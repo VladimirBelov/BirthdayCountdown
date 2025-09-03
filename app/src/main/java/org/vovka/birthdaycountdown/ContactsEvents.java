@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.08.2025, 00:48
+ *  * Created by Vladimir Belov on 03.09.2025, 09:57
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.08.2025, 00:28
+ *  * Last modified 02.09.2025, 22:00
  *
  */
 
@@ -8979,6 +8979,11 @@ public class ContactsEvents {
         return msg;
     }
 
+    /** Возвращает отформатированную дату
+     * @param dateIn Дата строкой DDMMYYY
+     * @param format Формат даты (с годом или без)
+     * @return Отформатированная дата, согласно указанному формату и настройки формата даты
+     */
     @NonNull
     String getDateFormatted(String dateIn, FormatDate format) {
 
@@ -10962,15 +10967,36 @@ public class ContactsEvents {
                             if (TimeZone.getDefault().getRawOffset() < 0) { //Для отрицательных зон надо прибавлять день
                                 dateStart.add(Calendar.DATE, 1);
                             }
+                            dateStart.set(Calendar.HOUR_OF_DAY, 0);
+                            dateStart.set(Calendar.MINUTE, 0);
+                            dateStart.set(Calendar.SECOND, 0);
+                            dateStart.set(Calendar.MILLISECOND, 0);
+                            dateEnd.set(Calendar.HOUR_OF_DAY, 0);
+                            dateEnd.set(Calendar.MINUTE, 0);
+                            dateEnd.set(Calendar.SECOND, 0);
+                            dateEnd.set(Calendar.MILLISECOND, 0);
+                            dateEnd.add(Calendar.SECOND, -1);
                         }
+                        if (dateEnd.before(startPeriod)) continue;
 
                         final String calId = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.CALENDAR_ID));
                         final String calHash = getHash(Constants.eventSourceCalendarPrefix + calId);
-                        final String eventTitle = Constants.eventTitleCalendarPrefix + cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.TITLE));
+                        String eventTitle = Constants.eventTitleCalendarPrefix + cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.TITLE));
+
+                        if (!isSameDay(dateStart, dateEnd)) {
+                            final FormatDate formatDate = dateStart.get(Calendar.YEAR) == dateEnd.get(Calendar.YEAR) ? FormatDate.WithoutYear : FormatDate.WithYear;
+                            eventTitle = eventTitle
+                                    .concat(Constants.STRING_PARENTHESIS_OPEN)
+                                    .concat(getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(dateStart.getTime()), formatDate))
+                                    .concat(Constants.STRING_MINUS)
+                                    .concat(getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(dateEnd.getTime()), formatDate))
+                                    .concat(Constants.STRING_PARENTHESIS_CLOSE);
+                        }
 
                         while (dateStart.before(startPeriod)) {
                             dateStart.add(Calendar.DATE, 1);
                         }
+                        dateEnd.add(Calendar.SECOND, 1);
 
                         do {
                             String key = calHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateStart.getTime()));
@@ -11811,4 +11837,17 @@ public class ContactsEvents {
         return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
     }
 
+    /** Проверяет, что две даты отностся к одному дню
+     * @param cal1 Первая дата
+     * @param cal2 Вторая дата
+     * @return Результат проверки
+     */
+    public static boolean isSameDay(Calendar cal1, Calendar cal2) {
+        if (cal1 == null || cal2 == null) {
+            return false;
+        }
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
+                cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
+    }
 }

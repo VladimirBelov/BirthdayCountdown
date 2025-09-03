@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.08.2025, 12:04
+ *  * Created by Vladimir Belov on 03.09.2025, 09:57
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 06.08.2025, 11:15
+ *  * Last modified 03.09.2025, 09:57
  *
  */
 
@@ -559,6 +559,10 @@ public class WidgetCalendar extends AppWidgetProvider {
                 Calendar calFirstDay = (Calendar) cal.clone();
                 calFirstDay.add(Calendar.MONTH, prefMonthsShift);
                 calFirstDay.set(Calendar.DAY_OF_MONTH, 1);
+                calFirstDay.set(Calendar.HOUR_OF_DAY, 0);
+                calFirstDay.set(Calendar.MINUTE, 0);
+                calFirstDay.set(Calendar.SECOND, 0);
+                calFirstDay.set(Calendar.MILLISECOND, 0);
                 int monthStartDayOfWeek = calFirstDay.get(Calendar.DAY_OF_WEEK);
                 Calendar calLastDay = (Calendar) calFirstDay.clone();
                 calLastDay.add(Calendar.MONTH, monthsInYear - 1);
@@ -581,6 +585,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         calLastDay.add(Calendar.DAY_OF_MONTH, 8 - calLastDay.get(Calendar.DAY_OF_WEEK));
                     }
                 }
+
                 if (BuildConfig.DEBUG) {
                     Log.i(TAG + ".Period", ContactsEvents.sdf_DDMMYYYY.format(calFirstDay.getTime()) + " : " + ContactsEvents.sdf_DDMMYYYY.format(calLastDay.getTime()));
                 }
