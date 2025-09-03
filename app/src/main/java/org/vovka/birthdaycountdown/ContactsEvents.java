@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.09.2025, 09:57
+ *  * Created by Vladimir Belov on 03.09.2025, 21:12
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 02.09.2025, 22:00
+ *  * Last modified 03.09.2025, 21:03
  *
  */
 
@@ -2003,9 +2003,11 @@ public class ContactsEvents {
 
                 Intent intentNotify = new Intent(context, NotifyActivity.class);
                 intentNotify.setAction(Intent.ACTION_VIEW);
+
+
                 ShortcutInfoCompat shortcutNotify = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_NOTIFY)
                         .setShortLabel(resources.getString(R.string.shortcut_notify))
-                        .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_notify))
+                        .setIcon(getTintedIcon(R.drawable.shortcut_notify))
                         .setIntent(intentNotify)
                         .setRank(1)
 
@@ -2024,7 +2026,7 @@ public class ContactsEvents {
                 intentFactsPopup.setAction(Intent.ACTION_VIEW);
                 ShortcutInfoCompat shortcutFactsPopup = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_FACTS)
                         .setShortLabel(resources.getString(R.string.shortcut_facts))
-                        .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_facts))
+                        .setIcon(getTintedIcon(R.drawable.shortcut_facts))
                         .setIntent(intentFactsPopup)
                         .setRank(2)
                         .build();
@@ -2042,7 +2044,7 @@ public class ContactsEvents {
                 intentQuiz.setAction(Intent.ACTION_VIEW);
                 ShortcutInfoCompat shortcutQuiz = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_QUIZ)
                         .setShortLabel(resources.getString(R.string.shortcut_quiz))
-                        .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_quiz))
+                        .setIcon(getTintedIcon(R.drawable.shortcut_quiz))
                         .setIntent(intentQuiz)
                         .setRank(3)
                         .build();
@@ -2051,7 +2053,7 @@ public class ContactsEvents {
                 intentSettings.setAction(Intent.ACTION_VIEW);
                 ShortcutInfoCompat shortcutSettings = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_SETTINGS)
                         .setShortLabel(resources.getString(R.string.shortcut_settings))
-                        .setIcon(IconCompat.createWithResource(context, R.drawable.shortcut_settings))
+                        .setIcon(getTintedIcon(R.drawable.shortcut_settings))
                         .setIntent(intentSettings)
                         .setRank(4)
                         .build();
@@ -2073,6 +2075,78 @@ public class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    /** Возвращает иконку с фоном цвета текущей темы
+     * @param resId Id иконки
+     * @return Изменённая иконка
+     */
+    IconCompat getTintedIcon(@DrawableRes int resId) {
+
+        Drawable originalDrawable = ContextCompat.getDrawable(context, resId);
+        Bitmap modifiedBitmap = null;
+        if (originalDrawable instanceof BitmapDrawable) {
+            Bitmap originalBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+            int colorToReplace = resources.getColor(R.color.dark_green);
+            TypedArray ta = getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
+            int newColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
+            ta.recycle();
+            int colorTolerance = 10; // Допуск для "похожих" цветов (0 для точного совпадения)
+            if (newColor != 0) {
+                modifiedBitmap = replaceColorInBitmap(originalBitmap, colorToReplace, newColor, colorTolerance);
+            }
+        }
+        if (modifiedBitmap != null) {
+            return IconCompat.createWithBitmap(modifiedBitmap);
+        } else {
+            return IconCompat.createWithResource(context, resId);
+        }
+    }
+
+    /** Заменяет один цвет на другой в Bitmap
+     * @param originalBitmap Исходный Bitmap.
+     * @param oldColor Цвет, который нужно заменить (например, Color.RED).
+     * @param newColor Цвет, на который нужно заменить (например, Color.BLUE).
+     * @param tolerance Допуск для "схожих" цветов (0 = точное совпадение).
+     * @return Новый Bitmap с замененными цветами.
+     */
+    Bitmap replaceColorInBitmap(Bitmap originalBitmap, int oldColor, int newColor, int tolerance) {
+        if (originalBitmap == null) {
+            return null;
+        }
+
+        // Создаем изменяемую копию Bitmap
+        Bitmap resultBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+        int width = resultBitmap.getWidth();
+        int height = resultBitmap.getHeight();
+        int[] pixels = new int[width * height];
+        resultBitmap.getPixels(pixels, 0, width, 0, 0, width, height);
+
+        // Разделяем компоненты старого цвета
+        int oldA = Color.alpha(oldColor);
+        int oldR = Color.red(oldColor);
+        int oldG = Color.green(oldColor);
+        int oldB = Color.blue(oldColor);
+
+        for (int i = 0; i < pixels.length; i++) {
+            int pixel = pixels[i];
+            int currentA = Color.alpha(pixel);
+            int currentR = Color.red(pixel);
+            int currentG = Color.green(pixel);
+            int currentB = Color.blue(pixel);
+
+            // Сравниваем цвета с учетом допуска
+            if (Math.abs(currentR - oldR) <= tolerance &&
+                    Math.abs(currentG - oldG) <= tolerance &&
+                    Math.abs(currentB - oldB) <= tolerance &&
+                    Math.abs(currentA - oldA) <= tolerance) { // Учитываем и альфа-канал, если нужно
+                pixels[i] = newColor;
+            }
+        }
+
+        resultBitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+        return resultBitmap;
     }
 
     /**
