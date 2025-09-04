@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.08.2025, 22:39
+  ~  * Created by Vladimir Belov on 05.09.2025, 01:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 04.08.2025, 21:32
+  ~  * Last modified 05.09.2025, 01:28
   ~  */
   -->
 
@@ -1312,6 +1312,7 @@
     <string name="month_event_saturdays">Субботы</string>
     <string name="month_event_sundays">Воскресенья</string>
     <string name="month_event_popup_prefix">"Дата: "</string>
+    <string name="month_event_empty">🚫 Нет событий для выбранного дня</string>
 
     <string name="facts_popup_caption">Факт</string>
     <string name="facts_popup_action_next_fact">⏩ Следующий</string>

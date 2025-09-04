@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.08.2025, 22:39
+  ~  * Created by Vladimir Belov on 05.09.2025, 01:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 04.08.2025, 21:34
+  ~  * Last modified 05.09.2025, 01:40
   ~  */
   -->
 
@@ -1313,6 +1313,7 @@ Clique longamente no item para selecionar a cor"</string>
     <string name="month_event_saturdays">Sábados</string>
     <string name="month_event_sundays">Domingos</string>
     <string name="month_event_popup_prefix">"Data: "</string>
+    <string name="month_event_empty">🚫 Nenhum evento para o dia selecionado</string>
 
     <string name="facts_popup_caption">Fato</string>
     <string name="facts_popup_action_next_fact">⏩ Próximo</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 05.09.2025, 01:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 09:54
+ *  * Last modified 04.09.2025, 22:02
  *
  */
 
@@ -124,7 +124,7 @@ public class FactsPopupActivity extends Activity {
                 buttonAction.setVisibility(View.VISIBLE);
 
                 TextView buttonPrev = findViewById(R.id.buttonFirstAction);
-                buttonPrev.setText(R.string.facts_popup_action_prev_fact);
+                buttonPrev.setText(R.string.popup_action_prev);
                 addClickEffect(buttonPrev);
                 buttonPrev.getBackground().setAlpha(50);
 

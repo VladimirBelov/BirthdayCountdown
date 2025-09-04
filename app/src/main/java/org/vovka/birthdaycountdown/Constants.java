@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.08.2025, 00:48
+ *  * Created by Vladimir Belov on 05.09.2025, 01:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.08.2025, 00:40
+ *  * Last modified 05.09.2025, 00:53
  *
  */
 
@@ -233,6 +233,7 @@ public final class Constants {
     static final String EXTRA_VALUES = "values";
     static final String EXTRA_RESULTS = "results";
     static final String EXTRA_LIST = "list";
+    static final String EXTRA_MAP = "map";
     static final String EXTRA_CHECKS = "checks";
     static final String EXTRA_COLORED = "colored";
     static final String EXTRA_NON_SORTED = "nonsorted";

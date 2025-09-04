@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.08.2025, 22:39
+  ~  * Created by Vladimir Belov on 05.09.2025, 01:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 04.08.2025, 21:33
+  ~  * Last modified 05.09.2025, 01:39
   ~  */
   -->
 
@@ -1312,6 +1312,7 @@ Haga clic largo en el elemento para seleccionar el color"</string>
     <string name="month_event_saturdays">Sábados</string>
     <string name="month_event_sundays">Domingos</string>
     <string name="month_event_popup_prefix">"Fecha: "</string>
+    <string name="month_event_empty">🚫 No hay eventos para el día seleccionado</string>
 
     <string name="facts_popup_caption">Hecho</string>
     <string name="facts_popup_action_next_fact">⏩ Siguiente</string>

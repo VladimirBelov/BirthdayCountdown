@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.08.2025, 22:39
+  ~  * Created by Vladimir Belov on 05.09.2025, 01:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 04.08.2025, 21:33
+  ~  * Last modified 05.09.2025, 01:38
   ~  */
   -->
 
@@ -1314,6 +1314,7 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="month_event_saturdays">Soboty</string>
     <string name="month_event_sundays">Neděle</string>
     <string name="month_event_popup_prefix">"Datum: "</string>
+    <string name="month_event_empty">🚫 Žádné události pro vybraný den</string>
 
     <string name="facts_popup_caption">Fakt</string>
     <string name="facts_popup_action_next_fact">⏩ Další</string>

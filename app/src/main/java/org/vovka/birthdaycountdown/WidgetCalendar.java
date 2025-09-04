@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.09.2025, 09:57
+ *  * Created by Vladimir Belov on 05.09.2025, 01:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.09.2025, 09:57
+ *  * Last modified 05.09.2025, 01:36
  *
  */
 
@@ -37,6 +37,7 @@ import androidx.annotation.NonNull;
 import org.intellij.lang.annotations.JdkConstants;
 
 import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -70,7 +71,7 @@ public class WidgetCalendar extends AppWidgetProvider {
     private boolean enabledFillDays;
     //private float fontMagnify;
     //private float fontMagnifyMonthRow = 1; //0.6f;
-    private List<String> prefOtherEvents;
+    private ArrayList<String> prefOtherEvents;
     private int prefOnClickCommon = Constants.onClick_None;
     private int prefOnClickHolidays = Constants.onClick_None;
     private boolean atLeastOneDayInMonth;
@@ -878,7 +879,7 @@ public class WidgetCalendar extends AppWidgetProvider {
         return cellRv;
     }
 
-    private PendingIntent getOnClickPendingIntent(Context context, int appWidgetId, Resources res, List<String> prefOtherEvents, Calendar cal, List<ContactsEvents.DayType> dayTypes) {
+    private PendingIntent getOnClickPendingIntent(Context context, int appWidgetId, Resources res, ArrayList<String> prefOtherEvents, Calendar cal, List<ContactsEvents.DayType> dayTypes) {
         PendingIntent pendingIntent = null;
 
         try {
@@ -894,11 +895,17 @@ public class WidgetCalendar extends AppWidgetProvider {
                 List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents, eventsColorsInMonth);
                 if (!dayInfo.isEmpty()) {
                     Intent intent = new Intent(context, WidgetCalendarPopup.class);
+                    SimpleDateFormat sdf = new SimpleDateFormat(" (EEE)", Locale.getDefault());
+
                     intent.putExtra(Constants.EXTRA_DAY_CAPTION,  res.getString(R.string.month_event_popup_prefix)
-                            .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear)));
+                            .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear))
+                            .concat(sdf.format(cal.getTime())));
                     intent.putExtra(Constants.EXTRA_DAY_INFO, String.join(Constants.HTML_BR, dayInfo));
                     intent.putExtra(Constants.EXTRA_VALUES, Long.toString(cal.getTimeInMillis()));
+                    intent.putStringArrayListExtra(Constants.EXTRA_LIST, prefOtherEvents);
+                    intent.putExtra(Constants.EXTRA_MAP, eventsColorsInMonth);
                     intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,
                             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntentImmutable);

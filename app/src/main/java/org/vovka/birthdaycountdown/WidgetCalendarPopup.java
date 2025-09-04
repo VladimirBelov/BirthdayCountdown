@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.08.2025, 09:37
+ *  * Created by Vladimir Belov on 05.09.2025, 01:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.08.2025, 23:24
+ *  * Last modified 05.09.2025, 01:35
  *
  */
 
@@ -32,6 +32,12 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -61,6 +67,17 @@ public class WidgetCalendarPopup extends Activity {
 
     private static final String TAG = "WidgetCalendarPopup";
     ContactsEvents eventsData;
+    TextView viewCaption;
+    TextView viewInfo;
+    TextView buttonCalendar;
+    TextView buttonShare;
+    TextView buttonPrevDay;
+    TextView buttonNextDay;
+    String dayInfo = null;
+    String dayCaption = null;
+    String dayMills = null;
+    ArrayList<String> listEventsPacks;
+    HashMap<String, Integer> eventsColorsInMonth = null;
 
     public WidgetCalendarPopup() {
     }
@@ -104,76 +121,127 @@ public class WidgetCalendarPopup extends Activity {
             setContentView(R.layout.activity_popup);
 
             Intent intent = getIntent();
-            Bundle extras = intent.getExtras();
-            String dayInfo = null;
-            String dayCaption = null;
-            @Nullable String dayMills;
-            if (extras != null) {
-                dayInfo = extras.getString(Constants.EXTRA_DAY_INFO);
-                dayCaption = extras.getString(Constants.EXTRA_DAY_CAPTION);
-                dayMills = extras.getString(Constants.EXTRA_VALUES);
-            } else {
-                dayMills = null;
-            }
-            if (!TextUtils.isEmpty(dayInfo)) {
-                TextView txtInfo = findViewById(R.id.textInfo);
-                if (txtInfo != null) {
-                    if (dayInfo.contains(Constants.TRANSPARENT)) {
-                        TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                        dayInfo = dayInfo.replaceAll(Constants.TRANSPARENT,
-                                Integer.toHexString(ta.getColor(R.styleable.Theme_backgroundColor, 0)  & 0x00ffffff));
-                        ta.recycle();
-                    }
-                    txtInfo.setText(HtmlCompat.fromHtml(dayInfo, HtmlCompat.FROM_HTML_MODE_LEGACY));
-                }
-            } else {
+            this.dayInfo = intent.getStringExtra(Constants.EXTRA_DAY_INFO);
+            this.dayCaption = intent.getStringExtra(Constants.EXTRA_DAY_CAPTION);
+            this.dayMills = intent.getStringExtra(Constants.EXTRA_VALUES);
+            this.listEventsPacks = intent.getStringArrayListExtra(Constants.EXTRA_LIST);
+            this.eventsColorsInMonth = getHashMapFromIntent(intent);
+
+            if (this.dayInfo == null || this.dayMills == null) {
                 ToastExpander.showInfoMsg(getApplicationContext(), "No extras!");
                 finish();
             }
-            if (!TextUtils.isEmpty(dayCaption)) {
-                TextView txtCaption = findViewById(R.id.textCaption);
-                if (txtCaption != null) {
-                    txtCaption.setText(dayCaption);
-                }
-            }
 
-            if (dayMills != null) {
-                TextView buttonAction = findViewById(R.id.buttonFirstAction);
-                buttonAction.setText(getString(R.string.event_type_other_emoji).concat(Constants.STRING_SPACE).concat(getString(R.string.appwidget_label_Calendar)));
-                buttonAction.setOnClickListener(view -> {
-                    Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-                    builder.appendPath(Constants.QUERY_PARAM_TIME);
-                    builder.appendPath(dayMills);
-                    Intent intentCalendar = new Intent(Intent.ACTION_VIEW, builder.build());
-                    intentCalendar.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intentCalendar);
-                    finish();
-                });
-                addClickEffect(buttonAction);
-                buttonAction.getBackground().setAlpha(50);
-                buttonAction.setVisibility(View.VISIBLE);
+            this.viewInfo = findViewById(R.id.textInfo);
+            this.viewCaption = findViewById(R.id.textCaption);
 
-                TextView buttonShare = findViewById(R.id.buttonSecondAction);
-                buttonShare.setText(R.string.facts_popup_action_share);
-                buttonShare.setOnClickListener(v -> {
-                    Intent intentShare = new Intent(Intent.ACTION_SEND);
-                    intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
-                    TextView txtCaption = findViewById(R.id.textCaption);
-                    TextView txtInfo = findViewById(R.id.textInfo);
-                    intentShare.putExtra(Intent.EXTRA_TEXT,
-                            txtCaption.getText().toString().concat(Constants.STRING_EOL).concat(txtInfo.getText().toString()));
-                    startActivity(Intent.createChooser(intentShare, ""));
-                });
-                addClickEffect(buttonShare);
-                buttonShare.getBackground().setAlpha(50);
-                buttonShare.setVisibility(View.VISIBLE);
-            }
+            //Календарь
+            this.buttonCalendar = findViewById(R.id.buttonSecondAction);
+            this.buttonCalendar.setText(getString(R.string.event_type_other_emoji).concat(Constants.STRING_SPACE).concat(getString(R.string.appwidget_label_Calendar)));
+            addClickEffect(this.buttonCalendar);
+            this.buttonCalendar.getBackground().setAlpha(50);
+            this.buttonCalendar.setVisibility(View.VISIBLE);
 
+            //Поделиться
+            this.buttonShare = findViewById(R.id.buttonThirdAction);
+            this.buttonShare.setText(R.string.facts_popup_action_share);
+            addClickEffect(this.buttonShare);
+            this.buttonShare.getBackground().setAlpha(50);
+            this.buttonShare.setVisibility(View.VISIBLE);
+
+            //Предыдущий день
+            this.buttonPrevDay = findViewById(R.id.buttonFirstAction);
+            this.buttonPrevDay.setText(R.string.popup_action_prev);
+            addClickEffect(this.buttonPrevDay);
+            this.buttonPrevDay.getBackground().setAlpha(50);
+            this.buttonPrevDay.setVisibility(View.VISIBLE);
+
+            //Следующий день
+            this.buttonNextDay = findViewById(R.id.buttonFourthAction);
+            this.buttonNextDay.setText(R.string.popup_action_next);
+            addClickEffect(this.buttonNextDay);
+            this.buttonNextDay.getBackground().setAlpha(50);
+            this.buttonNextDay.setVisibility(View.VISIBLE);
+
+            //Закрыть окно
             TextView buttonClose = findViewById(R.id.buttonClose);
             if (buttonClose != null) {
                 buttonClose.setText(Constants.BUTTON_X);
                 buttonClose.setOnClickListener(view -> finish());
             }
+
+            showDayInfo();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void showDayInfo() {
+
+        try {
+            if (this.dayInfo.contains(Constants.TRANSPARENT)) {
+                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                this.dayInfo = this.dayInfo.replaceAll(Constants.TRANSPARENT,
+                        Integer.toHexString(ta.getColor(R.styleable.Theme_backgroundColor, 0) & 0x00ffffff));
+                ta.recycle();
+            }
+            viewInfo.setText(HtmlCompat.fromHtml(this.dayInfo, HtmlCompat.FROM_HTML_MODE_LEGACY));
+
+            if (!TextUtils.isEmpty(this.dayCaption)) {
+                this.viewCaption.setText(dayCaption);
+            }
+
+            buttonCalendar.setOnClickListener(view -> {
+                Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+                builder.appendPath(Constants.QUERY_PARAM_TIME);
+                builder.appendPath(this.dayMills);
+                Intent intentCalendar = new Intent(Intent.ACTION_VIEW, builder.build());
+                intentCalendar.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentCalendar);
+                finish();
+            });
+
+            buttonShare.setOnClickListener(v -> {
+                Intent intentShare = new Intent(Intent.ACTION_SEND);
+                intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+                intentShare.putExtra(Intent.EXTRA_TEXT,
+                        this.viewCaption.getText().toString().concat(Constants.STRING_EOL).concat(this.viewInfo.getText().toString()));
+                startActivity(Intent.createChooser(intentShare, ""));
+            });
+
+            long millis = Long.parseLong(this.dayMills);
+            Calendar newCal = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat(" (EEE)", Locale.getDefault());
+
+            buttonPrevDay.setOnClickListener(v -> {
+                newCal.setTimeInMillis(millis);
+                newCal.add(Calendar.DAY_OF_YEAR, -1);
+
+                List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(newCal.getTime()), this.listEventsPacks, this.eventsColorsInMonth);
+                this.dayInfo = dayInfo.isEmpty() ? getString(R.string.month_event_empty) : String.join(Constants.HTML_BR, dayInfo);
+                this.dayCaption = getString(R.string.month_event_popup_prefix)
+                        .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(newCal.getTime()), ContactsEvents.FormatDate.WithYear))
+                        .concat(sdf.format(newCal.getTime()));
+                this.dayMills = Long.toString(newCal.getTimeInMillis());
+
+                showDayInfo();
+            });
+
+            buttonNextDay.setOnClickListener(v -> {
+                newCal.setTimeInMillis(millis);
+                newCal.add(Calendar.DAY_OF_YEAR, +1);
+
+                List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(newCal.getTime()), this.listEventsPacks, this.eventsColorsInMonth);
+                this.dayInfo = dayInfo.isEmpty() ? getString(R.string.month_event_empty) : String.join(Constants.HTML_BR, dayInfo);
+                this.dayCaption = getString(R.string.month_event_popup_prefix)
+                        .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(newCal.getTime()), ContactsEvents.FormatDate.WithYear))
+                        .concat(sdf.format(newCal.getTime()));
+                this.dayMills = Long.toString(newCal.getTimeInMillis());
+
+                showDayInfo();
+            });
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -195,5 +263,20 @@ public class WidgetCalendarPopup extends Activity {
             listDrawable.addState(new int[]{}, drawableNormal);
             view.setBackground(listDrawable);
         }
+    }
+
+    /**
+     * Вспомогательный метод для безопасного извлечения HashMap с подавлением предупреждения
+     *
+     * @param intent Intent
+     * @return Карта
+     */
+    @SuppressWarnings("unchecked")
+    private static HashMap<String, Integer> getHashMapFromIntent(Intent intent) {
+        Serializable serializable = intent.getSerializableExtra(Constants.EXTRA_MAP);
+        if (serializable instanceof HashMap) {
+            return (HashMap<String, Integer>) serializable;
+        }
+        return null;
     }
 }

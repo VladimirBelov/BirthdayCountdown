@@ -1,20 +1,20 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2025, 16:50
+ *  * Created by Vladimir Belov on 05.09.2025, 01:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.09.2025, 16:48
+ *  * Last modified 04.09.2025, 21:38
  *
  */
 //file:noinspection HardCodedStringLiteral
 
 buildscript {
-    
+
     repositories {
         mavenCentral()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:9.0.0-alpha03'
+        classpath 'com.android.tools.build:gradle:8.13.0'
         //https://developer.android.com/build/releases/gradle-plugin
     }
 }
