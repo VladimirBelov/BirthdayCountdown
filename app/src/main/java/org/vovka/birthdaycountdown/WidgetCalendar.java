@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2025, 01:45
+ *  * Created by Vladimir Belov on 10.09.2025, 01:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.09.2025, 01:36
+ *  * Last modified 10.09.2025, 01:29
  *
  */
 
@@ -556,8 +556,10 @@ public class WidgetCalendar extends AppWidgetProvider {
 
             //Определение периода показа дней
             int monthsInYear = rowsToDraw * columnsToDraw;
+            Calendar calFirstDay;
+            Calendar calLastDay;
             {
-                Calendar calFirstDay = (Calendar) cal.clone();
+                calFirstDay = (Calendar) cal.clone();
                 calFirstDay.add(Calendar.MONTH, prefMonthsShift);
                 calFirstDay.set(Calendar.DAY_OF_MONTH, 1);
                 calFirstDay.set(Calendar.HOUR_OF_DAY, 0);
@@ -565,7 +567,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 calFirstDay.set(Calendar.SECOND, 0);
                 calFirstDay.set(Calendar.MILLISECOND, 0);
                 int monthStartDayOfWeek = calFirstDay.get(Calendar.DAY_OF_WEEK);
-                Calendar calLastDay = (Calendar) calFirstDay.clone();
+                calLastDay = (Calendar) calFirstDay.clone();
                 calLastDay.add(Calendar.MONTH, monthsInYear - 1);
                 calLastDay.set(Calendar.DATE, calLastDay.getActualMaximum(Calendar.DATE));
 
@@ -704,7 +706,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         RemoteViews rowRv = new RemoteViews(context.getPackageName(), R.layout.row_week);
                         atLeastOneDayInMonth = false;
                         for (int day = 0; day < 7; day++) {
-                            RemoteViews rvCell = composeDayCell(cal, todayYear, thisMonth, today, appWidgetId, fontMagnify_Days);
+                            RemoteViews rvCell = composeDayCell(cal, todayYear, thisMonth, today, appWidgetId, fontMagnify_Days, calFirstDay, calLastDay);
                             if (rvCell != null) rowRv.addView(R.id.row_container, rvCell);
                             cal.add(Calendar.DAY_OF_MONTH, 1);
                         }
@@ -782,7 +784,19 @@ public class WidgetCalendar extends AppWidgetProvider {
         }
     }
 
-    private RemoteViews composeDayCell(Calendar cal, int todayYear, @JdkConstants.CalendarMonth int thisMonth, int today, int appWidgetId, float fontMagnify_Days) {
+    /** Построение ячейки дня календаря
+     * @param cal Дата
+     * @param todayYear Текущий год
+     * @param thisMonth Текущий месяц
+     * @param today Текущий день года
+     * @param appWidgetId Id виджета
+     * @param fontMagnify_Days Масштабирование размера текста
+     * @param calFirstDay Первый день календаря в виджете
+     * @param calLastDay Последний день календаря в виджете
+     * @return Ячейка дня
+     */
+    private RemoteViews composeDayCell(Calendar cal, int todayYear, @JdkConstants.CalendarMonth int thisMonth, int today,
+                                       int appWidgetId, float fontMagnify_Days, Calendar calFirstDay, Calendar calLastDay) {
         RemoteViews cellRv = null;
 
         try {
@@ -827,7 +841,12 @@ public class WidgetCalendar extends AppWidgetProvider {
                             } else {
                                 colorOfDay = eventsColorsOutMonth.get(dayType.sourceId);
                             }
-                            if (colorOfDay == null || dayType.type == ContactsEvents.DayType.Type.Workday) break;
+                            if (colorOfDay == null) continue;
+                            if (dayType.type == ContactsEvents.DayType.Type.Workday) { //Рабочий выходной
+                                isColoredByEvent = true;
+                                maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
+                                continue;
+                            }
                             if (Color.alpha(colorOfDay) > 0) { //Цвет дня не полностью прозрачный
                                 isColoredByEvent = true;
                                 maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
@@ -866,7 +885,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
             //Реакция на нажатие
             if (enabledFillDays || inMonth) {
-                PendingIntent pendingIntent = getOnClickPendingIntent(context, appWidgetId, res, prefOtherEvents, cal, dayTypes);
+                PendingIntent pendingIntent = getAction(context, appWidgetId, prefOtherEvents, cal, dayTypes, calFirstDay, calLastDay);
                 if (pendingIntent != null) {
                     cellRv.setOnClickPendingIntent(android.R.id.text1, pendingIntent);
                 }
@@ -879,7 +898,20 @@ public class WidgetCalendar extends AppWidgetProvider {
         return cellRv;
     }
 
-    private PendingIntent getOnClickPendingIntent(Context context, int appWidgetId, Resources res, ArrayList<String> prefOtherEvents, Calendar cal, List<ContactsEvents.DayType> dayTypes) {
+    /**
+     * Возвращает намерение (действие), которое необходимо выполнить по нажатию на день календаря
+     *
+     * @param context         Контекст виджета
+     * @param appWidgetId     Id виджета
+     * @param prefOtherEvents Список источников, откуда брать события
+     * @param cal             Дата
+     * @param dayTypes        Типы дней (если не пусто - есть праздники в этот день)
+     * @param calFirstDay     Первый день календаря в виджете
+     * @param calLastDay      Последний день календаря в виджете
+     * @return Действие, которое необходимо выполнить
+     */
+    private PendingIntent getAction(Context context, int appWidgetId, ArrayList<String> prefOtherEvents,
+                                    Calendar cal, List<ContactsEvents.DayType> dayTypes, Calendar calFirstDay, Calendar calLastDay) {
         PendingIntent pendingIntent = null;
 
         try {
@@ -897,14 +929,16 @@ public class WidgetCalendar extends AppWidgetProvider {
                     Intent intent = new Intent(context, WidgetCalendarPopup.class);
                     SimpleDateFormat sdf = new SimpleDateFormat(" (EEE)", Locale.getDefault());
 
-                    intent.putExtra(Constants.EXTRA_DAY_CAPTION,  res.getString(R.string.month_event_popup_prefix)
+                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                    intent.putExtra(Constants.EXTRA_DAY_CAPTION,  context.getString(R.string.month_event_popup_prefix)
                             .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear))
                             .concat(sdf.format(cal.getTime())));
                     intent.putExtra(Constants.EXTRA_DAY_INFO, String.join(Constants.HTML_BR, dayInfo));
                     intent.putExtra(Constants.EXTRA_VALUES, Long.toString(cal.getTimeInMillis()));
                     intent.putStringArrayListExtra(Constants.EXTRA_LIST, prefOtherEvents);
                     intent.putExtra(Constants.EXTRA_MAP, eventsColorsInMonth);
-                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                    intent.putExtra(Constants.EXTRA_DAY1, calFirstDay);
+                    intent.putExtra(Constants.EXTRA_DAY2, calLastDay);
 
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,

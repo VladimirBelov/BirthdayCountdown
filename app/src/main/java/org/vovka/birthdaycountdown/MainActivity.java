@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.09.2025, 01:32
+ *  * Created by Vladimir Belov on 10.09.2025, 01:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 02.09.2025, 01:28
+ *  * Last modified 10.09.2025, 00:09
  *
  */
 
@@ -2181,6 +2181,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (eventsData.currentTheme != eventsData.preferences_theme.themeMain) {
                 eventsData.currentTheme = eventsData.preferences_theme.themeMain;
+                eventsData.updateShortcuts();
 
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

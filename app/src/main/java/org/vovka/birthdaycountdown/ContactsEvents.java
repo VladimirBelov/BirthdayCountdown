@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.09.2025, 21:12
+ *  * Created by Vladimir Belov on 10.09.2025, 01:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.09.2025, 21:03
+ *  * Last modified 10.09.2025, 01:35
  *
  */
 
@@ -279,8 +279,10 @@ public class ContactsEvents {
     final int PendingIntentMutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
     final Map<Integer, Integer> preferences_IconPackImages_M = new TreeMap<>();
     final Map<Integer, Integer> preferences_IconPackImages_F = new TreeMap<>();
-    private final Map<String, DayType.Type> preferences_DaysTypes = new HashMap<>(); //Типы дней для календаря
-    private final Map<String, String> preferences_DaysInfo = new HashMap<>(); //Данные о событиях для календаря
+    /** Типы дней для календаря */
+    final Map<String, DayType.Type> preferences_DaysTypes = new HashMap<>();
+    /** Данные о событиях для календаря */
+    private final Map<String, String> preferences_DaysInfo = new HashMap<>();
 
     //Даты
     private Calendar cacheCalendar1 = null;
@@ -1991,6 +1993,9 @@ public class ContactsEvents {
         return result;
     }
 
+    /**
+     * Обновление ярлыков действий для иконки приложения
+     */
     void updateShortcuts() {
         //https://habr.com/ru/articles/593863/
         try {
@@ -2003,7 +2008,6 @@ public class ContactsEvents {
 
                 Intent intentNotify = new Intent(context, NotifyActivity.class);
                 intentNotify.setAction(Intent.ACTION_VIEW);
-
 
                 ShortcutInfoCompat shortcutNotify = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_NOTIFY)
                         .setShortLabel(resources.getString(R.string.shortcut_notify))
@@ -10741,9 +10745,12 @@ public class ContactsEvents {
 
     private synchronized static void setDisplayMetrics(DisplayMetrics ds) {displayMetrics = ds;}
 
-    /**
-     * day - date in yyyy-MM-dd format
-     * */
+
+    /** Получение массива типов событий для даты
+     * @param day Дата в формате yyyy-MM-dd
+     * @param fromPacks Список источников, откуда брать события
+     * @return Список типов событий
+     */
     @NonNull
     List<DayType> getDayTypes(@NonNull String day, @NonNull List<String> fromPacks) {
         List<DayType> types = new ArrayList<>();
@@ -10767,9 +10774,12 @@ public class ContactsEvents {
         return types;
     }
 
-    /**
-     * day - date in yyyy-MM-dd format
-     * */
+    /** Получение списка событий из общего массива
+     * @param day Дата в формате yyyy-MM-dd
+     * @param fromPacks Список источников, откуда брать события
+     * @param colors Массив цветов для источников (устанавливается в настройках конкретного виджета)
+     * @return Список событий
+     */
     @NonNull
     List<String> getDayInfo(@NonNull String day, @NonNull List<String> fromPacks, HashMap<String, Integer> colors) {
         List<String> dayInfo = new ArrayList<>();
@@ -10815,6 +10825,9 @@ public class ContactsEvents {
         preferences_DaysInfo.clear();
     }
 
+    /** Считывание событий из внутренних справочников и файлов
+     * @param fileHashes Хэши источников для получения событий
+     */
     @SuppressLint("DiscouragedApi")
     void fillDaysTypesFromFiles(List<String> fileHashes) {
         try {
@@ -10879,13 +10892,18 @@ public class ContactsEvents {
         }
     }
 
-    private void fillDaysTypesFromFile(String packHash, String[] days, @NonNull String titlePrefix) {
+    /** Добавление массива событий в общие массивы событий и типов событий
+     * @param packHash Хэш источника (тип источника + путь до источника (файла или внутреннего ресурса))
+     * @param events Массив событий (дата + флаги события + описание события)
+     * @param titlePrefix Префикс, добавляемый для всех событий (например: иконка)
+     */
+    private void fillDaysTypesFromFile(String packHash, String[] events, @NonNull String titlePrefix) {
         try {
 
             if (preferences_DaysTypes.containsKey(packHash)) return;
 
             Calendar today = removeTime(new GregorianCalendar());
-            for (String eventLine: days) {
+            for (String eventLine: events) {
                 String day = eventLine.trim();
 
                 if (day.isEmpty() || day.startsWith(Constants.STRING_HASH) || day.startsWith(Constants.STRING_DSLASH))
@@ -10959,6 +10977,11 @@ public class ContactsEvents {
         }
     }
 
+    /** Добавление события в общие массивы событий и типов событий
+     * @param key Ключ (packHash:yyyy-MM-dd)
+     * @param dayType Тип дня (праздник, рабочий, ...)
+     * @param eventTitle Данные о событии
+     */
     private void fillDayTypeAndInfo(String key, DayType.Type dayType, String eventTitle) {
         try {
 
@@ -10985,7 +11008,12 @@ public class ContactsEvents {
         }
     }
 
-    void fillDaysTypesFromCalendars(List<String> calendarHashes, Calendar startPeriod, Calendar endPeriod) {
+    /** Считывание событий из календарей
+     * @param calendarHashes Хэши источников для получения событий
+     * @param startPeriod Первый день периода считывания
+     * @param endPeriod Последний день периода считывания
+     */
+    void fillDaysTypesFromCalendars(List<String> calendarHashes, @NonNull Calendar startPeriod, @NonNull Calendar endPeriod) {
         try {
 
             if (checkNoCalendarAccess()) return;

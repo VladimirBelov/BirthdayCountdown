@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2025, 01:45
+ *  * Created by Vladimir Belov on 10.09.2025, 01:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.09.2025, 00:53
+ *  * Last modified 10.09.2025, 01:29
  *
  */
 
@@ -249,6 +249,8 @@ public final class Constants {
     static final String EXTRA_MONTH = "month";
     static final String EXTRA_YEAR = "year";
     static final String EXTRA_USE_YEAR = "useYear";
+    static final String EXTRA_DAY1 = "day1";
+    static final String EXTRA_DAY2 = "day2";
 
     static final int HTML_COLOR_DEFAULT = 0;
     static final int HTML_COLOR_RED = 1;

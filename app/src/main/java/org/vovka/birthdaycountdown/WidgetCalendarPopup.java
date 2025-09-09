@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2025, 01:45
+ *  * Created by Vladimir Belov on 10.09.2025, 01:38
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.09.2025, 01:35
+ *  * Last modified 10.09.2025, 01:33
  *
  */
 
@@ -171,6 +171,21 @@ public class WidgetCalendarPopup extends Activity {
             }
 
             showDayInfo();
+
+            if (eventsData.preferences_DaysTypes.isEmpty()) {
+                //Заполнение типов дней из календарей по периоду
+                Calendar calFirstDay = null;
+                Calendar calLastDay = null;
+                if (intent.hasExtra(Constants.EXTRA_DAY1) && intent.hasExtra(Constants.EXTRA_DAY2)) {
+                    calFirstDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY1);
+                    calLastDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY2);
+                }
+                if (calFirstDay != null && calLastDay != null) {
+                    eventsData.fillDaysTypesFromCalendars(this.listEventsPacks, calFirstDay, calLastDay);
+                }
+                //Заполнение типов дней из файлов
+                eventsData.fillDaysTypesFromFiles(this.listEventsPacks);
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
