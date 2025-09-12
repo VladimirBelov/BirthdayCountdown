@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.09.2025, 01:38
+ *  * Created by Vladimir Belov on 13.09.2025, 01:31
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 10.09.2025, 00:09
+ *  * Last modified 12.09.2025, 19:16
  *
  */
 
@@ -2267,9 +2267,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 updateList(true, !eventsData.isUIOpen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
                 eventsData.initNotifications();
                 eventsData.updateWidgets(0, null);
-                eventsData.updateShortcuts();
 
             }
+            eventsData.updateShortcuts();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

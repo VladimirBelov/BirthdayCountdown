@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.08.2025, 12:04
+ *  * Created by Vladimir Belov on 13.09.2025, 01:31
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 06.08.2025, 11:27
+ *  * Last modified 12.09.2025, 16:57
  *
  */
 
@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -114,6 +115,12 @@ public class LocalEventActivity extends Activity {
     TextView editDate;
     TextView viewEventType;
     Spinner spinnerEventTypes;
+    CardView cardDescription;
+    TextView viewDescription;
+    EditText editDescription;
+    CardView cardURL;
+    TextView viewURL;
+    EditText editURL;
     Button buttonPickContactData;
     Button buttonPickPhoto;
     Button buttonClearPhoto;
@@ -278,51 +285,18 @@ public class LocalEventActivity extends Activity {
             editDate = findViewById(R.id.editDate);
             spinnerEventTypes = findViewById(R.id.spinnerEventType);
             viewEventType = findViewById(R.id.viewEventType);
+            cardDescription = findViewById(R.id.cardDescription);
+            viewDescription = findViewById(R.id.captionDescription);
+            editDescription = findViewById(R.id.editDescription);
+            cardURL = findViewById(R.id.cardUrl);
+            viewURL = findViewById(R.id.captionUrl);
+            editURL = findViewById(R.id.editUrl);
             imagePhoto = findViewById(R.id.imagePhoto);
             buttonPickContactData = findViewById(R.id.buttonPickContactData);
             buttonPickPhoto = findViewById(R.id.buttonPickPhoto);
             buttonClearPhoto = findViewById(R.id.buttonClearPhoto);
 
-            eventTypesValues.add(getString(R.string.event_type_birthday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_birthday));
-            eventTypesIds.add(Constants.Type_BirthDay);
-            eventSubTypesIds.add(Constants.Type_BirthDay);
-            eventTypesValues.add(getString(R.string.event_type_wedding_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_anniversary));
-            eventTypesIds.add(Constants.Type_Anniversary);
-            eventSubTypesIds.add(Constants.Type_Anniversary);
-            eventTypesValues.add(getString(R.string.event_type_death_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_death));
-            eventTypesIds.add(Constants.Type_Custom);
-            eventSubTypesIds.add(Constants.Type_Death);
-            eventTypesValues.add(getString(R.string.event_type_crowning_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_crowning));
-            eventTypesIds.add(Constants.Type_Custom);
-            eventSubTypesIds.add(Constants.Type_Crowning);
-            eventTypesValues.add(getString(R.string.event_type_nameday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_nameday));
-            eventTypesIds.add(Constants.Type_Custom);
-            eventSubTypesIds.add(Constants.Type_NameDay);
-            eventTypesValues.add(getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_another));
-            eventTypesIds.add(Constants.Type_Another);
-            eventSubTypesIds.add(Constants.Type_Another);
-            eventTypesValues.add(getString(R.string.event_type_holiday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_holiday));
-            eventTypesIds.add(Constants.Type_HolidayEvent);
-            eventSubTypesIds.add(Constants.Type_HolidayEvent);
-            eventTypesValues.add(getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_other));
-            eventTypesIds.add(Constants.Type_Other);
-            eventSubTypesIds.add(Constants.Type_Other);
-            eventTypesValues.add(getString(R.string.event_type_custom1_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent1_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent1_caption));
-            eventTypesIds.add(Constants.Type_Custom);
-            eventSubTypesIds.add(Constants.Type_Custom1);
-            eventTypesValues.add(getString(R.string.event_type_custom2_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent2_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent2_caption));
-            eventTypesIds.add(Constants.Type_Custom);
-            eventSubTypesIds.add(Constants.Type_Custom2);
-            eventTypesValues.add(getString(R.string.event_type_custom3_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent3_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent3_caption));
-            eventTypesIds.add(Constants.Type_Custom);
-            eventSubTypesIds.add(Constants.Type_Custom3);
-            eventTypesValues.add(getString(R.string.event_type_custom4_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent4_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent4_caption));
-            eventTypesIds.add(Constants.Type_Custom);
-            eventSubTypesIds.add(Constants.Type_Custom4);
-            eventTypesValues.add(getString(R.string.event_type_custom5_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent5_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent5_caption));
-            eventTypesIds.add(Constants.Type_Custom);
-            eventSubTypesIds.add(Constants.Type_Custom5);
-
+            initEventTypes();
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, eventTypesValues);
             spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
             spinnerEventTypes.setAdapter(spinnerArrayAdapter);
@@ -437,6 +411,20 @@ public class LocalEventActivity extends Activity {
                 } else {
                     viewOrganization.setVisibility(View.GONE);
                     setReadOnly(editOrganization);
+                }
+
+                if (editDescription.getText().toString().isEmpty()) {
+                    cardDescription.setVisibility(View.GONE);
+                } else {
+                    viewDescription.setVisibility(View.GONE);
+                    setReadOnly(editDescription);
+                }
+
+                if (editURL.getText().toString().isEmpty()) {
+                    cardURL.setVisibility(View.GONE);
+                } else {
+                    viewURL.setVisibility(View.GONE);
+                    setReadOnly(editURL);
                 }
 
                 setReadOnly(editDate);
@@ -573,6 +561,48 @@ public class LocalEventActivity extends Activity {
         }
     }
 
+    private void initEventTypes() {
+        eventTypesValues.add(getString(R.string.event_type_birthday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_birthday));
+        eventTypesIds.add(Constants.Type_BirthDay);
+        eventSubTypesIds.add(Constants.Type_BirthDay);
+        eventTypesValues.add(getString(R.string.event_type_wedding_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_anniversary));
+        eventTypesIds.add(Constants.Type_Anniversary);
+        eventSubTypesIds.add(Constants.Type_Anniversary);
+        eventTypesValues.add(getString(R.string.event_type_death_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_death));
+        eventTypesIds.add(Constants.Type_Custom);
+        eventSubTypesIds.add(Constants.Type_Death);
+        eventTypesValues.add(getString(R.string.event_type_crowning_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_crowning));
+        eventTypesIds.add(Constants.Type_Custom);
+        eventSubTypesIds.add(Constants.Type_Crowning);
+        eventTypesValues.add(getString(R.string.event_type_nameday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_nameday));
+        eventTypesIds.add(Constants.Type_Custom);
+        eventSubTypesIds.add(Constants.Type_NameDay);
+        eventTypesValues.add(getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_another));
+        eventTypesIds.add(Constants.Type_Another);
+        eventSubTypesIds.add(Constants.Type_Another);
+        eventTypesValues.add(getString(R.string.event_type_holiday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_holiday));
+        eventTypesIds.add(Constants.Type_HolidayEvent);
+        eventSubTypesIds.add(Constants.Type_HolidayEvent);
+        eventTypesValues.add(getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_other));
+        eventTypesIds.add(Constants.Type_Other);
+        eventSubTypesIds.add(Constants.Type_Other);
+        eventTypesValues.add(getString(R.string.event_type_custom1_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent1_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent1_caption));
+        eventTypesIds.add(Constants.Type_Custom);
+        eventSubTypesIds.add(Constants.Type_Custom1);
+        eventTypesValues.add(getString(R.string.event_type_custom2_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent2_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent2_caption));
+        eventTypesIds.add(Constants.Type_Custom);
+        eventSubTypesIds.add(Constants.Type_Custom2);
+        eventTypesValues.add(getString(R.string.event_type_custom3_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent3_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent3_caption));
+        eventTypesIds.add(Constants.Type_Custom);
+        eventSubTypesIds.add(Constants.Type_Custom3);
+        eventTypesValues.add(getString(R.string.event_type_custom4_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent4_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent4_caption));
+        eventTypesIds.add(Constants.Type_Custom);
+        eventSubTypesIds.add(Constants.Type_Custom4);
+        eventTypesValues.add(getString(R.string.event_type_custom5_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent5_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent5_caption));
+        eventTypesIds.add(Constants.Type_Custom);
+        eventSubTypesIds.add(Constants.Type_Custom5);
+    }
+
     private void clearPhoto() {
         try {
 
@@ -623,12 +653,19 @@ public class LocalEventActivity extends Activity {
     }
 
     private void pickContactData() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
 
-        try {
-            startActivityForResult(intent, Constants.RESULT_PICK_CONTACT);
-        } catch (ActivityNotFoundException ignored) { /**/ }
+        if (eventsData.checkNoContactsAccess()) {
+            //https://issuetracker.google.com/issues/118400813 - без доступа к контактам не работает
+            requestContactsPermission();
+        } else {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+            //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            try {
+                startActivityForResult(intent, Constants.RESULT_PICK_CONTACT);
+            } catch (ActivityNotFoundException ignored) { /**/ }
+        }
     }
 
     @Override
@@ -659,6 +696,8 @@ public class LocalEventActivity extends Activity {
                     startActivityForResult(intent, Constants.RESULT_PICK_FILE);
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
             }
+        } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+                pickContactData();
         }
     }
 
@@ -672,14 +711,24 @@ public class LocalEventActivity extends Activity {
                     if (contactUri != null) {
                         String contactID = contactUri.toString().substring(contactUri.toString().lastIndexOf(Constants.STRING_SLASH) + 1);
                         if (!contactID.isEmpty()) {
-                            HashMap<String, String> contactDataMap = eventsData.getContactDataMulti(ContactsEvents.parseToLong(contactID), new String[]{
-                                    ContactsContract.Contacts.PHOTO_URI,
-                                    ContactsContract.Data.DISPLAY_NAME,
-                                    ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE
-                            });
-                            eventData.put(ContactsEvents.Position_photo_uri, ContactsEvents.checkForNull(contactDataMap.get(ContactsContract.Contacts.PHOTO_URI)));
-                            updateCaptionsAndVisibility(this);
-                            updateEventPhoto(this);
+                            try {
+                                HashMap<String, String> contactDataMap = eventsData.getContactDataMulti(ContactsEvents.parseToLong(contactID), new String[]{
+                                        ContactsContract.Contacts.PHOTO_URI,
+                                        ContactsContract.Data.DISPLAY_NAME,
+                                        ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE
+                                });
+                                //eventData.put(ContactsEvents.Position_photo_uri, ContactsEvents.checkForNull(contactDataMap.get(ContactsContract.Contacts.PHOTO_URI)));
+
+                                Uri selectedImageUri = Uri.parse(contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
+                                if (selectedImageUri != null) {
+                                    CropIntent intent = new CropIntent();
+                                    intent.setImagePath(selectedImageUri);
+                                    startActivityForResult(intent.getIntent(this), Constants.RESULT_CROP_PHOTO);
+                                }
+                            } catch (SecurityException e) {
+                                ToastExpander.showInfoMsg(this, getString(R.string.msg_no_access_contacts));
+                               //try (InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(getContentResolver(), contactUri, true))
+                            }
                         }
                     }
                 } else if (requestCode == Constants.RESULT_PICK_PHOTO || requestCode == Constants.RESULT_PICK_FILE) {
@@ -1015,6 +1064,34 @@ public class LocalEventActivity extends Activity {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(activity, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    void requestContactsPermission() {
+        try {
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.READ_CONTACTS},
+                        Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS
+                );
+            } else if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.READ_CONTACTS},
+                        Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS
+                );
+            } else {
+                ToastExpander.showMsg(this, getString(R.string.msg_no_access_contacts_hint));
+                try {
+                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
+                } catch (ActivityNotFoundException e) { /**/ }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

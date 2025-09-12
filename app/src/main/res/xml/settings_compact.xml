@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.07.2025, 22:57
+  ~  * Created by Vladimir Belov on 13.09.2025, 01:31
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 02.07.2025, 22:52
+  ~  * Last modified 13.09.2025, 01:21
   ~  */
   -->
 
@@ -1055,17 +1055,6 @@
             android:dialogIcon="@android:drawable/ic_menu_agenda"
             android:negativeButtonText="@string/button_cancel"/>
 
-<!--        <ListPreference
-            android:key="@string/pref_Notifications_FactEvents_Count_key"
-            android:title="@string/pref_Notifications_FactEvents_Count_title"
-            android:summary="@string/pref_Notifications_FactEvents_Count_summary"
-            android:defaultValue="@string/pref_Notifications_FactEvents_Count_default"
-            android:entries="@array/pref_Notifications_FactEvents_Count_entries"
-            android:entryValues="@array/pref_Notifications_FactEvents_Count_values"
-            android:icon="@android:drawable/ic_menu_day"
-            android:dialogIcon="@android:drawable/ic_menu_day"
-            android:negativeButtonText="@string/button_cancel"/>-->
-
         <Preference
             android:key="@string/pref_Notifications_AlarmHour_key"
             android:title="@string/pref_Notifications_AlarmHour_title"
@@ -1102,6 +1091,17 @@
             android:entryValues="@array/pref_Notifications_OnClick_values"
             android:icon="@android:drawable/ic_menu_compass"
             android:dialogIcon="@android:drawable/ic_menu_compass"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <ListPreference
+            android:key="@string/pref_Notifications_SmallIconsStyle_key"
+            android:title="@string/pref_Notifications_SmallIconsStyle_title"
+            android:summary="@string/pref_Notifications_SmallIconsStyle_summary"
+            android:defaultValue="@string/pref_Notifications_SmallIconsStyle_default"
+            android:entries="@array/pref_Notifications_SmallIconsStyle_entries"
+            android:entryValues="@array/pref_Notifications_SmallIconsStyle_values"
+            android:icon="@android:drawable/ic_menu_myplaces"
+            android:dialogIcon="@android:drawable/ic_menu_myplaces"
             android:negativeButtonText="@string/button_cancel"/>
 
         <Preference
@@ -1216,6 +1216,17 @@
             android:entryValues="@array/pref_Notifications_OnClick_values"
             android:icon="@android:drawable/ic_menu_compass"
             android:dialogIcon="@android:drawable/ic_menu_compass"
+            android:negativeButtonText="@string/button_cancel"/>
+
+        <ListPreference
+            android:key="@string/pref_Notifications2_SmallIconsStyle_key"
+            android:title="@string/pref_Notifications_SmallIconsStyle_title"
+            android:summary="@string/pref_Notifications_SmallIconsStyle_summary"
+            android:defaultValue="@string/pref_Notifications_SmallIconsStyle_default"
+            android:entries="@array/pref_Notifications_SmallIconsStyle_entries"
+            android:entryValues="@array/pref_Notifications_SmallIconsStyle_values"
+            android:icon="@android:drawable/ic_menu_myplaces"
+            android:dialogIcon="@android:drawable/ic_menu_myplaces"
             android:negativeButtonText="@string/button_cancel"/>
 
         <Preference

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.09.2025, 01:38
+ *  * Created by Vladimir Belov on 13.09.2025, 01:31
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 10.09.2025, 01:35
+ *  * Last modified 13.09.2025, 01:17
  *
  */
 
@@ -451,6 +451,8 @@ public class ContactsEvents {
     String preferences_notifications2_ringtone;
     int preferences_notifications_on_click_action;
     int preferences_notifications2_on_click_action;
+    int preferences_notifications_smallicons_style;
+    int preferences_notifications2_smallicons_style;
 
     /* preferences_notifications_style:
      *   0 - Одно общее уведомление
@@ -1603,6 +1605,8 @@ public class ContactsEvents {
             preferences_notifications2_quick_actions = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications2_QuickActions_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_QuickActions_values_default))));
             preferences_notifications_on_click_action = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_OnClick_key), context.getString(R.string.pref_Notifications_OnClick_default));
             preferences_notifications2_on_click_action = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications2_OnClick_key), context.getString(R.string.pref_Notifications_OnClick_default));
+            preferences_notifications_smallicons_style = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications_SmallIconsStyle_key), context.getString(R.string.pref_Notifications_SmallIconsStyle_default));
+            preferences_notifications2_smallicons_style = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications2_SmallIconsStyle_key), context.getString(R.string.pref_Notifications_SmallIconsStyle_default));
 
             //Виджеты
             preferences_widgets_event_info = getPreferenceStringSet(preferences, context.getString(R.string.pref_Widgets_EventInfo_key), pref_Widgets_EventInfo_Info_Default);
@@ -2092,9 +2096,7 @@ public class ContactsEvents {
         if (originalDrawable instanceof BitmapDrawable) {
             Bitmap originalBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
             int colorToReplace = resources.getColor(R.color.dark_green);
-            TypedArray ta = getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
-            int newColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
-            ta.recycle();
+            int newColor = getThemeBackColor();
             int colorTolerance = 10; // Допуск для "похожих" цветов (0 для точного совпадения)
             if (newColor != 0) {
                 modifiedBitmap = replaceColorInBitmap(originalBitmap, colorToReplace, newColor, colorTolerance);
@@ -2105,6 +2107,16 @@ public class ContactsEvents {
         } else {
             return IconCompat.createWithResource(context, resId);
         }
+    }
+
+    /** Возвращает цвет фона текущей темы
+     * @return Цвет
+     */
+    @ColorInt int getThemeBackColor() {
+        TypedArray ta = getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
+        int newColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
+        ta.recycle();
+        return newColor;
     }
 
     /** Заменяет один цвет на другой в Bitmap
@@ -5759,7 +5771,7 @@ public class ContactsEvents {
     }
 
     @NonNull
-    HashMap<String, String> getContactDataMulti(@NonNull Long contactId, @NonNull String[] columnNames) {
+    HashMap<String, String> getContactDataMulti(@NonNull Long contactId, @NonNull String[] columnNames) throws SecurityException {
 
         HashMap<String, String> resultMap = new HashMap<>();
 
@@ -5810,6 +5822,8 @@ public class ContactsEvents {
                 dataCursor.close();
             }
 
+        } catch (SecurityException se) {
+            throw se;
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -7205,6 +7219,7 @@ public class ContactsEvents {
                     preferences_notifications_on_click_action, 
                     preferences_notifications_quick_actions,
                     preferences_notifications_details,
+                    preferences_notifications_smallicons_style,
                     preferences_notifications_types.contains(resources.getString(R.string.pref_EventTypes_Facts)) ? preferences_notifications_fact_event_count : 0
             );
         } else if (queueNumber == 2) {
@@ -7220,6 +7235,7 @@ public class ContactsEvents {
                     preferences_notifications2_on_click_action,
                     preferences_notifications2_quick_actions,
                     preferences_notifications2_details,
+                    preferences_notifications2_smallicons_style,
                     preferences_notifications2_types.contains(resources.getString(R.string.pref_EventTypes_Facts)) ? preferences_notifications2_fact_event_count : 0
             );
         }
@@ -7229,7 +7245,7 @@ public class ContactsEvents {
     void showNotificationsForParams(boolean forceNoEventsMessage, String channelId, Set<String> prefDays, Set<String> prefEventSources,
                                     Set<String> prefEventTypes, int prefType, int prefPriority,
                                     String prefRingtone, int prefOnClickAction, Set<String> prefQuickActions, Set<String> prefEventDetails,
-                                    int randomFactsCount) {
+                                    int prefSmallIconStyle, int randomFactsCount) {
         //https://startandroid.ru/ru/uroki/vse-uroki-spiskom/511-urok-186-notifications-rasshirennye-uvedomlenija.html
 
         if (checkNoNotificationAccess()) return;
@@ -7307,12 +7323,12 @@ public class ContactsEvents {
 
                 StringBuilder textBig = new StringBuilder();
                 String textSmall = null;
+                int countEvents = 0;
                 if (!listFacts.isEmpty()) {
                     textBig.append(composeFactsAsString(listFacts));
                 }
                 boolean noEventsMsg = false;
                 if (!listNotify.isEmpty()) {
-                    int countEvents = 0;
                     for (NotifyEvent event : listNotify) {
                         if (prefType != 4 || event.eventDate.after(currentDay)) {
                             countEvents++;
@@ -7346,7 +7362,6 @@ public class ContactsEvents {
                     int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
                     final String notificationDetails = textBig.toString().concat(Constants.STRING_EOL).concat(textSmall);
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
-                            .setColor(this.getResources().getColor(R.color.dark_green))
                             .setSmallIcon(R.drawable.ic_icon_notify)
                             .setContentText(textSmall)
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(textBig)) //Ограничение 5120 символов https://stackoverflow.com/questions/27124887/whats-the-max-size-of-a-bigtextstyle-notification
@@ -7355,8 +7370,22 @@ public class ContactsEvents {
                             .setWhen(0) //https://stackoverflow.com/questions/18249871/android-notification-buttons-not-showing-up/18603076#18603076
                             .setAutoCancel(true);
 
+                    if (prefSmallIconStyle == 1) {
+                        builder.setColor(this.getResources().getColor(R.color.dark_green));
+                    } else {
+                        builder.setColor(getThemeBackColor());
+                    }
+
                     if (preferences_debug_on) {
                         builder.setSubText(Constants.NOTIFY_ID + notificationID);
+                    }
+
+                    if (countEvents > 1) {
+                        builder.setNumber(countEvents);
+                    }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        builder.setTimeoutAfter(85800000); //Сутки без 10 мин
                     }
 
                     if (prefPriority > 1 && !listNotify.isEmpty()) {
@@ -7415,13 +7444,24 @@ public class ContactsEvents {
                         final String eventTitle = event.singleEventArray[Position_eventDistance].equals(Constants.STRING_0) ? eventDistance[0] : eventDistance[0] + Constants.STRING_SPACE + eventDistance[1];
 
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
-                                .setColor(this.getResources().getColor(R.color.dark_green))
-                                .setSmallIcon(R.drawable.ic_icon_notify)
                                 .setContentText(eventDetails)
                                 .setContentTitle(eventTitle)
                                 .setStyle(new NotificationCompat.BigTextStyle().bigText(eventDetails))
                                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                                 .setAutoCancel(true);
+
+                        @ColorInt int eventIcon = R.drawable.ic_icon_notify;
+                        if (prefSmallIconStyle == 1) {
+                            builder.setColor(this.getResources().getColor(R.color.dark_green));
+                        } else  if (prefSmallIconStyle == 2) {
+                            builder.setColor(getThemeBackColor());
+                        } else {
+                            builder.setColor(getThemeBackColor());
+                            try {
+                                eventIcon = Integer.parseInt(event.singleEventArray[Position_eventIcon]);
+                            } catch (NumberFormatException ignored) { /**/ }
+                        }
+                        builder.setSmallIcon(eventIcon);
 
                         if (prefPriority > 2) {
                             builder.setOngoing(true);
@@ -7430,6 +7470,10 @@ public class ContactsEvents {
 
                         if (preferences_debug_on) {
                             builder.setSubText(Constants.NOTIFY_ID + notificationID);
+                        }
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            builder.setTimeoutAfter(85800000); //Сутки без 10 мин
                         }
 
                         Intent intent = null;
@@ -7555,8 +7599,10 @@ public class ContactsEvents {
                     final String eventDetails = composeFactsAsString(listFacts);
 
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
-                            .setColor(this.getResources().getColor(R.color.dark_green))
-                            .setSmallIcon(R.drawable.ic_icon_notify)
+                            //.setColor(this.getResources().getColor(R.color.dark_green))
+                            .setColor(getThemeBackColor())
+                            //.setSmallIcon(R.drawable.ic_icon_notify)
+                            .setSmallIcon(R.drawable.ic_event_fact)
                             .setContentText(eventDetails)
                             .setContentTitle(context.getString(R.string.pref_CustomEvents_Fact_title))
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(eventDetails))
@@ -11934,12 +11980,12 @@ public class ContactsEvents {
         int newWidth = (int) (width * ratio);
         int newHeight = (int) (height * ratio);
 
-        if (newWidth == width && newHeight == height) return bitmap; //без изменений
+        if (newWidth >= width && newHeight >= height) return bitmap; //без изменений
 
         return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
     }
 
-    /** Проверяет, что две даты отностся к одному дню
+    /** Проверяет, что две даты относятся к одному дню
      * @param cal1 Первая дата
      * @param cal2 Вторая дата
      * @return Результат проверки

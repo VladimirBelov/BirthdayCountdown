@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.09.2025, 01:45
+  ~  * Created by Vladimir Belov on 13.09.2025, 01:31
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.09.2025, 01:27
+  ~  * Last modified 13.09.2025, 01:24
   ~  */
   -->
 
@@ -157,6 +157,7 @@
     <string name="msg_no_calendars_hint">"No visible calendars were found or you did not give access to them"</string>
     <string name="msg_no_events_check_prefs">"No events found. Check the \"%1$s\" item in the \"%2$s\" section of program settings"</string>
     <string name="msg_no_access_calendar_hint">No access to calendars. Check application permissions</string>
+    <string name="msg_no_access_contacts_hint">No access to contacts. Check application permissions</string>
     <string name="msg_no_access_storage_hint">No access to external storage. Check application permissions</string>
     <string name="msg_welcome_title">Welcome!</string>
     <string name="msg_welcome_text">Thank you for installing this program. Although most functions are configured as informatively and minimally annoyingly as possible, it is recommended that you check the application settings. For example, there you can enable notifications of upcoming events or set parameters for widgets. Enjoy your use!</string>
@@ -1127,6 +1128,14 @@ Long click on item to select color"</string>
         <item>Close notification</item>
     </string-array>
 
+    <string name="pref_Notifications_SmallIconsStyle_title">Small icons</string>
+    <string name="pref_Notifications_SmallIconsStyle_summary">Notification small icons style</string>
+    <string-array name="pref_Notifications_SmallIconsStyle_entries">
+        <item>Standard</item>
+        <item>Standard theme colored</item>
+        <item>Event type icon</item>
+    </string-array>
+
     <string name="pref_Notifications_NotifyTest_title">Test notification</string>
     <string name="pref_Notifications_NotifyTest_summary">Click to show notification for today</string>
 
@@ -1332,6 +1341,8 @@ Long click on item to select color"</string>
     <string name="local_event_dialog_caption_org">Organization:</string>
     <string name="local_event_dialog_date_title">Date:</string>
     <string name="local_event_dialog_type_title">Event type:</string>
+    <string name="local_event_dialog_caption_desc">Description:</string>
+    <string name="local_event_dialog_caption_url">Web link:</string>
     <string name="local_event_dialog_confirmation_remove">Are you sure you want to remove this event?</string>
     <string name="local_event_dialog_confirmation_cancel">Event data has been modified. Are you sure you want to close this dialog?</string>
 
@@ -2362,6 +2373,15 @@ Long click on item to select color"</string>
         <item>4</item> <!--Контакт, ссылка, календарь-->
         <item>7</item> <!--Открыть список событий-->
         <item>6</item> <!--Удалить уведомление-->
+    </string-array>
+
+    <string name="pref_Notifications_SmallIconsStyle_key" translatable="false">Notifications_SmallIconsStyle</string>
+    <string name="pref_Notifications2_SmallIconsStyle_key" translatable="false">Notifications2_SmallIconsStyle</string>
+    <string name="pref_Notifications_SmallIconsStyle_default" translatable="false">1</string>
+    <string-array name="pref_Notifications_SmallIconsStyle_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 
     <string name="pref_Notifications_NotifyTest_key" translatable="false">NotifyTest</string>

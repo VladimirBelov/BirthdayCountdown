@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.06.2025, 10:00
+  ~  * Created by Vladimir Belov on 13.09.2025, 01:31
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.06.2025, 03:03
+  ~  * Last modified 10.09.2025, 20:29
   ~  */
   -->
 
@@ -61,330 +61,416 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/imagePhoto"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:contentDescription="@string/widget_Photo"
-                    android:scaleType="fitCenter" />
-
-                <Button
-                    android:id="@+id/buttonPickContactData"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
-                    android:drawableStart="@android:drawable/ic_menu_my_calendar"
-                    android:background="@android:color/transparent"
-                    android:visibility="gone" />
+                    android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/buttonPickPhoto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:drawableStart="@android:drawable/ic_menu_gallery"
-                    android:background="@android:color/transparent"
-                    android:visibility="gone" />
+                    <ImageView
+                        android:id="@+id/imagePhoto"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:contentDescription="@string/widget_Photo"
+                        android:scaleType="fitCenter" />
 
-                <Button
-                    android:id="@+id/buttonClearPhoto"
+                    <Button
+                        android:id="@+id/buttonPickContactData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:drawableStart="@android:drawable/ic_menu_my_calendar"
+                        android:background="@android:color/transparent"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/buttonPickPhoto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:drawableStart="@android:drawable/ic_menu_gallery"
+                        android:background="@android:color/transparent"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/buttonClearPhoto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:drawableStart="@android:drawable/ic_menu_close_clear_cancel"
+                        android:background="@android:color/transparent"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
-                    android:drawableStart="@android:drawable/ic_menu_close_clear_cancel"
-                    android:background="@android:color/transparent"
-                    android:visibility="gone" />
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="3dp"
+                        app:cardCornerRadius="4dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_margin="1dp"
+                            android:paddingTop="6dp" >
+
+                            <TextView
+                                android:id="@+id/captionName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@id/editName"
+                                android:text="@string/local_event_dialog_caption_name"
+                                android:textSize="12sp"
+                                android:paddingStart="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                            <EditText
+                                android:id="@+id/editName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:importantForAutofill="no"
+                                android:inputType="textMultiLine|textCapWords"
+                                android:maxLines="3"
+                                android:textSize="14sp"
+                                android:paddingHorizontal="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="3dp"
+                        app:cardCornerRadius="4dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_margin="1dp"
+                            android:paddingTop="6dp" >
+
+                            <TextView
+                                android:id="@+id/captionTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@id/editTitle"
+                                android:text="@string/local_event_dialog_caption_title"
+                                android:textSize="12sp"
+                                android:paddingStart="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                            <EditText
+                                android:id="@+id/editTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:importantForAutofill="no"
+                                android:inputType="textMultiLine|textCapSentences"
+                                android:maxLines="3"
+                                android:textSize="12sp"
+                                android:paddingHorizontal="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardOrganization"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="3dp"
+                        app:cardCornerRadius="4dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_margin="1dp"
+                            android:paddingTop="6dp" >
+
+                            <TextView
+                                android:id="@+id/captionOrganization"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@id/editName"
+                                android:text="@string/local_event_dialog_caption_org"
+                                android:textSize="12sp"
+                                android:paddingStart="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                            <EditText
+                                android:id="@+id/editOrganization"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:importantForAutofill="no"
+                                android:inputType="textMultiLine|textCapSentences"
+                                android:maxLines="3"
+                                android:textSize="12sp"
+                                android:paddingHorizontal="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="3dp"
+                        app:cardCornerRadius="4dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_margin="3dp"
+                            android:paddingTop="6dp" >
+
+                            <TextView
+                                android:id="@+id/captionDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@id/editDate"
+                                android:text="@string/local_event_dialog_date_title"
+                                android:textSize="12sp"
+                                android:paddingStart="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                            <TextView
+                                android:id="@+id/editDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:importantForAutofill="no"
+                                android:paddingHorizontal="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="3dp"
+                        app:cardCornerRadius="4dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_margin="3dp"
+                            android:paddingTop="6dp" >
+
+                            <TextView
+                                android:id="@+id/captionType"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@id/spinnerEventType"
+                                android:text="@string/local_event_dialog_type_title"
+                                android:textSize="12sp"
+                                android:paddingStart="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                            <Spinner
+                                android:id="@+id/spinnerEventType"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="4dp"
+                                android:textColor="?attr/dialogTextColor"
+                                tools:ignore="TouchTargetSizeCheck" />
+
+                            <TextView
+                                android:id="@+id/viewEventType"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:importantForAutofill="no"
+                                android:paddingHorizontal="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="3dp"
+                        app:cardCornerRadius="4dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_margin="1dp"
+                            android:paddingTop="6dp" >
+
+                            <TextView
+                                android:id="@+id/captionDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@id/editName"
+                                android:text="@string/local_event_dialog_caption_desc"
+                                android:textSize="12sp"
+                                android:paddingStart="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                            <EditText
+                                android:id="@+id/editDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:importantForAutofill="no"
+                                android:inputType="textMultiLine|textCapSentences"
+                                android:maxLines="5"
+                                android:textSize="12sp"
+                                android:paddingHorizontal="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardUrl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="3dp"
+                        app:cardCornerRadius="4dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_margin="1dp"
+                            android:paddingTop="6dp" >
+
+                            <TextView
+                                android:id="@+id/captionUrl"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@id/editName"
+                                android:text="@string/local_event_dialog_caption_url"
+                                android:textSize="12sp"
+                                android:paddingStart="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                            <EditText
+                                android:id="@+id/editUrl"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:importantForAutofill="no"
+                                android:inputType="textUri"
+                                android:maxLines="3"
+                                android:textSize="12sp"
+                                android:paddingHorizontal="4dp"
+                                android:textColor="?attr/dialogTextColor" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:gravity="end|center_horizontal"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardName"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/buttonFirstAction"
+                    style="@style/ButtonWithIcon"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardElevation="3dp"
-                    app:cardCornerRadius="4dp"
-                    app:cardUseCompatPadding="true"
-                    app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
+                    android:background="@drawable/border_button"
+                    android:ellipsize="marquee"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="5dp"
+                    android:paddingVertical="6dp"
+                    android:singleLine="true"
+                    android:textColor="?attr/dialogButtonColor"
+                    android:textSize="18sp"
+                    android:visibility="gone"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_margin="1dp"
-                        android:paddingTop="6dp" >
-
-                        <TextView
-                            android:id="@+id/captionName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:labelFor="@id/editName"
-                            android:text="@string/local_event_dialog_caption_name"
-                            android:textSize="12sp"
-                            android:paddingStart="4dp"
-                            android:textColor="?attr/dialogTextColor" />
-
-                        <EditText
-                            android:id="@+id/editName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:importantForAutofill="no"
-                            android:inputType="textMultiLine|textCapWords"
-                            android:maxLines="3"
-                            android:textSize="14sp"
-                            android:paddingHorizontal="4dp"
-                            android:textColor="?attr/dialogTextColor" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardTitle"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/buttonSecondAction"
+                    style="@style/ButtonWithIcon"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardElevation="3dp"
-                    app:cardCornerRadius="4dp"
-                    app:cardUseCompatPadding="true"
-                    app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/border_button"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="6dp"
+                    android:paddingHorizontal="5dp"
+                    android:singleLine="true"
+                    android:textSize="18sp"
+                    android:ellipsize="marquee"
+                    android:visibility="gone"
+                    android:textColor="?attr/dialogButtonColor"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_margin="1dp"
-                        android:paddingTop="6dp" >
-
-                        <TextView
-                            android:id="@+id/captionTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:labelFor="@id/editTitle"
-                            android:text="@string/local_event_dialog_caption_title"
-                            android:textSize="12sp"
-                            android:paddingStart="4dp"
-                            android:textColor="?attr/dialogTextColor" />
-
-                        <EditText
-                            android:id="@+id/editTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:importantForAutofill="no"
-                            android:inputType="textMultiLine|textCapSentences"
-                            android:maxLines="3"
-                            android:textSize="12sp"
-                            android:paddingHorizontal="4dp"
-                            android:textColor="?attr/dialogTextColor" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardOrganization"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/buttonThirdAction"
+                    style="@style/ButtonWithIcon"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardElevation="3dp"
-                    app:cardCornerRadius="4dp"
-                    app:cardUseCompatPadding="true"
-                    app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_margin="1dp"
-                        android:paddingTop="6dp" >
-
-                        <TextView
-                            android:id="@+id/captionOrganization"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:labelFor="@id/editName"
-                            android:text="@string/local_event_dialog_caption_org"
-                            android:textSize="12sp"
-                            android:paddingStart="4dp"
-                            android:textColor="?attr/dialogTextColor" />
-
-                        <EditText
-                            android:id="@+id/editOrganization"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:importantForAutofill="no"
-                            android:inputType="textMultiLine|textCapSentences"
-                            android:maxLines="3"
-                            android:textSize="12sp"
-                            android:paddingHorizontal="4dp"
-                            android:textColor="?attr/dialogTextColor" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardElevation="3dp"
-                    app:cardCornerRadius="4dp"
-                    app:cardUseCompatPadding="true"
-                    app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_margin="3dp"
-                        android:paddingTop="6dp" >
-
-                        <TextView
-                            android:id="@+id/captionDate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:labelFor="@id/editDate"
-                            android:text="@string/local_event_dialog_date_title"
-                            android:textSize="12sp"
-                            android:paddingStart="4dp"
-                            android:textColor="?attr/dialogTextColor" />
-
-                        <TextView
-                            android:id="@+id/editDate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:importantForAutofill="no"
-                            android:paddingHorizontal="4dp"
-                            android:textColor="?attr/dialogTextColor" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    app:cardElevation="3dp"
-                    app:cardCornerRadius="4dp"
-                    app:cardUseCompatPadding="true"
-                    app:cardBackgroundColor="?attr/dialogPanelsBackgroundColor" >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_margin="3dp"
-                        android:paddingTop="6dp" >
-
-                        <TextView
-                            android:id="@+id/captionType"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:labelFor="@id/spinnerEventType"
-                            android:text="@string/local_event_dialog_type_title"
-                            android:textSize="12sp"
-                            android:paddingStart="4dp"
-                            android:textColor="?attr/dialogTextColor" />
-
-                        <Spinner
-                            android:id="@+id/spinnerEventType"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="4dp"
-                            android:textColor="?attr/dialogTextColor"
-                            tools:ignore="TouchTargetSizeCheck" />
-
-                        <TextView
-                            android:id="@+id/viewEventType"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:importantForAutofill="no"
-                            android:paddingHorizontal="4dp"
-                            android:textColor="?attr/dialogTextColor" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="6dp"
+                    android:paddingHorizontal="5dp"
+                    android:singleLine="true"
+                    android:textSize="18sp"
+                    android:ellipsize="marquee"
+                    android:visibility="gone"
+                    android:background="@drawable/border_button"
+                    android:textColor="?attr/dialogButtonColor"
+                    tools:ignore="TouchTargetSizeCheck" />
 
             </LinearLayout>
 
-
         </LinearLayout>
+
     </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end|center_horizontal"
-        android:orientation="horizontal"
-        android:paddingHorizontal="10dp">
-
-        <TextView
-            android:id="@+id/buttonFirstAction"
-            style="@style/ButtonWithIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="center_vertical"
-            android:paddingVertical="6dp"
-            android:paddingHorizontal="5dp"
-            android:singleLine="true"
-            android:textSize="18sp"
-            android:ellipsize="marquee"
-            android:visibility="gone"
-            android:background="@drawable/border_button"
-            android:textColor="?attr/dialogButtonColor"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <TextView
-            android:id="@+id/buttonSecondAction"
-            style="@style/ButtonWithIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/border_button"
-            android:gravity="center_vertical"
-            android:paddingVertical="6dp"
-            android:paddingHorizontal="5dp"
-            android:singleLine="true"
-            android:textSize="18sp"
-            android:ellipsize="marquee"
-            android:visibility="gone"
-            android:textColor="?attr/dialogButtonColor"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <TextView
-            android:id="@+id/buttonThirdAction"
-            style="@style/ButtonWithIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
-            android:gravity="center_vertical"
-            android:paddingVertical="6dp"
-            android:paddingHorizontal="5dp"
-            android:singleLine="true"
-            android:textSize="18sp"
-            android:ellipsize="marquee"
-            android:visibility="gone"
-            android:background="@drawable/border_button"
-            android:textColor="?attr/dialogButtonColor"
-            tools:ignore="TouchTargetSizeCheck" />
-
-    </LinearLayout>
 
 </LinearLayout>

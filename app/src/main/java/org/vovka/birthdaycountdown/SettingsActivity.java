@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.07.2025, 15:59
+ *  * Created by Vladimir Belov on 13.09.2025, 01:31
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.07.2025, 13:21
+ *  * Last modified 13.09.2025, 01:07
  *
  */
 
@@ -370,6 +370,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_Priority_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_QuickActions_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_OnClick_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_SmallIconsStyle_key);
 
             Preference prefNotifyFactsCount = new Preference(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeMain));
             prefNotifyFactsCount.setKey(getString(R.string.pref_Notifications_FactEvents_Count_key));
@@ -664,7 +665,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_Accounts_key).equals(key)) { //Аккаунты
 
                 if (eventsData.checkNoContactsAccess()) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS);
+                    requestContactsPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                    //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS);
                     return true;
                 }
 
@@ -784,7 +786,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Help_ContactsAccess_key).equals(key)) {
 
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || !shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+                requestContactsPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS_2);
+                /*if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || !shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
                     ActivityCompat.requestPermissions(
                             this,
                             new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS},
@@ -793,8 +796,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else {
                     try {
                         startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
-                    } catch (android.content.ActivityNotFoundException e) { /**/ }
-                }
+                    } catch (android.content.ActivityNotFoundException e) { *//**//* }
+                }*/
 
             } else if (getString(R.string.pref_Help_CalendarAccess_key).equals(key)) {
 
@@ -1339,7 +1342,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             if (this.eventTypeForSelect != null && !this.eventTypeForSelect.isEmpty()) selectCalendars(this.eventTypeForSelect);
 
-        } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR_2 || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS_2) {
+        } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR_2
+                || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS_2) {
 
             updateVisibility();
 
@@ -2773,6 +2777,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Notifications2_Priority_key),
                         getString(R.string.pref_Notifications2_Ringtone_key),
                         getString(R.string.pref_Notifications2_Type_key),
+                        getString(R.string.pref_Notifications2_SmallIconsStyle_key),
                         getString(R.string.pref_Notifications_AlarmHour_key),
                         getString(R.string.pref_Notifications_AlarmMinute_key),
                         getString(R.string.pref_Notifications_FactEvents_Count_key),
@@ -2780,6 +2785,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Notifications_Priority_key),
                         getString(R.string.pref_Notifications_Ringtone_key),
                         getString(R.string.pref_Notifications_Type_key),
+                        getString(R.string.pref_Notifications_SmallIconsStyle_key),
                         getString(R.string.pref_Quiz_Interface_key),
                         getString(R.string.pref_Theme_key),
                         getString(R.string.pref_VersionCode_LastRun),
@@ -3364,6 +3370,34 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 );
             } else {
                 ToastExpander.showMsg(this, getString(R.string.msg_no_access_calendar_hint));
+                try {
+                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
+                } catch (ActivityNotFoundException e) { /**/ }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    void requestContactsPermission(int resultCode) {
+        try {
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.READ_CONTACTS},
+                        resultCode
+                );
+            } else if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.READ_CONTACTS},
+                        resultCode
+                );
+            } else {
+                ToastExpander.showMsg(this, getString(R.string.msg_no_access_contacts_hint));
                 try {
                     startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
                 } catch (ActivityNotFoundException e) { /**/ }
