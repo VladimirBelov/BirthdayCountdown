@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 13.09.2025, 01:31
+ *  * Created by Vladimir Belov on 16.09.2025, 22:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.09.2025, 16:57
+ *  * Last modified 16.09.2025, 02:23
  *
  */
 
@@ -341,6 +341,8 @@ public class LocalEventActivity extends Activity {
 
                             editTitle.setText(eventData.get(ContactsEvents.Position_title));
                             editOrganization.setText(eventData.get(ContactsEvents.Position_organization));
+                            editDescription.setText(eventData.get(ContactsEvents.Position_eventDescription));
+                            editURL.setText(eventData.get(ContactsEvents.Position_eventURL));
 
                             String eventDateString = eventData.get(ContactsEvents.Position_eventDateFirstTime);
                             if (eventDateString != null) {
@@ -425,6 +427,19 @@ public class LocalEventActivity extends Activity {
                 } else {
                     viewURL.setVisibility(View.GONE);
                     setReadOnly(editURL);
+                    editURL.setEnabled(true);
+                    editURL.setOnClickListener(v -> {
+                        try {
+                            String url = ((EditText) v).getText().toString().trim();
+                            if (!url.startsWith("http")) {
+                                url = "https://".concat(url);
+                            }
+                            if (eventsData.preferences_debug_on) {
+                                Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
+                            }
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                        } catch (ActivityNotFoundException e) { /**/ }
+                    });
                 }
 
                 setReadOnly(editDate);
@@ -546,7 +561,8 @@ public class LocalEventActivity extends Activity {
 
                 setFinishOnTouchOutside(false);
                 editName.requestFocus();
-                if (getWindow() != null) getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                if (getWindow() != null) getWindow().setSoftInputMode(
+                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             }
 
             updateCaptionsAndVisibility(this);
@@ -807,6 +823,15 @@ public class LocalEventActivity extends Activity {
     private static void setReadOnly(@NonNull final View view) {
         view.setFocusable(false);
         view.setFocusableInTouchMode(false);
+
+        /*boolean clickable = false;
+        if (view instanceof EditText) {
+            int inputType = ((EditText) view).getInputType();
+            if ((inputType & (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI))
+                    == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI)) {
+                clickable = true;
+            }
+        }*/
         view.setClickable(false);
         view.setLongClickable(false);
 
@@ -980,7 +1005,8 @@ public class LocalEventActivity extends Activity {
                eventData.put(ContactsEvents.Position_title, activity.editTitle.getText().toString());
                eventData.put(ContactsEvents.Position_organization, activity.editOrganization.getText().toString());
            }
-
+           eventData.put(ContactsEvents.Position_eventDescription, activity.editDescription.getText().toString());
+           eventData.put(ContactsEvents.Position_eventURL, activity.editURL.getText().toString());
            eventData.put(ContactsEvents.Position_age, Constants.STRING_EMPTY);
 
            eventsData.fillEmptyEventData(eventData);
@@ -1059,6 +1085,8 @@ public class LocalEventActivity extends Activity {
                 } else {
                     activity.buttonClearPhoto.setVisibility(View.GONE);
                 }
+
+                activity.findViewById(R.id.iconUrl).setVisibility(View.GONE);
             }
 
         } catch (Exception e) {

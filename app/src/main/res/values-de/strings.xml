@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.09.2025, 01:45
+  ~  * Created by Vladimir Belov on 16.09.2025, 22:29
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.09.2025, 01:38
+  ~  * Last modified 16.09.2025, 21:49
   ~  */
   -->
 
@@ -157,6 +157,7 @@
     <string name="msg_no_calendars_hint">"Es wurden keine verfügbaren Kalender gefunden oder Sie haben keinen Zugriff darauf gewährt"</string>
     <string name="msg_no_events_check_prefs">"Keine Ereignisse gefunden. Überprüfen Sie das Element \"%1$s\" im Abschnitt \"%2$s\" in den Programmeinstellungen"</string>
     <string name="msg_no_access_calendar_hint">Kein Zugriff auf Kalender. Überprüfen Sie die Anwendungsberechtigungen.</string>
+    <string name="msg_no_access_contacts_hint">Kein Zugriff auf Kontakte. Überprüfen Sie die Anwendungsberechtigungen</string>
     <string name="msg_no_access_storage_hint">Kein Zugriff auf externen Speicher. Überprüfen Sie die Anwendungsberechtigungen</string>
     <string name="msg_welcome_title">Willkommen!</string>
     <string name="msg_welcome_text">Vielen Dank, dass Sie dieses Programm installiert haben. Obwohl die meisten Funktionen bestmöglich vorkonfiguriert sind, wird empfohlen, die Anwendungseinstellungen zu überprüfen. Dort können Sie beispielsweise Benachrichtigungen über bevorstehende Ereignisse aktivieren oder Parameter für Widgets festlegen. Viel Spaß beim Gebrauch!</string>
@@ -1116,6 +1117,14 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
         <item>Schließen</item>
     </string-array>
 
+    <string name="pref_Notifications_SmallIconsStyle_title">Benachrichtigungssymbole</string>
+    <string name="pref_Notifications_SmallIconsStyle_summary">Stil des Benachrichtigungssymbols</string>
+    <string-array name="pref_Notifications_SmallIconsStyle_entries">
+        <item>Standard</item>
+        <item>Standard-Designfarbe</item>
+        <item>Symbol für Ereignistyp</item>
+    </string-array>
+
     <string name="pref_Notifications_OnClick_title">Benachrichtigungsklick</string>
     <string name="pref_Notifications_OnClick_summary">Was tun bei Anklicken der Benachrichtigung</string>
     <string-array name="pref_Notifications_OnClick_entries">
@@ -1330,6 +1339,8 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="local_event_dialog_caption_org">Organisation:</string>
     <string name="local_event_dialog_date_title">Datum:</string>
     <string name="local_event_dialog_type_title">Veranstaltungstyp:</string>
+    <string name="local_event_dialog_caption_desc">Beschreibung:</string>
+    <string name="local_event_dialog_caption_url">Weblink:</string>
     <string name="local_event_dialog_confirmation_remove">Möchten Sie diese Veranstaltung wirklich entfernen?</string>
     <string name="local_event_dialog_confirmation_cancel">Veranstaltungsdaten wurden geändert. Möchten Sie diesen Dialog wirklich schließen?</string>
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.09.2025, 01:38
+  ~  * Created by Vladimir Belov on 16.09.2025, 22:29
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 09.09.2025, 12:19
+  ~  * Last modified 16.09.2025, 22:25
   ~  */
   -->
 
@@ -287,7 +287,10 @@
 Тишина часто говорит громче слов. Прежде чем ответить — подумай, прежде чем судить — пойми
 Перед тем как мстить, вырой две могилы (Конфуций)
 Благими делами вымощена дорога в рай. А благими намерениями (не воплощенными в дела) - вымощена дорога в ад
-Не сравнивай себя с другими — сравнивай себя сегодняшнего с собой вчерашним, и тогда увидишь свой настоящий рост"</item>
+Не сравнивай себя с другими — сравнивай себя сегодняшнего с собой вчерашним, и тогда увидишь свой настоящий рост
+Тот, кто прощает злых, наказывает добрых (Сенека)
+День — это маленькая жизнь, и надо прожить ее так, будто ты должен умереть сейчас, а тебе неожиданно подарили еще сутки (Максим Горький)
+Не бойтесь начать всё сначала. На этот раз вы не начинаете с нуля, вы начинаете с опыта"</item>
 </string-array>
 
     <string-array name="facts2" translatable="false" tools:ignore="UnusedResources">
@@ -612,7 +615,8 @@ I'm not in this world to live up to your expectations and you're not in this wor
 Having expectations of others means you are trying to fix their lives. Fix your own life (Sadhguru)
 Perhaps the worst will happen, perhaps not, but until then, look forward to better things (Seneca)
 Be happy for this moment. This moment is your life (Omar Khayyam)
-If you don't value your time, neither will others. Stop giving away your time and talents- start charging for it (Kim Garst)"</item>
+If you don't value your time, neither will others. Stop giving away your time and talents- start charging for it (Kim Garst)
+Don’t be afraid to start over again. This time you’re not starting from scratch, you’re starting from experience"</item>
     </string-array>
 
     <string-array name="facts4" translatable="false" tools:ignore="UnusedResources">

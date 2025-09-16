@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 13.09.2025, 01:31
+ *  * Created by Vladimir Belov on 16.09.2025, 22:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 13.09.2025, 01:07
+ *  * Last modified 15.09.2025, 21:57
  *
  */
 
@@ -438,6 +438,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     R.string.pref_Notifications_QuickActions_key,
                     R.string.pref_Notifications_Ringtone_key,
                     R.string.pref_Notifications_OnClick_key,
+                    R.string.pref_Notifications_SmallIconsStyle_key,
                     R.string.pref_Notifications_NotifyTest_key
             );
 
@@ -452,6 +453,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     R.string.pref_Notifications2_QuickActions_key,
                     R.string.pref_Notifications2_Ringtone_key,
                     R.string.pref_Notifications2_OnClick_key,
+                    R.string.pref_Notifications2_SmallIconsStyle_key,
                     R.string.pref_Notifications2_NotifyTest_key
             );
 

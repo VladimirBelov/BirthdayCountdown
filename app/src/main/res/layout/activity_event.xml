@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 13.09.2025, 01:31
+  ~  * Created by Vladimir Belov on 16.09.2025, 22:29
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 10.09.2025, 20:29
+  ~  * Last modified 16.09.2025, 22:12
   ~  */
   -->
 
@@ -354,8 +354,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:importantForAutofill="no"
-                                android:inputType="textMultiLine|textCapSentences"
-                                android:maxLines="5"
+                                android:inputType="textMultiLine"
+                                android:maxLines="10"
                                 android:textSize="12sp"
                                 android:paddingHorizontal="4dp"
                                 android:textColor="?attr/dialogTextColor" />
@@ -390,16 +390,30 @@
                                 android:paddingStart="4dp"
                                 android:textColor="?attr/dialogTextColor" />
 
-                            <EditText
-                                android:id="@+id/editUrl"
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:importantForAutofill="no"
-                                android:inputType="textUri"
-                                android:maxLines="3"
-                                android:textSize="12sp"
-                                android:paddingHorizontal="4dp"
-                                android:textColor="?attr/dialogTextColor" />
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/iconUrl"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="5dp"
+                                    android:text="@string/event_source_internal"/>
+
+                                <EditText
+                                    android:id="@+id/editUrl"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:importantForAutofill="no"
+                                    android:inputType="textUri"
+                                    android:maxLines="3"
+                                    android:textSize="12sp"
+                                    android:paddingHorizontal="4dp"
+                                    android:textColor="?attr/dialogTextColor" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
 

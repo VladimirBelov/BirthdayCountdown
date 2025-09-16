@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 13.09.2025, 01:31
+ *  * Created by Vladimir Belov on 16.09.2025, 22:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 13.09.2025, 01:17
+ *  * Last modified 15.09.2025, 21:50
  *
  */
 
@@ -7328,12 +7328,24 @@ public class ContactsEvents {
                     textBig.append(composeFactsAsString(listFacts));
                 }
                 boolean noEventsMsg = false;
+                Map<String, Integer> mostEventIcons = new HashMap<>();
                 if (!listNotify.isEmpty()) {
                     for (NotifyEvent event : listNotify) {
                         if (prefType != 4 || event.eventDate.after(currentDay)) {
                             countEvents++;
                             if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
                             textBig.append(composeNotifyEventDetails(event, prefEventDetails));
+
+                            String eventIcon = event.singleEventArray[Position_eventIcon];
+                            if (eventIcon != null) {
+                                Integer currentCount = mostEventIcons.get(eventIcon);
+                                if (currentCount != null) {
+                                    mostEventIcons.put(eventIcon, currentCount + 1);
+                                } else {
+                                    mostEventIcons.put(eventIcon, 1);
+                                }
+                            }
+
                         }
                     }
 
@@ -7362,7 +7374,6 @@ public class ContactsEvents {
                     int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
                     final String notificationDetails = textBig.toString().concat(Constants.STRING_EOL).concat(textSmall);
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
-                            .setSmallIcon(R.drawable.ic_icon_notify)
                             .setContentText(textSmall)
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(textBig)) //Ограничение 5120 символов https://stackoverflow.com/questions/27124887/whats-the-max-size-of-a-bigtextstyle-notification
                             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -7370,11 +7381,30 @@ public class ContactsEvents {
                             .setWhen(0) //https://stackoverflow.com/questions/18249871/android-notification-buttons-not-showing-up/18603076#18603076
                             .setAutoCancel(true);
 
+                    @ColorInt int eventIcon = R.drawable.ic_icon_notify;
                     if (prefSmallIconStyle == 1) {
                         builder.setColor(this.getResources().getColor(R.color.dark_green));
+                    } else  if (prefSmallIconStyle == 2) {
+                        builder.setColor(getThemeBackColor());
                     } else {
                         builder.setColor(getThemeBackColor());
+                        try {
+                            String mostIcon = null;
+                            int mostIconCount = 0;
+                            for (Map.Entry<String, Integer> entry: mostEventIcons.entrySet()) {
+                                if (entry.getValue() > mostIconCount) {
+                                    mostIconCount = entry.getValue();
+                                    mostIcon = entry.getKey();
+                                }
+                            }
+                            if (mostIcon != null) {
+                                eventIcon = Integer.parseInt(mostIcon);
+                            }
+                        } catch (NumberFormatException ignored) { /**/ }
+                        mostEventIcons.clear();
                     }
+                    builder.setSmallIcon(eventIcon);
+
 
                     if (preferences_debug_on) {
                         builder.setSubText(Constants.NOTIFY_ID + notificationID);

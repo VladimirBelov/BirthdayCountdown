@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.09.2025, 01:45
+  ~  * Created by Vladimir Belov on 16.09.2025, 22:29
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.09.2025, 01:38
+  ~  * Last modified 16.09.2025, 21:49
   ~  */
   -->
 
@@ -157,6 +157,7 @@
     <string name="msg_no_calendars_hint">"Nebyly nalezeny žádné viditelné kalendáře nebo jste k nim neudělili přístup"</string>
     <string name="msg_no_events_check_prefs">"Nebyly nalezeny žádné události. Zkontrolujte položku \"%1$s\" v části \"%2$s\" nastavení programu"</string>
     <string name="msg_no_access_calendar_hint">Žádný přístup ke kalendářům. Zkontrolujte oprávnění aplikace</string>
+    <string name="msg_no_access_contacts_hint">Žádný přístup ke kontaktům. Zkontrolujte oprávnění aplikace</string>
     <string name="msg_no_access_storage_hint">Žádný přístup k externímu úložišti. Zkontrolujte oprávnění aplikace</string>
     <string name="msg_welcome_title">Vítejte!</string>
     <string name="msg_welcome_text">Děkujeme za instalaci tohoto programu. Přestože je většina funkcí konfigurována tak informativně a minimálně otravně, jak je to jen možné, doporučujeme zkontrolovat nastavení aplikace. Můžete tam například povolit upozornění na nadcházející události nebo nastavit parametry pro widgety. Užijte si používání!</string>
@@ -1116,6 +1117,14 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
         <item>Zavřít</item>
     </string-array>
 
+    <string name="pref_Notifications_SmallIconsStyle_title">Ikony oznámení</string>
+    <string name="pref_Notifications_SmallIconsStyle_summary">Styl ikony oznámení</string>
+    <string-array name="pref_Notifications_SmallIconsStyle_entries">
+        <item>Standardní</item>
+        <item>Standardní barva motivu</item>
+        <item>Ikona typu události</item>
+    </string-array>
+
     <string name="pref_Notifications_OnClick_title">Akce při kliknutí</string>
     <string name="pref_Notifications_OnClick_summary">Co dělat při jednom kliknutí na oznámení</string>
     <string-array name="pref_Notifications_OnClick_entries">
@@ -1332,6 +1341,8 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="local_event_dialog_caption_org">Organizace:</string>
     <string name="local_event_dialog_date_title">Datum:</string>
     <string name="local_event_dialog_type_title">Typ události:</string>
+    <string name="local_event_dialog_caption_desc">Popis:</string>
+    <string name="local_event_dialog_caption_url">Webový odkaz:</string>
     <string name="local_event_dialog_confirmation_remove">Opravdu chcete odstranit tuto událost?</string>
     <string name="local_event_dialog_confirmation_cancel">Data události byla změněna. Opravdu chcete toto dialogové okno zavřít?</string>
 

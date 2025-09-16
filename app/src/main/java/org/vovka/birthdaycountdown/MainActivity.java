@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 13.09.2025, 01:31
+ *  * Created by Vladimir Belov on 16.09.2025, 22:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.09.2025, 19:16
+ *  * Last modified 16.09.2025, 02:23
  *
  */
 
@@ -553,7 +553,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //todo: доделать для несколько ссылок String[] eventURLs = selectedEvent[ContactsEvents.Position_eventURL].trim().split(Constants.STRING_2TILDA);
                 if (eventURLs.length >= groupId) {
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(eventURLs[groupId].trim())));
+                        String url = eventURLs[groupId].trim();
+                        if (!url.startsWith("http")) {
+                            url = "https://".concat(url);
+                        }
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                     } catch (ActivityNotFoundException e) { /**/ }
                 }
 

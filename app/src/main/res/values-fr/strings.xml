@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.09.2025, 01:45
+  ~  * Created by Vladimir Belov on 16.09.2025, 22:29
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.09.2025, 01:39
+  ~  * Last modified 16.09.2025, 21:50
   ~  */
   -->
 
@@ -157,6 +157,7 @@
     <string name="msg_no_calendars_hint">"Les calendriers disponibles n'ont pas été trouvés ou vous n'y avez pas donné accès"</string>
     <string name="msg_no_events_check_prefs">"Aucun événement à afficher. Vérifiez le paragraphe \"%1$s\" de la section \"%2$s\" dans les paramètres du programme"</string>
     <string name="msg_no_access_calendar_hint">"Aucun accès aux calendriers. Vérifiez les autorisations de l'application"</string>
+    <string name="msg_no_access_contacts_hint">"Aucun accès aux contacts. Vérifiez les autorisations de l'application"</string>
     <string name="msg_no_access_storage_hint">"Aucun accès au stockage externe. Vérifier les autorisations de l'application"</string>
     <string name="msg_welcome_title">Bienvenue !</string>
     <string name="msg_welcome_text">"Merci d'avoir installé ce programme. Bien que la plupart des fonctionnalités soient configurées de la manière la plus informative et la moins gênante possible, il est recommandé de vérifier les paramètres de l'application. Par exemple, vous pouvez activer les notifications des événements à venir ou définir des paramètres pour les widgets. Bon usage !"</string>
@@ -1116,6 +1117,14 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
         <item>Fermer</item>
     </string-array>
 
+    <string name="pref_Notifications_SmallIconsStyle_title">Icônes de notification</string>
+    <string name="pref_Notifications_SmallIconsStyle_summary">"Style d'icône de notification"</string>
+    <string-array name="pref_Notifications_SmallIconsStyle_entries">
+        <item>Standard</item>
+        <item>Couleur de thème standard</item>
+        <item>"Icône de type d'événement"</item>
+    </string-array>
+
     <string name="pref_Notifications_OnClick_title">"Action sur le clic"</string>
     <string name="pref_Notifications_OnClick_summary">Que faire lorsque vous cliquez sur une seule notification</string>
     <string-array name="pref_Notifications_OnClick_entries">
@@ -1332,6 +1341,8 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
     <string name="local_event_dialog_caption_org">Organisation:</string>
     <string name="local_event_dialog_date_title">Date:</string>
     <string name="local_event_dialog_type_title">"Type d'événement:"</string>
+    <string name="local_event_dialog_caption_desc">Description:</string>
+    <string name="local_event_dialog_caption_url">Lien web:</string>
     <string name="local_event_dialog_confirmation_remove">Voulez-vous vraiment supprimer cet événement?</string>
     <string name="local_event_dialog_confirmation_cancel">"Les données de l'événement ont été modifiées. Voulez-vous vraiment fermer cette boîte de dialogue?"</string>
 

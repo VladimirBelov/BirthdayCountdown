@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.09.2025, 01:38
+ *  * Created by Vladimir Belov on 16.09.2025, 22:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 10.09.2025, 01:33
+ *  * Last modified 16.09.2025, 21:25
  *
  */
 
@@ -39,6 +39,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * `WidgetCalendarPopup` - это Activity, которое отображает всплывающее окно с подробной информацией
@@ -67,6 +69,7 @@ public class WidgetCalendarPopup extends Activity {
 
     private static final String TAG = "WidgetCalendarPopup";
     ContactsEvents eventsData;
+    Intent intent;
     TextView viewCaption;
     TextView viewInfo;
     TextView buttonCalendar;
@@ -120,7 +123,7 @@ public class WidgetCalendarPopup extends Activity {
 
             setContentView(R.layout.activity_popup);
 
-            Intent intent = getIntent();
+            intent = getIntent();
             this.dayInfo = intent.getStringExtra(Constants.EXTRA_DAY_INFO);
             this.dayCaption = intent.getStringExtra(Constants.EXTRA_DAY_CAPTION);
             this.dayMills = intent.getStringExtra(Constants.EXTRA_VALUES);
@@ -172,19 +175,43 @@ public class WidgetCalendarPopup extends Activity {
 
             showDayInfo();
 
-            if (eventsData.preferences_DaysTypes.isEmpty()) {
-                //Заполнение типов дней из календарей по периоду
-                Calendar calFirstDay = null;
-                Calendar calLastDay = null;
-                if (intent.hasExtra(Constants.EXTRA_DAY1) && intent.hasExtra(Constants.EXTRA_DAY2)) {
-                    calFirstDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY1);
-                    calLastDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY2);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        try {
+            super.onStart();
+
+            if (eventsData.isEmptyEventList() || eventsData.preferences_DaysTypes.isEmpty()) {
+                try (final ExecutorService executor = Executors.newSingleThreadExecutor()) {
+                    executor.execute(() -> {
+                        //Background work
+
+                        if (eventsData.preferences_DaysTypes.isEmpty() && intent != null) {
+                            //Заполнение типов дней из календарей по периоду
+                            Calendar calFirstDay = null;
+                            Calendar calLastDay = null;
+                            if (intent.hasExtra(Constants.EXTRA_DAY1) && intent.hasExtra(Constants.EXTRA_DAY2)) {
+                                calFirstDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY1);
+                                calLastDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY2);
+                            }
+                            if (calFirstDay != null && calLastDay != null) {
+                                eventsData.fillDaysTypesFromCalendars(this.listEventsPacks, calFirstDay, calLastDay);
+                            }
+                            //Заполнение типов дней из файлов
+                            eventsData.fillDaysTypesFromFiles(this.listEventsPacks);
+                        }
+
+                        if (eventsData.isEmptyEventList()) {
+                            eventsData.getEvents(this);
+                        }
+
+                    });
                 }
-                if (calFirstDay != null && calLastDay != null) {
-                    eventsData.fillDaysTypesFromCalendars(this.listEventsPacks, calFirstDay, calLastDay);
-                }
-                //Заполнение типов дней из файлов
-                eventsData.fillDaysTypesFromFiles(this.listEventsPacks);
             }
 
         } catch (Exception e) {

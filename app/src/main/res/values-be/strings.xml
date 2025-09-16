@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.09.2025, 01:45
+  ~  * Created by Vladimir Belov on 16.09.2025, 22:29
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.09.2025, 01:38
+  ~  * Last modified 16.09.2025, 21:48
   ~  */
   -->
 
@@ -157,6 +157,7 @@
     <string name="msg_no_calendars_hint">Даступныя календары не знойдзены альбо Вы не далі да іх доступу</string>
     <string name="msg_no_events_check_prefs">"Няма падзей для адлюстравання. Праверце ў наладах праграмы пункт \"%1$s\" у раздзеле \"%2$s\""</string>
     <string name="msg_no_access_calendar_hint">Няма доступу да календароў. Праверце дазволы праграмы</string>
+    <string name="msg_no_access_contacts_hint">Няма доступу да кантактаў. Праверце правы доступу праграмы</string>
     <string name="msg_no_access_storage_hint">Няма доступу да вонкавага сховішча. Праверце дазволы праграмы</string>
     <string name="msg_welcome_title">Сардэчна запрашаем!</string>
     <string name="msg_welcome_text">Дзякуй, што ўсталявалі гэту праграму. Хоць большасць функцый наладжана максімальнае інфарматыўна і мінімальна надакучлівае, рэкамендуецца праверыць налады праграмы. Прыкладам, там можна ўключыць паведамленні пра хуткія падзеі альбо задаць параметры для віджэтаў. Прыемнага карыстання!</string>
@@ -1116,13 +1117,21 @@
         <item>Закрыць</item>
     </string-array>
 
+    <string name="pref_Notifications_SmallIconsStyle_title">Іконкі апавяшчэнняў</string>
+    <string name="pref_Notifications_SmallIconsStyle_summary">Выгляд абразкоў для апавяшчэнняў</string>
+    <string-array name="pref_Notifications_SmallIconsStyle_entries">
+        <item>Стандартны</item>
+        <item>Стандартны пад колер тэмы</item>
+        <item>Іконка тыпу падзеі</item>
+    </string-array>
+
     <string name="pref_Notifications_OnClick_title">Дзеянне на націск</string>
     <string name="pref_Notifications_OnClick_summary">Што рабіць пры націску на адзінкавае паведамленне</string>
     <string-array name="pref_Notifications_OnClick_entries">
-        <item>Адкрыць картку кантакту, калі не - падзея календара, калі не - web спасылку</item> <!--Кантакт, каляндар, спасылка-->
-        <item>Адкрыць падзею календара, калі не - картку кантакту, калі не - web спасылку</item> <!--Каляндар, кантакт, спасылка-->
-        <item>Адкрыць web спасылку, калі не - картку кантакту, калі не - падзея календара</item> <!--Спасылка, кантакт, каляндар-->
-        <item>Адкрыць картку кантакту, калі не - web спасылку, калі не - падзея календара</item> <!--Кантакт, спасылка, каляндар-->
+        <item>Адкрыць картку кантакту, калі не - падзея календара, калі не - web спасылку</item>
+        <item>Адкрыць падзею календара, калі не - картку кантакту, калі не - web спасылку</item>
+        <item>Адкрыць web спасылку, калі не - картку кантакту, калі не - падзея календара</item>
+        <item>Адкрыць картку кантакту, калі не - web спасылку, калі не - падзея календара</item>
         <item>Адкрыць асноўны спіс падзей</item>
         <item>Зачыніць паведамленне</item>
     </string-array>
@@ -1330,6 +1339,8 @@
     <string name="local_event_dialog_caption_org">Арганізацыя:</string>
     <string name="local_event_dialog_date_title">Дата:</string>
     <string name="local_event_dialog_type_title">Тып падзеі:</string>
+    <string name="local_event_dialog_caption_desc">Апісанне:</string>
+    <string name="local_event_dialog_caption_url">Спасылка на вэб-сайт:</string>
     <string name="local_event_dialog_confirmation_remove">Вы ўпэўнены, што хочаце выдаліць гэту падзею?</string>
     <string name="local_event_dialog_confirmation_cancel">Даныя падзеі былі зменены. Вы ўпэўнены, што хочаце закрыць гэтае дыялогавае акно?</string>
 
