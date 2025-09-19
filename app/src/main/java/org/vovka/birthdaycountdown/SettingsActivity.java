@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 16.09.2025, 22:29
+ *  * Created by Vladimir Belov on 19.09.2025, 20:18
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 15.09.2025, 21:57
+ *  * Last modified 17.09.2025, 20:45
  *
  */
 
@@ -2994,7 +2994,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             Object pref = prefs.get(key);
                             if (pref != null) {
                                 outputStream.write(pref.toString()
-                                        .replace(Constants.STRING_EOL, Constants.STRING_EMPTY)
+                                        .replace(Constants.STRING_EOL, Constants.STRING_TAB)
                                         .replace(Constants.STRING_EOT, Constants.STRING_BAR)
                                         .concat(Constants.STRING_EOL)
                                         .getBytes(StandardCharsets.UTF_8)
@@ -3131,7 +3131,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 for (String eventLine: eventsArray) {
                     if (eventLine != null) {
-                        String eventString = eventLine.replaceAll(Constants.STRING_PIPE, Constants.STRING_EOT);
+                        //String eventString = eventLine.replaceAll(Constants.STRING_PIPE, Constants.STRING_EOT);
+                        String eventString = eventLine
+                                .replace(Constants.STRING_TAB, Constants.STRING_EOL)
+                                .replace(Constants.STRING_BAR, Constants.STRING_EOT);
+
                         if (!eventString.isEmpty() && !eventString.startsWith(Constants.STRING_HASH) && !eventLine.startsWith(Constants.STRING_DSLASH)) {
                             String[] singleEventArray = eventString.split(Constants.STRING_EOT, -1);
                             if (singleEventArray.length == ContactsEvents.Position_attrAmount) {

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.09.2025, 01:38
+ *  * Created by Vladimir Belov on 19.09.2025, 20:18
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 10.09.2025, 01:29
+ *  * Last modified 17.09.2025, 20:21
  *
  */
 
@@ -58,6 +58,7 @@ public final class Constants {
     static final String STRING_COMMA_SPACE = ", ";
     static final String STRING_EMPTY = "";
     static final String STRING_EOL = "\n";
+    static final String STRING_TAB = "\t";
     static final String STRING_EOL_RN = "\\r?\\n";
     static final String STRING_EOT = "\u0004";
     static final String STRING_EQ = "=?";
