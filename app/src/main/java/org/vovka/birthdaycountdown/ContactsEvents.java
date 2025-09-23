@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.09.2025, 02:20
+ *  * Created by Vladimir Belov on 23.09.2025, 21:18
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 20.09.2025, 02:14
+ *  * Last modified 23.09.2025, 21:10
  *
  */
 
@@ -973,6 +973,10 @@ public class ContactsEvents {
         return divisibleBy4 - divisibleBy100 + divisibleBy400;
     }
 
+    /** Возвращает календарь из даты
+     * @param date Дата
+     * @return Calendar
+     */
     static Calendar getCalendarFromDate(@NonNull Date date) {
 
         Calendar c = Calendar.getInstance();
@@ -981,8 +985,13 @@ public class ContactsEvents {
         return c;
     }
 
+    /** Возвращает дату  нулевым временем
+     * @param c Дата
+     * @return Дата с нулевым временем
+     */
     static Calendar removeTime(@NonNull Calendar c) {
 
+        c.set(Calendar.HOUR, 0);
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
@@ -3254,21 +3263,14 @@ public class ContactsEvents {
                     CalendarContract.Events.ALL_DAY
             };
 
-            Calendar startPeriod = Calendar.getInstance();
-            startPeriod.set(Calendar.HOUR_OF_DAY, 0);
-            startPeriod.set(Calendar.MINUTE, 0);
-            startPeriod.set(Calendar.SECOND, 0);
-            startPeriod.set(Calendar.MILLISECOND, 0);
-            final int zoneOffset = TimeZone.getDefault().getOffset(startPeriod.getTimeInMillis()); //событие на весь день начинается в 00:00:00 UTC, надо скорректировать часовую зону
-            startPeriod.add(Calendar.MILLISECOND, zoneOffset);
+
+            Calendar startPeriod = removeTime(Calendar.getInstance());
+
+            //событие на весь день начинается в 00:00:00 UTC, надо скорректировать часовую зону
+            final int zoneOffset = TimeZone.getDefault().getOffset(startPeriod.getTimeInMillis());
 
             Calendar endPeriod = (Calendar) startPeriod.clone();
-            endPeriod.set(Calendar.YEAR, startPeriod.get(Calendar.YEAR) + 1);
-            endPeriod.set(Calendar.HOUR_OF_DAY, 0);
-            endPeriod.set(Calendar.MINUTE, 0);
-            endPeriod.set(Calendar.SECOND, 0);
-            endPeriod.set(Calendar.MILLISECOND, 0);
-            endPeriod.add(Calendar.MILLISECOND, zoneOffset);
+            endPeriod.add(Calendar.YEAR, 1);
             endPeriod.add(Calendar.SECOND, -1);
 
             Calendar dateRubicon = (Calendar) startPeriod.clone();
@@ -3282,7 +3284,6 @@ public class ContactsEvents {
             List<Matcher> matcherNameAndTypes = new ArrayList<>();
             List<Matcher> matcherTypeAndNames = new ArrayList<>();
             boolean useEventYear;
-
 
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
             if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
@@ -3333,7 +3334,7 @@ public class ContactsEvents {
             }
             String selection = CalendarContract.Instances.CALENDAR_ID + Constants.SQL_EQUAL + calIDs;
             Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
-            ContentUris.appendId(builder, startPeriod.getTimeInMillis());
+            ContentUris.appendId(builder, dateRubicon.getTimeInMillis());
             ContentUris.appendId(builder, endPeriod.getTimeInMillis());
 
             cursor = contentResolver.query(
@@ -3348,7 +3349,7 @@ public class ContactsEvents {
             if (cursor != null) {
                 if (cursor.getCount() > 0) {
                     while (cursor.moveToNext()) {
-                        counterTotalAddedEvents += getCalendarEventsFromCursor(cursor, cache, zoneOffset, startPeriod, endPeriod, dateRubicon,
+                        counterTotalAddedEvents += getCalendarEventsFromCursor(cursor, cache, zoneOffset, dateRubicon, endPeriod,
                                 useEventYear, isMultiTypeSource, event, matcherNameAndTypes, matcherTypes, matcherTypeAndNames, matcherNames);
                     }
                 }
@@ -3372,24 +3373,25 @@ public class ContactsEvents {
         }
     }
 
-    /** Добавляет календарное событие из курсора. Если событие длится несколько дней - добавляет несколько событий
-     * @param cursor Курсор с данными события
-     * @param cache Кэш номеров колонок в курсоре
-     * @param zoneOffset Смещение текущей временной зоны от зоны startPeriod в мс
-     * @param startPeriod Дата начала периода (обычно - сегодня)
-     * @param endPeriod Дата конца периода (обычно - +1 год от сегодня)
-     * @param dateRubicon Дата начала периода минус количество предыдущих дней для показа из настроек
-     * @param useEventYear Использовать год в датах
-     * @param isMultiTypeSource Содержит ли источник событий события разных типов
-     * @param event Загоовка для события
+    /**
+     * Добавляет календарное событие из курсора. Если событие длится несколько дней - добавляет несколько событий
+     *
+     * @param cursor              Курсор с данными события
+     * @param cache               Кэш номеров колонок в курсоре
+     * @param zoneOffset          Смещение текущей временной зоны от зоны startPeriod в мс
+     * @param dateRubicon         Дата начала периода минус количество предыдущих дней для показа из настроек
+     * @param endPeriod           Дата конца периода (обычно - +1 год от сегодня)
+     * @param useEventYear        Использовать год в датах
+     * @param isMultiTypeSource   Содержит ли источник событий события разных типов
+     * @param event               Загоовка для события
      * @param matcherNameAndTypes Правила распознавания ИМЯ + ТИП СОБЫТИЯ
-     * @param matcherTypes Правила распознавания ТИП СОБЫТИЯ
+     * @param matcherTypes        Правила распознавания ТИП СОБЫТИЯ
      * @param matcherTypeAndNames Правила распознавания ТИП СОБЫТИЯ + ИМЯ
-     * @param matcherNames Правила распознавания ИМЯ
+     * @param matcherNames        Правила распознавания ИМЯ
      * @return Количество добавленных событий
      */
     private int getCalendarEventsFromCursor(@NonNull Cursor cursor, @NonNull ColumnIndexCache cache, int zoneOffset,
-                                            @NonNull Calendar startPeriod, @NonNull Calendar endPeriod, @NonNull Calendar dateRubicon,
+                                            @NonNull Calendar dateRubicon, @NonNull Calendar endPeriod,
                                             boolean useEventYear, boolean isMultiTypeSource, Event event,
                                             List<Matcher> matcherNameAndTypes, List<Matcher> matcherTypes, List<Matcher> matcherTypeAndNames, List<Matcher> matcherNames) {
         int counterAddedEvents = 0;
@@ -3408,29 +3410,29 @@ public class ContactsEvents {
                     ? getResources().getString(R.string.msg_calendar_info, getKeyParts(calendarTitle)[0])
                     : getResources().getString(R.string.event_type_calendar);
             Calendar dateStartNextTime = getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.BEGIN)))));
-            dateStartNextTime.add(Calendar.MILLISECOND, zoneOffset);
             Calendar dateEndNextTime = getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.END)))));
-            dateEndNextTime.add(Calendar.MILLISECOND, zoneOffset);
-            Date dateFirstTime = new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.DTSTART))));
+            Calendar dateFirstTime = getCalendarFromDate(new Date(parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.DTSTART)))));
             final TreeMap<Integer, String> eventData = new TreeMap<>();
 
-            if (cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Events.ALL_DAY)) == 1) { //У AllDay событий зона всегда UTC
-                if (TimeZone.getDefault().getRawOffset() < 0) { //Для отрицательных зон надо прибавлять день
-                    dateStartNextTime.add(Calendar.DATE, 1);
-                    dateEndNextTime.add(Calendar.DATE, 1);
-                }
+            if (cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Events.ALL_DAY)) == 1) {
+                //У AllDay событий зона всегда UTC
+                dateFirstTime.add(Calendar.MILLISECOND, -zoneOffset);
+                dateStartNextTime.add(Calendar.MILLISECOND, -zoneOffset);
+                dateEndNextTime.add(Calendar.MILLISECOND, -zoneOffset);
 
-                //Событие на весь день заканчивается на следующий день, а не в 23:59:59. Исправляем
-                dateEndNextTime.add(Calendar.DATE, -1);
-                dateEndNextTime.set(Calendar.HOUR_OF_DAY, 23);
-                dateEndNextTime.set(Calendar.MINUTE, 59);
-                dateEndNextTime.set(Calendar.SECOND, 59);
-                dateEndNextTime.set(Calendar.MILLISECOND, 0);
-                dateEndNextTime.add(Calendar.MILLISECOND, zoneOffset);
+                //Событие на весь день заканчивается на следующий день, а не в 23:59:59
+                dateEndNextTime.add(Calendar.SECOND, -1);
             }
 
+            //debug
+            SimpleDateFormat sdf_time = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.US);
+            Log.d(TAG, eventTitle);
+            Log.d(TAG, "period: " + sdf_time.format(dateRubicon.getTime()) + " - " + sdf_time.format(endPeriod.getTime()));
+            Log.d(TAG, "event: " + sdf_time.format(dateStartNextTime.getTime()) + " - " + sdf_time.format(dateEndNextTime.getTime()));
+            Log.d(TAG, "first time: " + sdf_time.format(dateFirstTime.getTime()));
+
             boolean isPassedEvent = false;
-            if (dateEndNextTime.before(startPeriod)) return 0; //Если событие выпало из периода
+            if (dateStartNextTime.after(endPeriod)) return 0; //Если событие выпало из периода
             if (dateEndNextTime.before(dateRubicon)) {
                 isPassedEvent = true;
             } else if (dateStartNextTime.before(dateRubicon) && dateEndNextTime.after(dateRubicon)) {
@@ -3514,9 +3516,10 @@ public class ContactsEvents {
             if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && event.icon == R.drawable.ic_event_unknown) return 0;
 
             do {
+                Log.d(TAG, "loop: " + sdf_time.format(dateStartNextTime.getTime()) + " - " + sdf_time.format(dateEndNextTime.getTime()));
                 eventData.clear();
                 final String eventNewDate = Constants.EVENT_PREFIX_CALENDAR_EVENT + Constants.STRING_COLON_SPACE
-                        + (useEventYear ? sdf_java.format(dateFirstTime) : sdf_java_no_year.format(dateFirstTime)) + Constants.STRING_COLON_SPACE
+                        + (useEventYear ? sdf_java.format(dateFirstTime.getTime()) : sdf_java_no_year.format(dateFirstTime.getTime())) + Constants.STRING_COLON_SPACE
                         + getHash(Constants.eventSourceCalendarPrefix + calendarId);
                 int importMethod = importMethod_Standalone;
                 final String eventID = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.EVENT_ID));
@@ -3650,7 +3653,7 @@ public class ContactsEvents {
                     eventData.put(Position_eventIcon, Integer.toString(event.icon));
                     eventData.put(Position_eventEmoji, event.emoji);
                     eventData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(dateStartNextTime.getTime()));
-                    eventData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(dateFirstTime));
+                    eventData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(dateFirstTime.getTime()));
                     eventData.put(Position_eventSource, eventSource);
                     eventData.put(Position_eventDescription, eventDescription);
 
@@ -3693,8 +3696,15 @@ public class ContactsEvents {
                         eventListPrev.add(getEventData(eventData));
                     }
                 }
+                //Ставим на начало следующего дня
+                dateStartNextTime.set(Calendar.HOUR, 0);
+                dateStartNextTime.set(Calendar.HOUR_OF_DAY, 0);
+                dateStartNextTime.set(Calendar.MINUTE, 0);
+                dateStartNextTime.set(Calendar.SECOND, 0);
+                dateStartNextTime.set(Calendar.MILLISECOND, 0);
                 dateStartNextTime.add(Calendar.DATE, 1);
-            } while (dateStartNextTime.before(dateEndNextTime) && dateStartNextTime.compareTo(endPeriod) <= 0);
+            } while (dateStartNextTime.compareTo(dateEndNextTime) <= 0 && dateStartNextTime.compareTo(endPeriod) <= 0);
+            Log.d(TAG, "---");
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

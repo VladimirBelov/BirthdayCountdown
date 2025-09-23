@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 16.09.2025, 22:29
+ *  * Created by Vladimir Belov on 23.09.2025, 21:18
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 16.09.2025, 21:25
+ *  * Last modified 23.09.2025, 03:14
  *
  */
 
@@ -81,6 +81,7 @@ public class WidgetCalendarPopup extends Activity {
     String dayMills = null;
     ArrayList<String> listEventsPacks;
     HashMap<String, Integer> eventsColorsInMonth = null;
+    private ExecutorService executorService;
 
     public WidgetCalendarPopup() {
     }
@@ -173,6 +174,8 @@ public class WidgetCalendarPopup extends Activity {
                 buttonClose.setOnClickListener(view -> finish());
             }
 
+            executorService = Executors.newSingleThreadExecutor();
+
             showDayInfo();
 
         } catch (Exception e) {
@@ -182,15 +185,14 @@ public class WidgetCalendarPopup extends Activity {
     }
 
     @Override
-    public void onStart() {
+    public void onResume() {
         try {
-            super.onStart();
+            super.onResume();
 
             if (eventsData.isEmptyEventList() || eventsData.preferences_DaysTypes.isEmpty()) {
-                try (final ExecutorService executor = Executors.newSingleThreadExecutor()) {
-                    executor.execute(() -> {
+                if (executorService != null && !executorService.isShutdown()) {
+                    executorService.execute(() -> {
                         //Background work
-
                         if (eventsData.preferences_DaysTypes.isEmpty() && intent != null) {
                             //Заполнение типов дней из календарей по периоду
                             Calendar calFirstDay = null;
@@ -200,16 +202,15 @@ public class WidgetCalendarPopup extends Activity {
                                 calLastDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY2);
                             }
                             if (calFirstDay != null && calLastDay != null) {
-                                eventsData.fillDaysTypesFromCalendars(this.listEventsPacks, calFirstDay, calLastDay);
+                                eventsData.fillDaysTypesFromCalendars(listEventsPacks, calFirstDay, calLastDay);
                             }
                             //Заполнение типов дней из файлов
-                            eventsData.fillDaysTypesFromFiles(this.listEventsPacks);
+                            eventsData.fillDaysTypesFromFiles(listEventsPacks);
                         }
 
                         if (eventsData.isEmptyEventList()) {
                             eventsData.getEvents(this);
                         }
-
                     });
                 }
             }
@@ -217,6 +218,14 @@ public class WidgetCalendarPopup extends Activity {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
         }
     }
 
