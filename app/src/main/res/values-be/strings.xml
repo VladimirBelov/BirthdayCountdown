@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 16.09.2025, 22:29
+  ~  * Created by Vladimir Belov on 25.09.2025, 23:01
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 16.09.2025, 21:48
+  ~  * Last modified 25.09.2025, 22:49
   ~  */
   -->
 
@@ -1314,9 +1314,12 @@
     <string name="Event_CatholicEaster">К_Вялікдзень</string>
     <string name="Event_NY">НГ</string>
 
-    <string name="previous_month">Папярэдні месяц</string>
     <string name="month_title">Назва месяца</string>
+    <string name="previous_month">Папярэдні месяц</string>
     <string name="next_month">У наступным месяцы</string>
+    <string name="previous_day">Папярэдні дзень</string>
+    <string name="next_day">Наступны дзень</string>
+    <string name="select_day">Выбраць дзень…</string>
 
     <string name="month_event_saturdays">Суботы</string>
     <string name="month_event_sundays">Нядзеля</string>

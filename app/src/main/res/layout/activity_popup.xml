@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.09.2025, 01:45
+  ~  * Created by Vladimir Belov on 25.09.2025, 23:01
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 04.09.2025, 21:40
+  ~  * Last modified 25.09.2025, 22:18
   ~  */
   -->
 
@@ -109,6 +109,20 @@
 
         <TextView
             android:id="@+id/buttonFourthAction"
+            style="@style/ButtonWithIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:layout_marginStart="10dp"
+            android:maxLines="1"
+            android:background="@drawable/border_button"
+            tools:ignore="TouchTargetSizeCheck"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/buttonFirthAction"
             style="@style/ButtonWithIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

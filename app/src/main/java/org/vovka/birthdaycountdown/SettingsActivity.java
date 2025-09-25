@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.09.2025, 20:18
+ *  * Created by Vladimir Belov on 25.09.2025, 23:01
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.09.2025, 20:45
+ *  * Last modified 25.09.2025, 22:59
  *
  */
 
@@ -3253,6 +3253,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    @SuppressWarnings("unused")
     public void getSelectedSources(String id, List<String> newSelectedSources) {
         try {
 

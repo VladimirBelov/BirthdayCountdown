@@ -1,14 +1,15 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.09.2025, 21:18
+ *  * Created by Vladimir Belov on 25.09.2025, 23:01
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 23.09.2025, 03:14
+ *  * Last modified 25.09.2025, 22:46
  *
  */
 
 package org.vovka.birthdaycountdown;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.LocaleManager;
 import android.content.ClipDescription;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
@@ -75,6 +77,7 @@ public class WidgetCalendarPopup extends Activity {
     TextView buttonCalendar;
     TextView buttonShare;
     TextView buttonPrevDay;
+    TextView buttonSelectDay;
     TextView buttonNextDay;
     String dayInfo = null;
     String dayCaption = null;
@@ -160,8 +163,15 @@ public class WidgetCalendarPopup extends Activity {
             this.buttonPrevDay.getBackground().setAlpha(50);
             this.buttonPrevDay.setVisibility(View.VISIBLE);
 
+            //Выбрать день
+            this.buttonSelectDay = findViewById(R.id.buttonFourthAction);
+            this.buttonSelectDay.setText(R.string.popup_action_calendar);
+            addClickEffect(this.buttonSelectDay);
+            this.buttonSelectDay.getBackground().setAlpha(50);
+            this.buttonSelectDay.setVisibility(View.VISIBLE);
+
             //Следующий день
-            this.buttonNextDay = findViewById(R.id.buttonFourthAction);
+            this.buttonNextDay = findViewById(R.id.buttonFirthAction);
             this.buttonNextDay.setText(R.string.popup_action_next);
             addClickEffect(this.buttonNextDay);
             this.buttonNextDay.getBackground().setAlpha(50);
@@ -266,6 +276,28 @@ public class WidgetCalendarPopup extends Activity {
             Calendar newCal = Calendar.getInstance();
             SimpleDateFormat sdf = new SimpleDateFormat(" (EEE)", Locale.getDefault());
 
+            buttonSelectDay.setOnClickListener(v -> {
+                newCal.setTimeInMillis(millis);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, selectedYear, selectedMonth, dayOfMonth) -> {
+                    newCal.clear();
+                    newCal.set(selectedYear, selectedMonth, dayOfMonth);
+
+                    List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(newCal.getTime()), this.listEventsPacks, this.eventsColorsInMonth);
+                    this.dayInfo = dayInfo.isEmpty() ? getString(R.string.month_event_empty) : String.join(Constants.HTML_BR, dayInfo);
+                    this.dayCaption = getString(R.string.month_event_popup_prefix)
+                            .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(newCal.getTime()), ContactsEvents.FormatDate.WithYear))
+                            .concat(sdf.format(newCal.getTime()));
+                    this.dayMills = Long.toString(newCal.getTimeInMillis());
+
+                    showDayInfo();
+                }, newCal.get(Calendar.YEAR), newCal.get(Calendar.MONTH), newCal.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.show();
+            });
+            buttonSelectDay.setOnLongClickListener(v -> {
+                Toast.makeText(this, getString(R.string.select_day), Toast.LENGTH_LONG).show();
+                return true;
+            });
+
             buttonPrevDay.setOnClickListener(v -> {
                 newCal.setTimeInMillis(millis);
                 newCal.add(Calendar.DAY_OF_YEAR, -1);
@@ -278,6 +310,10 @@ public class WidgetCalendarPopup extends Activity {
                 this.dayMills = Long.toString(newCal.getTimeInMillis());
 
                 showDayInfo();
+            });
+            buttonPrevDay.setOnLongClickListener(v -> {
+                Toast.makeText(this, getString(R.string.previous_day), Toast.LENGTH_LONG).show();
+                return true;
             });
 
             buttonNextDay.setOnClickListener(v -> {
@@ -292,6 +328,10 @@ public class WidgetCalendarPopup extends Activity {
                 this.dayMills = Long.toString(newCal.getTimeInMillis());
 
                 showDayInfo();
+            });
+            buttonNextDay.setOnLongClickListener(v -> {
+                Toast.makeText(this, getString(R.string.next_day), Toast.LENGTH_LONG).show();
+                return true;
             });
 
         } catch (Exception e) {

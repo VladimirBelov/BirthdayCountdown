@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.08.2025, 09:37
+ *  * Created by Vladimir Belov on 25.09.2025, 23:01
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.08.2025, 23:24
+ *  * Last modified 25.09.2025, 22:59
  *
  */
 
@@ -1160,6 +1160,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressWarnings("unused")
     public void getSelectedSources(List<String> newSelectedSources) {
         try {
 

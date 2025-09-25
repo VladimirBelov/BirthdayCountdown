@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 16.09.2025, 22:29
+  ~  * Created by Vladimir Belov on 25.09.2025, 23:01
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 16.09.2025, 21:50
+  ~  * Last modified 25.09.2025, 22:51
   ~  */
   -->
 
@@ -1315,9 +1315,12 @@ Clique longamente no item para selecionar a cor"</string>
     <string name="Event_CatholicEaster">Páscoa_católica</string>
     <string name="Event_NY">AN</string>
 
-    <string name="previous_month">Mês anterior</string>
     <string name="month_title">Título do mês</string>
+    <string name="previous_month">Mês anterior</string>
     <string name="next_month">No próximo mês</string>
+    <string name="previous_day">Dia anterior</string>
+    <string name="next_day">Próximo dia</string>
+    <string name="select_day">Selecionar dia…</string>
 
     <string name="month_event_saturdays">Sábados</string>
     <string name="month_event_sundays">Domingos</string>

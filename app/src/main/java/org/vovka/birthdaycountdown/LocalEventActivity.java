@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 16.09.2025, 22:29
+ *  * Created by Vladimir Belov on 25.09.2025, 23:01
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 16.09.2025, 02:23
+ *  * Last modified 25.09.2025, 22:59
  *
  */
 
@@ -823,15 +823,6 @@ public class LocalEventActivity extends Activity {
     private static void setReadOnly(@NonNull final View view) {
         view.setFocusable(false);
         view.setFocusableInTouchMode(false);
-
-        /*boolean clickable = false;
-        if (view instanceof EditText) {
-            int inputType = ((EditText) view).getInputType();
-            if ((inputType & (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI))
-                    == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI)) {
-                clickable = true;
-            }
-        }*/
         view.setClickable(false);
         view.setLongClickable(false);
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 16.09.2025, 22:29
+  ~  * Created by Vladimir Belov on 25.09.2025, 23:01
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 15.09.2025, 21:17
+  ~  * Last modified 25.09.2025, 22:23
   ~  */
   -->
 
@@ -1316,9 +1316,12 @@ Long click on item to select color"</string>
     <string name="Event_CatholicEaster">Catholic_Easter</string>
     <string name="Event_NY">NY</string>
 
-    <string name="previous_month">Previous month</string>
     <string name="month_title">Month title</string>
+    <string name="previous_month">Previous month</string>
     <string name="next_month">Next month</string>
+    <string name="previous_day">Previous day</string>
+    <string name="next_day">Next day</string>
+    <string name="select_day">Select day…</string>
 
     <string name="month_event_saturdays">Saturdays</string>
     <string name="month_event_sundays">Sundays</string>
@@ -1504,6 +1507,7 @@ Long click on item to select color"</string>
     <string name="event_type_5k_emoji" translatable="false">🏆</string>
     <string name="event_type_xdays_emoji" translatable="false">🚩</string>
     <string name="event_type_unknown_emoji" translatable="false">⁉️️</string>
+    <string name="event_type_multi_emoji" translatable="false">♻️️</string>
 
     <string name="event_source_contact" translatable="false">👨‍💼</string>
     <string name="event_source_calendar" translatable="false">📆</string>
@@ -1513,6 +1517,7 @@ Long click on item to select color"</string>
 
     <string name="popup_action_prev" translatable="false">⏪</string>
     <string name="popup_action_next" translatable="false">⏩</string>
+    <string name="popup_action_calendar" translatable="false">📆</string>
 
     <string name="pref_Root_key" translatable="false">Pref</string>
     <string name="pref_Common_key" translatable="false">Common</string>
