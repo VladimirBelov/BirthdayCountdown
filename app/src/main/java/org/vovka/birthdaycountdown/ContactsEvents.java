@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.09.2025, 21:18
+ *  * Created by Vladimir Belov on 25.09.2025, 21:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 23.09.2025, 21:10
+ *  * Last modified 25.09.2025, 00:14
  *
  */
 
@@ -240,6 +240,7 @@ public class ContactsEvents {
 
     private static final String TAG = "ContactsEvents";
     private static final ContactsEvents ourInstance = new ContactsEvents();
+    boolean flagIsUpdating = false;
 
     //Константы
     final Set<String> prefs_EventTypes_Default = new HashSet<String>() {{
@@ -2329,9 +2330,11 @@ public class ContactsEvents {
 
     synchronized boolean getEvents(Context in_context) {
 
+        if (flagIsUpdating) return false;
         if (in_context != null) setContext(in_context);
         if (getContext() == null) setContext(getContext().getApplicationContext());
         if (getContext() == null) return false;
+        flagIsUpdating = true;
 
         try {
 
@@ -2408,6 +2411,8 @@ public class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
+        } finally {
+            flagIsUpdating = false;
         }
     }
 
@@ -3424,13 +3429,6 @@ public class ContactsEvents {
                 dateEndNextTime.add(Calendar.SECOND, -1);
             }
 
-            //debug
-            SimpleDateFormat sdf_time = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.US);
-            Log.d(TAG, eventTitle);
-            Log.d(TAG, "period: " + sdf_time.format(dateRubicon.getTime()) + " - " + sdf_time.format(endPeriod.getTime()));
-            Log.d(TAG, "event: " + sdf_time.format(dateStartNextTime.getTime()) + " - " + sdf_time.format(dateEndNextTime.getTime()));
-            Log.d(TAG, "first time: " + sdf_time.format(dateFirstTime.getTime()));
-
             boolean isPassedEvent = false;
             if (dateStartNextTime.after(endPeriod)) return 0; //Если событие выпало из периода
             if (dateEndNextTime.before(dateRubicon)) {
@@ -3516,7 +3514,6 @@ public class ContactsEvents {
             if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && event.icon == R.drawable.ic_event_unknown) return 0;
 
             do {
-                Log.d(TAG, "loop: " + sdf_time.format(dateStartNextTime.getTime()) + " - " + sdf_time.format(dateEndNextTime.getTime()));
                 eventData.clear();
                 final String eventNewDate = Constants.EVENT_PREFIX_CALENDAR_EVENT + Constants.STRING_COLON_SPACE
                         + (useEventYear ? sdf_java.format(dateFirstTime.getTime()) : sdf_java_no_year.format(dateFirstTime.getTime())) + Constants.STRING_COLON_SPACE
@@ -3704,7 +3701,6 @@ public class ContactsEvents {
                 dateStartNextTime.set(Calendar.MILLISECOND, 0);
                 dateStartNextTime.add(Calendar.DATE, 1);
             } while (dateStartNextTime.compareTo(dateEndNextTime) <= 0 && dateStartNextTime.compareTo(endPeriod) <= 0);
-            Log.d(TAG, "---");
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

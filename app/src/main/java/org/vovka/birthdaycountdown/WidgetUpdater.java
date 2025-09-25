@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.07.2025, 13:26
+ *  * Created by Vladimir Belov on 25.09.2025, 21:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.07.2025, 12:27
+ *  * Last modified 25.09.2025, 00:18
  *
  */
 
@@ -63,7 +63,7 @@ class WidgetUpdater {
     final private int width;
     final private int height;
     private final int widgetId;
-    private Resources resources;
+    private final Resources resources;
     private String packageName;
     private double fontMagnify;
     private int colorDefault;
@@ -85,6 +85,7 @@ class WidgetUpdater {
 
     WidgetUpdater(@NonNull Context context, @NonNull ContactsEvents eventsData, @NonNull RemoteViews views, int eventsCount, int width, int height, int widgetId) {
         this.context = context;
+        this.resources = context.getResources();
         this.eventsData = eventsData;
         this.views = views;
         this.eventsCount = eventsCount > Constants.WIDGET_EVENTS_MAX ? Constants.WIDGET_EVENTS_MAX : eventsCount > 0 ? eventsCount : 1;
@@ -95,21 +96,20 @@ class WidgetUpdater {
 
     @SuppressLint("DiscouragedApi")
     void invokePhotoEventsUpdate() {
-        //По нажатию на виджет открываем основное окно
-        Intent intentView = new Intent(context, MainActivity.class);
-        intentView.setAction(Constants.ACTION_LAUNCH);
-        views.setOnClickPendingIntent(R.id.appwidget_main, PendingIntent.getActivity(context, 0, intentView, PendingIntentImmutable | PendingIntent.FLAG_UPDATE_CURRENT));
-
-        if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
-            if (eventsData.getContext() == null) eventsData.setContext(context);
-            eventsData.getPreferences();
-            eventsData.setLocale(true);
-            eventsData.getEvents(context);
-        }
 
         try {
+
+            if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
+                if (eventsData.getContext() == null) eventsData.setContext(context);
+                eventsData.getEvents(context);
+            }
+
+            //По нажатию на виджет открываем основное окно
+            Intent intentView = new Intent(context, MainActivity.class);
+            intentView.setAction(Constants.ACTION_LAUNCH);
+            views.setOnClickPendingIntent(R.id.appwidget_main, PendingIntent.getActivity(context, 0, intentView, PendingIntentImmutable | PendingIntent.FLAG_UPDATE_CURRENT));
+
             //Скрываем все события
-            resources = context.getResources();
             packageName = context.getPackageName();
             for (int e = 0; e < Constants.WIDGET_EVENTS_MAX; e++) {
                 views.setViewVisibility(resources.getIdentifier(Constants.WIDGET_EVENT_INFO + e, Constants.STRING_ID, packageName), View.GONE);

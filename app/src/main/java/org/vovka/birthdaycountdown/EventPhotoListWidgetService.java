@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 25.09.2025, 21:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 09:49
+ *  * Last modified 25.09.2025, 02:47
  *
  */
 
@@ -21,7 +21,7 @@ public class EventPhotoListWidgetService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new EventPhotoListDataProvider(this, intent);
+        return new EventPhotoListDataProvider(this.getApplicationContext(), intent);
     }
 
 }

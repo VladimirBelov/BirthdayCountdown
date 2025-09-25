@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.07.2025, 13:26
+ *  * Created by Vladimir Belov on 25.09.2025, 21:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.07.2025, 12:43
+ *  * Last modified 25.09.2025, 01:37
  *
  */
 
@@ -114,7 +114,9 @@ public class WidgetPhotoList extends AppWidgetProvider {
             adapter.setData(data); //Чтобы разные виджеты одного адаптера отличались для системы
             views.setRemoteAdapter(R.id.widget_list, adapter);
 
-            views.setEmptyView(R.id.widget_list, R.id.empty_view);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.BAKLAVA) {
+                views.setEmptyView(R.id.widget_list, R.id.empty_view);
+            }
 
             //Кнопка настроек
             if (ContactsEvents.isWidgetSupportConfig() && !widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ButtonConfig_ID))) {

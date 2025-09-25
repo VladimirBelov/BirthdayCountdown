@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.07.2025, 13:26
+ *  * Created by Vladimir Belov on 25.09.2025, 21:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.07.2025, 12:40
+ *  * Last modified 25.09.2025, 11:17
  *
  */
 
@@ -101,7 +101,7 @@ public class WidgetList extends AppWidgetProvider {
             }
 
             RemoteViews views;
-            //todo: https://stackoverflow.com/questions/9953892/how-to-put-divider-at-particular-position-in-an-android-list-view
+            // https://stackoverflow.com/questions/9953892/how-to-put-divider-at-particular-position-in-an-android-list-view
             if (widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Dividers_ID))) {
                 views = new RemoteViews(context.getPackageName(), R.layout.widgetlist_dividers);
             } else {
@@ -110,12 +110,19 @@ public class WidgetList extends AppWidgetProvider {
 
             //Привязываем адаптер
             //todo: переделать под RemoteCollectionItems https://developer.android.com/about/versions/12/features/widgets
+            //в Android 16 setRemoteAdapter принудительно (внутри framework) конвертируется в RemoteCollectionItems
+            // https://issuetracker.google.com/issues/398066578
+            // list widget it now calls ListWidgetRemoteViewsFactory#getViewAt for all items, regardless of how many are actually visible
+            // https://github.com/UweTrottmann/SeriesGuide/issues/1118
             Intent adapter = new Intent(context, EventListWidgetService.class);
             adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             Uri data = Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME));
             adapter.setData(data); //Чтобы разные виджеты одного адаптера отличались для системы
             views.setRemoteAdapter(R.id.widget_list, adapter);
-            views.setEmptyView(R.id.widget_list, R.id.empty_view);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.BAKLAVA) {
+                views.setEmptyView(R.id.widget_list, R.id.empty_view);
+            }
 
             //Кнопка настроек
             if (ContactsEvents.isWidgetSupportConfig() && !widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ButtonConfig_ID))) {

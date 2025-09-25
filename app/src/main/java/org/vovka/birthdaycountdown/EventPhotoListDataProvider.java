@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.07.2025, 01:18
+ *  * Created by Vladimir Belov on 25.09.2025, 21:29
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 30.07.2025, 01:18
+ *  * Last modified 25.09.2025, 00:33
  *
  */
 
@@ -379,6 +379,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             if (appWidgetInfo == null) return;
             String widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             widgetPref = eventsData.getWidgetPreference(widgetID, widgetType);
+
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 eventsData.getEvents(context);
             }
