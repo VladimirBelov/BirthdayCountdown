@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2025, 21:29
+ *  * Created by Vladimir Belov on 25.09.2025, 23:01
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.09.2025, 00:14
+ *  * Last modified 25.09.2025, 23:01
  *
  */
 
@@ -3388,7 +3388,7 @@ public class ContactsEvents {
      * @param endPeriod           Дата конца периода (обычно - +1 год от сегодня)
      * @param useEventYear        Использовать год в датах
      * @param isMultiTypeSource   Содержит ли источник событий события разных типов
-     * @param event               Загоовка для события
+     * @param event               Заготовка для события
      * @param matcherNameAndTypes Правила распознавания ИМЯ + ТИП СОБЫТИЯ
      * @param matcherTypes        Правила распознавания ТИП СОБЫТИЯ
      * @param matcherTypeAndNames Правила распознавания ТИП СОБЫТИЯ + ИМЯ
