@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.09.2025, 23:01
+  ~  * Created by Vladimir Belov on 26.09.2025, 09:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.09.2025, 22:18
+  ~  * Last modified 26.09.2025, 09:42
   ~  */
   -->
 
@@ -87,7 +87,7 @@
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
             android:padding="5dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="6dp"
             android:maxLines="1"
             android:background="@drawable/border_button"
             tools:ignore="TouchTargetSizeCheck"
@@ -101,7 +101,7 @@
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
             android:padding="5dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="6dp"
             android:maxLines="1"
             android:background="@drawable/border_button"
             tools:ignore="TouchTargetSizeCheck"
@@ -115,7 +115,7 @@
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
             android:padding="5dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="6dp"
             android:maxLines="1"
             android:background="@drawable/border_button"
             tools:ignore="TouchTargetSizeCheck"
@@ -129,7 +129,7 @@
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
             android:padding="5dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="6dp"
             android:maxLines="1"
             android:background="@drawable/border_button"
             tools:ignore="TouchTargetSizeCheck"
