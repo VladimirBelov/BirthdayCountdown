@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.10.2025, 00:44
+  ~  * Created by Vladimir Belov on 03.10.2025, 02:32
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 30.09.2025, 22:12
+  ~  * Last modified 03.10.2025, 01:42
   ~  */
   -->
 
@@ -719,8 +719,10 @@
     <string name="pref_EventInfo_ZodiacSign">♊ Zodiac sign</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 Chinese calendar year</string>
     <string name="pref_EventInfo_EventDate_Original">Original event date</string>
+    <string name="pref_EventInfo_EventYear_Original">Original event year</string>
     <string name="pref_EventInfo_EventDate_Original_WithYear">Original event date with year</string>
     <string name="pref_EventInfo_EventDate">Event date</string>
+    <string name="pref_EventInfo_EventYear">Event year</string>
     <string name="pref_EventInfo_EventDate_WithYear">Event date with year</string>
     <string name="pref_EventInfo_EventTitle">Event title (Person name)</string>
     <string name="pref_EventInfo_Age_Full">Age (full format)</string>
@@ -2063,6 +2065,8 @@ Long click on item to select color"</string>
     <string name="pref_EventInfo_RightBracket2_ID" translatable="false">41</string>
     <string name="pref_EventInfo_BoldStart_ID" translatable="false">42</string>
     <string name="pref_EventInfo_BoldEnd_ID" translatable="false">43</string>
+    <string name="pref_EventInfo_EventYear_ID" translatable="false">44</string>
+    <string name="pref_EventInfo_EventYear_Original_ID" translatable="false">45</string>
 
     <string-array name="pref_Widgets_EventInfo_values" translatable="false">
         <item>@string/pref_EventInfo_Border_ID</item>

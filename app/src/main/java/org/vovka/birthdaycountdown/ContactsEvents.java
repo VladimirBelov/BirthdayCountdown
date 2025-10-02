@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.10.2025, 00:44
+ *  * Created by Vladimir Belov on 03.10.2025, 02:32
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.10.2025, 00:26
+ *  * Last modified 03.10.2025, 02:20
  *
  */
 
@@ -308,7 +308,7 @@ public class ContactsEvents {
     static final SimpleDateFormat sdf_DDMMYYYY_G = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY_G, Locale.US);
     @SuppressLint("SimpleDateFormat")
     final SimpleDateFormat sdf_DDMMYYYYHHMM = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM);
-    final SimpleDateFormat sdf_DDMM = new SimpleDateFormat(Constants.DATE_DD_MM, Locale.US);
+    static final SimpleDateFormat sdf_DDMM = new SimpleDateFormat(Constants.DATE_DD_MM, Locale.US);
     final SimpleDateFormat sdf_MMMMDYYYY = new SimpleDateFormat(Constants.DATE_MMMM_D_YYYY, Locale.US);
     final SimpleDateFormat sdf_ru = new SimpleDateFormat(Constants.DATE_RUS, locale_ru);
     final SimpleDateFormat sdf_us = new SimpleDateFormat(Constants.DATE_US, Locale.US);
@@ -6624,7 +6624,8 @@ public class ContactsEvents {
                         }
                     }
                 }
-            } else if (Constants.STRING_STORAGE_CONTACTS.equals(singleEventArray[Position_eventStorage])) {
+            } else if (Constants.STRING_STORAGE_CONTACTS.equals(singleEventArray[Position_eventStorage])
+                    || Constants.STRING_STORAGE_LOCAL.equals(singleEventArray[Position_eventStorage])) {
                 if (eventSubType.equals(getEventType(Constants.Type_Death))) { //Если это годовщина смерти
                     agePrefix = resources.getString(R.string.msg_age_passed).concat(currentAge);
                 } else {
@@ -6666,10 +6667,10 @@ public class ContactsEvents {
         }
     }
 
-    /** Return distance to event details
-     * @param dayDiff Days to event
-     * @param eventDate Event date
-     * @return Details divided by |, for example: через 5 дней|в понедельник|15 февраля|вт
+    /** Возвращает подробности даты предстоящего события
+     * @param dayDiff Дней до события
+     * @param eventDate Дата события
+     * @return Детали разделены |, например: через 5 дней|в понедельник|15 февраля|вт
      */
     private String getEventDistanceText(long dayDiff, @NonNull Date eventDate) {
         //Если событие в ближайшие 3 дня, то вернёт "сегодня", "завтра", "послезавтра", если позже, то "через X дней" + "|в " + <день недели> + | + <MM dddd> | <день недели кратко>
@@ -6715,7 +6716,9 @@ public class ContactsEvents {
                     .append(Constants.STRING_BAR)
                     .append(sdfOut.format(c1.getTime()))
                     .append(Constants.STRING_BAR)
-                    .append(getResources().getStringArray(R.array.weekDaysShort)[c1.get(Calendar.DAY_OF_WEEK) - 1]);
+                    .append(getResources().getStringArray(R.array.weekDaysShort)[c1.get(Calendar.DAY_OF_WEEK) - 1])
+                    .append(Constants.STRING_BAR)
+                    .append(c1.get(Calendar.YEAR));
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2025, 21:29
+ *  * Created by Vladimir Belov on 03.10.2025, 02:32
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.09.2025, 00:18
+ *  * Last modified 03.10.2025, 01:26
  *
  */
 
@@ -452,6 +452,7 @@ class WidgetUpdater {
             rowValue = null;
             String captionUpper = String.valueOf(captionsPrefMap.get(Constants.PhotoWidget_Upper_Caption));
             String captionBottom = String.valueOf(captionsPrefMap.get(Constants.PhotoWidget_Bottom_Caption));
+            String personFullName = singleEventArray[ContactsEvents.Position_personFullName];
             if (!captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_none))) {
 
                 //Надпись
@@ -470,9 +471,9 @@ class WidgetUpdater {
                 } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))) { //Фамилия И.О. (Имя Отчество, если нет фамилии)
                     rowValue = person.getFullNameShort();
                 } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))) { //Имя Отчество Фамилия
-                    rowValue = singleEventArray[ContactsEvents.Position_personFullName];
+                    rowValue = personFullName;
                 } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) { //Имя
-                    rowValue = singleEventArray[ContactsEvents.Position_personFullName];
+                    rowValue = personFullName;
                     indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
@@ -491,7 +492,7 @@ class WidgetUpdater {
                             && !captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))
                             && !captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))
                             && !captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) {
-                        rowValue = singleEventArray[ContactsEvents.Position_personFullName];
+                        rowValue = personFullName;
                         indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                         if (indSpace > -1) {
                             rowValue = rowValue.substring(0, indSpace);
@@ -587,9 +588,9 @@ class WidgetUpdater {
                 } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))) { //Фамилия И.О. (Имя Отчество, если нет фамилии)
                     rowValue = person.getFullNameShort();
                 } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))) { //Имя Отчество Фамилия
-                    rowValue = singleEventArray[ContactsEvents.Position_personFullName];
+                    rowValue = personFullName;
                 } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) { //Имя
-                    rowValue = singleEventArray[ContactsEvents.Position_personFullName];
+                    rowValue = personFullName;
                     indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
@@ -608,7 +609,7 @@ class WidgetUpdater {
                             && !captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))
                             && !captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))
                             && !captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) {
-                        rowValue = singleEventArray[ContactsEvents.Position_personFullName];
+                        rowValue = personFullName;
                         indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                         if (indSpace > -1) {
                             rowValue = rowValue.substring(0, indSpace);
@@ -750,6 +751,7 @@ class WidgetUpdater {
             String strZodiacInfo = Constants.STRING_EMPTY;
             int id_widget_ZodiacIcon = resources.getIdentifier(Constants.WIDGET_ICON_ZODIAC + eventsDisplayed, Constants.STRING_ID, packageName);
 
+            String contactID = singleEventArray[ContactsEvents.Position_contactID];
             if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_ZodiacSign_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
 
@@ -757,13 +759,18 @@ class WidgetUpdater {
 
                     strZodiacInfo = ContactsEvents.ZodiacHelper.getZodiacSign(singleEventArray[ContactsEvents.Position_eventDateFirstTime]); //нам нужна только иконка
 
-                } else if (eventsData.birthdayDatesForIds.containsKey(singleEventArray[ContactsEvents.Position_contactID])) {
+                } else if (eventsData.birthdayDatesForIds.containsKey(contactID)) {
 
-                    Date birthDate = eventsData.birthdayDatesForIds.get(singleEventArray[ContactsEvents.Position_contactID]);
+                    Date birthDate = eventsData.birthdayDatesForIds.get(contactID);
                     if (birthDate != null) {
-                        Locale locale_en = new Locale(Constants.LANG_EN);
-                        SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                        strZodiacInfo = ContactsEvents.ZodiacHelper.getZodiacSign(sdfYear.format(birthDate));
+                        strZodiacInfo = ContactsEvents.ZodiacHelper.getZodiacSign(ContactsEvents.sdf_DDMMYYYY.format(birthDate));
+                    }
+
+                } else if (eventsData.birthdayDatesForNames.containsKey(personFullName)) {
+
+                    Date birthDate = eventsData.birthdayDatesForNames.get(personFullName);
+                    if (birthDate != null) {
+                        strZodiacInfo = ContactsEvents.ZodiacHelper.getZodiacSign(ContactsEvents.sdf_DDMMYYYY.format(birthDate));
                     }
                 }
             }
@@ -786,9 +793,9 @@ class WidgetUpdater {
 
                     strZodiacYearInfo = ContactsEvents.ZodiacHelper.getChineseZodiacYearSymbol(context, singleEventArray[ContactsEvents.Position_eventDateFirstTime]); //нам нужна только иконка
 
-                } else if (eventsData.birthdayDatesForIds.containsKey(singleEventArray[ContactsEvents.Position_contactID])) {
+                } else if (eventsData.birthdayDatesForIds.containsKey(contactID)) {
 
-                    Date birthDate = eventsData.birthdayDatesForIds.get(singleEventArray[ContactsEvents.Position_contactID]);
+                    Date birthDate = eventsData.birthdayDatesForIds.get(contactID);
                     if (birthDate != null) {
                         Locale locale_en = new Locale(Constants.LANG_EN);
                         SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);

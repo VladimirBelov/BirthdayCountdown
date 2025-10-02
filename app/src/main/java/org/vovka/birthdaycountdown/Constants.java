@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.10.2025, 00:44
+ *  * Created by Vladimir Belov on 03.10.2025, 02:32
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.10.2025, 00:14
+ *  * Last modified 03.10.2025, 00:48
  *
  */
 
@@ -127,6 +127,7 @@ public final class Constants {
     static final String STRING_STORAGE_CALENDAR = "calendar";
     static final String STRING_STORAGE_FILE = "file";
     static final String STRING_STORAGE_HOLIDAYS = "holidays";
+    static final String STRING_STORAGE_LOCAL = "local";
     static final int Storage_Calendar = 0;
     static final int Storage_Contacts = 1;
     static final int Storage_File = 2;

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2025, 21:29
+ *  * Created by Vladimir Belov on 03.10.2025, 02:32
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.09.2025, 00:33
+ *  * Last modified 03.10.2025, 02:24
  *
  */
 
@@ -26,11 +26,14 @@ import android.widget.RemoteViewsService;
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -198,6 +201,36 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         sbDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
                     }
                 }
+                //Дата исходного события
+                boolean showOriginalDate = widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventDate_Original_ID));
+                final boolean showOriginalYear = widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventYear_Original_ID));
+                if (showOriginalDate || showOriginalYear) {
+                    String eventDateFirstTime = singleEventArray[ContactsEvents.Position_eventDateFirstTime];
+                    if (showOriginalDate) {
+                        final SimpleDateFormat sdfOut = new SimpleDateFormat(eventsData.preferences_date_format == 3 || eventsData.preferences_date_format == 5 ?
+                                Constants.DATE_MMMM_D : Constants.DATE_D_MMMM, Locale.forLanguageTag(eventsData.currentLocale));
+                        Date eventDate = null;
+                        try {
+                            eventDate = ContactsEvents.sdf_DDMM.parse(eventDateFirstTime.substring(0, 5));
+                        } catch (ParseException ignored) { /**/ }
+                        if (eventDate != null) {
+                            if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
+                            sbDetails.append(sdfOut.format(eventDate));
+                        } else {
+                            showOriginalDate = false;
+                        }
+                    }
+                    if (showOriginalYear) {
+                        if (eventDateFirstTime != null && eventDateFirstTime.length() > 6) {
+                            if (showOriginalDate) {
+                                sbDetails.append(Constants.STRING_SPACE).append(eventDateFirstTime.substring(6));
+                            } else {
+                                if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
+                                sbDetails.append(eventDateFirstTime.substring(6));
+                            }
+                        }
+                    }
+                }
                 //Текущий возраст
                 if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_CurrentAge_ID)) && !singleEventArray[ContactsEvents.Position_eventDistance].equals(Constants.STRING_0)) {
                     final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
@@ -236,6 +269,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 final boolean showDistance = widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_DaysBeforeEvent_ID));
                 final boolean showDayOfWeek = widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventDayOfWeek_ID));
                 final boolean showEventDate = widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventDate_ID));
+                final boolean showEventYear = widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventYear_ID));
 
                 if ((showDistance || showDayOfWeek || showEventDate) && eventDistanceText.length >= 3) {
                     if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
@@ -251,8 +285,15 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                             if (textDistance.length() > 0) textDistance.append(Constants.STRING_COMMA_SPACE);
                             textDistance.append(eventDistanceText[2]);
                         }
+                        if (showEventYear) {
+                            if (showEventDate) {
+                                textDistance.append(Constants.STRING_SPACE).append(eventDistanceText[4]);
+                            } else {
+                                if (textDistance.length() > 0) textDistance.append(Constants.STRING_COMMA_SPACE);
+                                textDistance.append(eventDistanceText[4]);
+                            }
+                        }
                     }
-
                     sbDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE)
                             .append(textDistance).append(Constants.HTML_COLOR_END);
                 }

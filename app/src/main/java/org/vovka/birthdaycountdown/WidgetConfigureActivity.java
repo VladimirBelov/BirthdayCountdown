@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2025, 23:01
+ *  * Created by Vladimir Belov on 03.10.2025, 02:32
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.09.2025, 22:59
+ *  * Last modified 03.10.2025, 01:42
  *
  */
 
@@ -710,6 +710,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_DaysBeforeEvent_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_DaysBeforeEvent));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDayOfWeek_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDayOfWeek));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventYear_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventYear));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_Original_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate_Original));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventYear_Original_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventYear_Original));
                     break;
 
                 default:
