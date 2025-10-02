@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.09.2025, 23:01
+  ~  * Created by Vladimir Belov on 03.10.2025, 00:44
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.09.2025, 22:23
+  ~  * Last modified 30.09.2025, 22:12
   ~  */
   -->
 
@@ -1334,6 +1334,8 @@ Long click on item to select color"</string>
     <string name="facts_popup_empty">The facts pool is empty</string>
 
     <string name="local_event_date_picker_use_year">Provide year</string>
+    <string name="local_event_date_picker_week_day">Weekday: %1$s</string>
+    <string name="local_event_date_picker_bc">BC</string>
     <string name="local_event_date_picker_title">Choose date:</string>
     <string name="local_event_dialog_title_new_event">Add new event</string>
     <string name="local_event_dialog_title_edit_event">Edit event</string>

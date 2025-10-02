@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.09.2025, 20:18
+  ~  * Created by Vladimir Belov on 03.10.2025, 00:44
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.09.2025, 09:35
+  ~  * Last modified 02.10.2025, 10:08
   ~  */
   -->
 
@@ -291,7 +291,8 @@
 Тот, кто прощает злых, наказывает добрых (Сенека)
 День — это маленькая жизнь, и надо прожить ее так, будто ты должен умереть сейчас, а тебе неожиданно подарили еще сутки (Максим Горький)
 Не бойтесь начать всё сначала. На этот раз вы не начинаете с нуля, вы начинаете с опыта
-Терпение — это не ожидание бездействием, а умение продолжать путь, даже когда плодов ещё не видно (Александр Мень)"</item>
+Терпение — это не ожидание бездействием, а умение продолжать путь, даже когда плодов ещё не видно (Александр Мень)
+Если твоя работа — съесть лягушку, лучше сделать это сразу с утра. А если тебе нужно съесть двух лягушек, сначала съешь самую большую (Марк Твен)"</item>
 </string-array>
 
     <string-array name="facts2" translatable="false" tools:ignore="UnusedResources">
@@ -617,7 +618,8 @@ Having expectations of others means you are trying to fix their lives. Fix your 
 Perhaps the worst will happen, perhaps not, but until then, look forward to better things (Seneca)
 Be happy for this moment. This moment is your life (Omar Khayyam)
 If you don't value your time, neither will others. Stop giving away your time and talents- start charging for it (Kim Garst)
-Don’t be afraid to start over again. This time you’re not starting from scratch, you’re starting from experience"</item>
+Don’t be afraid to start over again. This time you’re not starting from scratch, you’re starting from experience
+If it's your job to eat a frog, it's best to do it first thing in the morning. And if it's your job to eat two frogs, it's best to eat the biggest one first (Mark Twain)"</item>
     </string-array>
 
     <string-array name="facts4" translatable="false" tools:ignore="UnusedResources">

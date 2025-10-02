@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2025, 23:01
+ *  * Created by Vladimir Belov on 03.10.2025, 00:44
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.09.2025, 22:59
+ *  * Last modified 30.09.2025, 22:29
  *
  */
 
@@ -2435,7 +2435,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             if (statsUnrecognizedEvents > 0 && eventsData.preferences_rules_unrecognized == ContactsEvents.Rules_Unrecognized_Type_Unrecognized) {
-                ToastExpander.showInfoMsg(this, toProperCase(resources.getString(R.string.msg_stats_unrecognized_prefix)) + statsUnrecognizedEvents);
+                ToastExpander.showInfoMsg(this, ContactsEvents.toProperCase(resources.getString(R.string.msg_stats_unrecognized_prefix)) + statsUnrecognizedEvents);
             }
 
             eventsData.statUnrecognizedEvents = statsUnrecognizedEvents;
@@ -2450,15 +2450,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private boolean isUnrecognizedEvent(@NonNull String[] singleEventArray) {
         return ContactsEvents.getEventType(Constants.Type_Unrecognized).equals(singleEventArray[ContactsEvents.Position_eventType]);
-    }
-
-    @NonNull
-    private String toProperCase(@NonNull String str) {
-        if (!str.isEmpty()) {
-            char[] chars = str.toLowerCase().toCharArray();
-            chars[0] = Character.toUpperCase(chars[0]);
-            return new String(chars);
-        } else {return str;}
     }
 
     synchronized private void drawList() {

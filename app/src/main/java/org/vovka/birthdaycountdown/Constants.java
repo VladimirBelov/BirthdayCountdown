@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.09.2025, 20:18
+ *  * Created by Vladimir Belov on 03.10.2025, 00:44
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.09.2025, 20:21
+ *  * Last modified 01.10.2025, 00:14
  *
  */
 
@@ -250,6 +250,7 @@ public final class Constants {
     static final String EXTRA_MONTH = "month";
     static final String EXTRA_YEAR = "year";
     static final String EXTRA_USE_YEAR = "useYear";
+    static final String EXTRA_IS_BC = "isBC";
     static final String EXTRA_DAY1 = "day1";
     static final String EXTRA_DAY2 = "day2";
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2025, 12:13
+ *  * Created by Vladimir Belov on 03.10.2025, 00:44
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.07.2025, 11:47
+ *  * Last modified 28.09.2025, 21:50
  *
  */
 
@@ -49,6 +49,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
@@ -161,11 +162,16 @@ public class AboutActivity extends AppCompatActivity {
             //https://stackoverflow.com/questions/37539949/detect-if-an-app-is-installed-from-play-store
             TextView txtInfo = findViewById(R.id.textVersionInfo);
 
+            String buildDateStr = Constants.STRING_2MINUS;
+            try {
+                Date buildDate = new Date(Long.parseLong(BuildConfig.BUILD_TIME));
+                buildDateStr = eventsData.getDateTimePreferable(buildDate);
+            } catch (NumberFormatException ignored) { /**/ }
             txtInfo.setText(HtmlCompat.fromHtml(getString(
                     R.string.changelog_version,
                     BuildConfig.VERSION_NAME,
                     Integer.toString(BuildConfig.VERSION_CODE),
-                    eventsData.getDateTimePreferable(BuildConfig.BUILD_TIME)
+                    buildDateStr
                     ).concat(eventsData.getInstallerInfo(R.string.changelog_installer)), HtmlCompat.FROM_HTML_MODE_LEGACY)); //
             txtInfo.setMovementMethod(LinkMovementMethod.getInstance());
             txtInfo.setClickable(true);

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2025, 23:01
+ *  * Created by Vladimir Belov on 03.10.2025, 00:44
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.09.2025, 22:59
+ *  * Last modified 01.10.2025, 02:04
  *
  */
 
@@ -60,6 +60,7 @@ import androidx.core.content.ContextCompat;
 import org.vovka.birthdaycountdown.imagecropper.CropIntent;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -96,6 +97,7 @@ public class LocalEventActivity extends Activity {
     private static int eventMonth;
     private static int eventDay;
     private static boolean eventUseYear = true;
+    private static boolean eventIsBC = false;
     private static final List<String> eventTypesValues = new ArrayList<>();
     private static final List<Integer> eventTypesIds = new ArrayList<>();
     private static final List<Integer> eventSubTypesIds = new ArrayList<>();
@@ -135,38 +137,42 @@ public class LocalEventActivity extends Activity {
     public static class DatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
         private static final String TAG = "DatePicker";
+        View viewActivity = null;
         View spinnerYear = null;
+        AtomicInteger selectedYear = new AtomicInteger();
+        AtomicInteger selectedMonth = new AtomicInteger();
+        AtomicInteger selectedDay = new AtomicInteger();
+        AtomicBoolean useYear = new AtomicBoolean(true);
+        AtomicBoolean isBC = new AtomicBoolean(false);
 
         @Nullable
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             try {
 
-                AtomicInteger yearToChange = new AtomicInteger();
-                AtomicInteger monthToChange = new AtomicInteger();
-                AtomicInteger dayToChange = new AtomicInteger();
-                AtomicBoolean useYear = new AtomicBoolean(true);
                 AtomicInteger yearBeforeHide = new AtomicInteger(0);
                 final Calendar today = Calendar.getInstance();
 
                 Bundle bundle = getArguments();
                 if (bundle.containsKey(Constants.EXTRA_DAY)) {
-                    yearToChange.set(bundle.getInt(Constants.EXTRA_YEAR));
-                    monthToChange.set(bundle.getInt(Constants.EXTRA_MONTH));
-                    dayToChange.set(bundle.getInt(Constants.EXTRA_DAY));
+                    selectedYear.set(bundle.getInt(Constants.EXTRA_YEAR));
+                    selectedMonth.set(bundle.getInt(Constants.EXTRA_MONTH));
+                    selectedDay.set(bundle.getInt(Constants.EXTRA_DAY));
                     useYear.set(bundle.getBoolean(Constants.EXTRA_USE_YEAR));
+                    isBC.set(bundle.getBoolean(Constants.EXTRA_IS_BC));
                 } else {
-                    yearToChange.set(today.get(Calendar.YEAR));
-                    monthToChange.set(today.get(Calendar.MONTH));
-                    dayToChange.set(today.get(Calendar.DAY_OF_MONTH));
+                    selectedYear.set(today.get(Calendar.YEAR));
+                    selectedMonth.set(today.get(Calendar.MONTH));
+                    selectedDay.set(today.get(Calendar.DAY_OF_MONTH));
                     useYear.set(true);
                 }
 
                 getActivity().setTheme(eventsData.preferences_theme.themeDialog);
-                View viewActivity = getActivity().getLayoutInflater().inflate(R.layout.datepicker, null);
+                viewActivity = getActivity().getLayoutInflater().inflate(R.layout.datepicker, null);
 
                 TextView editDate = getActivity().findViewById(R.id.editDate);
                 CheckBox checkUseYear = viewActivity.findViewById(R.id.check_use_year);
+                CheckBox checkIsBC = viewActivity.findViewById(R.id.check_bc);
                 android.widget.DatePicker datePicker = viewActivity.findViewById(R.id.datePicker);
 
                 //В разных версиях Android этот spinner назывался по-разному. Попробуем найти его
@@ -178,12 +184,13 @@ public class LocalEventActivity extends Activity {
                 Calendar minDate = Calendar.getInstance();
                 minDate.set(1, Calendar.JANUARY, 1); //java.util.Calendar не поддерживает годы до нашей эры (0 или отрицательные годы)
                 datePicker.setMinDate(minDate.getTimeInMillis());
-                datePicker.init(yearToChange.get(), monthToChange.get(), dayToChange.get(), (
+                datePicker.init(selectedYear.get(), selectedMonth.get(), selectedDay.get(), (
                                 view, year, monthOfYear, dayOfMonth) -> {
-                            yearToChange.set(year);
-                            monthToChange.set(monthOfYear);
-                            dayToChange.set(dayOfMonth);
+                            selectedYear.set(year);
+                            selectedMonth.set(monthOfYear);
+                            selectedDay.set(dayOfMonth);
                             useYear.set(checkUseYear.isChecked());
+                            isBC.set(checkIsBC.isChecked());
                         }
                 );
                 if (spinnerYear != null) {
@@ -196,25 +203,36 @@ public class LocalEventActivity extends Activity {
                         yearBeforeHide.set(today.get(Calendar.YEAR));
                     }
                 }
+                checkIsBC.setChecked(isBC.get());
+
+                datePicker.post(() -> handleDateChanged(selectedYear.get(), selectedMonth.get(), selectedDay.get()));
 
                 checkUseYear.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
                         datePicker.updateDate(yearBeforeHide.get() != 0 ? yearBeforeHide.get() : today.get(Calendar.YEAR), datePicker.getMonth(), datePicker.getDayOfMonth());
                         useYear.set(true);
                         spinnerYear.setVisibility(View.VISIBLE);
+                        checkIsBC.setVisibility(View.VISIBLE);
                     } else {
                         yearBeforeHide.set(datePicker.getYear());
                         useYear.set(false);
                         datePicker.updateDate(today.get(Calendar.YEAR), datePicker.getMonth(), datePicker.getDayOfMonth());
                         spinnerYear.setVisibility(View.GONE);
+                        checkIsBC.setVisibility(View.GONE);
                     }
                 });
+
+                checkIsBC.setOnCheckedChangeListener((buttonView, isChecked) -> isBC.set(isChecked));
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    datePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> handleDateChanged(year, monthOfYear, dayOfMonth));
+                }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                         .setView(viewActivity)
                         .setTitle(R.string.local_event_date_picker_title)
                         .setPositiveButton(R.string.button_ok, (dialog, which) -> {
-                            updateEventDate(editDate, dayToChange.get(), monthToChange.get(), yearToChange.get(), useYear.get());
+                            updateEventDate(editDate, selectedDay.get(), selectedMonth.get(), selectedYear.get(), useYear.get(), isBC.get());
                             updateEventPhoto((LocalEventActivity) getActivity());
                         })
                         .setNegativeButton(R.string.button_cancel, (dialog, which) -> dismiss());
@@ -225,6 +243,20 @@ public class LocalEventActivity extends Activity {
                 Log.e(TAG, e.getMessage(), e);
                 ToastExpander.showDebugMsg(getActivity(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
                 return null;
+            }
+        }
+
+        private void handleDateChanged(int year, int monthOfYear, int dayOfMonth) {
+            selectedYear.set(year);
+            selectedMonth.set(monthOfYear);
+            selectedDay.set(dayOfMonth);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                TextView textWeekDay = viewActivity.findViewById(R.id.week_day);
+                textWeekDay.setVisibility(View.VISIBLE);
+                SimpleDateFormat sdf = new SimpleDateFormat("EEEE", Locale.getDefault());
+                textWeekDay.setText(getResources().getString(R.string.local_event_date_picker_week_day,
+                        ContactsEvents.toProperCase(sdf.format(new Date(year - 1900, monthOfYear, dayOfMonth))))
+                );
             }
         }
 
@@ -306,6 +338,7 @@ public class LocalEventActivity extends Activity {
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
             boolean useYear = true;
+            boolean isBC = false;
 
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
@@ -349,22 +382,32 @@ public class LocalEventActivity extends Activity {
                                 Date dateEventFirstTime;
 
                                 try {
-                                    dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString);
+                                    dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY_G.parse(eventDateString);
                                     if (dateEventFirstTime != null) {
                                         day = dateEventFirstTime.getDate();
                                         month = dateEventFirstTime.getMonth();
                                         year = dateEventFirstTime.getYear() + 1900;
+                                        isBC = true;
                                     }
-                                } catch (ParseException pe) {
+                                } catch (ParseException peg) {
                                     try {
-                                        dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString
-                                                .concat(Constants.STRING_PERIOD).concat(String.valueOf(c.get(Calendar.YEAR))));
+                                        dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString);
                                         if (dateEventFirstTime != null) {
                                             day = dateEventFirstTime.getDate();
                                             month = dateEventFirstTime.getMonth();
-                                            useYear = false;
+                                            year = dateEventFirstTime.getYear() + 1900;
                                         }
-                                    } catch (ParseException ignored) { /**/ }
+                                    } catch (ParseException pe) {
+                                        try {
+                                            dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString
+                                                    .concat(Constants.STRING_PERIOD).concat(String.valueOf(c.get(Calendar.YEAR))));
+                                            if (dateEventFirstTime != null) {
+                                                day = dateEventFirstTime.getDate();
+                                                month = dateEventFirstTime.getMonth();
+                                                useYear = false;
+                                            }
+                                        } catch (ParseException ignored) { /**/ }
+                                    }
                                 }
                             }
                             if (storedEventSubType != null) {
@@ -491,6 +534,7 @@ public class LocalEventActivity extends Activity {
                     bundle.putInt(Constants.EXTRA_MONTH, eventMonth);
                     bundle.putInt(Constants.EXTRA_YEAR, eventYear);
                     bundle.putBoolean(Constants.EXTRA_USE_YEAR, eventUseYear);
+                    bundle.putBoolean(Constants.EXTRA_IS_BC, eventIsBC);
                     dialogFragment.setArguments(bundle);
 
                     LocalEventActivity.this.getFragmentManager()
@@ -566,7 +610,7 @@ public class LocalEventActivity extends Activity {
             }
 
             updateCaptionsAndVisibility(this);
-            updateEventDate(editDate, day, month, year, useYear);
+            updateEventDate(editDate, day, month, year, useYear, isBC);
             updateEventPhoto(this);
             this.eventDataSaved = eventsData.getEventData(eventData);
 
@@ -778,13 +822,14 @@ public class LocalEventActivity extends Activity {
         }
     }
 
-    private static void updateEventDate(@NonNull TextView editDate, int day, int month, int year, boolean useYear) {
+    private static void updateEventDate(@NonNull TextView editDate, int day, int month, int year, boolean useYear, boolean isBC) {
         try {
 
             eventDay = day;
             eventMonth = month;
             eventYear = year;
             eventUseYear = useYear;
+            eventIsBC = isBC;
             String dateFormated;
 
             if (eventUseYear) {
@@ -795,7 +840,7 @@ public class LocalEventActivity extends Activity {
                         eventsData.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay)), ContactsEvents.FormatDate.WithoutYear);
             }
 
-            editDate.setText("📆 ".concat(dateFormated));
+            editDate.setText("📆 ".concat(dateFormated).concat(eventIsBC ? eventsData.getResources().getString(R.string.msg_after_year_bc) : Constants.STRING_EMPTY));
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -978,13 +1023,14 @@ public class LocalEventActivity extends Activity {
                eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
            }
 
+           String eventDateString;
            if (eventUseYear) {
-               eventData.put(ContactsEvents.Position_eventDateFirstTime,
-                       ContactsEvents.sdf_DDMMYYYY.format(new Date(eventYear - 1900, eventMonth, eventDay)));
+               eventDateString = ContactsEvents.sdf_DDMMYYYY.format(new Date(eventYear - 1900, eventMonth, eventDay));
            } else {
-               eventData.put(ContactsEvents.Position_eventDateFirstTime,
-                       eventsData.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay)));
+               eventDateString = eventsData.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay));
            }
+           eventData.put(ContactsEvents.Position_eventDateFirstTime,
+                   eventDateString.concat(eventIsBC ? Constants.STRING_SPACE.concat(Constants.STRING_BC) : Constants.STRING_EMPTY));
 
            eventData.put(ContactsEvents.Position_eventType, String.valueOf(eventTypesIds.get(indexType)));
            eventData.put(ContactsEvents.Position_eventSubType, String.valueOf(subType));
