@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.10.2025, 02:32
+  ~  * Created by Vladimir Belov on 06.10.2025, 03:14
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 03.10.2025, 01:42
+  ~  * Last modified 06.10.2025, 01:51
   ~  */
   -->
 
@@ -1598,6 +1598,17 @@ Long click on item to select color"</string>
         <item>3</item>
     </string-array>
     <string name="pref_Theme_default" translatable="false">5</string>
+    <array name="pref_Theme_colors">
+        <item>@color/theme_brown_primary</item>
+        <item>@color/theme_orange_primary</item>
+        <item>@color/theme_green_primary</item>
+        <item>@color/theme_teal_primary</item>
+        <item>@color/theme_blue_primary</item>
+        <item>@color/theme_indigo_primary</item>
+        <item>@color/theme_blue_gray_primary</item>
+        <item>@color/theme_grey_primary</item>
+        <item>@color/theme_black_primary</item>
+    </array>
 
     <string name="pref_Accounts_key" translatable="false">Accounts</string>
 
@@ -1609,6 +1620,14 @@ Long click on item to select color"</string>
         <item>2</item>
         <item>3</item>
     </string-array>
+
+    <array name="pref_IconPack_photos">
+        <item>@drawable/ic_pack00_m1</item>
+        <item>@drawable/ic_pack00_f1</item>
+        <item>@drawable/ic_pack01_f2</item>
+        <item>@drawable/ic_pack02_f2</item>
+        <item>@drawable/ic_pack03_f3</item>
+    </array>
 
     <string name="pref_MenuStyle_key" translatable="false">MenuStyle</string>
     <bool name="pref_MenuStyle_default" translatable="false">true</bool>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.07.2025, 22:38
+ *  * Created by Vladimir Belov on 06.10.2025, 03:14
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.06.2025, 01:59
+ *  * Last modified 03.10.2025, 18:46
  *
  */
 
@@ -537,7 +537,6 @@ class ColorPreference extends Preference {
                 colorChoiceDrawable.setShape(GradientDrawable.OVAL);
             }
 
-            // Set stroke to dark version of color
             int darkenedColor = Color.rgb(
                     Color.red(color) * 192 / 256,
                     Color.green(color) * 192 / 256,

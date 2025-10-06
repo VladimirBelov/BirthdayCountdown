@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 13.09.2025, 01:31
+  ~  * Created by Vladimir Belov on 06.10.2025, 03:14
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 13.09.2025, 01:21
+  ~  * Last modified 06.10.2025, 03:05
   ~  */
   -->
 
@@ -20,7 +20,7 @@
         android:layout="@layout/settings_category_with_icon"
         android:icon="@android:drawable/ic_menu_mapmode">
 
-        <ListPreference
+        <org.vovka.birthdaycountdown.CustomListPreference
             android:defaultValue="@string/pref_Language_default"
             android:entries="@array/pref_Language_entries"
             android:entryValues="@array/pref_Language_values"
@@ -66,9 +66,9 @@
             android:defaultValue="@bool/pref_Help_ExtraFun_On_default"
             android:icon="@android:drawable/ic_menu_manage"/>
 
-        <ListPreference
-            android:defaultValue="@string/pref_List_NameFormat_default"
+        <org.vovka.birthdaycountdown.CustomListPreference
             android:key="@string/pref_List_NameFormat_key"
+            android:defaultValue="@string/pref_List_NameFormat_default"
             android:entries="@array/pref_List_NameFormat_entries"
             android:entryValues="@array/pref_List_NameFormat_values"
             android:title="@string/pref_List_NameFormat_title"
@@ -77,9 +77,9 @@
             android:dialogIcon="@android:drawable/ic_menu_manage"
             android:negativeButtonText="@string/button_cancel"/>
 
-        <ListPreference
-            android:defaultValue="@string/pref_List_DateFormat_default"
+        <org.vovka.birthdaycountdown.CustomListPreference
             android:key="@string/pref_List_DateFormat_key"
+            android:defaultValue="@string/pref_List_DateFormat_default"
             android:entries="@array/pref_List_DateFormat_entries"
             android:entryValues="@array/pref_List_DateFormat_values"
             android:title="@string/pref_List_DateFormat_title"
@@ -89,10 +89,10 @@
             android:negativeButtonText="@string/button_cancel"/>
 
         <MultiSelectListPreference
+            android:key="@string/pref_List_AgeFormat_key"
             android:defaultValue="@array/pref_List_AgeFormat_values_default"
             android:entries="@array/pref_List_AgeFormat_entries"
             android:entryValues="@array/pref_List_AgeFormat_values"
-            android:key="@string/pref_List_AgeFormat_key"
             android:summary="@string/pref_List_AgeFormat_summary"
             android:title="@string/pref_List_AgeFormat_title"
             android:icon="@android:drawable/ic_menu_day"

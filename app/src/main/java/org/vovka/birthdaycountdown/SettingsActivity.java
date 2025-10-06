@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2025, 23:01
+ *  * Created by Vladimir Belov on 06.10.2025, 03:14
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.09.2025, 22:59
+ *  * Last modified 06.10.2025, 02:54
  *
  */
 
@@ -36,10 +36,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -55,8 +57,13 @@ import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.format.DateFormat;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
+import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -78,6 +85,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -125,6 +135,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private int runningQueue = 0;
     boolean skipSharedPreferenceChangedEvent = false;
     private Insets statusBarInsets;
+    private final String summaryTemplate = ":\n";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -220,7 +231,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
-                            builder.setTitle(getString(R.string.msg_no_access_contacts));
+                            builder.setTitle(getString(R.string.msg_no_access_storage));
                             builder.setIcon(android.R.drawable.ic_menu_info_details);
                             builder.setMessage(getString(R.string.msg_no_access_storage_hint));
                             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
@@ -269,6 +280,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             updateTitles();
             updateVisibility();
+            if (eventsData.preferences_extrafun) setSummaryUpdate();
         }
     }
 
@@ -498,6 +510,187 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void setSummaryUpdate() {
+
+        try {
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            Preference pref;
+
+            //Язык
+            pref = findPreference(getString(R.string.pref_Language_key));
+            if (pref != null) {
+                List<String> langEntries = Arrays.asList(getResources().getStringArray(R.array.pref_Language_entries));
+                List<String> langValues = Arrays.asList(getResources().getStringArray(R.array.pref_Language_values));
+                /*pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                    String value = langEntries.get(langValues.indexOf(newValue.toString()));
+                    return updateSummary(R.string.pref_Language_key, value, getString(R.string.pref_Language_description) + summaryTemplate, 0 ,0);
+                });*/
+                String currentValue = preferences.getString(getString(R.string.pref_Language_key), getString(R.string.pref_Language_default));
+                String value = langEntries.get(langValues.indexOf(currentValue));
+                updateSummary(R.string.pref_Language_key, value, getString(R.string.pref_Language_description) + summaryTemplate, 0, 0);
+            }
+
+            //Тема
+            pref = findPreference(getString(R.string.pref_Theme_key));
+            if (pref != null) {
+                List<String> themeEntries = Arrays.asList(getResources().getStringArray(R.array.pref_Theme_entries));
+                List<String> themeValues = Arrays.asList(getResources().getStringArray(R.array.pref_Theme_values));
+                List<Integer> themeColors = getResourceColorList(this, R.array.pref_Theme_colors);
+                /*pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                    String value = themeEntries.get(themeValues.indexOf(newValue.toString()));
+                    @ColorInt int color = themeColors.get(themeValues.indexOf(newValue.toString()));
+                    return updateSummary(R.string.pref_Theme_key, value, getString(R.string.pref_Theme_description) + summaryTemplate, color, 0);
+                });*/
+                String currentValue = preferences.getString(getString(R.string.pref_Theme_key), getString(R.string.pref_Theme_default));
+                String value = themeEntries.get(themeValues.indexOf(currentValue));
+                @ColorInt int color = themeColors.get(themeValues.indexOf(currentValue));
+                updateSummary(R.string.pref_Theme_key, value, getString(R.string.pref_Theme_description) + summaryTemplate, color, 0);
+            }
+
+            //Набор иконок
+            pref = findPreference(getString(R.string.pref_IconPack_key));
+            if (pref != null) {
+                List<String> packEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_IconPack_entries)));
+                List<String> packValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_IconPack_values)));
+                List<Integer> packIcons = getResourceList(this, R.array.pref_IconPack_photos);
+                /*pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                    String value = packEntries.get(packValues.indexOf(newValue.toString()));
+                    @DrawableRes int drawable = packIcons.get(packValues.indexOf(newValue.toString()));
+                    return updateSummary(R.string.pref_IconPack_key, value, getString(R.string.pref_IconPack_description) + summaryTemplate, 0, drawable);
+                });*/
+                int currentValue = preferences.getInt(getString(R.string.pref_IconPack_key), 0);
+                String value = packEntries.get(packValues.indexOf(String.valueOf(currentValue)));
+                @DrawableRes int drawable = packIcons.get(packValues.indexOf(String.valueOf(currentValue)));
+                updateSummary(R.string.pref_IconPack_key, value, getString(R.string.pref_IconPack_description) + summaryTemplate, 0, drawable);
+            }
+
+            //Формат имени
+            pref = findPreference(getString(R.string.pref_List_NameFormat_key));
+            if (pref != null) {
+                List<String> nameFormatEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_NameFormat_entries)));
+                List<String> nameFormatValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_NameFormat_values)));
+                pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                    String value = nameFormatEntries.get(nameFormatValues.indexOf(newValue.toString()));
+                    return updateSummary(R.string.pref_List_NameFormat_key, value, Constants.STRING_EMPTY, 0, 0);
+                });
+                String currentValue = preferences.getString(getString(R.string.pref_List_NameFormat_key), getString(R.string.pref_List_NameFormat_default));
+                String value = nameFormatEntries.get(nameFormatValues.indexOf(currentValue));
+                updateSummary(R.string.pref_List_NameFormat_key, value, Constants.STRING_EMPTY, 0, 0);
+            }
+
+            //Формат даты
+            pref = findPreference(getString(R.string.pref_List_DateFormat_key));
+            if (pref != null) {
+                List<String> dateFormatEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_DateFormat_entries)));
+                List<String> dateFormatValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_DateFormat_values)));
+                pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                    String value = dateFormatEntries.get(dateFormatValues.indexOf(newValue.toString()));
+                    return updateSummary(R.string.pref_List_DateFormat_key, value, getString(R.string.pref_List_DateFormat_description) + summaryTemplate, 0, 0);
+                });
+                String currentValue = preferences.getString(getString(R.string.pref_List_DateFormat_key), getString(R.string.pref_List_DateFormat_default));
+                String value = dateFormatEntries.get(dateFormatValues.indexOf(currentValue));
+                updateSummary(R.string.pref_List_DateFormat_key, value, getString(R.string.pref_List_DateFormat_description) + summaryTemplate, 0, 0);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private boolean updateSummary(@StringRes int prefKey, Object value, @NonNull String template, @ColorInt int colorCircle, @DrawableRes int drawable) {
+
+        try {
+
+            Preference pref = findPreference(getString(prefKey));
+            if (pref == null) return false;
+            String newValue = value.toString();
+            String textBeforeValue = template + (colorCircle != 0 ? "@ " : drawable != 0 ? "@" : "");
+            String fullText = textBeforeValue + newValue;
+
+            SpannableString spannable = new SpannableString(fullText);
+            spannable.setSpan(new StyleSpan(Typeface.BOLD), textBeforeValue.length(), fullText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(new ForegroundColorSpan(ta.getColor(R.styleable.Theme_colorAccent, 0)), textBeforeValue.length(), fullText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            if (colorCircle != 0) {
+
+                int borderColor;
+                if ((Color.red(colorCircle) + Color.green(colorCircle) + Color.blue(colorCircle)) > 60) {
+                    borderColor = Color.rgb(
+                            Color.red(colorCircle) * 192 / 256,
+                            Color.green(colorCircle) * 192 / 256,
+                            Color.blue(colorCircle) * 192 / 256);
+                } else {
+                    borderColor = Color.rgb(
+                            192,
+                            192,
+                            192);
+                }
+
+                GradientDrawable oval = new GradientDrawable();
+                oval.setShape(GradientDrawable.OVAL);
+                int targetSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, getResources().getDisplayMetrics());
+                oval.setSize(targetSize, targetSize);
+                oval.setColor(colorCircle);
+                oval.setStroke((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics), borderColor);
+                oval.setBounds(0, 0, oval.getIntrinsicWidth(), oval.getIntrinsicHeight());
+
+                spannable.setSpan(
+                        new ImageSpan(oval, ImageSpan.ALIGN_BASELINE),
+                        fullText.indexOf("@"), fullText.indexOf("@") + 1,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                );
+
+            } else if (drawable != 0) {
+
+                Drawable icon = ContextCompat.getDrawable(this, drawable);
+                if (icon != null) {
+                    int targetSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics());
+
+                    // Получаем исходные размеры
+                    int intrinsicW = icon.getIntrinsicWidth();
+                    int intrinsicH = icon.getIntrinsicHeight();
+
+                    if (intrinsicW <= 0) intrinsicW = targetSize;
+                    if (intrinsicH <= 0) intrinsicH = targetSize;
+
+                    // Масштабируем с сохранением пропорций
+                    float scale = Math.min((float) targetSize / intrinsicW, (float) targetSize / intrinsicH);
+                    int scaledW = (int) (intrinsicW * scale);
+                    int scaledH = (int) (intrinsicH * scale);
+
+                    // Центрируем в квадрате
+                    int leftInset = (targetSize - scaledW) / 2;
+                    int topInset = (targetSize - scaledH) / 2;
+
+                    // Устанавливаем bounds у оригинальной иконки
+                    icon.setBounds(0, 0, scaledW, scaledH);
+
+                    // Оборачиваем в InsetDrawable для центрирования
+                    InsetDrawable insetDrawable = new InsetDrawable(icon, leftInset, topInset, leftInset, topInset);
+                    insetDrawable.setBounds(0, 0, targetSize, targetSize);
+
+                    spannable.setSpan(
+                            new ImageSpan(insetDrawable, ImageSpan.ALIGN_BOTTOM),
+                            fullText.indexOf("@"), fullText.indexOf("@") + 1,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    );
+                }
+
+            }
+
+            pref.setSummary(spannable);
+
+            return true;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return false;
         }
     }
 
@@ -1681,16 +1874,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
            List<String> themeNames = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Theme_entries)));
            List<String> themeNumbers = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Theme_values)));
-           List<Integer> themeColors = new ArrayList<>();
-           themeColors.add(getResources().getColor(R.color.theme_brown_primary));
-           themeColors.add(getResources().getColor(R.color.theme_orange_primary));
-           themeColors.add(getResources().getColor(R.color.theme_green_primary));
-           themeColors.add(getResources().getColor(R.color.theme_teal_primary));
-           themeColors.add(getResources().getColor(R.color.theme_blue_primary));
-           themeColors.add(getResources().getColor(R.color.theme_indigo_primary));
-           themeColors.add(getResources().getColor(R.color.theme_blue_gray_primary));
-           themeColors.add(getResources().getColor(R.color.theme_grey_primary));
-           themeColors.add(getResources().getColor(R.color.theme_black_primary));
+           List<Integer> themeColors = getResourceColorList(this, R.array.pref_Theme_colors);
 
            ListAdapter adapter = new ThemeListAdapter(this, themeNames, themeColors, ta);
 
@@ -1730,15 +1914,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
 
-            List<String> packNames = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_IconPack_entries)));
-            List<Integer> packIcons = new ArrayList<>();
-            packIcons.add(R.drawable.ic_pack00_m1);
-            packIcons.add(R.drawable.ic_pack00_f1);
-            packIcons.add(R.drawable.ic_pack01_f2);
-            packIcons.add(R.drawable.ic_pack02_f2);
-            packIcons.add(R.drawable.ic_pack03_f3);
+            List<String> packEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_IconPack_entries)));
+            List<String> packValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_IconPack_values)));
+            List<Integer> packIcons = getResourceList(this, R.array.pref_IconPack_photos);
 
-            ListAdapter adapter = new ImageSelectAdapter(this, packNames, packIcons, ImageSelectAdapter.Scale.ONE_THIRD, ta);
+            ListAdapter adapter = new ImageSelectAdapter(this, packEntries, packIcons, ImageSelectAdapter.Scale.ONE_THIRD, ta);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setTitle(R.string.pref_IconPack_title)
@@ -1758,6 +1938,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 eventsData.savePreferences();
                 eventsData.initIconPack();
                 alertToShow.dismiss();
+
+                String value = packEntries.get(packValues.indexOf(packIds.get(position)));
+                @DrawableRes int drawable = packIcons.get(packValues.indexOf(packIds.get(position)));
+                updateSummary(R.string.pref_IconPack_key, value, getString(R.string.pref_IconPack_description) + summaryTemplate, 0, drawable);
             });
 
             alertToShow.setOnShowListener(arg0 -> {
@@ -3503,6 +3687,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    public static List<Integer> getResourceColorList(Context context, @ArrayRes int arrayResId) {
+        try (TypedArray ta = context.getResources().obtainTypedArray(arrayResId)) {
+            List<Integer> colors = new ArrayList<>();
+            for (int i = 0; i < ta.length(); i++) {
+                int color = ContextCompat.getColor(context, ta.getResourceId(i, android.R.color.black));
+                colors.add(color);
+            }
+            return colors;
+        }
+    }
+
+    public static List<Integer> getResourceList(Context context, @ArrayRes int arrayResId) {
+        try (TypedArray ta = context.getResources().obtainTypedArray(arrayResId)) {
+            List<Integer> res = new ArrayList<>();
+            for (int i = 0; i < ta.length(); i++) {
+                res.add(ta.getResourceId(i, 0));
+            }
+            return res;
         }
     }
 

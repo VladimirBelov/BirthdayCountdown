@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.06.2025, 01:34
+  ~  * Created by Vladimir Belov on 06.10.2025, 03:14
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.06.2025, 23:15
+  ~  * Last modified 05.10.2025, 21:09
   ~  */
   -->
 
@@ -31,6 +31,7 @@
         <attr name="gradientCenterColor" format="color"/>
         <attr name="borderCardColor" format="color"/>
         <attr name="colorPrimary" format="color"/>
+        <attr name="colorAccent" format="color"/>
         <attr name="editTextBackgroundCustom" format="color"/>
     </declare-styleable>
 
