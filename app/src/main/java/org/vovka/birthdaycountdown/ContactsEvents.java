@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.10.2025, 02:32
+ *  * Created by Vladimir Belov on 07.10.2025, 01:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.10.2025, 02:20
+ *  * Last modified 07.10.2025, 01:01
  *
  */
 
@@ -400,7 +400,7 @@ public class ContactsEvents {
     final private Set<String> preferences_favoriteEvents_ids = new HashSet<>();
     final private Set<String> preferences_favoriteEventsRawIds = new HashSet<>();
     final private Set<String> preferences_favoriteEventsRawIds_ids = new HashSet<>();
-    final private Set<String> preferences_Accounts = new HashSet<>();
+    final Set<String> preferences_Accounts = new HashSet<>();
     Set<String> preferences_BirthDay_calendars = new HashSet<>();
     Set<String> preferences_OtherEvent_calendars = new HashSet<>();
     Set<String> preferences_HolidayEvent_calendars = new HashSet<>();
@@ -10506,7 +10506,7 @@ public class ContactsEvents {
 
     }
 
-    private String replaceCalendarIDtoTitle(Set<String> setIDs, HashMap<String, String> mapTitles){
+    String replaceCalendarIDtoTitle(Set<String> setIDs, HashMap<String, String> mapTitles){
 
         StringBuilder sb = new StringBuilder();
         try {

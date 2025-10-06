@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.10.2025, 03:14
+ *  * Created by Vladimir Belov on 07.10.2025, 01:24
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 06.10.2025, 02:54
+ *  * Last modified 07.10.2025, 01:23
  *
  */
 
@@ -41,7 +41,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.InsetDrawable;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -135,7 +134,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private int runningQueue = 0;
     boolean skipSharedPreferenceChangedEvent = false;
     private Insets statusBarInsets;
-    private final String summaryTemplate = ":\n";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -525,13 +523,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (pref != null) {
                 List<String> langEntries = Arrays.asList(getResources().getStringArray(R.array.pref_Language_entries));
                 List<String> langValues = Arrays.asList(getResources().getStringArray(R.array.pref_Language_values));
-                /*pref.setOnPreferenceChangeListener((preference, newValue) -> {
-                    String value = langEntries.get(langValues.indexOf(newValue.toString()));
-                    return updateSummary(R.string.pref_Language_key, value, getString(R.string.pref_Language_description) + summaryTemplate, 0 ,0);
-                });*/
                 String currentValue = preferences.getString(getString(R.string.pref_Language_key), getString(R.string.pref_Language_default));
                 String value = langEntries.get(langValues.indexOf(currentValue));
-                updateSummary(R.string.pref_Language_key, value, getString(R.string.pref_Language_description) + summaryTemplate, 0, 0);
+                updateSummary(R.string.pref_Language_key, value, getString(R.string.pref_Language_description), 0, 0);
             }
 
             //Тема
@@ -540,15 +534,28 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 List<String> themeEntries = Arrays.asList(getResources().getStringArray(R.array.pref_Theme_entries));
                 List<String> themeValues = Arrays.asList(getResources().getStringArray(R.array.pref_Theme_values));
                 List<Integer> themeColors = getResourceColorList(this, R.array.pref_Theme_colors);
-                /*pref.setOnPreferenceChangeListener((preference, newValue) -> {
-                    String value = themeEntries.get(themeValues.indexOf(newValue.toString()));
-                    @ColorInt int color = themeColors.get(themeValues.indexOf(newValue.toString()));
-                    return updateSummary(R.string.pref_Theme_key, value, getString(R.string.pref_Theme_description) + summaryTemplate, color, 0);
-                });*/
                 String currentValue = preferences.getString(getString(R.string.pref_Theme_key), getString(R.string.pref_Theme_default));
-                String value = themeEntries.get(themeValues.indexOf(currentValue));
-                @ColorInt int color = themeColors.get(themeValues.indexOf(currentValue));
-                updateSummary(R.string.pref_Theme_key, value, getString(R.string.pref_Theme_description) + summaryTemplate, color, 0);
+                int index = themeValues.indexOf(currentValue);
+                if (index > -1) {
+                    String value = themeEntries.get(index);
+                    @ColorInt int color = themeColors.get(index);
+                    updateSummary(R.string.pref_Theme_key, value, getString(R.string.pref_Theme_description), color, 0);
+                }
+            }
+
+            //Иконка приложения
+            pref = findPreference(getString(R.string.pref_Icon_key));
+            if (pref != null) {
+                List<String> iconEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Icon_entries)));
+                List<String> iconValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Icon_values)));
+                List<Integer> icons = getResourceList(this, R.array.pref_Icon_photos);
+                String currentValue = preferences.getString(getString(R.string.pref_Icon_key), getString(R.string.pref_Icon_default));
+                int index = iconValues.indexOf(currentValue);
+                if (index > - 1) {
+                    String value = iconEntries.get(index);
+                    @DrawableRes int drawable = icons.get(index);
+                    updateSummary(R.string.pref_Icon_key, value, getString(R.string.pref_Icon_description), 0, drawable);
+                }
             }
 
             //Набор иконок
@@ -557,15 +564,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 List<String> packEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_IconPack_entries)));
                 List<String> packValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_IconPack_values)));
                 List<Integer> packIcons = getResourceList(this, R.array.pref_IconPack_photos);
-                /*pref.setOnPreferenceChangeListener((preference, newValue) -> {
-                    String value = packEntries.get(packValues.indexOf(newValue.toString()));
-                    @DrawableRes int drawable = packIcons.get(packValues.indexOf(newValue.toString()));
-                    return updateSummary(R.string.pref_IconPack_key, value, getString(R.string.pref_IconPack_description) + summaryTemplate, 0, drawable);
-                });*/
                 int currentValue = preferences.getInt(getString(R.string.pref_IconPack_key), 0);
-                String value = packEntries.get(packValues.indexOf(String.valueOf(currentValue)));
-                @DrawableRes int drawable = packIcons.get(packValues.indexOf(String.valueOf(currentValue)));
-                updateSummary(R.string.pref_IconPack_key, value, getString(R.string.pref_IconPack_description) + summaryTemplate, 0, drawable);
+                int index = packValues.indexOf(String.valueOf(currentValue));
+                if (index > - 1) {
+                    String value = packEntries.get(index);
+                    @DrawableRes int drawable = packIcons.get(index);
+                    updateSummary(R.string.pref_IconPack_key, value, getString(R.string.pref_IconPack_description), 0, drawable);
+                }
             }
 
             //Формат имени
@@ -589,11 +594,54 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 List<String> dateFormatValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_DateFormat_values)));
                 pref.setOnPreferenceChangeListener((preference, newValue) -> {
                     String value = dateFormatEntries.get(dateFormatValues.indexOf(newValue.toString()));
-                    return updateSummary(R.string.pref_List_DateFormat_key, value, getString(R.string.pref_List_DateFormat_description) + summaryTemplate, 0, 0);
+                    return updateSummary(R.string.pref_List_DateFormat_key, value, getString(R.string.pref_List_DateFormat_description), 0, 0);
                 });
                 String currentValue = preferences.getString(getString(R.string.pref_List_DateFormat_key), getString(R.string.pref_List_DateFormat_default));
                 String value = dateFormatEntries.get(dateFormatValues.indexOf(currentValue));
-                updateSummary(R.string.pref_List_DateFormat_key, value, getString(R.string.pref_List_DateFormat_description) + summaryTemplate, 0, 0);
+                updateSummary(R.string.pref_List_DateFormat_key, value, getString(R.string.pref_List_DateFormat_description), 0, 0);
+            }
+
+            //Источники событий. Аккаунты контактов
+            pref = findPreference(getString(R.string.pref_Accounts_key));
+            if (pref != null) {
+                String value = eventsData.preferences_Accounts.isEmpty() ? getString(R.string.msg_all) :
+                        eventsData.preferences_Accounts.contains(Constants.account_none) ? getString(R.string.msg_none) :
+                                String.join(Constants.STRING_EOL, eventsData.preferences_Accounts);
+                updateSummary(R.string.pref_Accounts_key, value, getString(R.string.pref_Accounts_summary), 0, 0);
+            }
+
+            //Источники событий. Календари
+            pref = findPreference(getString(R.string.pref_CustomEvents_MultiType_Calendars_key));
+            if (pref != null) {
+                StringBuilder value = new StringBuilder();
+                if (eventsData.preferences_MultiType_calendars.isEmpty()) {
+                    value.append(getString(R.string.msg_none));
+                } else {
+                    if (eventsData.map_calendars.isEmpty()) eventsData.fillCalendarList();
+
+                    for(String id: eventsData.preferences_MultiType_calendars){
+                        String calData = eventsData.map_calendars.get(id);
+                        if (calData != null) {
+                            if (value.length() > 0) value.append(Constants.STRING_EOL);
+                            String[] calInfo = ContactsEvents.getKeyParts(calData);
+                            value.append(calInfo[0]);
+                        } else value.append(id);
+                    }
+                }
+                updateSummary(R.string.pref_CustomEvents_MultiType_Calendars_key, value.toString(), getString(R.string.pref_CustomEvents_Calendars_summary), 0, 0);
+            }
+
+            //Источники событий. Файлы
+            pref = findPreference(getString(R.string.pref_CustomEvents_MultiType_LocalFiles_key));
+            if (pref != null) {
+                StringBuilder value = new StringBuilder(eventsData.preferences_MultiType_files.isEmpty() ? getString(R.string.msg_none) : Constants.STRING_EMPTY);
+                for (String file: eventsData.preferences_MultiType_files) {
+                    String filePath = ContactsEvents.substringBefore(file, Constants.STRING_BAR);
+                    int indexFilename = filePath.lastIndexOf(Constants.STRING_SLASH);
+                    if (value.length() != 0) value.append(Constants.STRING_EOL);
+                    value.append(indexFilename > -1 ? filePath.substring(indexFilename + 1) : filePath);
+                }
+                updateSummary(R.string.pref_CustomEvents_MultiType_LocalFiles_key, value.toString(), getString(R.string.pref_CustomEvents_LocalFiles_summary), 0, 0);
             }
 
         } catch (Exception e) {
@@ -609,7 +657,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Preference pref = findPreference(getString(prefKey));
             if (pref == null) return false;
             String newValue = value.toString();
-            String textBeforeValue = template + (colorCircle != 0 ? "@ " : drawable != 0 ? "@" : "");
+            String textBeforeValue = template;
+            if (!newValue.isEmpty() || colorCircle != 0 || drawable != 0) textBeforeValue += ":\n";
+            if (colorCircle != 0 || drawable != 0) textBeforeValue += "@ ";
             String fullText = textBeforeValue + newValue;
 
             SpannableString spannable = new SpannableString(fullText);
@@ -649,36 +699,50 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 Drawable icon = ContextCompat.getDrawable(this, drawable);
                 if (icon != null) {
-                    int targetSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics());
+                    // 1. Конвертируем в Bitmap
+                    Bitmap original = drawableToBitmap(icon);
 
-                    // Получаем исходные размеры
-                    int intrinsicW = icon.getIntrinsicWidth();
-                    int intrinsicH = icon.getIntrinsicHeight();
+                    Bitmap finalBitmap;
 
-                    if (intrinsicW <= 0) intrinsicW = targetSize;
-                    if (intrinsicH <= 0) intrinsicH = targetSize;
+                    // 2. Проверяем, квадратный ли исходник
+                    if (original.getWidth() == original.getHeight()) {
+                        // Квадратный — используем как есть
+                        finalBitmap = original;
+                    } else {
+                        // Не квадратный — обрезаем по 1/3 слева и справа
+                        int cut = original.getWidth() / 3;
+                        int newWidth = original.getWidth() - 2 * cut;
+                        int newHeight = original.getHeight();
 
-                    // Масштабируем с сохранением пропорций
-                    float scale = Math.min((float) targetSize / intrinsicW, (float) targetSize / intrinsicH);
-                    int scaledW = (int) (intrinsicW * scale);
-                    int scaledH = (int) (intrinsicH * scale);
+                        // Защита от некорректных размеров
+                        if (newWidth <= 0 || newHeight <= 0) {
+                            // На всякий случай — используем оригинал
+                            finalBitmap = original;
+                        } else {
+                            finalBitmap = Bitmap.createBitmap(original, cut, 0, newWidth, newHeight);
+                        }
+                    }
 
-                    // Центрируем в квадрате
-                    int leftInset = (targetSize - scaledW) / 2;
-                    int topInset = (targetSize - scaledH) / 2;
+                    // 3. Масштабируем с сохранением пропорций до targetSize
+                    int targetSizePx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, getResources().getDisplayMetrics());
+                    float scale = Math.min((float) targetSizePx / finalBitmap.getWidth(), (float) targetSizePx / finalBitmap.getHeight());
+                    int scaledWidth = (int) (finalBitmap.getWidth() * scale);
+                    int scaledHeight = (int) (finalBitmap.getHeight() * scale);
+                    Bitmap scaled = Bitmap.createScaledBitmap(finalBitmap, scaledWidth, scaledHeight, true);
 
-                    // Устанавливаем bounds у оригинальной иконки
-                    icon.setBounds(0, 0, scaledW, scaledH);
+                    // 4. Создаём Drawable и устанавливаем bounds
+                    BitmapDrawable drawableForSpan = new BitmapDrawable(getResources(), scaled);
+                    drawableForSpan.setBounds(0, 0, scaledWidth, scaledHeight);
 
-                    // Оборачиваем в InsetDrawable для центрирования
-                    InsetDrawable insetDrawable = new InsetDrawable(icon, leftInset, topInset, leftInset, topInset);
-                    insetDrawable.setBounds(0, 0, targetSize, targetSize);
-
-                    spannable.setSpan(
-                            new ImageSpan(insetDrawable, ImageSpan.ALIGN_BOTTOM),
-                            fullText.indexOf("@"), fullText.indexOf("@") + 1,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    );
+                    // 5. Вставляем в Spannable
+                    int pos = fullText.indexOf("@");
+                    if (pos >= 0) {
+                        spannable.setSpan(
+                                new ImageSpan(drawableForSpan, ImageSpan.ALIGN_CENTER),
+                                pos, pos + 1,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                        );
+                    }
                 }
 
             }
@@ -692,6 +756,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
+    }
+
+    static Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        int width = drawable.getIntrinsicWidth() <= 0 ? 1 : drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight() <= 0 ? 1 : drawable.getIntrinsicHeight();
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     void hidePreference(boolean condition, @StringRes int parentId, @StringRes int resId) {
@@ -1801,6 +1880,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             eventsData.setPreferences_Accounts(checkedAccounts);
                             eventsData.savePreferences();
 
+                            String value = eventsData.preferences_Accounts.isEmpty() ? getString(R.string.msg_all) :
+                                    eventsData.preferences_Accounts.contains(Constants.account_none) ? getString(R.string.msg_none) :
+                                            String.join(Constants.STRING_EOL, eventsData.preferences_Accounts);
+                            updateSummary(R.string.pref_Accounts_key, value, getString(R.string.pref_Accounts_summary), 0, 0);
+
                         })
                         .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                         .setNeutralButton(getString(R.string.button_all) + Constants.STRING_BRACKETS_OPEN
@@ -1808,6 +1892,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 + Constants.STRING_BRACKETS_CLOSE, (dialog, which) -> {
                             eventsData.setPreferences_Accounts(new HashSet<>());
                             eventsData.savePreferences();
+
+                            String value = eventsData.preferences_Accounts.isEmpty() ? getString(R.string.msg_all) :
+                                    eventsData.preferences_Accounts.contains(Constants.account_none) ? getString(R.string.msg_none) :
+                                            String.join(Constants.STRING_EOL, eventsData.preferences_Accounts);
+                            updateSummary(R.string.pref_Accounts_key, value, getString(R.string.pref_Accounts_summary), 0, 0);
                         })
                         .setCancelable(true);
 
@@ -1941,7 +2030,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 String value = packEntries.get(packValues.indexOf(packIds.get(position)));
                 @DrawableRes int drawable = packIcons.get(packValues.indexOf(packIds.get(position)));
-                updateSummary(R.string.pref_IconPack_key, value, getString(R.string.pref_IconPack_description) + summaryTemplate, 0, drawable);
+                updateSummary(R.string.pref_IconPack_key, value, getString(R.string.pref_IconPack_description), 0, drawable);
             });
 
             alertToShow.setOnShowListener(arg0 -> {
@@ -1963,13 +2052,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         try {
             List<String> iconNames = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Icon_entries)));
             List<String> iconIDs = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Icon_values)));
-            List<Integer> iconImages = new ArrayList<>();
-            iconImages.add(R.mipmap.ic_launcher_spring_round);
-            iconImages.add(R.mipmap.ic_launcher_summer_round);
-            iconImages.add(R.mipmap.ic_launcher_autumn_round);
-            iconImages.add(R.mipmap.ic_launcher_winter_round);
-            iconImages.add(R.mipmap.ic_launcher_grey_round);
-            iconImages.add(R.mipmap.ic_launcher_black_round);
+            List<Integer> iconImages = getResourceList(this, R.array.pref_Icon_photos);
 
             ListAdapter adapter = new ImageSelectAdapter(this, iconNames, iconImages, ImageSelectAdapter.Scale.SQUARED, ta);
 
@@ -2071,6 +2154,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         eventsData.clearDaysTypesAndInfo();
 
                         dialog.cancel();
+
+                        if (eventType.equals(Constants.Type_MultiEvent)) {
+                            StringBuilder value = new StringBuilder();
+                            if (eventsData.preferences_MultiType_calendars.isEmpty()) {
+                                value.append(getString(R.string.msg_none));
+                            } else {
+                                for(String id: eventsData.preferences_MultiType_calendars){
+                                    String calData = eventsData.map_calendars.get(id);
+                                    if (calData != null) {
+                                        if (value.length() > 0) value.append(Constants.STRING_EOL);
+                                        String[] calInfo = ContactsEvents.getKeyParts(calData);
+                                        value.append(calInfo[0]);
+                                    } else value.append(id);
+                                }
+                            }
+                            updateSummary(R.string.pref_CustomEvents_MultiType_Calendars_key, value.toString(), getString(R.string.pref_CustomEvents_Calendars_summary), 0, 0);
+                        }
                     })
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                     .setCancelable(true);
@@ -2271,6 +2371,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         eventsData.clearDaysTypesAndInfo();
 
                         dialog.cancel();
+
+                        if (eventType.equals(Constants.Type_MultiEvent)) {
+                            StringBuilder value = new StringBuilder(toStore.isEmpty() ? getString(R.string.msg_none) : Constants.STRING_EMPTY);
+                            for (String f: toStore) {
+                                String filePath = ContactsEvents.substringBefore(f, Constants.STRING_BAR);
+                                int indexFilename = filePath.lastIndexOf(Constants.STRING_SLASH);
+                                if (value.length() != 0) value.append(Constants.STRING_EOL);
+                                value.append(indexFilename > -1 ? filePath.substring(indexFilename + 1) : filePath);
+                            }
+                            updateSummary(R.string.pref_CustomEvents_MultiType_LocalFiles_key, value.toString(), getString(R.string.pref_CustomEvents_LocalFiles_summary), 0, 0);
+
+                        }
                     })
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                     .setNeutralButton(R.string.button_choose, (dialog, which) -> {
@@ -3615,8 +3727,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 String filename = eventsData.getPath(this, uri);
                                 if (!filename.isEmpty()) {
                                     try {
-                                        this.grantUriPermission(this.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                                        this.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                        this.grantUriPermission(this.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION | android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                                        this.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                                         filesList.add(filename.concat(Constants.STRING_BAR).concat(uri.toString()));
                                         selectFiles(this.eventTypeForSelect);
                                     } catch (Exception e) {

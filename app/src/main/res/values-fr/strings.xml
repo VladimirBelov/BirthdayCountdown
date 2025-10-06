@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.09.2025, 23:01
+  ~  * Created by Vladimir Belov on 07.10.2025, 01:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.09.2025, 22:50
+  ~  * Last modified 06.10.2025, 20:18
   ~  */
   -->
 
@@ -585,8 +585,8 @@
     <string name="pref_List_NameFormat_description">Prénom ou nom au début</string>
 
     <string-array name="pref_List_NameFormat_entries">
-        <item>Prénom Patronyme Nom</item>
-        <item>Nom Prénom Patronyme</item>
+        <item>Prénom Patronyme</item>
+        <item>Patronyme Prénom</item>
     </string-array>
 
     <string name="pref_List_DateFormat_title">Format de date</string>

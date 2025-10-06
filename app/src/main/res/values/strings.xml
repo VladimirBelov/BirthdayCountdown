@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 06.10.2025, 03:14
+  ~  * Created by Vladimir Belov on 07.10.2025, 01:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.10.2025, 01:51
+  ~  * Last modified 06.10.2025, 23:12
   ~  */
   -->
 
@@ -1584,6 +1584,15 @@ Long click on item to select color"</string>
         <item>@string/pref_Icon_Grey</item>
         <item>@string/pref_Icon_Black</item>
     </string-array>
+
+    <array name="pref_Icon_photos">
+        <item>@mipmap/ic_launcher_spring_round</item>
+        <item>@mipmap/ic_launcher_summer_round</item>
+        <item>@mipmap/ic_launcher_autumn_round</item>
+        <item>@mipmap/ic_launcher_winter_round</item>
+        <item>@mipmap/ic_launcher_grey_round</item>
+        <item>@mipmap/ic_launcher_black_round</item>
+    </array>
 
     <string name="pref_Theme_key" translatable="false">Theme</string>
     <string-array name="pref_Theme_values" translatable="false">

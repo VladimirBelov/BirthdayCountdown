@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 06.10.2025, 03:14
+  ~  * Created by Vladimir Belov on 07.10.2025, 01:24
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.10.2025, 03:09
+  ~  * Last modified 06.10.2025, 23:15
   ~  */
   -->
 
@@ -22,7 +22,6 @@
         android:title="@string/pref_Common_title"
         android:layout="@layout/settings_category_with_divider">
 
-        <!-- todo: добавить другие языки https://crowdin.com/ -->
         <org.vovka.birthdaycountdown.CustomListPreference
             android:key="@string/pref_Language_key"
             android:defaultValue="@string/pref_Language_default"
