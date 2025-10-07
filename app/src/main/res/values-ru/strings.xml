@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.10.2025, 02:32
+  ~  * Created by Vladimir Belov on 08.10.2025, 00:21
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 03.10.2025, 01:42
+  ~  * Last modified 07.10.2025, 23:54
   ~  */
   -->
 
@@ -112,6 +112,7 @@
     <string name="msg_errors_details">"аккаунт=%1$s, тип события=%2$s, дата=%3$s"</string>
     <string name="msg_all">Все</string>
     <string name="msg_none">Никакие</string>
+    <string name="msg_not_selected">Не выбрано</string>
     <string name="msg_version">"Установлена версия: %s"</string>
     <string name="msg_error_get_event_image">Ошибка получения изображения события</string>
     <string name="msg_event_color_selected">"Выбран цвет #%1$s для %2$s"</string>
@@ -362,7 +363,7 @@
     </string-array>
 
     <string name="pref_LocalEvents_Size_title">Размер фото в локальных событиях</string>
-    <string name="pref_LocalEvents_Size_summary">"Текущее значение: %s пикселей"</string>
+    <string name="pref_LocalEvents_Size_summary">"%s пикселей"</string>
     <string name="pref_LocalEvents_Size_dialogTitle">Установите размер</string>
 
     <string name="pref_CustomEvents_title">Настройка событий</string>

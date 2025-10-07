@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.10.2025, 01:24
+  ~  * Created by Vladimir Belov on 08.10.2025, 00:21
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.10.2025, 23:15
+  ~  * Last modified 07.10.2025, 23:28
   ~  */
   -->
 
@@ -353,7 +353,7 @@
                     android:dialogIcon="@android:drawable/ic_menu_edit"
                     android:negativeButtonText="@string/button_cancel"/>
 
-                <ListPreference
+                <org.vovka.birthdaycountdown.CustomListPreference
                     android:key="@string/pref_List_SadPhoto_key"
                     android:defaultValue="@string/pref_List_SadPhoto_default"
                     android:entries="@array/pref_List_SadPhoto_entries"

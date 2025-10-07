@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.10.2025, 01:24
+  ~  * Created by Vladimir Belov on 08.10.2025, 00:21
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.10.2025, 23:12
+  ~  * Last modified 07.10.2025, 23:57
   ~  */
   -->
 
@@ -112,6 +112,7 @@
     <string name="msg_errors_details">"accountKey=%1$s, eventType=%2$s, eventDate=%3$s"</string>
     <string name="msg_all">All</string>
     <string name="msg_none">None</string>
+    <string name="msg_not_selected">Not selected</string>
     <string name="msg_version">"Set version: %s"</string>
     <string name="msg_error_get_event_image">Error getting event image</string>
     <string name="msg_event_color_selected">"Selected color #%1$s for %2$s"</string>
@@ -362,7 +363,7 @@
     </string-array>
 
     <string name="pref_LocalEvents_Size_title">Photo size in local events</string>
-    <string name="pref_LocalEvents_Size_summary">"Current value: %s pixels"</string>
+    <string name="pref_LocalEvents_Size_summary">"%s pixels"</string>
     <string name="pref_LocalEvents_Size_dialogTitle">Set size</string>
 
     <string name="pref_CustomEvents_title">Events setup</string>

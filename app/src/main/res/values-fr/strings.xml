@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.10.2025, 01:24
+  ~  * Created by Vladimir Belov on 08.10.2025, 00:21
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.10.2025, 20:18
+  ~  * Last modified 07.10.2025, 23:57
   ~  */
   -->
 
@@ -362,7 +362,7 @@
     </string-array>
 
     <string name="pref_LocalEvents_Size_title">Taille de la photo dans les événements locaux</string>
-    <string name="pref_LocalEvents_Size_summary">Valeur actuelle: %s pixels</string>
+    <string name="pref_LocalEvents_Size_summary">"%s pixels"</string>
     <string name="pref_LocalEvents_Size_dialogTitle">Définir la taille</string>
 
     <string name="pref_CustomEvents_title">Configuration des événements</string>

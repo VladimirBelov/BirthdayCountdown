@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.06.2025, 01:34
+ *  * Created by Vladimir Belov on 08.10.2025, 00:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.06.2025, 01:30
+ *  * Last modified 07.10.2025, 23:54
  *
  */
 
@@ -10,7 +10,12 @@ package org.vovka.birthdaycountdown;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.preference.DialogPreference;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.SeekBar;
@@ -185,16 +190,27 @@ public class SeekBarPreference extends DialogPreference {
      * Вспомогательный метод для обновления сводки
      */
     private void updateSummary(int value) {
+        String summary;
         if (mSummaryTemplate != null && mSummaryTemplate.contains("%s")) {
             // Если шаблон содержит %s, форматируем его
-            setSummary(String.format(mSummaryTemplate, value));
+            summary = String.format(mSummaryTemplate, value);
         } else if (mSummaryTemplate != null) {
             // Если шаблон есть, но без %s, просто используем его
-            setSummary(mSummaryTemplate);
+            summary = mSummaryTemplate;
         } else {
             // Если шаблона нет, можем установить просто числовое значение или оставить пустым
-            setSummary(String.valueOf(value));
+            summary = String.valueOf(value);
         }
+        ContactsEvents eventsData = ContactsEvents.getInstance();
+        SpannableString spannable = new SpannableString(summary);
+        if (eventsData.preferences_extrafun) {
+            spannable.setSpan(new StyleSpan(Typeface.BOLD), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            try (TypedArray ta = eventsData.getContext().getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                spannable.setSpan(new ForegroundColorSpan(ta.getColor(R.styleable.Theme_colorAccent, 0)), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+
+        setSummary(spannable);
     }
 
     // Метод для установки значения программно (если нужно)
