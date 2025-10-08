@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.10.2025, 00:21
+ *  * Created by Vladimir Belov on 08.10.2025, 22:31
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 07.10.2025, 23:54
+ *  * Last modified 08.10.2025, 22:22
  *
  */
 
@@ -538,16 +538,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
 
             //Иконка приложения
-            List<String> iconEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Icon_entries)));
-            List<String> iconValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Icon_values)));
-            List<Integer> icons = getResourceList(this, R.array.pref_Icon_photos);
-            currentValue = preferences.getString(getString(R.string.pref_Icon_key), getString(R.string.pref_Icon_default));
-            index = iconValues.indexOf(currentValue);
-            if (index > - 1) {
-                value = iconEntries.get(index);
-                @DrawableRes int drawable = icons.get(index);
-                updateSummary(R.string.pref_Icon_key, value, getString(R.string.pref_Icon_description), 0, drawable);
-            }
+            setSummaryForIcon();
 
             //Набор иконок
             List<String> packEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_IconPack_entries)));
@@ -589,10 +580,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
 
             //Источники событий. Аккаунты контактов
-            value = eventsData.preferences_Accounts.isEmpty() ? getString(R.string.msg_all) :
-                    eventsData.preferences_Accounts.contains(Constants.account_none) ? getString(R.string.msg_none) :
-                            String.join(Constants.STRING_EOL, eventsData.preferences_Accounts);
-            updateSummary(R.string.pref_Accounts_key, value, getString(R.string.pref_Accounts_summary), 0, 0);
+            setSummaryForAccounts();
 
             //Календари
             setSummaryForCalendars(Constants.Type_MultiEvent);
@@ -619,6 +607,39 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 value = sadPhotoEntries.get(sadPhotoValues.indexOf(currentValue));
                 updateSummary(R.string.pref_List_SadPhoto_key, value, getString(R.string.pref_List_SadPhoto_summary), 0, 0);
             }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void setSummaryForAccounts() {
+
+        try {
+
+            String value;
+            if (eventsData.preferences_Accounts.isEmpty()) {
+                value = getString(R.string.msg_all);
+            } else if(eventsData.preferences_Accounts.contains(Constants.account_none)) {
+                value = getString(R.string.msg_none);
+            } else {
+                StringBuilder result = new StringBuilder();
+                boolean first = true;
+
+                for (String account : eventsData.preferences_Accounts) {
+                    int indexParen = account.indexOf(Constants.STRING_PARENTHESIS_OPEN);
+                    String name = account;
+                    if (indexParen != -1) {
+                        name = account.substring(0, indexParen);
+                    }
+                    if (!first) result.append(Constants.STRING_EOL);
+                    first = false;
+                    result.append(name);
+                }
+                value = result.toString();
+            }
+            updateSummary(R.string.pref_Accounts_key, value, getString(R.string.pref_Accounts_summary), 0, 0);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -713,6 +734,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void setSummaryForIcon() {
+        List<String> iconEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Icon_entries)));
+        List<String> iconValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Icon_values)));
+        List<Integer> icons = getResourceList(this, R.array.pref_Icon_photos);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String currentValue = preferences.getString(getString(R.string.pref_Icon_key), getString(R.string.pref_Icon_default));
+        int index = iconValues.indexOf(currentValue);
+        if (index > - 1) {
+            String value = iconEntries.get(index);
+            @DrawableRes int drawable = icons.get(index);
+            updateSummary(R.string.pref_Icon_key, value, getString(R.string.pref_Icon_description), 0, drawable);
         }
     }
 
@@ -1945,11 +1980,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             eventsData.setPreferences_Accounts(checkedAccounts);
                             eventsData.savePreferences();
 
-                            String value = eventsData.preferences_Accounts.isEmpty() ? getString(R.string.msg_all) :
-                                    eventsData.preferences_Accounts.contains(Constants.account_none) ? getString(R.string.msg_none) :
-                                            String.join(Constants.STRING_EOL, eventsData.preferences_Accounts);
-                            updateSummary(R.string.pref_Accounts_key, value, getString(R.string.pref_Accounts_summary), 0, 0);
-
+                            setSummaryForAccounts();
                         })
                         .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                         .setNeutralButton(getString(R.string.button_all) + Constants.STRING_BRACKETS_OPEN
@@ -2138,6 +2169,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 eventsData.savePreferences();
                 alertToShow.dismiss();
                 eventsData.setAppIcon();
+                setSummaryForIcon();
             });
 
             alertToShow.setOnShowListener(arg0 -> {

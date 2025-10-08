@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.10.2025, 00:44
+ *  * Created by Vladimir Belov on 08.10.2025, 22:31
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 01.10.2025, 02:04
+ *  * Last modified 08.10.2025, 21:45
  *
  */
 
@@ -145,6 +145,7 @@ public class LocalEventActivity extends Activity {
         AtomicBoolean useYear = new AtomicBoolean(true);
         AtomicBoolean isBC = new AtomicBoolean(false);
 
+        @SuppressLint("InflateParams")
         @Nullable
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -197,10 +198,12 @@ public class LocalEventActivity extends Activity {
                     if (useYear.get()) {
                         spinnerYear.setVisibility(View.VISIBLE);
                         checkUseYear.setChecked(true);
+                        checkIsBC.setVisibility(View.VISIBLE);
                     } else {
                         spinnerYear.setVisibility(View.GONE);
                         checkUseYear.setChecked(false);
                         yearBeforeHide.set(today.get(Calendar.YEAR));
+                        checkIsBC.setVisibility(View.GONE);
                     }
                 }
                 checkIsBC.setChecked(isBC.get());
@@ -218,6 +221,7 @@ public class LocalEventActivity extends Activity {
                         useYear.set(false);
                         datePicker.updateDate(today.get(Calendar.YEAR), datePicker.getMonth(), datePicker.getDayOfMonth());
                         spinnerYear.setVisibility(View.GONE);
+                        isBC.set(false);
                         checkIsBC.setVisibility(View.GONE);
                     }
                 });
@@ -250,7 +254,7 @@ public class LocalEventActivity extends Activity {
             selectedYear.set(year);
             selectedMonth.set(monthOfYear);
             selectedDay.set(dayOfMonth);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //Почему-то на младших android не обновляет view
                 TextView textWeekDay = viewActivity.findViewById(R.id.week_day);
                 textWeekDay.setVisibility(View.VISIBLE);
                 SimpleDateFormat sdf = new SimpleDateFormat("EEEE", Locale.getDefault());
@@ -832,15 +836,20 @@ public class LocalEventActivity extends Activity {
             eventIsBC = isBC;
             String dateFormated;
 
+            Date date = new Date(eventYear - 1900, eventMonth, eventDay);
             if (eventUseYear) {
+                SimpleDateFormat sdf = new SimpleDateFormat(" (EEE)", Locale.getDefault());
+
                 dateFormated = eventsData.getDateFormatted(
-                        ContactsEvents.sdf_DDMMYYYY.format(new Date(eventYear - 1900, eventMonth, eventDay)), ContactsEvents.FormatDate.WithYear);
+                        ContactsEvents.sdf_DDMMYYYY.format(date), ContactsEvents.FormatDate.WithYear)
+                        + (eventIsBC ? eventsData.getResources().getString(R.string.msg_after_year_bc) : Constants.STRING_EMPTY)
+                        + ContactsEvents.toProperCase(sdf.format(date));
             } else {
                 dateFormated = eventsData.getDateFormatted(
-                        eventsData.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay)), ContactsEvents.FormatDate.WithoutYear);
+                        ContactsEvents.sdf_DDMM.format(date), ContactsEvents.FormatDate.WithoutYear);
             }
 
-            editDate.setText("📆 ".concat(dateFormated).concat(eventIsBC ? eventsData.getResources().getString(R.string.msg_after_year_bc) : Constants.STRING_EMPTY));
+            editDate.setText("📆 ".concat(dateFormated));
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1027,7 +1036,7 @@ public class LocalEventActivity extends Activity {
            if (eventUseYear) {
                eventDateString = ContactsEvents.sdf_DDMMYYYY.format(new Date(eventYear - 1900, eventMonth, eventDay));
            } else {
-               eventDateString = eventsData.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay));
+               eventDateString = ContactsEvents.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay));
            }
            eventData.put(ContactsEvents.Position_eventDateFirstTime,
                    eventDateString.concat(eventIsBC ? Constants.STRING_SPACE.concat(Constants.STRING_BC) : Constants.STRING_EMPTY));

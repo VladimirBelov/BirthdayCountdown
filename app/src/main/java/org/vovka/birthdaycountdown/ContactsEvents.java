@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.10.2025, 00:21
+ *  * Created by Vladimir Belov on 08.10.2025, 22:31
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.10.2025, 00:15
+ *  * Last modified 08.10.2025, 22:04
  *
  */
 
@@ -736,11 +736,9 @@ public class ContactsEvents {
     static class ZodiacHelper {
         private static final String TAG = "ZodiacHelper";
 
-        /**
-         * Получает символ знака зодиака по дате рождения.
-         *
-         * @param strBirthday Дата рождения в формате "ДД.ММ.ГГГГ" (например, "21.03.1990").
-         * @return Символ знака зодиака или пустая строка в случае ошибки или некорректной даты.
+        /** Получает символ знака зодиака по дате рождения
+         * @param strBirthday Дата рождения в формате "ДД.ММ.ГГГГ" или "ДД.ММ"
+         * @return Символ знака зодиака или пустая строка в случае ошибки или некорректной даты
          * <a href="https://habr.com/ru/post/397729/">НАСА объясняет, что положение «знаков зодиака» давно изменилось</a>
          * <a href="https://ru.astro-seek.com/vychislit-kitayskiy-goroskop/">Календарь по дате</a>
          * <a href="https://www.astronet.ru/db/msg/1196222">Таблица дат начала года по китайскому календарю</a>
@@ -748,11 +746,18 @@ public class ContactsEvents {
         @NonNull
         public static String getZodiacSign(@NonNull String strBirthday) {
             try {
-                if (strBirthday.length() != 10 || strBirthday.charAt(2) != '.' || strBirthday.charAt(5) != '.') {
+                char delimiter = Constants.STRING_PERIOD.charAt(0);
+                String strDate;
+                if (strBirthday.length() >= 10 && strBirthday.charAt(2) == delimiter && strBirthday.charAt(5) == delimiter) {
+                    strDate = strBirthday;
+                } else if (strBirthday.length() == 5 && strBirthday.charAt(2) == delimiter) {
+                    strDate = strBirthday.concat(Constants.STRING_PERIOD);
+                } else {
                     return Constants.STRING_EMPTY; //Некорректный формат даты
                 }
-                int eventDay = Integer.parseInt(strBirthday.substring(0, 2));
-                int eventMonth = Integer.parseInt(strBirthday.substring(3, 5));
+
+                int eventDay = Integer.parseInt(strDate.substring(0, 2));
+                int eventMonth = Integer.parseInt(strDate.substring(3, 5));
 
                 if (eventMonth > 12 || eventMonth < 1 || eventDay > 31 || eventDay < 1) {
                     return Constants.STRING_EMPTY; //Некорректные день или месяц
@@ -6341,6 +6346,7 @@ public class ContactsEvents {
 
                 if (eventDateFirstTime != null) {
                     age = countYearsDiff(eventDateFirstTime, eventDateThisTime); //Считаем, сколько будет лет
+                    if (!isAD) age--;
                     if (!TextUtils.isEmpty(contactID)) {
                         if (eventSubType.equals(getEventType(Constants.Type_BirthDay)) && !birthdayDatesForIds.containsKey(contactID)) {
                             birthdayDatesForIds.put(contactID, eventDateFirstTime);
@@ -11700,8 +11706,6 @@ public class ContactsEvents {
                 String packageName = context.getPackageName();
 
                 //Локальные события
-
-                //if (getLocalEventsCount() > 0) {
                 titles.add(
                         getResources().getString(R.string.msg_title_local_events)
                                 + Constants.STRING_BRACKETS_OPEN
@@ -11711,7 +11715,6 @@ public class ContactsEvents {
                 icons.add(android.R.drawable.ic_menu_add);
                 packages.add(packageName);
                 hashes.add(getHash(Constants.eventSourceLocalPrefix));
-                //}
 
                 //Справочники праздников и выходных
 
