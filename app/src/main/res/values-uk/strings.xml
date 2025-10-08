@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 00:21
+  ~  * Created by Vladimir Belov on 08.10.2025, 22:58
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 07.10.2025, 23:57
+  ~  * Last modified 08.10.2025, 22:55
   ~  */
   -->
 
@@ -112,6 +112,7 @@
     <string name="msg_errors_details">"акаунт=%1$s, тип події=%2$s, дата=%3$s"</string>
     <string name="msg_all">Всі</string>
     <string name="msg_none">Ніякі</string>
+    <string name="msg_not_selected">Не вибрано</string>
     <string name="msg_version">"Встановлено версію: %s"</string>
     <string name="msg_error_get_event_image">Помилка отримання зображення події</string>
     <string name="msg_event_color_selected">"Вибраний колір #%1$s для %2$s"</string>
@@ -719,8 +720,10 @@
     <string name="pref_EventInfo_ZodiacSign">Знак зодіаку</string>
     <string name="pref_EventInfo_ZodiacYear">Східний календар</string>
     <string name="pref_EventInfo_EventDate_Original">Оригінальна дата події</string>
+    <string name="pref_EventInfo_EventYear_Original">Рік початкової події</string>
     <string name="pref_EventInfo_EventDate_Original_WithYear">Оригінальна дата події з роком</string>
     <string name="pref_EventInfo_EventDate">Дата події</string>
+    <string name="pref_EventInfo_EventYear">Рік події</string>
     <string name="pref_EventInfo_EventDate_WithYear">Дата події з роком</string>
     <string name="pref_EventInfo_EventTitle">Заголовок події (ПІБ)</string>
     <string name="pref_EventInfo_Age_Full">Вік (повний формат)</string>
@@ -1332,6 +1335,8 @@
     <string name="facts_popup_empty">Блок фактів порожній</string>
 
     <string name="local_event_date_picker_use_year">Укажіть рік</string>
+    <string name="local_event_date_picker_week_day">День тижня: %1$s</string>
+    <string name="local_event_date_picker_bc">До Н.Е.</string>
     <string name="local_event_date_picker_title">Виберіть дату:</string>
     <string name="local_event_dialog_title_new_event">Додати нову подію</string>
     <string name="local_event_dialog_title_edit_event">Редагувати подію</string>

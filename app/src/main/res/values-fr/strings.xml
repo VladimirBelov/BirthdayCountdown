@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 00:21
+  ~  * Created by Vladimir Belov on 08.10.2025, 22:58
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 07.10.2025, 23:57
+  ~  * Last modified 08.10.2025, 22:56
   ~  */
   -->
 
@@ -112,6 +112,7 @@
     <string name="msg_errors_details">"accountKey=%1$s, eventType=%2$s, eventDate=%3$s"</string>
     <string name="msg_all">Tous</string>
     <string name="msg_none">Aucun</string>
+    <string name="msg_not_selected">Non sélectionné</string>
     <string name="msg_version">"Version installée: %s"</string>
     <string name="msg_error_get_event_image">"Erreur lors de l'obtention de l'image de l'événement"</string>
     <string name="msg_event_color_selected">"Couleur #%1$s sélectionnée pour %2$s"</string>
@@ -719,8 +720,10 @@
     <string name="pref_EventInfo_ZodiacSign">♊ Signe du zodiaque</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 Animal dans le calendrier oriental</string>
     <string name="pref_EventInfo_EventDate_Original">"Date de l'événement originale"</string>
+    <string name="pref_EventInfo_EventYear_Original">"Année de l'événement d'origine"</string>
     <string name="pref_EventInfo_EventDate_Original_WithYear">"Date de l'événement originale avec année"</string>
     <string name="pref_EventInfo_EventDate">"Date de l'événement"</string>
+    <string name="pref_EventInfo_EventYear">"Année de l'événement"</string>
     <string name="pref_EventInfo_EventDate_WithYear">"Date de l'événement avec année"</string>
     <string name="pref_EventInfo_EventTitle">"Titre de l'événement (Nom)"</string>
     <string name="pref_EventInfo_Age_Full">Âge (format complet)</string>
@@ -1334,6 +1337,8 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
     <string name="facts_popup_empty">Le pool de faits est vide</string>
 
     <string name="local_event_date_picker_use_year">"Indiquer l'année"</string>
+    <string name="local_event_date_picker_week_day">Jour de la semaine: %1$s</string>
+    <string name="local_event_date_picker_bc">BC</string>
     <string name="local_event_date_picker_title">Choisir la date:</string>
     <string name="local_event_dialog_title_new_event">Ajouter un nouvel événement</string>
     <string name="local_event_dialog_title_edit_event">"Modifier l'événement"</string>

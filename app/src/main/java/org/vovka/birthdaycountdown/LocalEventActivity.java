@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.10.2025, 22:31
+ *  * Created by Vladimir Belov on 08.10.2025, 22:57
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.10.2025, 21:45
+ *  * Last modified 08.10.2025, 22:37
  *
  */
 
@@ -139,11 +139,11 @@ public class LocalEventActivity extends Activity {
         private static final String TAG = "DatePicker";
         View viewActivity = null;
         View spinnerYear = null;
-        AtomicInteger selectedYear = new AtomicInteger();
-        AtomicInteger selectedMonth = new AtomicInteger();
-        AtomicInteger selectedDay = new AtomicInteger();
-        AtomicBoolean useYear = new AtomicBoolean(true);
-        AtomicBoolean isBC = new AtomicBoolean(false);
+        final AtomicInteger selectedYear = new AtomicInteger();
+        final AtomicInteger selectedMonth = new AtomicInteger();
+        final AtomicInteger selectedDay = new AtomicInteger();
+        final AtomicBoolean useYear = new AtomicBoolean(true);
+        final AtomicBoolean isBC = new AtomicBoolean(false);
 
         @SuppressLint("InflateParams")
         @Nullable

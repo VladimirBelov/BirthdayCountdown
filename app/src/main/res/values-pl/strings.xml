@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 00:21
+  ~  * Created by Vladimir Belov on 08.10.2025, 22:58
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 07.10.2025, 23:57
+  ~  * Last modified 08.10.2025, 22:55
   ~  */
   -->
 
@@ -112,6 +112,7 @@
     <string name="msg_errors_details">"konto=%1$s, rodzaj wydarzenia=%2$s, data=%3$s"</string>
     <string name="msg_all">Wszystkie</string>
     <string name="msg_none">Brak</string>
+    <string name="msg_not_selected">Nie wybrano</string>
     <string name="msg_version">"Versión instalada: %s"</string>
     <string name="msg_error_get_event_image">Error al obtener la imagen del evento</string>
     <string name="msg_event_color_selected">"Color #%1$s seleccionado para %2$s"</string>
@@ -719,8 +720,10 @@
     <string name="pref_EventInfo_ZodiacSign">♊ Znak zodiaku</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 Zwierzę w kalendarzu wschodnim</string>
     <string name="pref_EventInfo_EventDate_Original">Oryginalna data wydarzenia</string>
+    <string name="pref_EventInfo_EventYear_Original">Rok oryginalnego wydarzenia</string>
     <string name="pref_EventInfo_EventDate_Original_WithYear">Oryginalna data wydarzenia wraz z rokiem</string>
     <string name="pref_EventInfo_EventDate">Data wydarzenia</string>
+    <string name="pref_EventInfo_EventYear">Rok wydarzenia</string>
     <string name="pref_EventInfo_EventDate_WithYear">Data wydarzenia wraz z rokiem</string>
     <string name="pref_EventInfo_EventTitle">Tytuł wydarzenia (imię i nazwisko)</string>
     <string name="pref_EventInfo_Age_Full">Wiek (pełny format)</string>
@@ -1332,6 +1335,8 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="facts_popup_empty">Pula faktów jest pusta</string>
 
     <string name="local_event_date_picker_use_year">Podaj rok</string>
+    <string name="local_event_date_picker_week_day">Dzień tygodnia: %1$s</string>
+    <string name="local_event_date_picker_bc">BC</string>
     <string name="local_event_date_picker_title">Wybierz datę:</string>
     <string name="local_event_dialog_title_new_event">Dodaj nowe wydarzenie</string>
     <string name="local_event_dialog_title_edit_event">Edytuj wydarzenie</string>

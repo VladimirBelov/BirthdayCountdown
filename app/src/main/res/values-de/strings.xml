@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 00:21
+  ~  * Created by Vladimir Belov on 08.10.2025, 22:58
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 07.10.2025, 23:57
+  ~  * Last modified 08.10.2025, 22:56
   ~  */
   -->
 
@@ -112,6 +112,7 @@
     <string name="msg_errors_details">"Kontoschlüssel=%1$s, Ereignistyp=%2$s, Ereignisdatum=%3$s"</string>
     <string name="msg_all">Alle</string>
     <string name="msg_none">Keine</string>
+    <string name="msg_not_selected">Nicht ausgewählt</string>
     <string name="msg_version">"Installierte Version: %s"</string>
     <string name="msg_error_get_event_image">Fehler beim Abrufen des Ereignisbildes</string>
     <string name="msg_event_color_selected">"Farbe #%1$s für %2$s ausgewählt"</string>
@@ -718,9 +719,11 @@
     <string name="pref_EventInfo_SilentedIcon">🚫 Symbol für stummgeschaltetes Ereignis</string>
     <string name="pref_EventInfo_ZodiacSign">♊ Sternzeichen</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 Tierkreisjahr</string>
-    <string name="pref_EventInfo_EventDate_Original">Ursprüngliches Ereignisdatum</string>
+    <string name="pref_EventInfo_EventDate_Original">Datum der ursprünglichen Ereignis</string>
+    <string name="pref_EventInfo_EventYear_Original">Jahr der ursprünglichen Ereignis</string>
     <string name="pref_EventInfo_EventDate_Original_WithYear">Ursprüngliches Ereignisdatum mit Jahr</string>
     <string name="pref_EventInfo_EventDate">Ereignisdatum</string>
+    <string name="pref_EventInfo_EventYear">Ereignisjahr</string>
     <string name="pref_EventInfo_EventDate_WithYear">Ereignisdatum mit Jahr</string>
     <string name="pref_EventInfo_EventTitle">Ereignistitel (Name)</string>
     <string name="pref_EventInfo_Age_Full">Alter (vollständiges Format)</string>
@@ -1332,6 +1335,8 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="facts_popup_empty">Der Faktenpool ist leer</string>
 
     <string name="local_event_date_picker_use_year">Jahr angeben</string>
+    <string name="local_event_date_picker_week_day">Wochentag: %1$s</string>
+    <string name="local_event_date_picker_bc">BC</string>
     <string name="local_event_date_picker_title">Datum auswählen:</string>
     <string name="local_event_dialog_title_new_event">Neue Veranstaltung hinzufügen</string>
     <string name="local_event_dialog_title_edit_event">Veranstaltung bearbeiten</string>

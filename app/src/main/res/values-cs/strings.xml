@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 00:21
+  ~  * Created by Vladimir Belov on 08.10.2025, 22:58
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 07.10.2025, 23:57
+  ~  * Last modified 08.10.2025, 22:57
   ~  */
   -->
 
@@ -112,6 +112,7 @@
     <string name="msg_errors_details">"accountKey=%1$s, eventType=%2$s, eventDate=%3$s"</string>
     <string name="msg_all">Vše</string>
     <string name="msg_none">Žádné</string>
+    <string name="msg_not_selected">Nevybráno</string>
     <string name="msg_version">"Verze nainstalována: %s"</string>
     <string name="msg_error_get_event_image">Chyba při získávání obrázku události</string>
     <string name="msg_event_color_selected">"Barva #%1$s vybrána pro %2$s"</string>
@@ -718,9 +719,11 @@
     <string name="pref_EventInfo_SilentedIcon">🚫 Ikona umlčené události</string>
     <string name="pref_EventInfo_ZodiacSign">♊ znamení zvěrokruhu</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 čínský kalendářní rok</string>
-    <string name="pref_EventInfo_EventDate_Original">Původní datum události</string>
+    <string name="pref_EventInfo_EventDate_Original">Datum původní události</string>
+    <string name="pref_EventInfo_EventYear_Original">Rok původní události</string>
     <string name="pref_EventInfo_EventDate_Original_WithYear">Původní datum události s rokem</string>
     <string name="pref_EventInfo_EventDate">Datum události</string>
+    <string name="pref_EventInfo_EventYear">Rok události</string>
     <string name="pref_EventInfo_EventDate_WithYear">Datum události s rokem</string>
     <string name="pref_EventInfo_EventTitle">Název události (jméno osoby)</string>
     <string name="pref_EventInfo_Age_Full">Věk (úplný formát)</string>
@@ -1334,6 +1337,8 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="facts_popup_empty">Soubor faktů je prázdný</string>
 
     <string name="local_event_date_picker_use_year">Uveďte rok</string>
+    <string name="local_event_date_picker_week_day">Den v týdnu: %1$s</string>
+    <string name="local_event_date_picker_bc">BC</string>
     <string name="local_event_date_picker_title">Vyberte datum:</string>
     <string name="local_event_dialog_title_new_event">Přidat novou událost</string>
     <string name="local_event_dialog_title_edit_event">Upravit událost</string>

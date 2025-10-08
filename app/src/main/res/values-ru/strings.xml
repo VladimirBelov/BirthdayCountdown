@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 00:21
+  ~  * Created by Vladimir Belov on 08.10.2025, 22:58
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 07.10.2025, 23:54
+  ~  * Last modified 08.10.2025, 22:43
   ~  */
   -->
 
@@ -719,9 +719,9 @@
     <string name="pref_EventInfo_SilentedIcon">🚫 Иконка события без уведомления</string>
     <string name="pref_EventInfo_ZodiacSign">♊ Знак зодиака</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 Животное в восточном календаре</string>
-    <string name="pref_EventInfo_EventDate_Original">Дата исходного события</string>
-    <string name="pref_EventInfo_EventYear_Original">Год исходного события</string>
-    <string name="pref_EventInfo_EventDate_Original_WithYear">Дата исходного события с годом</string>
+    <string name="pref_EventInfo_EventDate_Original">Дата изначального события</string>
+    <string name="pref_EventInfo_EventYear_Original">Год изначального события</string>
+    <string name="pref_EventInfo_EventDate_Original_WithYear">Дата изначального события с годом</string>
     <string name="pref_EventInfo_EventDate">Дата события</string>
     <string name="pref_EventInfo_EventYear">Год события</string>
     <string name="pref_EventInfo_EventDate_WithYear">Дата события с годом</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 00:21
+  ~  * Created by Vladimir Belov on 08.10.2025, 22:57
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 07.10.2025, 23:57
+  ~  * Last modified 08.10.2025, 22:57
   ~  */
   -->
 
@@ -112,6 +112,7 @@
     <string name="msg_errors_details">"акаўнт=%1$s, тып падзеі=%2$s, дата=%3$s"</string>
     <string name="msg_all">Усе</string>
     <string name="msg_none">Ніякія</string>
+    <string name="msg_not_selected">Не выбрана</string>
     <string name="msg_version">"Усталяваная версія: %s"</string>
     <string name="msg_error_get_event_image">Памылка атрымання выявы падзеі</string>
     <string name="msg_event_color_selected">"Абраны колер #%1$s для %2$s"</string>
@@ -718,9 +719,11 @@
     <string name="pref_EventInfo_SilentedIcon">🚫 Абразок падзеі без паведамлення</string>
     <string name="pref_EventInfo_ZodiacSign">♊ Знак задыяка</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 Жывёла ва ўсходнім календары</string>
-    <string name="pref_EventInfo_EventDate_Original">Дата выточнай падзеі</string>
-    <string name="pref_EventInfo_EventDate_Original_WithYear">Дата выточнай падзеі з годам</string>
+    <string name="pref_EventInfo_EventDate_Original">Дата зыходнай падзеі</string>
+    <string name="pref_EventInfo_EventYear_Original">Год зыходнай падзеі</string>
+    <string name="pref_EventInfo_EventDate_Original_WithYear">Дата зыходнай падзеі з годам</string>
     <string name="pref_EventInfo_EventDate">Дата падзеі</string>
+    <string name="pref_EventInfo_EventYear">Год падзеі</string>
     <string name="pref_EventInfo_EventDate_WithYear">Дата падзеі з годам</string>
     <string name="pref_EventInfo_EventTitle">Загаловак падзеі (ПІБ)</string>
     <string name="pref_EventInfo_Age_Full">Узрост (поўны фармат)</string>
@@ -1332,6 +1335,8 @@
     <string name="facts_popup_empty">Бул фактаў пусты</string>
 
     <string name="local_event_date_picker_use_year">Увядзіце год</string>
+    <string name="local_event_date_picker_week_day">Дзень тыдня: %1$s</string>
+    <string name="local_event_date_picker_bc">Да Н.Э.</string>
     <string name="local_event_date_picker_title">Выберыце дату:</string>
     <string name="local_event_dialog_title_new_event">Дадаць новую падзею</string>
     <string name="local_event_dialog_title_edit_event">Рэдагаваць падзею</string>
