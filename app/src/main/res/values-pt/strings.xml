@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 22:58
+  ~  * Created by Vladimir Belov on 09.10.2025, 22:56
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.10.2025, 22:55
+  ~  * Last modified 09.10.2025, 22:44
   ~  */
   -->
 
@@ -77,6 +77,7 @@
     <string name="msg_no_access_contacts">Sem acesso aos contatos</string>
     <string name="msg_no_access_storage">Sem acesso ao armazenamento</string>
     <string name="msg_no_events">Eventos não encontrados</string>
+    <string name="msg_no_image_picker">Não há aplicativo para escolher fotos</string>
     <string name="msg_no_files_selected">" - não selecionado -"</string>
     <string name="msg_file_open_error">"Erro ao abrir arquivo: "</string>
     <string name="msg_file_access_write_error">"Não é possível obter acesso de gravação ao arquivo. Tente selecionar novamente o arquivo na preferência do aplicativo"</string>
@@ -1357,7 +1358,6 @@ Clique longamente no item para selecionar a cor"</string>
     <string name="event_photo_pick_contact_hint">Selecionar foto do contato…</string>
     <string name="event_photo_select_photo_hint">Selecionar foto local…</string>
     <string name="event_photo_clear_photo_hint">Limpar foto do evento</string>
-    <string name="event_photo_select_photo_title">Selecionar foto</string>
 
     <string name="crop_image_back">Voltar</string>
     <string name="crop_image_save">Salvar</string>

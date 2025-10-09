@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.10.2025, 22:31
+ *  * Created by Vladimir Belov on 09.10.2025, 22:56
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.10.2025, 22:04
+ *  * Last modified 09.10.2025, 22:31
  *
  */
 
@@ -297,12 +297,10 @@ public class ContactsEvents {
     private Calendar cacheCalendar1 = null;
     private Calendar cacheCalendar2 = null;
     //todo: подумать про массивы https://tproger.ru/translations/java-tips-and-tricks-for-begginer/
-    final Locale locale_ru = new Locale(Constants.LANG_RU); //Skype хранит даты в той локали, которая указана в приложении Skype
-    final Locale locale_ukr = new Locale(Constants.LANG_UA);
+    final Locale locale_ru = new Locale(Constants.LANG_RU);
     final SimpleDateFormat sdf_java = new SimpleDateFormat(Constants.DATE_JAVA, Locale.US);
     final SimpleDateFormat sdf_java_G = new SimpleDateFormat(Constants.DATE_JAVA_G, Locale.US);
     final SimpleDateFormat sdf_java_no_year = new SimpleDateFormat(Constants.DATE_JAVA_NO_YEAR, Locale.US);
-    final SimpleDateFormat sdf_skype = new SimpleDateFormat(Constants.DATE_DD_MMM_YYYY, Locale.US);
     final SimpleDateFormat sdf_DDMMY = new SimpleDateFormat(Constants.DATE_DD_MM_Y, Locale.US);
     static final SimpleDateFormat sdf_DDMMYYYY = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, Locale.US);
     static final SimpleDateFormat sdf_DDMMYYYY_G = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY_G, Locale.US);
@@ -311,8 +309,6 @@ public class ContactsEvents {
     static final SimpleDateFormat sdf_DDMM = new SimpleDateFormat(Constants.DATE_DD_MM, Locale.US);
     final SimpleDateFormat sdf_MMMMDYYYY = new SimpleDateFormat(Constants.DATE_MMMM_D_YYYY, Locale.US);
     final SimpleDateFormat sdf_ru = new SimpleDateFormat(Constants.DATE_RUS, locale_ru);
-    final SimpleDateFormat sdf_us = new SimpleDateFormat(Constants.DATE_US, Locale.US);
-    final SimpleDateFormat sdf_ukr = new SimpleDateFormat(Constants.DATE_RUS, locale_ukr);
     final SimpleDateFormat sdf_uk = new SimpleDateFormat(Constants.DATE_UK, Locale.UK);
     final SimpleDateFormat sdf_uk_G = new SimpleDateFormat(Constants.DATE_UK_G, Locale.UK);
     final SimpleDateFormat sdf_uk_no_year = new SimpleDateFormat(Constants.DATE_UK_NO_YEAR, Locale.UK);
@@ -861,29 +857,38 @@ public class ContactsEvents {
          */
         private static int getChineseZodiacYearNumber(@NonNull Context context, @NonNull String strBirthday) {
             try {
-                if (strBirthday.length() != 10 || strBirthday.charAt(2) != '.' || strBirthday.charAt(5) != '.') {
+                if (strBirthday.length() < 10 || strBirthday.charAt(2) != '.' || strBirthday.charAt(5) != '.') {
                     return -1; //Некорректный формат даты
                 }
 
-                Date eventDate = null;
+                Date eventDate;
                 int eventYear = 0;
                 Date lunarNewYear = null;
                 try {
-                    eventDate = sdf_DDMMYYYY.parse(strBirthday.trim());
+                    if (strBirthday.length() > 10) {
+                        eventDate = sdf_DDMMYYYY.parse(strBirthday.substring(0, 10));
+                    } else {
+                        eventDate = sdf_DDMMYYYY.parse(strBirthday.trim());
+                    }
                     if (eventDate != null) {
                         eventYear = Integer.parseInt(sdf_YYYY.format(eventDate));
                         lunarNewYear = getLunarNewYear(context, eventYear);
                     }
                 } catch (ParseException | NumberFormatException e) {
                     Log.e(TAG, e.getMessage() != null ? e.getMessage() : e.toString());
+                    return -1;
                 }
 
-                if (lunarNewYear != null && eventYear > 0) {
-                    int effectiveYear = eventDate.after(lunarNewYear) ? eventYear : eventYear - 1;
-                    return (effectiveYear - 1900) % 12;
-                } else {
-                    return (eventYear - 1900) % 12;
+                int effectiveYear = eventYear;
+                if (lunarNewYear != null) {
+                    // Если дата рождения до Лунного Нового года — относится к предыдущему знаку
+                    if (!eventDate.after(lunarNewYear)) {
+                        effectiveYear = eventYear - 1;
+                    }
                 }
+
+                // Универсальный расчёт индекса знака Зодиака (работает и до 1900)
+                return ((effectiveYear - 1900) % 12 + 12) % 12;
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage() != null ? e.getMessage() : e.toString());
@@ -6116,153 +6121,63 @@ public class ContactsEvents {
 
                     Date storedDate_Date = null;
                     boolean storedDate_isYear = false;
-                    if (accountType.contains(Constants.account_skype)) {
 
-                        storedDate_isYear = true;
-
-                        if (storedDate.contains("Sept")) {
-                            //https://stackoverflow.com/questions/67089932/simpledateformat-format-month-september-jdk16
-                            storedDate = storedDate.replace("Sept", "Sep");
-                        }
+                    //Если есть год пробуем сначала yyyy-MM-dd, потом dd MM yyyy, потом известные локали
+                    if (storedDate.startsWith(Constants.STRING_2MINUS) || //Нет года, формат --MM-dd
+                            storedDate.startsWith(Constants.STRING_0000_MINUS) || //Нет года, формат 0000-MM-dd
+                            (storedDate.startsWith("1604-") && (accountType.contains(Constants.account_exchange) || accountType.contains(Constants.account_google))) || //Нет года, формат 1604-MM-dd - com.google.android.gm.exchange https://stackoverflow.com/questions/14023390/nsdate-return-1604-for-year-value
+                            (storedDate.startsWith("1904-") && accountType.contains(Constants.account_huawei)) || //Нет года, формат 1904-MM-dd - com.android.huawei.phone
+                            (!TextUtils.isEmpty(eventCaption) && preferences_nameday_labels != null && preferences_nameday_labels.reset(eventCaption.toLowerCase()).find()) //Именины считаем без года
+                    ) {
 
                         try {
-                            storedDate_Date = sdf_skype.parse(storedDate);
+                            eventDateThisTime = sdf_java.parse(nowYear + Constants.STRING_MINUS + storedDate.substring(storedDate.startsWith(Constants.STRING_2MINUS) ? 2 : 5));
                         } catch (ParseException e) {
-                            try {
-                                storedDate_Date = sdf_ru.parse(storedDate);
-                            } catch (ParseException e2) {
-                                try {
-                                    storedDate_Date = sdf_ukr.parse(storedDate);
-                                } catch (ParseException e3) {
-                                    try {
-                                        storedDate_Date = sdf_us.parse(storedDate);
-                                    } catch (ParseException e4) {
-                                        try {
-                                            storedDate_Date = sdf_uk.parse(storedDate);
-                                        } catch (ParseException e5) {
-                                            try {
-                                                storedDate_Date = sdf_india.parse(storedDate);
-                                            } catch (ParseException e6) {
-                                                try {
-                                                    storedDate_Date = sdf_uk_no_year.parse(storedDate);
-                                                } catch (ParseException e7) {
-                                                    try {
-                                                        storedDate_Date = sdf_india_no_year.parse(storedDate);
-                                                    } catch (ParseException e8) {
-                                                        try {
-                                                            storedDate_Date = sdf_DDMMYYYY.parse(storedDate);
-                                                        } catch (ParseException e9) {
-                                                            //Не получилось распознать
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            //Не получилось распознать
+                        }
+                        if (eventDateThisTime != null) {
+                            long dayDiff_tmp = countDaysDiff(currentDay, eventDateThisTime);
+                            if (dayDiff_tmp < 0) eventDateThisTime = addYear(eventDateThisTime, 1);
+                            storedDate_Date = eventDateThisTime;
                         }
 
-                    } else if (accountType.contains(Constants.account_vk)) {
+                    } else { //Обычный формат yyyy-MM-dd
 
-                        if (storedDate.startsWith(Constants.STRING_0000_MINUS)) { //Нет года, формат 0000-mm-dd
-
-                            try {
-                                eventDateThisTime = sdf_java.parse(nowYear + Constants.STRING_MINUS + storedDate.substring(5));
-                            } catch (ParseException e) {
-                                //Не получилось распознать
-                            }
-                            if (eventDateThisTime != null) {
-                                if (currentDay.after(eventDateThisTime)) eventDateThisTime = addYear(eventDateThisTime, 1);
-                                storedDate_Date = eventDateThisTime;
-                            }
-
-                        } else {
-
-                            storedDate_isYear = true;
+                        storedDate_isYear = true;
+                        try {
+                            storedDate_Date = sdf_java_G.parse(storedDate);
+                            isAD = false;
+                        } catch (ParseException e0) {
                             try {
                                 storedDate_Date = sdf_java.parse(storedDate);
                             } catch (ParseException e) {
                                 try {
-                                    storedDate_Date = sdf_skype.parse(storedDate);
-                                } catch (ParseException e2) {
-                                    //Не получилось распознать
-                                }
-                            }
-                        }
-
-                    } else {
-                        //Стандартные аккаунты. Если есть год пробуем сначала yyyy-MM-dd, потом dd MM yyyy, потом известные локали
-                        //com.google
-                        //com.xiaomi
-                        //vnd.sec.contact.phone
-                        //asus.local.phone
-                        //com.google.android.gm.exchange
-                        //com.lotus.sync.notes
-                        //com.whatsapp
-                        //com.android.huawei.phone
-                        //com.android.local
-
-                        if (storedDate.startsWith(Constants.STRING_2MINUS) || //Нет года, формат --MM-dd
-                                storedDate.startsWith(Constants.STRING_0000_MINUS) || //Нет года, формат 0000-MM-dd
-                                (storedDate.startsWith("1604-") && (accountType.contains(Constants.account_exchange) || accountType.contains(Constants.account_google))) || //Нет года, формат 1604-MM-dd - com.google.android.gm.exchange https://stackoverflow.com/questions/14023390/nsdate-return-1604-for-year-value
-                                (storedDate.startsWith("1904-") && accountType.contains(Constants.account_huawei)) || //Нет года, формат 1904-MM-dd - com.android.huawei.phone
-                                (!TextUtils.isEmpty(eventCaption) && preferences_nameday_labels != null && preferences_nameday_labels.reset(eventCaption.toLowerCase()).find()) //Именины считаем без года
-                        ) {
-
-                            try {
-                                eventDateThisTime = sdf_java.parse(nowYear + Constants.STRING_MINUS + storedDate.substring(storedDate.startsWith(Constants.STRING_2MINUS) ? 2 : 5));
-                            } catch (ParseException e) {
-                                //Не получилось распознать
-                            }
-                            if (eventDateThisTime != null) {
-                                long dayDiff_tmp = countDaysDiff(currentDay, eventDateThisTime);
-                                if (dayDiff_tmp < 0) eventDateThisTime = addYear(eventDateThisTime, 1);
-                                storedDate_Date = eventDateThisTime;
-                            }
-
-                        } else { //Обычный формат yyyy-MM-dd
-
-                            storedDate_isYear = true;
-                            try {
-                                storedDate_Date = sdf_java_G.parse(storedDate);
-                                isAD = false;
-                            } catch (ParseException e0) {
-                                try {
-                                    storedDate_Date = sdf_java.parse(storedDate);
-                                } catch (ParseException e) {
+                                    storedDate_Date = sdf_ru.parse(storedDate);
+                                } catch (ParseException e3) {
                                     try {
-                                        storedDate_Date = sdf_skype.parse(storedDate);
-                                    } catch (ParseException e2) {
+                                        storedDate_Date = sdf_uk.parse(storedDate);
+                                    } catch (ParseException e4) {
                                         try {
-                                            storedDate_Date = sdf_ru.parse(storedDate);
-                                        } catch (ParseException e3) {
+                                            storedDate_Date = sdf_india.parse(storedDate);
+                                        } catch (ParseException e5) {
                                             try {
-                                                storedDate_Date = sdf_uk.parse(storedDate);
-                                            } catch (ParseException e4) {
+                                                storedDate_Date = sdf_YYYYMMDD_noDiv.parse(storedDate);
+                                            } catch (ParseException e6) {
                                                 try {
-                                                    storedDate_Date = sdf_india.parse(storedDate);
-                                                } catch (ParseException e5) {
+                                                    storedDate_Date = sdf_MMMMDYYYY.parse(storedDate);
+                                                } catch (ParseException e7) {
                                                     try {
-                                                        storedDate_Date = sdf_YYYYMMDD_noDiv.parse(storedDate);
-                                                    } catch (ParseException e6) {
+                                                        storedDate_Date = sdf_uk_no_year.parse(storedDate);
+                                                        storedDate_isYear = false;
+                                                    } catch (ParseException e8) {
                                                         try {
-                                                            storedDate_Date = sdf_MMMMDYYYY.parse(storedDate);
-                                                        } catch (ParseException e7) {
+                                                            storedDate_Date = sdf_india_no_year.parse(storedDate);
+                                                            storedDate_isYear = false;
+                                                        } catch (ParseException e9) {
                                                             try {
-                                                                storedDate_Date = sdf_uk_no_year.parse(storedDate);
-                                                                storedDate_isYear = false;
-                                                            } catch (ParseException e8) {
-                                                                try {
-                                                                    storedDate_Date = sdf_india_no_year.parse(storedDate);
-                                                                    storedDate_isYear = false;
-                                                                } catch (ParseException e9) {
-                                                                    try {
-                                                                        storedDate_Date = sdf_DDMMYYYY.parse(storedDate);
-                                                                    } catch (ParseException e10) {
-                                                                        //Не получилось распознать
-                                                                    }
-                                                                }
+                                                                storedDate_Date = sdf_DDMMYYYY.parse(storedDate);
+                                                            } catch (ParseException e10) {
+                                                                //Не получилось распознать
                                                             }
                                                         }
                                                     }
@@ -6273,7 +6188,6 @@ public class ContactsEvents {
                                 }
                             }
                         }
-
                     }
 
                     if (storedDate_Date != null) {
@@ -6281,7 +6195,6 @@ public class ContactsEvents {
                             eventDateFirstTime = storedDate_Date;
                             isYear = storedDate_isYear;
                         } else if (storedDate_isYear
-                                //&& getCalendarFromDate(storedDate_Date).get(Calendar.YEAR) != nowYear
                                 && storedDate_Date.before(now.getTime())
                                 && (!isYear || countDaysDiff(eventDateFirstTime, storedDate_Date) > 0)) { //Если у пользователя несколько дат, берём наименьший возраст todo: можно вынести в настройку - в какую сторону округлять
                             eventDateFirstTime = storedDate_Date;
@@ -10211,11 +10124,7 @@ public class ContactsEvents {
     }
 
     boolean checkNoStorageAccess() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_AUDIO) != PackageManager.PERMISSION_GRANTED;
-        } else {
-            return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
-        }
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
     }
 
     boolean checkNoNotificationAccess() {

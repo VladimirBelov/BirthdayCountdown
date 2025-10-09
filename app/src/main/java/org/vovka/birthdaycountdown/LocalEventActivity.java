@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.10.2025, 22:57
+ *  * Created by Vladimir Belov on 09.10.2025, 22:56
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.10.2025, 22:37
+ *  * Last modified 09.10.2025, 22:46
  *
  */
 
@@ -10,7 +10,6 @@ package org.vovka.birthdaycountdown;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -49,13 +48,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog.Builder;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.imagecropper.CropIntent;
 
@@ -88,7 +89,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *     <li>Поддержку различных языков и тем оформления.</li>
  *     <li>Динамическое изменение ширины диалогового окна в зависимости от режима (редактирование/просмотр).</li>
  */
-public class LocalEventActivity extends Activity {
+public class LocalEventActivity extends AppCompatActivity {
 
     private static final String TAG = "LocalEventActivity";
     private static final ContactsEvents eventsData;
@@ -683,31 +684,14 @@ public class LocalEventActivity extends Activity {
 
     private void pickPhoto() {
         try {
-            boolean requestPermissions = false;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions = true;
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED}, Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                }
-            } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions = true;
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_MEDIA_IMAGES}, Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                }
-            } else {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions = true;
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                }
-            }
 
-            if (!requestPermissions) {
-                Intent intent = new Intent();
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, getString(R.string.event_photo_select_photo_title)), Constants.RESULT_PICK_PHOTO);
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType(Constants.MIME_IMAGE_ALL);
+
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                photoPickerLauncher.launch(intent);
+            } else {
+                Toast.makeText(this, getString(R.string.msg_no_image_picker), Toast.LENGTH_SHORT).show();
             }
 
         } catch (Exception e) {
@@ -715,6 +699,20 @@ public class LocalEventActivity extends Activity {
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
+
+    private final ActivityResultLauncher<Intent> photoPickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Uri selectedImageUri = result.getData().getData();
+                    if (selectedImageUri != null) {
+                        CropIntent intent = new CropIntent();
+                        intent.setImagePath(selectedImageUri);
+                        startActivityForResult(intent.getIntent(this), Constants.RESULT_CROP_PHOTO);
+                    }
+                }
+            }
+    );
 
     private void pickContactData() {
 
@@ -749,12 +747,12 @@ public class LocalEventActivity extends Activity {
                 pickPhoto();
             } else {
                 // Разрешение отклонено
-                Toast.makeText(this, getString(R.string.msg_no_access_storage), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.msg_no_access_storage), Toast.LENGTH_LONG).show();
 
                 //Доступа до фото нет. Выбираем просто файл
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("image/*");
+                intent.setType(Constants.MIME_IMAGE_ALL);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 try {
                     startActivityForResult(intent, Constants.RESULT_PICK_FILE);
@@ -767,6 +765,8 @@ public class LocalEventActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
         try {
 
             if (resultCode == RESULT_OK) {
@@ -781,7 +781,6 @@ public class LocalEventActivity extends Activity {
                                         ContactsContract.Data.DISPLAY_NAME,
                                         ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE
                                 });
-                                //eventData.put(ContactsEvents.Position_photo_uri, ContactsEvents.checkForNull(contactDataMap.get(ContactsContract.Contacts.PHOTO_URI)));
 
                                 Uri selectedImageUri = Uri.parse(contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
                                 if (selectedImageUri != null) {
@@ -791,11 +790,10 @@ public class LocalEventActivity extends Activity {
                                 }
                             } catch (SecurityException e) {
                                 ToastExpander.showInfoMsg(this, getString(R.string.msg_no_access_contacts));
-                               //try (InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(getContentResolver(), contactUri, true))
                             }
                         }
                     }
-                } else if (requestCode == Constants.RESULT_PICK_PHOTO || requestCode == Constants.RESULT_PICK_FILE) {
+                } else if (requestCode == Constants.RESULT_PICK_FILE) {
                     Uri selectedImageUri = data.getData();
                     CropIntent intent = new CropIntent();
                     intent.setImagePath(selectedImageUri);

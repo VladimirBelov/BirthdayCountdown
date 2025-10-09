@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.10.2025, 03:14
+ *  * Created by Vladimir Belov on 09.10.2025, 22:56
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.10.2025, 18:46
+ *  * Last modified 09.10.2025, 22:44
  *
  */
 
@@ -207,7 +207,7 @@ class ColorPreference extends Preference {
             AlertDialog.Builder colorDialogBuilder = new AlertDialog.Builder(getActivity());
 
             try {
-                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                LayoutInflater layoutInflater = getActivity().getLayoutInflater();
                 View rootView = layoutInflater.inflate(R.layout.dialog_colors, null);
 
                 if (mPreference.mSelectDialogTitle.isEmpty()) {

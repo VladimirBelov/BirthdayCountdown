@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.10.2025, 00:44
+ *  * Created by Vladimir Belov on 09.10.2025, 22:56
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 30.09.2025, 22:29
+ *  * Last modified 09.10.2025, 21:41
  *
  */
 
@@ -2831,24 +2831,25 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];
                 String eventLabel = singleEventArray[ContactsEvents.Position_eventLabel].trim();
                 String eventCaption = singleEventArray[ContactsEvents.Position_eventCaption].trim();
+
+                String strZodiac = Constants.STRING_EMPTY;
+                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
+                    final String strZodiacInfo = eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_ZodiacSign)) ?
+                            singleEventArray[ContactsEvents.Position_zodiacSign].trim() : Constants.STRING_EMPTY;
+                    final String strZodiacYearInfo = eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_ZodiacYear)) ?
+                            singleEventArray[ContactsEvents.Position_zodiacYear].trim() : Constants.STRING_EMPTY;
+                    strZodiac = strZodiacInfo.concat(Constants.STRING_SPACE).concat(strZodiacYearInfo).trim();
+                }
+
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventCaption))) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                     eventDetails.append(eventCaption);
                     if (!eventLabel.isEmpty() && eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventCaption.equalsIgnoreCase(eventLabel)) {
                         eventDetails.append(Constants.STRING_PARENTHESIS_OPEN).append(eventLabel).append(Constants.STRING_PARENTHESIS_CLOSE);
                     }
-
-                    if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
-                        final String strZodiacInfo = eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_ZodiacSign)) ?
-                                singleEventArray[ContactsEvents.Position_zodiacSign].trim() : Constants.STRING_EMPTY;
-                        final String strZodiacYearInfo = eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_ZodiacYear)) ?
-                                singleEventArray[ContactsEvents.Position_zodiacYear].trim() : Constants.STRING_EMPTY;
-
-                        if (!strZodiacInfo.isEmpty() || !strZodiacYearInfo.isEmpty()) {
-                            eventDetails.append(Constants.STRING_PARENTHESIS_OPEN).append((strZodiacInfo.concat(Constants.STRING_SPACE).concat(strZodiacYearInfo)).trim()).append(Constants.STRING_PARENTHESIS_CLOSE);
-                        }
+                    if (!strZodiac.isEmpty()) {
+                        eventDetails.append(Constants.STRING_PARENTHESIS_OPEN).append(strZodiac).append(Constants.STRING_PARENTHESIS_CLOSE);
                     }
-
                 } else if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle))) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                     if (!eventLabel.isEmpty()) {
@@ -2856,6 +2857,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     } else {
                         eventDetails.append(eventCaption);
                     }
+                    if (!strZodiac.isEmpty()) {
+                        eventDetails.append(Constants.STRING_PARENTHESIS_OPEN).append(strZodiac).append(Constants.STRING_PARENTHESIS_CLOSE);
+                    }
+                } else if (!strZodiac.isEmpty()) {
+                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
+                    eventDetails.append(strZodiac);
                 }
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Age))) {

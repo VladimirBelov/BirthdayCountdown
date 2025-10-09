@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.10.2025, 02:32
+ *  * Created by Vladimir Belov on 09.10.2025, 22:56
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.10.2025, 00:48
+ *  * Last modified 09.10.2025, 21:08
  *
  */
 
@@ -199,7 +199,6 @@ public final class Constants {
     static final int RESULT_EDIT_EVENT = 206;
     static final int RESULT_PICK_FILE_FOR_EXPORT_EVENTS = 207;
     static final int RESULT_PICK_FILE_FOR_IMPORT_EVENTS = 208;
-    static final int RESULT_PICK_PHOTO = 209;
     static final int RESULT_CROP_PHOTO = 210;
 
     static final String NOTIFY_ID = "id: ";
@@ -312,8 +311,6 @@ public final class Constants {
     static final int PREV_EVENTS_MAX_DAYS = 14;
     static final int RECENT_FACTS_MAX = 10;
     static final String account_google = "com.google";
-    static final String account_skype = "com.skype.";
-    static final String account_vk = "com.vkontakte.account";
     static final String account_exchange = "com.google.android.gm.exchange";
     static final String account_huawei = "com.android.huawei.phone";
     static final String account_sim = ".sim";

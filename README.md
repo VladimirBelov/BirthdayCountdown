@@ -36,14 +36,12 @@ Supported event types:
 
 Supported accounts for events:
  1. Google
- 2. Skype 7.x and earlier, Skype Lite
- 3. Xiaomi
- 4. VK
- 5. Samsung
- 6. Asus
- 7. MS Exchange (via Gmail)
- 8. IBM Verse (IBM Notes Traveler)
- 9. Huawei
+ 2. Xiaomi
+ 3. Samsung
+ 4. Asus
+ 5. MS Exchange (via Gmail)
+ 6. IBM Verse (IBM Notes Traveler)
+ 7. Huawei
 
 Special program features: 
  1. For wedding anniversaries displaying name of anniversary - Paper, Cotton, Leather...

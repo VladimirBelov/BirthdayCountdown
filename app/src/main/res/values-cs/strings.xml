@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 22:58
+  ~  * Created by Vladimir Belov on 09.10.2025, 22:56
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.10.2025, 22:57
+  ~  * Last modified 09.10.2025, 22:44
   ~  */
   -->
 
@@ -77,6 +77,7 @@
     <string name="msg_no_access_contacts">Žádný přístup ke kontaktům</string>
     <string name="msg_no_access_storage">Žádný přístup k úložišti</string>
     <string name="msg_no_events">Události nenalezeny</string>
+    <string name="msg_no_image_picker">Neexistuje žádná aplikace pro výběr fotografií</string>
     <string name="msg_no_files_selected">" - nevybráno -"</string>
     <string name="msg_file_open_error">"Chyba při otevírání souboru: "</string>
     <string name="msg_file_access_write_error">"Nelze získat přístup k zápisu do souboru. Zkuste znovu vybrat soubor v předvolbách aplikace"</string>
@@ -1358,7 +1359,6 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="event_photo_pick_contact_hint">Vybrat fotografii z kontaktu…</string>
     <string name="event_photo_select_photo_hint">Vybrat místní fotografii…</string>
     <string name="event_photo_clear_photo_hint">Vymazat fotografii z události</string>
-    <string name="event_photo_select_photo_title">Vybrat fotografii</string>
 
     <string name="crop_image_back">Zpět</string>
     <string name="crop_image_save">Uložit</string>

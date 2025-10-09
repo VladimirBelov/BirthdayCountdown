@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 22:58
+  ~  * Created by Vladimir Belov on 09.10.2025, 22:56
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.10.2025, 22:55
+  ~  * Last modified 09.10.2025, 22:44
   ~  */
   -->
 
@@ -77,6 +77,7 @@
     <string name="msg_no_access_contacts">Brak dostępu do kontaktów</string>
     <string name="msg_no_access_storage">Brak dostępu do magazynu</string>
     <string name="msg_no_events">Nie znaleziono żadnych wydarzeń</string>
+    <string name="msg_no_image_picker">Brak aplikacji do wybierania zdjęć</string>
     <string name="msg_no_files_selected">" - nie wybrano -"</string>
     <string name="msg_file_open_error">"Błąd podczas otwierania pliku: "</string>
     <string name="msg_file_access_write_error">Nie udało się uzyskać dostępu do edycji pliku. Wybierz ponownie plik w ustawieniach aplikacji</string>
@@ -1356,7 +1357,6 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="event_photo_pick_contact_hint">Wybierz zdjęcie z kontaktu…</string>
     <string name="event_photo_select_photo_hint">Wybierz zdjęcie lokalne…</string>
     <string name="event_photo_clear_photo_hint">Wyczyść zdjęcie z wydarzenia</string>
-    <string name="event_photo_select_photo_title">Wybierz zdjęcie</string>
 
     <string name="crop_image_back">Wstecz</string>
     <string name="crop_image_save">Zapisz</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 22:58
+  ~  * Created by Vladimir Belov on 09.10.2025, 22:56
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.10.2025, 22:56
+  ~  * Last modified 09.10.2025, 22:44
   ~  */
   -->
 
@@ -77,6 +77,7 @@
     <string name="msg_no_access_contacts">Kein Zugriff auf Kontakte</string>
     <string name="msg_no_access_storage">Kein Zugriff auf den Speicher</string>
     <string name="msg_no_events">Keine Ereignissе gefunden</string>
+    <string name="msg_no_image_picker">Es gibt keine App zum Auswählen von Fotos</string>
     <string name="msg_no_files_selected">"  - nicht ausgewählt -"</string>
     <string name="msg_file_open_error">"Fehler beim Öffnen der Datei: "</string>
     <string name="msg_file_access_write_error">Schreibzugriff auf Datei nicht möglich. Versuchen Sie, die Datei in den Anwendungseinstellungen erneut auszuwählen.</string>
@@ -1356,7 +1357,6 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="event_photo_pick_contact_hint">Foto aus Kontakt auswählen…</string>
     <string name="event_photo_select_photo_hint">Lokales Foto auswählen…</string>
     <string name="event_photo_clear_photo_hint">Foto aus Veranstaltung löschen</string>
-    <string name="event_photo_select_photo_title">Foto auswählen</string>
 
     <string name="crop_image_back">Zurück</string>
     <string name="crop_image_save">Speichern</string>

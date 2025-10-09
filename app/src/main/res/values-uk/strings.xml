@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 22:58
+  ~  * Created by Vladimir Belov on 09.10.2025, 22:56
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.10.2025, 22:55
+  ~  * Last modified 09.10.2025, 22:44
   ~  */
   -->
 
@@ -77,6 +77,7 @@
     <string name="msg_no_access_contacts">Не вдається отримати доступ до контактів</string>
     <string name="msg_no_access_storage">Немає доступу до сховища</string>
     <string name="msg_no_events">Подій не знайдено</string>
+    <string name="msg_no_image_picker">Немає програми для вибору фотографій</string>
     <string name="msg_no_files_selected">"  - не вибрано -"</string>
     <string name="msg_file_open_error">"Помилка відкриття файлу: "</string>
     <string name="msg_file_access_write_error">Не вдається отримати доступ до запису у файл. Спробуйте повторно вибрати файл у налаштуваннях програми</string>
@@ -1356,7 +1357,6 @@
     <string name="event_photo_pick_contact_hint">Вибрати фотографію з контакту…</string>
     <string name="event_photo_select_photo_hint">Вибрати локальну фотографію…</string>
     <string name="event_photo_clear_photo_hint">Очистити фотографію з події</string>
-    <string name="event_photo_select_photo_title">Вибрати фотографію</string>
 
     <string name="crop_image_back">Назад</string>
     <string name="crop_image_save">Зберегти</string>

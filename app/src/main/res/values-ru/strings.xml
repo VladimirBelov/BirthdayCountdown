@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 22:58
+  ~  * Created by Vladimir Belov on 09.10.2025, 22:56
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.10.2025, 22:43
+  ~  * Last modified 09.10.2025, 22:44
   ~  */
   -->
 
@@ -77,6 +77,7 @@
     <string name="msg_no_access_contacts">Нет доступа к контактам</string>
     <string name="msg_no_access_storage">Нет доступа к хранилищу</string>
     <string name="msg_no_events">События не найдены</string>
+    <string name="msg_no_image_picker">Нет приложения для выбора фото</string>
     <string name="msg_no_files_selected">"  - не выбраны -"</string>
     <string name="msg_file_open_error">"Ошибка открытия файла: "</string>
     <string name="msg_file_access_write_error">Не удалось получить доступ на редактирование файла. Перевыберите файл в настройках приложения</string>
@@ -1356,7 +1357,6 @@
     <string name="event_photo_pick_contact_hint">Выбрать фото из контакта…</string>
     <string name="event_photo_select_photo_hint">Выбрать локальное фото…</string>
     <string name="event_photo_clear_photo_hint">Удалить фото из события</string>
-    <string name="event_photo_select_photo_title">Выберите фото</string>
 
     <string name="crop_image_back">Закрыть</string>
     <string name="crop_image_save">Сохранить</string>

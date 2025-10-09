@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.10.2025, 22:31
+ *  * Created by Vladimir Belov on 09.10.2025, 22:56
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.10.2025, 22:22
+ *  * Last modified 09.10.2025, 20:17
  *
  */
 
@@ -219,7 +219,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
             Preference notificationSoundPref = findPreference(getString(R.string.pref_Notifications_Ringtone_key));
-            if (notificationSoundPref != null) {
+            if (notificationSoundPref != null && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                 notificationSoundPref.setOnPreferenceChangeListener((preference, newValue) -> {
                     eventsData.getPreferences();
                     //todo: проверить для 13+
