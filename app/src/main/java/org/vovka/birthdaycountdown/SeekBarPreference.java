@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.10.2025, 00:21
+ *  * Created by Vladimir Belov on 09.10.2025, 14:03
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 07.10.2025, 23:54
+ *  * Last modified 09.10.2025, 09:37
  *
  */
 
@@ -74,7 +74,6 @@ public class SeekBarPreference extends DialogPreference {
             minSummaryValue = customAttrs.getInt(R.styleable.SeekBarPreference_minSummaryValue, 0);
         }
 
-        // --- Захват шаблона сводки ---
         // Получаем исходную строку сводки, которая может содержать "%s"
         CharSequence summary = getSummary();
         if (summary != null) {
@@ -131,6 +130,12 @@ public class SeekBarPreference extends DialogPreference {
                 // Не используем
             }
         });
+    }
+
+    @Override
+    protected void onBindView(View view) {
+        super.onBindView(view);
+        notifyChanged(); //Без этого первый раз не отрисовывает summary
     }
 
     // Этот метод вызывается, когда диалог закрывается (OK/Cancel)
