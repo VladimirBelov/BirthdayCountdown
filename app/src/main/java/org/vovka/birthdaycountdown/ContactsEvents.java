@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.10.2025, 22:56
+ *  * Created by Vladimir Belov on 10.10.2025, 10:06
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.10.2025, 22:31
+ *  * Last modified 10.10.2025, 09:59
  *
  */
 
@@ -1008,15 +1008,26 @@ public class ContactsEvents {
      * @param c Дата
      * @return Дата с нулевым временем
      */
-    static Calendar removeTime(@NonNull Calendar c) {
+    static Calendar getWithoutTime(@NonNull Calendar c) {
 
-        c.set(Calendar.HOUR, 0);
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
 
         return c;
+    }
+
+    /** Обнуляет поля времени для Calendar
+     * @param c Дата
+     */
+    static void clearTime(@NonNull Calendar c) {
+
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+
     }
 
     @NonNull
@@ -1301,11 +1312,11 @@ public class ContactsEvents {
             Calendar c2;
             int distanceSign = 1;
             if (dateFrom.before(dateTo)) {
-                c1 = removeTime(cacheCalendar1);
-                c2 = removeTime(cacheCalendar2);
+                c1 = getWithoutTime(cacheCalendar1);
+                c2 = getWithoutTime(cacheCalendar2);
             } else {
-                c1 = removeTime(cacheCalendar2);
-                c2 = removeTime(cacheCalendar1);
+                c1 = getWithoutTime(cacheCalendar2);
+                c2 = getWithoutTime(cacheCalendar1);
                 distanceSign = -1;
             }
 
@@ -1378,8 +1389,8 @@ public class ContactsEvents {
 
                 if (dateTo.before(dateFrom)) return Constants.STRING_EMPTY;
 
-                calendarDateFrom = removeTime(getCalendarFromDate(dateFrom));
-                calendarDateTo = removeTime(getCalendarFromDate(dateTo));
+                calendarDateFrom = getWithoutTime(getCalendarFromDate(dateFrom));
+                calendarDateTo = getWithoutTime(getCalendarFromDate(dateTo));
 
                 int yearFrom = calendarDateFrom.get(Calendar.YEAR);
                 int yearTo = calendarDateTo.get(Calendar.YEAR);
@@ -1456,11 +1467,11 @@ public class ContactsEvents {
             Calendar c2;
 
             if (date2.after(date1)) {
-                c1 = removeTime(getCalendarFromDate(date1));
-                c2 = removeTime(getCalendarFromDate(date2));
+                c1 = getWithoutTime(getCalendarFromDate(date1));
+                c2 = getWithoutTime(getCalendarFromDate(date2));
             } else {
-                c1 = removeTime(getCalendarFromDate(date2));
-                c2 = removeTime(getCalendarFromDate(date1));
+                c1 = getWithoutTime(getCalendarFromDate(date2));
+                c2 = getWithoutTime(getCalendarFromDate(date1));
             }
 
             int subst = 0;
@@ -2823,7 +2834,7 @@ public class ContactsEvents {
             String[] eventsArray = fileContent.split(Constants.STRING_EOL, -1);
             if (eventsArray[0].isEmpty()) return count;
             @Nullable Event event = null;
-            Calendar today = removeTime(new GregorianCalendar());
+            Calendar today = getWithoutTime(new GregorianCalendar());
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
 
             if (fileContent.startsWith(Constants.iCal_CalendarBegin)) {
@@ -3029,12 +3040,12 @@ public class ContactsEvents {
             @NonNull String eventKey) {
 
         String eventKey_current = eventKey;
-        String eventDate = null;
+        String eventDateStr = null;
         String eventType = null;
         String accountKey = null;
 
         try {
-            eventDate = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.DATA));
+            eventDateStr = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.DATA));
             eventType = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.TYPE));
             String accountType = cursor.getString(cache.getColumnIndex(cursor, Constants.ColumnNames_ACCOUNT_TYPE));
             if (accountType == null) accountType = Constants.STRING_NULL;
@@ -3042,7 +3053,7 @@ public class ContactsEvents {
             if (accountName == null) accountName = getResources().getString(R.string.account_type_local);
             accountKey = accountName + Constants.STRING_PARENTHESIS_OPEN + accountType + Constants.STRING_PARENTHESIS_CLOSE;
 
-            if (eventDate != null && eventType != null && (preferences_Accounts.isEmpty() || preferences_Accounts.contains(accountKey))) {
+            if (eventDateStr != null && eventType != null && (preferences_Accounts.isEmpty() || preferences_Accounts.contains(accountKey))) {
 
                 Event event = new Event();
                 String contactName = checkForNull(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.DISPLAY_NAME)));
@@ -3090,36 +3101,36 @@ public class ContactsEvents {
                     if (preferences_customevent1_enabled && preferences_customevent1_labels.reset(eventLabel.toLowerCase()).find()) {
 
                         event = createTypedEvent(Constants.Type_Custom1, eventLabel, Constants.Storage_Contacts);
-                        if (!preferences_customevent1_useyear && !eventDate.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
-                            eventDate = Constants.STRING_2MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
+                        if (!preferences_customevent1_useyear && !eventDateStr.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
+                            eventDateStr = Constants.STRING_2MINUS + eventDateStr.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_customevent2_enabled && preferences_customevent2_labels.reset(eventLabel.toLowerCase()).find()) {
 
                         event = createTypedEvent(Constants.Type_Custom2, eventLabel, Constants.Storage_Contacts);
-                        if (!preferences_customevent2_useyear && !eventDate.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
-                            eventDate = Constants.STRING_2MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
+                        if (!preferences_customevent2_useyear && !eventDateStr.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
+                            eventDateStr = Constants.STRING_2MINUS + eventDateStr.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_customevent3_enabled && preferences_customevent3_labels.reset(eventLabel.toLowerCase()).find()) {
 
                         event = createTypedEvent(Constants.Type_Custom3, eventLabel, Constants.Storage_Contacts);
-                        if (!preferences_customevent3_useyear && !eventDate.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
-                            eventDate = Constants.STRING_2MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
+                        if (!preferences_customevent3_useyear && !eventDateStr.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
+                            eventDateStr = Constants.STRING_2MINUS + eventDateStr.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_customevent4_enabled && preferences_customevent4_labels.reset(eventLabel.toLowerCase()).find()) {
 
                         event = createTypedEvent(Constants.Type_Custom4, eventLabel, Constants.Storage_Contacts);
-                        if (!preferences_customevent4_useyear && !eventDate.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
-                            eventDate = Constants.STRING_2MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
+                        if (!preferences_customevent4_useyear && !eventDateStr.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
+                            eventDateStr = Constants.STRING_2MINUS + eventDateStr.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_customevent5_enabled && preferences_customevent5_labels.reset(eventLabel.toLowerCase()).find()) {
 
                         event = createTypedEvent(Constants.Type_Custom5, eventLabel, Constants.Storage_Contacts);
-                        if (!preferences_customevent5_useyear && !eventDate.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
-                            eventDate = Constants.STRING_2MINUS + eventDate.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
+                        if (!preferences_customevent5_useyear && !eventDateStr.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
+                            eventDateStr = Constants.STRING_2MINUS + eventDateStr.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_nameday_labels != null && preferences_nameday_labels.reset(eventLabel.toLowerCase()).find()) {
@@ -3157,7 +3168,7 @@ public class ContactsEvents {
                     eventKey_next = eventKey_next.concat(Constants.STRING_COMMA).concat(eventLabel);
                 }
 
-                String newEventDate = accountType + Constants.STRING_COLON_SPACE + eventDate + Constants.STRING_COLON_SPACE
+                String newEventDate = accountType + Constants.STRING_COLON_SPACE + eventDateStr + Constants.STRING_COLON_SPACE
                         + getHash(((!accountType.equals(Constants.STRING_NULL) && !accountType.equals(accountName)) ? Constants.eventSourceContactPrefix : Constants.eventSourcePhonePrefix) + accountKey);
 
                 if (!eventKey_next.equalsIgnoreCase(eventKey_current)) { //Начало данных нового контакта
@@ -3249,7 +3260,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + resources.getString(R.string.msg_errors_details, accountKey, eventType, eventDate));
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + resources.getString(R.string.msg_errors_details, accountKey, eventType, eventDateStr));
         }
         return eventKey_current;
 
@@ -3290,7 +3301,7 @@ public class ContactsEvents {
             };
 
 
-            Calendar startPeriod = removeTime(Calendar.getInstance());
+            Calendar startPeriod = getWithoutTime(Calendar.getInstance());
 
             //событие на весь день начинается в 00:00:00 UTC, надо скорректировать часовую зону
             final int zoneOffset = TimeZone.getDefault().getOffset(startPeriod.getTimeInMillis());
@@ -3554,7 +3565,7 @@ public class ContactsEvents {
                 String contactTitle = Constants.STRING_EMPTY;
                 boolean namedFromEvent = false;
 
-                if (foundName == null) {
+                if (foundName == null && !matcherNames.isEmpty()) { // ..[name]..
                     for (Matcher matcherName : matcherNames) {
                         if (matcherName.reset(eventTitle).find()) {
                             foundName = matcherName.group(1);
@@ -3715,11 +3726,7 @@ public class ContactsEvents {
                     }
                 }
                 //Ставим на начало следующего дня
-                dateStartNextTime.set(Calendar.HOUR, 0);
-                dateStartNextTime.set(Calendar.HOUR_OF_DAY, 0);
-                dateStartNextTime.set(Calendar.MINUTE, 0);
-                dateStartNextTime.set(Calendar.SECOND, 0);
-                dateStartNextTime.set(Calendar.MILLISECOND, 0);
+                clearTime(dateStartNextTime);
                 dateStartNextTime.add(Calendar.DATE, 1);
             } while (dateStartNextTime.compareTo(dateEndNextTime) <= 0 && dateStartNextTime.compareTo(endPeriod) <= 0);
 
@@ -3807,7 +3814,7 @@ public class ContactsEvents {
 
             SharedPreferences preferences = context.getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
             Map<String, ?> prefs = preferences.getAll();
-            Calendar c = removeTime(Calendar.getInstance());
+            Calendar c = getWithoutTime(Calendar.getInstance());
 
             for (String eventId: prefs.keySet()) {
                 if (prefs.get(eventId) instanceof String) {
@@ -4189,7 +4196,7 @@ public class ContactsEvents {
 
             Set<String> fileList;
             //todo: переделать на java.Time https://www.devwithimagination.com/2018/03/13/performance-of-the-java-8-date-apis/
-            Calendar today = removeTime(new GregorianCalendar());
+            Calendar today = getWithoutTime(new GregorianCalendar());
             final boolean isFirstSecondLastFormat = Integer.toString(preferences_rules_files_name_format).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast));
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
 
@@ -6048,7 +6055,7 @@ public class ContactsEvents {
             if (isEmptyEventList()) return;
 
             List<String> magicList = new ArrayList<>(); //Для 5k событий
-            Calendar today = removeTime(new GregorianCalendar());
+            Calendar today = getWithoutTime(new GregorianCalendar());
             Date currentDay = today.getTime();
 
             setLocale(false);
@@ -6401,7 +6408,7 @@ public class ContactsEvents {
                 //Счётчики дней
                 if (getXDaysEventsCount() > 0 && isXDaysEvent(eventKey)) {
                     final List<String> valuePeriods = getXDaysEvent(eventKey);
-                    Calendar dateStart = removeTime(Calendar.getInstance());
+                    Calendar dateStart = getWithoutTime(Calendar.getInstance());
                     Calendar dateEnd = (Calendar) dateStart.clone();
                     dateEnd.add(Calendar.YEAR, 1);
                     int toRepeat = 365;
@@ -6746,7 +6753,7 @@ public class ContactsEvents {
                     break;
             }
 
-            Calendar today = removeTime(new GregorianCalendar());
+            Calendar today = getWithoutTime(new GregorianCalendar());
             Date currentDay = today.getTime();
 
             List<String> listPrevEventsPreparatory = new ArrayList<>();
@@ -7385,7 +7392,7 @@ public class ContactsEvents {
 
             setLocale(true);
 
-            Calendar today = removeTime(new GregorianCalendar());
+            Calendar today = getWithoutTime(new GregorianCalendar());
             Date currentDay = today.getTime();
 
             List<NotifyEvent> listNotify = new ArrayList<>();
@@ -9951,7 +9958,7 @@ public class ContactsEvents {
             if (!isBirthday || eventDay == null) return null;
 
             //Формируем информацию о персоне
-            Date currentDay = removeTime(Calendar.getInstance()).getTime();
+            Date currentDay = getWithoutTime(Calendar.getInstance()).getTime();
             boolean isDead = deathDatesForIds.containsKey(eventInfo[Position_contactID]); //Но есть годовщина смерти
             boolean isPassedBDay = (getCalendarFromDate(eventDay).get(Calendar.YEAR) != Calendar.getInstance().get(Calendar.YEAR)) || (eventDay.equals(currentDay));
             StringBuilder personInfo = new StringBuilder(getFullName(eventInfo));
@@ -11103,7 +11110,7 @@ public class ContactsEvents {
 
             if (preferences_DaysTypes.containsKey(packHash)) return;
 
-            Calendar today = removeTime(new GregorianCalendar());
+            Calendar today = getWithoutTime(new GregorianCalendar());
             for (String eventLine: events) {
                 String day = eventLine.trim();
 
@@ -11439,7 +11446,7 @@ public class ContactsEvents {
 
             long statCurrentModuleStart = System.currentTimeMillis();
             final TreeMap<Integer, String> eventData = new TreeMap<>();
-            Calendar today = removeTime(new GregorianCalendar());
+            Calendar today = getWithoutTime(new GregorianCalendar());
 
             int eventsPackCount = 1;
             int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());

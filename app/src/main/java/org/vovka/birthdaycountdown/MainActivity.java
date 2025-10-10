@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.10.2025, 22:56
+ *  * Created by Vladimir Belov on 10.10.2025, 10:06
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.10.2025, 21:41
+ *  * Last modified 10.10.2025, 09:48
  *
  */
 
@@ -871,7 +871,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateNextTime]);
                         } catch (ParseException ignored) { /**/ }
                         if (eventDate != null && birthDate != null) {
-                            Date today = ContactsEvents.removeTime(Calendar.getInstance()).getTime();
+                            Date today = ContactsEvents.getWithoutTime(Calendar.getInstance()).getTime();
                             if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
                             if (eventsData.deathDatesForIds.containsKey(contactID)) { //Но есть годовщина смерти
                                 textBig.append(getString(R.string.msg_age_could_be));
@@ -1153,7 +1153,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         try {
                             Date eventDate = ContactsEvents.sdf_DDMMYYYY.parse(selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
                             if (eventDate != null) {
-                                Calendar dateEnd = ContactsEvents.removeTime(Calendar.getInstance());
+                                Calendar dateEnd = ContactsEvents.getWithoutTime(Calendar.getInstance());
                                 dateEnd.add(Calendar.YEAR, 15);
                                 int toRepeat = 8;
                                 try {
@@ -1162,7 +1162,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     }
                                 } catch (NumberFormatException e) { /**/ }
                                 events = ContactsEvents.getInstance().getNextRepeatsForEvent(
-                                        ContactsEvents.removeTime(Calendar.getInstance()),
+                                        ContactsEvents.getWithoutTime(Calendar.getInstance()),
                                         dateEnd,
                                         ContactsEvents.getCalendarFromDate(eventDate),
                                         valuePeriods,

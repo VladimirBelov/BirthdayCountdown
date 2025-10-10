@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.10.2025, 22:56
+ *  * Created by Vladimir Belov on 10.10.2025, 10:06
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.10.2025, 22:46
+ *  * Last modified 10.10.2025, 09:48
  *
  */
 
@@ -1070,7 +1070,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
                 if (eventUseYear) {
                     final Date eventDate = new Date(eventYear - 1900, eventMonth, eventDay);
-                    final Date today = ContactsEvents.removeTime(Calendar.getInstance()).getTime();
+                    final Date today = ContactsEvents.getWithoutTime(Calendar.getInstance()).getTime();
                     int age = -1;
                     if (eventDate.before(today)) {
                         age = eventsData.countYearsDiff(eventDate, today);
