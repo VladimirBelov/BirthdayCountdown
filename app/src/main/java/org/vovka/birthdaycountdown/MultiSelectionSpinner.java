@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.07.2025, 14:02
+ *  * Created by Vladimir Belov on 11.10.2025, 03:07
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 06.07.2025, 13:49
+ *  * Last modified 10.10.2025, 22:57
  *
  */
 
@@ -232,6 +232,7 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
 
     public List<String> getSelectedStrings() {
         List<String> selection = new LinkedList<>();
+        if (_items == null) return null;
         int countSelected = _items.length;
         for (int i = 0; i < countSelected; i++) {
             if (mSelection[i]) {

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.10.2025, 14:51
+ *  * Created by Vladimir Belov on 11.10.2025, 03:07
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 10.10.2025, 14:47
+ *  * Last modified 11.10.2025, 02:50
  *
  */
 
@@ -330,7 +330,7 @@ public class ContactsEvents {
     boolean preferences_info_on;
     boolean preferences_extrafun;
     String preferences_language;
-    String preferences_icon;
+    String preferences_Icon;
     boolean preferences_menustyle_compact;
     public ColorTheme preferences_theme;
     String preferences_quiz_interface;
@@ -1562,7 +1562,7 @@ public class ContactsEvents {
             preferences_info_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_InfoMsg_On_key), getResources().getBoolean(R.bool.pref_Help_InfoMsg_On_default));
             preferences_extrafun = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_ExtraFun_On_key), getResources().getBoolean(R.bool.pref_Help_ExtraFun_On_default));
             preferences_language = getPreferenceString(preferences, context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
-            preferences_icon = getPreferenceString(preferences, context.getString(R.string.pref_Icon_key), context.getString(R.string.pref_Icon_default));
+            preferences_Icon = getPreferenceString(preferences, context.getString(R.string.pref_Icon_key), context.getString(R.string.pref_Icon_default));
             preferences_IconPackNumber = getPreferenceInt(preferences, context.getString(R.string.pref_IconPack_key), 0);
             initIconPack();
             preferences_menustyle_compact = getPreferenceBoolean(preferences, context.getString(R.string.pref_MenuStyle_key), getResources().getBoolean(R.bool.pref_MenuStyle_default));
@@ -2225,7 +2225,7 @@ public class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_Accounts_key), getPreferences_Accounts());
             editor.putInt(context.getString(R.string.pref_IconPack_key), preferences_IconPackNumber);
             editor.putString(context.getString(R.string.pref_Theme_key), Integer.toString(preferences_theme.prefNumber));
-            editor.putString(context.getString(R.string.pref_Icon_key), preferences_icon);
+            editor.putString(context.getString(R.string.pref_Icon_key), preferences_Icon);
             editor.putStringSet(context.getString(R.string.pref_Events_Hidden_key), preferences_hiddenEvents);
             editor.putStringSet(context.getString(R.string.pref_Events_Silent_key), preferences_silentEvents);
             editor.putStringSet(context.getString(R.string.pref_Events_Favorite_key), preferences_favoriteEvents);
@@ -5789,60 +5789,106 @@ public class ContactsEvents {
 
                         }
 
-                        //Случайное фото с соответствии с возрастом и полом
-                        Person person = new Person(context, singleEventArray);
-                        int gender = person.getGender();
+                        int resIconPack_event = -1;
+                        try {
+                            resIconPack_event = Integer.parseInt(this.resources.getString(R.string.pref_IconPack_event));
+                        } catch (NumberFormatException ignored) { /**/ }
+                        if (preferences_IconPackNumber == resIconPack_event) { //Иконка типа события
 
-                        //По-умолчанию
-                        Integer idPhoto = R.drawable.ic_pack00_m1;
-                        if (gender == 2 && preferences_IconPackImages_F.get(0) != null) {
-                            idPhoto = preferences_IconPackImages_F.get(0);
-                        } else if (preferences_IconPackImages_M.get(0) != null) {
-                            idPhoto = preferences_IconPackImages_M.get(0);
-                        }
+                            int iconResId;
 
-                        //Если определён возраст
-                        boolean foundInPeriod = false;
-                        int beforeAge = 0;
-                        if (person.Age >= 0) {
-                            if (gender == 2) {
-                                for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_F.entrySet()) {
-                                    beforeAge = entry.getKey();
-                                    if (beforeAge > 0 && person.Age <= beforeAge) {
-                                        idPhoto = preferences_IconPackImages_F.get(beforeAge);
-                                        foundInPeriod = true;
-                                        break;
-                                    }
-                                }
-                                if (!foundInPeriod) {
-                                    idPhoto = preferences_IconPackImages_F.get(beforeAge);
-                                }
+                            if (eventSubType.equals(getEventType(Constants.Type_BirthDay))) {
+                                iconResId = R.drawable.ic_event_birthday;
+                            } else if (eventSubType.equals(getEventType(Constants.Type_Anniversary))) {
+                                iconResId = R.drawable.ic_event_wedding;
+                            } else if (eventSubType.equals(getEventType(Constants.Type_NameDay))) {
+                                iconResId = R.drawable.ic_event_nameday;
+                            } else if (eventSubType.equals(getEventType(Constants.Type_Crowning))) {
+                                iconResId = R.drawable.ic_event_crowning;
+                            } else if (eventSubType.equals(getEventType(Constants.Type_Death))) {
+                                iconResId = R.drawable.ic_event_death;
+                            } else if (eventSubType.equals(getEventType(Constants.Type_HolidayEvent))) {
+                                iconResId = R.drawable.ic_event_holiday;
+                            } else if (eventSubType.equals(getEventType(Constants.Type_Custom1))) {
+                                iconResId = R.drawable.ic_event_custom1;
+                            } else if (eventSubType.equals(getEventType(Constants.Type_Custom2))) {
+                                iconResId = R.drawable.ic_event_custom2;
+                            } else if (eventSubType.equals(getEventType(Constants.Type_Custom3))) {
+                                iconResId = R.drawable.ic_event_custom3;
+                            } else if (eventSubType.equals(getEventType(Constants.Type_Custom4))) {
+                                iconResId = R.drawable.ic_event_custom4;
+                            } else if (eventSubType.equals(getEventType(Constants.Type_Custom5))) {
+                                iconResId = R.drawable.ic_event_custom5;
+                            } else if (eventSubType.equals(getEventType(Constants.Type_5K))) {
+                                iconResId = R.drawable.ic_event_medal;
+                            } else if (eventSubType.equals(getEventType(Constants.Type_Xdays))) {
+                                iconResId = R.drawable.ic_event_xdays;
+                            } else if (eventSubType.equals(getEventType(Constants.Type_Another))) {
+                                iconResId = R.drawable.ic_event_other;
+                            } else if (eventType.equals(getEventType(Constants.Type_Other))) {
+                                iconResId = R.drawable.ic_event_other;
                             } else {
-                                for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_M.entrySet()) {
-                                    beforeAge = entry.getKey();
-                                    if (beforeAge > 0 && person.Age <= beforeAge) {
-                                        idPhoto = preferences_IconPackImages_M.get(beforeAge);
-                                        foundInPeriod = true;
-                                        break;
+                                iconResId = R.drawable.ic_event_unknown;
+                            }
+
+                            bm = BitmapFactory.decodeResource(getResources(), iconResId);
+
+                        } else { //Случайное фото с соответствии с возрастом и полом
+
+                            Person person = new Person(context, singleEventArray);
+                            int gender = person.getGender();
+
+                            //По-умолчанию
+                            Integer idPhoto = R.drawable.ic_pack00_m1;
+                            if (gender == 2 && preferences_IconPackImages_F.get(0) != null) {
+                                idPhoto = preferences_IconPackImages_F.get(0);
+                            } else if (preferences_IconPackImages_M.get(0) != null) {
+                                idPhoto = preferences_IconPackImages_M.get(0);
+                            }
+
+                            //Если определён возраст
+                            boolean foundInPeriod = false;
+                            int beforeAge = 0;
+                            if (person.Age >= 0) {
+                                if (gender == 2) {
+                                    for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_F.entrySet()) {
+                                        beforeAge = entry.getKey();
+                                        if (beforeAge > 0 && person.Age <= beforeAge) {
+                                            idPhoto = preferences_IconPackImages_F.get(beforeAge);
+                                            foundInPeriod = true;
+                                            break;
+                                        }
                                     }
-                                }
-                                if (!foundInPeriod) {
-                                    idPhoto = preferences_IconPackImages_M.get(beforeAge);
+                                    if (!foundInPeriod) {
+                                        idPhoto = preferences_IconPackImages_F.get(beforeAge);
+                                    }
+                                } else {
+                                    for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_M.entrySet()) {
+                                        beforeAge = entry.getKey();
+                                        if (beforeAge > 0 && person.Age <= beforeAge) {
+                                            idPhoto = preferences_IconPackImages_M.get(beforeAge);
+                                            foundInPeriod = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!foundInPeriod) {
+                                        idPhoto = preferences_IconPackImages_M.get(beforeAge);
+                                    }
                                 }
                             }
-                        }
-                        if (idPhoto == null) return null;
-                        bm = getBitmap(context, idPhoto);
-                        if (bm == null) return null;
+                            if (idPhoto == null) return null;
+                            bm = getBitmap(context, idPhoto);
+                            if (bm == null) return null;
 
-                        int bmWidth = bm.getWidth();
-                        int bmHeight = bm.getHeight();
-                        if (bmHeight > bmWidth) {
-                            //noinspection SuspiciousNameCombination
-                            bm = Bitmap.createBitmap(bm, 0, (bmHeight - bmWidth) / 2, bmWidth, bmWidth);
-                        } else {
-                            //noinspection SuspiciousNameCombination
-                            bm = Bitmap.createBitmap(bm, (bmWidth - bmHeight) / 2, 0, bmHeight, bmHeight);
+                            int bmWidth = bm.getWidth();
+                            int bmHeight = bm.getHeight();
+                            if (bmHeight > bmWidth) {
+                                //noinspection SuspiciousNameCombination
+                                bm = Bitmap.createBitmap(bm, 0, (bmHeight - bmWidth) / 2, bmWidth, bmWidth);
+                            } else {
+                                //noinspection SuspiciousNameCombination
+                                bm = Bitmap.createBitmap(bm, (bmWidth - bmHeight) / 2, 0, bmHeight, bmHeight);
+                            }
                         }
                     }
                 }
@@ -9114,7 +9160,7 @@ public class ContactsEvents {
     }
 
     void setPreferences_Icon(String iconName) {
-        preferences_icon = iconName;
+        preferences_Icon = iconName;
     }
 
     Bitmap getPreferences_Icon() {
@@ -9130,8 +9176,8 @@ public class ContactsEvents {
             iconImages.add(R.mipmap.ic_launcher_grey_round);
             iconImages.add(R.mipmap.ic_launcher_black_round);
 
-            if (iconIDs.contains(preferences_icon)) {
-                Bitmap icon = getBitmap(context, iconImages.get(iconIDs.indexOf(preferences_icon)));
+            if (iconIDs.contains(preferences_Icon)) {
+                Bitmap icon = getBitmap(context, iconImages.get(iconIDs.indexOf(preferences_Icon)));
                 if (icon != null) return icon;
             }
             return defaultIcon;
@@ -9740,7 +9786,7 @@ public class ContactsEvents {
 
         try {
 
-            if (birthdayDatesForIds.isEmpty()) return null;
+            if (birthdayDatesForIds.isEmpty() && birthdayDatesForNames.isEmpty()) return null;
 
             //Получаем случайный день рождения
             int tryEvent = 0;
@@ -9842,7 +9888,7 @@ public class ContactsEvents {
 
         try {
 
-            if (birthdayDatesForIds.isEmpty()) return null;
+            if (birthdayDatesForIds.isEmpty() && birthdayDatesForNames.isEmpty()) return null;
 
             //Получаем случайный день рождения
             int tryEvent = 0;
@@ -9939,7 +9985,7 @@ public class ContactsEvents {
 
         try {
 
-            if (birthdayDatesForIds.isEmpty()) return null;
+            if (birthdayDatesForIds.isEmpty() && birthdayDatesForNames.isEmpty()) return null;
 
             //Получаем случайный день рождения
             int tryEvent = 0;
@@ -10602,7 +10648,7 @@ public class ContactsEvents {
             for (String iconID : resources.getStringArray(R.array.pref_Icon_values)) {
                 try {
                     final String activityName = BuildConfig.APPLICATION_ID + "." + iconID;
-                    if (preferences_icon.equals(iconID)) {
+                    if (preferences_Icon.equals(iconID)) {
                         int state = pm.getComponentEnabledSetting(new ComponentName(BuildConfig.APPLICATION_ID, activityName));
                         if (state != PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
                             ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_icon_changed, iconID));

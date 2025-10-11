@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.10.2025, 22:56
+ *  * Created by Vladimir Belov on 11.10.2025, 03:07
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.10.2025, 20:17
+ *  * Last modified 11.10.2025, 02:20
  *
  */
 
@@ -2174,7 +2174,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             alertToShow.setOnShowListener(arg0 -> {
                 alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                listView.setItemChecked(iconIDs.indexOf(eventsData.preferences_icon), true);
+                listView.setItemChecked(iconIDs.indexOf(eventsData.preferences_Icon), true);
             });
 
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);

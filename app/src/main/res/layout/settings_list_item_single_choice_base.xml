@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 11.10.2025, 03:07
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 11.10.2025, 02:03
+  ~  */
+  -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="48dp"
+        android:layout_height="49dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/hint_EventIcon"
+        android:scaleType="centerInside"
+        tools:ignore="ImageContrastCheck" />
+
+    <CheckedTextView
+        android:id="@+id/text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:maxLines="3"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:checkMark="?android:attr/listChoiceIndicatorSingle"
+        android:drawableStart="@null"
+        android:drawableLeft="@null" />
+
+</LinearLayout>

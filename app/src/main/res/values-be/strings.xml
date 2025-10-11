@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.10.2025, 22:56
+  ~  * Created by Vladimir Belov on 11.10.2025, 03:07
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 09.10.2025, 22:44
+  ~  * Last modified 11.10.2025, 00:41
   ~  */
   -->
 
@@ -332,6 +332,7 @@
         <item>Каляровыя</item>
         <item>Чорна-белыя</item>
         <item>Гарэзныя</item>
+        <item>Іконка тыпу падзеі</item>
     </string-array>
 
     <string-array name="pref_Icon_entries">
