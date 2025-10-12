@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.10.2025, 03:07
+ *  * Created by Vladimir Belov on 13.10.2025, 01:05
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 11.10.2025, 02:50
+ *  * Last modified 12.10.2025, 22:44
  *
  */
 
@@ -4784,12 +4784,12 @@ public class ContactsEvents {
             String orgNameFile = Constants.STRING_EMPTY;
             String titleFile = Constants.STRING_EMPTY;
             if (!TextUtils.isEmpty(contactID)) {
-                orgNameFile = checkForNull(eventData.get(Position_organization)).trim().toLowerCase();
+                orgNameFile = checkForNull(eventData.get(Position_organization)).trim();
                 titleFile = checkForNull(eventData.get(Position_title)).trim();
                 String orgNameContact = checkForNull(map_organizations.get(contactID)).trim().toLowerCase();
 
                 //Организации не совпадают
-                if (!orgNameContact.isEmpty() && !orgNameFile.isEmpty() && !orgNameContact.contains(orgNameFile)) contactID = null;
+                if (!orgNameContact.isEmpty() && !orgNameFile.isEmpty() && !orgNameContact.contains(orgNameFile.toLowerCase())) contactID = null;
             }
 
             if (!TextUtils.isEmpty(contactID)) {
@@ -5795,43 +5795,7 @@ public class ContactsEvents {
                         } catch (NumberFormatException ignored) { /**/ }
                         if (preferences_IconPackNumber == resIconPack_event) { //Иконка типа события
 
-                            int iconResId;
-
-                            if (eventSubType.equals(getEventType(Constants.Type_BirthDay))) {
-                                iconResId = R.drawable.ic_event_birthday;
-                            } else if (eventSubType.equals(getEventType(Constants.Type_Anniversary))) {
-                                iconResId = R.drawable.ic_event_wedding;
-                            } else if (eventSubType.equals(getEventType(Constants.Type_NameDay))) {
-                                iconResId = R.drawable.ic_event_nameday;
-                            } else if (eventSubType.equals(getEventType(Constants.Type_Crowning))) {
-                                iconResId = R.drawable.ic_event_crowning;
-                            } else if (eventSubType.equals(getEventType(Constants.Type_Death))) {
-                                iconResId = R.drawable.ic_event_death;
-                            } else if (eventSubType.equals(getEventType(Constants.Type_HolidayEvent))) {
-                                iconResId = R.drawable.ic_event_holiday;
-                            } else if (eventSubType.equals(getEventType(Constants.Type_Custom1))) {
-                                iconResId = R.drawable.ic_event_custom1;
-                            } else if (eventSubType.equals(getEventType(Constants.Type_Custom2))) {
-                                iconResId = R.drawable.ic_event_custom2;
-                            } else if (eventSubType.equals(getEventType(Constants.Type_Custom3))) {
-                                iconResId = R.drawable.ic_event_custom3;
-                            } else if (eventSubType.equals(getEventType(Constants.Type_Custom4))) {
-                                iconResId = R.drawable.ic_event_custom4;
-                            } else if (eventSubType.equals(getEventType(Constants.Type_Custom5))) {
-                                iconResId = R.drawable.ic_event_custom5;
-                            } else if (eventSubType.equals(getEventType(Constants.Type_5K))) {
-                                iconResId = R.drawable.ic_event_medal;
-                            } else if (eventSubType.equals(getEventType(Constants.Type_Xdays))) {
-                                iconResId = R.drawable.ic_event_xdays;
-                            } else if (eventSubType.equals(getEventType(Constants.Type_Another))) {
-                                iconResId = R.drawable.ic_event_other;
-                            } else if (eventType.equals(getEventType(Constants.Type_Other))) {
-                                iconResId = R.drawable.ic_event_other;
-                            } else {
-                                iconResId = R.drawable.ic_event_unknown;
-                            }
-
-                            bm = BitmapFactory.decodeResource(getResources(), iconResId);
+                            bm = BitmapFactory.decodeResource(getResources(), getEventIcon(eventType, eventSubType));
 
                         } else { //Случайное фото с соответствии с возрастом и полом
 
@@ -5996,6 +5960,51 @@ public class ContactsEvents {
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return null;
         }
+    }
+
+    /**
+     * Возвращает иконку события по типу и подтипу
+     *
+     * @param eventType Тип события
+     * @param eventSubType Подтип события
+     * @return Ссылка на ресурс иконки события
+     */
+    private static int getEventIcon(@NonNull String eventType, @NonNull String eventSubType) {
+        int iconResId;
+        if (eventSubType.equals(getEventType(Constants.Type_BirthDay))) {
+            iconResId = R.drawable.ic_event_birthday;
+        } else if (eventSubType.equals(getEventType(Constants.Type_Anniversary))) {
+            iconResId = R.drawable.ic_event_wedding;
+        } else if (eventSubType.equals(getEventType(Constants.Type_NameDay))) {
+            iconResId = R.drawable.ic_event_nameday;
+        } else if (eventSubType.equals(getEventType(Constants.Type_Crowning))) {
+            iconResId = R.drawable.ic_event_crowning;
+        } else if (eventSubType.equals(getEventType(Constants.Type_Death))) {
+            iconResId = R.drawable.ic_event_death;
+        } else if (eventSubType.equals(getEventType(Constants.Type_HolidayEvent))) {
+            iconResId = R.drawable.ic_event_holiday;
+        } else if (eventSubType.equals(getEventType(Constants.Type_Custom1))) {
+            iconResId = R.drawable.ic_event_custom1;
+        } else if (eventSubType.equals(getEventType(Constants.Type_Custom2))) {
+            iconResId = R.drawable.ic_event_custom2;
+        } else if (eventSubType.equals(getEventType(Constants.Type_Custom3))) {
+            iconResId = R.drawable.ic_event_custom3;
+        } else if (eventSubType.equals(getEventType(Constants.Type_Custom4))) {
+            iconResId = R.drawable.ic_event_custom4;
+        } else if (eventSubType.equals(getEventType(Constants.Type_Custom5))) {
+            iconResId = R.drawable.ic_event_custom5;
+        } else if (eventSubType.equals(getEventType(Constants.Type_5K))) {
+            iconResId = R.drawable.ic_event_medal;
+        } else if (eventSubType.equals(getEventType(Constants.Type_Xdays))) {
+            iconResId = R.drawable.ic_event_xdays;
+        } else if (eventSubType.equals(getEventType(Constants.Type_Another))) {
+            iconResId = R.drawable.ic_event_other;
+        } else if (eventType.equals(getEventType(Constants.Type_Other))) {
+            iconResId = R.drawable.ic_event_other;
+        } else {
+            iconResId = R.drawable.ic_event_unknown;
+        }
+        return iconResId;
     }
 
     @NonNull
@@ -10476,6 +10485,82 @@ public class ContactsEvents {
                     }
                 }
             }
+
+            // Параметры для строки msg_zero_events_body
+            String eventTypesParam = (preferences_list_event_types.isEmpty()
+                    ? Constants.FONT_COLOR_RED + resources.getString(R.string.msg_none)
+                    : Constants.FONT_COLOR_GREEN + listEventsTypes) + Constants.HTML_COLOR_END;
+
+            String permissionsAccountsAndContactsParam = resources.getString(R.string.stats_permissions_accounts,
+                    ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED
+                            ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END
+                            : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END)
+                    + resources.getString(R.string.stats_permissions_contacts,
+                    !checkNoContactsAccess()
+                            ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END
+                            : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END);
+
+            String accountsParam = (preferences_Accounts.isEmpty()
+                    ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_all)
+                    : !preferences_Accounts.contains(Constants.account_none)
+                    ? Constants.HTML_BR + Constants.FONT_COLOR_GREEN + String.join(Constants.STRING_COMMA_SPACE, preferences_Accounts)
+                    : Constants.FONT_COLOR_RED + String.join(Constants.STRING_COMMA_SPACE, preferences_Accounts))
+                    + Constants.HTML_COLOR_END;
+
+            String calendarPermissionParam = resources.getString(R.string.stats_permissions_calendar,
+                    !checkNoCalendarAccess()
+                            ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END
+                            : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END);
+
+            if (map_calendars.isEmpty()) fillCalendarList();
+
+            String birthdayCalendarsParam = preferences_BirthDay_calendars.isEmpty()
+                    ? Constants.STRING_MINUS
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_BirthDay_calendars, map_calendars) + Constants.HTML_COLOR_END;
+
+            String otherEventCalendarsParam = preferences_OtherEvent_calendars.isEmpty()
+                    ? Constants.STRING_MINUS
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_OtherEvent_calendars, map_calendars) + Constants.HTML_COLOR_END;
+
+            String holidayEventCalendarsParam = preferences_HolidayEvent_calendars.isEmpty()
+                    ? Constants.STRING_MINUS
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_HolidayEvent_calendars, map_calendars) + Constants.HTML_COLOR_END;
+
+            String multiTypeCalendarsParam = preferences_MultiType_calendars.isEmpty()
+                    ? Constants.STRING_MINUS
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_MultiType_calendars, map_calendars) + Constants.HTML_COLOR_END;
+
+            String birthdayFilesParam = preferences_Birthday_files.isEmpty()
+                    ? Constants.STRING_MINUS
+                    : String.join(Constants.STRING_COMMA_SPACE, preferences_Birthday_files);
+
+            String otherEventFilesParam = preferences_OtherEvent_files.isEmpty()
+                    ? Constants.STRING_MINUS
+                    : String.join(Constants.STRING_COMMA_SPACE, preferences_OtherEvent_files);
+
+            String holidayEventFilesParam = preferences_HolidayEvent_files.isEmpty()
+                    ? Constants.STRING_MINUS
+                    : String.join(Constants.STRING_COMMA_SPACE, preferences_HolidayEvent_files);
+
+            String multiTypeFilesParam = preferences_MultiType_files.isEmpty()
+                    ? Constants.STRING_MINUS
+                    : String.join(Constants.STRING_COMMA_SPACE, preferences_MultiType_files);
+
+            List<String> allFiltersList = Arrays.asList(
+                    resources.getString(R.string.events_scope_not_hidden),
+                    resources.getString(R.string.events_scope_all),
+                    resources.getString(R.string.events_scope_hidden),
+                    resources.getString(R.string.events_scope_silenced),
+                    resources.getString(R.string.events_scope_xdays),
+                    resources.getString(R.string.events_scope_unrecognized),
+                    resources.getString(R.string.events_scope_favorite));
+
+            String eventScopeFilterParam = (preferences_list_events_scope < 2
+                    ? Constants.FONT_COLOR_GREEN
+                    : Constants.FONT_COLOR_RED)
+                    + substringBefore(allFiltersList.get(preferences_list_events_scope), Constants.STRING_PARENTHESIS_OPEN)
+                    + Constants.HTML_COLOR_END;
+
             StringBuilder listEventsSources = new StringBuilder();
             if (!preferences_list_EventSources.isEmpty()) {
                 final EventSources eventSources = new EventSources();
@@ -10489,46 +10574,29 @@ public class ContactsEvents {
                     }
                 }
             }
-            if (map_calendars.isEmpty()) fillCalendarList();
 
-            List<String> allFiltersList = Arrays.asList(
-                    resources.getString(R.string.events_scope_not_hidden),
-                    resources.getString(R.string.events_scope_all),
-                    resources.getString(R.string.events_scope_hidden),
-                    resources.getString(R.string.events_scope_silenced),
-                    resources.getString(R.string.events_scope_xdays),
-                    resources.getString(R.string.events_scope_unrecognized),
-                    resources.getString(R.string.events_scope_favorite));
+            String eventSourcesParam = listEventsSources.length() == 0
+                    ? resources.getString(R.string.msg_all)
+                    : listEventsSources.toString();
 
+            // Формирование результата
             final String result = resources.getString(R.string.msg_zero_events_body,
-                    (preferences_list_event_types.isEmpty() ? Constants.FONT_COLOR_RED + resources.getString(R.string.msg_none) : Constants.FONT_COLOR_GREEN + listEventsTypes) + Constants.HTML_COLOR_END,
-                    resources.getString(R.string.stats_permissions_accounts, ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END)
-                            + resources.getString(R.string.stats_permissions_contacts, !checkNoContactsAccess() ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END),
-                    (
-                            preferences_Accounts.isEmpty() ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_all)
-                                    : !preferences_Accounts.contains(Constants.account_none) ? Constants.FONT_COLOR_GREEN + String.join(Constants.STRING_COMMA_SPACE, preferences_Accounts)
-                                    : Constants.FONT_COLOR_RED + String.join(Constants.STRING_COMMA_SPACE, preferences_Accounts)
-                    ) + Constants.HTML_COLOR_END,
-                    resources.getString(R.string.stats_permissions_calendar, !checkNoCalendarAccess() ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END),
-                    (preferences_BirthDay_calendars.isEmpty() ? Constants.STRING_MINUS
-                            : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_BirthDay_calendars, map_calendars) + Constants.HTML_COLOR_END),
-                    (preferences_OtherEvent_calendars.isEmpty() ? Constants.STRING_MINUS
-                            : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_OtherEvent_calendars, map_calendars) + Constants.HTML_COLOR_END),
-                    (preferences_HolidayEvent_calendars.isEmpty() ? Constants.STRING_MINUS
-                            : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_HolidayEvent_calendars, map_calendars) + Constants.HTML_COLOR_END),
-                    (preferences_MultiType_calendars.isEmpty() ? Constants.STRING_MINUS
-                            : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_MultiType_calendars, map_calendars) + Constants.HTML_COLOR_END),
-                    (preferences_Birthday_files.isEmpty() ? Constants.STRING_MINUS
-                            : String.join(Constants.STRING_COMMA_SPACE, preferences_Birthday_files)),
-                    (preferences_OtherEvent_files.isEmpty() ? Constants.STRING_MINUS
-                            : String.join(Constants.STRING_COMMA_SPACE, preferences_OtherEvent_files)),
-                    (preferences_HolidayEvent_files.isEmpty() ? Constants.STRING_MINUS
-                            : String.join(Constants.STRING_COMMA_SPACE, preferences_HolidayEvent_files)),
-                    (preferences_MultiType_files.isEmpty() ? Constants.STRING_MINUS
-                            : String.join(Constants.STRING_COMMA_SPACE, preferences_MultiType_files)),
-                    ((preferences_list_events_scope < 2 ? Constants.FONT_COLOR_GREEN : Constants.FONT_COLOR_RED) + substringBefore(allFiltersList.get(preferences_list_events_scope), Constants.STRING_PARENTHESIS_OPEN) + Constants.HTML_COLOR_END),
-                    (listEventsSources.length() == 0 ? resources.getString(R.string.msg_all) : listEventsSources.toString())
+                    eventTypesParam,
+                    permissionsAccountsAndContactsParam,
+                    accountsParam,
+                    calendarPermissionParam,
+                    birthdayCalendarsParam,
+                    otherEventCalendarsParam,
+                    holidayEventCalendarsParam,
+                    multiTypeCalendarsParam,
+                    birthdayFilesParam,
+                    otherEventFilesParam,
+                    holidayEventFilesParam,
+                    multiTypeFilesParam,
+                    eventScopeFilterParam,
+                    eventSourcesParam
             );
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 return result;
             } else {
@@ -12227,4 +12295,5 @@ public class ContactsEvents {
             return new String(chars);
         } else {return str;}
     }
+
 }

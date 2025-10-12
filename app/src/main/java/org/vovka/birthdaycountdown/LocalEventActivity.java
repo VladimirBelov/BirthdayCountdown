@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.10.2025, 10:06
+ *  * Created by Vladimir Belov on 13.10.2025, 01:05
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 10.10.2025, 09:48
+ *  * Last modified 13.10.2025, 00:30
  *
  */
 
@@ -60,8 +60,8 @@ import androidx.core.app.ActivityCompat;
 
 import org.vovka.birthdaycountdown.imagecropper.CropIntent;
 
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -175,8 +175,10 @@ public class LocalEventActivity extends AppCompatActivity {
                 TextView editDate = getActivity().findViewById(R.id.editDate);
                 CheckBox checkUseYear = viewActivity.findViewById(R.id.check_use_year);
                 CheckBox checkIsBC = viewActivity.findViewById(R.id.check_bc);
-                android.widget.DatePicker datePicker = viewActivity.findViewById(R.id.datePicker);
 
+                checkIsBC.setChecked(isBC.get());
+
+                android.widget.DatePicker datePicker = viewActivity.findViewById(R.id.datePicker);
                 //В разных версиях Android этот spinner назывался по-разному. Попробуем найти его
                 @SuppressLint("DiscouragedApi")
                 int yearSpinnerId = getResources().getIdentifier(Constants.RES_TYPE_YEAR, Constants.RES_TYPE_ID, Constants.RES_PACKAGE_ANDROID);
@@ -207,9 +209,7 @@ public class LocalEventActivity extends AppCompatActivity {
                         checkIsBC.setVisibility(View.GONE);
                     }
                 }
-                checkIsBC.setChecked(isBC.get());
-
-                datePicker.post(() -> handleDateChanged(selectedYear.get(), selectedMonth.get(), selectedDay.get()));
+                datePicker.post(() -> handleDateChanged(checkIsBC.isChecked(), selectedYear.get(), selectedMonth.get(), selectedDay.get()));
 
                 checkUseYear.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
@@ -225,12 +225,16 @@ public class LocalEventActivity extends AppCompatActivity {
                         isBC.set(false);
                         checkIsBC.setVisibility(View.GONE);
                     }
+                    handleDateChanged(isBC.get(), selectedYear.get(), selectedMonth.get(), selectedDay.get());
                 });
 
-                checkIsBC.setOnCheckedChangeListener((buttonView, isChecked) -> isBC.set(isChecked));
+                checkIsBC.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    isBC.set(isChecked);
+                    handleDateChanged(isBC.get(), selectedYear.get(), selectedMonth.get(), selectedDay.get());
+                });
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    datePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> handleDateChanged(year, monthOfYear, dayOfMonth));
+                    datePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> handleDateChanged(checkIsBC.isChecked(), year, monthOfYear, dayOfMonth));
                 }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
@@ -251,17 +255,22 @@ public class LocalEventActivity extends AppCompatActivity {
             }
         }
 
-        private void handleDateChanged(int year, int monthOfYear, int dayOfMonth) {
+        private void handleDateChanged(boolean isBC, int year, int month, int day) {
             selectedYear.set(year);
-            selectedMonth.set(monthOfYear);
-            selectedDay.set(dayOfMonth);
+            selectedMonth.set(month);
+            selectedDay.set(day);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //Почему-то на младших android не обновляет view
                 TextView textWeekDay = viewActivity.findViewById(R.id.week_day);
-                textWeekDay.setVisibility(View.VISIBLE);
-                SimpleDateFormat sdf = new SimpleDateFormat("EEEE", Locale.getDefault());
-                textWeekDay.setText(getResources().getString(R.string.local_event_date_picker_week_day,
-                        ContactsEvents.toProperCase(sdf.format(new Date(year - 1900, monthOfYear, dayOfMonth))))
-                );
+                if (useYear.get()) {
+                    textWeekDay.setVisibility(View.VISIBLE);
+                    int dow = DayOfWeekCalculator.getDayOfWeek(isBC, year, month + 1, day);
+                    String name = DayOfWeekCalculator.getDayName(dow, Locale.getDefault());
+                    textWeekDay.setText(getResources().getString(R.string.local_event_date_picker_week_day,
+                            ContactsEvents.toProperCase(name)));
+                } else {
+                    textWeekDay.setVisibility(View.INVISIBLE);
+                }
             }
         }
 
@@ -271,6 +280,90 @@ public class LocalEventActivity extends AppCompatActivity {
 
         @Override
         public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {}
+    }
+
+    static class DayOfWeekCalculator {
+
+        /** Вычисляет день недели для заданной даты по алгоритму Зеллера
+         * @param year  Положительный — н.э., отрицательный или 0 — до н.э.
+         *              Например: 1900 = 1900 н.э., 0 = 1 г. до н.э., -1 = 2 г. до н.э.
+         *              Но для удобства ввода используем другой метод (см. ниже).
+         * @param month 1–12 (январь = 1)
+         * @param day   1–31
+         * @return день недели: 1 = воскресенье, 2 = понедельник, ..., 7 = суббота (как в Calendar)
+         */
+        public static int getDayOfWeek(int year, int month, int day) {
+            // Определяем, какой календарь использовать
+            boolean isGregorian = isGregorianDate(year, month, day);
+
+            // Алгоритм Зеллера (универсальный)
+            if (month <= 2) {
+                month += 12;
+                year--;
+            }
+
+            int K = year % 100;
+            int J = year / 100;
+            int h;
+            if (isGregorian) {
+                h = day + (13 * (month + 1)) / 5 + K + (K / 4) + (J / 4) + 5 * J;
+            } else {
+                h = day + (13 * (month + 1)) / 5 + K + (K / 4) + 5 + 6 * J;
+            }
+            h = h % 7;
+            if (h < 0) h += 7;
+
+            // h: 0 = суббота, 1 = воскресенье, 2 = понедельник, ..., 6 = пятница
+            int[] zellerToCalendar = {7, 1, 2, 3, 4, 5, 6}; // SAT=7, SUN=1, MON=2, ...
+            return zellerToCalendar[h];
+        }
+
+        /** Проверяет, используется ли григорианский календарь для даты.
+         * Григорианский календарь введён 15 октября 1582 г.
+         * Всё до 1582-10-04 — юлианский.
+         * 1582-10-05 — 1582-10-14 — не существуют (пропущены).
+         */
+        private static boolean isGregorianDate(int year, int month, int day) {
+            if (year < 1582) return false;
+            if (year > 1582) return true;
+            if (month < 10) return false;
+            if (month > 10) return true;
+            return day >= 15; // 15 октября 1582 и позже — григорианский
+        }
+
+        /** Удобный метод для вызова с исторической нотацией
+         * @param yearBC если true, то year — это год до н.э. (1 = 1 г. до н.э.)
+         * @param year    год (положительное число)
+         * @param month   1–12
+         * @param day     1–31
+         * @return день недели (1–7, как в Calendar)
+         */
+        public static int getDayOfWeek(boolean yearBC, int year, int month, int day) {
+            if (year <= 0) {
+                throw new IllegalArgumentException("Year must be positive");
+            }
+            int prolepticYear = yearBC ? 1 - year : year;
+            return getDayOfWeek(prolepticYear, month, day);
+        }
+
+        /** Возвращает краткое название дня на локальном языке
+         * @param dayOfWeek Номер дня (1 - воскресенье)
+         * @param locale Локаль
+         * @return название для
+         */
+        static String getShortDayName(int dayOfWeek, Locale locale) {
+            return new DateFormatSymbols(locale).getShortWeekdays()[dayOfWeek];
+        }
+
+        /** Возвращает название дня на локальном языке
+         * @param dayOfWeek Номер дня (1 - воскресенье)
+         * @param locale Локаль
+         * @return название для
+         */
+        static String getDayName(int dayOfWeek, Locale locale) {
+            return new DateFormatSymbols(locale).getWeekdays()[dayOfWeek];
+        }
+
     }
 
     @Override
@@ -836,12 +929,15 @@ public class LocalEventActivity extends AppCompatActivity {
 
             Date date = new Date(eventYear - 1900, eventMonth, eventDay);
             if (eventUseYear) {
-                SimpleDateFormat sdf = new SimpleDateFormat(" (EEE)", Locale.getDefault());
+                int dow = DayOfWeekCalculator.getDayOfWeek(eventIsBC, eventYear, eventMonth + 1, eventDay);
+                String name = DayOfWeekCalculator.getShortDayName(dow, Locale.getDefault());
 
                 dateFormated = eventsData.getDateFormatted(
                         ContactsEvents.sdf_DDMMYYYY.format(date), ContactsEvents.FormatDate.WithYear)
                         + (eventIsBC ? eventsData.getResources().getString(R.string.msg_after_year_bc) : Constants.STRING_EMPTY)
-                        + ContactsEvents.toProperCase(sdf.format(date));
+                        + Constants.STRING_PARENTHESIS_OPEN
+                        + name.toLowerCase()
+                        + Constants.STRING_PARENTHESIS_CLOSE;
             } else {
                 dateFormated = eventsData.getDateFormatted(
                         ContactsEvents.sdf_DDMM.format(date), ContactsEvents.FormatDate.WithoutYear);
