@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.10.2025, 02:32
+ *  * Created by Vladimir Belov on 15.10.2025, 00:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.10.2025, 01:26
+ *  * Last modified 14.10.2025, 21:19
  *
  */
 
@@ -187,12 +187,11 @@ class WidgetUpdater {
 
             eventsToShow = Math.min(this.eventsCount, eventsData.eventList.size());
 
-            //Увеличение шрифтов в зависимости от размеров окна
-            int cells = getCellsForSize(Math.min(width, height));
-
             if (widgetPref.size() > 1) {
                 fontMagnify = ContactsEvents.getSizeForWidgetElement(widgetPref, 1, 1, 1);
             } else {
+                //Увеличение шрифтов в зависимости от размеров окна
+                int cells = getCellsForSize(Math.min(width, height));
                 fontMagnify = 1 + 1.0 * (cells - 1);
             }
 
@@ -682,9 +681,9 @@ class WidgetUpdater {
                 }
             }
 
-            Bitmap photo = eventsData.getEventPhoto(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Photo_ID))
+            ContactsEvents.EventPhoto photo = eventsData.getEventPhotoInternal(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Photo_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Photo_ID)), true, false, roundingFactor);
-            if (photo != null) {
+            if (photo.bitmap != null) {
 
                 //https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
                 //https://stackoverflow.com/questions/7895118/android-remoteviews-how-to-set-scaletype-of-an-imageview-inside-a-widget
@@ -692,16 +691,17 @@ class WidgetUpdater {
                 int id_widget_Photo_Centered = resources.getIdentifier(Constants.WIDGET_IMAGE_VIEW_CENTERED + eventsDisplayed, Constants.STRING_ID, packageName);
                 int id_widget_Photo_Start = resources.getIdentifier(Constants.WIDGET_IMAGE_VIEW_START + eventsDisplayed, Constants.STRING_ID, packageName);
                 int id_Photo;
-                if (roundingFactor < 1) {
-                    views.setViewVisibility(id_widget_Photo, View.VISIBLE);
-                    views.setViewVisibility(id_widget_Photo_Centered, View.GONE);
-                    views.setViewVisibility(id_widget_Photo_Start, View.GONE);
-                    id_Photo = id_widget_Photo;
-                } else if (roundingFactor > 8) {
+
+                if (roundingFactor > 8 || photo.type == ContactsEvents.PhotoType.ICON) {
                     views.setViewVisibility(id_widget_Photo, View.GONE);
                     views.setViewVisibility(id_widget_Photo_Centered, View.VISIBLE);
                     views.setViewVisibility(id_widget_Photo_Start, View.GONE);
                     id_Photo = id_widget_Photo_Centered;
+                } else if (roundingFactor < 1) {
+                    views.setViewVisibility(id_widget_Photo, View.VISIBLE);
+                    views.setViewVisibility(id_widget_Photo_Centered, View.GONE);
+                    views.setViewVisibility(id_widget_Photo_Start, View.GONE);
+                    id_Photo = id_widget_Photo;
                 } else {
                     views.setViewVisibility(id_widget_Photo, View.GONE);
                     views.setViewVisibility(id_widget_Photo_Centered, View.GONE);
@@ -711,9 +711,9 @@ class WidgetUpdater {
 
                 //необходимо уменьшать, потому что вот: https://stackoverflow.com/questions/13494898/remoteviews-for-widget-update-exceeds-max-bitmap-memory-usage-error
                 final int dstWidth = eventsToShow > 1 ? (4 * width / eventsToShow) : (2 * width);
-                final int dstHeight = eventsToShow > 1 ? (4 * photo.getHeight() * width) / (photo.getWidth() * eventsToShow) : (2 * photo.getHeight() * width / photo.getWidth());
+                final int dstHeight = eventsToShow > 1 ? (4 * photo.bitmap.getHeight() * width) / (photo.bitmap.getWidth() * eventsToShow) : (2 * photo.bitmap.getHeight() * width / photo.bitmap.getWidth());
                 if (dstHeight > 0 && dstWidth > 0) {
-                    Bitmap photo_small = Bitmap.createScaledBitmap(photo, dstWidth, dstHeight, true);
+                    Bitmap photo_small = Bitmap.createScaledBitmap(photo.bitmap, dstWidth, dstHeight, true);
                     views.setImageViewBitmap(id_Photo, photo_small);
                 } else {
                     Bitmap photo_icon = eventsData.getEventPhoto(event, false, true, false, roundingFactor);
@@ -976,6 +976,10 @@ class WidgetUpdater {
         }
     }
 
+    /** Возвращает количество "ячеек", которые занимает виджет
+     * @param size Ширина или высота виджета в DP
+     * @return Количество ячеек
+     */
     private static int getCellsForSize(int size) {
         int n = 2;
         while (70 * n - 30 < (size)) {

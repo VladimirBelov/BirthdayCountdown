@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.10.2025, 03:34
+ *  * Created by Vladimir Belov on 15.10.2025, 00:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.10.2025, 03:15
+ *  * Last modified 14.10.2025, 22:06
  *
  */
 
@@ -93,6 +93,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.IconCompat;
 import androidx.core.text.HtmlCompat;
 
@@ -2148,10 +2149,18 @@ public class ContactsEvents {
      * @return Цвет
      */
     @ColorInt int getThemeBackColor() {
-        TypedArray ta = getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
-        int newColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
-        ta.recycle();
-        return newColor;
+        if (context == null) return 0;
+        Resources.Theme theme = context.getResources().newTheme();
+        theme.applyStyle(preferences_theme.themeMain, true);
+        TypedArray ta = theme.obtainStyledAttributes(R.styleable.Theme);
+        try {
+            int resId = ta.getResourceId(R.styleable.Theme_windowStatusbarColor, 0);
+            return resId != 0
+                    ? ResourcesCompat.getColor(getResources(), resId, theme)
+                    : ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
+        } finally {
+            ta.recycle();
+        }
     }
 
     /** Заменяет один цвет на другой в Bitmap
@@ -5659,7 +5668,21 @@ public class ContactsEvents {
         return sb.toString();
     }
 
-    /** Возвращает фото для события
+    enum PhotoType {
+        CONTACT_PHOTO, EVENT_PHOTO, SILHUETE, ICON
+    }
+
+    static class EventPhoto {
+        public final Bitmap bitmap;
+        public PhotoType type;
+
+        public EventPhoto(Bitmap bitmap, PhotoType type) {
+            this.bitmap = bitmap;
+            this.type = type;
+        }
+    }
+
+    /** Возвращает фото для события (делегат. когда не нужно получать тип фото)
      * @param event Данные о событии
      * @param showPhotos Показывать фото (иначе - пиктограммы)
      * @param suggestSquared Делать фото квадратным
@@ -5667,12 +5690,24 @@ public class ContactsEvents {
      * @param roundingFactor Параметры скругления углов
      * @return Фото
      */
-    @Nullable
     Bitmap getEventPhoto(@NonNull String event, boolean showPhotos, boolean suggestSquared, boolean addFavoritesSign, int roundingFactor) {
+        return getEventPhotoInternal(event, showPhotos, suggestSquared, addFavoritesSign, roundingFactor).bitmap;
+    }
+
+    /** Возвращает фото для события
+     * @param event Данные о событии
+     * @param showPhotos Показывать фото (иначе - пиктограммы)
+     * @param suggestSquared Делать фото квадратным
+     * @param addFavoritesSign Добавить значок избранного контакта
+     * @param roundingFactor Параметры скругления углов
+     * @return EventPhoto (bitmap + type)
+     */
+    @NonNull EventPhoto getEventPhotoInternal(@NonNull String event, boolean showPhotos, boolean suggestSquared, boolean addFavoritesSign, int roundingFactor) {
 
         boolean makeSquared = suggestSquared;
         boolean addMourningTape = false;
         Bitmap bm = null;
+        PhotoType type = null;
 
         try {
 
@@ -5697,6 +5732,7 @@ public class ContactsEvents {
                         byte[] decodedBytes = Base64.decode(eventPhoto, Base64.DEFAULT);
                         bm = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
                     }
+                    if (bm != null) type = PhotoType.EVENT_PHOTO;
                 } catch (Exception ignored) { /**/ }
             }
 
@@ -5704,6 +5740,7 @@ public class ContactsEvents {
                 if (eventType.equals(getEventType(Constants.Type_Unrecognized))) {
 
                     bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_unknown);
+                    type = PhotoType.ICON;
 
                 } else if ((
                         eventSubType.equals(getEventType(Constants.Type_CalendarEvent))
@@ -5712,10 +5749,12 @@ public class ContactsEvents {
                 ) && TextUtils.isEmpty(singleEventArray[Position_photo_uri])) {
 
                     bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_other);
+                    type = PhotoType.ICON;
 
                 } else if (eventSubType.equals(getEventType(Constants.Type_HolidayEvent))) {
 
                     bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_holiday);
+                    type = PhotoType.ICON;
 
                     //todo: https://stackoverflow.com/questions/77168650/draw-emoji-to-image-in-android
                     //https://stackoverflow.com/questions/41212092/drawing-emojis-on-android-canvas-using-unicode-values
@@ -5747,6 +5786,7 @@ public class ContactsEvents {
                             bm = BitmapFactory.decodeStream(buf);
                             buf.close();
                             photo_stream.close();
+                            if (bm != null) type = PhotoType.CONTACT_PHOTO;
                         }
                     }
 
@@ -5794,10 +5834,10 @@ public class ContactsEvents {
                             resIconPack_event = Integer.parseInt(this.resources.getString(R.string.pref_IconPack_event));
                         } catch (NumberFormatException ignored) { /**/ }
                         if (preferences_IconPackNumber == resIconPack_event) { //Иконка типа события
-
                             bm = BitmapFactory.decodeResource(getResources(), getEventIcon(eventType, eventSubType));
-
-                        } else { //Случайное фото с соответствии с возрастом и полом
+                            if (bm != null) type = PhotoType.ICON;
+                        }
+                        if (bm == null) { //Случайное фото с соответствии с возрастом и полом
 
                             Person person = new Person(context, singleEventArray);
                             int gender = person.getGender();
@@ -5840,9 +5880,13 @@ public class ContactsEvents {
                                     }
                                 }
                             }
-                            if (idPhoto == null) return null;
+                            if (idPhoto == null) return new EventPhoto(null, null);
                             bm = getBitmap(context, idPhoto);
-                            if (bm == null) return null;
+                            if (bm == null) {
+                                return new EventPhoto(null, null);
+                            } else {
+                                type = PhotoType.SILHUETE;
+                            }
 
                             int bmWidth = bm.getWidth();
                             int bmHeight = bm.getHeight();
@@ -5857,7 +5901,7 @@ public class ContactsEvents {
                     }
                 }
             }
-            if (bm == null) return null;
+            if (bm == null) return new EventPhoto(null, null);
 
             int roundingRadiusX = 0;
             int roundingRadiusY = 0;
@@ -5953,12 +5997,12 @@ public class ContactsEvents {
 
             }
 
-            return toRoundCorner(bm, roundingRadiusX, roundingRadiusY);
+            return new EventPhoto(toRoundCorner(bm, roundingRadiusX, roundingRadiusY), type);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return null;
+            return new EventPhoto(null, null);
         }
     }
 
@@ -6302,15 +6346,24 @@ public class ContactsEvents {
                         singleEventArray[Position_eventDateNextTime] = sdf_DDMMYYYY.format(eventDateThisTime); //следующая дата события
                 }
 
-            } else { //Дата следующего события уже посчитана
-                String dayValue = dayArray[0];
+            } else { //Дата следующего события уже посчитана (обычно такое с событиями из календарей)
                 try {
-                    eventDateFirstTime = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateFirstTime]);
                     isYear = true;
-                    if (dayArray.length == 1) {
+                    for (String dayValue: dayArray) {
                         String storedDate = substringBetween(dayValue, Constants.STRING_COLON_SPACE, Constants.STRING_COLON_SPACE);
                         if (storedDate.startsWith(Constants.STRING_2MINUS)) {
                             isYear = false;
+                        } else {
+                            isYear = true;
+                            break;
+                        }
+                    }
+                    if (isYear) {
+                        eventDateFirstTime = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateFirstTime]);
+                    } else {
+                        String strDateFirstTime = singleEventArray[Position_eventDateFirstTime];
+                        if (strDateFirstTime.length() > 5) {
+                            singleEventArray[Position_eventDateFirstTime] = strDateFirstTime.substring(0, 5); //оригинальное событие без года
                         }
                     }
                 } catch (ParseException e) { /**/ }
@@ -6318,8 +6371,8 @@ public class ContactsEvents {
                     eventDateThisTime = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateNextTime]);
                 } catch (ParseException e) { /**/ }
 
-                if (!dayValue.isEmpty()) {
-                    increaseStatForEventSources(substringBefore(dayValue, Constants.STRING_COLON_SPACE));
+                if (!dayArray[0].isEmpty()) {
+                    increaseStatForEventSources(substringBefore(dayArray[0], Constants.STRING_COLON_SPACE));
                 }
 
             }
@@ -9338,15 +9391,15 @@ public class ContactsEvents {
 
     /** Возвращает отформатированную дату
      * @param dateIn Дата строкой DDMMYYY
-     * @param format Формат даты (с годом или без)
+     * @param dateFormat Формат даты (с годом или без)
      * @return Отформатированная дата, согласно указанному формату и настройки формата даты
      */
     @NonNull
-    String getDateFormatted(String dateIn, FormatDate format) {
+    String getDateFormatted(String dateIn, FormatDate dateFormat) {
 
         String resultString = Constants.STRING_EMPTY;
         if (TextUtils.isEmpty(dateIn)) return resultString;
-        if (preferences_date_format == 2 && format == FormatDate.WithYear)
+        if (preferences_date_format == 2 && dateFormat == FormatDate.WithYear)
             return dateIn; // DD.MM.YYYY
 
         String postfixBC = getResources().getString(R.string.msg_after_year_bc);
@@ -9387,9 +9440,9 @@ public class ContactsEvents {
                         } catch (Exception e2) { /**/ }
                     }
                     if (eventDate != null) {
-                        if (format == FormatDate.WithYear && isYearPresent) {
+                        if (dateFormat == FormatDate.WithYear && isYearPresent) {
                             sdfOut = new SimpleDateFormat(Constants.DATE_MM_DD_YYYY, locale);
-                        } else if (!isYearPresent || format == FormatDate.WithoutYear) {
+                        } else if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
                             sdfOut = new SimpleDateFormat(Constants.DATE_MM_DD, locale);
                         }
                         if (sdfOut != null) resultString = sdfOut.format(eventDate).concat(postfixBC);
@@ -9407,9 +9460,9 @@ public class ContactsEvents {
                         } catch (Exception e2) { /**/ }
                     }
                     if (eventDate != null) {
-                        if (format == FormatDate.WithYear && isYearPresent) {
+                        if (dateFormat == FormatDate.WithYear && isYearPresent) {
                             sdfOut = new SimpleDateFormat(Constants.DATE_UK, locale);
-                        } else if (!isYearPresent || format == FormatDate.WithoutYear) {
+                        } else if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
                             sdfOut = new SimpleDateFormat(Constants.DATE_UK_NO_YEAR, locale);
                         }
                         if (sdfOut != null) resultString = sdfOut.format(eventDate).concat(postfixBC);
@@ -9427,9 +9480,9 @@ public class ContactsEvents {
                         } catch (Exception e2) { /**/ }
                     }
                     if (eventDate != null) {
-                        if (format == FormatDate.WithYear && isYearPresent) {
+                        if (dateFormat == FormatDate.WithYear && isYearPresent) {
                             sdfOut = new SimpleDateFormat(Constants.DATE_IND, locale);
-                        } else if (!isYearPresent || format == FormatDate.WithoutYear) {
+                        } else if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
                             sdfOut = new SimpleDateFormat(Constants.DATE_IND_NO_YEAR, locale);
                         }
                         if (sdfOut != null) resultString = sdfOut.format(eventDate).concat(postfixBC);
@@ -9447,9 +9500,9 @@ public class ContactsEvents {
                         } catch (Exception e2) { /**/ }
                     }
                     if (eventDate != null) {
-                        if (format == FormatDate.WithYear && isYearPresent) {
+                        if (dateFormat == FormatDate.WithYear && isYearPresent) {
                             sdfOut = new SimpleDateFormat(Constants.DATE_DD_MMM_YYYY, locale);
-                        } else if (!isYearPresent || format == FormatDate.WithoutYear) {
+                        } else if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
                             sdfOut = new SimpleDateFormat(Constants.DATE_DD_MMM, locale);
                         }
                         if (sdfOut != null) resultString = sdfOut.format(eventDate).concat(postfixBC);
@@ -9467,9 +9520,9 @@ public class ContactsEvents {
                         } catch (Exception e2) { /**/ }
                     }
                     if (eventDate != null) {
-                        if (format == FormatDate.WithYear && isYearPresent) {
+                        if (dateFormat == FormatDate.WithYear && isYearPresent) {
                             sdfOut = new SimpleDateFormat(Constants.DATE_D_MMMM_YYYY, locale);
-                        } else if (!isYearPresent || format == FormatDate.WithoutYear) {
+                        } else if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
                             sdfOut = new SimpleDateFormat(Constants.DATE_D_MMMM, locale);
                         }
                         if (sdfOut != null) resultString = sdfOut.format(eventDate).concat(postfixBC);
@@ -9488,9 +9541,9 @@ public class ContactsEvents {
                         } catch (Exception e2) { /**/ }
                     }
                     if (eventDate != null) {
-                        if (format == FormatDate.WithYear && isYearPresent) {
+                        if (dateFormat == FormatDate.WithYear && isYearPresent) {
                             resultString = DateUtils.formatDateTime(context, eventDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_NUMERIC_DATE);
-                        } else if (!isYearPresent || format == FormatDate.WithoutYear) {
+                        } else if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
                             resultString = DateUtils.formatDateTime(context, eventDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_NUMERIC_DATE);
                         }
                     }
@@ -11015,55 +11068,72 @@ public class ContactsEvents {
         }
     }
 
+    /** Возвращает коэффициент масштабирования размера элементов виджета
+     * @param widgetPref Настройки виджета
+     * @param elementNumber Порядковый номер мультипликатора размера в настройке (они хранятся как размер1+размер2+...)
+     * @param baseSize Базовый размер, который нужно изменять. например {@link Constants#WIDGET_TEXT_SIZE_TINY}
+     * @param defaultMagnify Мультипликатор по-умолчанию ("Авто")
+     * @return Коэффициент масштабирования
+     */
     static float getSizeForWidgetElement(List<String> widgetPref, int elementNumber, int baseSize, double defaultMagnify) {
         double magnify = defaultMagnify;
         try {
 
             if (widgetPref != null && widgetPref.size() > elementNumber) {
-                String[] prefMagnify = widgetPref.get(1).split(Constants.REGEX_PLUS, -1);
-                if (prefMagnify.length >= elementNumber) {
-                    String prefTextMagnifyIndex = prefMagnify[elementNumber - 1];
+                String[] prefArrayMagnify = widgetPref.get(1).split(Constants.REGEX_PLUS, -1);
+                if (prefArrayMagnify.length >= elementNumber) {
+                    String prefMagnify = prefArrayMagnify[elementNumber - 1];
 
-                    switch (prefTextMagnifyIndex) {
-                        case Constants.STRING_1:
-                            magnify = magnify * 0.5;
-                            break;
-                        case Constants.STRING_2:
-                            magnify = magnify * 0.65;
-                            break;
-                        case Constants.STRING_3:
-                            magnify = magnify * 0.75;
-                            break;
-                        case Constants.STRING_4:
-                            magnify = magnify * 0.85;
-                            break;
-                        case Constants.STRING_5:
-                            magnify = magnify * 1;
-                            break;
-                        case Constants.STRING_6:
-                            magnify = magnify * 1.1;
-                            break;
-                        case Constants.STRING_7:
-                            magnify = magnify * 1.2;
-                            break;
-                        case Constants.STRING_8:
-                            magnify = magnify * 1.3;
-                            break;
-                        case Constants.STRING_9:
-                            magnify = magnify * 1.4;
-                            break;
-                        case Constants.STRING_10:
-                            magnify = magnify * 1.5;
-                            break;
-                        case Constants.STRING_11:
-                            magnify = magnify * 1.6;
-                            break;
-                        case Constants.STRING_12:
-                            magnify = magnify * 1.75;
-                            break;
-                        case Constants.STRING_13:
-                            magnify = magnify * 2.0;
-                            break;
+                    if (prefMagnify.contains(Constants.STRING_PERIOD)) { //В настройке - сам мультипликатор
+
+                        try {
+                            double value = Double.parseDouble(prefMagnify);
+                            if (value > 0) magnify *= value;
+                        } catch (NumberFormatException ignored) { /**/ }
+
+                    } else { //В настройке - индекс из списка выбора
+
+                        switch (prefMagnify) {
+                            case Constants.STRING_1:
+                                magnify *= 0.5;
+                                break;
+                            case Constants.STRING_2:
+                                magnify *= 0.65;
+                                break;
+                            case Constants.STRING_3:
+                                magnify *= 0.75;
+                                break;
+                            case Constants.STRING_4:
+                                magnify *= 0.85;
+                                break;
+                            case Constants.STRING_5:
+                                magnify *= 1; //То же, что и "Авто"
+                                break;
+                            case Constants.STRING_6:
+                                magnify *= 1.1;
+                                break;
+                            case Constants.STRING_7:
+                                magnify *= 1.2;
+                                break;
+                            case Constants.STRING_8:
+                                magnify *= 1.3;
+                                break;
+                            case Constants.STRING_9:
+                                magnify *= 1.4;
+                                break;
+                            case Constants.STRING_10:
+                                magnify *= 1.5;
+                                break;
+                            case Constants.STRING_11:
+                                magnify *= 1.6;
+                                break;
+                            case Constants.STRING_12:
+                                magnify *= 1.75;
+                                break;
+                            case Constants.STRING_13:
+                                magnify *= 2.0;
+                                break;
+                        }
                     }
                 }
             }

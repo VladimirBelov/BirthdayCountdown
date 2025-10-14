@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.10.2025, 03:34
+ *  * Created by Vladimir Belov on 15.10.2025, 00:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.10.2025, 03:15
+ *  * Last modified 15.10.2025, 00:10
  *
  */
 
@@ -32,6 +32,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -89,6 +90,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     @ColorInt private int colorCaptionUpper;
     @ColorInt private int colorCaptionBottom;
     private boolean isNewPinnedWidget;
+    private final int minValueSeekOffset = 49;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -199,6 +201,87 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             spinnerIndex.setSelection(prefStartingIndex - 1, true);
 
             //Масштабирование размеров
+            int maxValueSeek = 200;
+            int prefMagnifyText = 0;
+            int prefMagnifyPhoto = 0;
+
+            try {
+                if (widgetPref.size() > 1) {
+                    String[] prefMagnify = widgetPref.get(1).split(Constants.REGEX_PLUS);
+                    if (widgetPref.get(1).contains(Constants.STRING_PERIOD)) { //В настройках - мультипликатор
+
+                        prefMagnifyText = Math.min((int) Math.round(Double.parseDouble(prefMagnify[0]) * 100), maxValueSeek);
+                        if (prefMagnifyText > 0) prefMagnifyText -= minValueSeekOffset;
+                        if (prefMagnify.length > 1) {
+                            prefMagnifyPhoto = Math.min((int) Math.round(Double.parseDouble(prefMagnify[1]) * 100), maxValueSeek);
+                            if (prefMagnifyPhoto > 0) prefMagnifyPhoto -= minValueSeekOffset;
+                        }
+
+                    } else { //В настройках - индекс в списке (старый формат)
+
+                        List<String> listMagnifyValues = Arrays.asList("0+0.5+0.65+0.75+0.85+1.0+1.1+1.2+1.3+1.4+1.5+1.6+1.75+2.0".split(Constants.REGEX_PLUS));
+                        int prefMagnifyIndex = Integer.parseInt(prefMagnify[0]);
+                        if (prefMagnifyIndex >= 0 && prefMagnifyIndex < listMagnifyValues.size()) {
+                            prefMagnifyText = Math.min((int) Math.round(Double.parseDouble(listMagnifyValues.get(prefMagnifyIndex)) * 100), maxValueSeek);
+                            if (prefMagnifyText > 0) prefMagnifyText -= minValueSeekOffset;
+                        }
+                        if (prefMagnify.length > 1) {
+                            prefMagnifyIndex = Integer.parseInt(prefMagnify[1]);
+                            if (prefMagnifyIndex >= 0 && prefMagnifyIndex < listMagnifyValues.size()) {
+                                prefMagnifyPhoto = Math.min((int) Math.round(Double.parseDouble(listMagnifyValues.get(prefMagnifyIndex)) * 100), maxValueSeek);
+                                if (prefMagnifyPhoto > 0) prefMagnifyPhoto -= minValueSeekOffset;
+                            }
+                        }
+
+                    }
+                }
+            } catch (Exception e) {/**/}
+
+            //Текст
+            SeekBar seekFontMagnifyText = findViewById(R.id.seekFontMagnifyText);
+            seekFontMagnifyText.setMax(maxValueSeek - minValueSeekOffset);
+            seekFontMagnifyText.setProgress(prefMagnifyText);
+            TextView valueFontMagnifyText = findViewById(R.id.valueFontMagnifyText);
+            valueFontMagnifyText.setText(
+                    seekFontMagnifyText.getProgress() == 0 ? getString(R.string.widget_config_magnify_auto) :
+                            getString(R.string.pref_List_FontMagnify_progress, String.valueOf(minValueSeekOffset + seekFontMagnifyText.getProgress()))
+            );
+            seekFontMagnifyText.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    valueFontMagnifyText.setText(
+                            seekFontMagnifyText.getProgress() == 0 ? getString(R.string.widget_config_magnify_auto) :
+                            getString(R.string.pref_List_FontMagnify_progress, String.valueOf(minValueSeekOffset + seekFontMagnifyText.getProgress()))
+                    );
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+
+            //Фото
+            SeekBar seekFontMagnifyPhoto = findViewById(R.id.seekFontMagnifyPhoto);
+            seekFontMagnifyPhoto.setMax(maxValueSeek - minValueSeekOffset);
+            seekFontMagnifyPhoto.setProgress(prefMagnifyPhoto);
+            TextView valueFontMagnifyPhoto = findViewById(R.id.valueFontMagnifyPhoto);
+            valueFontMagnifyPhoto.setText(
+                    seekFontMagnifyPhoto.getProgress() == 0 ? getString(R.string.widget_config_magnify_auto) :
+                            getString(R.string.pref_List_FontMagnify_progress, String.valueOf(minValueSeekOffset + seekFontMagnifyPhoto.getProgress()))
+            );
+            seekFontMagnifyPhoto.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    valueFontMagnifyPhoto.setText(
+                            seekFontMagnifyPhoto.getProgress() == 0 ? getString(R.string.widget_config_magnify_auto) :
+                                    getString(R.string.pref_List_FontMagnify_progress, String.valueOf(minValueSeekOffset + seekFontMagnifyPhoto.getProgress()))
+                    );
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+
+            /*
             int prefTextMagnifyIndex = 0;
             int prefPhotoMagnifyIndex = 0;
             try {
@@ -207,13 +290,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     prefTextMagnifyIndex = Integer.parseInt(prefMagnify[0]);
                     if (prefMagnify.length > 1) prefPhotoMagnifyIndex = Integer.parseInt(prefMagnify[1]);
                 }
-            } catch (Exception e) {/**/}
+            } catch (Exception e) {*//**//*}
 
             Spinner spinnerTextMagnify = findViewById(R.id.spinnerTextMagnify);
             spinnerTextMagnify.setSelection(prefTextMagnifyIndex, true);
 
             Spinner spinnerPhotoMagnify = findViewById(R.id.spinnerPhotoMagnify);
-            spinnerPhotoMagnify.setSelection(prefPhotoMagnifyIndex, true);
+            spinnerPhotoMagnify.setSelection(prefPhotoMagnifyIndex, true);*/
 
             //Реакция на нажатие
             //todo: https://stackoverflow.com/questions/2695746/how-to-get-a-list-of-installed-android-applications-and-pick-one-to-run
@@ -791,7 +874,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
             if (!Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType) && !Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
-                findViewById(R.id.blockPhotoMagnify).setVisibility(View.GONE);
+                findViewById(R.id.blockFontMagnifyPhoto).setVisibility(View.GONE);
             }
 
             //Скрываем реакцию на нажатие
@@ -892,10 +975,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     public void buttonOkOnClick(final View view) {
         try {
 
+            //todo: вынести в global
             final MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
             final Spinner spinnerEventShift = findViewById(R.id.spinnerEventShift);
-            final Spinner spinnerTextMagnify = findViewById(R.id.spinnerTextMagnify);
-            final Spinner spinnerPhotoMagnify = findViewById(R.id.spinnerPhotoMagnify);
+            SeekBar seekFontMagnifyText = findViewById(R.id.seekFontMagnifyText);
+            SeekBar seekFontMagnifyPhoto = findViewById(R.id.seekFontMagnifyPhoto);
             final Spinner spinnerEventsCount = findViewById(R.id.spinnerScopeEventsCount);
             final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
             final Spinner spinnerPhotoStyle = findViewById(R.id.spinnerPhotoStyle);
@@ -945,9 +1029,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 scopeInfo.append(spinnerFacts.getSelectedItem()).append("r");
             }
 
-            String magnifyParams = String.valueOf(spinnerTextMagnify.getSelectedItemPosition())
-                    .concat(Constants.STRING_PLUS)
-                    .concat(String.valueOf(spinnerPhotoMagnify.getSelectedItemPosition()));
+            //Масштабирование
+            int textValue = seekFontMagnifyText.getProgress() + (seekFontMagnifyText.getProgress() != 0 ? minValueSeekOffset : 0);
+            int photoValue = seekFontMagnifyPhoto.getProgress() + (seekFontMagnifyPhoto.getProgress() != 0 ? minValueSeekOffset : 0);
+            String magnifyParams = String.format(Locale.US, "%.2f+%.2f", textValue / 100.0, photoValue / 100.0);
 
             //Параметры заголовков
             List<String> selectedCaptionsDetails = new ArrayList<>();

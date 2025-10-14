@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.10.2025, 03:34
+ *  * Created by Vladimir Belov on 15.10.2025, 00:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.10.2025, 02:33
+ *  * Last modified 14.10.2025, 23:22
  *
  */
 
@@ -309,6 +309,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 //Общий
                 seekFontMagnify = findViewById(R.id.seekFontMagnify);
                 seekFontMagnify.setMax(25);
+                seekFontMagnify.setProgress(prefFontMagnify_Common + 5);
                 valueFontMagnify = findViewById(R.id.valueFontMagnify);
                 valueFontMagnify.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnify.getProgress() - 5) * 10)));
                 this.seekFontMagnify.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -324,6 +325,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 //Название месяца
                 seekFontMagnifyMonth = findViewById(R.id.seekFontMagnifyMonth);
                 seekFontMagnifyMonth.setMax(25);
+                seekFontMagnifyMonth.setProgress(prefFontMagnify_Month + 5);
                 valueFontMagnifyMonth = findViewById(R.id.valueFontMagnifyMonth);
                 valueFontMagnifyMonth.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnifyMonth.getProgress() - 5) * 10)));
                 seekFontMagnifyMonth.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -339,6 +341,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 //Дни недели
                 seekFontMagnifyWeek = findViewById(R.id.seekFontMagnifyWeek);
                 seekFontMagnifyWeek.setMax(25);
+                seekFontMagnifyWeek.setProgress(prefFontMagnify_Weekdays + 5);
                 valueFontMagnifyWeek = findViewById(R.id.valueFontMagnifyWeek);
                 valueFontMagnifyWeek.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnifyWeek.getProgress() - 5) * 10)));
                 seekFontMagnifyWeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -354,6 +357,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 //Дни
                 seekFontMagnifyDay = findViewById(R.id.seekFontMagnifyDay);
                 seekFontMagnifyDay.setMax(25);
+                seekFontMagnifyDay.setProgress(prefFontMagnify_Days + 5);
                 valueFontMagnifyDay = findViewById(R.id.valueFontMagnifyDay);
                 valueFontMagnifyDay.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekFontMagnifyDay.getProgress() - 5) * 10)));
                 seekFontMagnifyDay.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -367,11 +371,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 });
 
                 checkFontMagnifyManual.setOnCheckedChangeListener((buttonView, isChecked) -> updateVisibility());
-
-                seekFontMagnify.setProgress(prefFontMagnify_Common + 5);
-                seekFontMagnifyMonth.setProgress(prefFontMagnify_Month + 5);
-                seekFontMagnifyWeek.setProgress(prefFontMagnify_Weekdays + 5);
-                seekFontMagnifyDay.setProgress(prefFontMagnify_Days + 5);
 
             } catch (Exception e) {/**/}
 

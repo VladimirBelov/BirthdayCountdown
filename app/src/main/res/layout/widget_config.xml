@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.06.2025, 15:43
+  ~  * Created by Vladimir Belov on 15.10.2025, 00:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.06.2025, 15:08
+  ~  * Last modified 14.10.2025, 22:41
   ~  */
   -->
 
@@ -709,58 +709,86 @@
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <LinearLayout
-                    android:id="@+id/blockTextMagnify"
+                    android:id="@+id/blockFontMagnifyText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/captionTextMagnify"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="3"
-                        android:paddingStart="8dp"
-                        android:text="@string/widget_config_magnify_text_caption"
-                        android:textColor="?android:attr/textColorSecondary" />
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp" >
 
-                    <Spinner
-                        android:id="@+id/spinnerTextMagnify"
-                        android:layout_width="0dp"
+                        <TextView
+                            android:id="@+id/captionFontMagnifyText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10"
+                            android:text="@string/widget_config_magnify_text_caption"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?android:attr/textColorSecondary" />
+
+                        <TextView
+                            android:id="@+id/valueFontMagnifyText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?android:attr/textColorSecondary" />
+
+                    </LinearLayout>
+
+                    <SeekBar
+                        android:id="@+id/seekFontMagnifyText"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="4"
-                        android:contentDescription="@string/widget_config_magnify_text_caption"
-                        android:entries="@array/widget_config_magnify_entries"
-                        tools:ignore="DuplicateSpeakableTextCheck" />
+                        android:contentDescription="@string/widget_config_font_magnify_label"
+                        android:maxHeight="50dp"
+                        android:minHeight="50dp"
+                        android:thumbTintMode="src_in" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/blockPhotoMagnify"
+                    android:id="@+id/blockFontMagnifyPhoto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/captionPhotoMagnify"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="3"
-                        android:paddingStart="8dp"
-                        android:text="@string/widget_config_magnify_photo_caption"
-                        android:textColor="?android:attr/textColorSecondary" />
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp" >
 
-                    <Spinner
-                        android:id="@+id/spinnerPhotoMagnify"
-                        android:layout_width="0dp"
+                        <TextView
+                            android:id="@+id/captionFontMagnifyPhoto"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10"
+                            android:text="@string/widget_config_magnify_photo_caption"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?android:attr/textColorSecondary" />
+
+                        <TextView
+                            android:id="@+id/valueFontMagnifyPhoto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="?android:attr/textColorSecondary" />
+
+                    </LinearLayout>
+
+                    <SeekBar
+                        android:id="@+id/seekFontMagnifyPhoto"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="4"
-                        android:contentDescription="@string/widget_config_magnify_photo_caption"
-                        android:entries="@array/widget_config_magnify_entries"
-                        tools:ignore="DuplicateSpeakableTextCheck,TooManyViews" />
+                        android:contentDescription="@string/widget_config_font_magnify_label"
+                        android:maxHeight="50dp"
+                        android:minHeight="50dp"
+                        android:thumbTintMode="src_in" />
 
                 </LinearLayout>
 
