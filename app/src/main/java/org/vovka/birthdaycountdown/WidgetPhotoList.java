@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2025, 21:29
+ *  * Created by Vladimir Belov on 14.10.2025, 03:34
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.09.2025, 01:37
+ *  * Last modified 14.10.2025, 02:29
  *
  */
 
@@ -199,10 +199,10 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
             ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
                     context.getResources().getString(R.string.msg_debug_widget_list_config, widgetType, appWidgetId,
-                            context.getResources().getResourceEntryName(views.getLayoutId()), String.join(Constants.STRING_COMMA, widgetPref))
+                            context.getResources().getResourceEntryName(views.getLayoutId()), TextUtils.join(Constants.STRING_COMMA, widgetPref))
                     : widgetType.concat(Constants.STRING_COLON)
                     .concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL)
-                    .concat(String.join(Constants.STRING_COMMA, widgetPref))
+                    .concat(TextUtils.join(Constants.STRING_COMMA, widgetPref))
             );
 
             //Запуск обновления

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.10.2025, 00:21
+  ~  * Created by Vladimir Belov on 14.10.2025, 03:34
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 07.10.2025, 23:28
+  ~  * Last modified 14.10.2025, 01:57
   ~  */
   -->
 
@@ -181,7 +181,7 @@
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_launcher_android">
 
-                <ListPreference
+                <org.vovka.birthdaycountdown.CustomListPreference
                     android:key="@string/pref_CustomEvents_Rules_Unrecognized_key"
                     android:defaultValue="@string/pref_CustomEvents_Rules_Unrecognized_default"
                     android:entries="@array/pref_CustomEvents_Rules_Unrecognized_entries"
@@ -196,7 +196,7 @@
                     android:title="@string/pref_CustomEvents_Birthday_Calendars_Rules_title"
                     android:summary="@string/pref_CustomEvents_Birthday_Calendars_Rules_summary"/>
 
-                <ListPreference
+                <org.vovka.birthdaycountdown.CustomListPreference
                     android:key="@string/pref_CustomEvents_Rules_Calendars_NameFormat_key"
                     android:defaultValue="@string/pref_List_NameFormat_default"
                     android:entries="@array/pref_List_NameFormat_entries"
@@ -206,7 +206,7 @@
                     android:dialogIcon="@drawable/ic_menu_friendslist"
                     android:negativeButtonText="@string/button_cancel"/>
 
-                <ListPreference
+                <org.vovka.birthdaycountdown.CustomListPreference
                     android:key="@string/pref_CustomEvents_Rules_LocalFiles_NameFormat_key"
                     android:defaultValue="@string/pref_List_NameFormat_default"
                     android:entries="@array/pref_List_NameFormat_entries"
@@ -646,7 +646,7 @@
         android:title="@string/pref_EventList_title"
         android:layout="@layout/settings_category_with_divider">
 
-        <MultiSelectListPreference
+        <org.vovka.birthdaycountdown.CustomMultiSelectListPreference
             android:key="@string/pref_List_Events_key"
             android:defaultValue="@array/pref_EventTypes_values_default"
             android:entries="@array/pref_List_EventTypes_entries"

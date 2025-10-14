@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.10.2025, 10:06
+ *  * Created by Vladimir Belov on 14.10.2025, 03:34
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 10.10.2025, 09:48
+ *  * Last modified 14.10.2025, 03:15
  *
  */
 
@@ -1743,7 +1743,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else if (itemId == Constants.MainMenu_EventsSources) {
 
                 final ContactsEvents.EventSources eventSources = eventsData.new EventSources();
-                eventSources.getEventSources(getString(R.string.pref_List_EventSources_key));
+                eventSources.loadEventSources(getString(R.string.pref_List_EventSources_key));
                 eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_list_EventSources),
                         this, getString(R.string.pref_List_EventSources_key));
                 return true;

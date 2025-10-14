@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 13.10.2025, 01:05
+ *  * Created by Vladimir Belov on 14.10.2025, 03:34
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 12.10.2025, 22:44
+ *  * Last modified 14.10.2025, 03:15
  *
  */
 
@@ -6587,7 +6587,7 @@ public class ContactsEvents {
                                 if (birthDate != null && deathDate != null) {
                                     final String wasAge = countDaysDiffText(birthDate, deathDate, 3);
                                     singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_was).concat(wasAge));
-                                    eventList.set(eventIndex, String.join(Constants.STRING_EOT, singleRowList));
+                                    eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
                                 }
                             }
                         }
@@ -6605,7 +6605,7 @@ public class ContactsEvents {
                                 if (birthDate != null && deathDate != null) {
                                     final String wasAge = countDaysDiffText(birthDate, deathDate, 3);
                                     singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_was).concat(wasAge));
-                                    eventList.set(eventIndex, String.join(Constants.STRING_EOT, singleRowList));
+                                    eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
                                 }
                             }
 
@@ -6630,7 +6630,7 @@ public class ContactsEvents {
                             if (eventIndex != null && eventIndex <= eventList.size()) {
                                 List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
                                 singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_could_be_now).concat(countDaysDiffText(birthDate, today, 3)));
-                                eventList.set(eventIndex, String.join(Constants.STRING_EOT, singleRowList));
+                                eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
                             }
                         }
                     } else { //Другие события
@@ -6662,7 +6662,7 @@ public class ContactsEvents {
                             if (eventIndex != null && eventIndex <= eventList.size()) {
                                 List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
                                 singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_could_be_now).concat(countDaysDiffText(birthDate, today, 3)));
-                                eventList.set(eventIndex, String.join(Constants.STRING_EOT, singleRowList));
+                                eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
                             }
                         }
                     } else { //Другие события
@@ -6690,7 +6690,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + String.join(Constants.STRING_EOT, singleEventArray));
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + TextUtils.join(Constants.STRING_EOT, singleEventArray));
         }
         return agePrefix;
     }
@@ -8039,7 +8039,7 @@ public class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-        return String.join(Constants.STRING_EMPTY, new HashSet<>(icons));
+        return TextUtils.join(Constants.STRING_EMPTY, new HashSet<>(icons));
     }
 
     String getEventKey(@NonNull String[] singleEventArray) {
@@ -10486,6 +10486,8 @@ public class ContactsEvents {
                 }
             }
 
+            final String msg_not_selected = resources.getString(R.string.msg_not_selected);
+
             // Параметры для строки msg_zero_events_body
             String eventTypesParam = (preferences_list_event_types.isEmpty()
                     ? Constants.FONT_COLOR_RED + resources.getString(R.string.msg_none)
@@ -10503,8 +10505,8 @@ public class ContactsEvents {
             String accountsParam = (preferences_Accounts.isEmpty()
                     ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_all)
                     : !preferences_Accounts.contains(Constants.account_none)
-                    ? Constants.HTML_BR + Constants.FONT_COLOR_GREEN + String.join(Constants.STRING_COMMA_SPACE, preferences_Accounts)
-                    : Constants.FONT_COLOR_RED + String.join(Constants.STRING_COMMA_SPACE, preferences_Accounts))
+                    ? Constants.HTML_BR + Constants.FONT_COLOR_GREEN + TextUtils.join(Constants.STRING_COMMA_SPACE, preferences_Accounts)
+                    : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_none))
                     + Constants.HTML_COLOR_END;
 
             String calendarPermissionParam = resources.getString(R.string.stats_permissions_calendar,
@@ -10515,36 +10517,36 @@ public class ContactsEvents {
             if (map_calendars.isEmpty()) fillCalendarList();
 
             String birthdayCalendarsParam = preferences_BirthDay_calendars.isEmpty()
-                    ? Constants.STRING_MINUS
+                    ? msg_not_selected
                     : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_BirthDay_calendars, map_calendars) + Constants.HTML_COLOR_END;
 
             String otherEventCalendarsParam = preferences_OtherEvent_calendars.isEmpty()
-                    ? Constants.STRING_MINUS
+                    ? msg_not_selected
                     : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_OtherEvent_calendars, map_calendars) + Constants.HTML_COLOR_END;
 
             String holidayEventCalendarsParam = preferences_HolidayEvent_calendars.isEmpty()
-                    ? Constants.STRING_MINUS
+                    ? msg_not_selected
                     : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_HolidayEvent_calendars, map_calendars) + Constants.HTML_COLOR_END;
 
             String multiTypeCalendarsParam = preferences_MultiType_calendars.isEmpty()
-                    ? Constants.STRING_MINUS
+                    ? msg_not_selected
                     : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_MultiType_calendars, map_calendars) + Constants.HTML_COLOR_END;
 
             String birthdayFilesParam = preferences_Birthday_files.isEmpty()
-                    ? Constants.STRING_MINUS
-                    : String.join(Constants.STRING_COMMA_SPACE, preferences_Birthday_files);
+                    ? msg_not_selected
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + TextUtils.join(Constants.STRING_COMMA_SPACE, preferences_Birthday_files) + Constants.HTML_COLOR_END;
 
             String otherEventFilesParam = preferences_OtherEvent_files.isEmpty()
-                    ? Constants.STRING_MINUS
-                    : String.join(Constants.STRING_COMMA_SPACE, preferences_OtherEvent_files);
+                    ? msg_not_selected
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + TextUtils.join(Constants.STRING_COMMA_SPACE, preferences_OtherEvent_files) + Constants.HTML_COLOR_END;
 
             String holidayEventFilesParam = preferences_HolidayEvent_files.isEmpty()
-                    ? Constants.STRING_MINUS
-                    : String.join(Constants.STRING_COMMA_SPACE, preferences_HolidayEvent_files);
+                    ? msg_not_selected
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + TextUtils.join(Constants.STRING_COMMA_SPACE, preferences_HolidayEvent_files) + Constants.HTML_COLOR_END;
 
             String multiTypeFilesParam = preferences_MultiType_files.isEmpty()
-                    ? Constants.STRING_MINUS
-                    : String.join(Constants.STRING_COMMA_SPACE, preferences_MultiType_files);
+                    ? msg_not_selected
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + TextUtils.join(Constants.STRING_COMMA_SPACE, preferences_MultiType_files) + Constants.HTML_COLOR_END;
 
             List<String> allFiltersList = Arrays.asList(
                     resources.getString(R.string.events_scope_not_hidden),
@@ -10557,19 +10559,17 @@ public class ContactsEvents {
 
             String eventScopeFilterParam = (preferences_list_events_scope < 2
                     ? Constants.FONT_COLOR_GREEN
-                    : Constants.FONT_COLOR_RED)
-                    + substringBefore(allFiltersList.get(preferences_list_events_scope), Constants.STRING_PARENTHESIS_OPEN)
-                    + Constants.HTML_COLOR_END;
+                    : Constants.FONT_COLOR_RED) + substringBefore(allFiltersList.get(preferences_list_events_scope), Constants.STRING_PARENTHESIS_OPEN) + Constants.HTML_COLOR_END;
 
             StringBuilder listEventsSources = new StringBuilder();
             if (!preferences_list_EventSources.isEmpty()) {
                 final EventSources eventSources = new EventSources();
-                eventSources.getEventSources(resources.getString(R.string.pref_List_EventSources_key));
+                eventSources.loadEventSources(resources.getString(R.string.pref_List_EventSources_key));
                 List<String> eventSourcesHashes = eventSources.getHashes();
                 for (int i = 0; i < eventSourcesHashes.size(); i++) {
                     String hash = eventSourcesHashes.get(i);
                     if (preferences_list_EventSources.contains(hash)) {
-                        if (listEventsSources.length() > 0) listEventsSources.append(Constants.STRING_COMMA_SPACE);
+                        if (listEventsSources.length() > 0) listEventsSources.append(Constants.HTML_BR);
                         listEventsSources.append(eventSources.getTitles().get(i));
                     }
                 }
@@ -10577,7 +10577,7 @@ public class ContactsEvents {
 
             String eventSourcesParam = listEventsSources.length() == 0
                     ? resources.getString(R.string.msg_all)
-                    : listEventsSources.toString();
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + listEventsSources + Constants.HTML_COLOR_END;
 
             // Формирование результата
             final String result = resources.getString(R.string.msg_zero_events_body,
@@ -11740,7 +11740,7 @@ public class ContactsEvents {
         private final List<Integer> icons = new ArrayList<>();
 
         @SuppressLint("DiscouragedApi")
-        void getEventSources(String eventConsumer) {
+        void loadEventSources(String eventConsumer) {
             try {
 
                 ids.clear();
@@ -12190,7 +12190,7 @@ public class ContactsEvents {
                 }
             }
 
-            String joinedString = String.join(Constants.STRING_EOT, currentList);
+            String joinedString = TextUtils.join(Constants.STRING_EOT, currentList);
             preferences.edit().putString(context.getString(R.string.pref_Facts_Recent_key), joinedString).apply();
 
         } catch (final Exception e) {

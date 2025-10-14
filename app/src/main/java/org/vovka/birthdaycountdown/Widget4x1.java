@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 14.10.2025, 03:34
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:33
+ *  * Last modified 14.10.2025, 02:33
  *
  */
 
@@ -18,6 +18,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -106,10 +107,10 @@ public class Widget4x1 extends AppWidgetProvider {
 
             ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
                     context.getResources().getString(R.string.msg_debug_widget_photo_config, widgetType, appWidgetId,
-                            context.getResources().getResourceEntryName(views.getLayoutId()), minWidth, minHeight, String.join(Constants.STRING_COMMA, widgetPref))
+                            context.getResources().getResourceEntryName(views.getLayoutId()), minWidth, minHeight, TextUtils.join(Constants.STRING_COMMA, widgetPref))
                     : widgetType.concat(Constants.STRING_COLON)
                     .concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL)
-                    .concat(String.join(Constants.STRING_COMMA, widgetPref))
+                    .concat(TextUtils.join(Constants.STRING_COMMA, widgetPref))
             );
 
             new WidgetUpdater(context, ContactsEvents.getInstance(), views, 5, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.10.2025, 02:32
+ *  * Created by Vladimir Belov on 14.10.2025, 03:34
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 03.10.2025, 01:42
+ *  * Last modified 14.10.2025, 03:15
  *
  */
 
@@ -623,7 +623,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 String pref = widgetPref.get(10);
                 if (!pref.isEmpty()) eventSourcesSelected = new ArrayList<>(Arrays.asList(pref.split(Constants.REGEX_PLUS)));
             }
-            eventSources.getEventSources(widgetType);
+            eventSources.loadEventSources(widgetType);
             updateEventSources();
             TextView listEventSources = findViewById(R.id.listEventSources);
             listEventSources.setOnClickListener(v -> selectEventSources());
@@ -999,11 +999,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     selectedCaptionsDetails.add(prefSize);
 
                     selectedCaptionsDetails.add(String.valueOf(colorCaptionBottom));
-                    //scopeInfo.append(String.join(Constants.STRING_PLUS, selectedCaptionsDetails));
+                    //scopeInfo.append(TextUtils.join(Constants.STRING_PLUS, selectedCaptionsDetails));
                 }
             }
 
-            final String eventSources = String.join(Constants.STRING_PLUS, eventSourcesSelected);
+            final String eventSources = TextUtils.join(Constants.STRING_PLUS, eventSourcesSelected);
 
             //Реакция на нажатие
             String[] prefActionsEntries = getResources().getStringArray(R.array.pref_widget_list_onclick_entries);
@@ -1060,10 +1060,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             prefsToStore.add(scopeInfo.toString()); //Объём событий
             prefsToStore.add(editCustomWidgetCaption.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)); //Заголовок виджета
             prefsToStore.add(eventSources); //Источники событий (через +)
-            prefsToStore.add(String.join(Constants.STRING_PLUS, selectedCaptionsDetails)); //Параметры заголовков (через +)
+            prefsToStore.add(TextUtils.join(Constants.STRING_PLUS, selectedCaptionsDetails)); //Параметры заголовков (через +)
             prefsToStore.add(spinnerOnClickCommonValue.toString()); //Реакция на нажатие
 
-            this.eventsData.setWidgetPreference(this.widgetId, String.join(Constants.STRING_COMMA, prefsToStore));
+            this.eventsData.setWidgetPreference(this.widgetId, TextUtils.join(Constants.STRING_COMMA, prefsToStore));
 
             final Intent intent = new Intent();
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.widgetId);

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.07.2025, 21:58
+ *  * Created by Vladimir Belov on 14.10.2025, 03:34
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.07.2025, 21:48
+ *  * Last modified 14.10.2025, 02:33
  *
  */
 
@@ -23,6 +23,7 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -551,7 +552,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 selectedElements.append(elementsIDs.get(elementsValues.indexOf(item)));
             }
 
-            final String eventSources = String.join(Constants.STRING_PLUS, eventSourcesSelected);
+            final String eventSources = TextUtils.join(Constants.STRING_PLUS, eventSourcesSelected);
 
             String fontMagnify;
             if (this.checkFontMagnifyManual.isChecked()) {
@@ -649,10 +650,10 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             prefsToStore.add(selectedArrows); //Стрелки
             prefsToStore.add(selectedWeeks); //Дни недели
             prefsToStore.add(selectedToday); //Сегодня
-            prefsToStore.add(String.join(Constants.STRING_PLUS, listColors)); //Цвета календарей
+            prefsToStore.add(TextUtils.join(Constants.STRING_PLUS, listColors)); //Цвета календарей
             prefsToStore.add(selectedOnClick); //Действие на нажатие
 
-            this.eventsData.setWidgetPreference(this.widgetId, String.join(Constants.STRING_COMMA, prefsToStore));
+            this.eventsData.setWidgetPreference(this.widgetId, TextUtils.join(Constants.STRING_COMMA, prefsToStore));
 
             final Intent intent = new Intent();
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.widgetId);

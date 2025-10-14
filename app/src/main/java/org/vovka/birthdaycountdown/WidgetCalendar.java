@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.09.2025, 01:38
+ *  * Created by Vladimir Belov on 14.10.2025, 03:34
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 10.09.2025, 01:29
+ *  * Last modified 14.10.2025, 02:33
  *
  */
 
@@ -26,6 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.provider.CalendarContract;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -141,7 +142,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
             if (needSavePref) {
                 widgetPref.set(3, Integer.toString(customMonthShift));
-                eventsData.setWidgetPreference(appWidgetId, String.join(Constants.STRING_COMMA, widgetPref));
+                eventsData.setWidgetPreference(appWidgetId, TextUtils.join(Constants.STRING_COMMA, widgetPref));
             }
 
         } catch (Exception e) {
@@ -933,7 +934,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     intent.putExtra(Constants.EXTRA_DAY_CAPTION,  context.getString(R.string.month_event_popup_prefix)
                             .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear))
                             .concat(sdf.format(cal.getTime())));
-                    intent.putExtra(Constants.EXTRA_DAY_INFO, String.join(Constants.HTML_BR, dayInfo));
+                    intent.putExtra(Constants.EXTRA_DAY_INFO, TextUtils.join(Constants.HTML_BR, dayInfo));
                     intent.putExtra(Constants.EXTRA_VALUES, Long.toString(cal.getTimeInMillis()));
                     intent.putStringArrayListExtra(Constants.EXTRA_LIST, prefOtherEvents);
                     intent.putExtra(Constants.EXTRA_MAP, eventsColorsInMonth);

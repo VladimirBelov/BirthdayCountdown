@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.10.2025, 22:56
+ *  * Created by Vladimir Belov on 14.10.2025, 03:34
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.10.2025, 21:08
+ *  * Last modified 14.10.2025, 00:25
  *
  */
 
@@ -269,7 +269,7 @@ public final class Constants {
     static final String FONT_COLOR_RED = "<font color=red>";
     static final String FONT_COLOR_DOT_START = "<bold><font color=#";
     static final String FONT_COLOR_DOT_END = ">●</font></bold> ";
-    static final String FONT_COLOR_GREEN = "<font color=#2ed70e>";
+    static final String FONT_COLOR_GREEN = "<font color=#2e7d32>";
     static final String HTML_LI = "<li>";
     static final String HTML_LI_API21 = "&nbsp;-&nbsp;";
     static final String HTML_LI_END = "</li>";

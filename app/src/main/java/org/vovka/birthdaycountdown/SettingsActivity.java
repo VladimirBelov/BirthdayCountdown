@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.10.2025, 03:07
+ *  * Created by Vladimir Belov on 14.10.2025, 03:34
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 11.10.2025, 02:20
+ *  * Last modified 14.10.2025, 03:31
  *
  */
 
@@ -59,6 +59,7 @@ import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
@@ -108,6 +109,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -551,33 +553,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 updateSummary(R.string.pref_IconPack_key, value, getString(R.string.pref_IconPack_description), 0, drawable);
             }
 
-            //Формат имени
-            pref = findPreference(getString(R.string.pref_List_NameFormat_key));
-            if (pref != null) {
-                List<String> nameFormatEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_NameFormat_entries)));
-                List<String> nameFormatValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_NameFormat_values)));
-                pref.setOnPreferenceChangeListener((preference, newValue) -> {
-                    String realValue = nameFormatEntries.get(nameFormatValues.indexOf(newValue.toString()));
-                    return updateSummary(R.string.pref_List_NameFormat_key, realValue, Constants.STRING_EMPTY, 0, 0);
-                });
-                currentValue = preferences.getString(getString(R.string.pref_List_NameFormat_key), getString(R.string.pref_List_NameFormat_default));
-                value = nameFormatEntries.get(nameFormatValues.indexOf(currentValue));
-                updateSummary(R.string.pref_List_NameFormat_key, value, Constants.STRING_EMPTY, 0, 0);
-            }
+            //Форматы имени
+            setSummaryForList(
+                    R.string.pref_List_NameFormat_key, R.string.pref_List_NameFormat_default, R.string.pref_List_NameFormat_description,
+                    R.array.pref_List_NameFormat_entries, R.array.pref_List_NameFormat_values);
+            setSummaryForList(
+                    R.string.pref_CustomEvents_Rules_Calendars_NameFormat_key, R.string.pref_List_NameFormat_default, R.string.pref_List_NameFormat_description,
+                    R.array.pref_List_NameFormat_entries, R.array.pref_List_NameFormat_values);
+            setSummaryForList(
+                    R.string.pref_CustomEvents_Rules_LocalFiles_NameFormat_key, R.string.pref_List_NameFormat_default, R.string.pref_List_NameFormat_description,
+                    R.array.pref_List_NameFormat_entries, R.array.pref_List_NameFormat_values);
 
             //Формат даты
-            pref = findPreference(getString(R.string.pref_List_DateFormat_key));
-            if (pref != null) {
-                List<String> dateFormatEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_DateFormat_entries)));
-                List<String> dateFormatValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_DateFormat_values)));
-                pref.setOnPreferenceChangeListener((preference, newValue) -> {
-                    String realValue = dateFormatEntries.get(dateFormatValues.indexOf(newValue.toString()));
-                    return updateSummary(R.string.pref_List_DateFormat_key, realValue, getString(R.string.pref_List_DateFormat_description), 0, 0);
-                });
-                currentValue = preferences.getString(getString(R.string.pref_List_DateFormat_key), getString(R.string.pref_List_DateFormat_default));
-                value = dateFormatEntries.get(dateFormatValues.indexOf(currentValue));
-                updateSummary(R.string.pref_List_DateFormat_key, value, getString(R.string.pref_List_DateFormat_description), 0, 0);
-            }
+            setSummaryForList(
+                    R.string.pref_List_DateFormat_key, R.string.pref_List_DateFormat_default, R.string.pref_List_DateFormat_description,
+                    R.array.pref_List_DateFormat_entries, R.array.pref_List_DateFormat_values);
 
             //Источники событий. Аккаунты контактов
             setSummaryForAccounts();
@@ -594,19 +584,48 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             setSummaryForFiles(ContactsEvents.getEventType(Constants.Type_Other));
             setSummaryForFiles(ContactsEvents.getEventType(Constants.Type_HolidayEvent));
 
-            //Траурная лента
-            pref = findPreference(getString(R.string.pref_List_SadPhoto_key));
+            //Нераспознанные события
+            setSummaryForList(
+                    R.string.pref_CustomEvents_Rules_Unrecognized_key, R.string.pref_CustomEvents_Rules_Unrecognized_default, R.string.pref_CustomEvents_Rules_Unrecognized_summary,
+                    R.array.pref_CustomEvents_Rules_Unrecognized_entries, R.array.pref_CustomEvents_Rules_Unrecognized_values);
+
+            //Правила распознавания имён
+            pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
             if (pref != null) {
-                List<String> sadPhotoEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_SadPhoto_entries)));
-                List<String> sadPhotoValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_SadPhoto_values)));
-                pref.setOnPreferenceChangeListener((preference, newValue) -> {
-                    String realValue = sadPhotoEntries.get(sadPhotoValues.indexOf(newValue.toString()));
-                    return updateSummary(R.string.pref_List_SadPhoto_key, realValue, getString(R.string.pref_List_SadPhoto_summary), 0, 0);
-                });
-                currentValue = preferences.getString(getString(R.string.pref_List_SadPhoto_key), getString(R.string.pref_List_SadPhoto_default));
-                value = sadPhotoEntries.get(sadPhotoValues.indexOf(currentValue));
-                updateSummary(R.string.pref_List_SadPhoto_key, value, getString(R.string.pref_List_SadPhoto_summary), 0, 0);
+                pref.setOnPreferenceChangeListener((preference, newValue) ->
+                        updateSummary(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key, newValue.toString(), getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_summary), 0, 0));
+                updateSummary(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key, preferences.getString(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key), getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_default)), getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_summary), 0, 0);
             }
+
+            //Траурная лента
+            setSummaryForList(
+                    R.string.pref_List_SadPhoto_key, R.string.pref_List_SadPhoto_default, R.string.pref_List_SadPhoto_summary,
+                    R.array.pref_List_SadPhoto_entries, R.array.pref_List_SadPhoto_values);
+
+            //Свои наименования
+            setSummaryForLabels(R.string.pref_CustomEvents_Birthday_Labels_key, R.string.pref_CustomEvents_Birthday_Labels_summary);
+            setSummaryForLabels(R.string.pref_CustomEvents_Anniversary_Labels_key, R.string.pref_CustomEvents_Anniversary_Labels_summary);
+            setSummaryForLabels(R.string.pref_CustomEvents_NameDay_Labels_key, R.string.pref_CustomEvents_NameDay_Labels_summary);
+            setSummaryForLabels(R.string.pref_CustomEvents_Crowning_Labels_key, R.string.pref_CustomEvents_Crowning_Labels_summary);
+            setSummaryForLabels(R.string.pref_CustomEvents_Death_Labels_key, R.string.pref_CustomEvents_Death_Labels_summary);
+            setSummaryForLabels(R.string.pref_CustomEvents_Another_Labels_key, R.string.pref_CustomEvents_Another_Labels_summary);
+            setSummaryForLabels(R.string.pref_CustomEvents_Holiday_Labels_key, R.string.pref_CustomEvents_Holiday_Labels_summary);
+            setSummaryForLabels(R.string.pref_CustomEvents_Other_Labels_key, R.string.pref_CustomEvents_Other_Labels_summary);
+            setSummaryForLabels(R.string.pref_CustomEvents_Custom1_Labels_key, R.string.pref_CustomEvents_Custom_Labels_summary);
+            setSummaryForLabels(R.string.pref_CustomEvents_Custom2_Labels_key, R.string.pref_CustomEvents_Custom_Labels_summary);
+            setSummaryForLabels(R.string.pref_CustomEvents_Custom3_Labels_key, R.string.pref_CustomEvents_Custom_Labels_summary);
+            setSummaryForLabels(R.string.pref_CustomEvents_Custom4_Labels_key, R.string.pref_CustomEvents_Custom_Labels_summary);
+            setSummaryForLabels(R.string.pref_CustomEvents_Custom5_Labels_key, R.string.pref_CustomEvents_Custom_Labels_summary);
+
+            //Список событий. Типы событий
+            setSummaryForMultiList(
+                    R.string.pref_List_Events_key, R.array.pref_EventTypes_values_default, R.string.pref_List_EventTypes_summary,
+                    R.array.pref_List_EventTypes_entries, R.array.pref_List_EventTypes_values);
+
+            //Источники событий
+            setSummaryForEventSources(R.string.pref_List_EventSources_key, R.string.pref_List_EventSources_description);
+            setSummaryForEventSources(R.string.pref_Notifications_EventSources_key, R.string.pref_Notifications_EventSources_description);
+            setSummaryForEventSources(R.string.pref_Notifications2_EventSources_key, R.string.pref_Notifications_EventSources_description);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -749,6 +768,132 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             @DrawableRes int drawable = icons.get(index);
             updateSummary(R.string.pref_Icon_key, value, getString(R.string.pref_Icon_description), 0, drawable);
         }
+    }
+
+    private void setSummaryForLabels(@StringRes int prefKey, @StringRes int prefSummaryKey) {
+
+        try {
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            Preference pref = findPreference(getString(prefKey));
+            if (pref != null) {
+                pref.setOnPreferenceChangeListener((preference, newValue) ->
+                        updateSummary(prefKey, newValue.toString(), getString(prefSummaryKey), 0, 0));
+                updateSummary(prefKey, preferences.getString(getString(prefKey), Constants.STRING_EMPTY), getString(prefSummaryKey), 0, 0);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void setSummaryForList(@StringRes int prefKey, @StringRes int prefDefaultKey,@StringRes int prefSummaryKey,
+                                   @ArrayRes int prefEntries, @ArrayRes int prefValues) {
+
+        try {
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            Preference pref = findPreference(getString(prefKey));
+            if (pref == null) return;
+
+            List<String> arrayEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(prefEntries)));
+            List<String> arrayValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(prefValues)));
+            pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                String realValue = arrayEntries.get(arrayValues.indexOf(newValue.toString()));
+                return updateSummary(prefKey, realValue, getString(prefSummaryKey), 0, 0);
+            });
+            final String currentValue = preferences.getString(getString(prefKey), getString(prefDefaultKey));
+            final String value = arrayEntries.get(arrayValues.indexOf(currentValue));
+            updateSummary(prefKey, value, getString(prefSummaryKey), 0, 0);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void setSummaryForMultiList(@StringRes int prefKey, @ArrayRes int prefDefaultKey, @StringRes int prefSummaryKey,
+            @ArrayRes int prefEntries, @ArrayRes int prefValues) {
+
+        try {
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            Preference pref = findPreference(getString(prefKey));
+            if (pref == null) return;
+
+            String[] entriesArr = getResources().getStringArray(prefEntries);
+            String[] valuesArr = getResources().getStringArray(prefValues);
+            String[] defaultArr = getResources().getStringArray(prefDefaultKey);
+
+            //Маппинг: value → entry (O(1) поиск)
+            Map<String, String> valueToEntry = new HashMap<>();
+            int len = Math.min(entriesArr.length, valuesArr.length);
+            for (int i = 0; i < len; i++) {
+                valueToEntry.put(valuesArr[i], entriesArr[i]);
+            }
+
+            pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                if (!(newValue instanceof Set<?>)) return false;
+
+                @SuppressWarnings("unchecked")
+                Set<String> newValues = (Set<String>) newValue;
+
+                List<String> displayNames = new ArrayList<>();
+                for (String value : newValues) {
+                    String entry = valueToEntry.get(value);
+                    if (entry != null) displayNames.add(entry);
+                }
+
+                String summary = TextUtils.join(Constants.STRING_EOL, displayNames);
+                return updateSummary(prefKey, summary, getString(prefSummaryKey), 0, 0);
+            });
+
+            Set<String> currentValue = preferences.getStringSet(getString(prefKey), new HashSet<>(Arrays.asList(defaultArr)));
+
+            List<String> displayNames = new ArrayList<>();
+            for (String value : currentValue) {
+                String entry = valueToEntry.get(value);
+                if (entry != null) displayNames.add(entry);
+            }
+
+            String summary = TextUtils.join(Constants.STRING_EOL, displayNames);
+            updateSummary(prefKey, summary, getString(prefSummaryKey), 0, 0);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void setSummaryForEventSources(@StringRes int prefKey, @StringRes int prefSummaryKey) {
+
+        try {
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            Preference pref = findPreference(getString(prefKey));
+            if (pref == null) return;
+
+            final ContactsEvents.EventSources eventSources = eventsData.new EventSources();
+            eventSources.loadEventSources(getString(prefKey));
+            List<String> eventSourcesHashes = eventSources.getHashes();
+
+            Set<String> currentValue = preferences.getStringSet(getString(prefKey), new HashSet<>());
+            List<String> displayNames = new ArrayList<>();
+            for (int i = 0; i < eventSourcesHashes.size(); i++) {
+                String hash = eventSourcesHashes.get(i);
+                if (currentValue.contains(hash)) {
+                    displayNames.add(ContactsEvents.substringBefore(eventSources.getTitles().get(i), Constants.STRING_BRACKETS_OPEN));
+                }
+            }
+            String summary = displayNames.isEmpty() ? getString(R.string.msg_all) : TextUtils.join(Constants.STRING_EOL, displayNames);
+            updateSummary(prefKey, summary, getString(prefSummaryKey), 0, 0);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+
     }
 
     private boolean updateSummary(@StringRes int prefKey, Object value, @NonNull String template, @ColorInt int colorCircle, @DrawableRes int drawable) {
@@ -1991,7 +2136,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                             String value = eventsData.preferences_Accounts.isEmpty() ? getString(R.string.msg_all) :
                                     eventsData.preferences_Accounts.contains(Constants.account_none) ? getString(R.string.msg_none) :
-                                            String.join(Constants.STRING_EOL, eventsData.preferences_Accounts);
+                                            TextUtils.join(Constants.STRING_EOL, eventsData.preferences_Accounts);
                             updateSummary(R.string.pref_Accounts_key, value, getString(R.string.pref_Accounts_summary), 0, 0);
                         })
                         .setCancelable(true);
@@ -3602,7 +3747,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         try {
 
             final ContactsEvents.EventSources eventSources = eventsData.new EventSources();
-            eventSources.getEventSources(eventConsumer);
+            eventSources.loadEventSources(eventConsumer);
 
             if (eventConsumer.equals(getString(R.string.pref_List_EventSources_key))) {
                 eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_list_EventSources),
@@ -3630,18 +3775,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 eventsData.preferences_list_EventSources.clear();
                 eventsData.preferences_list_EventSources.addAll(newSelectedSources);
                 eventsData.savePreferences();
+                setSummaryForEventSources(R.string.pref_List_EventSources_key, R.string.pref_List_EventSources_description);
 
             } else if (id.equals(getString(R.string.pref_Notifications_EventSources_key))) {
 
                 eventsData.preferences_notifications_sources.clear();
                 eventsData.preferences_notifications_sources.addAll(newSelectedSources);
                 eventsData.savePreferences();
+                setSummaryForEventSources(R.string.pref_Notifications_EventSources_key, R.string.pref_Notifications_EventSources_description);
 
             } else if (id.equals(getString(R.string.pref_Notifications2_EventSources_key))) {
 
                 eventsData.preferences_notifications2_sources.clear();
                 eventsData.preferences_notifications2_sources.addAll(newSelectedSources);
                 eventsData.savePreferences();
+                setSummaryForEventSources(R.string.pref_Notifications2_EventSources_key, R.string.pref_Notifications_EventSources_description);
 
             }
 
