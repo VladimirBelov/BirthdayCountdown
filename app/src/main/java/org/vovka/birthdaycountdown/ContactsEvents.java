@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.10.2025, 00:19
+ *  * Created by Vladimir Belov on 15.10.2025, 23:53
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.10.2025, 22:06
+ *  * Last modified 15.10.2025, 21:55
  *
  */
 
@@ -1608,7 +1608,7 @@ public class ContactsEvents {
             preferences_notifications2_channel_id = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications2_ChannelID), Constants.defaultNotification2ID);
             preferences_notifications_days = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_Days_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_Days_values_default))));
             preferences_notifications_days.removeAll(new HashSet<String>() {{ add(Constants.STRING_EMPTY); }});
-            preferences_notifications2_days = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications2_Days_key), new HashSet<>());
+            preferences_notifications2_days = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications2_Days_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications2_Days_values_default))));
             preferences_notifications2_days.removeAll(new HashSet<String>() {{ add(Constants.STRING_EMPTY); }});
 
             preferences_notifications_sources = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Notifications_EventSources_key), new HashSet<>());

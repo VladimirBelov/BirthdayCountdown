@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.08.2025, 00:48
+  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.08.2025, 00:04
+  ~  * Last modified 15.10.2025, 23:31
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.8</item>
+        <item>Do 📅 místních událostí přidána pole „Popis“ a „Webový odkaz“ spolu s možností zadat data v před naším letopočtem</item>
+        <item>Do widgetu seznamu fotografií přidána pole „Rok události“, „Datum původní události“ a „Rok původní události“</item>
+        <item>Do nastavení limitů událostí ve widgetech přidána verze 11..19</item>
+        <item>Přepracované rozhraní pro změnu velikosti prvků widgetu, nyní od 50 % do 200 % v krocích po 1 %</item>
+        <item>Procházejte dny ve vyskakovací zprávě kalendáře a vyberte tlačítko pro datum</item>
+        <item>Automaticky propojit narozeniny a výročí úmrtí s místními událostmi (pro zobrazení věku)</item>
+        <item>Možnost zobrazit 🎂 ikonu typu události místo siluet (Společná nastavení - Sada ikon)</item>
+        <item>Přizpůsobitelný vzhled malých ikon v oznámeních. Oznámení se automaticky smažou po 24 hodinách</item>
+        <item>Výběr fotografie z kontaktů v místní události vyžaduje přístup ke kontaktům. Vybraná fotografie se uloží do události (dříve se ukládal odkaz na kontakt)</item>
+        <item>Zobrazit aktuální nastavení na obrazovce nastavení (další funkce)</item>
+        <item>🚫 Odebráno používání oprávnění READ_MEDIA_IMAGES a READ_MEDIA_AUDIO a také podpora účtů Skype a VK (z adresáře)</item>
+        <item>Opravy chyb</item>
 
         <item>#1.8.7</item>
         <item>Přidána podpora pro narozeniny a svátky ze souborů iCalendar (ics)</item>

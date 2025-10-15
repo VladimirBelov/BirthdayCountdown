@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.10.2025, 00:19
+  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 14.10.2025, 22:27
+  ~  * Last modified 15.10.2025, 21:55
   ~  */
   -->
 
@@ -2325,6 +2325,8 @@ Long click on item to select color"</string>
 
     <string-array name="pref_Notifications_Days_values_default" translatable="false">
         <item>0</item>
+    </string-array>
+    <string-array name="pref_Notifications2_Days_values_default" translatable="false">
     </string-array>
 
     <string-array name="pref_Notifications_EventTypes_entries" translatable="false">

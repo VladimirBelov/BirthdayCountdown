@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.10.2025, 03:34
+  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 14.10.2025, 00:58
+  ~  * Last modified 15.10.2025, 21:40
   ~  */
   -->
 
@@ -672,7 +672,7 @@
             android:dialogIcon="@drawable/ic_menu_friendslist"
             android:negativeButtonText="@string/button_cancel"/>
 
-        <ListPreference
+        <org.vovka.birthdaycountdown.CustomListPreference
             android:key="@string/pref_List_PrevEvents_key"
             android:title="@string/pref_List_PrevEvents_title"
             android:summary="@string/pref_List_PrevEvents_summary"
@@ -746,7 +746,7 @@
             android:dialogIcon="@android:drawable/ic_menu_compass"
             android:negativeButtonText="@string/button_cancel"/>
 
-        <ListPreference
+        <org.vovka.birthdaycountdown.CustomListPreference
             android:key="@string/pref_List_SearchDepth_key"
             android:title="@string/pref_List_SearchDepth_title"
             android:summary="@string/pref_List_SearchDepth_summary"
@@ -860,7 +860,7 @@
             android:summary="@string/pref_Widgets_AddWidget_summary"
             android:icon="@android:drawable/ic_menu_crop"/>
 
-        <ListPreference
+        <org.vovka.birthdaycountdown.CustomListPreference
             android:key="@string/pref_Widgets_UpdateInterval_key"
             android:title="@string/pref_Widgets_UpdateInterval_title"
             android:summary="@string/pref_Widgets_UpdateInterval_summary"
@@ -993,7 +993,7 @@
         android:layout="@layout/settings_category_with_icon"
         android:icon="@drawable/ic_menu_notifications1">
 
-        <MultiSelectListPreference
+        <org.vovka.birthdaycountdown.CustomMultiSelectListPreference
             android:key="@string/pref_Notifications_Days_key"
             android:title="@string/pref_Notifications_Days_title"
             android:summary="@string/pref_Notifications_Days_summary"
@@ -1119,7 +1119,7 @@
         android:layout="@layout/settings_category_with_icon"
         android:icon="@drawable/ic_menu_notifications2">
 
-        <MultiSelectListPreference
+        <org.vovka.birthdaycountdown.CustomMultiSelectListPreference
             android:key="@string/pref_Notifications2_Days_key"
             android:title="@string/pref_Notifications_Days_title"
             android:summary="@string/pref_Notifications_Days_summary"

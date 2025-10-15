@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.08.2025, 00:48
+  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.08.2025, 00:00
+  ~  * Last modified 15.10.2025, 23:31
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.8</item>
+        <item>Added \"Description\" and \"Web Link\" fields to 📅 local events, along with the ability to specify dates in BC</item>
+        <item>Added \"Event Year\", \"Original Event Date\" and \"Original Event Year\" fields to the photo list widget</item>
+        <item>Added 11..19 to the event limit settings in widgets</item>
+        <item>Redesigned widget element scaling interface, now from 50% to 200% in 1% increments</item>
+        <item>Scroll through days in the calendar pop-up message and select date button</item>
+        <item>Automatically link birthdays and death anniversaries for local events (to display age)</item>
+        <item>Option to display an 🎂 event type icon instead of silhouettes (Common settings - Icon pack)</item>
+        <item>Customizable appearance of small icons in notifications. Notifications are automatically deleted after 24 hours</item>
+        <item>Selecting a photo from contacts in a local event requires access to contacts. The selected photo is saved in the event (previously, a link to the contact was stored)</item>
+        <item>Show current settings on the settings screen (extra features)</item>
+        <item>🚫 Removed use of the READ_MEDIA_IMAGES and READ_MEDIA_AUDIO permissions, as well as support for Skype and VK accounts (from the address book)</item>
+        <item>Bug fixes</item>
 
         <item>#1.8.7</item>
         <item>Added support for birthdays and holidays from 📅 iCalendar (ics) files</item>

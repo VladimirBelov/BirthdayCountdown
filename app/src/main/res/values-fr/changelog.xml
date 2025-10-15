@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.08.2025, 00:48
+  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.08.2025, 00:11
+  ~  * Last modified 15.10.2025, 23:31
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
 <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+    <item>#1.8.8</item>
+    <item>Ajout des champs «Description» et «Lien web» aux 📅 événements locaux, ainsi que la possibilité de spécifier des dates en Colombie-Britannique</item>
+    <item>"Ajout des champs «Année de l'événement», «Date de l'événement d'origine» et «Année de l'événement d'origine» au widget de liste de photos"</item>
+    <item>"Ajout de la version 11..19 aux paramètres de limite d'événements dans les widgets"</item>
+    <item>"Interface de mise à l'échelle des éléments du widget repensée, passant désormais de 50% à 200% par incréments de 1%"</item>
+    <item>Faites défiler les jours dans la fenêtre contextuelle du calendrier et sélectionnez le bouton de date</item>
+    <item>"Associez automatiquement les anniversaires de naissance et de décès aux événements locaux (pour afficher l'âge)"</item>
+    <item>"Option permettant d'afficher une 🎂 icône de type d'événement au lieu de silhouettes (Paramètres généraux - Ensemble d'icônes)"</item>
+    <item>Aspect personnalisable des petites icônes dans les notifications. Les notifications sont automatiquement supprimées après 24 heures</item>
+    <item>"La sélection d'une photo parmi les contacts d'un événement local nécessite l'accès aux contacts. La photo sélectionnée est enregistrée dans l'événement (auparavant, un lien vers le contact était enregistré)"</item>
+    <item>"Affichage des paramètres actuels dans l'écran des paramètres (fonctions supplémentaires)"</item>
+    <item>"🚫 Suppression de l'utilisation des autorisations READ_MEDIA_IMAGES et READ_MEDIA_AUDIO, ainsi que de la prise en charge des comptes Skype et VK (à partir du carnet d'adresses)"</item>
+    <item>Corrections de bugs</item>
 
     <item>#1.8.7</item>
     <item>Ajout de la prise en charge des anniversaires et des jours fériés à partir des fichiers iCalendar (ics)</item>

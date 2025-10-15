@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.08.2025, 00:48
+  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.08.2025, 00:18
+  ~  * Last modified 15.10.2025, 23:31
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.8</item>
+        <item>Dodano pola „Opis” i „Link internetowy” do 📅 wydarzeń lokalnych, a także możliwość określania dat w BC</item>
+        <item>Dodano pola „Rok wydarzenia”, „Data pierwotnego wydarzenia” i „Rok pierwotnego wydarzenia” do widżetu listy zdjęć</item>
+        <item>Dodano 11–19 do ustawień limitu wydarzeń w widżetach</item>
+        <item>Przeprojektowano interfejs skalowania elementów widżetu, teraz od 50% do 200% w krokach co 1%</item>
+        <item>Przewijaj dni w wyskakującym okienku kalendarza i wybierz przycisk daty</item>
+        <item>Automatycznie łącz urodziny i rocznice śmierci z wydarzeniami lokalnymi (aby wyświetlić wiek)</item>
+        <item>Opcja wyświetlania 🎂 ikony typu wydarzenia zamiast sylwetek (Ustawienia wspólne – Pakiet ikon)</item>
+        <item>Możliwość personalizacji wyglądu małych ikon w powiadomieniach. Powiadomienia są automatycznie usuwane po 24 godzinach</item>
+        <item>Wybranie zdjęcia z kontaktów w wydarzeniu lokalnym wymaga dostępu do kontaktów. Wybrane zdjęcie jest zapisywane w wydarzeniu (wcześniej przechowywany był link do kontaktu)</item>
+        <item>Pokaż bieżące ustawienia na ekranie ustawień (dodatkowe funkcje)</item>
+        <item>🚫 Usunięto obsługę uprawnień READ_MEDIA_IMAGES i READ_MEDIA_AUDIO, a także obsługę kont Skype i VK (z książki adresowej)</item>
+        <item>Poprawki błędów</item>
 
         <item>#1.8.7</item>
         <item>Dodano obsługę urodzin i świąt z plików iCalendar (ics)</item>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.10.2025, 00:19
+  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 14.10.2025, 22:30
+  ~  * Last modified 15.10.2025, 23:15
   ~  */
   -->
 
@@ -1175,7 +1175,7 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="pref_InfoMsg_On_title">Wiadomości informacyjne</string>
     <string name="pref_InfoMsg_On_summary">Pokaż komunikaty informacyjne o wykonanych akcjach lub uruchomionych operacjach w tle</string>
     <string name="pref_Debug_On_summary">Pokazuj komunikaty o błędach debugowania (zaleca się włączenie tej opcji w przypadku nieprawidłowego wyświetlania widżetów lub wydarzeń lub nieokreślenia niektórych dat i wysłanie do autora programu)</string>
-    <string name="pref_ExtraFun_On_title">Dodatkowe. funkcje</string>
+    <string name="pref_ExtraFun_On_title">Dodatkowe funkcje</string>
     <string name="pref_ExtraFun_On_description">Włącz dodatkowe funkcje umożliwiające dostosowywanie różnych aspektów aplikacji</string>
     <string name="pref_Help_CalendarSync_title">Synchronizacja kalendarzy</string>
     <string name="pref_Help_CalendarSync_summary">Wymuś synchronizację wszystkich kalendarzy</string>

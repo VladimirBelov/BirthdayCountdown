@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.08.2025, 00:48
+  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.08.2025, 00:18
+  ~  * Last modified 15.10.2025, 23:31
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.8</item>
+        <item>Adicionados os campos "Descrição" e "Link da Web" aos 📅 eventos locais, além da possibilidade de especificar datas em BC</item>
+        <item>Adicionados os campos "Ano do Evento", "Data Original do Evento" e "Ano Original do Evento" ao widget da lista de fotos</item>
+        <item>Adicionado 11..19 às configurações de limite de eventos nos widgets</item>
+        <item>Interface de dimensionamento de elementos do widget redesenhada, agora de 50% a 200% em incrementos de 1%</item>
+        <item>Role pelos dias na mensagem pop-up do calendário e selecione o botão de data</item>
+        <item>Vincule automaticamente aniversários e datas de falecimento a eventos locais (para exibir a idade)</item>
+        <item>Opção para exibir um 🎂 ícone de tipo de evento em vez de silhuetas (Configurações comuns - Pacote de ícones)</item>
+        <item>Aparência personalizável de pequenos ícones nas notificações. As notificações são excluídas automaticamente após 24 horas</item>
+        <item>Selecionar uma foto dos contatos em um evento local requer acesso aos contatos. A foto selecionada é salva no evento (anteriormente, um link para o contato era armazenado)</item>
+        <item>Mostrar as configurações atuais na tela de configurações (recursos extras)</item>
+        <item>🚫 Remoção do uso das permissões READ_MEDIA_IMAGES e READ_MEDIA_AUDIO, bem como suporte para contas do Skype e VK (do catálogo de endereços)</item>
+        <item>Correções de bugs</item>
 
         <item>#1.8.7</item>
         <item>Suporte adicionado para aniversários e feriados de arquivos iCalendar (ics)</item>

@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.08.2025, 00:48
+  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.08.2025, 00:10
+  ~  * Last modified 15.10.2025, 23:31
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.8</item>
+        <item>Se añadieron los campos "Descripción" y "Enlace web" a los 📅 eventos locales, junto con la posibilidad de especificar fechas en BC</item>
+        <item>Se añadieron los campos "Año del evento", "Fecha original del evento" y "Año original del evento" al widget de lista de fotos</item>
+        <item>Se añadió 11..19 a la configuración del límite de eventos en los widgets</item>
+        <item>Se rediseñó la interfaz de escalado de elementos del widget, ahora del 50 % al 200 % en incrementos del 1 %</item>
+        <item>Desplázate por los días en el mensaje emergente del calendario y selecciona el botón de fecha</item>
+        <item>Vincula automáticamente cumpleaños y aniversarios de defunción para eventos locales (para mostrar la edad)</item>
+        <item>Opción para mostrar un 🎂 icono de tipo de evento en lugar de siluetas (General - Paquete de iconos)</item>
+        <item>Apariencia personalizable de íconos pequeños en las notificaciones. Las notificaciones se eliminan automáticamente después de 24 horas</item>
+        <item>Seleccionar una foto de los contactos en un evento local requiere acceso a los contactos. La foto seleccionada se guarda en el evento (anteriormente, se guardaba un enlace al contacto)</item>
+        <item>Mostrar la configuración actual en la pantalla de configuración (Funciones extra)</item>
+        <item>🚫 Se eliminó el uso de los permisos READ_MEDIA_IMAGES y READ_MEDIA_AUDIO, así como la compatibilidad con cuentas de Skype y VK (desde la libreta de direcciones)</item>
+        <item>Corrección de errores</item>
 
         <item>#1.8.7</item>
         <item>Se ha añadido compatibilidad con cumpleaños y festivos desde archivos de iCalendar (ics)</item>

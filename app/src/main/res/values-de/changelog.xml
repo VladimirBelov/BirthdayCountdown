@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.08.2025, 00:48
+  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.08.2025, 00:10
+  ~  * Last modified 15.10.2025, 23:31
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.8</item>
+        <item>Die Felder „Beschreibung“ und „Weblink“ wurden zu 📅 lokalen Ereignisse hinzugefügt. Außerdem können nun Daten in BC angegeben werden</item>
+        <item>Die Felder „Ereignisjahr“, „Datum der ursprünglichen Ereignis“ und „Jahr der ursprünglichen Ereignis“ wurden zum Fotolisten-Widget hinzugefügt</item>
+        <item>Die Ereignislimiteinstellungen in Widgets wurden um 11 bis 19 erweitert</item>
+        <item>Die Skalierungsoberfläche für Widget-Elemente wurde überarbeitet und kann nun in 1-%-Schritten von 50 % bis 200 % angepasst werden</item>
+        <item>Die Kalender-Popup-Meldung kann durch die Tage scrollen und die Datumsschaltfläche auswählen</item>
+        <item>Geburts- und Todestage werden automatisch mit lokalen Ereignisse verknüpft (um das Alter anzuzeigen)</item>
+        <item>Option zur Anzeige eines 🎂 Ereignistypsymbols anstelle von Silhouetten (Allgemein – Symbolpaket)</item>
+        <item>Anpassbare Darstellung kleiner Symbole in Benachrichtigungen. Benachrichtigungen werden nach 24 Stunden automatisch gelöscht</item>
+        <item>Die Auswahl eines Fotos aus den Kontakten eines lokalen Ereignisses erfordert Zugriff auf die Kontakte. Das ausgewählte Foto wird im Ereignis gespeichert (bisher wurde ein Link zum Kontakt gespeichert)</item>
+        <item>Aktuelle Einstellungen im Einstellungsbildschirm anzeigen (Extrafunktionen)</item>
+        <item>🚫 Die Verwendung der Berechtigungen READ_MEDIA_IMAGES und READ_MEDIA_AUDIO sowie die Unterstützung für Skype- und VK-Konten (aus dem Adressbuch) wurden entfernt</item>
+        <item>Fehlerbehebungen</item>
 
         <item>#1.8.7</item>
         <item>Unterstützung für Geburtstage und Feiertage aus 📅 iCalendar-Dateien (ICS) hinzugefügt</item>

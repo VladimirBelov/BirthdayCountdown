@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.10.2025, 03:34
+ *  * Created by Vladimir Belov on 15.10.2025, 23:53
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.10.2025, 03:15
+ *  * Last modified 15.10.2025, 22:31
  *
  */
 
@@ -2794,13 +2794,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 //Дата оригинального события или предстоящая дата (для 5K и счётчиков дней)
                 String eventEmoji = singleEventArray[ContactsEvents.Position_eventEmoji];
-                String dateToShow;
+                String eventDateFirstTime = singleEventArray[ContactsEvents.Position_eventDateFirstTime];
+                String eventDateNextTime = singleEventArray[ContactsEvents.Position_eventDateNextTime];
+
                 if (resources.getString(R.string.event_type_xdays_emoji).equals(eventEmoji) || resources.getString(R.string.event_type_5k_emoji).equals(eventEmoji)) {
-                    dateToShow = singleEventArray[ContactsEvents.Position_eventDateNextTime];
+                    holder.DateTextView.setText(eventsData.getDateFormatted(eventDateNextTime, ContactsEvents.FormatDate.WithYear));
+                } else if (eventDateFirstTime.length() < 10) {
+                    holder.DateTextView.setText(eventsData.getDateFormatted(eventDateNextTime, ContactsEvents.FormatDate.WithoutYear));
                 } else {
-                    dateToShow = singleEventArray[ContactsEvents.Position_eventDateFirstTime];
+                    holder.DateTextView.setText(eventsData.getDateFormatted(eventDateFirstTime, ContactsEvents.FormatDate.WithYear));
                 }
-                holder.DateTextView.setText(eventsData.getDateFormatted(dateToShow, ContactsEvents.FormatDate.WithYear));
 
                 //Фамилия Имя Отчество
                 holder.NameTextView.setText(eventsData.getFullName(singleEventArray));

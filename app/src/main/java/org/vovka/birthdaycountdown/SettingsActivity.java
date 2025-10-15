@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.10.2025, 03:34
+ *  * Created by Vladimir Belov on 15.10.2025, 23:53
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.10.2025, 03:31
+ *  * Last modified 15.10.2025, 22:15
  *
  */
 
@@ -627,6 +627,29 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             setSummaryForEventSources(R.string.pref_Notifications_EventSources_key, R.string.pref_Notifications_EventSources_description);
             setSummaryForEventSources(R.string.pref_Notifications2_EventSources_key, R.string.pref_Notifications_EventSources_description);
 
+            //Предыдущие события
+            setSummaryForList(
+                    R.string.pref_List_PrevEvents_key, R.string.pref_List_PrevEvents_default, R.string.pref_List_PrevEvents_summary,
+                    R.array.pref_List_PrevEvents_entries, R.array.pref_List_PrevEvents_values);
+
+            //Глубина поиска
+            setSummaryForList(
+                    R.string.pref_List_SearchDepth_key, R.string.pref_List_SearchDepth_default, R.string.pref_List_SearchDepth_summary,
+                    R.array.pref_List_SearchDepth_entries, R.array.pref_List_SearchDepth_values);
+
+            //Виджеты. Период обновления
+            setSummaryForList(
+                    R.string.pref_Widgets_UpdateInterval_key, R.string.pref_Widgets_UpdateInterval_default, R.string.pref_Widgets_UpdateInterval_summary,
+                    R.array.pref_Widgets_UpdateInterval_entries, R.array.pref_Widgets_UpdateInterval_values);
+
+            //Уведомления. Сроки уведомлений
+            setSummaryForMultiList(
+                    R.string.pref_Notifications_Days_key, R.array.pref_Notifications_Days_values_default, R.string.pref_Notifications_Days_summary,
+                    R.array.pref_Notifications_Days_entries, R.array.pref_Notifications_Days_values);
+            setSummaryForMultiList(
+                    R.string.pref_Notifications2_Days_key, R.array.pref_Notifications2_Days_values_default, R.string.pref_Notifications_Days_summary,
+                    R.array.pref_Notifications_Days_entries, R.array.pref_Notifications_Days_values);
+
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -799,13 +822,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             List<String> arrayEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(prefEntries)));
             List<String> arrayValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(prefValues)));
+            if (arrayEntries.size() != arrayValues.size()) return;
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
-                String realValue = arrayEntries.get(arrayValues.indexOf(newValue.toString()));
-                return updateSummary(prefKey, realValue, getString(prefSummaryKey), 0, 0);
+                if (arrayValues.contains(newValue.toString())) {
+                    String realValue = arrayEntries.get(arrayValues.indexOf(newValue.toString()));
+                    return updateSummary(prefKey, realValue, getString(prefSummaryKey), 0, 0);
+                } else {return false;}
             });
             final String currentValue = preferences.getString(getString(prefKey), getString(prefDefaultKey));
-            final String value = arrayEntries.get(arrayValues.indexOf(currentValue));
-            updateSummary(prefKey, value, getString(prefSummaryKey), 0, 0);
+            if (arrayValues.contains(currentValue)) {
+                final String value = arrayEntries.get(arrayValues.indexOf(currentValue));
+                updateSummary(prefKey, value, getString(prefSummaryKey), 0, 0);
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -825,11 +853,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             String[] entriesArr = getResources().getStringArray(prefEntries);
             String[] valuesArr = getResources().getStringArray(prefValues);
             String[] defaultArr = getResources().getStringArray(prefDefaultKey);
+            if (entriesArr.length != valuesArr.length) return;
 
             //Маппинг: value → entry (O(1) поиск)
             Map<String, String> valueToEntry = new HashMap<>();
-            int len = Math.min(entriesArr.length, valuesArr.length);
-            for (int i = 0; i < len; i++) {
+            for (int i = 0; i < entriesArr.length; i++) {
                 valueToEntry.put(valuesArr[i], entriesArr[i]);
             }
 
@@ -1797,6 +1825,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 if (eventsData.preferences_menustyle_compact) {
                     updateVisibility();
                 } else {
+                    //todo: даже если просто поменялся список дней, то всё равно происходит полное переоткрытие настроек, что неудобно
                     Intent intent = getIntent();
                     finish();
                     startActivity(intent);
