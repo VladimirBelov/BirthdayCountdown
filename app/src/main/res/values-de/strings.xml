@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.10.2025, 00:19
+  ~  * Created by Vladimir Belov on 17.10.2025, 13:26
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 14.10.2025, 22:29
+  ~  * Last modified 17.10.2025, 12:50
   ~  */
   -->
 
@@ -882,22 +882,6 @@
     <string name="widget_config_magnify_text_caption">Text</string>
     <string name="widget_config_magnify_photo_caption">Foto</string>
     <string name="widget_config_magnify_auto">Automatisch</string>
-    <string-array name="widget_config_magnify_entries">
-        <item>@string/widget_config_magnify_auto</item>
-        <item>x0.5</item>
-        <item>x0.65</item>
-        <item>x0.75</item>
-        <item>x0.85</item>
-        <item>x1.0</item>
-        <item>x1.1</item>
-        <item>x1.2</item>
-        <item>x1.3</item>
-        <item>x1.4</item>
-        <item>x1.5</item>
-        <item>x1.6</item>
-        <item>x1.75</item>
-        <item>x2.0</item>
-    </string-array>
 
     <string name="widget_config_photostyle_label">Fotostil</string>
     <string name="widget_config_photostyle_description">Stil von Kontaktfotos</string>

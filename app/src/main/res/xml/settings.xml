@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
+  ~  * Created by Vladimir Belov on 17.10.2025, 13:26
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 15.10.2025, 21:40
+  ~  * Last modified 17.10.2025, 13:24
   ~  */
   -->
 
@@ -123,7 +123,7 @@
             android:dialogIcon="@android:drawable/ic_menu_edit"
             android:negativeButtonText="@string/button_cancel"/>
 
-        <org.vovka.birthdaycountdown.SeekBarPreference
+        <org.vovka.birthdaycountdown.CustomSeekBarPreference
             android:key="@string/pref_LocalEvents_PhotoSize_key"
             android:title="@string/pref_LocalEvents_Size_title"
             android:summary="@string/pref_LocalEvents_Size_summary"
@@ -1031,7 +1031,7 @@
             android:dialogIcon="@android:drawable/ic_menu_view"
             android:negativeButtonText="@string/button_cancel"/>
 
-        <MultiSelectListPreference
+        <org.vovka.birthdaycountdown.CustomMultiSelectListPreference
             android:key="@string/pref_Notifications_Events_key"
             android:defaultValue="@array/pref_EventTypes_values_default"
             android:entries="@array/pref_Notifications_EventTypes_entries"
@@ -1154,7 +1154,7 @@
             android:dialogIcon="@android:drawable/ic_menu_view"
             android:negativeButtonText="@string/button_cancel"/>
 
-        <MultiSelectListPreference
+        <org.vovka.birthdaycountdown.CustomMultiSelectListPreference
             android:key="@string/pref_Notifications2_Events_key"
             android:defaultValue="@array/pref_EventTypes_values_default"
             android:entries="@array/pref_Notifications_EventTypes_entries"

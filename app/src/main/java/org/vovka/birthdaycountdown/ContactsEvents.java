@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.10.2025, 23:53
+ *  * Created by Vladimir Belov on 17.10.2025, 13:26
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 15.10.2025, 21:55
+ *  * Last modified 17.10.2025, 12:50
  *
  */
 
@@ -5674,7 +5674,7 @@ public class ContactsEvents {
 
     static class EventPhoto {
         public final Bitmap bitmap;
-        public PhotoType type;
+        public final PhotoType type;
 
         public EventPhoto(Bitmap bitmap, PhotoType type) {
             this.bitmap = bitmap;

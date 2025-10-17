@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.10.2025, 14:03
+ *  * Created by Vladimir Belov on 17.10.2025, 13:26
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.10.2025, 09:37
+ *  * Last modified 17.10.2025, 13:24
  *
  */
 
@@ -22,9 +22,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 /** @noinspection unused*/
-public class SeekBarPreference extends DialogPreference {
+public class CustomSeekBarPreference extends DialogPreference {
 
-    private static final String TAG = "SeekBarPreference";
+    private static final String TAG = "CustomSeekBarPreference";
     private int defaultValueFromXml = 0;
     private int mProgress;
     private int mMax;
@@ -34,22 +34,22 @@ public class SeekBarPreference extends DialogPreference {
     private String mSummaryTemplate; // Поле для хранения шаблона сводки
     private TextView mSeekBarValueTextView;
 
-    public SeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public CustomSeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs);
     }
 
-    public SeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CustomSeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
 
-    public SeekBarPreference(Context context, AttributeSet attrs) {
+    public CustomSeekBarPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public SeekBarPreference(Context context) {
+    public CustomSeekBarPreference(Context context) {
         super(context);
         init(context, null);
     }
@@ -135,7 +135,7 @@ public class SeekBarPreference extends DialogPreference {
     @Override
     protected void onBindView(View view) {
         super.onBindView(view);
-        notifyChanged(); //Без этого первый раз не отрисовывает summary
+        updateSummary(minSummaryValue + step * mProgress); //Без этого первый раз не отрисовывает summary
     }
 
     // Этот метод вызывается, когда диалог закрывается (OK/Cancel)
@@ -209,9 +209,11 @@ public class SeekBarPreference extends DialogPreference {
         ContactsEvents eventsData = ContactsEvents.getInstance();
         SpannableString spannable = new SpannableString(summary);
         if (eventsData.preferences_extrafun) {
-            spannable.setSpan(new StyleSpan(Typeface.BOLD), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            try (TypedArray ta = eventsData.getContext().getTheme().obtainStyledAttributes(R.styleable.Theme)) {
-                spannable.setSpan(new ForegroundColorSpan(ta.getColor(R.styleable.Theme_colorAccent, 0)), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (isEnabled()) {
+                spannable.setSpan(new StyleSpan(Typeface.BOLD), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                try (TypedArray ta = eventsData.getContext().getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                    spannable.setSpan(new ForegroundColorSpan(ta.getColor(R.styleable.Theme_colorAccent, 0)), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
             }
         }
 

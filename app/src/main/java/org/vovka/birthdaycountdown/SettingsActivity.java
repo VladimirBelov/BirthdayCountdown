@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.10.2025, 23:53
+ *  * Created by Vladimir Belov on 17.10.2025, 13:26
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 15.10.2025, 22:15
+ *  * Last modified 17.10.2025, 13:14
  *
  */
 
@@ -178,26 +178,26 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             setDisplayMetrics(this.getResources().getDisplayMetrics());
             setContentView(R.layout.activity_settings);
 
+            //Цвет заголовка окна
+            ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+
             if (ContactsEvents.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
-                    this.statusBarInsets = insets; //windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
+                    this.statusBarInsets = insets;
                     layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
                     return WindowInsetsCompat.CONSUMED;
                 });
+            } else {
+                // Устанавливаем цвет панели навигации
+                Window w = getWindow();
+                w.setStatusBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0)); //почему-то сама из темы не ставится
+                w.setNavigationBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0));
             }
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);
-
-            //Цвет заголовка окна
-            ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-            Window w = getWindow();
-            w.setStatusBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0)); //почему-то сама из темы не ставится
-            w.setNavigationBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0));
-            // Устанавливаем цвет панели навигации
-            //setNavigationBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0));
             toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
             setSupportActionBar(toolbar);
 
@@ -487,6 +487,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
                 }
 
+                setSummaryForNotifications();
+
             } else {
 
                 prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_Notifications_key));
@@ -622,10 +624,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     R.string.pref_List_Events_key, R.array.pref_EventTypes_values_default, R.string.pref_List_EventTypes_summary,
                     R.array.pref_List_EventTypes_entries, R.array.pref_List_EventTypes_values);
 
-            //Источники событий
+            //Источники событий для списка
             setSummaryForEventSources(R.string.pref_List_EventSources_key, R.string.pref_List_EventSources_description);
-            setSummaryForEventSources(R.string.pref_Notifications_EventSources_key, R.string.pref_Notifications_EventSources_description);
-            setSummaryForEventSources(R.string.pref_Notifications2_EventSources_key, R.string.pref_Notifications_EventSources_description);
 
             //Предыдущие события
             setSummaryForList(
@@ -642,18 +642,36 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     R.string.pref_Widgets_UpdateInterval_key, R.string.pref_Widgets_UpdateInterval_default, R.string.pref_Widgets_UpdateInterval_summary,
                     R.array.pref_Widgets_UpdateInterval_entries, R.array.pref_Widgets_UpdateInterval_values);
 
-            //Уведомления. Сроки уведомлений
-            setSummaryForMultiList(
-                    R.string.pref_Notifications_Days_key, R.array.pref_Notifications_Days_values_default, R.string.pref_Notifications_Days_summary,
-                    R.array.pref_Notifications_Days_entries, R.array.pref_Notifications_Days_values);
-            setSummaryForMultiList(
-                    R.string.pref_Notifications2_Days_key, R.array.pref_Notifications2_Days_values_default, R.string.pref_Notifications_Days_summary,
-                    R.array.pref_Notifications_Days_entries, R.array.pref_Notifications_Days_values);
+            //Уведомления
+            setSummaryForNotifications();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    private void setSummaryForNotifications() {
+
+        //Источники событий
+        setSummaryForEventSources(R.string.pref_Notifications_EventSources_key, R.string.pref_Notifications_EventSources_description);
+        setSummaryForEventSources(R.string.pref_Notifications2_EventSources_key, R.string.pref_Notifications_EventSources_description);
+
+        //Сроки уведомлений
+        setSummaryForMultiList(
+                R.string.pref_Notifications_Days_key, R.array.pref_Notifications_Days_values_default, R.string.pref_Notifications_Days_summary,
+                R.array.pref_Notifications_Days_entries, R.array.pref_Notifications_Days_values);
+        setSummaryForMultiList(
+                R.string.pref_Notifications2_Days_key, R.array.pref_Notifications2_Days_values_default, R.string.pref_Notifications_Days_summary,
+                R.array.pref_Notifications_Days_entries, R.array.pref_Notifications_Days_values);
+
+        //Типы событий
+        setSummaryForMultiList(
+                R.string.pref_Notifications_Events_key, R.array.pref_EventTypes_values_default, R.string.pref_Notifications_EventTypes_summary,
+                R.array.pref_Notifications_EventTypes_entries, R.array.pref_Notifications_EventTypes_values);
+        setSummaryForMultiList(
+                R.string.pref_Notifications2_Events_key, R.array.pref_EventTypes_values_default, R.string.pref_Notifications_EventTypes_summary,
+                R.array.pref_Notifications_EventTypes_entries, R.array.pref_Notifications_EventTypes_values);
     }
 
     private void setSummaryForAccounts() {
@@ -937,8 +955,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             String fullText = textBeforeValue + newValue;
 
             SpannableString spannable = new SpannableString(fullText);
-            spannable.setSpan(new StyleSpan(Typeface.BOLD), textBeforeValue.length(), fullText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannable.setSpan(new ForegroundColorSpan(ta.getColor(R.styleable.Theme_colorAccent, 0)), textBeforeValue.length(), fullText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (pref.isEnabled()) {
+                spannable.setSpan(new StyleSpan(Typeface.BOLD), textBeforeValue.length(), fullText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(new ForegroundColorSpan(ta.getColor(R.styleable.Theme_colorAccent, 0)), textBeforeValue.length(), fullText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
 
             if (colorCircle != 0) {
 
@@ -1181,9 +1201,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 setUpNestedScreen((PreferenceScreen) preference);
 
-                if (getString(R.string.pref_Notifications_key).equals(key) || getString(R.string.pref_Notifications2_key).equals(key)) {
+                //Пока эта проверка будет только после установки дней
+                /*if (getString(R.string.pref_Notifications_key).equals(key) || getString(R.string.pref_Notifications2_key).equals(key)) {
                     checkAndRequestNotificationAccess(eventsData);
-                }
+                }*/
 
             } else if (getString(R.string.pref_Notifications_NotifyTest_key).equals(key)) { //Тест уведомления 1
 
@@ -1814,7 +1835,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
 
                         try {
-                            //startActivity(new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
                             startActivity(intent);
                         } catch (ActivityNotFoundException e) { /**/ }
                     }
