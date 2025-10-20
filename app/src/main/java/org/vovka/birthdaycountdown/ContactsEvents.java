@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.10.2025, 13:26
+ *  * Created by Vladimir Belov on 21.10.2025, 02:39
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.10.2025, 12:50
+ *  * Last modified 21.10.2025, 02:33
  *
  */
 
@@ -62,7 +62,6 @@ import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.text.format.Time;
 import android.text.style.StyleSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -130,6 +129,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -286,7 +286,6 @@ public class ContactsEvents {
     final Random generator = new Random();
     //https://developer.android.com/about/versions/12/behavior-changes-12#pending-intent-mutability
     final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
-    final int PendingIntentMutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
     final Map<Integer, Integer> preferences_IconPackImages_M = new TreeMap<>();
     final Map<Integer, Integer> preferences_IconPackImages_F = new TreeMap<>();
     /** Типы дней для календаря */
@@ -7296,6 +7295,27 @@ public class ContactsEvents {
         }
     }
 
+    /** Вспомогательный метод для установки будильника
+     * @param alarmManager AlarmManager
+     * @param triggerTime Время срабатывания
+     * @param pendingIntent Intent для запуска
+     */
+    @SuppressLint("MissingPermission")
+    private void scheduleExactAlarm(AlarmManager alarmManager, long triggerTime, PendingIntent pendingIntent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+            } else {
+                // Пользователь запретил точные будильники → используем неточный
+                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+        }
+    }
+
     void initWidgetUpdate(@NonNull StringBuilder log) {
 
         try {
@@ -7303,52 +7323,46 @@ public class ContactsEvents {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             if (alarmManager == null) return;
 
-            Intent updateIntent = new Intent(context, WidgetUpdateReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, updateIntent, PendingIntentMutable);
+            final int pendingIntentFlags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                    ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                    : PendingIntent.FLAG_UPDATE_CURRENT;
 
-            Intent updateIntentDaily = new Intent(context, WidgetUpdateDailyReceiver.class);
-            PendingIntent pendingIntentDaily = PendingIntent.getBroadcast(context, 0, updateIntentDaily, PendingIntentMutable);
+            int requestCode = 100;
+            int requestCodeDaily = 200;
+
+            Intent hourlyIntent = new Intent(context, WidgetUpdateReceiver.class);
+            Intent dailyIntent = new Intent(context, WidgetUpdateDailyReceiver.class);
 
             if (preferences_widgets_update_period > 0) {
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(System.currentTimeMillis());
-                calendar.add(Calendar.HOUR_OF_DAY, preferences_widgets_update_period);
+                //По часам
+                long hourlyTrigger = System.currentTimeMillis() + TimeUnit.HOURS.toMillis(preferences_widgets_update_period);
+                PendingIntent hourlyPendingIntent = PendingIntent.getBroadcast(context, requestCode, hourlyIntent, pendingIntentFlags);
+                scheduleExactAlarm(alarmManager, hourlyTrigger, hourlyPendingIntent);
 
-                Calendar calendarStartDay = Calendar.getInstance();
-                calendarStartDay.setTimeInMillis(System.currentTimeMillis());
-                calendarStartDay.add(Calendar.DAY_OF_YEAR, 1);
-                calendarStartDay.set(Calendar.HOUR_OF_DAY, 0);
-                calendarStartDay.set(Calendar.MINUTE, 0);
-                calendarStartDay.set(Calendar.SECOND, 1);
-                calendarStartDay.set(Calendar.MILLISECOND, 0);
+                //В полночь
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DAY_OF_YEAR, 1);
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 1);
+                cal.set(Calendar.MILLISECOND, 0);
+                long dailyTrigger = cal.getTimeInMillis();
 
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR * preferences_widgets_update_period, pendingIntent);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendarStartDay.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntentDaily);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (checkCanExactAlarm()) {
-                        try {
-                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendarStartDay.getTimeInMillis(), pendingIntentDaily);
-                        } catch (SecurityException se) {
-                            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendarStartDay.getTimeInMillis(), pendingIntentDaily);
-                        }
-                    } else {
-                        alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                        alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendarStartDay.getTimeInMillis(), pendingIntentDaily);
-                    }
-                }
-                log.append(resources.getString(R.string.msg_next_widgetupdate,
-                        sdf_DDMMYYYYHHMM.format(calendar.before(calendarStartDay) ? calendar.getTime() : calendarStartDay.getTime())));
+                PendingIntent dailyPendingIntent = PendingIntent.getBroadcast(context, requestCodeDaily, dailyIntent, pendingIntentFlags);
+                scheduleExactAlarm(alarmManager, dailyTrigger, dailyPendingIntent);
 
-            } else { //Disable
-                if (PendingIntent.getBroadcast(context, 0, updateIntent, PendingIntentMutable) != null) {
-                    alarmManager.cancel(pendingIntent);
-                }
-                if (PendingIntent.getBroadcast(context, 0, updateIntentDaily, PendingIntentMutable) != null) {
-                    alarmManager.cancel(pendingIntentDaily);
-                }
+                // Лог
+                Date nextUpdate = new Date(Math.min(hourlyTrigger, dailyTrigger));
+                log.append(resources.getString(R.string.msg_next_widgetupdate, sdf_DDMMYYYYHHMM.format(nextUpdate)));
+
+            } else {
+                // Отмена будильников
+                PendingIntent pi1 = PendingIntent.getBroadcast(context, requestCode, hourlyIntent, pendingIntentFlags);
+                alarmManager.cancel(pi1);
+
+                PendingIntent pi2 = PendingIntent.getBroadcast(context, requestCodeDaily, dailyIntent, pendingIntentFlags);
+                alarmManager.cancel(pi2);
             }
 
         } catch (Exception e) {
@@ -7361,79 +7375,47 @@ public class ContactsEvents {
     void initNotificationSchedule(@NonNull StringBuilder log, int queueNumber, @NonNull Set<String> prefDays, int prefAlarmHour, int prefAlarmMinute) {
 
         try {
-
-            Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-            alarmIntent.putExtra(Constants.QUEUE, queueNumber);
-
-            // Проверяем, существует ли уже PendingIntent с таким же queueNumber
-            PendingIntent existingPendingIntent = PendingIntent.getBroadcast(
-                    context, queueNumber, alarmIntent, PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE);
-
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager == null) return;
 
-            // Если PendingIntent существует, отменяем его
-            if (existingPendingIntent != null && alarmManager != null) {
-                alarmManager.cancel(existingPendingIntent);
-                existingPendingIntent.cancel(); // Отменяем PendingIntent
-                if (preferences_debug_on) {
-                    log.append(resources.getString(R.string.msg_canceled_previous_notification, queueNumber));
-                }
-            }
+            final int flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                    ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                    : PendingIntent.FLAG_UPDATE_CURRENT;
 
-            // Создаем новый PendingIntent (или переиспользуем существующий)
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                    context, queueNumber, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-            alarmIntent.putExtra(Constants.QUEUE, queueNumber);
+            boolean needToNotify = !prefDays.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled();
 
-            boolean needToNotify = false;
-            boolean canExactAlarm = false;
-            if (!prefDays.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
-                canExactAlarm = checkCanExactAlarm();
-                if (!canExactAlarm) {
-                    log.append(context.getString(R.string.msg_exact_alarms_disabled));
-                }
-                needToNotify = true;
-            }
-
+            Intent intent = new Intent(context, AlarmReceiver.class);
             if (needToNotify) {
+                intent.putExtra(Constants.QUEUE, queueNumber);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, queueNumber, intent, flags);
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(System.currentTimeMillis());
-                calendar.set(Calendar.HOUR_OF_DAY, prefAlarmHour);
-                calendar.set(Calendar.MINUTE, prefAlarmMinute);
-                calendar.set(Calendar.SECOND, 0);
+                // Вычисляем время следующего срабатывания
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR_OF_DAY, prefAlarmHour);
+                cal.set(Calendar.MINUTE, prefAlarmMinute);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.MILLISECOND, 0);
 
-                if (calendar.before(Calendar.getInstance())) {
-                    calendar.add(Calendar.DATE, 1);
+                if (cal.before(Calendar.getInstance())) {
+                    cal.add(Calendar.DATE, 1);
                 }
 
-                if (alarmManager != null) {
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (canExactAlarm) {
-                            try {
-                                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                            } catch (SecurityException se) {
-                                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                            }
-                        } else {
-                            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                        }
-                    }
+                scheduleExactAlarm(alarmManager, cal.getTimeInMillis(), pendingIntent);
 
-                    String logEntry = resources.getString(R.string.msg_next_notification, sdf_DDMMYYYYHHMM.format(calendar.getTime()));
-                    if (log.indexOf(logEntry) == -1) log.append(logEntry);
-                }
+                sdf_DDMMYYYYHHMM.setTimeZone(cal.getTimeZone());
+                log.append(resources.getString(R.string.msg_next_notification, sdf_DDMMYYYYHHMM.format(cal.getTime())));
 
-            } else { //Уведомления не нужны или нет доступа показывать уведомления
-                if (PendingIntent.getBroadcast(context, queueNumber, alarmIntent, PendingIntentImmutable) != null && alarmManager != null) {
-                    alarmManager.cancel(pendingIntent);
-                }
+            } else {
+                // Отменяем будильник
+                PendingIntent pi = PendingIntent.getBroadcast(context, queueNumber, intent, flags);
+                alarmManager.cancel(pi);
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            if (preferences_debug_on) {
+                ToastExpander.showDebugMsg(context, getMethodName(3) + ": " + e);
+            }
         }
     }
 
@@ -8139,6 +8121,8 @@ public class ContactsEvents {
 
         try {
 
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager == null) return;
             if (TextUtils.isEmpty(notifyData) || (snoozeHours <= 0 && wakeDateTime == null)) return;
 
             Intent alarmIntent = new Intent(context, NotifyActionReceiver.class);
@@ -8155,37 +8139,26 @@ public class ContactsEvents {
                 alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, preferences_notifications_quick_actions.toArray(new String[0])); //Берём из основных
             }
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), alarmIntent, PendingIntentMutable); //PendingIntent.FLAG_UPDATE_CURRENT);
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            final int flags = PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0);
+            int requestCode = (Math.abs(notifyData.hashCode()) % 9000) + 1000; // диапазон 1000–9999
+            alarmIntent.putExtra(Constants.EXTRA_NOTIFICATION_ID, requestCode);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, alarmIntent, flags);
 
-            long currentTimeMillis = System.currentTimeMillis();
-            long nextUpdateTimeMillis;
-            boolean isSnoozed = false;
+            boolean isSnoozed;
+            long triggerTime;
             if (snoozeHours > 0) {
-                nextUpdateTimeMillis = currentTimeMillis + snoozeHours * 60 * DateUtils.MINUTE_IN_MILLIS; //* DateUtils.HOUR_IN_MILLIS;
+                triggerTime = System.currentTimeMillis() + TimeUnit.HOURS.toMillis(snoozeHours);
                 isSnoozed = true;
             } else {
-                nextUpdateTimeMillis = wakeDateTime.getTime();
+                isSnoozed = false;
+                triggerTime = wakeDateTime.getTime();
             }
-            Time nextUpdateTime = new Time();
-            nextUpdateTime.set(nextUpdateTimeMillis);
 
-            if (alarmManager != null) {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, nextUpdateTimeMillis, pendingIntent);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (checkCanExactAlarm()) {
-                        try {
-                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, nextUpdateTimeMillis, pendingIntent);
-                        } catch (SecurityException se) {
-                            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, nextUpdateTimeMillis, pendingIntent);
-                        }
-                    } else {
-                        alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, nextUpdateTimeMillis, pendingIntent);
-                    }
-                }
-                boolean finalIsSnoozed = isSnoozed;
-                handler.post(() -> Toast.makeText(context, context.getString(finalIsSnoozed ? R.string.msg_snoozed_until : R.string.msg_notify_time, sdf_DDMMYYYYHHMM.format(nextUpdateTimeMillis)), Toast.LENGTH_LONG).show());
-            }
+            scheduleExactAlarm(alarmManager, triggerTime, pendingIntent);
+
+            //handler.post(() -> Toast.makeText(context, context.getString(isSnoozed ? R.string.msg_snoozed_until : R.string.msg_notify_time, sdf_DDMMYYYYHHMM.format(triggerTime)), Toast.LENGTH_LONG).show());
+            sdf_DDMMYYYYHHMM.setTimeZone(Calendar.getInstance().getTimeZone());
+            ToastExpander.showInfoMsg(context, context.getString(isSnoozed ? R.string.msg_snoozed_until : R.string.msg_notify_time, sdf_DDMMYYYYHHMM.format(triggerTime)));
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -8211,30 +8184,33 @@ public class ContactsEvents {
             final String eventDetails = composeNotifyEventDetails(new NotifyEvent(singleEventArray, eventDate), new HashSet<>(Arrays.asList(details)));
             int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
             final String[] eventDistance = singleEventArray[Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
+            Set<String> prefEventDetails = preferences_notifications_details;
+            final String eventTitle = singleEventArray[Position_eventDistance].equals(Constants.STRING_0) ? eventDistance[0] : eventDistance[0] + Constants.STRING_SPACE + eventDistance[1];
+
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
-                    .setColor(this.getResources().getColor(R.color.dark_green))
-                    .setSmallIcon(R.drawable.ic_icon_notify)
                     .setContentText(eventDetails)
                     .setContentTitle(eventDistance[0] + Constants.STRING_SPACE + eventDistance[1])
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(eventDetails))
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setAutoCancel(true);
 
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri uri = null;
-            if (singleEventArray[Position_eventStorage].contains(Constants.STRING_STORAGE_CONTACTS) && !TextUtils.isEmpty(singleEventArray[Position_contactID])) {
-                uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, singleEventArray[Position_contactID]);
-            } else if (singleEventArray[Position_eventStorage].contains(Constants.STRING_STORAGE_CALENDAR) && !TextUtils.isEmpty(singleEventArray[Position_eventID])) {
-                uri = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, singleEventArray[Position_eventID]);
+            int prefSmallIconStyle = preferences_notifications_smallicons_style;
+            @ColorInt int eventIcon = R.drawable.ic_icon_notify;
+            if (prefSmallIconStyle == 1) {
+                builder.setColor(this.getResources().getColor(R.color.dark_green));
+            } else  if (prefSmallIconStyle == 2) {
+                builder.setColor(getThemeBackColor());
+            } else {
+                builder.setColor(getThemeBackColor());
+                try {
+                    eventIcon = Integer.parseInt(singleEventArray[Position_eventIcon]);
+                } catch (NumberFormatException ignored) { /**/ }
             }
-            if (uri != null) {
-                intent.setData(uri);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
-                builder.setContentIntent(pendingIntent);
-            }
+            builder.setSmallIcon(eventIcon);
 
-            //todo: добавить кнопки из actions
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                builder.setTimeoutAfter(85800000); //Сутки без 10 мин
+            }
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 if (preferences_notifications_ringtone != null)
@@ -8249,6 +8225,94 @@ public class ContactsEvents {
                 roundingFactor = preferences_list_photostyle;
             }
             builder.setLargeIcon(getEventPhoto(dataNotify, true, true, true, roundingFactor));
+
+            Set<String> prefQuickActions = actions == null ? new HashSet<>() : new HashSet<>(Arrays.asList(actions));
+            Intent intent = null;
+
+            if (preferences_notifications_on_click_action == 7) { //Основной список событий
+                intent = new Intent(context, MainActivity.class);
+                intent.setAction(Constants.ACTION_LAUNCH);
+            } else if (preferences_notifications_on_click_action >= 1 & preferences_notifications_on_click_action <= 4) {
+                intent = getViewActionIntent(singleEventArray, preferences_notifications_on_click_action, context);
+            } else if (preferences_notifications_on_click_action == 6) { //Закрыть уведомление
+                intent = new Intent();
+            }
+
+            if (intent != null) {
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
+                builder.setContentIntent(pendingIntent);
+            }
+
+            if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Dial))
+                    && !singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_CalendarEvent))
+                    && !TextUtils.isEmpty(singleEventArray[Position_contactID])
+                    && !TextUtils.isEmpty(getContactPhone(parseToLong(singleEventArray[Position_contactID])))) {
+
+                Intent intentDial = new Intent(context, NotifyActionReceiver.class);
+                intentDial.setAction(Constants.ACTION_DIAL);
+                intentDial.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                intentDial.putExtra(Constants.EXTRA_NOTIFICATION_DATA, dataNotify);
+                PendingIntent pendingDial = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentDial, PendingIntentImmutable);
+                NotificationCompat.Action actionDial = new NotificationCompat.Action(0, context.getString(R.string.button_dial), pendingDial);
+                builder.addAction(actionDial);
+
+            }
+
+            final String eventKey = getEventKey(singleEventArray);
+            if (!eventKey.isEmpty() && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Silent))) {
+                Intent intentSilent = new Intent(context, NotifyActionReceiver.class);
+                intentSilent.setAction(Constants.ACTION_SILENT);
+                intentSilent.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                intentSilent.putExtra(Constants.EXTRA_NOTIFICATION_DATA, dataNotify);
+                PendingIntent pendingSilent = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentSilent, PendingIntentImmutable);
+                NotificationCompat.Action actionSilent = new NotificationCompat.Action(0, context.getString(R.string.button_silent), pendingSilent);
+                builder.addAction(actionSilent);
+            }
+
+            if (!eventKey.isEmpty() && prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Hide))) {
+                Intent intentHide = new Intent(context, NotifyActionReceiver.class);
+                intentHide.setAction(Constants.ACTION_HIDE);
+                intentHide.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                intentHide.putExtra(Constants.EXTRA_NOTIFICATION_DATA, dataNotify);
+                PendingIntent pendingHide = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentHide, PendingIntentImmutable);
+                NotificationCompat.Action actionHide = new NotificationCompat.Action(0, context.getString(R.string.button_hide), pendingHide);
+                builder.addAction(actionHide);
+            }
+
+            if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Remind))) {
+                Intent intentSnooze = new Intent(context, NotifyActionReceiver.class);
+                intentSnooze.setAction(Constants.ACTION_SNOOZE);
+                intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_DATA, dataNotify);
+                intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, prefEventDetails.toArray(new String[0]));
+                intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, prefQuickActions.toArray(new String[0]));
+                PendingIntent pendingSnooze = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentSnooze, PendingIntentImmutable);
+                NotificationCompat.Action actionSnooze = new NotificationCompat.Action(0, context.getString(R.string.button_snooze), pendingSnooze);
+                builder.addAction(actionSnooze);
+            }
+
+            if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Share))) {
+                Intent intentShare = new Intent(context, NotifyActionReceiver.class);
+                intentShare.setAction(Constants.ACTION_SHARE);
+                intentShare.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                intentShare.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventTitle.concat(Constants.STRING_EOL).concat(eventDetails));
+                PendingIntent pendingShare = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentShare, PendingIntentImmutable);
+                NotificationCompat.Action actionShare = new NotificationCompat.Action(0, context.getString(R.string.button_share), pendingShare);
+                builder.addAction(actionShare);
+            }
+
+            if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Attach))) {
+                Intent intentAttach = new Intent(context, NotifyActionReceiver.class);
+                intentAttach.setAction(Constants.ACTION_ATTACH);
+                intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
+                intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_DATA, dataNotify);
+                intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, prefEventDetails.toArray(new String[0]));
+                intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, prefQuickActions.toArray(new String[0]));
+                PendingIntent pendingAttach = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentAttach, PendingIntentImmutable);
+                NotificationCompat.Action actionAttach = new NotificationCompat.Action(0, context.getString(R.string.button_attach), pendingAttach);
+                builder.addAction(actionAttach);
+            }
 
             if (setOnGoing) {
                 if (actions != null && Arrays.asList(actions).contains(context.getString(R.string.pref_Notifications_QuickActions_Close))) {
@@ -8265,7 +8329,6 @@ public class ContactsEvents {
                 builder.setOngoing(true);
                 builder.setPriority(NotificationCompat.PRIORITY_MAX);
             }
-
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             if (!checkNoNotificationAccess()) {

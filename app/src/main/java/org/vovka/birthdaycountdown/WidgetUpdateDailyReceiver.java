@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 21.10.2025, 02:39
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:37
+ *  * Last modified 19.10.2025, 20:31
  *
  */
 
@@ -48,11 +48,11 @@ public class WidgetUpdateDailyReceiver extends BroadcastReceiver {
             eventsData.setLocale(true);
             eventsData.getEvents(context);
 
-            //Переинициализируем обновления виджетов
-            eventsData.initWidgetUpdate(log);
-
             //Посылаем сообщения на обновление виджетов
             eventsData.updateWidgets(0, log);
+
+            //Переинициализируем обновления виджетов
+            eventsData.initWidgetUpdate(log);
 
             if (log.length() > 0) ToastExpander.showDebugMsg(context, log.toString());
 

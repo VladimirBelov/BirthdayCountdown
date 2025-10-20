@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 21.10.2025, 02:39
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:04
+ *  * Last modified 21.10.2025, 02:38
  *
  */
 
@@ -93,8 +93,8 @@ public class NotifyActionReceiver extends BroadcastReceiver {
             if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
                 ToastExpander.showDebugMsg(context, eventsData.getContext().getString(R.string.msg_debug_notify_action_empty, action));
                 return;
-            } else {
-                ToastExpander.showDebugMsg(context, action.concat(Constants.STRING_COLON_SPACE).concat(notificationData));
+            //} else {
+            //    ToastExpander.showDebugMsg(context, action.concat(Constants.STRING_COLON_SPACE).concat(notificationData));
             }
 
             if (action.equalsIgnoreCase(Constants.ACTION_SNOOZE)) {
