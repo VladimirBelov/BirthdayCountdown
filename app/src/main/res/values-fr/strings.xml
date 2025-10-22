@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
+  ~  * Created by Vladimir Belov on 23.10.2025, 00:57
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 22.10.2025, 10:34
+  ~  * Last modified 23.10.2025, 00:54
   ~  */
   -->
 
@@ -1089,6 +1089,11 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
 
     <string name="pref_Notifications_AlarmHour_title">"Heure de la notification"</string>
     <string name="pref_Notifications_AlarmHour_summary">À quelle heure signaler les événements</string>
+    <string name="pref_Notifications_Ringtone_dialog_title">Choisir un son de notification</string>
+    <string name="pref_Notifications_Ringtone_choice_system">🎶 Sonneries système…</string>
+    <string name="pref_Notifications_Ringtone_choice_file">📁 Sélectionner un fichier…</string>
+    <string name="pref_Notifications_Ringtone_choice_default">🎵 Son de notification par défaut</string>
+    <string name="pref_Notifications_Ringtone_choice_silent">🔇 Silencieux</string>
 
     <string name="pref_Notifications_Ringtone_title">Son de notification</string>
     <string name="pref_Notifications_Ringtone_summary">Son des événements à venir</string>

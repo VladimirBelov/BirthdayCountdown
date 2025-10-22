@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
+  ~  * Created by Vladimir Belov on 23.10.2025, 00:56
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 22.10.2025, 10:34
+  ~  * Last modified 23.10.2025, 00:49
   ~  */
   -->
 
@@ -1092,6 +1092,11 @@ Long click on item to select color"</string>
 
     <string name="pref_Notifications_Ringtone_title">Notification sound</string>
     <string name="pref_Notifications_Ringtone_summary">Upcoming Events Sound</string>
+    <string name="pref_Notifications_Ringtone_dialog_title">Choose a notification sound</string>
+    <string name="pref_Notifications_Ringtone_choice_system">🎶 System ringtones…</string>
+    <string name="pref_Notifications_Ringtone_choice_file">📁 Select file…</string>
+    <string name="pref_Notifications_Ringtone_choice_default">🎵 Default notification sound</string>
+    <string name="pref_Notifications_Ringtone_choice_silent">🔇 Silent</string>
 
     <string name="pref_Notifications_QuickActions_title">Quick actions</string>
     <string name="pref_Notifications_QuickActions_summary">Which actions are available for single notification (up to 3)</string>

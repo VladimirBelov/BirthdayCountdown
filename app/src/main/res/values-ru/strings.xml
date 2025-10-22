@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
+  ~  * Created by Vladimir Belov on 23.10.2025, 00:57
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 22.10.2025, 10:34
+  ~  * Last modified 23.10.2025, 00:48
   ~  */
   -->
 
@@ -1092,6 +1092,11 @@
 
     <string name="pref_Notifications_Ringtone_title">Звук уведомления</string>
     <string name="pref_Notifications_Ringtone_summary">Звук уведомления о предстоящих событиях</string>
+    <string name="pref_Notifications_Ringtone_dialog_title">Выберите звук уведомления</string>
+    <string name="pref_Notifications_Ringtone_choice_system">🎶 Системные мелодии…</string>
+    <string name="pref_Notifications_Ringtone_choice_file">📁 Выбрать файл…</string>
+    <string name="pref_Notifications_Ringtone_choice_default">🎵 По умолчанию (системный)</string>
+    <string name="pref_Notifications_Ringtone_choice_silent">🔇 Без звука</string>
 
     <string name="pref_Notifications_QuickActions_title">Быстрые действия</string>
     <string name="pref_Notifications_QuickActions_summary">Какие действия показывать у одиночного уведомления (до 3х штук)</string>

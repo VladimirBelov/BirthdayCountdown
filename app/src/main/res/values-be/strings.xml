@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
+  ~  * Created by Vladimir Belov on 23.10.2025, 00:56
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 22.10.2025, 10:34
+  ~  * Last modified 23.10.2025, 00:54
   ~  */
   -->
 
@@ -1089,9 +1089,13 @@
 
     <string name="pref_Notifications_AlarmHour_title">Час паведамлення</string>
     <string name="pref_Notifications_AlarmHour_summary">У які час паведамляць пра падзеі</string>
-
     <string name="pref_Notifications_Ringtone_title">Гук паведамлення</string>
     <string name="pref_Notifications_Ringtone_summary">Гук паведамлення пра падзеі, якія маюць быць</string>
+    <string name="pref_Notifications_Ringtone_dialog_title">Выберыце гук апавяшчэння</string>
+    <string name="pref_Notifications_Ringtone_choice_system">🎶 Сістэмныя мелодыі званка…</string>
+    <string name="pref_Notifications_Ringtone_choice_file">📁 Выберыце файл…</string>
+    <string name="pref_Notifications_Ringtone_choice_default">🎵 Гук апавяшчэння па змаўчанні</string>
+    <string name="pref_Notifications_Ringtone_choice_silent">🔇 Бязгучны</string>
 
     <string name="pref_Notifications_QuickActions_title">Хуткія дзеянні</string>
     <string name="pref_Notifications_QuickActions_summary">Якія дзеянні паказваць у адзінкавага паведамлення (да 3х штук)</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.10.2025, 20:46
+ *  * Created by Vladimir Belov on 23.10.2025, 00:56
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.10.2025, 20:40
+ *  * Last modified 23.10.2025, 00:56
  *
  */
 
@@ -109,7 +109,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -707,7 +706,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     private void setSummaryForNotificationsRingtone() {
-        String currentRingtone = Constants.STRING_EMPTY;
+        String currentRingtone = getString(R.string.pref_Notifications_Ringtone_choice_silent) ;
         if (!eventsData.preferences_notifications_ringtone.isEmpty()) {
             Uri ringtoneUri = Uri.parse(eventsData.preferences_notifications_ringtone);
             if (isFileProviderUri(ringtoneUri)) {
@@ -721,7 +720,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
         updateSummary(R.string.pref_Notifications_Ringtone_key, currentRingtone, getString(R.string.pref_Notifications_Ringtone_summary), 0, 0);
 
-        currentRingtone = Constants.STRING_EMPTY;
+        currentRingtone = getString(R.string.pref_Notifications_Ringtone_choice_silent) ;
         if (!eventsData.preferences_notifications2_ringtone.isEmpty()) {
             Uri ringtoneUri = Uri.parse(eventsData.preferences_notifications2_ringtone);
             if (isFileProviderUri(ringtoneUri)) {
@@ -2550,25 +2549,70 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             new AlertDialog.Builder(new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog))
                     .setIcon(R.drawable.ic_menu_notify)
-                    .setTitle("Выберите источник мелодии")
-                    .setItems(new CharSequence[]{"Системные мелодии", "Выбрать файл"}, (dialog, which) -> {
+                    .setTitle(R.string.pref_Notifications_Ringtone_dialog_title)
+                    .setItems(new CharSequence[]{
+                            getString(R.string.pref_Notifications_Ringtone_choice_system),     // → открывает RingtoneManager без Default/Silent
+                            getString(R.string.pref_Notifications_Ringtone_choice_file),          // → ACTION_OPEN_DOCUMENT
+                            getString(R.string.pref_Notifications_Ringtone_choice_default), // → Settings.System.DEFAULT_NOTIFICATION_URI
+                            getString(R.string.pref_Notifications_Ringtone_choice_silent)              // → null
+                    }, (dialog, which) -> {
+
                         runningQueue = queueNumber;
                         if (which == 0) {
+
                             // Системные мелодии
                             Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
                             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALL);
-                            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
-                            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
+                            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, false);
+                            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
                             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
-                            if (!prefRingtone.isEmpty()) intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(prefRingtone));
+                            if (!TextUtils.isEmpty(prefRingtone)) intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(prefRingtone));
                             startActivityForResult(intent, Constants.RESULT_PICK_RINGTONE);
-                        } else {
+
+                        } else if (which == 1) {
+
                             // Свой файл
                             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                             intent.addCategory(Intent.CATEGORY_OPENABLE);
                             intent.setType("audio/*");
                             intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"audio/mpeg", "audio/ogg", "audio/aac"});
                             startActivityForResult(intent, Constants.RESULT_PICK_CUSTOM_RINGTONE);
+
+                        } else if (which == 2) {
+
+                            Uri oldUri;
+                            if (runningQueue == 1) {
+                                oldUri = TextUtils.isEmpty(eventsData.preferences_notifications_ringtone) ? null : Uri.parse(eventsData.preferences_notifications_ringtone);
+                                eventsData.preferences_notifications_ringtone = Settings.System.DEFAULT_NOTIFICATION_URI.toString();
+                            } else {
+                                oldUri = TextUtils.isEmpty(eventsData.preferences_notifications2_ringtone) ? null : Uri.parse(eventsData.preferences_notifications2_ringtone);
+                                eventsData.preferences_notifications2_ringtone = Settings.System.DEFAULT_NOTIFICATION_URI.toString();
+                            }
+                            eventsData.savePreferences();
+
+                            // Удаляем неиспользуемый файл
+                            removeUselessMelody(oldUri);
+
+                            runningQueue = 0;
+                            setSummaryForNotificationsRingtone();
+
+                        } else {
+
+                            Uri oldUri;
+                            if (runningQueue == 1) {
+                                oldUri = TextUtils.isEmpty(eventsData.preferences_notifications_ringtone) ? null : Uri.parse(eventsData.preferences_notifications_ringtone);
+                                eventsData.preferences_notifications_ringtone = "";
+                            } else {
+                                oldUri = TextUtils.isEmpty(eventsData.preferences_notifications2_ringtone) ? null : Uri.parse(eventsData.preferences_notifications2_ringtone);
+                                eventsData.preferences_notifications2_ringtone = "";
+                            }
+                            eventsData.savePreferences();
+
+                            // Удаляем неиспользуемый файл
+                            removeUselessMelody(oldUri);
+
+                            runningQueue = 0;
+                            setSummaryForNotificationsRingtone();
                         }
                     })
                     .show();
@@ -2665,7 +2709,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 .replaceAll("\\s+", "_"); // пробелы → подчёркивания
     }
 
-    /** Опредилитель, что URI — из FileProvider
+    /** Определитель, что URI — из FileProvider
      * @param uri Uri
      * @return Результат
      */
@@ -4187,36 +4231,24 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else if (requestCode == Constants.RESULT_PICK_RINGTONE) {
 
                     // Это выбор системной мелодии (через RingtoneManager)
-                    Uri newUri = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-
-                    // Получаем текущие сохранённые URI
-                    Uri savedCustomUri1 = null, savedCustomUri2 = null;
-                    if (!TextUtils.isEmpty(eventsData.preferences_notifications_ringtone)) {
-                        savedCustomUri1 = Uri.parse(eventsData.preferences_notifications_ringtone);
-                    }
-                    if (!TextUtils.isEmpty(eventsData.preferences_notifications2_ringtone)) {
-                        savedCustomUri2 = Uri.parse(eventsData.preferences_notifications2_ringtone);
+                    Uri pickedUri = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                    if (pickedUri == null) {
+                       pickedUri = Settings.System.DEFAULT_NOTIFICATION_URI;
                     }
 
-                    // Сохраняем новый URI (системный)
+                    // Сохраняем новый URI
+                    Uri oldUri;
                     if (runningQueue == 1) {
-                        eventsData.preferences_notifications_ringtone = (newUri != null) ? newUri.toString() : "";
-                    } else if (runningQueue == 2) {
-                        eventsData.preferences_notifications2_ringtone = (newUri != null) ? newUri.toString() : "";
+                        oldUri = TextUtils.isEmpty(eventsData.preferences_notifications_ringtone) ? null : Uri.parse(eventsData.preferences_notifications_ringtone);
+                        eventsData.preferences_notifications_ringtone = (pickedUri != null) ? pickedUri.toString() : "";
+                    } else {
+                        oldUri = TextUtils.isEmpty(eventsData.preferences_notifications2_ringtone) ? null : Uri.parse(eventsData.preferences_notifications2_ringtone);
+                        eventsData.preferences_notifications2_ringtone = (pickedUri != null) ? pickedUri.toString() : "";
                     }
                     eventsData.savePreferences();
 
-                    // Удаляем СТАРЫЙ ПОЛЬЗОВАТЕЛЬСКИЙ ФАЙЛ, если он был
-                    Uri oldCustomUri = (runningQueue == 1) ? savedCustomUri1 : savedCustomUri2;
-                    if (isFileProviderUri(oldCustomUri)) {
-                        String oldFileName = getFileNameFromFileProviderUri(oldCustomUri);
-                        if (oldFileName != null) {
-                            File oldFile = new File(getFilesDir(), oldFileName);
-                            if (oldFile.exists() && !oldFile.delete()) {
-                                Log.w(TAG, "Failed to delete old ringtone: " + oldFile);
-                            }
-                        }
-                    }
+                    // Удаляем неиспользуемый файл
+                    removeUselessMelody(oldUri);
 
                     runningQueue = 0;
                     setSummaryForNotificationsRingtone();
@@ -4234,7 +4266,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     File targetFile = new File(getFilesDir(), safeName);
                     try (InputStream in = getContentResolver().openInputStream(sourceUri);
                          OutputStream out = new FileOutputStream(targetFile)) {
-                        if (in == null) throw new FileNotFoundException("Cannot open: " + sourceUri);
+                        if (in == null) {
+                            ToastExpander.showInfoMsg(this, getString(R.string.msg_file_open_error) + sourceUri);
+                            return;
+                        }
                         byte[] buf = new byte[8192];
                         int n;
                         while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
@@ -4245,28 +4280,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                     // Сохраняем путь до новой мелодии в настройку
                     Uri newUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", targetFile);
-                    String savedUriStr = (runningQueue == 1) ? eventsData.preferences_notifications_ringtone
-                            : eventsData.preferences_notifications2_ringtone;
-
+                    Uri oldUri;
                     if (runningQueue == 1) {
+                        oldUri = TextUtils.isEmpty(eventsData.preferences_notifications_ringtone) ? null : Uri.parse(eventsData.preferences_notifications_ringtone);
                         eventsData.preferences_notifications_ringtone = newUri.toString();
-                    } else if (runningQueue == 2) {
+                    } else {
+                        oldUri = TextUtils.isEmpty(eventsData.preferences_notifications2_ringtone) ? null : Uri.parse(eventsData.preferences_notifications2_ringtone);
                         eventsData.preferences_notifications2_ringtone = newUri.toString();
                     }
                     eventsData.savePreferences();
 
-                    // Удаляем старый файл ТОЛЬКО для своей очереди
-                    Uri oldUri = null;
-                    if (!TextUtils.isEmpty(savedUriStr)) oldUri = Uri.parse(savedUriStr);
-                    if (!newUri.equals(oldUri)) {
-                        String oldName = getFileNameFromFileProviderUri(oldUri);
-                        if (oldName != null) {
-                            File oldFile = new File(getFilesDir(), oldName);
-                            if (oldFile.exists() && !oldFile.delete()) {
-                                Log.w(TAG, "Failed to delete old ringtone: " + oldFile);
-                            }
-                        }
-                    }
+                    // Удаляем неиспользуемый файл
+                    removeUselessMelody(oldUri);
 
                     runningQueue = 0;
                     setSummaryForNotificationsRingtone();
@@ -4305,6 +4330,30 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void removeUselessMelody(Uri oldUri) {
+
+        if (oldUri == null) return;
+
+        boolean isUsed = false;
+        Uri savedUri;
+
+        savedUri = TextUtils.isEmpty(eventsData.preferences_notifications_ringtone) ? null : Uri.parse(eventsData.preferences_notifications_ringtone);
+        if (oldUri.equals(savedUri)) isUsed = true;
+
+        savedUri = TextUtils.isEmpty(eventsData.preferences_notifications2_ringtone) ? null : Uri.parse(eventsData.preferences_notifications2_ringtone);
+        if (oldUri.equals(savedUri)) isUsed = true;
+
+        if (!isUsed) {
+            String oldName = getFileNameFromFileProviderUri(oldUri);
+            if (oldName != null) {
+                File oldFile = new File(getFilesDir(), oldName);
+                if (oldFile.exists() && !oldFile.delete()) {
+                    Log.w(TAG, "Failed to delete old ringtone: " + oldFile);
+                }
+            }
         }
     }
 
