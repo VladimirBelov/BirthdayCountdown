@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.10.2025, 10:59
+ *  * Created by Vladimir Belov on 22.10.2025, 11:02
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.10.2025, 10:43
+ *  * Last modified 22.10.2025, 11:02
  *
  */
 
@@ -85,7 +85,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
