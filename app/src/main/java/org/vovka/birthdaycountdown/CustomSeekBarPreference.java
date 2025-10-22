@@ -1,14 +1,15 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.10.2025, 13:26
+ *  * Created by Vladimir Belov on 22.10.2025, 20:46
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.10.2025, 13:24
+ *  * Last modified 22.10.2025, 20:40
  *
  */
 
 package org.vovka.birthdaycountdown;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.preference.DialogPreference;
@@ -194,8 +195,10 @@ public class CustomSeekBarPreference extends DialogPreference {
     /**
      * Вспомогательный метод для обновления сводки
      */
-    private void updateSummary(int value) {
+    public void updateSummary(int newValue) {
         String summary;
+        int value = newValue;
+        if (value < 0) value = minSummaryValue + step * mProgress;
         if (mSummaryTemplate != null && mSummaryTemplate.contains("%s")) {
             // Если шаблон содержит %s, форматируем его
             summary = String.format(mSummaryTemplate, value);
@@ -211,7 +214,9 @@ public class CustomSeekBarPreference extends DialogPreference {
         if (eventsData.preferences_extrafun) {
             if (isEnabled()) {
                 spannable.setSpan(new StyleSpan(Typeface.BOLD), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                try (TypedArray ta = eventsData.getContext().getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                Resources.Theme theme = eventsData.getResources().newTheme();
+                theme.applyStyle(eventsData.preferences_theme.themeMain, true);
+                try (TypedArray ta = theme.obtainStyledAttributes(R.styleable.Theme)) {
                     spannable.setSpan(new ForegroundColorSpan(ta.getColor(R.styleable.Theme_colorAccent, 0)), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
             }

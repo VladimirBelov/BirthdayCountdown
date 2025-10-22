@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.10.2025, 10:59
+ *  * Created by Vladimir Belov on 22.10.2025, 20:46
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.10.2025, 10:34
+ *  * Last modified 22.10.2025, 20:40
  *
  */
 
@@ -43,6 +43,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.AudioAttributes;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -579,6 +580,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     R.string.pref_List_DateFormat_key, R.string.pref_List_DateFormat_default, R.string.pref_List_DateFormat_description,
                     R.array.pref_List_DateFormat_entries, R.array.pref_List_DateFormat_values);
 
+            //Размер локальных фото
+            Preference pref = findPreference(getString(R.string.pref_LocalEvents_PhotoSize_key));
+            if (pref instanceof CustomSeekBarPreference) {
+                CustomSeekBarPreference seek = (CustomSeekBarPreference) pref;
+                seek.updateSummary(-1);
+            }
+
             //Источники событий. Аккаунты контактов
             setSummaryForAccounts();
 
@@ -699,12 +707,32 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     private void setSummaryForNotificationsRingtone() {
-        String currentRingtone = !eventsData.preferences_notifications_ringtone.isEmpty() ?
-                getDisplayNameFromUri(Uri.parse(eventsData.preferences_notifications_ringtone)) : Constants.STRING_EMPTY;
+        String currentRingtone = Constants.STRING_EMPTY;
+        if (!eventsData.preferences_notifications_ringtone.isEmpty()) {
+            Uri ringtoneUri = Uri.parse(eventsData.preferences_notifications_ringtone);
+            if (isFileProviderUri(ringtoneUri)) {
+                currentRingtone = getDisplayNameFromUri(ringtoneUri);
+            } else {
+                Ringtone ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
+                if (ringtone != null) {
+                    currentRingtone = ringtone.getTitle(this);
+                }
+            }
+        }
         updateSummary(R.string.pref_Notifications_Ringtone_key, currentRingtone, getString(R.string.pref_Notifications_Ringtone_summary), 0, 0);
 
-        currentRingtone = !eventsData.preferences_notifications2_ringtone.isEmpty() ?
-                getDisplayNameFromUri(Uri.parse(eventsData.preferences_notifications2_ringtone)) : Constants.STRING_EMPTY;
+        currentRingtone = Constants.STRING_EMPTY;
+        if (!eventsData.preferences_notifications2_ringtone.isEmpty()) {
+            Uri ringtoneUri = Uri.parse(eventsData.preferences_notifications2_ringtone);
+            if (isFileProviderUri(ringtoneUri)) {
+                currentRingtone = getDisplayNameFromUri(ringtoneUri);
+            } else {
+                Ringtone ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
+                if (ringtone != null) {
+                    currentRingtone = ringtone.getTitle(this);
+                }
+            }
+        }
         updateSummary(R.string.pref_Notifications2_Ringtone_key, currentRingtone, getString(R.string.pref_Notifications_Ringtone_summary), 0, 0);
     }
 
@@ -2551,10 +2579,24 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    /** Получение человекочитаемого имени файла из Uri
+     * @param uri Uri файла
+     * @return Имя файла
+     */
     private String getDisplayNameFromUri(Uri uri) {
         String displayName = null;
 
-        // 1. Попробуем стандартный способ (для SAF)
+        // 1. Из query-параметров (системная мелодия)
+        if (uri.getQuery() != null) {
+            String query = uri.getQuery();
+            for (String param : query.split("&")) {
+                if (param.startsWith("title=")) {
+                    return Uri.decode(param.substring(6));
+                }
+            }
+        }
+
+        // 2. Попробуем стандартный способ (для SAF)
         if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
             try (Cursor cursor = getContentResolver().query(uri, new String[]{OpenableColumns.DISPLAY_NAME}, null, null, null)) {
                 if (cursor != null && cursor.moveToFirst()) {
@@ -2566,9 +2608,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } catch (Exception e) { /**/ }
         }
 
-        // 2. Если имя выглядит как техническое (например, "sound_picker_track_59.ogg") — попробуем MediaStore
-        if (displayName == null ||
-                displayName.startsWith("sound_picker_") ||
+        // 3. Если имя выглядит как техническое (например, "sound_picker_track_59.ogg") — попробуем MediaStore
+        if (displayName == null || displayName.startsWith("sound_picker_") ||
                 displayName.matches(".*_\\d+\\.(mp3|ogg|wav|m4a)")) {
 
             // Проверяем, что URI из MediaStore
@@ -2585,7 +2626,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 int titleIndex = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
                                 if (titleIndex >= 0) {
                                     String title = cursor.getString(titleIndex);
-                                    if (title != null && !title.isEmpty()) displayName = title;
+                                    if (title != null && !title.isEmpty()) return title;
                                 }
                             }
                         }
@@ -2594,23 +2635,44 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
         }
 
-        // 3. Fallback: из query-параметров (редко)
-        if ((displayName == null || displayName.isEmpty()) && uri.getQuery() != null) {
-            String query = uri.getQuery();
-            for (String param : query.split("&")) {
-                if (param.startsWith("title=")) {
-                    displayName = Uri.decode(param.substring(6));
-                    break;
-                }
-            }
-        }
-
-        // 4. Последний fallback
+        // 4. Имя файла
         if (displayName == null || displayName.isEmpty()) {
             displayName = uri.getLastPathSegment();
         }
 
         return displayName != null ? displayName : "sound";
+    }
+
+    /** Получение имени файла из Uri
+     * @param uri Uri файла
+     * @return Имя файла
+     */
+    private String getFileNameFromFileProviderUri(Uri uri) {
+        if (uri == null || !ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) return null;
+        String path = uri.getPath();
+        if (path == null || path.isEmpty()) return null;
+        int lastSlash = path.lastIndexOf('/');
+        return (lastSlash >= 0) ? path.substring(lastSlash + 1) : path;
+    }
+
+    /** Удаляет недопустимые символы в имени файла
+     * @param name Имя файла
+     * @return Корректное имя файла
+     */
+    private String sanitizeFileName(String name) {
+        if (name == null || name.isEmpty()) return "ringtone";
+        return name.replaceAll("[\\\\/:*?\"<>|]", "_")
+                .replaceAll("\\s+", "_"); // пробелы → подчёркивания
+    }
+
+    /** Опредилитель, что URI — из FileProvider
+     * @param uri Uri
+     * @return Результат
+     */
+    private boolean isFileProviderUri(Uri uri) {
+        if (uri == null || !ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) return false;
+        String authority = uri.getAuthority();
+        return authority != null && authority.equals(getPackageName() + ".fileprovider");
     }
 
     private void editRules() {
@@ -4100,6 +4162,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         try {
 
             if (resultCode == Activity.RESULT_OK && resultData != null) {
+
                 if (requestCode == Constants.RESULT_PICK_FILE) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
@@ -4120,73 +4183,112 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             ToastExpander.showInfoMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
                         }
                     }
+
                 } else if (requestCode == Constants.RESULT_PICK_RINGTONE) {
-                    Uri ringtone = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-                    int queueNumber = runningQueue;
-                    if (ringtone != null) {
-                        if (queueNumber == 1) {
-                            eventsData.preferences_notifications_ringtone = ringtone.toString();
-                        } else if (queueNumber == 2) {
-                            eventsData.preferences_notifications2_ringtone = ringtone.toString();
-                        }
-                    } else {
-                        if (queueNumber == 1) {
-                            eventsData.preferences_notifications_ringtone = Constants.STRING_EMPTY; //Беззвучный
-                        } else if (queueNumber == 2) {
-                            eventsData.preferences_notifications2_ringtone = Constants.STRING_EMPTY; //Беззвучный
+
+                    // Это выбор системной мелодии (через RingtoneManager)
+                    Uri newUri = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+
+                    // Получаем текущие сохранённые URI
+                    Uri savedCustomUri1 = null, savedCustomUri2 = null;
+                    if (!TextUtils.isEmpty(eventsData.preferences_notifications_ringtone)) {
+                        savedCustomUri1 = Uri.parse(eventsData.preferences_notifications_ringtone);
+                    }
+                    if (!TextUtils.isEmpty(eventsData.preferences_notifications2_ringtone)) {
+                        savedCustomUri2 = Uri.parse(eventsData.preferences_notifications2_ringtone);
+                    }
+
+                    // Сохраняем новый URI (системный)
+                    if (runningQueue == 1) {
+                        eventsData.preferences_notifications_ringtone = (newUri != null) ? newUri.toString() : "";
+                    } else if (runningQueue == 2) {
+                        eventsData.preferences_notifications2_ringtone = (newUri != null) ? newUri.toString() : "";
+                    }
+                    eventsData.savePreferences();
+
+                    // Удаляем СТАРЫЙ ПОЛЬЗОВАТЕЛЬСКИЙ ФАЙЛ, если он был
+                    Uri oldCustomUri = (runningQueue == 1) ? savedCustomUri1 : savedCustomUri2;
+                    if (isFileProviderUri(oldCustomUri)) {
+                        String oldFileName = getFileNameFromFileProviderUri(oldCustomUri);
+                        if (oldFileName != null) {
+                            File oldFile = new File(getFilesDir(), oldFileName);
+                            if (oldFile.exists() && !oldFile.delete()) {
+                                Log.w(TAG, "Failed to delete old ringtone: " + oldFile);
+                            }
                         }
                     }
-                    runningQueue = 0;
-                    eventsData.savePreferences();
-                    setSummaryForNotificationsRingtone();
-                } else if (requestCode == Constants.RESULT_PICK_CUSTOM_RINGTONE) {
-                    Uri uri = resultData.getData();
-                    if (uri == null) return;
-                    int queueNumber = runningQueue;
-                    String originalFileName = getDisplayNameFromUri(uri);
-                    File targetFile = new File(getFilesDir(), originalFileName);
 
-                    try (InputStream in = getContentResolver().openInputStream(uri);
+                    runningQueue = 0;
+                    setSummaryForNotificationsRingtone();
+
+                } else if (requestCode == Constants.RESULT_PICK_CUSTOM_RINGTONE) {
+
+                    Uri sourceUri = resultData.getData();
+                    if (sourceUri == null) return;
+
+                    String displayName = getDisplayNameFromUri(sourceUri);
+                    String safeName = sanitizeFileName(displayName);
+                    if (!safeName.contains(".")) safeName += ".mp3";
+
+                    //Копируем файл в папку приложения
+                    File targetFile = new File(getFilesDir(), safeName);
+                    try (InputStream in = getContentResolver().openInputStream(sourceUri);
                          OutputStream out = new FileOutputStream(targetFile)) {
-                        if (in == null) {
-                            throw new FileNotFoundException(getString(R.string.msg_file_open_error).concat(uri.toString()));
-                        }
-                        byte[] buffer = new byte[8192];
-                        int bytesRead;
-                        while ((bytesRead = in.read(buffer)) != -1) {
-                            out.write(buffer, 0, bytesRead);
-                        }
-                    } catch (FileNotFoundException fe) {
-                        ToastExpander.showDebugMsg(this, fe.toString());
-                        return;
+                        if (in == null) throw new FileNotFoundException("Cannot open: " + sourceUri);
+                        byte[] buf = new byte[8192];
+                        int n;
+                        while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
                     } catch (IOException e) {
                         ToastExpander.showDebugMsg(this, getString(R.string.msg_ringtone_copy_error));
                         return;
                     }
-                    uri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", targetFile);
-                    if (queueNumber == 1) {
-                        eventsData.preferences_notifications_ringtone = uri.toString();
-                    } else if (queueNumber == 2) {
-                        eventsData.preferences_notifications2_ringtone = uri.toString();
+
+                    // Сохраняем путь до новой мелодии в настройку
+                    Uri newUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", targetFile);
+                    String savedUriStr = (runningQueue == 1) ? eventsData.preferences_notifications_ringtone
+                            : eventsData.preferences_notifications2_ringtone;
+
+                    if (runningQueue == 1) {
+                        eventsData.preferences_notifications_ringtone = newUri.toString();
+                    } else if (runningQueue == 2) {
+                        eventsData.preferences_notifications2_ringtone = newUri.toString();
                     }
-                    runningQueue = 0;
                     eventsData.savePreferences();
+
+                    // Удаляем старый файл ТОЛЬКО для своей очереди
+                    Uri oldUri = null;
+                    if (!TextUtils.isEmpty(savedUriStr)) oldUri = Uri.parse(savedUriStr);
+                    if (!newUri.equals(oldUri)) {
+                        String oldName = getFileNameFromFileProviderUri(oldUri);
+                        if (oldName != null) {
+                            File oldFile = new File(getFilesDir(), oldName);
+                            if (oldFile.exists() && !oldFile.delete()) {
+                                Log.w(TAG, "Failed to delete old ringtone: " + oldFile);
+                            }
+                        }
+                    }
+
+                    runningQueue = 0;
                     setSummaryForNotificationsRingtone();
+
                 } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_EXPORT_PREFERENCES) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
                         exportPreferences(uri);
                     }
+
                 } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_IMPORT_PREFERENCES) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
                         importPreferences(importStage.doClean, uri);
                     }
+
                 } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_EXPORT_EVENTS) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
                         exportLocalEvents(uri);
                     }
+
                 } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_IMPORT_EVENTS) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
