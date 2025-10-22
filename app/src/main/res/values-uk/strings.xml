@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.10.2025, 13:26
+  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.10.2025, 12:50
+  ~  * Last modified 22.10.2025, 10:34
   ~  */
   -->
 
@@ -83,6 +83,7 @@
     <string name="msg_file_access_write_error">Не вдається отримати доступ до запису у файл. Спробуйте повторно вибрати файл у налаштуваннях програми</string>
     <string name="msg_file_access_read_error">"Неможливо отримати доступ до читання файлу: %1$s"</string>
     <string name="msg_file_no_app_for_file">На пристрої немає жодної програми, яка може відкрити даний тип файлу</string>
+    <string name="msg_ringtone_copy_error">Не вдалося зберегти мелодію дзвінка в папку програми</string>
     <string name="msg_before_event_prefix">"Через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" тому"</string>
@@ -153,7 +154,6 @@
     <string name="msg_notifications_soon">"Незабаром подій - "</string>
     <string name="msg_notifications_all">"Подій - "</string>
     <string name="msg_notifications_disabled">Повідомлення вимкнені\n</string>
-    <string name="msg_exact_alarms_disabled">Точні будильники вимкнено\n</string>
     <string name="msg_no_events_hint">Не знайдено жодної події. Для відображення подій вони мають бути заповнені у картках Ваших контактів або у вибраних календарях або у вибраних файлах</string>
     <string name="msg_no_accounts_hint">"Облікові записи не знайдені або Ви не надали до них доступу"</string>
     <string name="msg_no_calendars_hint">"Доступні календарі не знайдені або Ви не дали до них доступ"</string>
@@ -196,7 +196,6 @@
     <string name="msg_created_channel">"Канал сповіщення %1$s створено\n"</string>
     <string name="msg_sent_widgets_update_request">Надіслано запит на оновлення віджетів</string>
     <string name="msg_next_notification">"Наступне сповіщення: %1$s\n"</string>
-    <string name="msg_canceled_previous_notification">Скасовано попереднє сповіщення для черги #%d\n</string>
     <string name="msg_skipped_notification">Пропущено повторне сповіщення для черги #%d\n</string>
     <string name="msg_next_widgetupdate">"Наступне оновлення віджета: %1$s\n"</string>
     <string name="msg_no_action">Немає дій для події</string>

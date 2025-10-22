@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.10.2025, 13:26
+  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.10.2025, 12:50
+  ~  * Last modified 22.10.2025, 10:34
   ~  */
   -->
 
@@ -83,6 +83,7 @@
     <string name="msg_file_access_write_error">No se puede obtener acceso de escritura al archivo. Intente volver a seleccionar el archivo en la preferencia de la aplicación</string>
     <string name="msg_file_access_read_error">"No se pudo obtener acceso de lectura al archivo: %1$s"</string>
     <string name="msg_file_no_app_for_file">No hay aplicaciones en el dispositivo que puedan abrir este tipo de archivo</string>
+    <string name="msg_ringtone_copy_error">Error al guardar el tono de llamada en la carpeta de la aplicación</string>
     <string name="msg_before_event_prefix">"dentro de "</string>
     <string name="msg_after_event_prefix">"hace "</string>
     <string name="msg_after_event_postfix">""</string>
@@ -153,7 +154,6 @@
     <string name="msg_notifications_soon">"Eventos pronto - "</string>
     <string name="msg_notifications_all">"Eventos - "</string>
     <string name="msg_notifications_disabled">Notificaciones desactivadas\n</string>
-    <string name="msg_exact_alarms_disabled">Alarmas exactas deshabilitadas\n</string>
     <string name="msg_no_events_hint">No se encontraron eventos. Para mostrar eventos, deben ser llenados en las tarjetas de sus contactos o en calendarios seleccionados o en archivos seleccionados</string>
     <string name="msg_no_accounts_hint">Cuentas no encontradas o no les ha dado acceso</string>
     <string name="msg_no_calendars_hint">No se encontraron calendarios disponibles o no les ha dado acceso</string>
@@ -196,7 +196,6 @@
     <string name="msg_created_channel">"Notificar que se creó el canal %1$s\n"</string>
     <string name="msg_sent_widgets_update_request">Solicitud de actualización de widgets enviada</string>
     <string name="msg_next_notification">"Próxima notificación: %1$s\n"</string>
-    <string name="msg_canceled_previous_notification">Notificación previa cancelada para la cola #%d\n</string>
     <string name="msg_skipped_notification">Notificación duplicada omitida para la cola #%d\n</string>
     <string name="msg_next_widgetupdate">"Próxima actualización del widget: %1$s\n"</string>
     <string name="msg_no_action">Ninguna acción para el evento</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.10.2025, 13:26
+  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.10.2025, 12:50
+  ~  * Last modified 22.10.2025, 10:34
   ~  */
   -->
 
@@ -83,6 +83,7 @@
     <string name="msg_file_access_write_error">"Can't obtain write access to file. Try reselect file in application preference"</string>
     <string name="msg_file_access_read_error">"Can't obtain read access to file: %1$s"</string>
     <string name="msg_file_no_app_for_file">There is not app on your device to open this file type</string>
+    <string name="msg_ringtone_copy_error">Failed to save ringtone to application folder</string>
     <string name="msg_before_event_prefix">"in "</string>
     <string name="msg_after_event_postfix">" ago"</string>
     <string name="msg_after_event_prefix">""</string>
@@ -153,7 +154,6 @@
     <string name="msg_notifications_soon">"Events soon - "</string>
     <string name="msg_notifications_all">"Events - "</string>
     <string name="msg_notifications_disabled">Notifications disabled\n</string>
-    <string name="msg_exact_alarms_disabled">Exact alarms disabled\n</string>
     <string name="msg_no_events_hint">No events found. To display events, they must be filled in your contacts cards or in selected calendars or in selected files</string>
     <string name="msg_no_accounts_hint">"No accounts were found or you did not give access to them"</string>
     <string name="msg_no_calendars_hint">"No visible calendars were found or you did not give access to them"</string>
@@ -196,7 +196,6 @@
     <string name="msg_created_channel">"Notify channel %1$s was created\n"</string>
     <string name="msg_sent_widgets_update_request">Sent widgets update request</string>
     <string name="msg_next_notification">"Next notification: %1$s\n"</string>
-    <string name="msg_canceled_previous_notification">Canceled previous notification for queue #%d\n</string>
     <string name="msg_skipped_notification">Skipped duplicate notification for queue #%d\n</string>
     <string name="msg_next_widgetupdate">"Next widget update: %1$s\n"</string>
     <string name="msg_no_action">No action for event</string>
@@ -381,7 +380,7 @@
     <string name="pref_CustomEvents_Rules_summary">Use these setting while importing events</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Name recognition rules</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Rules for contact name recognition rules from calendar event title</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Enter contact name recognition rules from calendar event title. Multiple rules are separated by \"|\". Rule must contains tag [name] surrounded by other text (optional). Rule \"[name]\" can't be the last (if there are several rules). To set event type add tag [type]:"</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Enter rules for recognizing a contact name or event type from a calendar event title. Multiple rules are separated by \"|\". Rules can contain [name] or [type] tags, surrounded by other text (optional). The \"[name]\" rule must not be the last one (if there are multiple):"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Tags not found!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Incorrect format! Delimiter must be | symbol</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Name format for calendar events</string>

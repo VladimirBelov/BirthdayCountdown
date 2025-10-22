@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.10.2025, 13:26
+  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.10.2025, 13:24
+  ~  * Last modified 22.10.2025, 01:44
   ~  */
   -->
 
@@ -1068,8 +1068,8 @@
             android:key="@string/pref_Notifications_Ringtone_key"
             android:title="@string/pref_Notifications_Ringtone_title"
             android:summary="@string/pref_Notifications_Ringtone_summary"
-            android:icon="@android:drawable/ic_menu_more"
-            android:dialogIcon="@android:drawable/ic_menu_more"/>
+            android:icon="@drawable/ic_menu_notify"
+            android:dialogIcon="@drawable/ic_menu_notify"/>
 
         <MultiSelectListPreference
             android:key="@string/pref_Notifications_QuickActions_key"
@@ -1193,8 +1193,8 @@
             android:key="@string/pref_Notifications2_Ringtone_key"
             android:title="@string/pref_Notifications_Ringtone_title"
             android:summary="@string/pref_Notifications_Ringtone_summary"
-            android:icon="@android:drawable/ic_menu_more"
-            android:dialogIcon="@android:drawable/ic_menu_more"/>
+            android:icon="@drawable/ic_menu_notify"
+            android:dialogIcon="@drawable/ic_menu_notify"/>
 
         <MultiSelectListPreference
             android:key="@string/pref_Notifications2_QuickActions_key"

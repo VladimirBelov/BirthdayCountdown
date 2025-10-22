@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.10.2025, 02:39
+ *  * Created by Vladimir Belov on 22.10.2025, 10:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 21.10.2025, 02:33
+ *  * Last modified 22.10.2025, 10:43
  *
  */
 
@@ -537,7 +537,7 @@ public class ContactsEvents {
     private Resources resources;
     private ContentResolver contentResolver;
     @Nullable
-    protected CoordinatorLayout coordinator;
+    protected ViewGroup coordinator;
 
     //Зависимые от языка константы
     String[] weekDaysShort;
@@ -10392,13 +10392,13 @@ public class ContactsEvents {
             }
 
             // MediaStore (and general)
-            else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            else if (ContentResolver.SCHEME_CONTENT.equalsIgnoreCase(uri.getScheme())) {
                 // Return the remote address
                 if (isGooglePhotosUri(uri) && uri.getLastPathSegment() != null) return uri.getLastPathSegment();
                 return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/" + getDataColumn(context, uri, null, null);
             }
             // File
-            else if ("file".equalsIgnoreCase(uri.getScheme()) && uri.getPath() != null) {
+            else if (ContentResolver.SCHEME_FILE.equalsIgnoreCase(uri.getScheme()) && uri.getPath() != null) {
                 return uri.getPath();
             } else {
                 ToastExpander.showInfoMsg(context, uri.toString());

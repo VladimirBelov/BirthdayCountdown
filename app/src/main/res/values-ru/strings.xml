@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.10.2025, 13:26
+  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.10.2025, 12:50
+  ~  * Last modified 22.10.2025, 10:34
   ~  */
   -->
 
@@ -83,6 +83,7 @@
     <string name="msg_file_access_write_error">Не удалось получить доступ на редактирование файла. Перевыберите файл в настройках приложения</string>
     <string name="msg_file_access_read_error">"Не удалось получить доступ на чтение файла: %1$s"</string>
     <string name="msg_file_no_app_for_file">На устройстве нет ни одного приложения, которое может открыть данный тип файла</string>
+    <string name="msg_ringtone_copy_error">Не удалось сохранить мелодию в папку приложения</string>
     <string name="msg_before_event_prefix">"через "</string>
     <string name="msg_after_event_prefix">""</string>
     <string name="msg_after_event_postfix">" назад"</string>
@@ -153,7 +154,6 @@
     <string name="msg_notifications_soon">"Событий скоро - "</string>
     <string name="msg_notifications_all">"Событий - "</string>
     <string name="msg_notifications_disabled">Уведомления выключены\n</string>
-    <string name="msg_exact_alarms_disabled">Уведомления в точное время запрещены\n</string>
     <string name="msg_no_events_hint">Не найдено ни одного события. Для отображения событий они должны быть заполнены в карточках Ваших контактов или в выбранных календарях или в выбранных файлах</string>
     <string name="msg_no_accounts_hint">Учётные записи не найдены или Вы не дали к ним доступ</string>
     <string name="msg_no_calendars_hint">Доступные календари не найдены или Вы не дали к ним доступ</string>
@@ -196,7 +196,6 @@
     <string name="msg_created_channel">"Канал уведомлений #%s был создан\n"</string>
     <string name="msg_sent_widgets_update_request">Обновление виджетов…</string>
     <string name="msg_next_notification">"Следующее уведомление: %1$s\n"</string>
-    <string name="msg_canceled_previous_notification">Отменено предыдущее уведомление для очереди #%d\n</string>
     <string name="msg_skipped_notification">Пропущено дублирующее уведомление для очереди #%d\n</string>
     <string name="msg_next_widgetupdate">"Следующее обновление виджетов: %1$s\n"</string>
     <string name="msg_no_action">Нет действий для события</string>
@@ -381,7 +380,7 @@
     <string name="pref_CustomEvents_Rules_summary">Использовать эти настройки при импорте событий</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Правила распознавания имён</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Правила распознавания имён контактов из заголовков календарных событий</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Введите правила распознавания имени контакта из заголовка календарного события. Несколько правил разделяются \"|\". Правило должно содержать тег [name], окруженный другим текстом (опционально). Правило \"[name]\" не должно быть последним (если их несколько). Для определения типа события добавьте тег [type]:"</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Введите правила распознавания имени контакта или типа события из заголовка календарного события. Несколько правил разделяются \"|\". Правила могут содержат теги [name] или [type], окруженные другим текстом (опционально). Правило \"[name]\" не должно быть последним (если их несколько):"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Теги не найдены!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Некорректный формат правил! Разделителем служит символ |</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Формат имени для календарных событий</string>

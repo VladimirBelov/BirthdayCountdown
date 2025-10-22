@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.10.2025, 13:26
+  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.10.2025, 12:50
+  ~  * Last modified 22.10.2025, 10:34
   ~  */
   -->
 
@@ -83,6 +83,7 @@
     <string name="msg_file_access_write_error">Schreibzugriff auf Datei nicht möglich. Versuchen Sie, die Datei in den Anwendungseinstellungen erneut auszuwählen.</string>
     <string name="msg_file_access_read_error">"Es konnte kein Lesezugriff auf Datei erhalten werden: %1$s"</string>
     <string name="msg_file_no_app_for_file">Es gibt keine Anwendungen auf dem Gerät, die diesen Dateityp öffnen können</string>
+    <string name="msg_ringtone_copy_error">Klingelton konnte nicht im Anwendungsordner gespeichert werden</string>
     <string name="msg_before_event_prefix">"In "</string>
     <string name="msg_after_event_prefix">"Vor "</string>
     <string name="msg_after_event_postfix">""</string>
@@ -153,7 +154,6 @@
     <string name="msg_notifications_soon">"Ereignisse in Kürze - "</string>
     <string name="msg_notifications_all">"Ereignisse - "</string>
     <string name="msg_notifications_disabled">Benachrichtigungen aus\n</string>
-    <string name="msg_exact_alarms_disabled">Exakte Alarme deaktiviert\n</string>
     <string name="msg_no_events_hint">Keine Ereignisse gefunden. Um Ereignisse anzuzeigen, müssen sie in den Karten Ihrer Kontakte oder in ausgewählten Kalendern oder in ausgewählten Dateien ausgefüllt werden</string>
     <string name="msg_no_accounts_hint">"Es wurden keine Konten gefunden oder Sie haben keinen Zugriff darauf gewährt"</string>
     <string name="msg_no_calendars_hint">"Es wurden keine verfügbaren Kalender gefunden oder Sie haben keinen Zugriff darauf gewährt"</string>
@@ -196,7 +196,6 @@
     <string name="msg_created_channel">"Benachrichtigen, dass Kanal %1$s erstellt wurde\n"</string>
     <string name="msg_sent_widgets_update_request">Widgets-Aktualisierungsanfrage gesendet</string>
     <string name="msg_next_notification">"Nächste Benachrichtigung: %1$s\n"</string>
-    <string name="msg_canceled_previous_notification">Vorherige Benachrichtigung für Warteschlange #%d abgebrochen\n</string>
     <string name="msg_skipped_notification">Doppelte Benachrichtigung für Warteschlange #%d übersprungen\n</string>
     <string name="msg_next_widgetupdate">"Nächstes Widget-Update: %1$s\n"</string>
     <string name="msg_no_action">Keine Aktion für Ereignis</string>
@@ -381,7 +380,7 @@
     <string name="pref_CustomEvents_Rules_summary">Verwenden Sie diese Einstellung beim Importieren von Ereignissen</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_title">Regeln</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_summary">Regeln für die Erkennungsregeln von Kontaktnamen aus dem Titel des Kalenderereignisses</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">Geben Sie die Regeln zum Erkennen des Kontaktnamens aus der Kopfzeile des Kalenderereignisses ein (mehrere Regeln sind getrennt |). Die Regel muss den Tag [name] enthalten, der von anderem Text umgeben ist (optional). Um den Ereignistyp festzulegen, fügen Sie das Tag [type] hinzu.:</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_hint">"Geben Sie Regeln ein, um einen Kontaktnamen oder Ereignistyp anhand eines Kalenderereignistitels zu erkennen. Mehrere Regeln werden durch \"|\" getrennt. Regeln können Tags vom Typ [Name] oder [Typ] enthalten, die von anderem Text umgeben sind (optional). Die Regel \"[Name]\" darf nicht die letzte sein (wenn es mehrere gibt):"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags">Keine Tags gefunden!</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error">Falsches Format! Das Trennzeichen ist das Symbol |</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_title">Namensformat für Kalenderereignisse</string>

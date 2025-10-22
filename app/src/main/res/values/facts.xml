@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.10.2025, 00:44
+  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 02.10.2025, 10:08
+  ~  * Last modified 22.10.2025, 10:05
   ~  */
   -->
 
@@ -292,7 +292,8 @@
 День — это маленькая жизнь, и надо прожить ее так, будто ты должен умереть сейчас, а тебе неожиданно подарили еще сутки (Максим Горький)
 Не бойтесь начать всё сначала. На этот раз вы не начинаете с нуля, вы начинаете с опыта
 Терпение — это не ожидание бездействием, а умение продолжать путь, даже когда плодов ещё не видно (Александр Мень)
-Если твоя работа — съесть лягушку, лучше сделать это сразу с утра. А если тебе нужно съесть двух лягушек, сначала съешь самую большую (Марк Твен)"</item>
+Если твоя работа — съесть лягушку, лучше сделать это сразу с утра. А если тебе нужно съесть двух лягушек, сначала съешь самую большую (Марк Твен)
+Сравнивая свою жизнь с тем, что видишь в соцсетях других людей, помни, что ты сравниваешь своё закулисье с чужой сценой"</item>
 </string-array>
 
     <string-array name="facts2" translatable="false" tools:ignore="UnusedResources">
@@ -619,7 +620,8 @@ Perhaps the worst will happen, perhaps not, but until then, look forward to bett
 Be happy for this moment. This moment is your life (Omar Khayyam)
 If you don't value your time, neither will others. Stop giving away your time and talents- start charging for it (Kim Garst)
 Don’t be afraid to start over again. This time you’re not starting from scratch, you’re starting from experience
-If it's your job to eat a frog, it's best to do it first thing in the morning. And if it's your job to eat two frogs, it's best to eat the biggest one first (Mark Twain)"</item>
+If it's your job to eat a frog, it's best to do it first thing in the morning. And if it's your job to eat two frogs, it's best to eat the biggest one first (Mark Twain)
+Comparison is the thief of joy. You’re comparing your behind-the-scenes with everyone else’s highlight reel (Steve Maraboli)"</item>
     </string-array>
 
     <string-array name="facts4" translatable="false" tools:ignore="UnusedResources">

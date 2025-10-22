@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.10.2025, 23:53
+ *  * Created by Vladimir Belov on 22.10.2025, 10:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 15.10.2025, 22:31
+ *  * Last modified 22.10.2025, 03:32
  *
  */
 
@@ -786,7 +786,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
                 bmp.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
                 fileOutputStream.close();
-                bitmapShareUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID, file);
+                bitmapShareUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", file);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
                 ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);

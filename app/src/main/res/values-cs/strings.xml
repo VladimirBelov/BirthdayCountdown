@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.10.2025, 13:26
+  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.10.2025, 12:50
+  ~  * Last modified 22.10.2025, 10:34
   ~  */
   -->
 
@@ -83,6 +83,7 @@
     <string name="msg_file_access_write_error">"Nelze získat přístup k zápisu do souboru. Zkuste znovu vybrat soubor v předvolbách aplikace"</string>
     <string name="msg_file_access_read_error">"Nelze získat přístup pro čtení k souboru: %1$s"</string>
     <string name="msg_file_no_app_for_file">Ve vašem zařízení není aplikace pro otevření tohoto typu souboru</string>
+    <string name="msg_ringtone_copy_error">Nepodařilo se uložit vyzváněcí tón do složky aplikace</string>
     <string name="msg_before_event_prefix">"za "</string>
     <string name="msg_after_event_postfix">""</string>
     <string name="msg_after_event_prefix">"před "</string>
@@ -153,7 +154,6 @@
     <string name="msg_notifications_soon">"Události brzy - "</string>
     <string name="msg_notifications_all">"Události - "</string>
     <string name="msg_notifications_disabled">Oznámení deaktivována\n</string>
-    <string name="msg_exact_alarms_disabled">Přesné alarmy deaktivovány\n</string>
     <string name="msg_no_events_hint">Nebyly nalezeny žádné události. Chcete-li zobrazit události, musí být vyplněny na vašich kartách kontaktů nebo ve vybraných kalendářích nebo ve vybraných soubor</string>
     <string name="msg_no_accounts_hint">"Nebyly nalezeny žádné účty nebo jste k nim neudělili přístup"</string>
     <string name="msg_no_calendars_hint">"Nebyly nalezeny žádné viditelné kalendáře nebo jste k nim neudělili přístup"</string>
@@ -196,7 +196,6 @@
     <string name="msg_created_channel">"Upozornit kanál %1$s byl vytvořen\n"</string>
     <string name="msg_sent_widgets_update_request">Odeslaný požadavek na aktualizaci widgetů</string>
     <string name="msg_next_notification">"Další upozornění: %1$s\n"</string>
-    <string name="msg_canceled_previous_notification">Zrušeno předchozí oznámení pro frontu #%d\n</string>
     <string name="msg_skipped_notification">Přeskočeno duplicitní oznámení pro frontu #%d\n</string>
     <string name="msg_next_widgetupdate">"Další aktualizace widgetu: %1$s\n"</string>
     <string name="msg_no_action">Žádná akce pro událost</string>

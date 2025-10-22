@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.10.2025, 03:34
+ *  * Created by Vladimir Belov on 22.10.2025, 10:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.10.2025, 00:25
+ *  * Last modified 22.10.2025, 00:58
  *
  */
 
@@ -194,6 +194,7 @@ public final class Constants {
     static final int RESULT_PICK_FILE = 201;
     static final int RESULT_PICK_OTHER_CONTACT = 202;
     static final int RESULT_PICK_RINGTONE = 203;
+    static final int RESULT_PICK_CUSTOM_RINGTONE = 209;
     static final int RESULT_PICK_FILE_FOR_EXPORT_PREFERENCES = 204;
     static final int RESULT_PICK_FILE_FOR_IMPORT_PREFERENCES = 205;
     static final int RESULT_EDIT_EVENT = 206;

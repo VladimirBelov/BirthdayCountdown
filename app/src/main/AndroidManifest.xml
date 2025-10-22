@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.10.2025, 02:39
+  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 20.10.2025, 23:41
+  ~  * Last modified 22.10.2025, 04:21
   ~  */
   -->
 
@@ -15,7 +15,6 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" /> <!-- для проигрывания уведомлений из внешнего хранилища https://stackoverflow.com/questions/54120745/android-9-0-notificationmanager-notify-throwing-java-lang-securityexception -->
-    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"/>
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/> <!-- для установки высокого приоритета уведомлениям викторины на младших Android https://stackoverflow.com/questions/42597698/android-how-to-allow-enable-floating-notifications-setting-as-default-for-ap -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/> <!-- для доступа к точным будильникам -->
@@ -62,7 +61,7 @@
         </activity>
 
         <activity-alias
-            android:name="org.vovka.birthdaycountdown.Spring"
+            android:name="${applicationId}.Spring"
             android:targetActivity=".MainActivity"
             android:exported="true"
             android:enabled="true">
@@ -75,7 +74,7 @@
         </activity-alias>
 
         <activity-alias
-            android:name="org.vovka.birthdaycountdown.Summer"
+            android:name="${applicationId}.Summer"
             android:icon="@drawable/app_icon_summer"
             android:targetActivity=".MainActivity"
             android:exported="true"
@@ -89,7 +88,7 @@
         </activity-alias>
 
         <activity-alias
-            android:name="org.vovka.birthdaycountdown.Autumn"
+            android:name="${applicationId}.Autumn"
             android:icon="@drawable/app_icon_autumn"
             android:targetActivity=".MainActivity"
             android:exported="true"
@@ -103,7 +102,7 @@
         </activity-alias>
 
         <activity-alias
-            android:name="org.vovka.birthdaycountdown.Winter"
+            android:name="${applicationId}.Winter"
             android:icon="@drawable/app_icon_winter"
             android:targetActivity=".MainActivity"
             android:exported="true"
@@ -117,7 +116,7 @@
         </activity-alias>
 
         <activity-alias
-            android:name="org.vovka.birthdaycountdown.Grey"
+            android:name="${applicationId}.Grey"
             android:icon="@drawable/app_icon_grey"
             android:targetActivity=".MainActivity"
             android:exported="true"
@@ -131,7 +130,7 @@
         </activity-alias>
 
         <activity-alias
-            android:name="org.vovka.birthdaycountdown.Black"
+            android:name="${applicationId}.Black"
             android:icon="@drawable/app_icon_black"
             android:targetActivity=".MainActivity"
             android:exported="true"
@@ -286,7 +285,7 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_5x1_info" />
 
             <!--Samsung One UI https://stackoverflow.com/questions/58574864/enable-widget-setting-button-for-widgets-in-android -->
-            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="org.vovka.birthdaycountdown.WidgetConfigureActivity"/>
+            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="${applicationId}.WidgetConfigureActivity"/>
         </receiver>
 
         <receiver
@@ -298,7 +297,7 @@
             </intent-filter>
 
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_2x2_info" />
-            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="org.vovka.birthdaycountdown.WidgetConfigureActivity"/>
+            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="${applicationId}.WidgetConfigureActivity"/>
         </receiver>
 
         <receiver
@@ -310,7 +309,7 @@
             </intent-filter>
 
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_4x1bc_info" />
-            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="org.vovka.birthdaycountdown.WidgetConfigureActivity"/>
+            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="${applicationId}.WidgetConfigureActivity"/>
         </receiver>
 
         <receiver
@@ -322,7 +321,7 @@
             </intent-filter>
 
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_list_info" />
-            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="org.vovka.birthdaycountdown.WidgetConfigureActivity"/>
+            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="${applicationId}.WidgetConfigureActivity"/>
         </receiver>
 
         <receiver
@@ -334,7 +333,7 @@
             </intent-filter>
 
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_photolist_info" />
-            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="org.vovka.birthdaycountdown.WidgetConfigureActivity"/>
+            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="${applicationId}.WidgetConfigureActivity"/>
         </receiver>
 
         <receiver
@@ -346,7 +345,7 @@
             </intent-filter>
 
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_calendar_info" />
-            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="org.vovka.birthdaycountdown.WidgetCalendarConfigureActivity"/>
+            <meta-data android:name="android.appwidget.provider.semConfigureActivity" android:value="${applicationId}.WidgetCalendarConfigureActivity"/>
         </receiver>
 
         <receiver
@@ -371,15 +370,16 @@
                 <action android:name="com.samsung.android.intent.action.DEVICE_SEARCH" />
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
         </provider>
 
         <provider
             android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
-            android:authorities="${applicationId}"
             android:grantUriPermissions="true">
-            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths"/>
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
         </provider>
 
         <meta-data android:name="android.app.default_searchable" android:value=".MainActivity" />

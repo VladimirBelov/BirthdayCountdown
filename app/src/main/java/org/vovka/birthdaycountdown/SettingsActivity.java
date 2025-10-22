@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.10.2025, 13:26
+ *  * Created by Vladimir Belov on 22.10.2025, 10:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.10.2025, 13:14
+ *  * Last modified 22.10.2025, 10:34
  *
  */
 
@@ -24,6 +24,7 @@ import android.content.ActivityNotFoundException;
 import android.content.ClipDescription;
 import android.content.ComponentName;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -54,6 +55,8 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.text.InputType;
 import android.text.Spannable;
@@ -98,11 +101,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -487,7 +496,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
                 }
 
-                setSummaryForNotifications();
+                if (eventsData.preferences_extrafun) setSummaryForNotifications();
 
             } else {
 
@@ -520,7 +529,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         try {
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            Preference pref;
 
             //Язык
             List<String> langEntries = Arrays.asList(getResources().getStringArray(R.array.pref_Language_entries));
@@ -592,12 +600,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     R.array.pref_CustomEvents_Rules_Unrecognized_entries, R.array.pref_CustomEvents_Rules_Unrecognized_values);
 
             //Правила распознавания имён
-            pref = findPreference(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key));
-            if (pref != null) {
-                pref.setOnPreferenceChangeListener((preference, newValue) ->
-                        updateSummary(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key, newValue.toString(), getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_summary), 0, 0));
-                updateSummary(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key, preferences.getString(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key), getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_default)), getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_summary), 0, 0);
-            }
+            String storedValue = preferences.getString(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key), getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_default)).replace(Constants.STRING_BAR, Constants.STRING_EOL);
+            updateSummary(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key,
+                    storedValue, getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_summary), 0, 0);
 
             //Траурная лента
             setSummaryForList(
@@ -672,6 +677,35 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         setSummaryForMultiList(
                 R.string.pref_Notifications2_Events_key, R.array.pref_EventTypes_values_default, R.string.pref_Notifications_EventTypes_summary,
                 R.array.pref_Notifications_EventTypes_entries, R.array.pref_Notifications_EventTypes_values);
+
+        //Время уведомления
+        setSummaryForNotificationsAlarmHour();
+
+        //Мелодия
+        setSummaryForNotificationsRingtone();
+    }
+
+    private void setSummaryForNotificationsAlarmHour() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, eventsData.preferences_notifications_alarm_hour);
+        cal.set(Calendar.MINUTE, eventsData.preferences_notifications_alarm_minute);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        updateSummary(R.string.pref_Notifications_AlarmHour_key, DateFormat.getTimeFormat(this).format(cal.getTime()), getString(R.string.pref_Notifications_AlarmHour_summary), 0, 0);
+
+        cal.set(Calendar.HOUR_OF_DAY, eventsData.preferences_notifications2_alarm_hour);
+        cal.set(Calendar.MINUTE, eventsData.preferences_notifications2_alarm_minute);
+        updateSummary(R.string.pref_Notifications2_AlarmHour_key, DateFormat.getTimeFormat(this).format(cal.getTime()), getString(R.string.pref_Notifications_AlarmHour_summary), 0, 0);
+    }
+
+    private void setSummaryForNotificationsRingtone() {
+        String currentRingtone = !eventsData.preferences_notifications_ringtone.isEmpty() ?
+                getDisplayNameFromUri(Uri.parse(eventsData.preferences_notifications_ringtone)) : Constants.STRING_EMPTY;
+        updateSummary(R.string.pref_Notifications_Ringtone_key, currentRingtone, getString(R.string.pref_Notifications_Ringtone_summary), 0, 0);
+
+        currentRingtone = !eventsData.preferences_notifications2_ringtone.isEmpty() ?
+                getDisplayNameFromUri(Uri.parse(eventsData.preferences_notifications2_ringtone)) : Constants.STRING_EMPTY;
+        updateSummary(R.string.pref_Notifications2_Ringtone_key, currentRingtone, getString(R.string.pref_Notifications_Ringtone_summary), 0, 0);
     }
 
     private void setSummaryForAccounts() {
@@ -1201,11 +1235,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 setUpNestedScreen((PreferenceScreen) preference);
 
-                //Пока эта проверка будет только после установки дней
-                /*if (getString(R.string.pref_Notifications_key).equals(key) || getString(R.string.pref_Notifications2_key).equals(key)) {
-                    checkAndRequestNotificationAccess(eventsData);
-                }*/
-
             } else if (getString(R.string.pref_Notifications_NotifyTest_key).equals(key)) { //Тест уведомления 1
 
                 testNotify(1);
@@ -1355,17 +1384,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_Help_ContactsAccess_key).equals(key)) {
 
                 requestContactsPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS_2);
-                /*if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || !shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
-                    ActivityCompat.requestPermissions(
-                            this,
-                            new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS},
-                            Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS_2
-                    );
-                } else {
-                    try {
-                        startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
-                    } catch (android.content.ActivityNotFoundException e) { *//**//* }
-                }*/
 
             } else if (getString(R.string.pref_Help_CalendarAccess_key).equals(key)) {
 
@@ -1738,6 +1756,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     @Override
+    public void onStart() {
+        try {
+            super.onStart();
+            if (eventsData != null) {
+                eventsData.isUIOpen = true;
+                eventsData.coordinator = this.findViewById(R.id.coordinator);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    @Override
     public void onStop() {
 
         try {
@@ -1748,8 +1781,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     notificationManager.deleteNotificationChannel(testChannelId);
                 }
             }
-
             getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+
+            if (eventsData != null) {
+                eventsData.isUIOpen = false;
+                eventsData.coordinator = null;
+            }
+            ToastExpander.getInstance().dismissSnackBar();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -2482,26 +2520,97 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
 
-            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
-                    .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
-                    .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
-                    .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
-                    .putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
-
-            if (prefRingtone.isEmpty()) {
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
-            } else {
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(prefRingtone));
-            }
-            try {
-                runningQueue = queueNumber;
-                startActivityForResult(intent, Constants.RESULT_PICK_RINGTONE);
-            } catch (android.content.ActivityNotFoundException e) { /**/ }
+            new AlertDialog.Builder(new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog))
+                    .setIcon(R.drawable.ic_menu_notify)
+                    .setTitle("Выберите источник мелодии")
+                    .setItems(new CharSequence[]{"Системные мелодии", "Выбрать файл"}, (dialog, which) -> {
+                        runningQueue = queueNumber;
+                        if (which == 0) {
+                            // Системные мелодии
+                            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+                            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALL);
+                            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
+                            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
+                            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
+                            if (!prefRingtone.isEmpty()) intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(prefRingtone));
+                            startActivityForResult(intent, Constants.RESULT_PICK_RINGTONE);
+                        } else {
+                            // Свой файл
+                            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                            intent.addCategory(Intent.CATEGORY_OPENABLE);
+                            intent.setType("audio/*");
+                            intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"audio/mpeg", "audio/ogg", "audio/aac"});
+                            startActivityForResult(intent, Constants.RESULT_PICK_CUSTOM_RINGTONE);
+                        }
+                    })
+                    .show();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    private String getDisplayNameFromUri(Uri uri) {
+        String displayName = null;
+
+        // 1. Попробуем стандартный способ (для SAF)
+        if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
+            try (Cursor cursor = getContentResolver().query(uri, new String[]{OpenableColumns.DISPLAY_NAME}, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int displayNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (displayNameIndex >= 0) {
+                        displayName = cursor.getString(displayNameIndex);
+                    }
+                }
+            } catch (Exception e) { /**/ }
+        }
+
+        // 2. Если имя выглядит как техническое (например, "sound_picker_track_59.ogg") — попробуем MediaStore
+        if (displayName == null ||
+                displayName.startsWith("sound_picker_") ||
+                displayName.matches(".*_\\d+\\.(mp3|ogg|wav|m4a)")) {
+
+            // Проверяем, что URI из MediaStore
+            if (uri.toString().startsWith("content://media/")) {
+                try {
+                    // Извлекаем ID из URI: content://media/.../media/123 → 123
+                    List<String> pathSegments = uri.getPathSegments();
+                    if (!pathSegments.isEmpty()) {
+                        String id = pathSegments.get(pathSegments.size() - 1);
+                        long audioId = Long.parseLong(id);
+                        Uri mediaUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, audioId);
+                        try (Cursor cursor = getContentResolver().query(mediaUri, new String[]{MediaStore.Audio.Media.TITLE}, null, null, null)) {
+                            if (cursor != null && cursor.moveToFirst()) {
+                                int titleIndex = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
+                                if (titleIndex >= 0) {
+                                    String title = cursor.getString(titleIndex);
+                                    if (title != null && !title.isEmpty()) displayName = title;
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) { /**/ }
+            }
+        }
+
+        // 3. Fallback: из query-параметров (редко)
+        if ((displayName == null || displayName.isEmpty()) && uri.getQuery() != null) {
+            String query = uri.getQuery();
+            for (String param : query.split("&")) {
+                if (param.startsWith("title=")) {
+                    displayName = Uri.decode(param.substring(6));
+                    break;
+                }
+            }
+        }
+
+        // 4. Последний fallback
+        if (displayName == null || displayName.isEmpty()) {
+            displayName = uri.getLastPathSegment();
+        }
+
+        return displayName != null ? displayName : "sound";
     }
 
     private void editRules() {
@@ -2524,7 +2633,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             final EditText input = new EditText(this);
             input.setInputType(InputType.TYPE_CLASS_TEXT);
             input.setText(eventsData.preferences_birthday_calendars_rules);
-            //input.setHint(R.string.msg_hint_search);
             input.setSingleLine(false);
             input.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
             input.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
@@ -2540,7 +2648,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             alertToShow.setOnShowListener(arg0 -> {
                 alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                 alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                //alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
             });
 
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -2580,6 +2687,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 eventsData.preferences_birthday_calendars_rules = rules;
                 eventsData.savePreferences();
                 alertToShow.dismiss();
+
+                String storedValue = (rules.isEmpty() ? getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_default) : rules).replace(Constants.STRING_BAR, Constants.STRING_EOL);
+                updateSummary(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key,
+                        storedValue, getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_summary), 0, 0);
 
             });
 
@@ -2735,6 +2846,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         int minute = Build.VERSION.SDK_INT >= 23 ? timePicker.getMinute() : timePicker.getCurrentMinute();
                         eventsData.setPreferences_AlarmTime(queueNumber, hour, minute);
                         eventsData.savePreferences();
+
+                        setSummaryForNotificationsAlarmHour();
                     })
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.dismiss())
                     .setView(timePicker)
@@ -3986,76 +4099,98 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
 
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK && resultData != null) {
                 if (requestCode == Constants.RESULT_PICK_FILE) {
-                    if (resultData != null) {
-                        Uri uri = resultData.getData();
-                        if (uri != null) {
-                            final String fileContent = eventsData.readFileToString(uri.toString(), null);
-                            if (!fileContent.isEmpty()) {
-                                String filename = eventsData.getPath(this, uri);
-                                if (!filename.isEmpty()) {
-                                    try {
-                                        this.grantUriPermission(this.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION | android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                                        this.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                                        filesList.add(filename.concat(Constants.STRING_BAR).concat(uri.toString()));
-                                        selectFiles(this.eventTypeForSelect);
-                                    } catch (Exception e) {
-                                        ToastExpander.showDebugMsg(this, getString(R.string.msg_file_access_read_error, uri.getPath()));
-                                    }
+                    Uri uri = resultData.getData();
+                    if (uri != null) {
+                        final String fileContent = eventsData.readFileToString(uri.toString(), null);
+                        if (!fileContent.isEmpty()) {
+                            String filename = eventsData.getPath(this, uri);
+                            if (!filename.isEmpty()) {
+                                try {
+                                    this.grantUriPermission(this.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION | android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                                    this.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                    filesList.add(filename.concat(Constants.STRING_BAR).concat(uri.toString()));
+                                    selectFiles(this.eventTypeForSelect);
+                                } catch (Exception e) {
+                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_file_access_read_error, uri.getPath()));
                                 }
-                            } else {
-                                ToastExpander.showInfoMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
                             }
+                        } else {
+                            ToastExpander.showInfoMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
                         }
                     }
                 } else if (requestCode == Constants.RESULT_PICK_RINGTONE) {
-                    if (resultData != null) {
-                        Uri ringtone = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-                        int queueNumber = runningQueue;
-                        if (ringtone != null) {
-                            if (queueNumber == 1) {
-                                eventsData.preferences_notifications_ringtone = ringtone.toString();
-                            } else if (queueNumber == 2) {
-                                eventsData.preferences_notifications2_ringtone = ringtone.toString();
-                            }
-                        } else {
-                            if (queueNumber == 1) {
-                                eventsData.preferences_notifications_ringtone = Constants.STRING_EMPTY; //Беззвучный
-                            } else if (queueNumber == 2) {
-                                eventsData.preferences_notifications2_ringtone = Constants.STRING_EMPTY; //Беззвучный
-                            }
+                    Uri ringtone = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                    int queueNumber = runningQueue;
+                    if (ringtone != null) {
+                        if (queueNumber == 1) {
+                            eventsData.preferences_notifications_ringtone = ringtone.toString();
+                        } else if (queueNumber == 2) {
+                            eventsData.preferences_notifications2_ringtone = ringtone.toString();
                         }
-                        runningQueue = 0;
-                        eventsData.savePreferences();
+                    } else {
+                        if (queueNumber == 1) {
+                            eventsData.preferences_notifications_ringtone = Constants.STRING_EMPTY; //Беззвучный
+                        } else if (queueNumber == 2) {
+                            eventsData.preferences_notifications2_ringtone = Constants.STRING_EMPTY; //Беззвучный
+                        }
                     }
-                } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_EXPORT_PREFERENCES) {
-                    if (resultData != null) {
-                        Uri uri = resultData.getData();
-                        if (uri != null) {
-                            exportPreferences(uri);
+                    runningQueue = 0;
+                    eventsData.savePreferences();
+                    setSummaryForNotificationsRingtone();
+                } else if (requestCode == Constants.RESULT_PICK_CUSTOM_RINGTONE) {
+                    Uri uri = resultData.getData();
+                    if (uri == null) return;
+                    int queueNumber = runningQueue;
+                    String originalFileName = getDisplayNameFromUri(uri);
+                    File targetFile = new File(getFilesDir(), originalFileName);
+
+                    try (InputStream in = getContentResolver().openInputStream(uri);
+                         OutputStream out = new FileOutputStream(targetFile)) {
+                        if (in == null) {
+                            throw new FileNotFoundException(getString(R.string.msg_file_open_error).concat(uri.toString()));
                         }
+                        byte[] buffer = new byte[8192];
+                        int bytesRead;
+                        while ((bytesRead = in.read(buffer)) != -1) {
+                            out.write(buffer, 0, bytesRead);
+                        }
+                    } catch (FileNotFoundException fe) {
+                        ToastExpander.showDebugMsg(this, fe.toString());
+                        return;
+                    } catch (IOException e) {
+                        ToastExpander.showDebugMsg(this, getString(R.string.msg_ringtone_copy_error));
+                        return;
+                    }
+                    uri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", targetFile);
+                    if (queueNumber == 1) {
+                        eventsData.preferences_notifications_ringtone = uri.toString();
+                    } else if (queueNumber == 2) {
+                        eventsData.preferences_notifications2_ringtone = uri.toString();
+                    }
+                    runningQueue = 0;
+                    eventsData.savePreferences();
+                    setSummaryForNotificationsRingtone();
+                } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_EXPORT_PREFERENCES) {
+                    Uri uri = resultData.getData();
+                    if (uri != null) {
+                        exportPreferences(uri);
                     }
                 } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_IMPORT_PREFERENCES) {
-                    if (resultData != null) {
-                        Uri uri = resultData.getData();
-                        if (uri != null) {
-                            importPreferences(importStage.doClean, uri);
-                        }
+                    Uri uri = resultData.getData();
+                    if (uri != null) {
+                        importPreferences(importStage.doClean, uri);
                     }
                 } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_EXPORT_EVENTS) {
-                    if (resultData != null) {
-                        Uri uri = resultData.getData();
-                        if (uri != null) {
-                            exportLocalEvents(uri);
-                        }
+                    Uri uri = resultData.getData();
+                    if (uri != null) {
+                        exportLocalEvents(uri);
                     }
                 } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_IMPORT_EVENTS) {
-                    if (resultData != null) {
-                        Uri uri = resultData.getData();
-                        if (uri != null) {
-                            importLocalEvents(importStage.doClean, uri);
-                        }
+                    Uri uri = resultData.getData();
+                    if (uri != null) {
+                        importLocalEvents(importStage.doClean, uri);
                     }
                 }
 

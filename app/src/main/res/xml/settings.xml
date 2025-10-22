@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.10.2025, 13:26
+  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.10.2025, 13:24
+  ~  * Last modified 22.10.2025, 01:39
   ~  */
   -->
 
@@ -1067,13 +1067,12 @@
             android:icon="@android:drawable/ic_menu_recent_history"
             android:negativeButtonText="@string/button_cancel"/>
 
-        <!--https://developer.android.com/reference/android/preference/RingtonePreference#attr_android:ringtoneType-->
-        <!--No support for RingtonePreference in support library: https://issuetracker.google.com/issues/37057453#comment3-->
         <Preference
             android:key="@string/pref_Notifications_Ringtone_key"
             android:title="@string/pref_Notifications_Ringtone_title"
             android:summary="@string/pref_Notifications_Ringtone_summary"
-            android:icon="@android:drawable/ic_menu_more"/>
+            android:icon="@drawable/ic_menu_notify"
+            android:dialogIcon="@drawable/ic_menu_notify"/>
 
         <!--todo: сделать проверку, что выбрали не больше 3х действий https://stackoverflow.com/questions/11090304/multiselectlistpreference-example -->
         <MultiSelectListPreference
@@ -1196,7 +1195,8 @@
             android:key="@string/pref_Notifications2_Ringtone_key"
             android:title="@string/pref_Notifications_Ringtone_title"
             android:summary="@string/pref_Notifications_Ringtone_summary"
-            android:icon="@android:drawable/ic_menu_more"/>
+            android:icon="@drawable/ic_menu_notify"
+            android:dialogIcon="@drawable/ic_menu_notify"/>
 
         <!--todo: сделать проверку, что выбрали не больше 3х действий https://stackoverflow.com/questions/11090304/multiselectlistpreference-example -->
         <MultiSelectListPreference

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.10.2025, 13:26
+  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 17.10.2025, 12:50
+  ~  * Last modified 22.10.2025, 10:34
   ~  */
   -->
 
@@ -83,6 +83,7 @@
     <string name="msg_file_access_write_error">"Impossible d'accéder à la modification du fichier. Réinitialisez le fichier dans les paramètres de l'application"</string>
     <string name="msg_file_access_read_error">"Impossible d'accéder à la lecture du fichier : %1$s"</string>
     <string name="msg_file_no_app_for_file">"Aucune application sur l'appareil ne peut ouvrir ce type de fichier"</string>
+    <string name="msg_ringtone_copy_error">"Échec de l'enregistrement de la sonnerie dans le dossier de l'application"</string>
     <string name="msg_before_event_prefix">"dans "</string>
     <string name="msg_after_event_postfix">""</string>
     <string name="msg_after_event_prefix">"en arrière "</string>
@@ -153,7 +154,6 @@
     <string name="msg_notifications_soon">"Événements bientôt - "</string>
     <string name="msg_notifications_all">"Événements - "</string>
     <string name="msg_notifications_disabled">Notifications sont désactivées\n</string>
-    <string name="msg_exact_alarms_disabled">"Notifications à l'heure exacte sont interdites\n"</string>
     <string name="msg_no_events_hint">"Aucun événement n'a été trouvé. Pour afficher les événements, ils doivent être remplis dans vos cartes de contact ou dans les calendriers sélectionnés ou dans les fichiers sélectionnés"</string>
     <string name="msg_no_accounts_hint">"Aucun compte n'a été trouvé ou vous n'y avez pas donné accès"</string>
     <string name="msg_no_calendars_hint">"Les calendriers disponibles n'ont pas été trouvés ou vous n'y avez pas donné accès"</string>
@@ -196,7 +196,6 @@
     <string name="msg_created_channel">"Canal de notification %1$s a été créé\n"</string>
     <string name="msg_sent_widgets_update_request">Mise à jour des widgets…</string>
     <string name="msg_next_notification">"Notification suivant: %1$s\n"</string>
-    <string name="msg_canceled_previous_notification">"Notification précédente annulée pour la file d'attente #%d\n"</string>
     <string name="msg_skipped_notification">"Notification en double ignorée pour la file d'attente #%d\n"</string>
     <string name="msg_next_widgetupdate">"Prochaine mise à jour du widget: %1$s\n"</string>
     <string name="msg_no_action">"Pas d'action pour l'événement"</string>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 22.10.2025, 01:18
+  ~  */
+  -->
+
+<paths>
+	<cache-path name="cache" path="."/>
+	<files-path name="sounds" path="." />
+</paths>
