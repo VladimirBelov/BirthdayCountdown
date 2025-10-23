@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.10.2025, 11:02
+ *  * Created by Vladimir Belov on 24.10.2025, 00:12
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.10.2025, 11:02
+ *  * Last modified 24.10.2025, 00:07
  *
  */
 
@@ -2419,16 +2419,16 @@ public class ContactsEvents {
             final String idHoliday = getEventType(Constants.Type_HolidayEvent);
 
             boolean result = getContactsEvents()
+                    | getLocalEvents()
                     | getCalendarEvents(idBirthday)
                     | getCalendarEvents(idOther)
                     | getCalendarEvents(idHoliday)
+                    | getCalendarEvents(Constants.Type_MultiEvent)
                     | getFileEvents(idBirthday)
                     | getFileEvents(idOther)
                     | getFileEvents(idHoliday)
-                    | (!preferences_MultiType_files.isEmpty() && getFileEvents(Constants.Type_MultiEvent))
-                    | (!preferences_MultiType_calendars.isEmpty() && getCalendarEvents(Constants.Type_MultiEvent))
+                    | getFileEvents(Constants.Type_MultiEvent)
                     | getHolidayEvents()
-                    | getLocalEvents()
                     | getFactsEvents(true);
 
             statFavoriteEventsCount += getFavoritesEventsCount();
@@ -3273,16 +3273,13 @@ public class ContactsEvents {
         //todo: использовать цвета календарей https://www.javatips.net/api/android.provider.calendarcontract.instances
 
         Cursor cursor = null;
-
+        long statCurrentModuleStart = System.currentTimeMillis();
         try (ColumnIndexCache cache = new ColumnIndexCache()) {
-
-            long statCurrentModuleStart = System.currentTimeMillis();
 
             if (checkNoCalendarAccess()) return false;
 
             Set<String> preferences_calendars = getPreferences_Calendars(eventType);
             if (preferences_calendars.isEmpty()) return false;
-
 
             Event event = new Event();
 
@@ -3397,8 +3394,6 @@ public class ContactsEvents {
 
             statCalendarsEventCount += counterTotalAddedEvents;
             statEventsCount += counterTotalAddedEvents;
-            statTimeGetCalendarEvents += System.currentTimeMillis() - statCurrentModuleStart;
-
             return true;
 
         } catch (SecurityException se) {
@@ -3408,8 +3403,8 @@ public class ContactsEvents {
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         } finally {
-            //eventData.clear();
             if (cursor != null) cursor.close();
+            statTimeGetCalendarEvents += System.currentTimeMillis() - statCurrentModuleStart;
         }
     }
 
@@ -3739,7 +3734,7 @@ public class ContactsEvents {
         return counterAddedEvents;
     }
 
-    /** Добавляет новую дату в существующее событие
+    /** Добавляет новую дату из календарного события в существующее событие контакта
      * @param eventIndex Индекс события в общем списке событий
      * @param eventNewDate Новая дата события
      * @param eventID ID события
@@ -3799,6 +3794,10 @@ public class ContactsEvents {
             singleRowList.set(Position_eventSource, eventSource);
         } else if (!eventSource_stored.contains(eventSource)) {
             singleRowList.set(Position_eventSource, eventSource_stored.concat(Constants.STRING_2TILDA).concat(eventSource));
+        }
+
+        if (TextUtils.isEmpty(singleRowList.get(Position_eventID))) {
+            singleRowList.set(Position_eventID, eventID);
         }
 
         StringBuilder dataRow = new StringBuilder();
@@ -4192,14 +4191,10 @@ public class ContactsEvents {
 
     private boolean getFileEvents(@NonNull String eventType) {
 
+        long statCurrentModuleStart = System.currentTimeMillis();
         try {
 
-            long statCurrentModuleStart = System.currentTimeMillis();
-
-            Set<String> fileList;
-            //todo: переделать на java.Time https://www.devwithimagination.com/2018/03/13/performance-of-the-java-8-date-apis/
-            Calendar today = getWithoutTime(new GregorianCalendar());
-            final boolean isFirstSecondLastFormat = Integer.toString(preferences_rules_files_name_format).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast));
+            Set<String> fileList = null;
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
 
             if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
@@ -4218,10 +4213,13 @@ public class ContactsEvents {
 
                 fileList = preferences_MultiType_files;
 
-            } else {
-                return false;
             }
             if (fileList == null || fileList.isEmpty()) return false;
+
+            //todo: переделать на java.Time https://www.devwithimagination.com/2018/03/13/performance-of-the-java-8-date-apis/
+            Calendar today = getWithoutTime(new GregorianCalendar());
+            final boolean isFirstSecondLastFormat = Integer.toString(preferences_rules_files_name_format).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast));
+
 
             for (String file : fileList) {
 
@@ -4262,13 +4260,14 @@ public class ContactsEvents {
                 }
             }
 
-            statTimeGetFileEvents += System.currentTimeMillis() - statCurrentModuleStart;
             return true;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
+        } finally {
+            statTimeGetFileEvents += System.currentTimeMillis() - statCurrentModuleStart;
         }
     }
 
@@ -4280,7 +4279,8 @@ public class ContactsEvents {
      * @param eventSource Источник событий
      * @param indexFileNameEnd Позиция окончания пути файла и начало URI
      */
-    private void addICalEvents(@NonNull String file, @NonNull String[] fileLines, @NonNull String eventType, @NonNull Calendar today, @NonNull String eventSource, int indexFileNameEnd) {
+    private void addICalEvents(@NonNull String file, @NonNull String[] fileLines, @NonNull String eventType,
+                               @NonNull Calendar today, @NonNull String eventSource, int indexFileNameEnd) {
         try {
 
             TreeMap<Integer, String> eventData = new TreeMap<>();
@@ -4379,6 +4379,7 @@ public class ContactsEvents {
                         String personFullNameNormalized = null;
                         String personFullNameAltNormalized = null;
                         String contactID = null;
+                        String eventID = Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle);
 
                         eventData.put(Position_personFullName, eventTitle);
                         if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
@@ -4402,7 +4403,7 @@ public class ContactsEvents {
                         eventData.put(Position_eventIcon, Integer.toString(event.icon));
                         eventData.put(Position_eventEmoji, event.emoji);
                         eventData.put(Position_eventURL, eventURL);
-                        eventData.put(Position_eventID, Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle));
+                        eventData.put(Position_eventID, eventID);
                         if (useEventYear) {
                             eventData.put(Position_eventDateFirstTime, sdf_DDMMYYYY.format(eventDateFirstTime));
                             eventData.put(Position_eventDateNextTime, sdf_DDMMYYYY.format(eventDateThisTime));
@@ -4410,6 +4411,12 @@ public class ContactsEvents {
 
                         if (event.needScanContacts) {
                             contactID = getContactID(personFullNameNormalized, personFullNameAltNormalized);
+
+                            if (contactID == null) {
+                                String mergedID = getMergedID(eventID);
+                                if (!mergedID.isEmpty()) contactID = mergedID;
+                            }
+
                             if (!TextUtils.isEmpty(contactID)) {
                                 eventData.put(Position_contactID, contactID);
                                 eventData.put(Position_rawContactID, checkForNull(map_contacts_ids.get(contactID)));
@@ -4445,6 +4452,11 @@ public class ContactsEvents {
                                         needUpdate = true;
                                     } else if (!eventSource_stored.contains(eventSource)) {
                                         singleRowList.set(Position_eventSource, eventSource_stored.concat(Constants.STRING_2TILDA).concat(eventSource));
+                                        needUpdate = true;
+                                    }
+
+                                    if (TextUtils.isEmpty(singleRowList.get(Position_eventID))) {
+                                        singleRowList.set(Position_eventID, eventID);
                                         needUpdate = true;
                                     }
 
@@ -4675,6 +4687,7 @@ public class ContactsEvents {
             }
             if (preferences_list_prev_events_scan_distance == 0 && result.isPassedEvent) return; //Событие прошло и показ прошедших выключен
 
+            String eventID = Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle);
             eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
                     + (useEventYear ? isAD ? sdf_java.format(result.dateEvent) : sdf_java_G.format(result.dateEvent) : sdf_java_no_year.format(result.dateEvent))
                     + Constants.STRING_COLON_SPACE
@@ -4779,13 +4792,18 @@ public class ContactsEvents {
                 }
                 contactID = getContactID(personFullNameNormalized, personFullNameAltNormalized);
 
+                if (contactID == null) {
+                    String mergedID = getMergedID(eventID);
+                    if (!mergedID.isEmpty()) contactID = mergedID;
+                }
+
             } else { //Просто событие
                 eventData.put(Position_personFullName, eventTitle);
                 eventData.put(Position_personFullNameAlt, eventTitle);
             }
 
             eventData.put(Position_notAnnualEvent, !result.isEndless ? Constants.STRING_1 : Constants.STRING_EMPTY);
-            eventData.put(Position_eventID, Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle));
+            eventData.put(Position_eventID, eventID);
 
             //Проверка по организации, что нашли именно требуемый контакт
             String orgNameFile = Constants.STRING_EMPTY;
@@ -4844,6 +4862,11 @@ public class ContactsEvents {
                         needUpdate = true;
                     } else if (!eventSource_stored.contains(eventSource)) {
                         singleRowList.set(Position_eventSource, eventSource_stored.concat(Constants.STRING_2TILDA).concat(eventSource));
+                        needUpdate = true;
+                    }
+
+                    if (TextUtils.isEmpty(singleRowList.get(Position_eventID))) {
+                        singleRowList.set(Position_eventID, eventID);
                         needUpdate = true;
                     }
 
@@ -8711,6 +8734,10 @@ public class ContactsEvents {
         }
     }
 
+    /** Возвращает ID контакта, связанный с linkID
+     * @param linkID ID события
+     * @return ID контакта или null
+     */
     @NonNull
     String getMergedID(@NonNull String linkID) {
 
@@ -8719,13 +8746,13 @@ public class ContactsEvents {
             if (preferences_mergedIDs.isEmpty()) return Constants.STRING_EMPTY;
 
             String mergedID = preferences_mergedIDs.get(linkID);
-            if (mergedID != null && !mergedID.isEmpty() && map_contacts_ids.containsKey(mergedID)) {
+            if (!TextUtils.isEmpty(mergedID) && map_contacts_ids.containsKey(mergedID)) {
                 return mergedID;
             } else {
-                mergedID = getMergedRawID(linkID);
-                if (!mergedID.isEmpty()) {
+                mergedID = preferences_mergedRawIDs.get(linkID);
+                if (!TextUtils.isEmpty(mergedID)) {
                     String contactIDMerged = map_contacts_rawIds.get(mergedID);
-                    if (contactIDMerged != null && map_contacts_ids.containsKey(contactIDMerged)) {
+                    if (!TextUtils.isEmpty(contactIDMerged) && map_contacts_ids.containsKey(contactIDMerged)) {
                         return contactIDMerged;
                     }
                 }
@@ -8805,20 +8832,6 @@ public class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
-        }
-    }
-
-    @NonNull
-    String getMergedRawID(@NonNull String linkID) {
-
-        try {
-
-            return checkForNull(preferences_mergedRawIDs.get(linkID));
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return Constants.STRING_EMPTY;
         }
     }
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.10.2025, 10:59
+ *  * Created by Vladimir Belov on 24.10.2025, 00:12
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.10.2025, 03:32
+ *  * Last modified 23.10.2025, 23:15
  *
  */
 
@@ -373,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 .setIcon(R.drawable.ic_menu_chat_dashboard);
                         menu.add(Menu.NONE, Constants.ContextMenu_RemergeEvent, Menu.NONE, getString(R.string.menu_context_remerge_event))
                                 .setIcon(R.drawable.ic_menu_copy);
-                    } else if (eventStorage.contains(Constants.STRING_STORAGE_CALENDAR)
+                    } else if ((eventStorage.contains(Constants.STRING_STORAGE_CALENDAR) || eventStorage.contains(Constants.STRING_STORAGE_FILE))
                             && selectedEvent[ContactsEvents.Position_contactID].isEmpty()) {
                         menu.add(Menu.NONE, Constants.ContextMenu_MergeEvent, Menu.NONE, getString(R.string.menu_context_merge_event))
                                 .setIcon(R.drawable.ic_menu_copy);
