@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 23.10.2025, 00:57
+  ~  * Created by Vladimir Belov on 29.10.2025, 01:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 23.10.2025, 00:48
+  ~  * Last modified 29.10.2025, 00:14
   ~  */
   -->
 
@@ -66,6 +66,7 @@
     <string name="menu_context_favorites_add">Добавить в избранные</string>
     <string name="menu_context_favorites_remove">Удалить из избранных</string>
     <string name="menu_context_edit_local_event">Редактировать событие</string>
+    <string name="menu_context_create_from_local_event">Ещё одно событие…</string>
     <string name="menu_context_dial">Позвонить</string>
     <string name="menu_context_prev">Предыдущий факт</string>
     <string name="menu_ok">OK</string>
@@ -1342,6 +1343,7 @@
     <string name="local_event_dialog_caption_url">Web ссылка:</string>
     <string name="local_event_dialog_confirmation_remove">Вы уверены, что хотите удалить это событие?</string>
     <string name="local_event_dialog_confirmation_cancel">Данные были изменены. Вы уверены, что хотите закрыть диалог?</string>
+    <string name="local_event_dialog_confirmation_similar">Найдены похожие события. Обновить данные во всех похожих событиях?</string>
 
     <string name="event_photo_details">"[фото, %d байт]"</string>
     <string name="event_photo_pick_contact_hint">Выбрать фото из контакта…</string>

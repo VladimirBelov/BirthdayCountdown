@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.10.2025, 00:12
+ *  * Created by Vladimir Belov on 29.10.2025, 01:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 24.10.2025, 00:07
+ *  * Last modified 29.10.2025, 01:08
  *
  */
 
@@ -3916,6 +3916,9 @@ public class ContactsEvents {
         }
     }
 
+    /** Сохраняет локальное событие
+     * @param eventData Данные события
+     */
     void saveLocalEvent(@NonNull TreeMap<Integer, String> eventData) {
         try {
 
@@ -3930,6 +3933,9 @@ public class ContactsEvents {
         }
     }
 
+    /** Удаляет локальное событие
+     * @param eventData Данные события
+     */
     void removeLocalEvent(@NonNull TreeMap<Integer, String> eventData) {
         try {
 
@@ -8632,23 +8638,25 @@ public class ContactsEvents {
             boolean idRemoved = false;
             HashSet<String> newValues = new HashSet<>();
 
-            String keyPrefix = key.substring(0, key.indexOf(Constants.STRING_2HASH)).concat(Constants.STRING_2HASH);
-            for (String event: preferences_favoriteEvents) {
-                if (event.startsWith(keyPrefix)) {
-                    idRemoved = true;
-                } else {
-                    newValues.add(event);
+            if (key.contains(Constants.STRING_2HASH)) {
+                String keyPrefix = key.substring(0, key.indexOf(Constants.STRING_2HASH)).concat(Constants.STRING_2HASH);
+                for (String event : preferences_favoriteEvents) {
+                    if (event.startsWith(keyPrefix)) {
+                        idRemoved = true;
+                    } else {
+                        newValues.add(event);
+                    }
                 }
-            }
-            if (idRemoved) {
-                preferences_favoriteEvents.clear();
-                preferences_favoriteEvents.addAll(newValues);
+                if (idRemoved) {
+                    preferences_favoriteEvents.clear();
+                    preferences_favoriteEvents.addAll(newValues);
+                }
             }
 
             if (!TextUtils.isEmpty(keyWithRawId)) {
                 boolean idRawRemoved = false;
                 newValues.clear();
-                keyPrefix = keyWithRawId.substring(0, keyWithRawId.indexOf(Constants.STRING_2HASH)).concat(Constants.STRING_2HASH);
+                String keyPrefix = keyWithRawId.substring(0, keyWithRawId.indexOf(Constants.STRING_2HASH)).concat(Constants.STRING_2HASH);
                 for (String event: preferences_favoriteEventsRawIds) {
                     if (event.startsWith(keyPrefix)) {
                         idRawRemoved = true;
@@ -8677,10 +8685,10 @@ public class ContactsEvents {
                 }
 
                 editor.apply();
+                cacheFavoriteEventsIds();
             }
 
-            cacheFavoriteEventsIds();
-            return true;
+            return idRemoved;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

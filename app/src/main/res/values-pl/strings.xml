@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 23.10.2025, 00:57
+  ~  * Created by Vladimir Belov on 29.10.2025, 01:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 23.10.2025, 00:54
+  ~  * Last modified 29.10.2025, 01:24
   ~  */
   -->
 
@@ -66,6 +66,7 @@
     <string name="menu_context_favorites_add">Dodaj do ulubionych</string>
     <string name="menu_context_favorites_remove">Usuń z ulubionych</string>
     <string name="menu_context_edit_local_event">Edytuj wydarzenie</string>
+    <string name="menu_context_create_from_local_event">Jeszcze jedno wydarzenie…</string>
     <string name="menu_context_dial">Wybierz</string>
     <string name="menu_context_prev">Poprzedni fakt</string>
     <string name="menu_ok">OK</string>
@@ -1342,6 +1343,7 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="local_event_dialog_caption_url">Link do strony internetowej:</string>
     <string name="local_event_dialog_confirmation_remove">Czy na pewno chcesz usunąć to wydarzenie?</string>
     <string name="local_event_dialog_confirmation_cancel">Dane wydarzenia zostały zmodyfikowane. Czy na pewno chcesz zamknąć to okno dialogowe?</string>
+    <string name="local_event_dialog_confirmation_similar">Znaleziono podobne zdarzenia. Odświeżyć dane we wszystkich podobnych zdarzeniach?</string>
 
     <string name="event_photo_details">"[dane obrazu, %d bajtów]"</string>
     <string name="event_photo_pick_contact_hint">Wybierz zdjęcie z kontaktu…</string>

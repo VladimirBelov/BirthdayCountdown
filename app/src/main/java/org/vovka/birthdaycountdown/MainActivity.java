@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.10.2025, 00:12
+ *  * Created by Vladimir Belov on 29.10.2025, 01:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 23.10.2025, 23:15
+ *  * Last modified 29.10.2025, 00:14
  *
  */
 
@@ -334,6 +334,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             selectedEvent_num = position;
             selectedEvent_str = (String) listView.getItemAtPosition(position);
             selectedEvent = selectedEvent_str.split(Constants.STRING_EOT, -1);
+            String eventSubtype = selectedEvent[ContactsEvents.Position_eventSubType];
 
             //https://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
             //menu.setHeaderTitle(dataArray1[ContactsEvents.dataMap.get("fio")] + ":");
@@ -345,6 +346,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_green)));
                 }
+
+                if (!eventSubtype.equals(String.valueOf(Constants.Type_Other)) &&
+                        !eventSubtype.equals(String.valueOf(Constants.Type_HolidayEvent))) {
+                    menuItem = menu.add(Menu.NONE, Constants.ContextMenu_CreateFromEventLocalEvent, Menu.NONE, getString(R.string.menu_context_create_from_local_event))
+                            .setIcon(android.R.drawable.ic_menu_add);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_green)));
+                    }
+                }
             }
 
             String contactID = selectedEvent[ContactsEvents.Position_contactID];
@@ -352,9 +362,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 menu.add(Menu.NONE, Constants.ContextMenu_EditContact, Menu.NONE, getString(R.string.menu_context_edit_contact))
                         .setIcon(android.R.drawable.ic_menu_edit);
             } else {
-                //todo: добавить добавление в локальные события
                 MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_CreateContact, Menu.NONE, getString(R.string.menu_context_create_contact))
-                        .setIcon(android.R.drawable.ic_menu_add);
+                        .setIcon(R.drawable.ic_menu_invite);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_green)));
                 }
@@ -367,7 +376,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             .setIcon(android.R.drawable.ic_menu_month);
                 }
 
-                if (ContactsEvents.getEventType(Constants.Type_BirthDay).equals(selectedEvent[ContactsEvents.Position_eventSubType])) {
+                if (ContactsEvents.getEventType(Constants.Type_BirthDay).equals(eventSubtype)) {
                     if (!eventsData.getMergedID(selectedEvent[ContactsEvents.Position_eventID]).isEmpty()) {
                         menu.add(Menu.NONE, Constants.ContextMenu_UnmergeEvent, Menu.NONE, getString(R.string.menu_context_unmerge_event))
                                 .setIcon(R.drawable.ic_menu_chat_dashboard);
@@ -462,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (!selectedEvent[ContactsEvents.Position_age].equals(Constants.STRING_MINUS1)) {
                 if (!eventsData.isXDaysEvent(eventKey)) {
-                    if (!selectedEvent[ContactsEvents.Position_eventSubType].equals(ContactsEvents.getEventType(Constants.Type_5K))) {
+                    if (!eventSubtype.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
                         menuItem = menu.add(Menu.NONE, Constants.ContextMenu_xDaysEvent, Menu.NONE, getString(R.string.menu_context_xDaysEvent_add))
                                 .setIcon(android.R.drawable.ic_menu_myplaces);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -504,6 +513,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 Intent intent = new Intent(this, LocalEventActivity.class);
                 intent.setAction(Intent.ACTION_EDIT);
+                intent.putExtra(Constants.EXTRA_EVENT_DATA, selectedEvent[ContactsEvents.Position_eventID]);
+                try {
+                    startActivityForResult(intent, Constants.RESULT_EDIT_EVENT);
+                } catch (ActivityNotFoundException e) { /**/ }
+                return true;
+
+            } else if (itemId == Constants.ContextMenu_CreateFromEventLocalEvent) {
+
+                Intent intent = new Intent(this, LocalEventActivity.class);
+                intent.setAction(Intent.ACTION_INSERT_OR_EDIT);
                 intent.putExtra(Constants.EXTRA_EVENT_DATA, selectedEvent[ContactsEvents.Position_eventID]);
                 try {
                     startActivityForResult(intent, Constants.RESULT_EDIT_EVENT);

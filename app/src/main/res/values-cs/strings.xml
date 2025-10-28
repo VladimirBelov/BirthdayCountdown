@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 23.10.2025, 00:56
+  ~  * Created by Vladimir Belov on 29.10.2025, 01:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 23.10.2025, 00:55
+  ~  * Last modified 29.10.2025, 01:25
   ~  */
   -->
 
@@ -66,6 +66,7 @@
     <string name="menu_context_favorites_add">Přidat do oblíbených</string>
     <string name="menu_context_favorites_remove">Odebrat z oblíbených</string>
     <string name="menu_context_edit_local_event">Upravit událost</string>
+    <string name="menu_context_create_from_local_event">Ještě jedna událost…</string>
     <string name="menu_context_dial">Vytočit</string>
     <string name="menu_context_prev">Předchozí fakt</string>
     <string name="menu_ok">OK</string>
@@ -1344,6 +1345,7 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="local_event_dialog_caption_url">Webový odkaz:</string>
     <string name="local_event_dialog_confirmation_remove">Opravdu chcete odstranit tuto událost?</string>
     <string name="local_event_dialog_confirmation_cancel">Data události byla změněna. Opravdu chcete toto dialogové okno zavřít?</string>
+    <string name="local_event_dialog_confirmation_similar">Nalezeny podobné události. Obnovit data ve všech podobných událostech?</string>
 
     <string name="event_photo_details">"[data obrázku, %d bajtů]"</string>
     <string name="event_photo_pick_contact_hint">Vybrat fotografii z kontaktu…</string>

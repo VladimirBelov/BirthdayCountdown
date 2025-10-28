@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 23.10.2025, 00:56
+  ~  * Created by Vladimir Belov on 29.10.2025, 01:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 23.10.2025, 00:54
+  ~  * Last modified 29.10.2025, 01:27
   ~  */
   -->
 
@@ -66,6 +66,7 @@
     <string name="menu_context_favorites_add">Дадаць у абранае</string>
     <string name="menu_context_favorites_remove">Выдаліць з абраных</string>
     <string name="menu_context_edit_local_event">Рэдагаваць падзею</string>
+    <string name="menu_context_create_from_local_event">Яшчэ адна падзея…</string>
     <string name="menu_context_dial">Набраць</string>
     <string name="menu_context_prev">Папярэдні факт</string>
     <string name="menu_ok">Добра</string>
@@ -1341,6 +1342,7 @@
     <string name="local_event_dialog_caption_url">Спасылка на вэб-сайт:</string>
     <string name="local_event_dialog_confirmation_remove">Вы ўпэўнены, што хочаце выдаліць гэту падзею?</string>
     <string name="local_event_dialog_confirmation_cancel">Даныя падзеі былі зменены. Вы ўпэўнены, што хочаце закрыць гэтае дыялогавае акно?</string>
+    <string name="local_event_dialog_confirmation_similar">Знойдзены падобныя падзеі. Абнавіць дадзеныя ва ўсіх падобных падзеях?</string>
 
     <string name="event_photo_details">"[дадзеныя выявы, %d байтаў]"</string>
     <string name="event_photo_pick_contact_hint">Выбраць фота з кантакту…</string>

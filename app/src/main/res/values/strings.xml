@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 23.10.2025, 00:56
+  ~  * Created by Vladimir Belov on 29.10.2025, 01:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 23.10.2025, 00:49
+  ~  * Last modified 29.10.2025, 00:39
   ~  */
   -->
 
@@ -66,6 +66,7 @@
     <string name="menu_context_favorites_add">Add to favorites</string>
     <string name="menu_context_favorites_remove">Remove from favorites</string>
     <string name="menu_context_edit_local_event">Edit event</string>
+    <string name="menu_context_create_from_local_event">One more event…</string>
     <string name="menu_context_dial">Dial</string>
     <string name="menu_context_prev">Previous fact</string>
     <string name="menu_ok">OK</string>
@@ -1344,6 +1345,7 @@ Long click on item to select color"</string>
     <string name="local_event_dialog_caption_url">Web link:</string>
     <string name="local_event_dialog_confirmation_remove">Are you sure you want to remove this event?</string>
     <string name="local_event_dialog_confirmation_cancel">Event data has been modified. Are you sure you want to close this dialog?</string>
+    <string name="local_event_dialog_confirmation_similar">Similar events found. Refresh data in all similar events?</string>
 
     <string name="event_photo_details">"[image data, %d bytes]"</string>
     <string name="event_photo_pick_contact_hint">Select photo from contact…</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 13.10.2025, 01:05
+ *  * Created by Vladimir Belov on 29.10.2025, 01:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 13.10.2025, 00:30
+ *  * Last modified 29.10.2025, 01:08
  *
  */
 
@@ -16,7 +16,9 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.LocaleManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -68,6 +70,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -93,7 +97,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
     private static final String TAG = "LocalEventActivity";
     private static final ContactsEvents eventsData;
-    private static TreeMap<Integer, String> eventData = new TreeMap<>();
+    private static final TreeMap<Integer, String> eventData = new TreeMap<>();
     private static int eventYear;
     private static int eventMonth;
     private static int eventDay;
@@ -442,82 +446,104 @@ public class LocalEventActivity extends AppCompatActivity {
             Bundle extras = intent.getExtras();
             final String action = intent.getAction();
             isReadOnly = Intent.ACTION_VIEW.equals(action);
+
             if (Intent.ACTION_INSERT.equals(action)) {
 
                 eventData.put(ContactsEvents.Position_eventID, ContactsEvents.getHash(String.valueOf(c.getTimeInMillis())));
                 viewActivityTitle.setText(R.string.local_event_dialog_title_new_event);
 
+            } else if (Intent.ACTION_INSERT_OR_EDIT.equals(action)) {
+
+                eventData.put(ContactsEvents.Position_eventID, ContactsEvents.getHash(String.valueOf(c.getTimeInMillis())));
+                viewActivityTitle.setText(R.string.local_event_dialog_title_new_event);
+                if (extras != null && extras.containsKey(Constants.EXTRA_EVENT_DATA)) {
+                    TreeMap<Integer, String> eventDataTemplate;
+                    eventDataTemplate = eventsData.getLocalEvent(extras.getString(Constants.EXTRA_EVENT_DATA));
+                    if (eventDataTemplate != null) {
+                        String oldCaption;
+                        if (eventsData.preferences_name_format == ContactsEvents.FormatName.NameFirst) {
+                            oldCaption = eventDataTemplate.get(ContactsEvents.Position_personFullName);
+                        } else {
+                            oldCaption = eventDataTemplate.get(ContactsEvents.Position_personFullNameAlt);
+                        }
+                        if (oldCaption != null) editName.setText(oldCaption);
+                        editTitle.setText(eventDataTemplate.get(ContactsEvents.Position_title));
+                        editOrganization.setText(eventDataTemplate.get(ContactsEvents.Position_organization));
+                        eventData.put(ContactsEvents.Position_photo, eventDataTemplate.get(ContactsEvents.Position_photo));
+                        eventDataTemplate.clear();
+                    }
+                }
+
             } else if (Intent.ACTION_EDIT.equals(action) || isReadOnly) {
                 if (!isReadOnly) viewActivityTitle.setText(R.string.local_event_dialog_title_edit_event);
-                if (extras != null) {
-                    if (extras.containsKey(Constants.EXTRA_EVENT_DATA)) {
-                        //noinspection AssignmentToStaticFieldFromInstanceMethod
-                        eventData = eventsData.getLocalEvent(extras.getString(Constants.EXTRA_EVENT_DATA));
-                        if (eventData != null) {
-                            String storedEventSubType = eventData.get(ContactsEvents.Position_eventSubType);
-                            String storedEventType = eventData.get(ContactsEvents.Position_eventType);
-                            boolean isNotContactEvent = false;
-                            if (storedEventType != null) {
-                                isNotContactEvent = storedEventType.equals(String.valueOf(Constants.Type_Other))
-                                        || storedEventType.equals(String.valueOf(Constants.Type_HolidayEvent));
-                            }
+                if (extras != null && extras.containsKey(Constants.EXTRA_EVENT_DATA)) {
+                    TreeMap<Integer, String> eventDataStored = eventsData.getLocalEvent(extras.getString(Constants.EXTRA_EVENT_DATA));
+                    if (eventDataStored != null) {
+                        eventData.putAll(eventDataStored);
+                        eventDataStored.clear();
+                        String storedEventSubType = eventData.get(ContactsEvents.Position_eventSubType);
+                        String storedEventType = eventData.get(ContactsEvents.Position_eventType);
+                        boolean isNotContactEvent = false;
+                        if (storedEventType != null) {
+                            isNotContactEvent = storedEventType.equals(String.valueOf(Constants.Type_Other))
+                                    || storedEventType.equals(String.valueOf(Constants.Type_HolidayEvent));
+                        }
 
-                            String oldCaption;
-                            if (isNotContactEvent || eventsData.preferences_name_format == ContactsEvents.FormatName.NameFirst) {
-                                oldCaption = eventData.get(ContactsEvents.Position_personFullName);
-                            } else {
-                                oldCaption = eventData.get(ContactsEvents.Position_personFullNameAlt);
-                            }
-                            if (oldCaption != null) editName.setText(oldCaption);
+                        String oldCaption;
+                        if (isNotContactEvent || eventsData.preferences_name_format == ContactsEvents.FormatName.NameFirst) {
+                            oldCaption = eventData.get(ContactsEvents.Position_personFullName);
+                        } else {
+                            oldCaption = eventData.get(ContactsEvents.Position_personFullNameAlt);
+                        }
+                        if (oldCaption != null) editName.setText(oldCaption);
 
-                            editTitle.setText(eventData.get(ContactsEvents.Position_title));
-                            editOrganization.setText(eventData.get(ContactsEvents.Position_organization));
-                            editDescription.setText(eventData.get(ContactsEvents.Position_eventDescription));
-                            editURL.setText(eventData.get(ContactsEvents.Position_eventURL));
+                        editTitle.setText(eventData.get(ContactsEvents.Position_title));
+                        editOrganization.setText(eventData.get(ContactsEvents.Position_organization));
+                        editDescription.setText(eventData.get(ContactsEvents.Position_eventDescription));
+                        editURL.setText(eventData.get(ContactsEvents.Position_eventURL));
 
-                            String eventDateString = eventData.get(ContactsEvents.Position_eventDateFirstTime);
-                            if (eventDateString != null) {
-                                Date dateEventFirstTime;
+                        String eventDateString = eventData.get(ContactsEvents.Position_eventDateFirstTime);
+                        if (eventDateString != null) {
+                            Date dateEventFirstTime;
 
+                            try {
+                                dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY_G.parse(eventDateString);
+                                if (dateEventFirstTime != null) {
+                                    day = dateEventFirstTime.getDate();
+                                    month = dateEventFirstTime.getMonth();
+                                    year = dateEventFirstTime.getYear() + 1900;
+                                    isBC = true;
+                                }
+                            } catch (ParseException peg) {
                                 try {
-                                    dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY_G.parse(eventDateString);
+                                    dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString);
                                     if (dateEventFirstTime != null) {
                                         day = dateEventFirstTime.getDate();
                                         month = dateEventFirstTime.getMonth();
                                         year = dateEventFirstTime.getYear() + 1900;
-                                        isBC = true;
                                     }
-                                } catch (ParseException peg) {
+                                } catch (ParseException pe) {
                                     try {
-                                        dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString);
+                                        dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString
+                                                .concat(Constants.STRING_PERIOD).concat(String.valueOf(c.get(Calendar.YEAR))));
                                         if (dateEventFirstTime != null) {
                                             day = dateEventFirstTime.getDate();
                                             month = dateEventFirstTime.getMonth();
-                                            year = dateEventFirstTime.getYear() + 1900;
+                                            useYear = false;
                                         }
-                                    } catch (ParseException pe) {
-                                        try {
-                                            dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString
-                                                    .concat(Constants.STRING_PERIOD).concat(String.valueOf(c.get(Calendar.YEAR))));
-                                            if (dateEventFirstTime != null) {
-                                                day = dateEventFirstTime.getDate();
-                                                month = dateEventFirstTime.getMonth();
-                                                useYear = false;
-                                            }
-                                        } catch (ParseException ignored) { /**/ }
-                                    }
+                                    } catch (ParseException ignored) { /**/ }
                                 }
                             }
-                            if (storedEventSubType != null) {
-                                try {
-                                    Integer eventSubTypeId = Integer.valueOf(storedEventSubType);
-                                    if (eventSubTypesIds.contains(eventSubTypeId)) {
-                                        int indexEventSubType = eventSubTypesIds.indexOf(eventSubTypeId);
-                                        spinnerEventTypes.setSelection(indexEventSubType);
-                                        viewEventType.setText(eventTypesValues.get(indexEventSubType));
-                                    }
-                                } catch (NumberFormatException ignored) { /**/ }
-                            }
+                        }
+                        if (storedEventSubType != null) {
+                            try {
+                                Integer eventSubTypeId = Integer.valueOf(storedEventSubType);
+                                if (eventSubTypesIds.contains(eventSubTypeId)) {
+                                    int indexEventSubType = eventSubTypesIds.indexOf(eventSubTypeId);
+                                    spinnerEventTypes.setSelection(indexEventSubType);
+                                    viewEventType.setText(eventTypesValues.get(indexEventSubType));
+                                }
+                            } catch (NumberFormatException ignored) { /**/ }
                         }
                     }
                 }
@@ -993,30 +1019,31 @@ public class LocalEventActivity extends AppCompatActivity {
         try {
 
             prepareEventData(this);
-            if (!eventsData.getEventData(eventData).equals(this.eventDataSaved)) {
-                Builder builder = new Builder(themedContext);
-                builder
-                        .setTitle(getString(R.string.msg_title_confirmation))
-                        .setIcon(android.R.drawable.ic_menu_help)
-                        .setMessage(getString(R.string.local_event_dialog_confirmation_cancel))
-                        .setPositiveButton(R.string.button_yes, (dialog, which) -> {
-                            dialog.dismiss();
-                            setResult(RESULT_CANCELED);
-                            finish();
-                        })
-                        .setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
-                androidx.appcompat.app.AlertDialog alertToShow = builder.create();
-                alertToShow.setOnShowListener(dialog -> {
-                    TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                    ta.recycle();
-                });
-                alertToShow.show();
-            } else {
+            if (eventsData.getEventData(eventData).equals(this.eventDataSaved)) {
                 setResult(RESULT_CANCELED);
                 finish();
+                return;
             }
+
+            Builder builder = new Builder(themedContext);
+            builder
+                    .setTitle(getString(R.string.msg_title_confirmation))
+                    .setIcon(android.R.drawable.ic_menu_help)
+                    .setMessage(getString(R.string.local_event_dialog_confirmation_cancel))
+                    .setPositiveButton(R.string.button_yes, (dialog, which) -> {
+                        dialog.dismiss();
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    })
+                    .setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
+            androidx.appcompat.app.AlertDialog alertToShow = builder.create();
+            alertToShow.setOnShowListener(dialog -> {
+                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                ta.recycle();
+            });
+            alertToShow.show();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1082,16 +1109,136 @@ public class LocalEventActivity extends AppCompatActivity {
             }
 
             prepareEventData(this);
-            eventsData.saveLocalEvent(eventData);
-            eventsData.needUpdateEventList = true;
 
-            setResult(RESULT_OK);
-            finish();
+            List<String> similarEventIds;
+            if (!eventsData.getEventData(eventData).equals(this.eventDataSaved)) {
+                similarEventIds = getSimilarLocalEventIds(this.eventDataSaved);
+            } else {
+                similarEventIds = null;
+            }
+            if (similarEventIds == null) {
+                saveEvent();
+                return;
+            }
+
+            ContextThemeWrapper themedContext = new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog);
+            Builder builder = new Builder(themedContext);
+            builder
+                    .setTitle(getString(R.string.msg_title_confirmation))
+                    .setIcon(android.R.drawable.ic_menu_help)
+                    .setMessage(getString(R.string.local_event_dialog_confirmation_similar))
+                    .setPositiveButton(R.string.button_yes, (dialog, which) -> {
+                        dialog.dismiss();
+                        updateSimilarEvents(similarEventIds);
+                        saveEvent();
+                    })
+                    .setNegativeButton(R.string.button_no, (dialog, which) -> {
+                        dialog.dismiss();
+                        saveEvent();
+                    })
+                    .setNeutralButton(R.string.button_cancel, (dialog, which) -> dialog.dismiss());
+            androidx.appcompat.app.AlertDialog alertToShow = builder.create();
+            alertToShow.setOnShowListener(dialog -> {
+                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                ta.recycle();
+            });
+            alertToShow.show();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    /**
+     * Обновляет события данными
+     *
+     * @param similarEventIds Список Id событий для обновления
+     */
+    private void updateSimilarEvents(List<String> similarEventIds) {
+        try {
+
+            if (similarEventIds == null || similarEventIds.isEmpty() || LocalEventActivity.eventData == null || LocalEventActivity.eventData.isEmpty()) return;
+
+            SharedPreferences preferences = getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
+
+            for (String eventId: similarEventIds) {
+                String eventString = preferences.getString(eventId, null);
+                if (eventString != null) {
+                    try {
+
+                        TreeMap<Integer, String> eventDataToUpdate = eventsData.getEventData(eventString);
+
+                        eventDataToUpdate.put(ContactsEvents.Position_personFullName, LocalEventActivity.eventData.get(ContactsEvents.Position_personFullName));
+                        eventDataToUpdate.put(ContactsEvents.Position_personFullNameAlt, LocalEventActivity.eventData.get(ContactsEvents.Position_personFullNameAlt));
+                        eventDataToUpdate.put(ContactsEvents.Position_title, LocalEventActivity.eventData.get(ContactsEvents.Position_title));
+                        eventDataToUpdate.put(ContactsEvents.Position_organization, LocalEventActivity.eventData.get(ContactsEvents.Position_organization));
+                        eventDataToUpdate.put(ContactsEvents.Position_photo, LocalEventActivity.eventData.get(ContactsEvents.Position_photo));
+
+                        eventsData.saveLocalEvent(eventDataToUpdate);
+                        eventDataToUpdate.clear();
+
+                    } catch (Exception ignored) { /**/ }
+                }
+
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Получает список Id всех похожих локальных событий, исключая eventData
+     *
+     * @param eventDataSaved Данные события, по которым надо искать
+     * @return Список Id
+     */
+    private List<String> getSimilarLocalEventIds(String eventDataSaved) {
+        List<String> result = new ArrayList<>();
+        try {
+
+            TreeMap<Integer, String> eventDataToFind = eventsData.getEventData(eventDataSaved);
+
+            SharedPreferences preferences = getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
+            Map<String, ?> prefs = preferences.getAll();
+
+            for (String eventId: prefs.keySet()) {
+                if (prefs.get(eventId) instanceof String && !eventId.equalsIgnoreCase(LocalEventActivity.eventData.get(ContactsEvents.Position_eventID))) {
+                    String eventString = (String) prefs.get(eventId);
+                    if (eventString != null) {
+                        try {
+                            String[] singleEventArray = eventString.split(Constants.STRING_EOT, -1);
+
+                            if (Objects.equals(eventDataToFind.get(ContactsEvents.Position_personFullName), singleEventArray[ContactsEvents.Position_personFullName])
+                            && Objects.equals(eventDataToFind.get(ContactsEvents.Position_title), singleEventArray[ContactsEvents.Position_title])
+                            && Objects.equals(eventDataToFind.get(ContactsEvents.Position_organization), singleEventArray[ContactsEvents.Position_organization])
+                            && Objects.equals(eventDataToFind.get(ContactsEvents.Position_photo), singleEventArray[ContactsEvents.Position_photo])) {
+                                result.add(singleEventArray[ContactsEvents.Position_eventID]);
+                            }
+
+                        } catch (Exception ignored) { /**/ }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return result.isEmpty() ? null : result;
+    }
+
+    private void saveEvent() {
+        eventsData.saveLocalEvent(eventData);
+        eventsData.needUpdateEventList = true;
+
+        setResult(RESULT_OK);
+        finish();
     }
 
     private void buttonSwitchToEdit(final View view) {

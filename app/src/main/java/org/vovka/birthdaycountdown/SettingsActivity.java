@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.10.2025, 00:56
+ *  * Created by Vladimir Belov on 29.10.2025, 01:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 23.10.2025, 00:56
+ *  * Last modified 29.10.2025, 01:27
  *
  */
 
@@ -3771,8 +3771,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         SharedPreferences preferences = getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
                         Map<String, ?> prefs = preferences.getAll();
 
-                        for (String key : prefs.keySet()) {
-                            Object pref = prefs.get(key);
+                        for (String eventId : prefs.keySet()) {
+                            Object pref = prefs.get(eventId);
                             if (pref != null) {
                                 outputStream.write(pref.toString()
                                         .replace(Constants.STRING_EOL, Constants.STRING_TAB)
