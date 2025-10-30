@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.10.2025, 01:27
+ *  * Created by Vladimir Belov on 31.10.2025, 00:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 29.10.2025, 01:27
+ *  * Last modified 30.10.2025, 23:18
  *
  */
 
@@ -424,8 +424,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Quiz_key);
 
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Tools_key);
+            hidePreference(!eventsData.preferences_debug_on, R.string.pref_Tools_key, R.string.pref_Tools_Preferences_Show_key);
             hidePreference(!eventsData.preferences_debug_on, R.string.pref_Tools_Preferences_key, R.string.pref_Tools_Preferences_Show_key);
-            hidePreference(!eventsData.preferences_debug_on, R.string.pref_Tools_Events_key, R.string.pref_Tools_Events_Show_key);
+            hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Tools_Events_key);
+            hidePreference(!eventsData.preferences_debug_on || eventsData.statLocalEventCount == 0, R.string.pref_Tools_Events_key, R.string.pref_Tools_LocalEvents_Show_key);
+            hidePreference(!eventsData.preferences_extrafun || eventsData.statLocalEventCount == 0, R.string.pref_Tools_Events_key, R.string.pref_Tools_LocalEvents_Export_key);
+            hidePreference(!eventsData.preferences_extrafun || eventsData.statLocalEventCount == 0, R.string.pref_Tools_Events_key, R.string.pref_Tools_LocalEvents_Clear_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Tools_Events_key, R.string.pref_Tools_LocalEvents_Import_key);
+            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Tools_Events_key, R.string.pref_Tools_Events_Import_key);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 hidePreference(eventsData.checkNoBatteryOptimization(), R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
@@ -1515,19 +1521,24 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 importPreferences(importStage.selectFile, null);
                 return true;
 
-            } else if (getString(R.string.pref_Tools_Events_Show_key).equals(key)) {
+            } else if (getString(R.string.pref_Tools_LocalEvents_Show_key).equals(key)) {
 
                 showLocalEvents();
                 return true;
 
-            } else if (getString(R.string.pref_Tools_Events_Export_key).equals(key)) {
+            } else if (getString(R.string.pref_Tools_LocalEvents_Export_key).equals(key)) {
 
                 exportLocalEvents(null);
                 return true;
 
-            } else if (getString(R.string.pref_Tools_Events_Import_key).equals(key)) {
+            } else if (getString(R.string.pref_Tools_LocalEvents_Import_key).equals(key)) {
 
                 importLocalEvents(importStage.selectFile, null);
+                return true;
+
+            } else if (getString(R.string.pref_Tools_LocalEvents_Clear_key).equals(key)) {
+
+                clearLocalEvents();
                 return true;
 
             } else if (getString(R.string.pref_Holidays_key).equals(key)) {
@@ -1924,9 +1935,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 updateVisibility();
 
             }
-        /* bug. вот так с выбором рингтона не работает https://stackoverflow.com/questions/6725105/ringtonepreference-not-firing-onsharedpreferencechanged
-        else if (getString(R.string.pref_Notifications_Ringtone_key).equals(key)) {
-        }*/
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -3789,7 +3797,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
                         builder.setTitle(getString(R.string.msg_title_success));
                         builder.setIcon(android.R.drawable.ic_menu_set_as);
-                        builder.setMessage(getString(R.string.pref_Tools_Events_Export_result, countExported));
+                        builder.setMessage(getString(R.string.pref_Tools_LocalEvents_Export_result, countExported));
                         builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.dismiss());
                         builder.setNegativeButton(R.string.button_open, (dialog, which) -> {
                             Intent intent = new Intent();
@@ -3954,6 +3962,38 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         } finally {
             skipSharedPreferenceChangedEvent = false;
         }
+    }
+
+    private void clearLocalEvents() {
+
+        try {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+            builder.setTitle(getString(R.string.msg_title_confirmation));
+            builder.setIcon(android.R.drawable.ic_menu_help);
+            builder.setMessage(getString(R.string.msg_prefs_local_events_clear_confirmation));
+            builder.setPositiveButton(R.string.button_yes, (dialog, which) -> {
+                SharedPreferences preferences = getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear().apply();
+                eventsData.statLocalEventCount = 0;
+                eventsData.needUpdateEventList = true;
+                updateVisibility();
+            });
+            builder.setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
+            AlertDialog alertToShow = builder.create();
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+            });
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+
     }
 
     private void showLocalEvents() {

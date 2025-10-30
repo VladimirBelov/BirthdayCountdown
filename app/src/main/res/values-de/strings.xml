@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.10.2025, 01:27
+  ~  * Created by Vladimir Belov on 31.10.2025, 00:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 29.10.2025, 01:25
+  ~  * Last modified 30.10.2025, 22:59
   ~  */
   -->
 
@@ -206,6 +206,7 @@
     <string name="msg_prefs_import_unknown">"Unbekannte Präferenz: %1$s"</string>
     <string name="msg_prefs_import_error">"Importfehler: %1$s"</string>
     <string name="msg_prefs_import_events_clear_confirmation">Alle lokalen Ereignisse löschen, bevor neue importiert werden?</string>
+    <string name="msg_prefs_local_events_clear_confirmation">Alle lokalen Ereignisse löschen?</string>
     <string name="msg_event_type_select_title">Ereignistyp auswählen</string>
     <string name="msg_event_type_label_set">"Labelsatz: %1$s"</string>
     <string name="msg_event_type_label_added">"Label hinzugefügt: %1$s"</string>
@@ -1174,16 +1175,18 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="pref_Tools_summary">Verschiedene Werkzeuge zur Datenbearbeitung</string>
     <string name="pref_Tools_Preferences_title">Einstellungen</string>
     <string name="pref_Tools_Preferences_Show_title">Gespeicherte Einstellungen anzeigen</string>
-    <string name="pref_Tools_Preferences_Export_title">Einstellungen exportieren</string>
+    <string name="pref_Tools_Preferences_Export_title">Einstellungen in Datei sichern</string>
     <string name="pref_Tools_Preferences_Export_result">Einstellungen exportiert: %1$d</string>
     <string name="pref_Tools_Preferences_Import_title">Einstellungen importieren</string>
     <string name="pref_Tools_Preferences_Import_result">Einstellungen importiert: %1$d, Fehler: %2$d</string>
-    <string name="pref_Tools_Events_title">Veranstaltungen</string>
-    <string name="pref_Tools_Events_Show_title">Gespeicherte lokale Veranstaltungen anzeigen</string>
-    <string name="pref_Tools_Events_Export_title">Lokale Veranstaltungen exportieren</string>
-    <string name="pref_Tools_Events_Export_result">Exportierte Veranstaltungen: %1$d</string>
-    <string name="pref_Tools_Events_Import_title">Lokale Veranstaltungen importieren</string>
-    <string name="pref_Tools_Events_Import_result">Importierte Veranstaltungen: %1$d, übersprungen: %2$d, Fehler: %3$d</string>
+    <string name="pref_Tools_Events_title">Ereignisse</string>
+    <string name="pref_Tools_Events_Show_title">Gespeicherte lokale Ereignisse anzeigen</string>
+    <string name="pref_Tools_LocalEvents_Export_title">Lokale Ereignisse exportieren</string>
+    <string name="pref_Tools_LocalEvents_Export_result">Exportierte Ereignisse: %1$d</string>
+    <string name="pref_Tools_LocalEvents_Clear_title">Lokale Ereignisse löschen</string>
+    <string name="pref_Tools_LocalEvents_Import_title">Lokale Ereignisse importieren</string>
+    <string name="pref_Tools_Events_Import_title">Dateiereignisse importieren</string>
+    <string name="pref_Tools_Events_Import_result">Importierte Ereignisse: %1$d, übersprungen: %2$d, Fehler: %3$d</string>
 
     <string name="changelog_version"><![CDATA[Version: %1$s (%2$s)<br>Datum: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>Installiert von %1$s]]></string>

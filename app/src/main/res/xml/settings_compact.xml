@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
+  ~  * Created by Vladimir Belov on 31.10.2025, 00:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 22.10.2025, 01:44
+  ~  * Last modified 30.10.2025, 22:20
   ~  */
   -->
 
@@ -1277,7 +1277,9 @@
             <Preference
                 android:key="@string/pref_Tools_Preferences_Export_key"
                 android:title="@string/pref_Tools_Preferences_Export_title"
-                android:icon="@android:drawable/ic_menu_set_as"/>
+                android:singleLineTitle="false"
+                android:icon="@android:drawable/ic_menu_set_as"
+                tools:ignore="UnusedAttribute" />
 
             <Preference
                 android:key="@string/pref_Tools_Preferences_Import_key"
@@ -1293,16 +1295,28 @@
             android:icon="@android:drawable/ic_menu_agenda">
 
             <Preference
-                android:key="@string/pref_Tools_Events_Show_key"
+                android:key="@string/pref_Tools_LocalEvents_Show_key"
                 android:title="@string/pref_Tools_Events_Show_title"
                 android:icon="@android:drawable/ic_menu_info_details"
                 android:singleLineTitle="false"
+                tools:ignore="UnusedAttribute"/>
+
+            <Preference
+                android:key="@string/pref_Tools_LocalEvents_Export_key"
+                android:title="@string/pref_Tools_LocalEvents_Export_title"
+                android:singleLineTitle="false"
+                android:icon="@android:drawable/ic_menu_set_as"
                 tools:ignore="UnusedAttribute" />
 
             <Preference
-                android:key="@string/pref_Tools_Events_Export_key"
-                android:title="@string/pref_Tools_Events_Export_title"
-                android:icon="@android:drawable/ic_menu_set_as"/>
+                android:key="@string/pref_Tools_LocalEvents_Clear_key"
+                android:title="@string/pref_Tools_LocalEvents_Clear_title"
+                android:icon="@android:drawable/ic_menu_delete"/>
+
+            <Preference
+                android:key="@string/pref_Tools_LocalEvents_Import_key"
+                android:title="@string/pref_Tools_LocalEvents_Import_title"
+                android:icon="@android:drawable/ic_menu_upload"/>
 
             <Preference
                 android:key="@string/pref_Tools_Events_Import_key"

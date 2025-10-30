@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.10.2025, 01:27
+  ~  * Created by Vladimir Belov on 31.10.2025, 00:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 29.10.2025, 00:14
+  ~  * Last modified 30.10.2025, 22:59
   ~  */
   -->
 
@@ -206,6 +206,7 @@
     <string name="msg_prefs_import_unknown">"Неизвестная настройка: %1$s"</string>
     <string name="msg_prefs_import_error">"Ошибка импорта: %1$s"</string>
     <string name="msg_prefs_import_events_clear_confirmation">Удалить все локальные события перед импортированием новых?</string>
+    <string name="msg_prefs_local_events_clear_confirmation">Удалить все локальные события?</string>
     <string name="msg_event_type_select_title">Выберите тип события</string>
     <string name="msg_event_type_label_set">"Метка установлена: %1$s"</string>
     <string name="msg_event_type_label_added">"Метка добавлена: %1$s"</string>
@@ -1174,15 +1175,17 @@
     <string name="pref_Tools_summary">Различные инструменты для манипуляций с данными</string>
     <string name="pref_Tools_Preferences_title">Настройки</string>
     <string name="pref_Tools_Preferences_Show_title">Показать сохранённые настройки</string>
-    <string name="pref_Tools_Preferences_Export_title">Экспортировать настройки</string>
+    <string name="pref_Tools_Preferences_Export_title">Сохранить настройки в резервную копию</string>
     <string name="pref_Tools_Preferences_Export_result">Экспортировано настроек: %1$d</string>
-    <string name="pref_Tools_Preferences_Import_title">Импортировать настройки</string>
+    <string name="pref_Tools_Preferences_Import_title">Восстановить настройки</string>
     <string name="pref_Tools_Preferences_Import_result">Импортировано настроек: %1$d, ошибок: %2$d</string>
     <string name="pref_Tools_Events_title">События</string>
     <string name="pref_Tools_Events_Show_title">Показать сохранённые локальные события</string>
-    <string name="pref_Tools_Events_Export_title">Экспортировать локальные события</string>
-    <string name="pref_Tools_Events_Export_result">Экспортировано настроек: %1$d</string>
-    <string name="pref_Tools_Events_Import_title">Импортировать локальные события</string>
+    <string name="pref_Tools_LocalEvents_Export_title">Сохранить локальные события в резервную копию</string>
+    <string name="pref_Tools_LocalEvents_Export_result">Экспортировано настроек: %1$d</string>
+    <string name="pref_Tools_LocalEvents_Clear_title">Очистить локальные события</string>
+    <string name="pref_Tools_LocalEvents_Import_title">Восстановить локальные события</string>
+    <string name="pref_Tools_Events_Import_title">Импортировать события из файла</string>
     <string name="pref_Tools_Events_Import_result">Импортировано событий: %1$d, пропущено: %2$d, ошибок: %3$d</string>
 
     <string name="changelog_version"><![CDATA[версия: %1$s (%2$s)<br>дата: %3$s]]></string>

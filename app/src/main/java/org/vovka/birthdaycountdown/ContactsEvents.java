@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.10.2025, 01:27
+ *  * Created by Vladimir Belov on 31.10.2025, 00:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 29.10.2025, 01:08
+ *  * Last modified 30.10.2025, 23:25
  *
  */
 
@@ -505,6 +505,7 @@ public class ContactsEvents {
     int statContactsEventCount = 0;
     int statCalendarsEventCount = 0;
     int statFilesEventCount = 0;
+    int statLocalEventCount = 0;
     int statContactsTitleCount = 0;
     int statContactsOrganizationCount = 0;
     int statContactsNicknameCount = 0;
@@ -2396,6 +2397,7 @@ public class ContactsEvents {
             statContactsEventCount = 0;
             statCalendarsEventCount = 0;
             statFilesEventCount = 0;
+            statLocalEventCount = 0;
             statContactsTitleCount = 0;
             statContactsOrganizationCount = 0;
             statContactsNicknameCount = 0;
@@ -3887,11 +3889,12 @@ public class ContactsEvents {
                             eventData.put(Position_eventStorage, Constants.EVENT_PREFIX_LOCAL_EVENT);
                             eventData.put(Position_eventSource, getResources().getString(R.string.msg_source_local));
 
-                            statEventsCount++;
                             fillEmptyEventData(eventData);
                             String eventRow = getEventData(eventData);
                             if (!eventListUpdated.contains(eventRow)) {
                                 if (eventListUpdated.add(eventRow)) {
+                                    statEventsCount++;
+                                    statLocalEventCount++;
                                     if (event.subType.equals(getEventType(Constants.Type_BirthDay))) {
                                         birthdayDatesForNames.put(personFullName, dateEventFirstTime);
                                     } else if (event.subType.equals(getEventType(Constants.Type_Death))) {
@@ -10712,8 +10715,8 @@ public class ContactsEvents {
             }
 
             String eventSourcesParam = listEventsSources.length() == 0
-                    ? resources.getString(R.string.msg_all)
-                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + listEventsSources + Constants.HTML_COLOR_END;
+                    ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_all) + Constants.HTML_COLOR_END
+                    : Constants.HTML_BR + Constants.FONT_COLOR_RED + listEventsSources + Constants.HTML_COLOR_END;
 
             // Формирование результата
             final String result = resources.getString(R.string.msg_zero_events_body,

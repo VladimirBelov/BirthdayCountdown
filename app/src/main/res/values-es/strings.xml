@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.10.2025, 01:27
+  ~  * Created by Vladimir Belov on 31.10.2025, 00:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 29.10.2025, 01:25
+  ~  * Last modified 30.10.2025, 22:59
   ~  */
   -->
 
@@ -206,6 +206,7 @@
     <string name="msg_prefs_import_unknown">"Preferencia desconocida: %1$s"</string>
     <string name="msg_prefs_import_error">"Error de importación: %1$s"</string>
     <string name="msg_prefs_import_events_clear_confirmation">¿Borrar todos los eventos locales antes de importar los nuevos?</string>
+    <string name="msg_prefs_local_events_clear_confirmation">¿Borrar todos los eventos locales?</string>
     <string name="msg_event_type_select_title">Seleccionar tipo de evento</string>
     <string name="msg_event_type_label_set">"Conjunto de etiquetas: %1$s"</string>
     <string name="msg_event_type_label_added">"Etiqueta agregada: %1$s"</string>
@@ -1180,9 +1181,11 @@ Haga clic largo en el elemento para seleccionar el color"</string>
     <string name="pref_Tools_Preferences_Import_result">Preferencias importadas: %1$d, errores: %2$d</string>
     <string name="pref_Tools_Events_title">Eventos</string>
     <string name="pref_Tools_Events_Show_title">Mostrar eventos locales guardados</string>
-    <string name="pref_Tools_Events_Export_title">Exportar eventos locales</string>
-    <string name="pref_Tools_Events_Export_result">Eventos exportados: %1$d</string>
-    <string name="pref_Tools_Events_Import_title">Importar eventos locales</string>
+    <string name="pref_Tools_LocalEvents_Export_title">Exportar eventos locales</string>
+    <string name="pref_Tools_LocalEvents_Export_result">Eventos exportados: %1$d</string>
+    <string name="pref_Tools_LocalEvents_Clear_title">Borrar eventos locales</string>
+    <string name="pref_Tools_LocalEvents_Import_title">Importar eventos locales</string>
+    <string name="pref_Tools_Events_Import_title">Importar eventos de archivo</string>
     <string name="pref_Tools_Events_Import_result">Eventos importados: %1$d, omitidos: %2$d, errores: %3$d</string>
 
     <string name="changelog_version"><![CDATA[versión: %1$s (%2$s)<br>fecha: %3$s]]></string>

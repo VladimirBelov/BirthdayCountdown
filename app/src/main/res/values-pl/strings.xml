@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.10.2025, 01:27
+  ~  * Created by Vladimir Belov on 31.10.2025, 00:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 29.10.2025, 01:24
+  ~  * Last modified 30.10.2025, 22:59
   ~  */
   -->
 
@@ -206,6 +206,7 @@
     <string name="msg_prefs_import_unknown">"Nieznane ustawienie: %1$s"</string>
     <string name="msg_prefs_import_error">"Błąd importu: %1$s"</string>
     <string name="msg_prefs_import_events_clear_confirmation">Czy wyczyścić wszystkie zdarzenia lokalne przed zaimportowaniem nowych?</string>
+    <string name="msg_prefs_local_events_clear_confirmation">Czy wyczyścić wszystkie zdarzenia lokalne?</string>
     <string name="msg_event_type_select_title">Wybierz typ wydarzenia</string>
     <string name="msg_event_type_label_set">"Zestaw etykiet: %1$s"</string>
     <string name="msg_event_type_label_added">"Dodano etykietę: %1$s"</string>
@@ -1180,9 +1181,11 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="pref_Tools_Preferences_Import_result">Zaimportowane ustawienia: %1$d, błędy: %2$d</string>
     <string name="pref_Tools_Events_title">Wydarzenia</string>
     <string name="pref_Tools_Events_Show_title">Pokaż zapisane wydarzenia lokalne</string>
-    <string name="pref_Tools_Events_Export_title">Eksportuj wydarzenia lokalne</string>
-    <string name="pref_Tools_Events_Export_result">Wyeksportowane wydarzenia: %1$d</string>
-    <string name="pref_Tools_Events_Import_title">Importuj wydarzenia lokalne</string>
+    <string name="pref_Tools_LocalEvents_Export_title">Eksportuj wydarzenia lokalne</string>
+    <string name="pref_Tools_LocalEvents_Export_result">Wyeksportowane wydarzenia: %1$d</string>
+    <string name="pref_Tools_LocalEvents_Clear_title">Wyczyść zdarzenia lokalne</string>
+    <string name="pref_Tools_LocalEvents_Import_title">Importuj wydarzenia lokalne</string>
+    <string name="pref_Tools_Events_Import_title">Importuj zdarzenia pliku</string>
     <string name="pref_Tools_Events_Import_result">Zaimportowane wydarzenia: %1$d, pominięte: %2$d, błędy: %3$d</string>
 
     <string name="changelog_version"><![CDATA[wersja: %1$s (%2$s)<br>data: %3$s]]></string>

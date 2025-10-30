@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.10.2025, 01:27
+ *  * Created by Vladimir Belov on 31.10.2025, 00:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 29.10.2025, 00:14
+ *  * Last modified 30.10.2025, 23:49
  *
  */
 
@@ -361,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (!TextUtils.isEmpty(contactID)) {
                 menu.add(Menu.NONE, Constants.ContextMenu_EditContact, Menu.NONE, getString(R.string.menu_context_edit_contact))
                         .setIcon(android.R.drawable.ic_menu_edit);
-            } else {
+            } else if (eventsData.preferences_extrafun) {
                 MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_CreateContact, Menu.NONE, getString(R.string.menu_context_create_contact))
                         .setIcon(R.drawable.ic_menu_invite);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -471,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (!selectedEvent[ContactsEvents.Position_age].equals(Constants.STRING_MINUS1)) {
                 if (!eventsData.isXDaysEvent(eventKey)) {
-                    if (!eventSubtype.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
+                    if (eventsData.preferences_extrafun && !eventSubtype.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
                         menuItem = menu.add(Menu.NONE, Constants.ContextMenu_xDaysEvent, Menu.NONE, getString(R.string.menu_context_xDaysEvent_add))
                                 .setIcon(android.R.drawable.ic_menu_myplaces);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -665,6 +665,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else if (itemId == Constants.ContextMenu_UnhideEvent) {
 
                 if (eventsData.unsetHiddenEvent(eventKey, eventKeyWithRawId)) {
+
+                    // Если удалили последнего скрытого и нет доп. функций - используем для показа все источники
+                    if (!eventsData.preferences_extrafun && eventsData.getHiddenEventsCount() == 0
+                            && !eventsData.preferences_list_EventSources.isEmpty()) {
+                        eventsData.preferences_list_EventSources.clear();
+                        eventsData.savePreferences();
+                    }
+
                     this.invalidateOptionsMenu();
                     filterEventsList();
                     drawList();

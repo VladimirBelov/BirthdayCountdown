@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.02.2025, 00:19
+  ~  * Created by Vladimir Belov on 31.10.2025, 00:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 11.02.2025, 00:19
+  ~  * Last modified 31.10.2025, 00:24
   ~  */
   -->
 
@@ -12,4 +12,4 @@
     android:layout_height="wrap_content"
     android:singleLine="true"
     android:textColor="?attr/dialogTextColor"
-    android:textSize="16sp" />
+    android:textSize="14sp" />

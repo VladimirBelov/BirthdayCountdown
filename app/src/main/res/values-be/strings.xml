@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.10.2025, 01:27
+  ~  * Created by Vladimir Belov on 31.10.2025, 00:27
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 29.10.2025, 01:27
+  ~  * Last modified 30.10.2025, 22:59
   ~  */
   -->
 
@@ -206,6 +206,7 @@
     <string name="msg_prefs_import_unknown">"Невядомая налада: %1$s"</string>
     <string name="msg_prefs_import_error">"Памылка імпарту: %1$s"</string>
     <string name="msg_prefs_import_events_clear_confirmation">Выдаліць усе мясцовыя падзеі перад імпартам новых?</string>
+    <string name="msg_prefs_local_events_clear_confirmation">Выдаліць усе мясцовыя падзеі?</string>
     <string name="msg_event_type_select_title">Абярыце тып падзеі</string>
     <string name="msg_event_type_label_set">"Метка ўсталявана: %1$s"</string>
     <string name="msg_event_type_label_added">"Метка дададзена: %1$s"</string>
@@ -1179,9 +1180,11 @@
     <string name="pref_Tools_Preferences_Import_result">Імпартавана налад: %1$d, памылак: %2$d</string>
     <string name="pref_Tools_Events_title">Падзеі</string>
     <string name="pref_Tools_Events_Show_title">Паказаць захаваныя мясцовыя падзеі</string>
-    <string name="pref_Tools_Events_Export_title">Экспарт мясцовых падзей</string>
-    <string name="pref_Tools_Events_Export_result">Экспартаваныя падзеі: %1$d</string>
-    <string name="pref_Tools_Events_Import_title">Імпарт мясцовых падзей</string>
+    <string name="pref_Tools_LocalEvents_Export_title">Экспарт мясцовых падзей</string>
+    <string name="pref_Tools_LocalEvents_Export_result">Экспартаваныя падзеі: %1$d</string>
+    <string name="pref_Tools_LocalEvents_Clear_title">Ачысціць лакальныя падзеі</string>
+    <string name="pref_Tools_LocalEvents_Import_title">Імпарт мясцовых падзей</string>
+    <string name="pref_Tools_Events_Import_title">Імпартаваць падзеі файла</string>
     <string name="pref_Tools_Events_Import_result">Імпартаваныя падзеі: %1$d, прапушчаныя: %2$d, памылкі: %3$d</string>
 
     <string name="changelog_version"><![CDATA[версія: %1$s (%2$s)<br>дата: %3$s]]></string>
