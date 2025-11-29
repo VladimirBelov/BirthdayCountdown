@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.10.2025, 00:27
+ *  * Created by Vladimir Belov on 30.11.2025, 02:33
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 30.10.2025, 23:18
+ *  * Last modified 19.11.2025, 22:23
  *
  */
 
@@ -107,6 +107,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -286,6 +288,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
             eventsData.getPreferences();
+
+            if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
+                eventsData.getEvents(this);
+            }
 
             updateTitles();
             updateVisibility();
@@ -1518,7 +1524,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Tools_Preferences_Import_key).equals(key)) {
 
-                importPreferences(importStage.selectFile, null);
+                importPreferences(ImportStage.selectFile, null);
                 return true;
 
             } else if (getString(R.string.pref_Tools_LocalEvents_Show_key).equals(key)) {
@@ -1533,12 +1539,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Tools_LocalEvents_Import_key).equals(key)) {
 
-                importLocalEvents(importStage.selectFile, null);
+                importLocalEvents(ImportStage.selectFile, null);
                 return true;
 
             } else if (getString(R.string.pref_Tools_LocalEvents_Clear_key).equals(key)) {
 
                 clearLocalEvents();
+                return true;
+
+            } else if (getString(R.string.pref_Tools_Events_Import_key).equals(key)) {
+
+                importEvents(ImportStage.selectFile, null);
                 return true;
 
             } else if (getString(R.string.pref_Holidays_key).equals(key)) {
@@ -2703,7 +2714,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         if (uri == null || !ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) return null;
         String path = uri.getPath();
         if (path == null || path.isEmpty()) return null;
-        int lastSlash = path.lastIndexOf('/');
+        int lastSlash = path.lastIndexOf(Constants.STRING_SLASH);
         return (lastSlash >= 0) ? path.substring(lastSlash + 1) : path;
     }
 
@@ -3281,8 +3292,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
-    private enum importStage {
-        selectFile, doClean, doImport
+    private enum ImportStage {
+        selectFile, analyseFile, doClean, doImport
     }
 
     private void exportPreferences(Uri uri) {
@@ -3398,11 +3409,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
-    private void importPreferences(importStage stage, Uri uri) {
+    private void importPreferences(ImportStage stage, Uri uri) {
 
         try {
 
-            if (stage == importStage.selectFile) {
+            if (stage == ImportStage.selectFile) {
 
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -3412,7 +3423,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_IMPORT_PREFERENCES);
                 } catch (ActivityNotFoundException e) { /**/ }
 
-            } else if (stage == importStage.doClean) {
+            } else if (stage == ImportStage.doClean) {
 
                 String[] prefsArray = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL).split(Constants.STRING_EOL);
                 if (prefsArray[0].isEmpty()) {
@@ -3446,10 +3457,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 }
                             }
 
-                            importPreferences(importStage.doImport, uri);
+                            importPreferences(ImportStage.doImport, uri);
                         }
                     });
-                    builder.setNegativeButton(R.string.button_no, (dialog, which) -> importPreferences(importStage.doImport, uri));
+                    builder.setNegativeButton(R.string.button_no, (dialog, which) -> importPreferences(ImportStage.doImport, uri));
                     AlertDialog alertToShow = builder.create();
                     alertToShow.setOnShowListener(arg0 -> {
                         alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
@@ -3459,10 +3470,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     alertToShow.show();
 
                 } else {
-                    importPreferences(importStage.doImport, uri);
+                    importPreferences(ImportStage.doImport, uri);
                 }
 
-            } else if (stage == importStage.doImport && uri != null) {
+            } else if (stage == ImportStage.doImport && uri != null) {
 
                 String[] prefsArray = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL).split(Constants.STRING_EOL);
                 if (prefsArray[0].isEmpty()) {
@@ -3755,7 +3766,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 + ".txt");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
                 try {
-                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_EXPORT_EVENTS);
+                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_BACKUP_LOCAL_EVENTS);
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
 
             } else {
@@ -3852,22 +3863,26 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    /** Восстановление локальных событий из резервной копии
+     * @param stage Стадия { {@code @ImportStage} }
+     * @param uri Выбранный файл на предыдущей стадии
+     */
     @SuppressLint("ApplySharedPref")
-    private void importLocalEvents(importStage stage, Uri uri) {
+    private void importLocalEvents(ImportStage stage, Uri uri) {
 
         try {
 
-            if (stage == importStage.selectFile) {
+            if (stage == ImportStage.selectFile) {
 
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setType("*/*");
                 try {
-                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_IMPORT_EVENTS);
+                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_RESTORE_LOCAL_EVENTS);
                 } catch (ActivityNotFoundException e) { /**/ }
 
-            } else if (stage == importStage.doClean) {
+            } else if (stage == ImportStage.doClean) {
 
                 String[] prefsArray = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL).split(Constants.STRING_EOL);
                 if (prefsArray[0].isEmpty()) {
@@ -3888,9 +3903,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     builder.setPositiveButton(R.string.button_yes, (dialog, which) -> {
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.clear().commit();
-                        importLocalEvents(importStage.doImport, uri);
+                        importLocalEvents(ImportStage.doImport, uri);
                     });
-                    builder.setNegativeButton(R.string.button_no, (dialog, which) -> importLocalEvents(importStage.doImport, uri));
+                    builder.setNegativeButton(R.string.button_no, (dialog, which) -> importLocalEvents(ImportStage.doImport, uri));
                     AlertDialog alertToShow = builder.create();
                     alertToShow.setOnShowListener(arg0 -> {
                         alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
@@ -3900,10 +3915,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     alertToShow.show();
 
                 } else {
-                    importLocalEvents(importStage.doImport, uri);
+                    importLocalEvents(ImportStage.doImport, uri);
                 }
 
-            } else if (stage == importStage.doImport && uri != null) {
+            } else if (stage == ImportStage.doImport && uri != null) {
 
                 String[] eventsArray = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL).split(Constants.STRING_EOL);
                 if (eventsArray[0].isEmpty()) {
@@ -4049,6 +4064,76 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    /** Импорт событий из файла
+     * @param stage Стадия { {@code @ImportStage} }
+     * @param uri Выбранный файл на предыдущей стадии
+     */
+    private void importEvents(ImportStage stage, Uri uri) {
+
+        try {
+
+            if (stage == ImportStage.selectFile) {
+
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setType("text/*");
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"text/plain", "text/x-vCalendar"});
+
+                try {
+                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_IMPORT_EVENTS);
+                } catch (ActivityNotFoundException e) { /**/ }
+
+            } else if (stage == ImportStage.analyseFile) {
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                        .setPositiveButton(R.string.button_ok, null)
+                        .setNegativeButton(R.string.button_cancel, null);
+
+                AlertDialog dialog = builder.create();
+                View view = View.inflate(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog), R.layout.dialog_import, null);
+                dialog.setCustomTitle(view);
+
+                //Иконка и заголовок
+                ImageView icon = view.findViewById(R.id.icon);
+                if (icon != null) icon.setImageBitmap(ContactsEvents.getBitmap(this, android.R.drawable.ic_menu_myplaces));
+                TextView title = view.findViewById(R.id.title);
+                if (title != null) title.setText(R.string.xDaysCounter_Dialog_Title);
+
+                //Результаты анализа
+
+                TextView summary = view.findViewById(R.id.summary);
+                List<String> dataForImport = getEventsToImport(uri);
+                summary.setText(dataForImport.get(0));
+
+                dialog.show();
+
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    @NotNull
+    private List<String> getEventsToImport(Uri uri) {
+        List<String> result = new ArrayList<>();
+        List<String> details = new ArrayList<>();
+
+        try {
+
+            details.add("Файл: " + eventsData.getPath(this, uri));
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            details.add("Ошибка: " + e.getMessage());
+        }
+        result.add(0, String.join(Constants.STRING_EOL, details));
+        return result;
     }
 
     private void selectEventSources(String eventConsumer) {
@@ -4345,19 +4430,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_IMPORT_PREFERENCES) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
-                        importPreferences(importStage.doClean, uri);
+                        importPreferences(ImportStage.doClean, uri);
                     }
 
-                } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_EXPORT_EVENTS) {
+                } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_BACKUP_LOCAL_EVENTS) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
                         exportLocalEvents(uri);
                     }
 
+                } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_RESTORE_LOCAL_EVENTS) {
+                    Uri uri = resultData.getData();
+                    if (uri != null) {
+                        importLocalEvents(ImportStage.doClean, uri);
+                    }
+
                 } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_IMPORT_EVENTS) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
-                        importLocalEvents(importStage.doClean, uri);
+                        importEvents(ImportStage.analyseFile, uri);
                     }
                 }
 

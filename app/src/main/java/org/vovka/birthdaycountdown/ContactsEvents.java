@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.10.2025, 00:27
+ *  * Created by Vladimir Belov on 30.11.2025, 02:33
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 30.10.2025, 23:25
+ *  * Last modified 29.11.2025, 23:37
  *
  */
 
@@ -128,6 +128,9 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -545,7 +548,8 @@ public class ContactsEvents {
     String eventNameEaster;
     String eventNameCatholicEaster;
 
-    private Thread widgetsUpdateThread;
+    private final ExecutorService widgetUpdateExecutor = Executors.newSingleThreadExecutor();
+    private Future<?> pendingUpdateTask = null; // Для отслеживания текущей задачи
 
     private ContactsEvents() {
     }
@@ -4227,8 +4231,6 @@ public class ContactsEvents {
 
             //todo: переделать на java.Time https://www.devwithimagination.com/2018/03/13/performance-of-the-java-8-date-apis/
             Calendar today = getWithoutTime(new GregorianCalendar());
-            final boolean isFirstSecondLastFormat = Integer.toString(preferences_rules_files_name_format).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast));
-
 
             for (String file : fileList) {
 
@@ -4240,10 +4242,7 @@ public class ContactsEvents {
                 }
 
                 String fileName = fileDetails[0].lastIndexOf(Constants.STRING_SLASH) > -1 ? fileDetails[0].substring(fileDetails[0].lastIndexOf(Constants.STRING_SLASH) + 1) : fileDetails[0];
-                final String eventSource = !fileName.isEmpty() ? getResources().getString(R.string.msg_file_info, fileName) :
-                        getResources().getString(R.string.event_type_file);
-                int indexFileNameEnd = file.indexOf(Constants.STRING_BAR);
-                if (indexFileNameEnd < 0) indexFileNameEnd = 0;
+                final String eventSource = !fileName.isEmpty() ? getResources().getString(R.string.msg_file_info, fileName) : getResources().getString(R.string.event_type_file);
 
                 if (eventsArray[0].startsWith(Constants.iCal_CalendarBegin)) {
                     addICalEvents(
@@ -4251,8 +4250,7 @@ public class ContactsEvents {
                             eventsArray,
                             eventType,
                             today,
-                            eventSource,
-                            indexFileNameEnd
+                            eventSource
                     );
                 } else {
                     for (String eventString : eventsArray) {
@@ -4261,9 +4259,7 @@ public class ContactsEvents {
                                 eventString,
                                 eventType,
                                 today,
-                                eventSource,
-                                isFirstSecondLastFormat,
-                                indexFileNameEnd
+                                eventSource
                         );
                     }
                 }
@@ -4286,10 +4282,9 @@ public class ContactsEvents {
      * @param eventType Тип событий, которым добавлять
      * @param today Дата сегодня
      * @param eventSource Источник событий
-     * @param indexFileNameEnd Позиция окончания пути файла и начало URI
      */
     private void addICalEvents(@NonNull String file, @NonNull String[] fileLines, @NonNull String eventType,
-                               @NonNull Calendar today, @NonNull String eventSource, int indexFileNameEnd) {
+                               @NonNull Calendar today, @NonNull String eventSource) {
         try {
 
             TreeMap<Integer, String> eventData = new TreeMap<>();
@@ -4305,6 +4300,7 @@ public class ContactsEvents {
             StringBuilder eventLines = new StringBuilder();
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
             String emptyEventYear = null;
+            int indexFileNameEnd = Math.max(0, file.indexOf(Constants.STRING_BAR));
 
             for (String line: fileLines) {
 
@@ -4573,10 +4569,8 @@ public class ContactsEvents {
      * @param eventType Тип событий, которым добавлять
      * @param today Дата сегодня
      * @param eventSource Источник событий
-     * @param isFirstSecondLastFormat Имя идёт до Фамилии
-     * @param indexFileNameEnd Позиция окончания пути файла и начало URI
      */
-    private void addFileEventFromLine(String file, String eventString, @NonNull String eventType, Calendar today, String eventSource, boolean isFirstSecondLastFormat, int indexFileNameEnd) {
+    private void addFileEventFromLine(String file, String eventString, @NonNull String eventType, Calendar today, String eventSource) {
         try {
 
             String eventLine = eventString.trim().replace("\uFEFF", Constants.STRING_EMPTY);
@@ -4597,6 +4591,8 @@ public class ContactsEvents {
             int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
             boolean isBirthdaysPlusEvent = eventLine.startsWith(Constants.STRING_BDP_DIV)
                     && eventLine.endsWith(Constants.STRING_BDP_EOL);
+            final boolean isFirstSecondLastFormat = Integer.toString(preferences_rules_files_name_format).equals(context.getString(R.string.pref_List_NameFormat_FirstSecondLast));
+            int indexFileNameEnd = Math.max(0, file.indexOf(Constants.STRING_BAR));
 
             //todo: сделать поддержку дат до 1900 http://rsdn.org/forum/java/981164.all
             //BirthdayPro, DarkBirthday: <Дата без пробелов>[,<пробел>флаги] название праздника или ФИО [(должность)]
@@ -6869,6 +6865,7 @@ public class ContactsEvents {
     List<String> getPreviousEvents(@NonNull List<String> dataList) {
 
         List<String> result = new ArrayList<>();
+        statEventsPrevEventsFound = 0;
         if (dataList.isEmpty()) return result;
 
         try {
@@ -6911,7 +6908,6 @@ public class ContactsEvents {
 
             List<String> listPrevEventsPreparatory = new ArrayList<>();
             List<String> listPrevEventsDates = new ArrayList<>();
-            statEventsPrevEventsFound = 0;
 
             //События внизу списка событий (ежегодные)
             for (int i = dataList.size() - 1; i >= 0 && statEventsPrevEventsFound < params_events; i--) {
@@ -7136,83 +7132,94 @@ public class ContactsEvents {
 
     void updateWidgets(int widgetID, StringBuilder log) {
 
+        //https://stackoverflow.com/questions/21300924/difference-between-executors-newfixedthreadpool1-and-executors-newsinglethread
+
+        // Отменяем предыдущую задачу, если она еще выполняется
+        if (pendingUpdateTask != null && !pendingUpdateTask.isDone()) {
+            pendingUpdateTask.cancel(true); // true - позволяет прервать выполняющийся поток
+            Log.d(TAG, "Предыдущая задача отменена");
+        }
+
         if (context == null) return;
 
-        //Посылаем сообщения на обновление виджетов
         try {
-
-            if (widgetsUpdateThread != null) {
-                if (widgetsUpdateThread.isAlive()) {
-                    widgetsUpdateThread.interrupt();
+            // Создаем новую задачу
+            Runnable updateTask = () -> {
+                // Проверяем, была ли задача отменена перед началом работы
+                if (Thread.currentThread().isInterrupted()) {
+                    Log.d(TAG, "Задача была прервана до старта");
+                    return;
                 }
-            }
 
-            //https://stackoverflow.com/questions/21300924/difference-between-executors-newfixedthreadpool1-and-executors-newsinglethread
-            Thread t = new Thread() {
+                int[] ids;
 
-                public void run() {
-
-                    int[] ids;
-
-                    if (widgetID == 0) {
-                        try {
-                            sleep(2000);
-                        } catch (InterruptedException e) {
-                            return;
-                        }
+                if (widgetID == 0) {
+                    try {
+                        // Используем Thread.sleep внутри задачи
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        // Восстанавливаем флаг прерывания и выходим
+                        Thread.currentThread().interrupt();
+                        Log.d(TAG, "Сон задачи был прерван");
+                        return;
                     }
-
-                    statTimeUpdateWidgets = 0;
-                    statActiveWidgets = 0;
-
-                    ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget2x2.class));
-                    if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-                        //Toast.makeText(context, "Widget2x2:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-                        Widget2x2 myWidget = new Widget2x2();
-                        myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                    }
-
-                    ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget5x1.class));
-                    if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-                        //Toast.makeText(context, "Widget5x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-                        Widget5x1 myWidget = new Widget5x1();
-                        myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                    }
-
-                    ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget4x1.class));
-                    if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-                        //Toast.makeText(context, "Widget4x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-                        Widget4x1 myWidget = new Widget4x1();
-                        myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                    }
-
-                    ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetList.class));
-                    if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-                        //Toast.makeText(context, "WidgetList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-                        WidgetList myWidget = new WidgetList();
-                        myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                    }
-
-                    ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetPhotoList.class));
-                    if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-                        //Toast.makeText(context, "WidgetPhotoList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-                        WidgetPhotoList myWidget = new WidgetPhotoList();
-                        myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                    }
-
-                    ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetCalendar.class));
-                    if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
-                        //Toast.makeText(context, "WidgetCalendar:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
-                        WidgetCalendar myWidget = new WidgetCalendar();
-                        myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
-                    }
-
-                    interrupt();
-
                 }
+
+                // Проверяем снова после сна
+                if (Thread.currentThread().isInterrupted()) {
+                    Log.d(TAG, "Задача была прервана после сна");
+                    return;
+                }
+
+                statTimeUpdateWidgets = 0;
+                statActiveWidgets = 0;
+
+                ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget2x2.class));
+                if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                    //Toast.makeText(context, "Widget2x2:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                    Widget2x2 myWidget = new Widget2x2();
+                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                }
+
+                ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget5x1.class));
+                if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                    //Toast.makeText(context, "Widget5x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                    Widget5x1 myWidget = new Widget5x1();
+                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                }
+
+                ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, Widget4x1.class));
+                if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                    //Toast.makeText(context, "Widget4x1:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                    Widget4x1 myWidget = new Widget4x1();
+                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                }
+
+                ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetList.class));
+                if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                    //Toast.makeText(context, "WidgetList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                    WidgetList myWidget = new WidgetList();
+                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                }
+
+                ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetPhotoList.class));
+                if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                    //Toast.makeText(context, "WidgetPhotoList:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                    WidgetPhotoList myWidget = new WidgetPhotoList();
+                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                }
+
+                ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetCalendar.class));
+                if (ids != null && ((widgetID > 0 && ids.length > 0 && contains(ids, widgetID)) || widgetID == 0)) {
+                    //Toast.makeText(context, "WidgetCalendar:" + Arrays.toString(ids), Toast.LENGTH_LONG).show();
+                    WidgetCalendar myWidget = new WidgetCalendar();
+                    myWidget.onUpdate(context, AppWidgetManager.getInstance(context), widgetID > 0 ? new int[]{widgetID} : ids);
+                }
+
             };
-            widgetsUpdateThread = t;
-            t.start();
+
+            // Запускаем задачу и сохраняем Future
+            pendingUpdateTask = widgetUpdateExecutor.submit(updateTask);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -9629,7 +9636,7 @@ public class ContactsEvents {
                     if (eventDate != null) {
                         if (dateFormat == FormatDate.WithYear && isYearPresent) {
                             resultString = DateUtils.formatDateTime(context, eventDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_NUMERIC_DATE);
-                        } else if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
+                        } else { //if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
                             resultString = DateUtils.formatDateTime(context, eventDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_NUMERIC_DATE);
                         }
                     }
@@ -9637,7 +9644,7 @@ public class ContactsEvents {
 
         } catch (Exception e) { /**/ }
 
-        return resultString.concat(postfixBC);
+        return TextUtils.isEmpty(resultString) ? resultString : resultString.concat(postfixBC);
 
     }
 
@@ -12450,6 +12457,20 @@ public class ContactsEvents {
             chars[0] = Character.toUpperCase(chars[0]);
             return new String(chars);
         } else {return str;}
+    }
+
+    public void shutdown() {
+        if (widgetUpdateExecutor != null) {
+            widgetUpdateExecutor.shutdown(); // Завершает плавно
+            try {
+                if (!widgetUpdateExecutor.awaitTermination(60, TimeUnit.SECONDS)) {
+                    widgetUpdateExecutor.shutdownNow(); // Принудительно завершает
+                }
+            } catch (InterruptedException e) {
+                widgetUpdateExecutor.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
 }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 30.11.2025, 02:33
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 00:07
+ *  * Last modified 13.11.2025, 18:04
  *
  */
 
@@ -56,7 +56,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
             if (Objects.equals(intent.getAction(), Intent.ACTION_BOOT_COMPLETED)) { // on device boot complete, reset the alarm
 
                 StringBuilder log = new StringBuilder();
-                if (eventsData.getContext() == null) eventsData.setContext(context);
+                if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
                 eventsData.getPreferences();
                 eventsData.setLocale(true);
 

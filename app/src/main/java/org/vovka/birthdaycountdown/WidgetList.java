@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.10.2025, 03:34
+ *  * Created by Vladimir Belov on 30.11.2025, 02:33
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.10.2025, 02:29
+ *  * Last modified 13.11.2025, 18:04
  *
  */
 
@@ -61,7 +61,7 @@ public class WidgetList extends AppWidgetProvider {
 
         try {
 
-            if (eventsData.getContext() == null) eventsData.setContext(context);
+            if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
             eventsData.getPreferences();
 
             //Без этого на Android 8 и 9 не меняет динамически язык
@@ -248,7 +248,7 @@ public class WidgetList extends AppWidgetProvider {
         try {
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(context);
+            if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
             eventsData.getPreferences();
             eventsData.setLocale(true);
 

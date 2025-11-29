@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2025, 21:29
+ *  * Created by Vladimir Belov on 30.11.2025, 02:33
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.09.2025, 00:03
+ *  * Last modified 13.11.2025, 18:04
  *
  */
 
@@ -110,7 +110,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             this.floatDensity = displayMetrics.density;
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(context);
+            if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
             eventsData.getPreferences();
             eventsData.setLocale(true);
 

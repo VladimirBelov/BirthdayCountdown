@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 31.10.2025, 00:27
+  ~  * Created by Vladimir Belov on 30.11.2025, 02:33
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 30.10.2025, 23:29
+  ~  * Last modified 19.11.2025, 21:48
   ~  */
   -->
 
@@ -1186,6 +1186,7 @@ Long click on item to select color"</string>
     <string name="pref_Tools_LocalEvents_Clear_title">Clear local events</string>
     <string name="pref_Tools_LocalEvents_Import_title">Restore local events</string>
     <string name="pref_Tools_Events_Import_title">Import file events</string>
+    <string name="pref_Tools_Events_Import_summary">Select file for analyze and import of events (TXT, ICS)…</string>
     <string name="pref_Tools_Events_Import_result">Events imported: %1$d, skipped: %2$d, errors: %3$d</string>
 
     <string name="changelog_version"><![CDATA[version: %1$s (%2$s)<br>built: %3$s]]></string>

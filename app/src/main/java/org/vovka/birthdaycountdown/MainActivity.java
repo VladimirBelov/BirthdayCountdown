@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.10.2025, 00:27
+ *  * Created by Vladimir Belov on 30.11.2025, 02:33
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 30.10.2025, 23:49
+ *  * Last modified 30.11.2025, 02:31
  *
  */
 
@@ -115,7 +115,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private Resources resources;
     private SwipeRefreshLayout swipeRefresh;
     private SwipeRefreshLayout.OnRefreshListener swipeRefreshListener;
-    private EventsAdapter adapter;
+    private ListView listView;
+    private TextView emptyView;
 
     //Переменные
     private String filterNames = Constants.STRING_EMPTY;
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private int selectedEvent_num;
     private final List<String> dataList = new ArrayList<>();
     private final List<String> dataListFull = new ArrayList<>();
+    private EventsAdapter adapter;
     private int statsAllEvents = 0; //Всего событий (для выбранных источников и типов)
     private int statsHiddenEvents = 0; //Всего скрытых событий (для выбранных источников и типов)
     private int statsAllHiddenEvents = 0; //Всего скрытых событий (всего)
@@ -134,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private boolean triggeredMsgNoEvents = false;
     private TypedArray ta = null;
     private DisplayMetrics displayMetrics;
+    boolean scrolledToToday = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //https://stackoverflow.com/questions/29069070/completely-transparent-status-bar-and-navigation-bar-on-lollipop
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(this);
+            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.getPreferences();
 
             //Без этого на Android 8 и 9 не меняет динамически язык
@@ -246,9 +249,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     swipeRefresh.setRefreshing(false);
                 }
             };
-            //swipeRefresh.post(() -> swipeRefreshListener.onRefresh());
 
-            ListView listView = findViewById(R.id.mainListView);
+            listView = findViewById(R.id.mainListView);
+            emptyView = findViewById(R.id.mainListViewEmpty);
 
             //Разделитель списка зависит от стиля отображения
             if (eventsData.preferences_list_style == Integer.parseInt(getString(R.string.pref_List_Style_Card))) {
@@ -300,9 +303,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Приветственное сообщение или описание новой версии
             showWelcomeScreen();
-
-            //todo: сделать разные иконки приложения https://github.com/guardianproject/CameraV/commit/98d8c545c1901d03d9d238204bb45d502a623e59#diff-7ab4bf3d594a968a90e0250af33fcb9bR399
-            //https://stackoverflow.com/questions/1103027/how-to-change-an-application-icon-programmatically-in-android
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1506,7 +1506,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                     if (index.get() > -1) {
                         new Handler().postDelayed(() -> {
-                            ListView listView = findViewById(R.id.mainListView);
                             int jumpToEvent = index.get() + eventsData.statEventsPrevEventsFound;
 
                             //Находим в списке (бежим к началу)
@@ -2189,7 +2188,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (!filterNames.isEmpty()) return; //Чтобы не было обновления списка после просмотра контакта (при непустой строке поиска)
 
             if (eventsData == null) eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(this);
+            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
 
             //если "выходили" посмотреть карточку контакта или события на 5 сек
             if (eventsData.statLastPausedForOtherActivity > 0 && !this.dataList.isEmpty()
@@ -2231,7 +2230,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Разделитель списка зависит от стиля отображения
             //Тут повтор из onCreate, потому что иногда при смене настроек изменения не подхватываются
-            ListView listView = findViewById(R.id.mainListView);
             if (eventsData.preferences_list_style == Integer.parseInt(getString(R.string.pref_List_Style_Card))) {
 
                 listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_backgroundColor, 0)));
@@ -2296,6 +2294,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
 
                 updateList(true, !eventsData.isUIOpen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+
+                if (!scrolledToToday && eventsData.statEventsPrevEventsFound > 0 &&
+                        eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_NotHidden) {
+                    listView.post(() -> {
+                        listView.setSelectionFromTop(eventsData.statEventsPrevEventsFound, 0);
+                        scrolledToToday = true;
+                    });
+                }
+
                 eventsData.initNotifications();
                 eventsData.updateWidgets(0, null);
 
@@ -2317,7 +2324,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR) {
 
-                registerForContextMenu(findViewById(R.id.mainListView));
+                registerForContextMenu(listView);
                 updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
 
             } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS) {
@@ -2332,7 +2339,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     }
 
-    synchronized private void filterEventsList() {
+    private void filterEventsList() {
         try {
             int statsVisibleEvents = 0;
             statsAllEvents = 0;
@@ -2341,7 +2348,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             statsSilencedEvents = 0;
             statsXDaysEvents = 0;
             statsUnrecognizedEvents = 0;
-            eventsData.statEventsPrevEventsFound = 0;
+            //eventsData.statEventsPrevEventsFound = 0;
             dataList.clear();
 
             if (!eventsData.isEmptyEventList()) {
@@ -2417,26 +2424,25 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (dataList.isEmpty()) { // && eventsData.eventListPrev.isEmpty()
 
-                findViewById(R.id.mainListView).setVisibility(View.GONE);
+                listView.setVisibility(View.GONE);
 
-                TextView viewZero = findViewById(R.id.mainListViewEmpty);
-                if (viewZero != null) {
-                    viewZero.setVisibility(View.VISIBLE);
-                    viewZero.setText(HtmlCompat.fromHtml(
+                if (emptyView != null) {
+                    emptyView.setVisibility(View.VISIBLE);
+                    emptyView.setText(HtmlCompat.fromHtml(
                         getString(R.string.msg_zero_events_title) +
                                 eventsData.getCurrentParams() +
                                 getString(R.string.msg_zero_events_footer)
                         , HtmlCompat.FROM_HTML_MODE_LEGACY));
                     //https://stackoverflow.com/questions/1748977/making-textview-scrollable-on-android
-                    viewZero.setMovementMethod(new ScrollingMovementMethod());
+                    emptyView.setMovementMethod(new ScrollingMovementMethod());
                 }
 
                 setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), Constants.HTML_COLOR_YELLOW));
 
             } else {
 
-                findViewById(R.id.mainListView).setVisibility(View.VISIBLE);
-                findViewById(R.id.mainListViewEmpty).setVisibility(View.GONE);
+                listView.setVisibility(View.VISIBLE);
+                emptyView.setVisibility(View.GONE);
 
                 if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Hidden) {
                     setHint(resources.getString(R.string.msg_stats_hidden_prefix) + statsVisibleEvents + Constants.STRING_SPACE);
@@ -2479,38 +2485,30 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         return ContactsEvents.getEventType(Constants.Type_Unrecognized).equals(singleEventArray[ContactsEvents.Position_eventType]);
     }
 
-    synchronized private void drawList() {
+    private void drawList() {
         try {
-
-            //Выводим данные
-            ListView listView = findViewById(R.id.mainListView);
 
             //Сохраняем позицию в списке, чтобы вернутся к ней после обновления
             //https://stackoverflow.com/a/3035521/4928833
+
             int index = listView.getFirstVisiblePosition();
             View v = listView.getChildAt(0);
             int top = (v == null) ? 0 : (v.getTop()) - listView.getPaddingTop();
 
-            if (dataList.isEmpty()) {
-                findViewById(R.id.mainListView).setVisibility(View.GONE);
-                if (filterNames.isEmpty()) {
-                    findViewById(R.id.mainListViewEmpty).setVisibility(View.VISIBLE);
-                } else {
-                    findViewById(R.id.mainListViewEmpty).setVisibility(View.GONE);
-                }
-            } else {
-                findViewById(R.id.mainListView).setVisibility(View.VISIBLE);
-                findViewById(R.id.mainListViewEmpty).setVisibility(View.GONE);
-            }
+            listView.setVisibility(dataList.isEmpty() ? View.GONE : View.VISIBLE);
+            emptyView.setVisibility(dataList.isEmpty() && filterNames.isEmpty() ? View.VISIBLE : View.GONE);
 
-            //if (listView.getAdapter() == null) {
-                adapter = new EventsAdapter(this, dataListFull, dataList);
-                listView.setAdapter(adapter);
-            //} //todo:
+            //Если использовать тут adapter.notifyDataSetChanged(); при поиске список ломается и показывает не то
+            adapter = new EventsAdapter(this, dataListFull, dataList);
+            listView.setAdapter(adapter);
 
             //Возвращаемся к ранее сохранённой позиции после обновления
-            //Почему-то при index = 0 идёт сдвиг вверх на getPaddingTop
-            listView.setSelectionFromTop(index, index > 0 ? top : top + listView.getPaddingTop());
+            listView.post(() -> {
+                if (index  < listView.getCount()) {
+                    //Почему-то при index = 0 идёт сдвиг вверх на getPaddingTop
+                    listView.setSelectionFromTop(index, index > 0 ? top : top + listView.getPaddingTop());
+                }
+            });
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

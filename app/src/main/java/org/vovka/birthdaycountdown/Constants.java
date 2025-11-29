@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.10.2025, 01:27
+ *  * Created by Vladimir Belov on 30.11.2025, 02:33
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 28.10.2025, 22:17
+ *  * Last modified 06.11.2025, 23:01
  *
  */
 
@@ -87,7 +87,6 @@ public final class Constants {
 
     static final String LANG_EN = "en";
     static final String LANG_RU = "ru";
-    static final String LANG_UA = "uk_UA";
 
     //https://en.wikipedia.org/wiki/Date_format_by_country
     static final String DATETIME_DD_MM_YYYY_HH_MM = "dd.MM.yyyy HH:mm";
@@ -104,7 +103,6 @@ public final class Constants {
     static final String DATE_MMMM_D = "MMMM d";
     static final String DATE_D_MMMM = "d MMMM";
     static final String DATE_RUS = "dd MMMMM yyyy г.";
-    static final String DATE_US = "MMM dd, yyyy";
     static final String DATE_UK = "dd/MM/yyyy";
     static final String DATE_UK_G = "dd/MM/yyyy G";
     static final String DATE_UK_NO_YEAR = "dd/MM";
@@ -194,13 +192,14 @@ public final class Constants {
     static final int RESULT_PICK_FILE = 201;
     static final int RESULT_PICK_OTHER_CONTACT = 202;
     static final int RESULT_PICK_RINGTONE = 203;
-    static final int RESULT_PICK_CUSTOM_RINGTONE = 209;
-    static final int RESULT_PICK_FILE_FOR_EXPORT_PREFERENCES = 204;
-    static final int RESULT_PICK_FILE_FOR_IMPORT_PREFERENCES = 205;
-    static final int RESULT_EDIT_EVENT = 206;
-    static final int RESULT_PICK_FILE_FOR_EXPORT_EVENTS = 207;
-    static final int RESULT_PICK_FILE_FOR_IMPORT_EVENTS = 208;
-    static final int RESULT_CROP_PHOTO = 210;
+    static final int RESULT_PICK_CUSTOM_RINGTONE = 204;
+    static final int RESULT_PICK_FILE_FOR_EXPORT_PREFERENCES = 205;
+    static final int RESULT_PICK_FILE_FOR_IMPORT_PREFERENCES = 206;
+    static final int RESULT_PICK_FILE_FOR_BACKUP_LOCAL_EVENTS = 208;
+    static final int RESULT_PICK_FILE_FOR_RESTORE_LOCAL_EVENTS = 209;
+    static final int RESULT_PICK_FILE_FOR_IMPORT_EVENTS = 210;
+    static final int RESULT_EDIT_EVENT = 250;
+    static final int RESULT_CROP_PHOTO = 260;
 
     static final String NOTIFY_ID = "id: ";
     static final int defaultNotificationID = 1000;

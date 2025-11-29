@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.10.2025, 02:39
+ *  * Created by Vladimir Belov on 30.11.2025, 02:33
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.10.2025, 16:57
+ *  * Last modified 30.11.2025, 00:55
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -156,9 +156,10 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0' //https://developer.android.com/jetpack/androidx/releases/recyclerview
     //noinspection GradleDependency
     implementation 'androidx.core:core:1.14.0-alpha01' //https://developer.android.com/jetpack/androidx/releases/core
+    //noinspection GradleDependency
     implementation 'androidx.core:core-splashscreen:1.0.1' //https://developer.android.com/jetpack/androidx/releases/core#core-splashscreen-1.0.1
     implementation 'androidx.fragment:fragment:1.8.9' //https://developer.android.com/jetpack/androidx/releases/fragment
-    implementation 'androidx.activity:activity:1.11.0'
+    implementation 'androidx.activity:activity:1.11.0' //https://developer.android.com/jetpack/androidx/releases/activity
 }
 
 java {
