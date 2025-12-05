@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.11.2025, 02:33
+  ~  * Created by Vladimir Belov on 06.12.2025, 00:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.11.2025, 21:48
+  ~  * Last modified 05.12.2025, 23:12
   ~  */
   -->
 
@@ -151,6 +151,7 @@
     <string name="msg_hint_search">Искать в списке</string>
     <string name="msg_hint_search_all">Искать везде</string>
     <string name="msg_hint_global_search">Поиск событий</string>
+    <string name="msg_hint_faq_search">Искать в тексте…</string>
     <string name="msg_notifications_soon_no_events">Нет событий в выбранные дни</string>
     <string name="msg_notifications_soon">"Событий скоро - "</string>
     <string name="msg_notifications_all">"Событий - "</string>
@@ -233,6 +234,8 @@
     <string name="hint_Rate_PlayMarket">Оценить приложение в Google Play</string>
     <string name="hint_Rate_OtherAppStore">"Оценить приложение в %s"</string>
     <string name="hint_Color">Значение в ARGB</string>
+    <string name="hint_Prev">Предыдущее вхождение</string>
+    <string name="hint_Next">Следующее вхождение</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Да</string>
@@ -1188,6 +1191,7 @@
     <string name="pref_Tools_Events_Import_title">Импортировать события из файла</string>
     <string name="pref_Tools_Events_Import_summary">Выберите файл для анализа и импорта событий (TXT, ICS)…</string>
     <string name="pref_Tools_Events_Import_result">Импортировано событий: %1$d, пропущено: %2$d, ошибок: %3$d</string>
+    <string name="pref_Tools_Events_Import_Dialog_title">Импорт событий</string>
 
     <string name="changelog_version"><![CDATA[версия: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>установлено из %1$s]]></string>

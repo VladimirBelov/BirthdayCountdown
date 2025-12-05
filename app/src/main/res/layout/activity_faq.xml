@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.06.2025, 15:43
+  ~  * Created by Vladimir Belov on 06.12.2025, 00:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.06.2025, 15:10
+  ~  * Last modified 05.12.2025, 23:50
   ~  */
   -->
 
@@ -27,7 +27,62 @@
 			android:layout_height="?attr/actionBarSize"
 			app:title="@string/window_faq"
 			android:theme="@style/AppTheme.ActionBar"
-			app:titleTextAppearance="@style/ActivityTitleStyle"/>
+			app:titleTextAppearance="@style/ActivityTitleStyle">
+
+            <ImageButton
+                android:id="@+id/btnSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:padding="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_menu_search"
+                android:contentDescription="@string/menu_search"
+                android:tint="?attr/windowTitleColor" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            android:id="@+id/searchBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/searchText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/msg_hint_faq_search"
+                android:imeOptions="actionSearch"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textSize="16sp"
+                android:textColor="?attr/windowTitleColor"
+                android:textColorHint="?attr/windowEditHintColor"
+                app:layout_scrollFlags="scroll|enterAlways" />
+
+            <ImageButton
+                android:id="@+id/btnPrev"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/arrow_up_float"
+                android:contentDescription="@string/hint_Prev" />
+
+            <ImageButton
+                android:id="@+id/btnNext"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/arrow_down_float"
+                android:contentDescription="@string/hint_Next" />
+
+        </LinearLayout>
 
 	</com.google.android.material.appbar.AppBarLayout>
 

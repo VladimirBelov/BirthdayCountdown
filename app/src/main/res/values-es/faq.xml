@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.02.2025, 13:56
+  ~  * Created by Vladimir Belov on 06.12.2025, 00:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.02.2025, 13:28
+  ~  * Last modified 06.12.2025, 00:02
   ~  */
   -->
 
@@ -26,7 +26,7 @@
                 <item>Para editar la configuración del widget de fotos, haga clic en la etiqueta del evento más a la derecha. Al hacer clic en cualquier otro lugar de este evento, se abrirá la ventana principal de la aplicación.</item>
                 <item>Si no se encontraron eventos adecuados para el widget de fotos y se muestra la notificación \"Eventos no encontrados\", al hacer clic en el mensaje se abrirá la configuración de este widget.</item>
                 <item>La reacción al hacer clic en un evento separado en el widget se configura en \"Configuraciones-> Widgets-> Al hacer clic en la acción\"</item>
-                <item><![CDATA[<img src="pref_widget.png" width=100%><br>]]></item>
+                <item><![CDATA[<img src="pref_widget.webp" width=100%><br>]]></item>
                 <item>Para editar la configuración del widget de lista, haga clic en el botón de alternar en la esquina superior derecha de la lista de eventos.</item>
 
                 <item>#Los eventos no encajan o las fotos son demasiado estrechas</item>
@@ -71,18 +71,18 @@
 
                 <item>#<![CDATA[<a id="events_calendar">Eventos del calendario]]></item>
                 <item><![CDATA[Se admite cualquier evento de calendario de los calendarios seleccionados.<ul>
-                 <li>Si el calendario contiene solo un tipo de eventos, dichos calendarios deben seleccionarse en la sección correspondiente (<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Cumpleaños, <img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Otro evento).
-                 <li>Los calendarios con eventos de diferentes tipos se especifican en la sección <img src="btn_zoom_page_press.webp" width=5% style="vertical-align:middle"> Orígenes de eventos.
+                 <li>Si el calendario contiene solo un tipo de eventos, dichos calendarios deben seleccionarse en la sección correspondiente (<img src="ic_event_birthday.webp" style="vertical-align:middle"> Cumpleaños, <img src="ic_event_other.webp" style="vertical-align:middle"> Otro evento).
+                 <li>Los calendarios con eventos de diferentes tipos se especifican en la sección <img src="btn_zoom_page_press.webp" style="vertical-align:middle"> Orígenes de eventos.
                  <li>Si desea especificar enlaces a recursos externos, los enlaces web en los eventos del calendario deben estar en el campo Descripción y comenzar con http:// o https://
                  <li>Dependiendo de la sección seleccionada donde se especifica el calendario, el mecanismo para importar eventos es diferente.
                  </ul>]]></item>
-                <item><![CDATA[<br><img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Cumpleaños: Durante la importación de un evento, se busca un contacto en la libreta de direcciones. Las reglas de reconocimiento de nombres y el formato de nombre se utilizan para esto (se establecen en Configuraciones-> Configuración de eventos-> Configuración de importación). De forma predeterminada, se utiliza el título completo del evento como nombre del contacto. Si se encuentra un contacto, los datos de la persona se agregan a los detalles del evento: foto, organización, cargo, enlaces web. Hay tres opciones: <ol>
+                <item><![CDATA[<br><img src="ic_event_birthday.webp" style="vertical-align:middle"> Cumpleaños: Durante la importación de un evento, se busca un contacto en la libreta de direcciones. Las reglas de reconocimiento de nombres y el formato de nombre se utilizan para esto (se establecen en Configuraciones-> Configuración de eventos-> Configuración de importación). De forma predeterminada, se utiliza el título completo del evento como nombre del contacto. Si se encuentra un contacto, los datos de la persona se agregan a los detalles del evento: foto, organización, cargo, enlaces web. Hay tres opciones: <ol>
                 <li>contacto encontrado, pero ya hay datos sobre el cumpleaños: la fecha del calendario se agrega al evento (con o sin año, dependiendo de la configuración)
                 <li>el contacto se encontró, pero no hay información sobre el cumpleaños: se agrega un nuevo evento a la lista
                 <li>contacto no encontrado: se agrega un nuevo evento
                 </ol>]]></item>
-                <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Otro evento: estos eventos del calendario no se muestran en los widgets, solo en la lista de eventos y notificaciones. Se guarda todo el título del evento.]]></item>
-                <item><![CDATA[<br><img src="btn_zoom_page_press.webp" width=5% style="vertical-align:middle"> Diferentes tipos de eventos: <ul>
+                <item><![CDATA[<img src="ic_event_other.webp" style="vertical-align:middle"> Otro evento: estos eventos del calendario no se muestran en los widgets, solo en la lista de eventos y notificaciones. Se guarda todo el título del evento.]]></item>
+                <item><![CDATA[<br><img src="btn_zoom_page_press.webp" style="vertical-align:middle"> Diferentes tipos de eventos: <ul>
                 <li>El tipo de evento está determinado por el contenido del campo de descripción del evento del Calendario. Para determinar el tipo, se utilizan nombres de eventos estándar y (o) sus propios nombres, que debe especificar para los eventos usted mismo.
                 <li>Si el tipo de evento no está definido como Otro evento, se realizará una búsqueda de contactos por el nombre del evento del calendario (similar a la búsqueda de contactos para cumpleaños descrita anteriormente).
                 <li>Los eventos de calendario se pueden crear tanto en la aplicación de calendario estándar (simplemente especificando el tipo requerido en la descripción del evento) como en aplicaciones de terceros. Por ejemplo, al crear eventos en la aplicación <a href=\"https://play.google.com/store/apps/details?id=org.withouthat.acalendar\">aCalendar</a>, puede seleccionar el tipo de evento (aniversario, boda, cumpleaños, etc.) y el tipo correspondiente se agregarán al campo Descripción automáticamente.
@@ -105,15 +105,15 @@
                 <li>si no se conoce el año, establezca 0000
                 <li>el archivo debe guardarse en codificación UTF-8
                 <li>si hay varios pares de corchetes después del nombre, entonces si los pares de corchetes siguen entre sí: el contenido dentro del último par se moverá al título del trabajo de los contactos, si un par está dentro del otro, el contenido dentro de los corchetes exteriores se moverá al título del trabajo de los contactos
-                <li>si el archivo solo enumera eventos de cierto tipo (<img src="ic_event_birthday.webp" width=5% style="vertical-align:middle"> Cumpleaños, <img src="ic_event_other.webp" width= 5 % style="vertical-align:middle"> Otro evento), dichos archivos deben especificarse en la sección de configuración correspondiente a su tipo
-                <li>los archivos con diferentes tipos de eventos se especifican en la sección <img src="btn_zoom_page_press.webp" width=5% style="vertical-align:middle"> Orígenes de eventos. El tipo de evento está determinado por la bandera (a continuación se muestra el formato y los ejemplos)
-                <li>para todos los tipos de eventos excepto <img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Otro evento, busca un contacto en la libreta de direcciones para fusionarlo con eventos duplicados o agregar web Enlaces
+                <li>si el archivo solo enumera eventos de cierto tipo (<img src="ic_event_birthday.webp" style="vertical-align:middle"> Cumpleaños, <img src="ic_event_other.webp" width= 5 % style="vertical-align:middle"> Otro evento), dichos archivos deben especificarse en la sección de configuración correspondiente a su tipo
+                <li>los archivos con diferentes tipos de eventos se especifican en la sección <img src="btn_zoom_page_press.webp" style="vertical-align:middle"> Orígenes de eventos. El tipo de evento está determinado por la bandera (a continuación se muestra el formato y los ejemplos)
+                <li>para todos los tipos de eventos excepto <img src="ic_event_other.webp" style="vertical-align:middle"> Otro evento, busca un contacto en la libreta de direcciones para fusionarlo con eventos duplicados o agregar web Enlaces
                 <li>Para usar eventos de Cumpleaños, deben exportarse a un archivo: Sincronización-> Guardar en tarjeta SD
                 </ul>]]></item>
 
                 <item><![CDATA[<b><a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> formato de evento</b> (entre corchetes - parámetros opcionales):<br>]]></item>
                 <item><![CDATA[<b></b># COMENTARIO<br>&lt;<b>FECHA</b>&gt;[,BANDERAS] &lt;<b>NOMBRE y TÍTULO DEL EVENTO</b>&gt; [|DESCRIPCIÓN] [([ORGANIZACIÓN,] TÍTULO)] [ENLACE WEB]<br><br>]]></item>
-                <item><![CDATA[<img src="ic_event_other.webp" width=5% style="vertical-align:middle"> Otro evento. Formato (entre corchetes - parámetros opcionales):<br><br># COMENTARIO<br>&lt;<b>FECHA</b>&gt;[,BANDERAS] &lt;<b>TÍTULO DEL EVENTO</b>&gt; [ENLACE WEB]<br><br>]]></item>
+                <item><![CDATA[<img src="ic_event_other.webp" style="vertical-align:middle"> Otro evento. Formato (entre corchetes - parámetros opcionales):<br><br># COMENTARIO<br>&lt;<b>FECHA</b>&gt;[,BANDERAS] &lt;<b>TÍTULO DEL EVENTO</b>&gt; [ENLACE WEB]<br><br>]]></item>
                 <item tools:ignore="Typos"><![CDATA[<b>BANDERAS</b>:<br>1 - evento único, que debe mostrarse solo una vez (se requiere el año)<br>BC: antes de la fecha de la era común (¡se requiere el año!)<br>Etiqueta_de_evento: para archivos que contienen eventos de diferentes tipos, el tipo de evento está determinado por esta etiqueta. Si hay un espacio en la etiqueta, debe reemplazarse con un guión bajo \"_\"<br><br>por ejemplo:<br>01/01/2000 John Doe (Enigma, jefe) https://enigma.com/<br>02/01/2000 Richard Roe (Enigma,)<br>01 /03/0000 Friedman v. Ferguson (vecino)<br>01/01/2022, 1 a principios de 2022<br>15/03/44, BC Yu.Caesar fue asesinado<br>02/03/1819, cumpleaños Nemo (capitán)<br>]]></item>
 
                 <item><![CDATA[<b><a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a> formato de evento</b>:<br>]]></item>

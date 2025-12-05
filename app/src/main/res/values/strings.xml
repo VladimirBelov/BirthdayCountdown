@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.11.2025, 02:33
+  ~  * Created by Vladimir Belov on 06.12.2025, 00:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.11.2025, 21:48
+  ~  * Last modified 06.12.2025, 00:13
   ~  */
   -->
 
@@ -151,6 +151,7 @@
     <string name="msg_hint_search">Search in list</string>
     <string name="msg_hint_search_all">Search everywhere</string>
     <string name="msg_hint_global_search">Search birthdays and events</string>
+    <string name="msg_hint_faq_search">Search in text…</string>
     <string name="msg_notifications_soon_no_events">No events for chosen days</string>
     <string name="msg_notifications_soon">"Events soon - "</string>
     <string name="msg_notifications_all">"Events - "</string>
@@ -233,6 +234,8 @@
     <string name="hint_Rate_PlayMarket">Rate this app on Google Play</string>
     <string name="hint_Rate_OtherAppStore">"Rate this app on %s"</string>
     <string name="hint_Color">ARGB value</string>
+    <string name="hint_Prev">Previous match</string>
+    <string name="hint_Next">Next match</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Yes</string>
@@ -1188,6 +1191,7 @@ Long click on item to select color"</string>
     <string name="pref_Tools_Events_Import_title">Import file events</string>
     <string name="pref_Tools_Events_Import_summary">Select file for analyze and import of events (TXT, ICS)…</string>
     <string name="pref_Tools_Events_Import_result">Events imported: %1$d, skipped: %2$d, errors: %3$d</string>
+    <string name="pref_Tools_Events_Import_Dialog_title">Import of events</string>
 
     <string name="changelog_version"><![CDATA[version: %1$s (%2$s)<br>built: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>installed from %1$s]]></string>
@@ -2473,7 +2477,6 @@ Long click on item to select color"</string>
 
     <string name="changelog_header" translatable="false"><![CDATA[<html><head><style type=\"text/css\">body {color: rgb(%1$s); font-size: 10pt;}h1 { margin-left: 0px; font-size: 12pt;}h2 { margin-left: 10px; font-size: 11pt;}h3 { margin-left: 10px; font-size: 10pt;}li { margin-left: 0px; font-size: 9pt;}ul { padding-left: 30px;}</style></head><body>]]></string>
 
-    <string name="faq_header" translatable="false"><![CDATA[<!DOCTYPE html><html><head><style type=\"text/css\">body {color: rgb(%1$s); font-size: 10pt;}h1 {font-weight: bold; font-size: 12pt;}h2 {font-weight: bold; font-size: 11pt;}h3 {font-weight: bold; font-size: 10pt;}</style></head><body>]]></string>
     <string name="faq_anchor_events_calendar" translatable="false">events_calendar</string>
     <string name="faq_anchor_events_files" translatable="false">events_files</string>
     <string name="faq_anchor_events_facts" translatable="false">events_facts</string>

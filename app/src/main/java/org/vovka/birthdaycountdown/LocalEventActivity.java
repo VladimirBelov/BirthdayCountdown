@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.10.2025, 01:27
+ *  * Created by Vladimir Belov on 06.12.2025, 00:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 29.10.2025, 01:08
+ *  * Last modified 04.12.2025, 23:46
  *
  */
 
@@ -70,8 +70,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -1112,7 +1110,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
             List<String> similarEventIds;
             if (!eventsData.getEventData(eventData).equals(this.eventDataSaved)) {
-                similarEventIds = getSimilarLocalEventIds(this.eventDataSaved);
+                similarEventIds = eventsData.getSimilarLocalEventIds(this.eventDataSaved, null);
             } else {
                 similarEventIds = null;
             }
@@ -1190,47 +1188,6 @@ public class LocalEventActivity extends AppCompatActivity {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-    }
-
-    /**
-     * Получает список Id всех похожих локальных событий, исключая eventData
-     *
-     * @param eventDataSaved Данные события, по которым надо искать
-     * @return Список Id
-     */
-    private List<String> getSimilarLocalEventIds(String eventDataSaved) {
-        List<String> result = new ArrayList<>();
-        try {
-
-            TreeMap<Integer, String> eventDataToFind = eventsData.getEventData(eventDataSaved);
-
-            SharedPreferences preferences = getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
-            Map<String, ?> prefs = preferences.getAll();
-
-            for (String eventId: prefs.keySet()) {
-                if (prefs.get(eventId) instanceof String && !eventId.equalsIgnoreCase(LocalEventActivity.eventData.get(ContactsEvents.Position_eventID))) {
-                    String eventString = (String) prefs.get(eventId);
-                    if (eventString != null) {
-                        try {
-                            String[] singleEventArray = eventString.split(Constants.STRING_EOT, -1);
-
-                            if (Objects.equals(eventDataToFind.get(ContactsEvents.Position_personFullName), singleEventArray[ContactsEvents.Position_personFullName])
-                            && Objects.equals(eventDataToFind.get(ContactsEvents.Position_title), singleEventArray[ContactsEvents.Position_title])
-                            && Objects.equals(eventDataToFind.get(ContactsEvents.Position_organization), singleEventArray[ContactsEvents.Position_organization])
-                            && Objects.equals(eventDataToFind.get(ContactsEvents.Position_photo), singleEventArray[ContactsEvents.Position_photo])) {
-                                result.add(singleEventArray[ContactsEvents.Position_eventID]);
-                            }
-
-                        } catch (Exception ignored) { /**/ }
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-        return result.isEmpty() ? null : result;
     }
 
     private void saveEvent() {

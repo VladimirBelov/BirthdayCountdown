@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.11.2025, 02:33
+  ~  * Created by Vladimir Belov on 06.12.2025, 00:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 06.11.2025, 21:53
+  ~  * Last modified 03.12.2025, 16:12
   ~  */
   -->
 
@@ -51,7 +51,8 @@
             android:layout_height="wrap_content"
             android:textIsSelectable="false"
             android:textSize="14sp"
-            android:lineSpacingExtra="4dp" />
+            android:lineSpacingExtra="4dp"
+            tools:ignore="VisualLintLocaleText" />
 
     </ScrollView>
 
@@ -62,15 +63,17 @@
         android:labelFor="@id/spinnerEventType"
         android:text="@string/local_event_dialog_type_title"
         android:textSize="12sp"
-        android:paddingStart="4dp"
-        android:textColor="?attr/dialogTextColor" />
+        android:paddingStart="16dp"
+        android:textColor="?attr/dialogTextColor"
+        android:visibility="gone" />
 
     <Spinner
         android:id="@+id/spinnerEventType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="4dp"
+        android:paddingHorizontal="16dp"
         android:textColor="?attr/dialogTextColor"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:visibility="gone" />
 
 </LinearLayout>

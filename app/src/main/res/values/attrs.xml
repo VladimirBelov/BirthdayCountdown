@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 06.10.2025, 03:14
+  ~  * Created by Vladimir Belov on 06.12.2025, 00:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.10.2025, 21:09
+  ~  * Last modified 05.12.2025, 22:43
   ~  */
   -->
 
@@ -11,6 +11,7 @@
     <declare-styleable name="Theme">
         <attr name="windowTitleColor" format="color"/>
         <attr name="windowTitleTextColor" format="color"/>
+        <attr name="windowEditHintColor" format="color"/>
         <attr name="windowStatusbarColor" format="color"/>
         <attr name="windowNavbarDividerColor" format="color"/>
         <attr name="backgroundColor" format="color"/>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.10.2025, 10:59
+  ~  * Created by Vladimir Belov on 06.12.2025, 00:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 22.10.2025, 10:05
+  ~  * Last modified 01.12.2025, 17:37
   ~  */
   -->
 
@@ -293,7 +293,17 @@
 Не бойтесь начать всё сначала. На этот раз вы не начинаете с нуля, вы начинаете с опыта
 Терпение — это не ожидание бездействием, а умение продолжать путь, даже когда плодов ещё не видно (Александр Мень)
 Если твоя работа — съесть лягушку, лучше сделать это сразу с утра. А если тебе нужно съесть двух лягушек, сначала съешь самую большую (Марк Твен)
-Сравнивая свою жизнь с тем, что видишь в соцсетях других людей, помни, что ты сравниваешь своё закулисье с чужой сценой"</item>
+Сравнивая свою жизнь с тем, что видишь в соцсетях других людей, помни, что ты сравниваешь своё закулисье с чужой сценой
+Живешь только раз, но если делать это правильно, одного раза достаточно (Мэй Уэст)
+Если что-нибудь может пойти не так, оно пойдёт не так (Закон Мерфи)
+Всё не так легко, как кажется... (Следствие закона Мерфи)
+Всякая работа требует больше времени, чем вы думаете (Следствие закона Мерфи)
+Из всех возможных неприятностей произойдёт именно та, ущерб от которой больше (Следствие закона Мерфи)
+Если четыре причины возможных неприятностей заранее устранены, то всегда найдётся пятая (Следствие закона Мерфи)
+Предоставленные сами себе события имеют тенденцию развиваться от плохого к худшему (Следствие закона Мерфи)
+Как только вы принимаетесь делать какую-то работу, находится другая, которую надо сделать ещё раньше (Следствие закона Мерфи)
+Всякое решение плодит новые проблемы (Следствие закона Мерфи)
+Когда мера становится целью, она перестает быть хорошей мерой (Закон Гудхарта)"</item>
 </string-array>
 
     <string-array name="facts2" translatable="false" tools:ignore="UnusedResources">
@@ -621,7 +631,19 @@ Be happy for this moment. This moment is your life (Omar Khayyam)
 If you don't value your time, neither will others. Stop giving away your time and talents- start charging for it (Kim Garst)
 Don’t be afraid to start over again. This time you’re not starting from scratch, you’re starting from experience
 If it's your job to eat a frog, it's best to do it first thing in the morning. And if it's your job to eat two frogs, it's best to eat the biggest one first (Mark Twain)
-Comparison is the thief of joy. You’re comparing your behind-the-scenes with everyone else’s highlight reel (Steve Maraboli)"</item>
+Comparison is the thief of joy. You’re comparing your behind-the-scenes with everyone else’s highlight reel (Steve Maraboli)
+Anything that can go wrong will go wrong (Murphy's law)
+Nothing is as easy as it looks (Extension of Murphy’s Law)
+Everything takes longer than you expect (Extension of Murphy’s Law)
+If anything can go wrong, it will — and at the worst possible time (Extension of Murphy’s Law)
+If you realize that something is going to go wrong, it’s already too late to fix it (Extension of Murphy’s Law)
+Any system that depends on human reliability is unreliable (Extension of Murphy’s Law)
+Left to themselves, things tend to go from bad to worse (Extension of Murphy’s Law)
+If you’re doing something right, you’re probably not trying hard enough (Extension of Murphy’s Law)
+The perversity of the universe tends toward a maximum (Extension of Murphy’s Law)
+No matter how many times you’ve done it before, if you’re doing it for the first time — you’ll mess it up (Extension of Murphy’s Law)
+The solution to a problem changes the nature of the problem (Extension of Murphy’s Law)
+When a measure becomes a target, it ceases to be a good measure (Goodhart's law)"</item>
     </string-array>
 
     <string-array name="facts4" translatable="false" tools:ignore="UnusedResources">

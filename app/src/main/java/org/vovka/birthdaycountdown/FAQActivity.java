@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.06.2025, 13:04
+ *  * Created by Vladimir Belov on 06.12.2025, 00:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.06.2025, 12:48
+ *  * Last modified 05.12.2025, 22:15
  *
  */
 
@@ -10,6 +10,7 @@ package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
 import android.app.LocaleManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -20,10 +21,17 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.ActionBar;
@@ -42,6 +50,10 @@ import java.util.Locale;
 public class FAQActivity extends AppCompatActivity {
 
     private static final String TAG = "FAQActivity";
+    private LinearLayout searchBox;
+    private EditText searchText;
+    private WebView webView;
+    private boolean webViewLoaded = false;
 
     @SuppressLint({"PrivateResource", "SetJavaScriptEnabled"})
     public void onCreate(Bundle savedInstanceState) {
@@ -125,15 +137,20 @@ public class FAQActivity extends AppCompatActivity {
             getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
 
             eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит язык по-умолчанию
-            WebView webView = findViewById(R.id.webView);
+            webView = findViewById(R.id.webView);
             if (webView != null) {
                 webView.setVerticalScrollBarEnabled(true);
                 webView.setBackgroundColor(Color.TRANSPARENT);
+                webView.getSettings().setJavaScriptEnabled(true);
+                webView.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onPageFinished(WebView view, String url) {
+                        super.onPageFinished(view, url);
+                        webViewLoaded = true;
+                    }
+                });
 
                 StringBuilder sb = new StringBuilder();
-                int color = ta.getColor(R.styleable.Theme_eventDateColor, 0); // почему-то #RRGGBB с webView не работает вообще - пустой экран
-                sb.append(getString(R.string.faq_header, Color.red(color) + "," + Color.green(color) + "," + Color.blue(color)));
-
                 String[] arrFAQ;
                 try {
                     arrFAQ = getResources().getStringArray(R.array.faq);
@@ -160,20 +177,52 @@ public class FAQActivity extends AppCompatActivity {
                     anchor = extras.getString(Constants.EXTRA_ANCHOR, Constants.STRING_EMPTY);
                     if (!anchor.isEmpty()) {
                         // https://stackoverflow.com/questions/14062901/webview-jump-to-anchor-using-loaddatawithbaseurl
-                        webView.getSettings().setJavaScriptEnabled(true);
                         sb.append(Constants.ANCHOR_LINK_START).append(anchor).append(Constants.ANCHOR_LINK_END);
                     }
                 }
-                sb.append("</body></html>");
 
+                int color = ta.getColor(R.styleable.Theme_eventDateColor, 0); // почему-то #RRGGBB с webView не работает вообще - пустой экран
+                final String textColor = Color.red(color) + "," + Color.green(color) + "," + Color.blue(color);
+                String html = buildFAQHtml(sb.toString()).replace("%1$s", textColor);
                 webView.loadDataWithBaseURL(
-                        Constants.DRAWABLE_BASE_URL,
-                        sb.toString(),
+                        "file:///android_asset/help/",
+                        html,
                         Constants.CHARSET_HTML_UTF_8,
                         Constants.CHARSET_UTF_8,
                         null
                 );
             }
+
+            searchBox = findViewById(R.id.searchBox);
+            searchText = findViewById(R.id.searchText);
+            ImageButton btnPrev = findViewById(R.id.btnPrev);
+            ImageButton btnNext = findViewById(R.id.btnNext);
+
+            searchText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String query = s.toString().trim();
+                    if (query.length() >= 2) {
+                        performSearch(query);
+                    } else {
+                        clearHighlights();
+                    }
+                }
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            });
+
+            btnPrev.setOnClickListener(v -> webView.evaluateJavascript("goToPrevMatch()", null));
+            btnNext.setOnClickListener(v -> webView.evaluateJavascript("goToNextMatch()", null));
+
+            ImageButton buttonSearch = findViewById(R.id.btnSearch);
+            buttonSearch.setOnClickListener(v -> {
+                if (searchBox.getVisibility() == View.GONE) {
+                    showSearch();
+                } else {
+                    hideSearch();
+                }
+            });
 
             Button buttonMail = findViewById(R.id.buttonMail);
             buttonMail.setText(R.string.button_question);
@@ -193,4 +242,134 @@ public class FAQActivity extends AppCompatActivity {
         }
     }
 
+    private void showSearch() {
+        searchBox.setVisibility(View.VISIBLE);
+        searchText.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showSoftInput(searchText, InputMethodManager.SHOW_IMPLICIT);
+        }
+    }
+
+    private void performSearch(String query) {
+        if (!webViewLoaded) {
+            webView.post(() -> performSearch(query));
+            return;
+        }
+        String safeQuery = query.replace("\"", "\\\"");
+        webView.evaluateJavascript("findAndScroll(\"" + safeQuery + "\")", null);
+    }
+
+    private void clearHighlights() {
+        if (!webViewLoaded) {
+            webView.post(this::clearHighlights);
+            return;
+        }
+        webView.evaluateJavascript("clearHighlights()", null);
+    }
+
+    private void hideSearch() {
+        searchBox.setVisibility(View.GONE);
+        searchText.setText("");
+        if (!webViewLoaded) {
+            webView.post(() -> webView.evaluateJavascript("clearHighlights()", null));
+            return;
+        }
+        webView.evaluateJavascript("clearHighlights()", null);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(searchText.getWindowToken(), 0);
+        }
+    }
+
+    private String buildFAQHtml(String content) {
+        return "<!DOCTYPE html>" +
+                "<html><head>" +
+                "<meta charset=\"utf-8\">" +
+                "<style>" +
+                "body {color: rgb(%1$s); font-size: 10pt; }" +
+                "h1 { font-weight: bold; font-size: 12pt; }" +
+                "h2 { font-weight: bold; font-size: 11pt; }" +
+                "h3 { font-weight: bold; font-size: 10pt; }" +
+                ".highlight { background-color: yellow; }" +
+                "</style>" +
+
+                "<script>" +
+                "var SearchState = {" +
+                "    matches: []," +
+                "    currentIndex: -1," +
+                "    query: \"\"" +
+                "};" +
+
+                "function escapeRegExp(string) {" +
+                "    return string.replace(/[.*+?^${}()|\\[\\]\\\\]/g, '\\\\$&');" +
+                "}" +
+
+                "function findAndScroll(text) {" +
+                "    console.log('findAndScroll: ' + text);" +
+                "    try {" +
+                "        clearHighlights();" +
+                "        if (!text) {" +
+                "            SearchState.matches = [];" +
+                "            SearchState.currentIndex = -1;" +
+                "            SearchState.query = '';" +
+                "            return;" +
+                "        }" +
+                "        var body = document.body;" +
+                "        var originalHtml = body.innerHTML;" +
+                "        var escapedText = escapeRegExp(text);" +
+                "        var regex = new RegExp('(' + escapedText + ')', 'gi');" +
+                "        var newHtml = originalHtml.replace(regex, '<span class=\"highlight\">$1</span>');" +
+                "        body.innerHTML = newHtml;" +
+                "        SearchState.matches = [];" +
+                "        var allHighlights = document.querySelectorAll('.highlight');" +
+                "        for (var i = 0; i < allHighlights.length; i++) {" +
+                "            SearchState.matches.push(allHighlights[i]);" +
+                "        }" +
+                "        SearchState.query = text;" +
+                "        if (SearchState.matches.length > 0) {" +
+                "            SearchState.currentIndex = 0;" +
+                "            SearchState.matches[0].scrollIntoView({behavior: 'smooth', block: 'center'});" +
+                "        }" +
+                "    } catch (e) {" +
+                "        console.error('JS ERROR in findAndScroll: ' + e.message);" +
+                "    }" +
+                "}" +
+
+                "function goToNextMatch() {" +
+                "    if (SearchState.matches.length === 0) return;" +
+                "    SearchState.currentIndex = (SearchState.currentIndex + 1) % SearchState.matches.length;" +
+                "    scrollToCurrentMatch();" +
+                "}" +
+
+                "function goToPrevMatch() {" +
+                "    if (SearchState.matches.length === 0) return;" +
+                "    SearchState.currentIndex = (SearchState.currentIndex - 1 + SearchState.matches.length) % SearchState.matches.length;" +
+                "    scrollToCurrentMatch();" +
+                "}" +
+
+                "function scrollToCurrentMatch() {" +
+                "    if (SearchState.currentIndex >= 0 && SearchState.currentIndex < SearchState.matches.length) {" +
+                "        var current = SearchState.matches[SearchState.currentIndex];" +
+                "        if (current) {" +
+                "            current.scrollIntoView({behavior: 'smooth', block: 'center'});" +
+                "        }" +
+                "    }" +
+                "}" +
+
+                "function clearHighlights() {" +
+                "    var body = document.body;" +
+                "    if (body) {" +
+                "        body.innerHTML = body.innerHTML.replace(/<span class=\"highlight\">(.*?)<\\/span>/gi, '$1');" +
+                "    }" +
+                "    SearchState.matches = [];" +
+                "    SearchState.currentIndex = -1;" +
+                "    SearchState.query = '';" +
+                "}" +
+                "console.log('JS loaded');" +
+                "</script>" +
+                "</head><body>" +
+                content +
+                "</body></html>";
+    }
 }

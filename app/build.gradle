@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.11.2025, 02:33
+ *  * Created by Vladimir Belov on 06.12.2025, 00:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 30.11.2025, 00:55
+ *  * Last modified 04.12.2025, 19:39
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -151,7 +151,7 @@ dependencies {
     //https://issuetracker.google.com/issues/140602653
     //noinspection GradleDependency
     implementation 'com.google.android.material:material:1.1.0-alpha10' //https://github.com/material-components/material-components-android/releases
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0' //https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0' //https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout
     //noinspection GradleDependency
     implementation 'androidx.recyclerview:recyclerview:1.0.0' //https://developer.android.com/jetpack/androidx/releases/recyclerview
     //noinspection GradleDependency
@@ -159,6 +159,7 @@ dependencies {
     //noinspection GradleDependency
     implementation 'androidx.core:core-splashscreen:1.0.1' //https://developer.android.com/jetpack/androidx/releases/core#core-splashscreen-1.0.1
     implementation 'androidx.fragment:fragment:1.8.9' //https://developer.android.com/jetpack/androidx/releases/fragment
+    //noinspection GradleDependency 1.12 - API23+
     implementation 'androidx.activity:activity:1.11.0' //https://developer.android.com/jetpack/androidx/releases/activity
 }
 

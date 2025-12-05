@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.10.2025, 22:56
+  ~  * Created by Vladimir Belov on 06.12.2025, 00:19
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 09.10.2025, 14:59
+  ~  * Last modified 05.12.2025, 22:48
   ~  */
   -->
 
@@ -44,6 +44,7 @@
         <item name="listDividerColor">@color/theme_green_status_transp</item>
         <item name="windowStatusbarColor">@color/theme_green_status</item>
         <item name="windowTitleColor">@color/white</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="borderCardColor">@color/theme_green_primary</item>
         <item name="gradientStartColor">@color/theme_green_secondary</item>
         <item name="gradientEndColor">@color/theme_green_status_transp</item>
@@ -120,6 +121,7 @@
         <item name="listDividerColor">@color/light_gray_transp</item>
         <item name="windowStatusbarColor">@color/medium_dark_gray</item>
         <item name="windowTitleColor">@color/lighter_gray</item>
+        <item name="windowEditHintColor">@color/light_gray</item>
         <item name="borderCardColor">@color/theme_grey_primary</item>
         <item name="gradientStartColor">@color/lighter_gray</item>
         <item name="gradientEndColor">@color/light_gray</item>
@@ -196,6 +198,7 @@
         <item name="windowNavbarDividerColor">@color/medium_dark_gray_trans_25</item>
         <item name="windowStatusbarColor">@color/theme_black_primary</item>
         <item name="windowTitleColor">@color/lighter_gray</item>
+        <item name="windowEditHintColor">@color/light_gray</item>
         <item name="editTextBackgroundCustom">@color/theme_black_primary</item>
     </style>
 
@@ -262,6 +265,7 @@
         <item name="listDividerColor">@color/medium_dark_gray_trans_25</item>
         <item name="windowStatusbarColor">@color/theme_blue_status</item>
         <item name="windowTitleColor">@color/white</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="borderCardColor">@color/theme_blue_primary</item>
         <item name="gradientStartColor">@color/light_blue_transp</item>
         <item name="gradientEndColor">@color/dark_blue_transp</item>
@@ -324,7 +328,7 @@
         <item name="colorPrimary">@color/theme_blue_gray_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
         <item name="dialogButtonColor">@color/theme_black_primary</item>
-        <item name="dialogHintColor">@color/light_gray_darker</item>
+        <item name="dialogHintColor">@color/light_gray</item>
         <item name="dialogTextColor">@color/theme_black_primary</item>
         <item name="dialogBackgroundColor">@color/theme_blue_gray_secondary</item>
         <item name="dialogPanelsBackgroundColor">@color/theme_blue_gray_panels</item>
@@ -338,6 +342,7 @@
         <item name="listDividerColor">@color/theme_blue_gray_status_transp</item>
         <item name="windowStatusbarColor">@color/theme_blue_gray_status</item>
         <item name="windowTitleColor">@color/white</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="editTextBackgroundCustom">@color/theme_blue_gray_secondary</item>
     </style>
 
@@ -408,6 +413,7 @@
         <item name="listDividerColor">@color/theme_orange_status_transp</item>
         <item name="windowStatusbarColor">@color/theme_orange_status</item>
         <item name="windowTitleColor">@color/white</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="borderCardColor">@color/theme_orange_primary_transp</item>
         <item name="gradientStartColor">@color/theme_orange_secondary</item>
         <item name="gradientEndColor">@color/theme_orange_status_transp</item>
@@ -484,6 +490,7 @@
         <item name="listDividerColor">@color/theme_teal_status_transp</item>
         <item name="windowStatusbarColor">@color/theme_teal_status</item>
         <item name="windowTitleColor">@color/white</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="borderCardColor">@color/theme_teal_primary</item>
         <item name="gradientStartColor">@color/theme_teal_secondary</item>
         <item name="gradientEndColor">@color/theme_teal_status_transp</item>
@@ -560,6 +567,7 @@
         <item name="listDividerColor">@color/theme_brown_status_transp</item>
         <item name="windowStatusbarColor">@color/theme_brown_status</item>
         <item name="windowTitleColor">@color/white</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="borderCardColor">@color/theme_brown_primary_transp</item>
         <item name="gradientStartColor">@color/theme_brown_secondary</item>
         <item name="gradientEndColor">@color/theme_brown_status_transp</item>
@@ -636,6 +644,7 @@
         <item name="listDividerColor">@color/theme_indigo_status_transp</item>
         <item name="windowStatusbarColor">@color/theme_indigo_status</item>
         <item name="windowTitleColor">@color/white</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="borderCardColor">@color/theme_indigo_primary_transp</item>
         <item name="gradientStartColor">@color/theme_indigo_secondary</item>
         <item name="gradientEndColor">@color/theme_indigo_status_transp</item>
