@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.11.2025, 02:33
+ *  * Created by Vladimir Belov on 09.12.2025, 03:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 06.11.2025, 23:01
+ *  * Last modified 08.12.2025, 23:48
  *
  */
 
@@ -200,6 +200,7 @@ public final class Constants {
     static final int RESULT_PICK_FILE_FOR_IMPORT_EVENTS = 210;
     static final int RESULT_EDIT_EVENT = 250;
     static final int RESULT_CROP_PHOTO = 260;
+    static final int RESULT_IMPORT_EVENTS = 270;
 
     static final String NOTIFY_ID = "id: ";
     static final int defaultNotificationID = 1000;
@@ -219,6 +220,7 @@ public final class Constants {
     static final String ACTION_NEXT_MONTH = "action.NEXT_MONTH";
     static final String ACTION_RESET_MONTH = "action.RESET_MONTH";
     static final String ACTION_SHARE = "action.SHARE";
+    static final String ACTION_IMPORT_EVENTS = "action.IMPORT";
 
     static final String EXTRA_NOTIFICATION_ID = "notificationID";
     static final String EXTRA_NOTIFICATION_DATA = "notificationData";
@@ -253,6 +255,7 @@ public final class Constants {
     static final String EXTRA_IS_BC = "isBC";
     static final String EXTRA_DAY1 = "day1";
     static final String EXTRA_DAY2 = "day2";
+    static final String EXTRA_URL = "url";
 
     static final int HTML_COLOR_DEFAULT = 0;
     static final int HTML_COLOR_RED = 1;

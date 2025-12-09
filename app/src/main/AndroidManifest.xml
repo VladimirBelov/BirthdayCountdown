@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.11.2025, 02:33
+  ~  * Created by Vladimir Belov on 09.12.2025, 03:04
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 13.11.2025, 21:08
+  ~  * Last modified 09.12.2025, 00:17
   ~  */
   -->
 
@@ -231,7 +231,7 @@
             android:excludeFromRecents="true"/>
 
         <activity android:name=".LocalEventActivity"
-            android:theme="@style/Theme.LocalEventDialog"
+            android:theme="@style/Theme.Dialog"
             android:exported="false"
             android:excludeFromRecents="true"/>
 
@@ -243,6 +243,12 @@
 
         <activity
             android:name=".imagecropper.CropImageActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"/>
+
+        <activity
+            android:name=".EventImporterActivity"
+            android:theme="@style/Theme.Dialog"
             android:exported="false"
             android:excludeFromRecents="true"/>
 

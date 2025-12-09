@@ -1,25 +1,21 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 09.12.2025, 03:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:07
+ *  * Last modified 09.12.2025, 02:48
  *
  */
 
 package org.vovka.birthdaycountdown;
 
 import android.app.Activity;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
-import java.util.Locale;
-
 /**
- * QuizActivity отвечает за показ викторины (квиза).
+ * QuizActivity отвечает за запуск викторины из иконки приложения
  */
+//todo: переделать под диалоговую активность
 public class QuizActivity extends Activity {
 
     private static final String TAG = "QuizActivity";
@@ -32,30 +28,12 @@ public class QuizActivity extends Activity {
             super.onCreate(savedInstanceState);
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
-            eventsData.getPreferences();
+            eventsData.initLanguage(this);
 
-            //Без этого на Android 8 и 9 не меняет динамически язык
-            Locale locale;
-            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
-                locale = new Locale(eventsData.systemLocale);
-            } else {
-                locale = new Locale(eventsData.preferences_language);
+            if (eventsData.needUpdateEventList || eventsData.isEmptyEventList()) {
+                eventsData.getEvents();
             }
-            Resources applicationRes = getBaseContext().getResources();
-            Configuration applicationConf = applicationRes.getConfiguration();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                applicationConf.setLocales(new android.os.LocaleList(locale));
-            } else {
-                applicationConf.setLocale(locale);
-            }
-            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-
-            eventsData.setLocale(true);
-
-            if (eventsData.getEvents(null)) {
-                eventsData.quizCheckAndGo(null, null);
-            }
+            eventsData.quizCheckAndGo(null, null, null);
 
             finish();
 

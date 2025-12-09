@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 06.12.2025, 00:19
+  ~  * Created by Vladimir Belov on 09.12.2025, 03:04
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.12.2025, 22:48
+  ~  * Last modified 09.12.2025, 00:17
   ~  */
   -->
 
@@ -786,7 +786,7 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
-    <style name="Theme.LocalEventDialog" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="Theme.Dialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>

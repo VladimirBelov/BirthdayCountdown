@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.12.2025, 00:19
+ *  * Created by Vladimir Belov on 09.12.2025, 03:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 30.11.2025, 02:47
+ *  * Last modified 09.12.2025, 02:52
  *
  */
 
@@ -10,7 +10,6 @@ package org.vovka.birthdaycountdown;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.LocaleManager;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.ClipDescription;
@@ -34,7 +33,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.LocaleList;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
@@ -150,32 +148,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //https://stackoverflow.com/questions/29069070/completely-transparent-status-bar-and-navigation-bar-on-lollipop
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
-            eventsData.getPreferences();
+            eventsData.initLanguage(this);
 
-            //Без этого на Android 8 и 9 не меняет динамически язык
-            Locale locale;
-            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
-                locale = new Locale(eventsData.systemLocale);
-            } else {
-                locale = new Locale(eventsData.preferences_language);
-            }
-            Resources applicationRes = getBaseContext().getResources();
-            Configuration applicationConf = applicationRes.getConfiguration();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    LocaleList list = getSystemService(LocaleManager.class).getApplicationLocales();
-                    if (!list.isEmpty()) {
-                        locale = getSystemService(LocaleManager.class).getApplicationLocales().get(0);
-                    }
-                }
-                applicationConf.setLocales(new LocaleList(locale));
-            } else {
-                applicationConf.setLocale(locale);
-            }
-            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-
-            eventsData.setLocale(true);
             resources = getResources();
             displayMetrics = resources.getDisplayMetrics();
 
@@ -1755,10 +1729,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.MainMenu_Quiz) {
 
-                Intent intent = new Intent(this, QuizActivity.class);
+                eventsData.quizCheckAndGo(null, null, MainActivity.this);
+                /*Intent intent = new Intent(this, QuizActivity.class);
                 try {
                     startActivity(intent);
-                } catch (ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException e) { *//**//* }*/
                 return true;
 
             } else if (itemId == Constants.MainMenu_Filter) {
@@ -2548,7 +2523,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 executor.execute(() -> {
                     //Background work
                     if (eventsData.needUpdateEventList || eventsData.isEmptyEventList()) {
-                        eventsData.getEvents(this);
+                        eventsData.getEvents();
                     }
 
                     final Handler handler = new Handler(Looper.getMainLooper());
@@ -2572,7 +2547,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else {
                 if (eventsData.needUpdateEventList || eventsData.isEmptyEventList()) {
-                    eventsData.getEvents(this);
+                    eventsData.getEvents();
                 }
                 filterEventsList();
                 drawList();

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.11.2025, 02:33
+  ~  * Created by Vladimir Belov on 09.12.2025, 03:04
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.11.2025, 21:48
+  ~  * Last modified 09.12.2025, 01:22
   ~  */
   -->
 
@@ -1247,10 +1247,11 @@
 
         <ListPreference
             android:key="@string/pref_Quiz_Interface_key"
-            android:entries="@array/pref_Quiz_Interface_entries"
-            android:entryValues="@array/pref_Quiz_Interface_values"
             android:title="@string/pref_Quiz_Interface_title"
             android:summary="@string/pref_Quiz_Interface_summary"
+            android:defaultValue="@string/pref_Quiz_Interface_Dialog"
+            android:entries="@array/pref_Quiz_Interface_entries"
+            android:entryValues="@array/pref_Quiz_Interface_values"
             android:icon="@android:drawable/ic_menu_manage"
             android:dialogIcon="@android:drawable/ic_menu_manage"
             android:negativeButtonText="@string/button_cancel"/>

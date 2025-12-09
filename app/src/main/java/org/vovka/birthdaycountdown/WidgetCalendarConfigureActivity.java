@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.10.2025, 00:19
+ *  * Created by Vladimir Belov on 09.12.2025, 03:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.10.2025, 23:22
+ *  * Last modified 09.12.2025, 01:09
  *
  */
 
@@ -10,19 +10,15 @@ package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.LocaleManager;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -57,7 +53,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Этот класс предоставляет активность конфигурации для виджета "Календарь".
@@ -93,40 +88,14 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
         TypedArray ta = null;
 
         try {
 
-            super.onCreate(savedInstanceState);
-
             thisActivity = this;
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
-            eventsData.getPreferences();
-
-            //Без этого на Android 8 и 9 не меняет динамически язык
-            Locale locale;
-            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
-                locale = new Locale(eventsData.systemLocale);
-            } else {
-                locale = new Locale(eventsData.preferences_language);
-            }
-            Resources applicationRes = getBaseContext().getResources();
-            Configuration applicationConf = applicationRes.getConfiguration();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    LocaleList list = getSystemService(LocaleManager.class).getApplicationLocales();
-                    if (!list.isEmpty()) {
-                        locale = getSystemService(LocaleManager.class).getApplicationLocales().get(0);
-                    }
-                }
-                applicationConf.setLocales(new android.os.LocaleList(locale));
-            } else {
-                applicationConf.setLocale(locale);
-            }
-            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-
-            eventsData.setLocale(true);
+            eventsData.initLanguage(this);
 
             this.setTheme(eventsData.preferences_theme.themeMain);
             setContentView(R.layout.widget_calendar_config);

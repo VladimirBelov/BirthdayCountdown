@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.10.2025, 03:34
+ *  * Created by Vladimir Belov on 09.12.2025, 03:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.10.2025, 02:29
+ *  * Last modified 09.12.2025, 02:01
  *
  */
 
@@ -219,7 +219,7 @@ public class WidgetCalendarPopup extends Activity {
                         }
 
                         if (eventsData.isEmptyEventList()) {
-                            eventsData.getEvents(this);
+                            eventsData.getEvents();
                         }
                     });
                 }

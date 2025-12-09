@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.11.2025, 02:33
+ *  * Created by Vladimir Belov on 09.12.2025, 03:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 13.11.2025, 18:04
+ *  * Last modified 09.12.2025, 02:01
  *
  */
 
@@ -35,7 +35,7 @@ public class WidgetUpdateReceiver extends BroadcastReceiver {
             if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
             eventsData.getPreferences();
             eventsData.setLocale(true);
-            eventsData.getEvents(context);
+            eventsData.getEvents();
 
             //Посылаем сообщения на обновление виджетов
             eventsData.updateWidgets(0, log);

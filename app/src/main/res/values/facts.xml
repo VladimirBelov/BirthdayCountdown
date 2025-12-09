@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 06.12.2025, 00:19
+  ~  * Created by Vladimir Belov on 09.12.2025, 03:04
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.12.2025, 17:37
+  ~  * Last modified 07.12.2025, 12:02
   ~  */
   -->
 
-    <resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--Не более 150 строк на один item-->
 
     <string-array name="facts1" translatable="false" tools:ignore="UnusedResources">
-<item>🇷🇺 Мысль дня</item>
-<item>"Делать деньги — самая большая ошибка в жизни. Делать нужно то, к чему чувствуешь склонность и талант и, если преуспеешь в этом — деньги будут (Грир Гарсон)
+        <item>🇷🇺 Мысль дня</item>
+        <item>"Делать деньги — самая большая ошибка в жизни. Делать нужно то, к чему чувствуешь склонность и талант и, если преуспеешь в этом — деньги будут (Грир Гарсон)
 Кто сеет добро - пожинает добро, кто сеет зло - пожинает зло (Индийская пословица)
 Вы никогда не выиграете по-крупному, если будете только минимизировать потери (Харви Спектор из сериала «Форс-мажоры»)
 Взрослеть — значит расставаться с фантазиями, заблуждениями, ложными верованиями (Ричард Бах)
@@ -163,7 +163,7 @@
 Отказываясь от планирования своих дел, ты тем самым планируешь себе хаос и суету в жизни (Бернард Шоу)
 Качество сегодняшней своей жизни можно рассматривать как оценку своей управленческой квалификации (Питер Друкер)
 Главное чему нужно научиться - учиться (Юрий Гагарин)"</item>
-<item>"Мир прекрасен, но не совершен (Джеральд Даррелл)
+        <item>"Мир прекрасен, но не совершен (Джеральд Даррелл)
 Налоги и правда очень высоки... Но у нас есть много других «налогов», гораздо более тяжелых для некоторых из нас. Мы платим в два раза больший налог за свою праздность, втрое больше – за нашу гордость и вчетверо больше – за нашу глупость (Бенджамин Франклин)
 Плохо организованному человеку всегда кажется, что дел у него больше, чем это есть на самом деле (Дэвид Аллен)
 Если вы думаете, что все дорожает, попробуйте что-нибудь продать (Роберт Лембке)
@@ -303,12 +303,29 @@
 Предоставленные сами себе события имеют тенденцию развиваться от плохого к худшему (Следствие закона Мерфи)
 Как только вы принимаетесь делать какую-то работу, находится другая, которую надо сделать ещё раньше (Следствие закона Мерфи)
 Всякое решение плодит новые проблемы (Следствие закона Мерфи)
-Когда мера становится целью, она перестает быть хорошей мерой (Закон Гудхарта)"</item>
-</string-array>
+Когда мера становится целью, она перестает быть хорошей мерой (Закон Гудхарта)
+Войско баранов, возглавляемое львом всегда одержит победу над войском львов, возглавляемых бараном (Александр Македонский)
+Если человек поверил в плохую сплетню о вас, значит, он искал возможность думать о вас плохо (Александр Дюма)
+Иногда жизнь проверяет тебя тишиной, чтобы ты услышал то, что пропускал в шуме. Ответы часто приходят, когда перестаёшь их торопить
+Если вы не можете найти время на отдых, то скоро придётся найти время на лечение
+Не бойся потерять то, что не приносит роста. Освобождая место для нового, ты открываешь возможности, о которых даже не мечтал
+Не увеличивай расходы вместе с доходами. Рост дохода должен усиливать твою стабильность, а не твой образ жизни
+Если вы избегаете конфликта, чтобы сохранить мир, то вы начинаете войну внутри себя (Сьюзан Джефферс)
+Путешествие в тысячу ли начинается с одного шага (Конфуций)
+Совершенство достигается не тогда, когда нечего добавить, а когда нечего убрать (Антуан де Сент-Экзюпери)"</item>
+        <item>"
+Мы есть то, что мы постоянно делаем. Совершенство, следовательно, — это не действие, а привычка (Аристотель)
+Отсутствие устойчивого желания учиться и развиваться всю жизнь у одного из партнёров - огромный фактор риска для семейной жизни
+Страх не исчезнет, пока вы продолжаете расти. Единственный способ избавиться от страха — сделать то, чего боишься (Сьюзан Джефферс)
+Спокойствие — не отсутствие движения, а уверенность в своём направлении. Когда внутри тишина, решения становятся яснее
+Человек выгорает не когда тяжело, а когда бессмысленно
+Там, где заканчиваются сомнения, начинается действие. Иногда первый шаг важнее идеального плана
+Рентабельнее простить один раз, чем ненавидеть всю жизнь"</item>
+    </string-array>
 
     <string-array name="facts2" translatable="false" tools:ignore="UnusedResources">
-    <item>🇷🇺 Пословицы</item>
-    <item>"Аппетит приходит во время еды, а жадность — во время аппетита
+        <item>🇷🇺 Пословицы</item>
+        <item>"Аппетит приходит во время еды, а жадность — во время аппетита
 Баба с возу – кобыле легче
 Беда не по лесу ходит, а по людям
 Бедность — не порок, а несчастье
@@ -495,11 +512,11 @@
 Шито-крыто, а узелок-то тут
 Яблоко от яблоньки недалеко падает
 Язык мой — враг мой, прежде ума глаголет"</item>
-</string-array>
+    </string-array>
 
     <string-array name="facts3" translatable="false" tools:ignore="UnusedResources">
-    <item>🇺🇸 Famous Quotes</item>
-    <item>"//https://blog.hubspot.com/sales/famous-quotes
+        <item>🇺🇸 Famous Quotes</item>
+        <item>"//https://blog.hubspot.com/sales/famous-quotes
 A goal is a dream with a deadline (Napoleon Hill)
 A man may die, nations may rise and fall, but an idea lives on (John F. Kennedy)
 All great achievements require time (Maya Angelou)
@@ -643,12 +660,15 @@ If you’re doing something right, you’re probably not trying hard enough (Ext
 The perversity of the universe tends toward a maximum (Extension of Murphy’s Law)
 No matter how many times you’ve done it before, if you’re doing it for the first time — you’ll mess it up (Extension of Murphy’s Law)
 The solution to a problem changes the nature of the problem (Extension of Murphy’s Law)
-When a measure becomes a target, it ceases to be a good measure (Goodhart's law)"</item>
+When a measure becomes a target, it ceases to be a good measure (Goodhart's law)
+Most millionaires are frugal. They live well below their means (Thomas J. Stanley, William D. Danko)
+Wealth is what you accumulate, not what you spend (Thomas J. Stanley, William D. Danko)
+The fear will never go away as long as you continue to grow. The only way to get rid of the fear of doing something is to go out and do it (Susan Jeffers)"</item>
     </string-array>
 
     <string-array name="facts4" translatable="false" tools:ignore="UnusedResources">
-    <item>🇩🇪 Inspirierende Zitate</item>
-    <item>"//https://www.myposter.de/magazin/sprueche/zitate/ https://www.studihub.de/40-beruehmte-zitate-bekannter-persoenlichkeiten/
+        <item>🇩🇪 Inspirierende Zitate</item>
+        <item>"//https://www.myposter.de/magazin/sprueche/zitate/ https://www.studihub.de/40-beruehmte-zitate-bekannter-persoenlichkeiten/
 Alle Lebewesen außer den Menschen wissen, dass der Hauptzweck des Lebens darin besteht, es zu genießen (Samuel Butler)
 Alle Träume können wahr werden, wenn wir den Mut haben, ihnen zu folgen (Walt Disney)
 Alle wollen die Welt verändern, aber keiner sich selbst (Lew Nikolajewitsch Tolstoi)
@@ -757,8 +777,8 @@ Zwei Dinge sind unendlich, das Universum und die menschliche Dummheit, aber bei 
     </string-array>
 
     <string-array name="facts5" translatable="false" tools:ignore="UnusedResources">
-    <item>🇪🇸 Citas famosas</item>
-    <item>"//https://www.clara.es/estilo-de-vida/frases-de-la-vida/frases-celebres_26335
+        <item>🇪🇸 Citas famosas</item>
+        <item>"//https://www.clara.es/estilo-de-vida/frases-de-la-vida/frases-celebres_26335
 A menudo damos a los niños respuestas que recordar en lugar de problemas a resolver (Roger Lewin)
 A veces podemos pasarnos años sin vivir en absoluto, y de pronto toda nuestra vida se concentra en un solo instante (Oscar Wilde)
 Al final, lo que importa no son los años de vida, sino la vida de los años (Abraham Lincoln)

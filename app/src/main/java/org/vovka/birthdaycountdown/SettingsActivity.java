@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.12.2025, 00:19
+ *  * Created by Vladimir Belov on 09.12.2025, 03:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.12.2025, 23:48
+ *  * Last modified 09.12.2025, 02:01
  *
  */
 
@@ -15,7 +15,6 @@ import android.accounts.AuthenticatorDescription;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.LocaleManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -48,7 +47,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.LocaleList;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceGroup;
@@ -108,8 +106,6 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -120,8 +116,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.EnumSet;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -158,32 +152,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             super.onCreate(savedInstanceState);
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
-            eventsData.getPreferences();
-
-            //Без этого на Android 8 и 9 не меняет динамически язык
-            Locale locale;
-            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
-                locale = new Locale(eventsData.systemLocale);
-            } else {
-                locale = new Locale(eventsData.preferences_language);
-            }
-            Resources applicationRes = getBaseContext().getResources();
-            Configuration applicationConf = applicationRes.getConfiguration();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    LocaleList list = getSystemService(LocaleManager.class).getApplicationLocales();
-                    if (!list.isEmpty()) {
-                        locale = getSystemService(LocaleManager.class).getApplicationLocales().get(0);
-                    }
-                }
-                applicationConf.setLocales(new android.os.LocaleList(locale));
-            } else {
-                applicationConf.setLocale(locale);
-            }
-            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-
-            eventsData.setLocale(true);
+            eventsData.initLanguage(this);
 
             this.setTheme(eventsData.preferences_theme.themeMain);
             this.getTheme().applyStyle(R.style.OptOutEdgeToEdgeEnforcement, false);
@@ -292,7 +261,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             eventsData.getPreferences();
 
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
-                eventsData.getEvents(this);
+                eventsData.getEvents();
             }
 
             updateTitles();
@@ -1551,7 +1520,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Tools_Events_Import_key).equals(key)) {
 
-                importEvents(ImportStage.selectFile, null);
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setType("text/*");
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"text/plain", "text/calendar"});
+
+                try {
+                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_IMPORT_EVENTS);
+                } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
             } else if (getString(R.string.pref_Holidays_key).equals(key)) {
@@ -2112,40 +2089,39 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         ContactsEvents eventsData = ContactsEvents.getInstance();
         eventsData.getPreferences(); //перечитываем настройки, если их меняли для показа уведомлений
 
-        if (NotificationManagerCompat.from(this).areNotificationsEnabled()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-                NotificationManager notificationManager = getSystemService(NotificationManager.class);
-
-                if (notificationManager != null) {
-
-                    //если был предыдущий тест
-                    if (!testChannelId.equals(Constants.STRING_EMPTY) && notificationManager.getNotificationChannel(testChannelId) != null) {
-                        notificationManager.deleteNotificationChannel(testChannelId);
-                    }
-
-                    Random r = new Random();
-                    testChannelId = Integer.toString(r.nextInt(1000));
-
-                    NotificationChannel channel = new NotificationChannel(testChannelId, getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
-                    channel.setDescription(getString(R.string.pref_Notifications_Notification_Channel_Description));
-                    if (queueNumber == 1) {
-                        channel.setSound(Uri.parse(eventsData.preferences_notifications_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
-                    } else if (queueNumber == 2) {
-                        channel.setSound(Uri.parse(eventsData.preferences_notifications2_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
-                    }
-
-                    channel.enableVibration(true);
-
-                    notificationManager.createNotificationChannel(channel);
-
-                }
-            }
-            eventsData.showNotifications(queueNumber, true, testChannelId);
-
-        } else {
+        if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
             ToastExpander.showInfoMsg(this, getString(R.string.msg_notifications_disabled));
+            return;
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+
+            if (notificationManager != null) {
+
+                //если был предыдущий тест
+                if (!testChannelId.equals(Constants.STRING_EMPTY) && notificationManager.getNotificationChannel(testChannelId) != null) {
+                    notificationManager.deleteNotificationChannel(testChannelId);
+                }
+
+                Random r = new Random();
+                testChannelId = Integer.toString(r.nextInt(1000));
+
+                NotificationChannel channel = new NotificationChannel(testChannelId, getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
+                channel.setDescription(getString(R.string.pref_Notifications_Notification_Channel_Description));
+                if (queueNumber == 1) {
+                    channel.setSound(Uri.parse(eventsData.preferences_notifications_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
+                } else if (queueNumber == 2) {
+                    channel.setSound(Uri.parse(eventsData.preferences_notifications2_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
+                }
+                channel.enableVibration(true);
+
+                notificationManager.createNotificationChannel(channel);
+
+            }
+        }
+        eventsData.showNotifications(queueNumber, true, testChannelId);
     }
 
     private void selectAccounts() {
@@ -4068,210 +4044,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
-    /** Импорт событий из файла
-     * @param stage Стадия { {@code @ImportStage} }
-     * @param uri Выбранный файл на предыдущей стадии
-     */
-    private void importEvents(ImportStage stage, Uri uri) {
-
-        try {
-
-            if (stage == ImportStage.selectFile) {
-
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.setType("text/*");
-                intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"text/plain", "text/x-vCalendar"});
-
-                try {
-                    startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_IMPORT_EVENTS);
-                } catch (ActivityNotFoundException e) { /**/ }
-
-            } else if (stage == ImportStage.analyseFile) {
-
-                final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                        .setPositiveButton(R.string.button_ok, null)
-                        .setNegativeButton(R.string.button_cancel, null);
-
-                AlertDialog dialog = builder.create();
-                View view = View.inflate(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog), R.layout.dialog_import, null);
-                dialog.setCustomTitle(view);
-
-                //Иконка и заголовок
-                ImageView icon = view.findViewById(R.id.icon);
-                if (icon != null) icon.setImageBitmap(ContactsEvents.getBitmap(this, android.R.drawable.ic_menu_upload));
-                TextView title = view.findViewById(R.id.title);
-                if (title != null) title.setText(R.string.pref_Tools_Events_Import_Dialog_title);
-
-                //Результаты анализа
-
-                TextView summary = view.findViewById(R.id.summary);
-                List<String> dataForImport = getEventsToImport(uri);
-                summary.setText(dataForImport.get(0));
-
-                dialog.show();
-
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-    }
-
-    /** Возвращает список событий, которые могут быть импортированы из файла
-     * @param uri Путь до файла
-     * @return Список событий для импорта. Первым элементом списка идёт результат анализа файла
-     */
-    @NotNull
-    private List<String> getEventsToImport(Uri uri) {
-        List<String> eventsList = new ArrayList<>();
-        List<String> details = new ArrayList<>();
-        int statEventsSkipped = 0;
-        int statEventsDoubles = 0;
-        int statEventsUnRecognized = 0;
-
-        try {
-
-            details.add("Файл: " + eventsData.getPath(this, uri));
-
-            String fileContent = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL);
-
-            if (fileContent.isEmpty()) {
-                details.add("🚫 Файл пустой или нет доступа");
-                return eventsList;
-            }
-
-            if (fileContent.startsWith(Constants.iCal_CalendarBegin)) {
-                details.add("🛑 Пока не поддерживается");
-
-            } else {
-
-                //BirthdayPro, DarkBirthday: <Дата без пробелов>[,<пробел>флаги[тип события]] название праздника или ФИО [(должность)] [http:// или https:// ссылка]
-                Calendar today = ContactsEvents.getWithoutTime(new GregorianCalendar());
-                String[] eventsArray =  fileContent.split(Constants.STRING_EOL, -1);
-                for (String eventString : eventsArray) {
-
-                    String eventLine = eventString.trim().replace("\uFEFF", Constants.STRING_EMPTY);
-                    if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH)) continue;
-                    int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
-                    if (indexFirstSpace == -1) continue;
-
-                    String eventDateString;
-                    String eventLabel_forSearch = Constants.STRING_EMPTY;
-                    String eventTitle;
-                    boolean isEndless = true;
-                    boolean isAD = true;
-
-                    final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
-                    if (indexComma > -1 && indexComma < indexFirstSpace) { //Есть флаги
-
-                        if (indexFirstSpace - indexComma == 1) { //После запятой пробел - убираем
-                            eventLine = eventLine.substring(0, indexComma + 1) + eventLine.substring(indexFirstSpace + 1);
-                            indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
-                            if (indexFirstSpace == -1) {
-                                statEventsSkipped++;
-                                continue;
-                            }
-                        }
-
-                        eventDateString = eventLine.substring(0, indexComma);
-                        String flags = eventLine.substring(indexComma + 1, indexFirstSpace);
-                        eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
-
-                        if (!flags.isEmpty()) {
-                            if (flags.contains(Constants.STRING_1)) {
-                                isEndless = false;
-                                flags = flags.replace(Constants.STRING_1, Constants.STRING_EMPTY);
-                            }
-                            if (flags.contains(Constants.STRING_BC)) {
-                                isAD = false;
-                                flags = flags.replace(Constants.STRING_BC, Constants.STRING_EMPTY);
-                            }
-                            eventLabel_forSearch = flags.replace(Constants.STRING_UNDERSCORE, Constants.STRING_SPACE);
-                        }
-
-                    } else {
-
-                        eventDateString = eventLine.substring(0, indexFirstSpace);
-                        eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
-
-                    }
-
-                    if (eventDateString.isEmpty() || eventTitle.isEmpty()) {
-                        statEventsSkipped++;
-                        continue;
-                    }
-
-                    boolean useEventYear = true;
-                    int indexDateNoYear = eventDateString.indexOf(Constants.STRING_0000);
-                    if (indexDateNoYear != -1) useEventYear = false;
-
-                    ContactsEvents.ComputedDateForFileEvent result = eventsData.getComputedDateForFileEvent(today, indexDateNoYear, isAD, false, eventDateString, null, isEndless);
-                    if (result.dateEvent == null) {
-                        statEventsSkipped++;
-                        continue;
-                    }
-
-                    ContactsEvents.Event event = eventsData.recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, false, useEventYear);
-                        if (event.type.equals(ContactsEvents.getEventType(Constants.Type_Unrecognized))) {
-                            statEventsUnRecognized++;
-                        }
-
-                    //Собираем событие
-                    TreeMap<Integer, String> eventData = new TreeMap<>();
-                    if (!event.needScanContacts) {
-                        eventData.put(ContactsEvents.Position_personFullName, eventTitle);
-                        eventData.put(ContactsEvents.Position_personFullNameAlt, Constants.STRING_EMPTY);
-                    } else if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
-                        eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
-                        String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, this);
-                        eventData.put(ContactsEvents.Position_personFullName, personFullNameAlt);
-                    } else {
-                        eventData.put(ContactsEvents.Position_personFullName, eventTitle);
-                        String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst, this);
-                        eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
-                    }
-
-                    eventsData.fillEmptyEventData(eventData);
-                    String eventDataAsString = eventsData.getEventData(eventData);
-
-                    //Проверка на существующие локальные события
-                    List<String> similarEventIds = eventsData.getSimilarLocalEventIds(eventDataAsString,
-                            EnumSet.of(
-                                    ContactsEvents.getSimilarFields.PERSON_FULL_NAME,
-                                    ContactsEvents.getSimilarFields.ORGANIZATION
-                            ));
-
-                    if (similarEventIds != null) {
-                        statEventsDoubles++;
-                    } else {
-                        eventsList.add(eventDataAsString);
-                    }
-                }
-
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            details.add("Ошибка: " + e.getMessage());
-        } finally {
-            if (statEventsSkipped > 0) {
-                details.add("Событий пропущено: " + statEventsSkipped);
-            }
-            if (statEventsUnRecognized > 0) {
-                details.add("Событий не распознано: " + statEventsUnRecognized);
-            }
-            if (statEventsDoubles > 0) {
-                details.add("Дублей пропущено: " + statEventsDoubles);
-            }
-            eventsList.add(0, String.join(Constants.STRING_EOL, details));
-        }
-        return eventsList;
-    }
-
     private void selectEventSources(String eventConsumer) {
         try {
 
@@ -4584,7 +4356,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_IMPORT_EVENTS) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
-                        importEvents(ImportStage.analyseFile, uri);
+                        //importEvents(ImportStage.analyseFile, uri);
+
+                        Intent intent = new Intent(this, EventImporterActivity.class);
+                        intent.setAction(Constants.ACTION_IMPORT_EVENTS);
+                        intent.putExtra(Constants.EXTRA_URL, uri.toString());
+                        try {
+                            startActivityForResult(intent, Constants.RESULT_IMPORT_EVENTS);
+                        } catch (ActivityNotFoundException e) { /**/ }
                     }
                 }
 

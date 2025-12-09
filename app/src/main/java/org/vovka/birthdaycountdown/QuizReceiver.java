@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.11.2025, 02:33
+ *  * Created by Vladimir Belov on 09.12.2025, 03:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 13.11.2025, 18:04
+ *  * Last modified 09.12.2025, 03:03
  *
  */
 
@@ -15,7 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 /**
- * QuizReceiver - это BroadcastReceiver, который прослушивает широковещательные сообщения, связанные с викторинами.
+ * QuizReceiver - это BroadcastReceiver, который прослушивает широковещательные сообщения с ответами викторинами (если викторина включена в режиме уведомлений).
  * Он получает вопросы и ответы викторины, а затем обрабатывает их, используя класс ContactsEvents.
  */
 public class QuizReceiver extends BroadcastReceiver {
@@ -38,7 +38,7 @@ public class QuizReceiver extends BroadcastReceiver {
                 quizAnswer = extras.getString(Constants.EXTRA_QUIZ_RESULT, Constants.STRING_EMPTY);
             }
 
-            eventsData.quizCheckAndGo(quizQuestion, quizAnswer);
+            eventsData.quizCheckAndGo(quizQuestion, quizAnswer, null);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

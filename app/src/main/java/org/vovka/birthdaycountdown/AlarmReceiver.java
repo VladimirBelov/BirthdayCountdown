@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.11.2025, 02:33
+ *  * Created by Vladimir Belov on 09.12.2025, 03:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 13.11.2025, 18:04
+ *  * Last modified 09.12.2025, 02:01
  *
  */
 
@@ -44,7 +44,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             boolean isNeedNotify2 = !eventsData.preferences_notifications2_days.isEmpty();
 
             if (isNeedNotify || isNeedNotify2) {
-                if (eventsData.getEvents(context)) {
+                if (eventsData.getEvents()) {
 
                     long today = System.currentTimeMillis();
 

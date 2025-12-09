@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 09.12.2025, 03:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:14
+ *  * Last modified 09.12.2025, 02:01
  *
  */
 
@@ -83,7 +83,7 @@ public class SuggestionProvider extends ContentProvider{
                 if (eventsData.isEmptyEventList()) {
                     eventsData.getPreferences();
                     eventsData.setLocale(true);
-                    eventsData.getEvents(null);
+                    eventsData.getEvents();
                 }
 
                 if (!eventsData.isEmptyEventList()) {

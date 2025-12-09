@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.12.2025, 00:19
+ *  * Created by Vladimir Belov on 09.12.2025, 03:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.12.2025, 23:46
+ *  * Last modified 09.12.2025, 02:48
  *
  */
 
@@ -15,6 +15,7 @@ import android.accounts.AuthenticatorDescription;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.LocaleManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -50,6 +51,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
@@ -954,6 +956,38 @@ public class ContactsEvents {
         }
     }
 
+    /** Устанавливает язык текущей активности
+     * @param activity Активность
+     */
+    void initLanguage(@NonNull Activity activity) {
+        if (getContext() == null) setContext(activity.getApplicationContext());
+        getPreferences();
+
+        //Без этого на Android 8 и 9 не меняет динамически язык
+        Locale locale;
+        if (preferences_language.equals(getContext().getString(R.string.pref_Language_default))) {
+            locale = new Locale(systemLocale);
+        } else {
+            locale = new Locale(preferences_language);
+        }
+        Resources applicationRes = activity.getBaseContext().getResources();
+        Configuration applicationConf = applicationRes.getConfiguration();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                LocaleList list = activity.getSystemService(LocaleManager.class).getApplicationLocales();
+                if (!list.isEmpty()) {
+                    locale = activity.getSystemService(LocaleManager.class).getApplicationLocales().get(0);
+                }
+            }
+            applicationConf.setLocales(new LocaleList(locale));
+        } else {
+            applicationConf.setLocale(locale);
+        }
+        applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+
+        setLocale(true);
+    }
+
     private static int countLeapYearsBetween(int y1, int y2) {
 
         int yearStart;
@@ -1662,11 +1696,7 @@ public class ContactsEvents {
             preferences_widgets_color_default = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventCaption_key), getResources().getColor(R.color.pref_Widgets_Color_EventCaption_default));
             preferences_widgets_color_widget_caption = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_WidgetCaption_key), getResources().getColor(R.color.pref_Widgets_Color_WidgetCaption_default));
 
-            preferences_quiz_interface = getPreferenceString(preferences, getResources().getString(R.string.pref_Quiz_Interface_key), Constants.STRING_EMPTY);
-            if (preferences_quiz_interface.isEmpty()) {
-                preferences_quiz_interface = getResources().getString(Build.VERSION.SDK_INT < Build.VERSION_CODES.O || Build.VERSION.SDK_INT > Build.VERSION_CODES.R ? R.string.pref_Quiz_Interface_Dialog : R.string.pref_Quiz_Interface_Notify);
-                preferences.edit().putString(context.getString(R.string.pref_Quiz_Interface_key), preferences_quiz_interface).apply();
-            }
+            preferences_quiz_interface = getPreferenceString(preferences, getResources().getString(R.string.pref_Quiz_Interface_key), getResources().getString(R.string.pref_Quiz_Interface_Dialog));
 
             //Определения событий
 
@@ -2367,12 +2397,12 @@ public class ContactsEvents {
 
     }
 
-    synchronized boolean getEvents(Context in_context) {
+    /** Считывание всех доступных событий
+     */
+    synchronized boolean getEvents() {
 
         if (flagIsUpdating) return false;
-        if (in_context != null) setContext(in_context);
         if (getContext() == null) setContext(getContext().getApplicationContext());
-        if (getContext() == null) return false;
         flagIsUpdating = true;
 
         try {
@@ -9806,12 +9836,16 @@ public class ContactsEvents {
         return resultString;
     }
 
-    @SuppressLint("MissingPermission")
-    void quizCheckAndGo(String question, String answer) {
+    /** Показывает результат ответа и следующий вопрос
+     * @param question Ответ
+     * @param answer Правильный ответ
+     * @param activity Вызвавшая активность //todo: временная подпорка, пока не будет переделано под диалоговую активность
+     */
+    void quizCheckAndGo(String question, String answer, Activity activity) {
 
         try {
 
-            final boolean isNotifyInterface = preferences_quiz_interface.equals(getResources().getString(R.string.pref_Quiz_Interface_Notify)) || !isUIOpen;
+            final boolean isNotifyInterface = preferences_quiz_interface.equals(getResources().getString(R.string.pref_Quiz_Interface_Notify)) || !isUIOpen || activity == null;
 
             final String quizChannelId = Integer.toString(Constants.defaultQuizID);
             if (isNotifyInterface && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //для Android 8+
@@ -9891,6 +9925,11 @@ public class ContactsEvents {
 
             if (isNotifyInterface) {
 
+                if (!NotificationManagerCompat.from(getContext()).areNotificationsEnabled()) {
+                    ToastExpander.showInfoMsg(getContext(), getResources().getString(R.string.msg_notifications_disabled));
+                    return;
+                }
+
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, quizChannelId)
                         .setColor(getResources().getColor(R.color.dark_green))
@@ -9954,7 +9993,7 @@ public class ContactsEvents {
                 AlertDialog alertToShow;
                 QuizQuestion finalQuest = quest;
 
-                builder = new AlertDialog.Builder(new ContextThemeWrapper(context, preferences_theme.themeDialog));
+                builder = new AlertDialog.Builder(new ContextThemeWrapper(activity, preferences_theme.themeDialog));
                 builder.setTitle(quest.type);
                 builder.setMessage(Constants.STRING_EOL + quest.question);
                 if (quest.event != null && !quest.event.isEmpty()) {
@@ -9970,19 +10009,19 @@ public class ContactsEvents {
                             case 0:
                                 builder.setNeutralButton(a[1], (dialog, which) -> {
                                     dialog.dismiss();
-                                    quizCheckAndGo(finalQuest.type + Constants.STRING_EOL + finalQuest.question, action);
+                                    quizCheckAndGo(finalQuest.type + Constants.STRING_EOL + finalQuest.question, action, activity);
                                 });
                                 break;
                             case 1:
                                 builder.setNegativeButton(a[1], (dialog, which) -> {
                                     dialog.dismiss();
-                                    quizCheckAndGo(finalQuest.type + Constants.STRING_EOL + finalQuest.question, action);
+                                    quizCheckAndGo(finalQuest.type + Constants.STRING_EOL + finalQuest.question, action, activity);
                                 });
                                 break;
                             case 2:
                                 builder.setPositiveButton(a[1], (dialog, which) -> {
                                     dialog.dismiss();
-                                    quizCheckAndGo(finalQuest.type + Constants.STRING_EOL + finalQuest.question, action);
+                                    quizCheckAndGo(finalQuest.type + Constants.STRING_EOL + finalQuest.question, action, activity);
                                 });
                                 break;
                         }
@@ -10474,6 +10513,7 @@ public class ContactsEvents {
     //https://stackoverflow.com/questions/13209494/how-to-get-the-full-file-path-from-uri
     String getPath(Context context, Uri uri) {
 
+        if (uri == null) return Constants.STRING_EMPTY;
         try {
 
             // DocumentProvider

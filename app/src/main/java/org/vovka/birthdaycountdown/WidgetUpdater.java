@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.10.2025, 00:19
+ *  * Created by Vladimir Belov on 09.12.2025, 03:04
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.10.2025, 21:19
+ *  * Last modified 09.12.2025, 02:01
  *
  */
 
@@ -100,8 +100,8 @@ class WidgetUpdater {
         try {
 
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
-                if (eventsData.getContext() == null) eventsData.setContext(context);
-                eventsData.getEvents(context);
+                if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
+                eventsData.getEvents();
             }
 
             //По нажатию на виджет открываем основное окно
