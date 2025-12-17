@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 18.12.2025, 02:05
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 01:08
+ *  * Last modified 18.12.2025, 00:58
  *
  */
 
@@ -796,7 +796,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 if (ind > -1) {
                     if (sb.length() > 0) sb.append(Constants.STRING_EOL);
 
-                    String sourceId = ContactsEvents.checkForNull(eventSources.getIds().get(ind));
+                    String sourceId = ContactsEvents.getString(eventSources.getIds().get(ind));
                     if (sourceId.startsWith(Constants.eventSourceCalendarPrefix)) {
                         sb.append(Constants.eventTitleCalendarPrefix);
                     } else if (sourceId.startsWith(Constants.eventSourceFilePrefix) || sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {

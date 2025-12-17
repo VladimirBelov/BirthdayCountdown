@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 18.12.2025, 02:05
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 02:01
+ *  * Last modified 18.12.2025, 00:58
  *
  */
 
@@ -153,7 +153,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
                 //Организация и должность
                 if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_Organization_ID))) {
-                    final String contactOrganization = ContactsEvents.checkForNull(singleEventArray[ContactsEvents.Position_organization]).trim();
+                    final String contactOrganization = ContactsEvents.getString(singleEventArray[ContactsEvents.Position_organization]).trim();
                     if (!contactOrganization.isEmpty()) sbDetails.append(contactOrganization.trim());
                 }
                 if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_JobTitle_ID))) {

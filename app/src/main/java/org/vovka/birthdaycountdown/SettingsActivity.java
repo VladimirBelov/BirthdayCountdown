@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 18.12.2025, 02:05
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 02:01
+ *  * Last modified 17.12.2025, 23:07
  *
  */
 
@@ -163,6 +163,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             //Цвет заголовка окна
             ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
+            // Устанавливаем цвет панели навигации
+            // https://developer.android.com/about/versions/15/behavior-changes-15#window-insets says that "This API is deprecated but continues to affect 3-button navigation."
+            Window w = getWindow();
+            w.setStatusBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0)); //почему-то сама из темы не ставится
+            w.setNavigationBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0));
+
             if (ContactsEvents.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
@@ -171,11 +177,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
                     return WindowInsetsCompat.CONSUMED;
                 });
-            } else {
-                // Устанавливаем цвет панели навигации
-                Window w = getWindow();
-                w.setStatusBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0)); //почему-то сама из темы не ставится
-                w.setNavigationBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0));
             }
 
             Toolbar toolbar = findViewById(R.id.toolbar);
@@ -1999,7 +2000,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
 
                 ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) list.getLayoutParams();
-                marginParams.setMargins(0, this.statusBarInsets.top + ContactsEvents.Dip2Px(getResources(), 48), 0, 0);
+                marginParams.setMargins(0, this.statusBarInsets.top + ContactsEvents.Dip2Px(getResources(), 48), 0, this.statusBarInsets.bottom);
                 ViewGroup root = (ViewGroup) list.getParent();
                 bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
 

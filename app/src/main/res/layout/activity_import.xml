@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.12.2025, 03:04
+  ~  * Created by Vladimir Belov on 18.12.2025, 02:05
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 08.12.2025, 23:48
+  ~  * Last modified 18.12.2025, 01:43
   ~  */
   -->
 
@@ -55,16 +55,29 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp">
+        android:padding="6dp">
 
-        <TextView
-            android:id="@+id/summary"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textIsSelectable="false"
-            android:textSize="14sp"
-            android:lineSpacingExtra="4dp"
-            tools:ignore="VisualLintLocaleText" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="false"
+                android:textSize="14sp"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="?attr/dialogTextColor" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listEvents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
 
     </ScrollView>
 

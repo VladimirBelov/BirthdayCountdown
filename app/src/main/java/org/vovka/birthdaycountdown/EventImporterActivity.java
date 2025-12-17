@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 18.12.2025, 02:05
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 00:54
+ *  * Last modified 18.12.2025, 02:05
  *
  */
 
@@ -13,18 +13,28 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -70,6 +80,40 @@ public class EventImporterActivity extends AppCompatActivity {
             List<String> dataForImport = getEventsToImport(Uri.parse(extras.getString(Constants.EXTRA_URL)));
             summary.setText(dataForImport.get(0));
 
+            try {
+                RecyclerView recyclerView = findViewById(R.id.listEvents);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+                DividerItemDecoration divider = new DividerItemDecoration(
+                        recyclerView.getContext(),
+                        DividerItemDecoration.VERTICAL
+                );
+                recyclerView.addItemDecoration(divider);
+
+                List<EventItem> events = new ArrayList<>();
+
+                for (int i = 1; i < dataForImport.size(); i++) {
+                    TreeMap<Integer, String> eventData = eventsData.getEventData(dataForImport.get(i));
+
+                    String details = ContactsEvents.getString(eventData.get(ContactsEvents.Position_eventCaption))
+                            .concat(Constants.STRING_COLON_SPACE)
+                            .concat(ContactsEvents.getString(eventData.get(ContactsEvents.Position_eventDateFirstTime)));
+                    events.add(new EventItem(
+                            eventData.get(ContactsEvents.Position_eventIcon),
+                            eventData.get(ContactsEvents.Position_personFullName),
+                            details)
+                    );
+                }
+
+                EventListAdapter adapter = new EventListAdapter(events);
+                adapter.selectAll();
+                recyclerView.setAdapter(adapter);
+
+            } catch (Exception e) {
+                ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
+                ToastExpander.showDebugMsg(context, e.getMessage() != null ? e.getMessage() : e.toString());
+            }
+
             //Ширина диалога
             WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
             DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -83,13 +127,14 @@ public class EventImporterActivity extends AppCompatActivity {
                 buttonCloseX.setOnClickListener(this::buttonCancelOnClick);
             }
 
+            setFinishOnTouchOutside(false);
+
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
-
 
     /** Возвращает список событий, которые могут быть импортированы из файла
      * @param uri Путь до файла
@@ -99,9 +144,9 @@ public class EventImporterActivity extends AppCompatActivity {
     private List<String> getEventsToImport(Uri uri) {
         List<String> eventsList = new ArrayList<>();
         List<String> details = new ArrayList<>();
-        int statEventsSkipped = 0;
-        int statEventsDoubles = 0;
-        int statEventsUnRecognized = 0;
+        int statEventsSkipped = 0; //Не поддерживается или с ошибкой
+        int statEventsDoubles = 0; //Дубль с существующим событием
+        int statEventsUnRecognized = 0; //Тип не распознан или без типа
 
         try {
 
@@ -191,6 +236,83 @@ public class EventImporterActivity extends AppCompatActivity {
                         statEventsUnRecognized++;
                     }
 
+                    @Nullable Date dateEvent = null;
+                    if (indexDateNoYear == -1) { //С годом
+                        try {
+                            if (isAD) {
+                                    String dateNextFloatingEvent = eventsData.computeFloatingDate(eventDateString, 0);
+                                    if (!eventDateString.equals(dateNextFloatingEvent)) {
+                                        //Пока не поддерживается
+                                        statEventsSkipped++;
+                                        continue;
+                                    }
+                                dateEvent = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString);
+                            } else {
+                                dateEvent = ContactsEvents.sdf_DDMMYYYY_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                            }
+                        } catch (ParseException e1) {
+                            try {
+                                if (isAD) {
+                                    dateEvent = ContactsEvents.sdf_india.parse(eventDateString);
+                                } else {
+                                    dateEvent = ContactsEvents.sdf_india_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                                }
+                            } catch (ParseException e2) {
+                                try {
+                                    if (isAD) {
+                                        dateEvent = ContactsEvents.sdf_uk.parse(eventDateString);
+                                    } else {
+                                        dateEvent = ContactsEvents.sdf_uk_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                                    }
+                                } catch (ParseException e3) {
+                                    try {
+                                        if (isAD) {
+                                            dateEvent = ContactsEvents.sdf_java.parse(eventDateString);
+                                        } else {
+                                            dateEvent = ContactsEvents.sdf_java_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                                        }
+                                    } catch (ParseException e4) {
+                                        //Не получилось распознать
+                                    }
+                                }
+                            }
+                        }
+
+                    } else { //Без года
+
+                        String dateNextEvent = eventDateString.replace(Constants.STRING_0000, String.valueOf(today.get(Calendar.YEAR)));
+                        try {
+                                String dateNextFloatingEvent = eventsData.computeFloatingDate(dateNextEvent, 0);
+                                if (!dateNextEvent.equals(dateNextFloatingEvent)) {
+                                    //Пока не поддерживается
+                                    statEventsSkipped++;
+                                    continue;
+                                }
+                            dateEvent = ContactsEvents.sdf_DDMMYYYY.parse(dateNextEvent);
+                        } catch (ParseException e1) {
+                            try {
+                                dateEvent = ContactsEvents.sdf_india.parse(dateNextEvent);
+                            } catch (ParseException e2) {
+                                try {
+                                    dateEvent = ContactsEvents.sdf_uk.parse(dateNextEvent);
+                                } catch (ParseException e3) {
+                                    try {
+                                        dateEvent = ContactsEvents.sdf_java.parse(dateNextEvent);
+                                    } catch (ParseException e4) {
+                                        //Не получилось распознать
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (dateEvent == null) {
+                        statEventsSkipped++;
+                        continue;
+                    } else {
+                        eventDateString = ContactsEvents.sdf_DDMMYYYY.format(dateEvent);
+                    }
+
                     //Собираем событие
                     TreeMap<Integer, String> eventData = new TreeMap<>();
                     if (!event.needScanContacts) {
@@ -204,6 +326,20 @@ public class EventImporterActivity extends AppCompatActivity {
                         eventData.put(ContactsEvents.Position_personFullName, eventTitle);
                         String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst, this);
                         eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
+                    }
+
+                    eventData.put(ContactsEvents.Position_eventCaption, event.caption);
+                    //eventData.put(Position_eventLabel, event.label);
+                    //eventData.put(Position_eventSource, eventSource);
+                    eventData.put(ContactsEvents.Position_eventType, event.type);
+                    eventData.put(ContactsEvents.Position_eventSubType, event.subType);
+                    //eventData.put(Position_dates, eventNewDate);
+                    eventData.put(ContactsEvents.Position_eventIcon, Integer.toString(event.icon));
+                    eventData.put(ContactsEvents.Position_eventEmoji, event.emoji);
+                    if (useEventYear) {
+                        eventData.put(ContactsEvents.Position_eventDateFirstTime, eventDateString);
+                    } else {
+                        eventData.put(ContactsEvents.Position_eventDateFirstTime, eventDateString.substring(0, indexDateNoYear - 1));
                     }
 
                     eventsData.fillEmptyEventData(eventData);
@@ -230,11 +366,14 @@ public class EventImporterActivity extends AppCompatActivity {
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             details.add("Ошибка: " + e.getMessage());
         } finally {
-            if (statEventsSkipped > 0) {
-                details.add("Событий пропущено: " + statEventsSkipped);
+            if (!eventsList.isEmpty()) {
+                details.add("Событий найдено: " + eventsList.size());
             }
             if (statEventsUnRecognized > 0) {
-                details.add("Событий не распознано: " + statEventsUnRecognized);
+                details.add("Типов событий не распознано: " + statEventsUnRecognized);
+            }
+            if (statEventsSkipped > 0) {
+                details.add("Событий пропущено: " + statEventsSkipped);
             }
             if (statEventsDoubles > 0) {
                 details.add("Дублей пропущено: " + statEventsDoubles);
@@ -247,5 +386,117 @@ public class EventImporterActivity extends AppCompatActivity {
     public void buttonCancelOnClick(final View view) {
             setResult(RESULT_CANCELED);
             finish();
+    }
+
+    static class EventItem {
+        private int iconResId;
+        private final String title;
+        private final String subtitle;
+
+        public EventItem(String iconResIdString, String title, String subtitle) {
+            try {
+                this.iconResId = Integer.parseInt(iconResIdString);
+            } catch (NumberFormatException pe) {
+                this.iconResId = R.drawable.ic_event_unknown;
+            }
+            this.title = title;
+            this.subtitle = subtitle;
+        }
+
+        public int getIconResId() { return iconResId; }
+        public String getTitle() { return title; }
+        public String getSubtitle() { return subtitle; }
+    }
+
+    static class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventViewHolder> {
+
+        private final List<EventItem> eventList;
+        private final boolean[] selectedItems;
+
+        public EventListAdapter(List<EventItem> eventList) {
+            this.eventList = eventList;
+            this.selectedItems = new boolean[eventList.size()];
+        }
+
+        @NonNull
+        @Override
+        public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_event, parent, false);
+            return new EventViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
+            EventItem item = eventList.get(position);
+            holder.icon.setImageResource(item.getIconResId());
+            holder.title.setText(item.getTitle());
+            holder.subtitle.setText(item.getSubtitle());
+            holder.checkbox.setChecked(selectedItems[position]);
+
+            holder.itemView.setOnClickListener(v -> {
+                int pos = holder.getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    selectedItems[pos] = !selectedItems[pos];
+                    notifyItemChanged(pos);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return eventList.size();
+        }
+
+        public List<Integer> getSelectedPositions() {
+            List<Integer> selected = new ArrayList<>();
+            for (int i = 0; i < selectedItems.length; i++) {
+                if (selectedItems[i]) {
+                    selected.add(i);
+                }
+            }
+            return selected;
+        }
+
+        public void clearSelection() {
+            List<Integer> previouslySelected = new ArrayList<>();
+            for (int i = 0; i < selectedItems.length; i++) {
+                if (selectedItems[i]) {
+                    selectedItems[i] = false;
+                    previouslySelected.add(i);
+                }
+            }
+            for (int position : previouslySelected) {
+                notifyItemChanged(position);
+            }
+        }
+
+        public void selectAll() {
+            boolean needNotify = false;
+            for (int i = 0; i < selectedItems.length; i++) {
+                if (!selectedItems[i]) {
+                    selectedItems[i] = true;
+                    needNotify = true;
+                }
+            }
+            if (needNotify) {
+                notifyItemRangeChanged(0, selectedItems.length);
+            }
+        }
+
+        static class EventViewHolder extends RecyclerView.ViewHolder {
+            CheckBox checkbox;
+            ImageView icon;
+            TextView title;
+            TextView subtitle;
+
+            EventViewHolder(@NonNull View itemView) {
+                super(itemView);
+                checkbox = itemView.findViewById(R.id.checkbox);
+                icon = itemView.findViewById(R.id.icon);
+                title = itemView.findViewById(R.id.title);
+                subtitle = itemView.findViewById(R.id.subtitle);
+            }
+        }
     }
 }
