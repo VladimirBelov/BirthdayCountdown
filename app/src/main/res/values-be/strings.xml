@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 31.10.2025, 00:27
+  ~  * Created by Vladimir Belov on 20.12.2025, 01:54
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 30.10.2025, 22:59
+  ~  * Last modified 19.12.2025, 23:05
   ~  */
   -->
 
@@ -1183,9 +1183,9 @@
     <string name="pref_Tools_LocalEvents_Export_title">Экспарт мясцовых падзей</string>
     <string name="pref_Tools_LocalEvents_Export_result">Экспартаваныя падзеі: %1$d</string>
     <string name="pref_Tools_LocalEvents_Clear_title">Ачысціць лакальныя падзеі</string>
-    <string name="pref_Tools_LocalEvents_Import_title">Імпарт мясцовых падзей</string>
+    <string name="pref_Tools_LocalEvents_Restore_title">Імпарт мясцовых падзей</string>
     <string name="pref_Tools_Events_Import_title">Імпартаваць падзеі файла</string>
-    <string name="pref_Tools_Events_Import_result">Імпартаваныя падзеі: %1$d, прапушчаныя: %2$d, памылкі: %3$d</string>
+    <string name="pref_Tools_LocalEvents_Restore_result">Імпартаваныя падзеі: %1$d, прапушчаныя: %2$d, памылкі: %3$d</string>
 
     <string name="changelog_version"><![CDATA[версія: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>усталявана з %1$s]]></string>

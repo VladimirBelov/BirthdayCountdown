@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2025, 15:45
+ *  * Created by Vladimir Belov on 20.12.2025, 01:54
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.06.2025, 15:21
+ *  * Last modified 19.12.2025, 16:25
  *
  */
 
@@ -74,7 +74,7 @@ class CustomEditTextPreference extends EditTextPreference {
             //в светлой теме получилось выставить editTextPreference color только таким способом
             editText.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
             editText.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
-            //editText.setContentDescription(getContext().getString(R.string.hint_EditText)); есть Hint, для EditText этого достаточно
+            //editText.setContentDescription(getContext().getNotNullString(R.string.hint_EditText)); есть Hint, для EditText этого достаточно
             //final float scale = getContext().getResources().getDisplayMetrics().density;
             //editText.setMinimumHeight((int) (48 * scale + 0.5f));
             //todo: сделать опциональный MaxLine

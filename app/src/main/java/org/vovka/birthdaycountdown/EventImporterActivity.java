@@ -1,14 +1,19 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.12.2025, 02:05
+ *  * Created by Vladimir Belov on 20.12.2025, 01:54
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.12.2025, 02:05
+ *  * Last modified 20.12.2025, 01:45
  *
  */
 
 package org.vovka.birthdaycountdown;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -16,13 +21,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -33,6 +43,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
@@ -44,6 +55,21 @@ public class EventImporterActivity extends AppCompatActivity {
 
     private static final String TAG = "EventImporterActivity";
     private static final ContactsEvents eventsData;
+    EventListAdapter adapter = null;
+    private int firstVisiblePosition = -1;
+    private int topOffset = 0;
+    final List<String> dataForImport = new ArrayList<>();
+    private final List<String> eventTypesValues = new ArrayList<>();
+    private final List<Integer> eventTypesIds = new ArrayList<>();
+    private final List<Integer> eventSubTypesIds = new ArrayList<>();
+    boolean hasUnrecognizedEvents = false;
+    RecyclerView recyclerView;
+    TextView viewEventType;
+    Spinner spinnerEventTypes;
+    TextView buttonSelectAll;
+    TextView buttonSelectNone;
+    TextView buttonCancel;
+    TextView buttonImport;
 
     static {
         eventsData = ContactsEvents.getInstance();
@@ -77,42 +103,105 @@ public class EventImporterActivity extends AppCompatActivity {
             if (title != null) title.setText(R.string.pref_Tools_Events_Import_Dialog_title);
 
             TextView summary = findViewById(R.id.summary);
-            List<String> dataForImport = getEventsToImport(Uri.parse(extras.getString(Constants.EXTRA_URL)));
+            dataForImport.addAll(getEventsToImport(Uri.parse(extras.getString(Constants.EXTRA_URL))));
             summary.setText(dataForImport.get(0));
+            dataForImport.remove(0);
 
-            try {
-                RecyclerView recyclerView = findViewById(R.id.listEvents);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            viewEventType = findViewById(R.id.captionType);
+            spinnerEventTypes = findViewById(R.id.spinnerEventType);
+            buttonSelectAll = findViewById(R.id.buttonFirstAction);
+            buttonSelectNone = findViewById(R.id.buttonSecondAction);
+            buttonCancel = findViewById(R.id.buttonThirdAction);
+            buttonImport = findViewById(R.id.buttonFourthAction);
 
-                DividerItemDecoration divider = new DividerItemDecoration(
-                        recyclerView.getContext(),
-                        DividerItemDecoration.VERTICAL
-                );
-                recyclerView.addItemDecoration(divider);
+            if (!dataForImport.isEmpty()) {
+                try {
+                    recyclerView = findViewById(R.id.listEvents);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-                List<EventItem> events = new ArrayList<>();
-
-                for (int i = 1; i < dataForImport.size(); i++) {
-                    TreeMap<Integer, String> eventData = eventsData.getEventData(dataForImport.get(i));
-
-                    String details = ContactsEvents.getString(eventData.get(ContactsEvents.Position_eventCaption))
-                            .concat(Constants.STRING_COLON_SPACE)
-                            .concat(ContactsEvents.getString(eventData.get(ContactsEvents.Position_eventDateFirstTime)));
-                    events.add(new EventItem(
-                            eventData.get(ContactsEvents.Position_eventIcon),
-                            eventData.get(ContactsEvents.Position_personFullName),
-                            details)
+                    DividerItemDecoration divider = new DividerItemDecoration(
+                            recyclerView.getContext(),
+                            DividerItemDecoration.VERTICAL
                     );
+                    recyclerView.addItemDecoration(divider);
+
+                    List<EventItem> events = new ArrayList<>();
+                    for (String eventStr : dataForImport) {
+                        TreeMap<Integer, String> eventData = eventsData.getEventData(eventStr);
+
+                        String details = ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventCaption))
+                                .concat(Constants.STRING_COLON_SPACE)
+                                .concat(ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventDateFirstTime)));
+                        events.add(new EventItem(
+                                eventData.get(ContactsEvents.Position_eventIcon),
+                                eventData.get(ContactsEvents.Position_personFullName), //todo: вывод Position_personFullNameAlt
+                                details)
+                        );
+                        if (!hasUnrecognizedEvents && ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
+                                .equals(ContactsEvents.getEventType(Constants.Type_Unrecognized))) {
+                            hasUnrecognizedEvents = true;
+                        }
+                    }
+
+                    adapter = new EventListAdapter(events);
+                    adapter.setOnSelectionChangedListener((allSelected, noneSelected) -> {
+                        buttonSelectAll.setAlpha(allSelected ? 0.4f : 1.0f);
+                        buttonSelectNone.setAlpha(noneSelected ? 0.4f : 1.0f);
+                        buttonImport.setAlpha(noneSelected ? 0.4f : 1.0f);
+                    });
+
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+
+                    buttonSelectAll.setText("✅ Все");
+                    addClickEffect(buttonSelectAll);
+                    buttonSelectAll.setVisibility(View.VISIBLE);
+                    buttonSelectAll.setOnClickListener(v -> {
+                        saveRecyclerViewScrollPosition();
+                        updateSelectionWithoutAnimation(true);
+                        restoreRecyclerViewScrollPosition();
+                    });
+
+                    buttonSelectNone.setText("⭕ Ни одного");
+                    addClickEffect(buttonSelectNone);
+                    buttonSelectNone.setVisibility(View.VISIBLE);
+                    buttonSelectNone.setOnClickListener(v -> {
+                        saveRecyclerViewScrollPosition();
+                        updateSelectionWithoutAnimation(false);
+                        restoreRecyclerViewScrollPosition();
+                    });
+
+                    buttonImport.setText("↩️ Импорт");
+                    addClickEffect(buttonImport);
+                    buttonImport.setVisibility(View.VISIBLE);
+                    buttonImport.setOnClickListener(v -> doImport());
+
+                    adapter.selectAll();
+
+                    if (hasUnrecognizedEvents) {
+                        viewEventType.setVisibility(View.VISIBLE);
+
+                        eventsData.initEventTypes(eventTypesValues, eventTypesIds, eventSubTypesIds);
+                        eventTypesValues.add(0, getResources().getString(R.string.event_type_unknown_emoji) + Constants.STRING_SPACE + getResources().getString(R.string.pref_Tools_Events_Import_Unrecognized_type));
+                        eventTypesIds.add(0, Constants.Type_Unrecognized);
+                        eventSubTypesIds.add(0, Constants.Type_Unrecognized);
+
+                        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, eventTypesValues);
+                        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                        spinnerEventTypes.setAdapter(spinnerArrayAdapter);
+                        spinnerEventTypes.setVisibility(View.VISIBLE);
+                    }
+
+                } catch (Exception e) {
+                    ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
+                    ToastExpander.showDebugMsg(context, e.getMessage() != null ? e.getMessage() : e.toString());
                 }
-
-                EventListAdapter adapter = new EventListAdapter(events);
-                adapter.selectAll();
-                recyclerView.setAdapter(adapter);
-
-            } catch (Exception e) {
-                ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
-                ToastExpander.showDebugMsg(context, e.getMessage() != null ? e.getMessage() : e.toString());
             }
+
+            buttonCancel.setText("❌ Отмена");
+            addClickEffect(buttonCancel);
+            buttonCancel.setVisibility(View.VISIBLE);
+            buttonCancel.setOnClickListener(this::buttonCancelOnClick);
 
             //Ширина диалога
             WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
@@ -133,6 +222,20 @@ public class EventImporterActivity extends AppCompatActivity {
             Log.e(TAG, e.getMessage(), e);
             ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void updateSelectionWithoutAnimation(boolean selectAll) {
+        RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
+        recyclerView.setItemAnimator(null);
+        try {
+            if (selectAll) {
+                adapter.selectAll();
+            } else {
+                adapter.clearSelection();
+            }
+        } finally {
+            recyclerView.setItemAnimator(animator);
         }
     }
 
@@ -231,9 +334,10 @@ public class EventImporterActivity extends AppCompatActivity {
                         continue;
                     }
 
+                    boolean isUnrecognizedEvent = false;
                     ContactsEvents.Event event = eventsData.recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, false, useEventYear);
                     if (event.type.equals(ContactsEvents.getEventType(Constants.Type_Unrecognized))) {
-                        statEventsUnRecognized++;
+                        isUnrecognizedEvent = true;
                     }
 
                     @Nullable Date dateEvent = null;
@@ -315,10 +419,81 @@ public class EventImporterActivity extends AppCompatActivity {
 
                     //Собираем событие
                     TreeMap<Integer, String> eventData = new TreeMap<>();
+
+                    //URLs
+                    String eventURL = Constants.STRING_EMPTY;
+                    String eventTitle_lowered = eventTitle.toLowerCase();
+                    int urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTP);
+                    if (urlOffset > -1) {
+                        eventURL = eventTitle.substring(urlOffset);
+                    } else {
+                        urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTPS);
+                        if (urlOffset > -1) {
+                            eventURL = eventTitle.substring(urlOffset);
+                        }
+                    }
+                    if (urlOffset > -1) {
+                        eventURL = ContactsEvents.substringBefore(eventURL, Constants.STRING_SPACE);
+                        eventData.put(ContactsEvents.Position_eventURL, eventURL);
+                        eventTitle = eventTitle.replace(eventURL, Constants.STRING_EMPTY).trim();
+                    }
+
+                    //Описание события
+                    int indStartDescription = eventTitle.indexOf(Constants.STRING_BAR);
+                    if (indStartDescription > -1) {
+                        int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
+                        if (pStartFirst > -1) {
+                            if (indStartDescription < pStartFirst) { //"|" до "("
+                                String eventDescription = eventTitle.substring(indStartDescription + 1, pStartFirst);
+                                if (!eventDescription.isEmpty()) {
+                                    eventData.put(ContactsEvents.Position_eventDescription, eventDescription.trim());
+                                    eventTitle = eventTitle.replace(eventDescription.concat(Constants.STRING_BAR), Constants.STRING_EMPTY).trim();
+                                }
+                            }
+                        } else {
+                            String eventDescription = eventTitle.substring(indStartDescription + 1);
+                            if (!eventDescription.isEmpty()) {
+                                eventData.put(ContactsEvents.Position_eventDescription, eventDescription.trim());
+                                eventTitle = eventTitle.replace(eventDescription, Constants.STRING_EMPTY).trim();
+                            }
+                        }
+                    }
+
+                    if (event.needScanContacts) {
+                        //всё, что внутри скобок в имени - в должность и организацию
+                        int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
+                        int pStartLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_START);
+                        int pEndFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                        int pEndLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                        String contactTitle = null;
+
+                        if (pStartFirst > -1 && pEndFirst > pStartFirst) { //хотя бы пара скобок
+                            if (pStartFirst == pStartLast && pEndFirst == pEndLast) { //одна пара скобок
+                                contactTitle = eventTitle.substring(pStartFirst + 1, pEndFirst);
+                                eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                            } else if (pStartLast < pEndFirst && pStartLast < pEndLast) { //скобки внутри скобок
+                                contactTitle = eventTitle.substring(pStartFirst + 1, pEndLast);
+                                eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                            } else if (pEndFirst < pStartLast) { //пара скобок за другой парой
+                                contactTitle = eventTitle.substring(pStartLast + 1, pEndLast);
+                                eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                            }
+                            if (contactTitle != null) {
+                                int cStart = contactTitle.indexOf(Constants.STRING_COMMA);
+                                if (cStart > 0) {
+                                    eventData.put(ContactsEvents.Position_organization, contactTitle.substring(0, cStart).trim());
+                                    eventData.put(ContactsEvents.Position_title, contactTitle.substring(cStart + 1).trim());
+                                } else {
+                                    eventData.put(ContactsEvents.Position_title, contactTitle.trim());
+                                }
+                            }
+                        }
+                    }
+
                     if (!event.needScanContacts) {
                         eventData.put(ContactsEvents.Position_personFullName, eventTitle);
                         eventData.put(ContactsEvents.Position_personFullNameAlt, Constants.STRING_EMPTY);
-                    } else if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
+                    } else if (eventsData.preferences_rules_files_name_format == ContactsEvents.FormatName.LastnameFirst) {
                         eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
                         String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, this);
                         eventData.put(ContactsEvents.Position_personFullName, personFullNameAlt);
@@ -329,11 +504,8 @@ public class EventImporterActivity extends AppCompatActivity {
                     }
 
                     eventData.put(ContactsEvents.Position_eventCaption, event.caption);
-                    //eventData.put(Position_eventLabel, event.label);
-                    //eventData.put(Position_eventSource, eventSource);
                     eventData.put(ContactsEvents.Position_eventType, event.type);
                     eventData.put(ContactsEvents.Position_eventSubType, event.subType);
-                    //eventData.put(Position_dates, eventNewDate);
                     eventData.put(ContactsEvents.Position_eventIcon, Integer.toString(event.icon));
                     eventData.put(ContactsEvents.Position_eventEmoji, event.emoji);
                     if (useEventYear) {
@@ -346,15 +518,29 @@ public class EventImporterActivity extends AppCompatActivity {
                     String eventDataAsString = eventsData.getEventData(eventData);
 
                     //Проверка на существующие локальные события
-                    List<String> similarEventIds = eventsData.getSimilarLocalEventIds(eventDataAsString,
-                            EnumSet.of(
-                                    ContactsEvents.getSimilarFields.PERSON_FULL_NAME,
-                                    ContactsEvents.getSimilarFields.ORGANIZATION
-                            ));
+                    List<String> similarEventIds;
+                    if (isUnrecognizedEvent) {
+                        similarEventIds = eventsData.getSimilarLocalEventIds(eventDataAsString,
+                                EnumSet.of(
+                                        ContactsEvents.getSimilarFields.PERSON_FULL_NAME,
+                                        ContactsEvents.getSimilarFields.ORGANIZATION
+                                ));
+                    } else {
+                        similarEventIds = eventsData.getSimilarLocalEventIds(eventDataAsString,
+                                EnumSet.of(
+                                        ContactsEvents.getSimilarFields.PERSON_FULL_NAME,
+                                        ContactsEvents.getSimilarFields.ORGANIZATION,
+                                        ContactsEvents.getSimilarFields.EVENT_TYPE,
+                                        ContactsEvents.getSimilarFields.EVENT_SUBTYPE
+                                ));
+                    }
 
                     if (similarEventIds != null) {
                         statEventsDoubles++;
                     } else {
+                        if (isUnrecognizedEvent) {
+                            statEventsUnRecognized++;
+                        }
                         eventsList.add(eventDataAsString);
                     }
                 }
@@ -383,6 +569,85 @@ public class EventImporterActivity extends AppCompatActivity {
         return eventsList;
     }
 
+    void doImport() {
+        try {
+
+            if (adapter == null || adapter.getSelectedPositions().isEmpty()) return;
+            List<Integer> selectedPositions = adapter.getSelectedPositions();
+            int selectedEventTypeIndex = spinnerEventTypes.getSelectedItemPosition();
+            if (hasUnrecognizedEvents && selectedEventTypeIndex == 0) {
+                boolean unrecognizedSelected = false;
+                for (Integer pos: selectedPositions) {
+                    if (pos < dataForImport.size()) {
+                        TreeMap<Integer, String> eventData = eventsData.getEventData(dataForImport.get(pos));
+                        if (ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
+                                .equals(ContactsEvents.getEventType(Constants.Type_Unrecognized))) {
+                            unrecognizedSelected = true;
+                            break;
+                        }
+                    }
+                }
+               if (unrecognizedSelected) {
+                   Toast.makeText(this, "Выберите тип для нераспознанных событий!", Toast.LENGTH_LONG).show();
+                   return;
+               }
+            }
+
+            int countImported = 0;
+            for (Integer pos: selectedPositions) {
+                if (pos < dataForImport.size()) {
+                    TreeMap<Integer, String> eventData = eventsData.getEventData(dataForImport.get(pos));
+                    if (ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
+                            .equals(ContactsEvents.getEventType(Constants.Type_Unrecognized))) {
+
+                        eventData.put(ContactsEvents.Position_eventType, String.valueOf(eventTypesIds.get(selectedEventTypeIndex)));
+                        eventData.put(ContactsEvents.Position_eventSubType, String.valueOf(eventSubTypesIds.get(selectedEventTypeIndex)));
+                    } else {
+                        //Обратное преобразование типа события в хранимый id
+                        String typeStr = eventData.get(ContactsEvents.Position_eventType);
+                        if (typeStr != null) {
+                            eventData.put(ContactsEvents.Position_eventType, String.valueOf(ContactsEvents.getEventTypeInt(typeStr)));
+                        }
+                        String subtypeStr = eventData.get(ContactsEvents.Position_eventSubType);
+                        if (subtypeStr != null) {
+                            eventData.put(ContactsEvents.Position_eventSubType, String.valueOf(ContactsEvents.getEventTypeInt(subtypeStr)));
+                        }
+                    }
+                    eventData.put(ContactsEvents.Position_eventID, ContactsEvents.getHash(String.valueOf(System.currentTimeMillis())));
+                    eventData.put(ContactsEvents.Position_eventCaption, Constants.STRING_EMPTY);
+                    eventData.put(ContactsEvents.Position_eventIcon, Constants.STRING_EMPTY);
+                    eventData.put(ContactsEvents.Position_eventEmoji, Constants.STRING_EMPTY);
+                    eventsData.fillEmptyEventData(eventData);
+                    eventsData.saveLocalEvent(eventData);
+                    eventsData.needUpdateEventList = true;
+                    countImported++;
+                }
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+            builder.setTitle(getString(R.string.msg_title_success));
+            builder.setIcon(android.R.drawable.ic_menu_info_details);
+            builder.setMessage(getString(R.string.pref_Tools_Events_Import_result, countImported));
+            builder.setPositiveButton(R.string.button_ok, (dialog, which) -> {
+                dialog.dismiss();
+                setResult(RESULT_OK);
+                finish();
+            });
+            AlertDialog alertToShow = builder.create();
+            alertToShow.setOnShowListener(arg0 -> {
+                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                ta.recycle();
+            });
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
     public void buttonCancelOnClick(final View view) {
             setResult(RESULT_CANCELED);
             finish();
@@ -408,21 +673,47 @@ public class EventImporterActivity extends AppCompatActivity {
         public String getSubtitle() { return subtitle; }
     }
 
+    public interface OnSelectionChangedListener {
+        void onSelectionChanged(boolean allSelected, boolean noneSelected);
+    }
+
+    private void saveRecyclerViewScrollPosition() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        if (layoutManager != null) {
+            View firstVisibleView = layoutManager.findViewByPosition(layoutManager.findFirstVisibleItemPosition());
+            firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+            topOffset = (firstVisibleView != null) ? firstVisibleView.getTop() : 0;
+        }
+    }
+
+    private void restoreRecyclerViewScrollPosition() {
+        if (firstVisiblePosition != -1 && recyclerView.getAdapter() != null) {
+            recyclerView.post(() -> {
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (layoutManager != null) {
+                    layoutManager.scrollToPositionWithOffset(firstVisiblePosition, topOffset);
+                }
+            });
+        }
+    }
+
     static class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventViewHolder> {
 
         private final List<EventItem> eventList;
         private final boolean[] selectedItems;
+        private int selectedCount;
+        private OnSelectionChangedListener selectionListener;
 
         public EventListAdapter(List<EventItem> eventList) {
             this.eventList = eventList;
             this.selectedItems = new boolean[eventList.size()];
+            this.selectedCount = 0;
         }
 
         @NonNull
         @Override
         public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_event, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event, parent, false);
             return new EventViewHolder(view);
         }
 
@@ -436,11 +727,30 @@ public class EventImporterActivity extends AppCompatActivity {
 
             holder.itemView.setOnClickListener(v -> {
                 int pos = holder.getAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION) {
-                    selectedItems[pos] = !selectedItems[pos];
-                    notifyItemChanged(pos);
+                if (pos == RecyclerView.NO_POSITION) return;
+
+                boolean newSelected = !selectedItems[pos];
+                selectedItems[pos] = newSelected;
+
+                if (newSelected) {
+                    selectedCount++;
+                } else {
+                    selectedCount--;
+                }
+
+                holder.checkbox.setChecked(newSelected);
+
+                if (selectionListener != null) {
+                    selectionListener.onSelectionChanged(
+                            selectedCount == eventList.size(),
+                            selectedCount == 0
+                    );
                 }
             });
+        }
+
+        public void setOnSelectionChangedListener(OnSelectionChangedListener listener) {
+            this.selectionListener = listener;
         }
 
         @Override
@@ -459,28 +769,25 @@ public class EventImporterActivity extends AppCompatActivity {
         }
 
         public void clearSelection() {
-            List<Integer> previouslySelected = new ArrayList<>();
-            for (int i = 0; i < selectedItems.length; i++) {
-                if (selectedItems[i]) {
-                    selectedItems[i] = false;
-                    previouslySelected.add(i);
+            if (selectedCount > 0) {
+                Arrays.fill(selectedItems, false);
+                selectedCount = 0;
+                notifyItemRangeChanged(0, eventList.size());
+                if (selectionListener != null) {
+                    selectionListener.onSelectionChanged(false, true);
                 }
-            }
-            for (int position : previouslySelected) {
-                notifyItemChanged(position);
             }
         }
 
         public void selectAll() {
-            boolean needNotify = false;
-            for (int i = 0; i < selectedItems.length; i++) {
-                if (!selectedItems[i]) {
-                    selectedItems[i] = true;
-                    needNotify = true;
+            boolean wasNotAll = selectedCount != eventList.size();
+            if (wasNotAll) {
+                Arrays.fill(selectedItems, true);
+                selectedCount = eventList.size();
+                notifyItemRangeChanged(0, eventList.size());
+                if (selectionListener != null) {
+                    selectionListener.onSelectionChanged(true, false);
                 }
-            }
-            if (needNotify) {
-                notifyItemRangeChanged(0, selectedItems.length);
             }
         }
 
@@ -497,6 +804,22 @@ public class EventImporterActivity extends AppCompatActivity {
                 title = itemView.findViewById(R.id.title);
                 subtitle = itemView.findViewById(R.id.subtitle);
             }
+        }
+    }
+
+    private void addClickEffect(@NonNull View view)
+    {
+        Drawable drawableNormal = view.getBackground();
+
+        if (view.getBackground().getConstantState() != null) {
+            Drawable drawablePressed = view.getBackground().getConstantState().newDrawable();
+            drawablePressed.mutate();
+            drawablePressed.setColorFilter(Color.argb(50, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
+
+            StateListDrawable listDrawable = new StateListDrawable();
+            listDrawable.addState(new int[]{android.R.attr.state_pressed}, drawablePressed);
+            listDrawable.addState(new int[]{}, drawableNormal);
+            view.setBackground(listDrawable);
         }
     }
 }

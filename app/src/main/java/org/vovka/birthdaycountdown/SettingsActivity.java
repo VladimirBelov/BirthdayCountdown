@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.12.2025, 02:05
+ *  * Created by Vladimir Belov on 20.12.2025, 01:54
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 17.12.2025, 23:07
+ *  * Last modified 19.12.2025, 23:05
  *
  */
 
@@ -3939,7 +3939,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
                 }
 
-                ToastExpander.showMsg(this, getString(R.string.pref_Tools_Events_Import_result, countSuccess, countSkip, countError));
+                ToastExpander.showMsg(this, getString(R.string.pref_Tools_LocalEvents_Restore_result, countSuccess, countSkip, countError));
                 if (countSuccess > 0) {
                     if (editor.commit()) {
                         eventsData.needUpdateEventList = true;

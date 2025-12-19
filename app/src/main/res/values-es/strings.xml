@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 31.10.2025, 00:27
+  ~  * Created by Vladimir Belov on 20.12.2025, 01:54
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 30.10.2025, 22:59
+  ~  * Last modified 19.12.2025, 23:05
   ~  */
   -->
 
@@ -1184,9 +1184,9 @@ Haga clic largo en el elemento para seleccionar el color"</string>
     <string name="pref_Tools_LocalEvents_Export_title">Exportar eventos locales</string>
     <string name="pref_Tools_LocalEvents_Export_result">Eventos exportados: %1$d</string>
     <string name="pref_Tools_LocalEvents_Clear_title">Borrar eventos locales</string>
-    <string name="pref_Tools_LocalEvents_Import_title">Importar eventos locales</string>
+    <string name="pref_Tools_LocalEvents_Restore_title">Importar eventos locales</string>
     <string name="pref_Tools_Events_Import_title">Importar eventos de archivo</string>
-    <string name="pref_Tools_Events_Import_result">Eventos importados: %1$d, omitidos: %2$d, errores: %3$d</string>
+    <string name="pref_Tools_LocalEvents_Restore_result">Eventos importados: %1$d, omitidos: %2$d, errores: %3$d</string>
 
     <string name="changelog_version"><![CDATA[versión: %1$s (%2$s)<br>fecha: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>instalado desde %1$s]]></string>

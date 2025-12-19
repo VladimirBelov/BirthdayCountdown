@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.12.2025, 02:05
+ *  * Created by Vladimir Belov on 20.12.2025, 01:54
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.12.2025, 00:58
+ *  * Last modified 19.12.2025, 16:25
  *
  */
 
@@ -2813,11 +2813,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 StringBuilder eventDetails = new StringBuilder();
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Organization))) {
-                    final String contactOrganization = ContactsEvents.getString(singleEventArray[ContactsEvents.Position_organization]).trim();
+                    final String contactOrganization = ContactsEvents.getNotNullString(singleEventArray[ContactsEvents.Position_organization]).trim();
                     if (!contactOrganization.isEmpty()) eventDetails.append(contactOrganization.trim());
                 }
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_JobTitle))) {
-                    final String positionJobTitle = ContactsEvents.getString(singleEventArray[ContactsEvents.Position_title]).trim();
+                    final String positionJobTitle = ContactsEvents.getNotNullString(singleEventArray[ContactsEvents.Position_title]).trim();
                     if (!positionJobTitle.isEmpty()) {
                         if (eventDetails.length() > 0) eventDetails.append(Constants.STRING_COMMA_SPACE);
                         eventDetails.append(positionJobTitle);

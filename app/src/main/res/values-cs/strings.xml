@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 31.10.2025, 00:27
+  ~  * Created by Vladimir Belov on 20.12.2025, 01:54
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 30.10.2025, 22:59
+  ~  * Last modified 19.12.2025, 23:05
   ~  */
   -->
 
@@ -1184,9 +1184,9 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="pref_Tools_LocalEvents_Export_title">Exportovat místní události</string>
     <string name="pref_Tools_LocalEvents_Export_result">Exportované události: %1$d</string>
     <string name="pref_Tools_LocalEvents_Clear_title">Vymazat místní události</string>
-    <string name="pref_Tools_LocalEvents_Import_title">Importovat místní události</string>
+    <string name="pref_Tools_LocalEvents_Restore_title">Importovat místní události</string>
     <string name="pref_Tools_Events_Import_title">Události importu souborů</string>
-    <string name="pref_Tools_Events_Import_result">Importované události: %1$d, vynechané: %2$d, chyby: %3$d</string>
+    <string name="pref_Tools_LocalEvents_Restore_result">Importované události: %1$d, vynechané: %2$d, chyby: %3$d</string>
 
     <string name="changelog_version"><![CDATA[verze: %1$s (%2$s)<br>sestaveno: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>instalováno z %1$s]]></string>

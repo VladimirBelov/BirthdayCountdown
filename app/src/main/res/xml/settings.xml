@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.12.2025, 03:04
+  ~  * Created by Vladimir Belov on 20.12.2025, 01:54
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 09.12.2025, 01:22
+  ~  * Last modified 19.12.2025, 23:05
   ~  */
   -->
 
@@ -1309,7 +1309,7 @@
 
         <Preference
             android:key="@string/pref_Tools_LocalEvents_Import_key"
-            android:title="@string/pref_Tools_LocalEvents_Import_title"
+            android:title="@string/pref_Tools_LocalEvents_Restore_title"
             android:icon="@android:drawable/ic_menu_upload"/>
 
         <Preference

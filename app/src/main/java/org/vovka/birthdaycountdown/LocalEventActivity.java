@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 20.12.2025, 01:54
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 00:54
+ *  * Last modified 20.12.2025, 01:38
  *
  */
 
@@ -63,6 +63,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -398,15 +399,15 @@ public class LocalEventActivity extends AppCompatActivity {
             buttonPickPhoto = findViewById(R.id.buttonPickPhoto);
             buttonClearPhoto = findViewById(R.id.buttonClearPhoto);
 
-            initEventTypes();
+            eventsData.initEventTypes(eventTypesValues, eventTypesIds, eventSubTypesIds);
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, eventTypesValues);
             spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
             spinnerEventTypes.setAdapter(spinnerArrayAdapter);
 
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
+            final Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH);
+            int day = cal.get(Calendar.DAY_OF_MONTH);
             boolean useYear = true;
             boolean isBC = false;
 
@@ -417,12 +418,12 @@ public class LocalEventActivity extends AppCompatActivity {
 
             if (Intent.ACTION_INSERT.equals(action)) {
 
-                eventData.put(ContactsEvents.Position_eventID, ContactsEvents.getHash(String.valueOf(c.getTimeInMillis())));
+                eventData.put(ContactsEvents.Position_eventID, ContactsEvents.getHash(String.valueOf(cal.getTimeInMillis())));
                 viewActivityTitle.setText(R.string.local_event_dialog_title_new_event);
 
             } else if (Intent.ACTION_INSERT_OR_EDIT.equals(action)) {
 
-                eventData.put(ContactsEvents.Position_eventID, ContactsEvents.getHash(String.valueOf(c.getTimeInMillis())));
+                eventData.put(ContactsEvents.Position_eventID, ContactsEvents.getHash(String.valueOf(cal.getTimeInMillis())));
                 viewActivityTitle.setText(R.string.local_event_dialog_title_new_event);
                 if (extras != null && extras.containsKey(Constants.EXTRA_EVENT_DATA)) {
                     TreeMap<Integer, String> eventDataTemplate;
@@ -493,7 +494,7 @@ public class LocalEventActivity extends AppCompatActivity {
                                 } catch (ParseException pe) {
                                     try {
                                         dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString
-                                                .concat(Constants.STRING_PERIOD).concat(String.valueOf(c.get(Calendar.YEAR))));
+                                                .concat(Constants.STRING_PERIOD).concat(String.valueOf(cal.get(Calendar.YEAR))));
                                         if (dateEventFirstTime != null) {
                                             day = dateEventFirstTime.getDate();
                                             month = dateEventFirstTime.getMonth();
@@ -711,48 +712,6 @@ public class LocalEventActivity extends AppCompatActivity {
             ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-    }
-
-    private void initEventTypes() {
-        eventTypesValues.add(getString(R.string.event_type_birthday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_birthday));
-        eventTypesIds.add(Constants.Type_BirthDay);
-        eventSubTypesIds.add(Constants.Type_BirthDay);
-        eventTypesValues.add(getString(R.string.event_type_wedding_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_anniversary));
-        eventTypesIds.add(Constants.Type_Anniversary);
-        eventSubTypesIds.add(Constants.Type_Anniversary);
-        eventTypesValues.add(getString(R.string.event_type_death_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_death));
-        eventTypesIds.add(Constants.Type_Custom);
-        eventSubTypesIds.add(Constants.Type_Death);
-        eventTypesValues.add(getString(R.string.event_type_crowning_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_crowning));
-        eventTypesIds.add(Constants.Type_Custom);
-        eventSubTypesIds.add(Constants.Type_Crowning);
-        eventTypesValues.add(getString(R.string.event_type_nameday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_nameday));
-        eventTypesIds.add(Constants.Type_Custom);
-        eventSubTypesIds.add(Constants.Type_NameDay);
-        eventTypesValues.add(getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_another));
-        eventTypesIds.add(Constants.Type_Another);
-        eventSubTypesIds.add(Constants.Type_Another);
-        eventTypesValues.add(getString(R.string.event_type_holiday_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_holiday));
-        eventTypesIds.add(Constants.Type_HolidayEvent);
-        eventSubTypesIds.add(Constants.Type_HolidayEvent);
-        eventTypesValues.add(getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + getString(R.string.event_type_other));
-        eventTypesIds.add(Constants.Type_Other);
-        eventSubTypesIds.add(Constants.Type_Other);
-        eventTypesValues.add(getString(R.string.event_type_custom1_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent1_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent1_caption));
-        eventTypesIds.add(Constants.Type_Custom);
-        eventSubTypesIds.add(Constants.Type_Custom1);
-        eventTypesValues.add(getString(R.string.event_type_custom2_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent2_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent2_caption));
-        eventTypesIds.add(Constants.Type_Custom);
-        eventSubTypesIds.add(Constants.Type_Custom2);
-        eventTypesValues.add(getString(R.string.event_type_custom3_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent3_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent3_caption));
-        eventTypesIds.add(Constants.Type_Custom);
-        eventSubTypesIds.add(Constants.Type_Custom3);
-        eventTypesValues.add(getString(R.string.event_type_custom4_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent4_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent4_caption));
-        eventTypesIds.add(Constants.Type_Custom);
-        eventSubTypesIds.add(Constants.Type_Custom4);
-        eventTypesValues.add(getString(R.string.event_type_custom5_emoji) + Constants.STRING_SPACE + (eventsData.preferences_customevent5_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent5_caption));
-        eventTypesIds.add(Constants.Type_Custom);
-        eventSubTypesIds.add(Constants.Type_Custom5);
     }
 
     private void clearPhoto() {
@@ -1030,6 +989,7 @@ public class LocalEventActivity extends AppCompatActivity {
                     .setMessage(getString(R.string.local_event_dialog_confirmation_remove))
                     .setPositiveButton(R.string.button_yes, (dialog, which) -> {
                         //Хранимый тип события и используемый при отрисовке отличаются
+                        //todo: зачем тут менять тип события?
                         String eventType = eventData.get(ContactsEvents.Position_eventType);
                         if (eventType != null) {
                             try {
@@ -1080,7 +1040,10 @@ public class LocalEventActivity extends AppCompatActivity {
 
             List<String> similarEventIds;
             if (!eventsData.getEventData(eventData).equals(this.eventDataSaved)) {
-                similarEventIds = eventsData.getSimilarLocalEventIds(this.eventDataSaved, null);
+                similarEventIds = eventsData.getSimilarLocalEventIds(this.eventDataSaved, EnumSet.of(
+                        ContactsEvents.getSimilarFields.PERSON_FULL_NAME,
+                        ContactsEvents.getSimilarFields.ORGANIZATION
+                ));
             } else {
                 similarEventIds = null;
             }

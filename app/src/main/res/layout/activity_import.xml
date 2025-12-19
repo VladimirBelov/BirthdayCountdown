@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.12.2025, 02:05
+  ~  * Created by Vladimir Belov on 20.12.2025, 01:54
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 18.12.2025, 01:43
+  ~  * Last modified 19.12.2025, 18:22
   ~  */
   -->
 
@@ -75,7 +75,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listEvents"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -86,9 +87,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:labelFor="@id/spinnerEventType"
-        android:text="@string/local_event_dialog_type_title"
-        android:textSize="12sp"
-        android:paddingStart="16dp"
+        android:text="@string/pref_Tools_Events_Import_Unrecognized_title"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:paddingTop="4dp"
+        android:paddingLeft="6dp"
         android:textColor="?attr/dialogTextColor"
         android:visibility="gone" />
 
@@ -97,8 +100,79 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp"
+        android:paddingBottom="4dp"
         android:textColor="?attr/dialogTextColor"
         tools:ignore="TouchTargetSizeCheck"
         android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:orientation="horizontal"
+        android:gravity="center|center_horizontal">
+
+        <TextView
+            android:id="@+id/buttonFirstAction"
+            style="@style/ButtonWithIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:maxLines="1"
+            android:background="@drawable/border_button"
+            tools:ignore="TouchTargetSizeCheck"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/buttonSecondAction"
+            style="@style/ButtonWithIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:layout_marginStart="6dp"
+            android:maxLines="1"
+            android:background="@drawable/border_button"
+            tools:ignore="TouchTargetSizeCheck"
+            android:visibility="gone" />
+
+        <!-- Распорка: занимает всё свободное пространство -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/buttonThirdAction"
+            style="@style/ButtonWithIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:layout_marginStart="6dp"
+            android:maxLines="1"
+            android:background="@drawable/border_button"
+            tools:ignore="TouchTargetSizeCheck"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/buttonFourthAction"
+            style="@style/ButtonWithIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:layout_marginStart="6dp"
+            android:maxLines="1"
+            android:background="@drawable/border_button"
+            tools:ignore="TouchTargetSizeCheck"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
 </LinearLayout>
