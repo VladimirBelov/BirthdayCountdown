@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.12.2025, 01:54
+  ~  * Created by Vladimir Belov on 21.12.2025, 01:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.12.2025, 23:05
+  ~  * Last modified 20.12.2025, 23:13
   ~  */
   -->
 
@@ -1195,6 +1195,19 @@ Long click on item to select color"</string>
     <string name="pref_Tools_Events_Import_Unrecognized_title">Type for unrecognized events:</string>
     <string name="pref_Tools_Events_Import_Unrecognized_type">- not selected -</string>
     <string name="pref_Tools_Events_Import_result">Events imported: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_noAccess">🚫 File is empty or no access</string>
+    <string name="pref_Tools_Events_Import_result_notSupported">🛑 Not supported yet</string>
+    <string name="pref_Tools_Events_Import_result_EventsFound">Events found: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Events types unrecognized: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsSkipped">Events skipped: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsDoubles">Doubles skipped: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_Error">Error: %1$s</string>
+    <string name="pref_Tools_Events_Import_result_Filename">File: %1$s</string>
+    <string name="pref_Tools_Events_Import_msg_SelectType">Choose type for all selected unrecognized events!</string>
+    <string name="pref_Tools_Events_Import_Button_SelectAll">✅ Select all</string>
+    <string name="pref_Tools_Events_Import_Button_SelectNone">⭕ Select none</string>
+    <string name="pref_Tools_Events_Import_Button_Cancel">❌ Cancel</string>
+    <string name="pref_Tools_Events_Import_Button_Import">↩️ Import</string>
 
     <string name="changelog_version"><![CDATA[version: %1$s (%2$s)<br>built: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>installed from %1$s]]></string>

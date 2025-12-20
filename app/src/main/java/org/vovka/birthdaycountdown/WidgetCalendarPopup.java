@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 21.12.2025, 01:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 02:01
+ *  * Last modified 21.12.2025, 00:58
  *
  */
 
@@ -282,7 +282,7 @@ public class WidgetCalendarPopup extends Activity {
                     newCal.clear();
                     newCal.set(selectedYear, selectedMonth, dayOfMonth);
 
-                    List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(newCal.getTime()), this.listEventsPacks, this.eventsColorsInMonth);
+                    List<String> dayInfo = eventsData.getDayInfo(ContactsEvents.sdf_java.format(newCal.getTime()), this.listEventsPacks, this.eventsColorsInMonth);
                     this.dayInfo = dayInfo.isEmpty() ? getString(R.string.month_event_empty) : TextUtils.join(Constants.HTML_BR, dayInfo);
                     this.dayCaption = getString(R.string.month_event_popup_prefix)
                             .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(newCal.getTime()), ContactsEvents.FormatDate.WithYear))
@@ -302,7 +302,7 @@ public class WidgetCalendarPopup extends Activity {
                 newCal.setTimeInMillis(millis);
                 newCal.add(Calendar.DAY_OF_YEAR, -1);
 
-                List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(newCal.getTime()), this.listEventsPacks, this.eventsColorsInMonth);
+                List<String> dayInfo = eventsData.getDayInfo(ContactsEvents.sdf_java.format(newCal.getTime()), this.listEventsPacks, this.eventsColorsInMonth);
                 this.dayInfo = dayInfo.isEmpty() ? getString(R.string.month_event_empty) : TextUtils.join(Constants.HTML_BR, dayInfo);
                 this.dayCaption = getString(R.string.month_event_popup_prefix)
                         .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(newCal.getTime()), ContactsEvents.FormatDate.WithYear))
@@ -320,7 +320,7 @@ public class WidgetCalendarPopup extends Activity {
                 newCal.setTimeInMillis(millis);
                 newCal.add(Calendar.DAY_OF_YEAR, +1);
 
-                List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(newCal.getTime()), this.listEventsPacks, this.eventsColorsInMonth);
+                List<String> dayInfo = eventsData.getDayInfo(ContactsEvents.sdf_java.format(newCal.getTime()), this.listEventsPacks, this.eventsColorsInMonth);
                 this.dayInfo = dayInfo.isEmpty() ? getString(R.string.month_event_empty) : TextUtils.join(Constants.HTML_BR, dayInfo);
                 this.dayCaption = getString(R.string.month_event_popup_prefix)
                         .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(newCal.getTime()), ContactsEvents.FormatDate.WithYear))

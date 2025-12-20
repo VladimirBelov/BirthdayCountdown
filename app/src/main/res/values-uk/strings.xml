@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.12.2025, 01:54
+  ~  * Created by Vladimir Belov on 21.12.2025, 01:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.12.2025, 23:05
+  ~  * Last modified 21.12.2025, 01:43
   ~  */
   -->
 
@@ -151,6 +151,7 @@
     <string name="msg_hint_search">Шукати в списку</string>
     <string name="msg_hint_search_all">Шукати всюди</string>
     <string name="msg_hint_global_search">Пошук подій</string>
+    <string name="msg_hint_faq_search">Пошук у тексті…</string>
     <string name="msg_notifications_soon_no_events">Немає подій за вибрані дні</string>
     <string name="msg_notifications_soon">"Незабаром подій - "</string>
     <string name="msg_notifications_all">"Подій - "</string>
@@ -233,6 +234,8 @@
     <string name="hint_Rate_PlayMarket">Оцініть цю програму на Google Play</string>
     <string name="hint_Rate_OtherAppStore">"Оцініть цю програму в %s"</string>
     <string name="hint_Color">Значення ARGB</string>
+    <string name="hint_Prev">Попередній збіг</string>
+    <string name="hint_Next">Наступний збіг</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Так</string>
@@ -1185,8 +1188,26 @@
     <string name="pref_Tools_LocalEvents_Export_result">Експортовано подій: %1$d</string>
     <string name="pref_Tools_LocalEvents_Clear_title">Очистити локальні події</string>
     <string name="pref_Tools_LocalEvents_Restore_title">Імпорт місцевих подій</string>
-    <string name="pref_Tools_Events_Import_title">Імпорт подій файлу</string>
     <string name="pref_Tools_LocalEvents_Restore_result">Імпортовано подій: %1$d, пропущено: %2$d, помилок: %3$d</string>
+    <string name="pref_Tools_Events_Import_title">Імпорт подій файлу</string>
+    <string name="pref_Tools_Events_Import_summary">Виберіть файл для аналізу та імпорту подій (TXT, ICS)…</string>
+    <string name="pref_Tools_Events_Import_Dialog_title">Імпорт подій</string>
+    <string name="pref_Tools_Events_Import_Unrecognized_title">Тип для нерозпізнаних подій:</string>
+    <string name="pref_Tools_Events_Import_Unrecognized_type">- не вибрано -</string>
+    <string name="pref_Tools_Events_Import_result">Імпортовано подій: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_noAccess">🚫 Файл порожній або до нього немає доступу</string>
+    <string name="pref_Tools_Events_Import_result_notSupported">🛑 Ще не підтримується</string>
+    <string name="pref_Tools_Events_Import_result_EventsFound">Знайдено подій: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Типи подій не розпізнано: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsSkipped">Пропущено подій: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsDoubles">Пропущено подвійних подій: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_Error">Помилка: %1$s</string>
+    <string name="pref_Tools_Events_Import_result_Filename">Файл: %1$s</string>
+    <string name="pref_Tools_Events_Import_msg_SelectType">Виберіть тип для усі вибрані нерозпізнані події!</string>
+    <string name="pref_Tools_Events_Import_Button_SelectAll">✅ Все</string>
+    <string name="pref_Tools_Events_Import_Button_SelectNone">⭕ Нічого</string>
+    <string name="pref_Tools_Events_Import_Button_Cancel">❌ Скасувати</string>
+    <string name="pref_Tools_Events_Import_Button_Import">↩️ Імпортувати</string>
 
     <string name="changelog_version"><![CDATA[версія: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>встановлено з %1$s]]></string>

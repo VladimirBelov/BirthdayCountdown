@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.12.2025, 01:54
+  ~  * Created by Vladimir Belov on 21.12.2025, 01:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.12.2025, 23:05
+  ~  * Last modified 21.12.2025, 01:30
   ~  */
   -->
 
@@ -151,6 +151,7 @@
     <string name="msg_hint_search">Hledat v seznamu</string>
     <string name="msg_hint_search_all">Hledejte všude</string>
     <string name="msg_hint_global_search">Vyhledat narozeniny a události</string>
+    <string name="msg_hint_faq_search">Hledat v textu…</string>
     <string name="msg_notifications_soon_no_events">Žádné události pro vybrané dny</string>
     <string name="msg_notifications_soon">"Události brzy - "</string>
     <string name="msg_notifications_all">"Události - "</string>
@@ -233,6 +234,8 @@
     <string name="hint_Rate_PlayMarket">Ohodnoťte tuto aplikaci na Google Play</string>
     <string name="hint_Rate_OtherAppStore">"Ohodnoťte tuto aplikaci v %s"</string>
     <string name="hint_Color">Hodnota ARGB</string>
+    <string name="hint_Prev">Předchozí shoda</string>
+    <string name="hint_Next">Další shoda</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Ano</string>
@@ -1185,8 +1188,26 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="pref_Tools_LocalEvents_Export_result">Exportované události: %1$d</string>
     <string name="pref_Tools_LocalEvents_Clear_title">Vymazat místní události</string>
     <string name="pref_Tools_LocalEvents_Restore_title">Importovat místní události</string>
-    <string name="pref_Tools_Events_Import_title">Události importu souborů</string>
     <string name="pref_Tools_LocalEvents_Restore_result">Importované události: %1$d, vynechané: %2$d, chyby: %3$d</string>
+    <string name="pref_Tools_Events_Import_title">Události importu souborů</string>
+    <string name="pref_Tools_Events_Import_summary">Vyberte soubor pro analýzu a import událostí (TXT, ICS)…</string>
+    <string name="pref_Tools_Events_Import_Dialog_title">Import událostí</string>
+    <string name="pref_Tools_Events_Import_Unrecognized_title">Typ pro nerozpoznané události:</string>
+    <string name="pref_Tools_Events_Import_Unrecognized_type">- nevybráno -</string>
+    <string name="pref_Tools_Events_Import_result">Importováno událostí: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_noAccess">🚫 Soubor je prázdný nebo k němu není přístup</string>
+    <string name="pref_Tools_Events_Import_result_notSupported">🛑 Zatím nepodporováno</string>
+    <string name="pref_Tools_Events_Import_result_EventsFound">Nalezené události: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Typy událostí nerozpoznané: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsSkipped">Přeskočené události: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsDoubles">Přeskočené dvojité události: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_Error">Chyba: %1$s</string>
+    <string name="pref_Tools_Events_Import_result_Filename">Soubor: %1$s</string>
+    <string name="pref_Tools_Events_Import_msg_SelectType">Vyberte typ pro všechny vybrané nerozpoznané události!</string>
+    <string name="pref_Tools_Events_Import_Button_SelectAll">✅ Vybrat vše</string>
+    <string name="pref_Tools_Events_Import_Button_SelectNone">⭕ Nevybrat nic</string>
+    <string name="pref_Tools_Events_Import_Button_Cancel">❌ Zrušit</string>
+    <string name="pref_Tools_Events_Import_Button_Import">↩️ Importovat</string>
 
     <string name="changelog_version"><![CDATA[verze: %1$s (%2$s)<br>sestaveno: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>instalováno z %1$s]]></string>

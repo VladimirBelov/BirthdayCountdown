@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 21.12.2025, 01:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 02:01
+ *  * Last modified 21.12.2025, 01:18
  *
  */
 
@@ -11,20 +11,17 @@ package org.vovka.birthdaycountdown;
 import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 import android.annotation.SuppressLint;
-import android.app.LocaleManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.LocaleList;
 import android.provider.CalendarContract;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -70,8 +67,6 @@ public class WidgetCalendar extends AppWidgetProvider {
     private boolean colorizeSaturdays;
     private boolean colorizeSundays;
     private boolean enabledFillDays;
-    //private float fontMagnify;
-    //private float fontMagnifyMonthRow = 1; //0.6f;
     private ArrayList<String> prefOtherEvents;
     private int prefOnClickCommon = Constants.onClick_None;
     private int prefOnClickHolidays = Constants.onClick_None;
@@ -174,36 +169,13 @@ public class WidgetCalendar extends AppWidgetProvider {
                 widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             }
 
+            eventsData.initLanguage(context);
+
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
                 eventsData.getPreferences();
-                eventsData.setLocale(true);
                 eventsData.getEvents();
             }
-
-            //Без этого на Android 8 и 9 не меняет динамически язык
-            Locale locale;
-            if (eventsData.preferences_language.equals(context.getString(R.string.pref_Language_default))) {
-                locale = new Locale(eventsData.systemLocale);
-            } else {
-                locale = new Locale(eventsData.preferences_language);
-            }
-            Resources applicationRes = context.getResources();
-            Configuration applicationConf = applicationRes.getConfiguration();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    LocaleList list = context.getSystemService(LocaleManager.class).getApplicationLocales();
-                    if (!list.isEmpty()) {
-                        locale = context.getSystemService(LocaleManager.class).getApplicationLocales().get(0);
-                    }
-                }
-                applicationConf.setLocales(new android.os.LocaleList(locale));
-            } else {
-                applicationConf.setLocale(locale);
-            }
-            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-
-            eventsData.setLocale(true);
 
             int columnsMax = 4;
             int columnsToDraw = 3;
@@ -430,7 +402,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             //Заголовок
-            int colorMonthTitle = res.getColor(R.color.pref_Widgets_Color_Calendar_MonthTitle_default);
+            @ColorInt int colorMonthTitle = res.getColor(R.color.pref_Widgets_Color_Calendar_MonthTitle_default);
             if (widgetPref.size() > 9 && !widgetPref.get(9).isEmpty()) {
                 try {
                     colorMonthTitle = Color.parseColor(widgetPref.get(9));
@@ -828,7 +800,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify_Days);
 
             //Цвет дня
-            List<ContactsEvents.DayType> dayTypes = eventsData.getDayTypes(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents);
+            List<ContactsEvents.DayType> dayTypes = eventsData.getDayTypes(ContactsEvents.sdf_java.format(cal.getTime()), prefOtherEvents);
 
             boolean isColoredByEvent = false;
             if (!dayTypes.isEmpty()) {
@@ -925,7 +897,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             if (action == Constants.onClick_Popup) {
-                List<String> dayInfo = eventsData.getDayInfo(eventsData.sdf_java.format(cal.getTime()), prefOtherEvents, eventsColorsInMonth);
+                List<String> dayInfo = eventsData.getDayInfo(ContactsEvents.sdf_java.format(cal.getTime()), prefOtherEvents, eventsColorsInMonth);
                 if (!dayInfo.isEmpty()) {
                     Intent intent = new Intent(context, WidgetCalendarPopup.class);
                     SimpleDateFormat sdf = new SimpleDateFormat(" (EEE)", Locale.getDefault());

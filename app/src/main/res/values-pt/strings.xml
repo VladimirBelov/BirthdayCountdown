@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.12.2025, 01:54
+  ~  * Created by Vladimir Belov on 21.12.2025, 01:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.12.2025, 23:05
+  ~  * Last modified 21.12.2025, 01:42
   ~  */
   -->
 
@@ -151,6 +151,7 @@
     <string name="msg_hint_search">Pesquisar na lista</string>
     <string name="msg_hint_search_all">Pesquisar em todos os lugares</string>
     <string name="msg_hint_global_search">Pesquisar aniversários e eventos</string>
+    <string name="msg_hint_faq_search">Pesquisar no texto…</string>
     <string name="msg_notifications_soon_no_events">Nenhum evento nos dias escolhidos</string>
     <string name="msg_notifications_soon">"Eventos em breve - "</string>
     <string name="msg_notifications_all">"Eventos - "</string>
@@ -233,6 +234,8 @@
     <string name="hint_Rate_PlayMarket">Avalie este aplicativo no Google Play</string>
     <string name="hint_Rate_OtherAppStore">"Avalie este aplicativo na %s"</string>
     <string name="hint_Color">Valor ARGB</string>
+    <string name="hint_Prev">Partida anterior</string>
+    <string name="hint_Next">Próxima partida</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Sim</string>
@@ -1185,8 +1188,26 @@ Clique longamente no item para selecionar a cor"</string>
     <string name="pref_Tools_LocalEvents_Export_result">Eventos exportados: %1$d</string>
     <string name="pref_Tools_LocalEvents_Clear_title">Limpar eventos locais</string>
     <string name="pref_Tools_LocalEvents_Restore_title">Importar eventos locais</string>
-    <string name="pref_Tools_Events_Import_title">Importar eventos de arquivo</string>
     <string name="pref_Tools_LocalEvents_Restore_result">Eventos importados: %1$d, ignorados: %2$d, erros: %3$d</string>
+    <string name="pref_Tools_Events_Import_title">Importar eventos de arquivo</string>
+    <string name="pref_Tools_Events_Import_summary">Selecione o arquivo para análise e importação de eventos (TXT, ICS)…</string>
+    <string name="pref_Tools_Events_Import_Dialog_title">Importação de eventos</string>
+    <string name="pref_Tools_Events_Import_Unrecognized_title">Tipo para eventos não reconhecidos:</string>
+    <string name="pref_Tools_Events_Import_Unrecognized_type">- não selecionado -</string>
+    <string name="pref_Tools_Events_Import_result">Eventos importados: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_noAccess">🚫 Arquivo vazio ou sem acesso</string>
+    <string name="pref_Tools_Events_Import_result_notSupported">🛑 Ainda não suportado</string>
+    <string name="pref_Tools_Events_Import_result_EventsFound">Eventos encontrados: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Tipos de eventos não reconhecidos: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsSkipped">Eventos ignorados: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsDoubles">Duplos ignorados: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_Error">Erro: %1$s</string>
+    <string name="pref_Tools_Events_Import_result_Filename">Arquivo: %1$s</string>
+    <string name="pref_Tools_Events_Import_msg_SelectType">Escolha o tipo para todos os eventos não reconhecidos selecionados!</string>
+    <string name="pref_Tools_Events_Import_Button_SelectAll">✅ Tudo</string>
+    <string name="pref_Tools_Events_Import_Button_SelectNone">⭕ Nada</string>
+    <string name="pref_Tools_Events_Import_Button_Cancel">❌ Cancelar</string>
+    <string name="pref_Tools_Events_Import_Button_Import">↩️ Importar</string>
 
     <string name="changelog_version"><![CDATA[versão: %1$s (%2$s)<br>construído: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>instalado de %1$s]]></string>

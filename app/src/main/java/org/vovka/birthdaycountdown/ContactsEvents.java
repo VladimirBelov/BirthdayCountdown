@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.12.2025, 01:54
+ *  * Created by Vladimir Belov on 21.12.2025, 01:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 20.12.2025, 01:36
+ *  * Last modified 21.12.2025, 01:18
  *
  */
 
@@ -253,7 +253,6 @@ public class ContactsEvents {
      * @param typeStr Идентификатор типа события
      * @return Хранимый Id типа события
      */
-    @NonNull
     static int getEventTypeInt(@NonNull String typeStr) {
         for (Map.Entry<Integer, String> entry : eventTypesIDs.entrySet()) {
             if (Objects.equals(typeStr, entry.getValue())) {
@@ -625,7 +624,9 @@ public class ContactsEvents {
     }
 
     static class Event {
+        /** Наименование события */
         String caption = Constants.STRING_EMPTY;
+        /** Заголовок пользовательского события */
         String label = Constants.STRING_EMPTY;
         String type = Constants.STRING_EMPTY;
         String subType = Constants.STRING_EMPTY;
@@ -1040,6 +1041,37 @@ public class ContactsEvents {
                 }
             }
             applicationConf.setLocales(new LocaleList(locale));
+        } else {
+            applicationConf.setLocale(locale);
+        }
+        applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+
+        setLocale(true);
+    }
+
+    /** Устанавливает язык для текущей активности
+     * @param context Контекст
+     */
+    void initLanguage(@NonNull Context context) {
+        if (getContext() == null) setContext(context.getApplicationContext());
+
+        //Без этого на Android 8 и 9 не меняет динамически язык
+        Locale locale;
+        if (preferences_language.equals(context.getString(R.string.pref_Language_default))) {
+            locale = new Locale(systemLocale);
+        } else {
+            locale = new Locale(preferences_language);
+        }
+        Resources applicationRes = context.getResources();
+        Configuration applicationConf = applicationRes.getConfiguration();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                LocaleList list = context.getSystemService(LocaleManager.class).getApplicationLocales();
+                if (!list.isEmpty()) {
+                    locale = context.getSystemService(LocaleManager.class).getApplicationLocales().get(0);
+                }
+            }
+            applicationConf.setLocales(new android.os.LocaleList(locale));
         } else {
             applicationConf.setLocale(locale);
         }
@@ -5693,6 +5725,12 @@ public class ContactsEvents {
         return unrecognizedEvent;
     }
 
+    /** Создаёт событие указанного типа с предопределёнными атрибутами
+     * @param eventType Тип события
+     * @param eventLabel Заголовок пользовательского события
+     * @param eventSource Источник события (используется для установки наименования для "Другое событие")
+     * @return Предзаполненное событие
+     */
     @NonNull
     Event createTypedEvent(int eventType, @NonNull String eventLabel, int eventSource) {
 
@@ -5852,6 +5890,24 @@ public class ContactsEvents {
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return event;
+    }
+
+    /** Является ли тип события событием контакта
+     * @param eventType Тип события
+     * @return true, false
+     */
+    static boolean isContactEventType(int eventType) {
+        return eventType == Constants.Type_BirthDay ||
+                eventType == Constants.Type_Death ||
+                eventType == Constants.Type_Anniversary ||
+                eventType == Constants.Type_NameDay ||
+                eventType == Constants.Type_Crowning ||
+                eventType == Constants.Type_Another ||
+                eventType == Constants.Type_Custom1 ||
+                eventType == Constants.Type_Custom2 ||
+                eventType == Constants.Type_Custom3 ||
+                eventType == Constants.Type_Custom4 ||
+                eventType == Constants.Type_Custom5;
     }
 
     @NonNull

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.12.2025, 01:54
+ *  * Created by Vladimir Belov on 21.12.2025, 01:45
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 20.12.2025, 01:45
+ *  * Last modified 21.12.2025, 00:58
  *
  */
 
@@ -153,7 +153,7 @@ public class EventImporterActivity extends AppCompatActivity {
                     recyclerView.setAdapter(adapter);
                     recyclerView.setVisibility(View.VISIBLE);
 
-                    buttonSelectAll.setText("✅ Все");
+                    buttonSelectAll.setText(R.string.pref_Tools_Events_Import_Button_SelectAll);
                     addClickEffect(buttonSelectAll);
                     buttonSelectAll.setVisibility(View.VISIBLE);
                     buttonSelectAll.setOnClickListener(v -> {
@@ -162,7 +162,7 @@ public class EventImporterActivity extends AppCompatActivity {
                         restoreRecyclerViewScrollPosition();
                     });
 
-                    buttonSelectNone.setText("⭕ Ни одного");
+                    buttonSelectNone.setText(R.string.pref_Tools_Events_Import_Button_SelectNone);
                     addClickEffect(buttonSelectNone);
                     buttonSelectNone.setVisibility(View.VISIBLE);
                     buttonSelectNone.setOnClickListener(v -> {
@@ -171,7 +171,7 @@ public class EventImporterActivity extends AppCompatActivity {
                         restoreRecyclerViewScrollPosition();
                     });
 
-                    buttonImport.setText("↩️ Импорт");
+                    buttonImport.setText(R.string.pref_Tools_Events_Import_Button_Import);
                     addClickEffect(buttonImport);
                     buttonImport.setVisibility(View.VISIBLE);
                     buttonImport.setOnClickListener(v -> doImport());
@@ -198,7 +198,7 @@ public class EventImporterActivity extends AppCompatActivity {
                 }
             }
 
-            buttonCancel.setText("❌ Отмена");
+            buttonCancel.setText(R.string.pref_Tools_Events_Import_Button_Cancel);
             addClickEffect(buttonCancel);
             buttonCancel.setVisibility(View.VISIBLE);
             buttonCancel.setOnClickListener(this::buttonCancelOnClick);
@@ -253,18 +253,18 @@ public class EventImporterActivity extends AppCompatActivity {
 
         try {
 
-            details.add("Файл: " + eventsData.getPath(this, uri));
+            details.add(getString(R.string.pref_Tools_Events_Import_result_Filename, eventsData.getPath(this, uri)));
             String fileContent = Constants.STRING_EMPTY;
 
             if (uri != null) fileContent = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL);
 
             if (fileContent.isEmpty()) {
-                details.add("🚫 Файл пустой или нет доступа");
+                details.add(getString(R.string.pref_Tools_Events_Import_result_noAccess));
                 return eventsList;
             }
 
             if (fileContent.startsWith(Constants.iCal_CalendarBegin)) {
-                details.add("🛑 Пока не поддерживается");
+                details.add(getString(R.string.pref_Tools_Events_Import_result_notSupported));
 
             } else {
 
@@ -550,19 +550,19 @@ public class EventImporterActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            details.add("Ошибка: " + e.getMessage());
+            details.add(getString(R.string.pref_Tools_Events_Import_result_Error, e.getMessage()));
         } finally {
             if (!eventsList.isEmpty()) {
-                details.add("Событий найдено: " + eventsList.size());
+                details.add(getString(R.string.pref_Tools_Events_Import_result_EventsFound, eventsList.size()));
             }
             if (statEventsUnRecognized > 0) {
-                details.add("Типов событий не распознано: " + statEventsUnRecognized);
+                details.add(getString(R.string.pref_Tools_Events_Import_result_EventsUnrecognized, statEventsUnRecognized));
             }
             if (statEventsSkipped > 0) {
-                details.add("Событий пропущено: " + statEventsSkipped);
+                details.add(getString(R.string.pref_Tools_Events_Import_result_EventsSkipped, statEventsSkipped));
             }
             if (statEventsDoubles > 0) {
-                details.add("Дублей пропущено: " + statEventsDoubles);
+                details.add(getString(R.string.pref_Tools_Events_Import_result_EventsDoubles, statEventsDoubles));
             }
             eventsList.add(0, String.join(Constants.STRING_EOL, details));
         }
@@ -588,7 +588,7 @@ public class EventImporterActivity extends AppCompatActivity {
                     }
                 }
                if (unrecognizedSelected) {
-                   Toast.makeText(this, "Выберите тип для нераспознанных событий!", Toast.LENGTH_LONG).show();
+                   Toast.makeText(this, getString(R.string.pref_Tools_Events_Import_msg_SelectType), Toast.LENGTH_LONG).show();
                    return;
                }
             }
@@ -600,8 +600,55 @@ public class EventImporterActivity extends AppCompatActivity {
                     if (ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
                             .equals(ContactsEvents.getEventType(Constants.Type_Unrecognized))) {
 
-                        eventData.put(ContactsEvents.Position_eventType, String.valueOf(eventTypesIds.get(selectedEventTypeIndex)));
+                        Integer eventTypeInt = eventTypesIds.get(selectedEventTypeIndex);
+                        eventData.put(ContactsEvents.Position_eventType, String.valueOf(eventTypeInt));
                         eventData.put(ContactsEvents.Position_eventSubType, String.valueOf(eventSubTypesIds.get(selectedEventTypeIndex)));
+
+                        //Если выбран тип событий контакта, ещё раз пробуем распарсить Организацию, Должность и Имя
+                        if (ContactsEvents.isContactEventType(eventTypeInt)) {
+                            String eventTitle = eventData.get(ContactsEvents.Position_personFullName);
+                            if (eventTitle != null) {
+                                //всё, что внутри скобок в имени - в должность и организацию
+                                int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
+                                int pStartLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_START);
+                                int pEndFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                                int pEndLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                                String contactTitle = null;
+
+                                if (pStartFirst > -1 && pEndFirst > pStartFirst) { //хотя бы пара скобок
+                                    if (pStartFirst == pStartLast && pEndFirst == pEndLast) { //одна пара скобок
+                                        contactTitle = eventTitle.substring(pStartFirst + 1, pEndFirst);
+                                        eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                                    } else if (pStartLast < pEndFirst && pStartLast < pEndLast) { //скобки внутри скобок
+                                        contactTitle = eventTitle.substring(pStartFirst + 1, pEndLast);
+                                        eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                                    } else if (pEndFirst < pStartLast) { //пара скобок за другой парой
+                                        contactTitle = eventTitle.substring(pStartLast + 1, pEndLast);
+                                        eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                                    }
+                                    if (contactTitle != null) {
+                                        int cStart = contactTitle.indexOf(Constants.STRING_COMMA);
+                                        if (cStart > 0) {
+                                            eventData.put(ContactsEvents.Position_organization, contactTitle.substring(0, cStart).trim());
+                                            eventData.put(ContactsEvents.Position_title, contactTitle.substring(cStart + 1).trim());
+                                        } else {
+                                            eventData.put(ContactsEvents.Position_title, contactTitle.trim());
+                                        }
+                                    }
+                                }
+
+                                if (eventsData.preferences_rules_files_name_format == ContactsEvents.FormatName.LastnameFirst) {
+                                    eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
+                                    String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, this);
+                                    eventData.put(ContactsEvents.Position_personFullName, personFullNameAlt);
+                                } else {
+                                    eventData.put(ContactsEvents.Position_personFullName, eventTitle);
+                                    String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst, this);
+                                    eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
+                                }
+                            }
+                        }
+
                     } else {
                         //Обратное преобразование типа события в хранимый id
                         String typeStr = eventData.get(ContactsEvents.Position_eventType);
@@ -792,10 +839,10 @@ public class EventImporterActivity extends AppCompatActivity {
         }
 
         static class EventViewHolder extends RecyclerView.ViewHolder {
-            CheckBox checkbox;
-            ImageView icon;
-            TextView title;
-            TextView subtitle;
+            final CheckBox checkbox;
+            final ImageView icon;
+            final TextView title;
+            final TextView subtitle;
 
             EventViewHolder(@NonNull View itemView) {
                 super(itemView);

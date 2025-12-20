@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.12.2025, 01:54
+  ~  * Created by Vladimir Belov on 21.12.2025, 01:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.12.2025, 23:05
+  ~  * Last modified 21.12.2025, 01:37
   ~  */
   -->
 
@@ -151,6 +151,7 @@
     <string name="msg_hint_search">Шукаць у спісе</string>
     <string name="msg_hint_search_all">Шукаць усюды</string>
     <string name="msg_hint_global_search">Пошук падзей</string>
+    <string name="msg_hint_faq_search">Пошук у тэксце…</string>
     <string name="msg_notifications_soon_no_events">Няма падзей у абраныя дні</string>
     <string name="msg_notifications_soon">"Падзей хутка - "</string>
     <string name="msg_notifications_all">"Падзей - "</string>
@@ -233,6 +234,8 @@
     <string name="hint_Rate_PlayMarket">Ацаніць праграму ў Google Play</string>
     <string name="hint_Rate_OtherAppStore">"Ацаніць праграму ў %s"</string>
     <string name="hint_Color">Значэнне ў ARGB</string>
+    <string name="hint_Prev">Папярэдні супадзенне</string>
+    <string name="hint_Next">Наступнае супадзенне</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Так</string>
@@ -1184,8 +1187,26 @@
     <string name="pref_Tools_LocalEvents_Export_result">Экспартаваныя падзеі: %1$d</string>
     <string name="pref_Tools_LocalEvents_Clear_title">Ачысціць лакальныя падзеі</string>
     <string name="pref_Tools_LocalEvents_Restore_title">Імпарт мясцовых падзей</string>
-    <string name="pref_Tools_Events_Import_title">Імпартаваць падзеі файла</string>
     <string name="pref_Tools_LocalEvents_Restore_result">Імпартаваныя падзеі: %1$d, прапушчаныя: %2$d, памылкі: %3$d</string>
+    <string name="pref_Tools_Events_Import_title">Імпартаваць падзеі файла</string>
+    <string name="pref_Tools_Events_Import_summary">Выбраць файл для аналізу і імпарту падзей (TXT, ICS)…</string>
+    <string name="pref_Tools_Events_Import_Dialog_title">Імпарт падзей</string>
+    <string name="pref_Tools_Events_Import_Unrecognized_title">Тып для нераспазнаных падзей:</string>
+    <string name="pref_Tools_Events_Import_Unrecognized_type">- не выбрана -</string>
+    <string name="pref_Tools_Events_Import_result">Імпартавана падзей: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_noAccess">🚫 Файл пусты або няма доступу</string>
+    <string name="pref_Tools_Events_Import_result_notSupported">🛑 Пакуль не падтрымліваецца</string>
+    <string name="pref_Tools_Events_Import_result_EventsFound">Знойдзена падзей: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Тыпы падзей нераспазнаныя: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsSkipped">Прапушчаныя падзеі: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsDoubles">Прапушчаныя падвойныя падзеі: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_Error">Памылка: %1$s</string>
+    <string name="pref_Tools_Events_Import_result_Filename">Файл: %1$s</string>
+    <string name="pref_Tools_Events_Import_msg_SelectType">Выберыце тып для усе выбраныя нераспазнаныя падзеі!</string>
+    <string name="pref_Tools_Events_Import_Button_SelectAll">✅ Выбраць усе</string>
+    <string name="pref_Tools_Events_Import_Button_SelectNone">⭕ Нічога</string>
+    <string name="pref_Tools_Events_Import_Button_Cancel">❌ Адмена</string>
+    <string name="pref_Tools_Events_Import_Button_Import">↩️ Імпартаваць</string>
 
     <string name="changelog_version"><![CDATA[версія: %1$s (%2$s)<br>дата: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>усталявана з %1$s]]></string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.12.2025, 01:54
+  ~  * Created by Vladimir Belov on 21.12.2025, 01:45
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.12.2025, 23:05
+  ~  * Last modified 21.12.2025, 01:39
   ~  */
   -->
 
@@ -151,6 +151,7 @@
     <string name="msg_hint_search">Rechercher dans la liste</string>
     <string name="msg_hint_search_all">Rechercher partout</string>
     <string name="msg_hint_global_search">Rechercher des anniversaires et des événements</string>
+    <string name="msg_hint_faq_search">Rechercher dans le texte…</string>
     <string name="msg_notifications_soon_no_events">Aucun événement pour les jours sélectionnés</string>
     <string name="msg_notifications_soon">"Événements bientôt - "</string>
     <string name="msg_notifications_all">"Événements - "</string>
@@ -233,6 +234,8 @@
     <string name="hint_Rate_PlayMarket">"Évaluez l'application sur Google Play"</string>
     <string name="hint_Rate_OtherAppStore">"Évaluez l'application sur %s"</string>
     <string name="hint_Color">Valeur dans ARVB</string>
+    <string name="hint_Prev">Match précédent</string>
+    <string name="hint_Next">Match suivant</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Oui</string>
@@ -1185,8 +1188,26 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
     <string name="pref_Tools_LocalEvents_Export_result">Événements exportés: %1$d</string>
     <string name="pref_Tools_LocalEvents_Clear_title">Effacer les événements locaux</string>
     <string name="pref_Tools_LocalEvents_Restore_title">Importer les événements locaux</string>
-    <string name="pref_Tools_Events_Import_title">Importer les événements de fichiers</string>
     <string name="pref_Tools_LocalEvents_Restore_result">Événements importés: %1$d, ignorés: %2$d, erreurs: %3$d</string>
+    <string name="pref_Tools_Events_Import_title">Importer les événements de fichiers</string>
+    <string name="pref_Tools_Events_Import_summary">Sélectionnez le fichier à analyser et à importer (TXT, ICS)…</string>
+    <string name="pref_Tools_Events_Import_Dialog_title">Importation des événements</string>
+    <string name="pref_Tools_Events_Import_Unrecognized_title">Type pour les événements non reconnus:</string>
+    <string name="pref_Tools_Events_Import_Unrecognized_type">- non sélectionné -</string>
+    <string name="pref_Tools_Events_Import_result">Événements importés: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_noAccess">🚫 Fichier vide ou accès impossible</string>
+    <string name="pref_Tools_Events_Import_result_notSupported">🛑 Non pris en charge pourtant</string>
+    <string name="pref_Tools_Events_Import_result_EventsFound">Événements trouvés: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsUnrecognized">"Types d'événements non reconnus: %1$d"</string>
+    <string name="pref_Tools_Events_Import_result_EventsSkipped">Événements ignorés: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_EventsDoubles">Doubles ignorés: %1$d</string>
+    <string name="pref_Tools_Events_Import_result_Error">Erreur: %1$s</string>
+    <string name="pref_Tools_Events_Import_result_Filename">Fichier: %1$s</string>
+    <string name="pref_Tools_Events_Import_msg_SelectType">Choisissez le type pour tous les événements non reconnus sélectionnés!</string>
+    <string name="pref_Tools_Events_Import_Button_SelectAll">✅ Tous</string>
+    <string name="pref_Tools_Events_Import_Button_SelectNone">⭕ Rien</string>
+    <string name="pref_Tools_Events_Import_Button_Cancel">❌ Annuler</string>
+    <string name="pref_Tools_Events_Import_Button_Import">↩️ Importer</string>
 
     <string name="changelog_version"><![CDATA[version: %1$s (%2$s)<br>construit: %3$s]]></string>
     <string name="changelog_installer"><![CDATA[<br>installé à partir de %1$s]]></string>
