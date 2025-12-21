@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.12.2025, 16:55
+  ~  * Created by Vladimir Belov on 21.12.2025, 17:21
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.12.2025, 16:52
+  ~  * Last modified 21.12.2025, 16:58
   ~  */
   -->
 
@@ -17,7 +17,7 @@
         <item>Dateiereignisse können nun Kontakten zugeordnet werden (wie bei Kalenderereignissen), aktuell nur für Geburtstage</item>
         <item>Lokales Ereignis aus einem anderen ausgewählten Ereignis erstellen</item>
         <item>Daten in allen ähnlichen lokalen Ereignissen beim Speichern aktualisieren</item>
-        <item>Ereignisse aus Dateien importieren</item>
+        <item>↩️ Ereignisse aus Dateien importieren</item>
         <item>Suche nach Referenzinformationen hinzugefügt</item>
         <item>🏖️ Feiertage für 2026 hinzugefügt</item>
         <item>Fehlerbehebungen</item>

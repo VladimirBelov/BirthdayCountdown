@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.12.2025, 16:55
+  ~  * Created by Vladimir Belov on 21.12.2025, 17:21
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.12.2025, 16:49
+  ~  * Last modified 21.12.2025, 16:58
   ~  */
   -->
 
@@ -17,7 +17,7 @@
         <item>Added the ability to attach file events to contacts (as is done for calendar events), currently only for birthdays</item>
         <item>Create a local event from another selected one</item>
         <item>Update data in all similar local events when saving</item>
-        <item>Import events from files</item>
+        <item>↩️ Import events from files</item>
         <item>Added search for reference information</item>
         <item>🏖️ Added holidays for 2026</item>
         <item>Bug fixes</item>

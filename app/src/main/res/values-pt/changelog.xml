@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.12.2025, 16:55
+  ~  * Created by Vladimir Belov on 21.12.2025, 17:21
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.12.2025, 16:55
+  ~  * Last modified 21.12.2025, 16:58
   ~  */
   -->
 
@@ -16,7 +16,7 @@
         <item>Adicionada a capacidade de anexar eventos de arquivo a contatos (como é feito para eventos de calendário), atualmente apenas para aniversários</item>
         <item>Criar um evento local a partir de outro selecionado</item>
         <item>Atualizar dados em todos os eventos locais semelhantes ao salvar</item>
-        <item>Importar eventos de arquivos</item>
+        <item>↩️ Importar eventos de arquivos</item>
         <item>Adicionada busca por informações de referência</item>
         <item>🏖️ Adicionados feriados para 2026</item>
         <item>Correções de bugs</item>
