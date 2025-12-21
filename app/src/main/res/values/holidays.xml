@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.06.2024, 18:10
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 26.06.2024, 18:10
+  ~  * Created by Vladimir Belov on 21.12.2025, 16:55
+  ~  * Copyright (c) 2018 - 2025. All rights reserved.
+  ~  * Last modified 21.12.2025, 16:36
   ~  */
   -->
 
@@ -13,7 +13,13 @@
         <item>🇷🇺 Производственный календарь</item>
         <item>"//Ежегодные
         01.01.0000,! Новогодние каникулы
+        02.01.0000,! Новогодние каникулы
+        03.01.0000,! Новогодние каникулы
+        04.01.0000,! Новогодние каникулы
+        05.01.0000,! Новогодние каникулы
+        06.01.0000,! Новогодние каникулы
         07.01.0000,! Рождество Христово
+        08.01.0000,! Новогодние каникулы
         23.02.0000,! День Защитника Отечества
         08.03.0000,! Международный женский день
         01.05.0000,! Праздник Весны и Труда
@@ -21,22 +27,10 @@
         12.06.0000,! День России
         04.11.0000,! День народного единства"</item>
         <item>"//2023 https://www.consultant.ru/law/ref/calendar/proizvodstvennye/2023/
-        02.01.2023,!1 Новогодние каникулы
-        03.01.2023,!1 Новогодние каникулы
-        04.01.2023,!1 Новогодние каникулы
-        05.01.2023,!1 Новогодние каникулы
-        06.01.2023,!1 Новогодние каникулы
-        08.01.2023,!1 Новогодние каникулы
         24.02.2023,!1 Перенос с воскресенья 1 января на пятницу
         08.05.2023,!1 Перенос с воскресенья 8 января на понедельник
         06.11.2023,!1 Перенос с субботы 4 ноября на понедельник"</item>
         <item>"//2024 https://www.consultant.ru/law/ref/calendar/proizvodstvennye/2024/  https://hh.ru/calendar
-        02.01.2024,!1 Новогодние каникулы
-        03.01.2024,!1 Новогодние каникулы
-        04.01.2024,!1 Новогодние каникулы
-        05.01.2024,!1 Новогодние каникулы
-        06.01.2024,!1 Новогодние каникулы
-        08.01.2024,!1 Новогодние каникулы
         27.04.2024,?1 Рабочая суббота за 29 апреля
         29.04.2024,!1 Перенос с субботы 27 апреля на понедельник
         30.04.2024,!1 Перенос с субботы 2 ноября на вторник
@@ -46,87 +40,76 @@
         30.12.2024,!1 Перенос с субботы 28 декабря на понедельник
         31.12.2024,!1 Перенос с воскресенья 7 января на вторник"</item>
         <item>"//2025 https://www.consultant.ru/law/ref/calendar/proizvodstvennye/2025/
-        02.01.2025,!1 Новогодние каникулы
-        03.01.2025,!1 Новогодние каникулы
-        04.01.2025,!1 Новогодние каникулы
-        05.01.2025,!1 Новогодние каникулы
-        06.01.2025,!1 Новогодние каникулы
-        08.01.2025,!1 Новогодние каникулы
         02.05.2025,!1 Перенос с субботы 4 января на пятницу
         08.05.2025,!1 Перенос с воскресенья 23 февраля на четверг
         13.06.2025,!1 Перенос с субботы 8 марта на пятницу
         01.11.2025,?1 Рабочая суббота за 3 ноября
         03.11.2025,!1 Перенос с субботы 1 ноября на понедельник
         31.12.2025,!1 Перенос с воскресенья 5 января на среду"</item>
+        <item>"//2026 https://www.consultant.ru/law/ref/calendar/proizvodstvennye/2026/
+        09.01.2026,!1 Перенос с субботы 3 января на пятницу
+        09.03.2026,!1 Перенос с воскресенья 8 марта на понедельник
+        11.05.2026,!1 Перенос с субботы 9 мая на понедельник
+        31.12.2026,!1 Перенос с воскресенья 4 января на четверг"</item>
     </string-array>
 
     <string-array name="holidays2" translatable="false" tools:ignore="UnusedResources">
         <item>🇩🇪 Gesetzliche Feiertage</item>
         <item>"//Jährlich
         01.01.0000,! Neujahrstag
-        06.01.0000,! Heilige Drei Könige"</item>
+        06.01.0000,! Heilige Drei Könige
+        08.03.0000,! Internationaler Frauentag
+        01.05.0000,! Tag der Arbeit
+        08.08.0000,? Augsburger Friedensfest
+        15.08.0000,? Mariä Himmelfahrt
+        20.09.0000,? Weltkindertag
+        31.10.0000,? Reformationstag
+        03.10.0000,! Tag der Deutschen Einheit
+        01.11.0000,? Allerheiligen
+        25.12.0000,! Weihnachten
+        26.12.0000,! Zweiter Weihnachtsfeiertag"</item>
         <item>"//2023 https://ru-geld.de/de/holidays/
-        08.03.2024,!1 Internationaler Frauentag
         07.04.2023,!1 Karfreitag
         09.04.2023,!1 Ostern
         10.04.2023,!1 Ostermontag
-        01.05.2023,!1 Tag der Arbeit
         18.05.2023,!1 Christi Himmelfahrt
         28.05.2023,!1 Pfingstsonntag
         29.05.2023,!1 Pfingstmontag
         08.06.2023,?1 Fronleichnam
-        08.08.2023,?1 Augsburger Friedensfest
-        15.08.2023,?1 Mariä Himmelfahrt
-        20.09.2023,?1 Weltkindertag
-        03.10.2023,!1 Tag der Deutschen Einheit
-        31.10.2023,?1 Reformationstag
-        01.11.2023,?1 Allerheiligen
-        22.11.2023,?1 Buß- und Bettag
-        25.12.2023,!1 Weihnachten
-        26.12.2023,!1 Zweiter Weihnachtsfeiertag"</item>
+        22.11.2023,?1 Buß- und Bettag"</item>
         <item>"//2024
-        08.03.2024,!1 Internationaler Frauentag
         29.03.2024,!1 Karfreitag
         31.03.2024,!1 Ostern
         01.04.2024,!1 Ostermontag
-        01.05.2024,!1 Tag der Arbeit
         09.05.2024,!1 Christi Himmelfahrt
         19.05.2024,!1 Pfingstsonntag
         20.05.2024,!1 Pfingstmontag
         30.05.2024,?1 Fronleichnam
-        08.08.2024,?1 Augsburger Friedensfest
-        15.08.2024,?1 Mariä Himmelfahrt
-        20.09.2024,?1 Weltkindertag
-        03.10.2024,!1 Tag der Deutschen Einheit
-        31.10.2024,?1 Reformationstag
-        01.11.2024,?1 Allerheiligen
-        20.11.2024,?1 Buß- und Bettag
-        25.12.2024,!1 Weihnachten
-        26.12.2024,!1 Zweiter Weihnachtsfeiertag"</item>
+        20.11.2024,?1 Buß- und Bettag"</item>
         <item>"//2025
-        08.03.2025,!1 Internationaler Frauentag
         18.04.2025,!1 Karfreitag
         20.04.2025,!1 Ostern
         21.04.2025,!1 Ostermontag
-        01.05.2025,!1 Tag der Arbeit
         29.05.2025,!1 Christi Himmelfahrt
         08.06.2025,!1 Pfingstsonntag
         09.06.2025,!1 Pfingstmontag
         19.06.2025,?1 Fronleichnam
-        08.08.2025,?1 Augsburger Friedensfest
-        15.08.2025,?1 Mariä Himmelfahrt
-        20.09.2025,?1 Weltkindertag
-        03.10.2025,!1 Tag der Deutschen Einheit
-        31.10.2025,?1 Reformationstag
-        01.11.2025,?1 Allerheiligen
-        19.11.2025,?1 Buß- und Bettag
-        25.12.2025,!1 Weihnachten
-        26.12.2025,!1 Zweiter Weihnachtsfeiertag"</item>
+        19.11.2025,?1 Buß- und Bettag"</item>
+        <item>"//2026
+        03.04.2026,!1 Karfreitag
+        05.04.2026,!1 Ostern
+        06.04.2026,!1 Ostermontag
+        14.05.2026,!1 Christi Himmelfahrt
+        24.05.2026,!1 Pfingstsonntag
+        25.05.2026,!1 Pfingstmontag
+        04.06.2026,?1 Fronleichnam
+        18.11.2026,?1 Buß- und Bettag"</item>
     </string-array>
 
     <string-array name="holidays3" translatable="false" tools:ignore="UnusedResources">
         <item>🇺🇦 Виробничий календар</item>
         <item>"//Щорічні
+        01.01.0000,! Новий рік
         08.03.0000,! Жіночий день
         01.05.0000,! День праці
         09.05.0000,! День Перемоги
@@ -145,14 +128,12 @@
         05.06.2023,!1 Трійця
         16.10.2023,!1 Перенесення із суботи 14 жовтня на понеділок"</item>
         <item>"//2024 https://www.buhoblik.org.ua/kadry-zarplata/vremya/4000-4000-osobennosti-kalendarya.html
-        01.01.2024,!1 Новий рік
         08.01.2024,!1 Православне Різдво
         05.05.2024,!1 Великдень
         06.05.2024,!1 Великдень
         24.06.2024,!1 Трійця
         29.07.2024,!1 Перенесення з неділі 28 липня на понеділок"</item>
         <item>"//2025
-        01.01.2025,!1 Новий рік
         07.01.2025,!1 Православне Різдво
         10.03.2025,!1 Перенесення із суботи 8 березня на понеділок
         20.04.2025,!1 Великдень
@@ -161,6 +142,15 @@
         09.06.2025,!1 Перенесення з неділі 8 червня на понеділок
         30.06.2025,!1 Перенесення із суботи 28 червня на понеділок
         25.08.2025,!1 Перенесення з неділі 24 серпня на понеділок"</item>
+        <item>"//2026
+        07.01.2026,!1 Православне Різдво
+        09.03.2026,!1 Перенесення з неділі 8 березня на понеділок
+        12.04.2026,!1 Великдень
+        13.04.2026,!1 Великдень
+        11.05.2026,!1 Перенесення з суботи 9 травня на понеділок
+        31.05.2026,!1 Трійця
+        11.05.2026,!1 Перенесення з неділі 31 травня на понеділок
+        29.06.2026,!1 Перенесення з неділі 28 червня на понеділок"</item>
     </string-array>
 
     <string-array name="holidays4" translatable="false" tools:ignore="UnusedResources">
@@ -193,6 +183,11 @@
         <item>"//2025
         02.01.2025,!1 Новый год
         29.04.2025,!1 Радаўніца (па календары праваслаўнай канфесіі)"</item>
+        <item>"//2026 https://fin.kartoteka.by/work-calendar-2026
+        02.01.2026,!1 Новый год
+        20.04.2026,!1 Перанос з суботы 25 красавіка на панядзелак
+        21.04.2026,!1 Радаўніца
+        25.04.2026,?1 Працоўная субота за 20 красавіка"</item>
     </string-array>
 
     <string-array name="holidays5" translatable="false" tools:ignore="UnusedResources">
@@ -226,6 +221,14 @@
         01.09.2025,!1 Labor Day
         13.10.2025,!1 Columbus Day
         27.11.2025,!1 Thanksgiving"</item>
+        <item>"//2026
+        19.01.2026,!1 Martin Luther King Day
+        16.02.2026,!1 President's Day
+        25.05.2026,!1 Memorial Day
+        03.07.2026,!1 Independence Day (obs.)
+        07.09.2026,!1 Labor Day
+        12.10.2026,!1 Columbus Day
+        26.11.2026,!1 Thanksgiving"</item>
     </string-array>
 
     <string-array name="holidays6" translatable="false" tools:ignore="UnusedResources">
@@ -254,6 +257,12 @@
         05.05.2025,!1 May Day Bank Holiday
         26.05.2025,!1 Spring Bank Holiday
         25.08.2025,!1 Late Summer Bank Holiday"</item>
+        <item>"//2026
+        03.04.2026,!1 Good Friday
+        06.04.2026,!1 Easter Monday
+        04.05.2026,!1 May Day Bank Holiday
+        25.05.2026,!1 Spring Bank Holiday
+        31.08.2026,!1 Late Summer Bank Holiday"</item>
     </string-array>
 
     <string-array name="holidays7" translatable="false" tools:ignore="UnusedResources">
@@ -289,6 +298,16 @@
         02.10.2025,!1 Yom Kippur
         07.10.2025,!1 Sukkot
         14.10.2025,!1 Shemini Atzeret / Simchat Torah"</item>
+        <item>"//2026 https://excelnotes.com/holidays-in-israel-2026/
+        02.04.2026,!1 Pesach
+        08.04.2026,!1 Shvi'i shel Pesach
+        22.04.2026,!1 Yom Ha-Atzmaut
+        22.05.2026,!1 Shavuot
+        12.09.2026,!1 Rosh Hashanah
+        13.09.2026,!1 Rosh Hashanah
+        21.09.2026,!1 Yom Kippur
+        26.09.2026,!1 Sukkot
+        03.10.2026,!1 Shemini Atzeret / Simchat Torah"</item>
     </string-array>
 
     <string-array name="holidays8" translatable="false" tools:ignore="UnusedResources">
@@ -318,6 +337,11 @@
         29.05.2025,!1 Christi Himmelfahrt
         09.06.2025,!1 Pfingstmontag
         19.06.2025,!1 Fronleichnam"</item>
+        <item>"//2026
+        06.04.2026,!1 Ostermontag
+        14.05.2026,!1 Christi Himmelfahrt
+        25.05.2026,!1 Pfingstmontag
+        04.06.2026,!1 Fronleichnam"</item>
     </string-array>
 
     <string-array name="holidays9" translatable="false" tools:ignore="UnusedResources">
@@ -344,6 +368,10 @@
         04.03.2025,!1 Terça-feira de Carnaval
         18.04.2025,!1 Sexta-feira Santa
         19.06.2025,!1 Corpus Christi"</item>
+        <item>"//2026
+        17.02.2026,!1 Terça-feira de Carnaval
+        03.04.2026,!1 Sexta-feira Santa
+        04.06.2026,!1 Corpus Christi"</item>
     </string-array>
 
     <string-array name="holidays10" translatable="false" tools:ignore="UnusedResources">
@@ -370,6 +398,9 @@
         <item>"//2025
         17.04.2025,!1 Jueves santo
         18.04.2025,!1 Viernes Santo"</item>
+        <item>"//2026
+        02.04.2026,!1 Jueves santo
+        03.04.2026,!1 Viernes Santo"</item>
     </string-array>
 
     <string-array name="holidays11" translatable="false" tools:ignore="UnusedResources">
@@ -395,6 +426,10 @@
         21.04.2025,!1 Lundi de Pâques
         29.05.2025,!1 Jeudi de l'Ascension
         09.06.2025,!1 Lundi de la Pentecôte"</item>
+        <item>"//2026 https://publicholidays.fr/fr/
+        06.04.2026,!1 Lundi de Pâques
+        14.05.2026,!1 Jeudi de l'Ascension
+        24.05.2026,!1 Lundi de la Pentecôte"</item>
     </string-array>
 
     <string-array name="holidays12" translatable="false" tools:ignore="UnusedResources">
@@ -415,6 +450,8 @@
         29.03.2024,!1 Good Friday"</item>
         <item>"//2025
         18.04.2025,!1 Good Friday"</item>
+        <item>"//2026
+        03.04.2026,!1 Good Friday"</item>
     </string-array>
 
     <string-array name="holidays13" translatable="false" tools:ignore="UnusedResources">
@@ -447,11 +484,18 @@
         <item>"//2025 https://online.zakon.kz/accountant/Calendars/Holidays/2025
         10.03.2025,!1 Перенос с субботы 8 марта на понедельник
         24.03.2025,!1 Перенос с субботы 22 марта на понедельник
-        25.03.2025,!1 Перенос с субботы 23 марта на вторник
+        25.03.2025,!1 Перенос с воскресенья 23 марта на вторник
         06.06.2024,!1 Первый день Курбан-айта
         07.07.2025,!1 Перенос с воскресенья 6 июля на понедельник
         01.09.2025,!1 Перенос с субботы 30 августа на понедельник
         27.10.2025,!1 Перенос с субботы 25 октября на понедельник"</item>
+        <item>"//2026
+        09.03.2026,!1 Перенос с воскресенья 8 марта на понедельник
+        24.03.2026,!1 Перенос с субботы 21 марта на вторник
+        25.03.2026,!1 Перенос с воскресенья 22 марта на среду
+        11.05.2026,!1 Перенос с субботы 9 мая на понедельник
+        31.08.2026,!1 Перенос с воскресенья 30 августа на понедельник
+        26.10.2026,!1 Перенос с воскресенья 25 октября на понедельник"</item>
     </string-array>
 
     <string-array name="holidays14" translatable="false" tools:ignore="UnusedResources">
@@ -481,6 +525,11 @@
         21.04.2025,!1 Poniedziałek Wielkanocny
         08.06.2025,!1 Zielone Świątki
         19.06.2025,!1 Boże Ciało"</item>
+        <item>"//2026
+        05.04.2026,!1 Niedziela Wielkanocna
+        06.04.2026,!1 Poniedziałek Wielkanocny
+        24.05.2026,!1 Zielone Świątki
+        04.06.2026,!1 Boże Ciało"</item>
     </string-array>
 
     <string-array name="holidays15" translatable="false" tools:ignore="UnusedResources">
@@ -504,6 +553,9 @@
         <item>"//2025 https://publicholidays.cz/2025-dates/
         18.04.2025,!1 Velký pátek
         21.04.2025,!1 Velikonoční pondělí"</item>
+        <item>"//2026
+        03.04.2026,!1 Velký pátek
+        06.04.2026,!1 Velikonoční pondělí"</item>
     </string-array>
 
 </resources>

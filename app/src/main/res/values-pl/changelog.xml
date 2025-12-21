@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
+  ~  * Created by Vladimir Belov on 21.12.2025, 16:55
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 15.10.2025, 23:31
+  ~  * Last modified 21.12.2025, 16:54
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.9</item>
+        <item>🎵 Możliwość wyboru pliku zewnętrznego jako dzwonka powiadomienia</item>
+        <item>Przepisany kod do ustawiania harmonogramów wyświetlania powiadomień, aktualizacji widżetów i funkcji „Przypomnij”</item>
+        <item>Dodano możliwość dołączania zdarzeń z plików do kontaktów (podobnie jak w przypadku zdarzeń w kalendarzu), obecnie tylko dla urodzin</item>
+        <item>Utwórz zdarzenie lokalne z innego wybranego zdarzenia</item>
+        <item>Aktualizuj dane we wszystkich podobnych zdarzeniach lokalnych podczas zapisywania</item>
+        <item>Importuj zdarzenia z plików</item>
+        <item>Dodano wyszukiwanie informacji referencyjnych</item>
+        <item>🏖️ Dodano święta w 2026 roku</item>
+        <item>Poprawki błędów</item>
 
         <item>#1.8.8</item>
         <item>Dodano pola „Opis” i „Link internetowy” do 📅 wydarzeń lokalnych, a także możliwość określania dat w BC</item>

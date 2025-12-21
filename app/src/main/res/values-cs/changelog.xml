@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
+  ~  * Created by Vladimir Belov on 21.12.2025, 16:55
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 15.10.2025, 23:31
+  ~  * Last modified 21.12.2025, 16:52
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.9</item>
+        <item>🎵 Možnost vybrat externí soubor jako vyzváněcí tón oznámení</item>
+        <item>Přepsaný kód pro nastavení plánů zobrazování oznámení, aktualizace widgetů a pro funkci „Připomenout“</item>
+        <item>Přidána možnost připojit události souborů ke kontaktům (stejně jako u událostí v kalendáři), aktuálně pouze pro narozeniny</item>
+        <item>Vytvořit lokální událost z jiné vybrané</item>
+        <item>Aktualizovat data ve všech podobných lokálních událostech při ukládání</item>
+        <item>Importovat události ze souborů</item>
+        <item>Přidáno vyhledávání referenčních informací</item>
+        <item>🏖️ Přidány svátky pro rok 2026</item>
+        <item>Opravy chyb</item>
 
         <item>#1.8.8</item>
         <item>Do 📅 místních událostí přidána pole „Popis“ a „Webový odkaz“ spolu s možností zadat data v před naším letopočtem</item>

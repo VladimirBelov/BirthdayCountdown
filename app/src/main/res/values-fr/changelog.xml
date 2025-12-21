@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
+  ~  * Created by Vladimir Belov on 21.12.2025, 16:55
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 15.10.2025, 23:31
+  ~  * Last modified 21.12.2025, 16:54
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
 <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+    <item>#1.8.9</item>
+
+    <item>🎵 Possibilité de sélectionner un fichier externe comme sonnerie de notification</item>
+    <item>"Code réécrit pour la planification de l'affichage des notifications, la mise à jour des widgets et la fonction «Rappel»"</item>
+    <item>"Ajout de la possibilité d'associer des événements de fichiers aux contacts (comme pour les événements du calendrier), actuellement uniquement pour les anniversaires"</item>
+    <item>"Créer un événement local à partir d'un autre événement sélectionné"</item>
+    <item>"Mise à jour des données de tous les événements locaux similaires lors de l'enregistrement"</item>
+    <item>Importer des événements depuis des fichiers</item>
+    <item>"Ajout d'une fonction de recherche pour les informations de référence"</item>
+    <item>🏖️ Ajout des jours fériés pour 2026</item>
+    <item>Corrections de bugs</item>
 
     <item>#1.8.8</item>
     <item>Ajout des champs «Description» et «Lien web» aux 📅 événements locaux, ainsi que la possibilité de spécifier des dates en Colombie-Britannique</item>

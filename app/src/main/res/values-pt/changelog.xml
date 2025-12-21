@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.10.2025, 23:53
+  ~  * Created by Vladimir Belov on 21.12.2025, 16:55
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 15.10.2025, 23:31
+  ~  * Last modified 21.12.2025, 16:55
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.8.9</item>
+        <item>🎵 Possibilidade de selecionar um arquivo externo como toque de notificação</item>
+        <item>Código reescrito para definir agendamentos para exibição de notificações, atualização de widgets e para a função "Lembrar"</item>
+        <item>Adicionada a capacidade de anexar eventos de arquivo a contatos (como é feito para eventos de calendário), atualmente apenas para aniversários</item>
+        <item>Criar um evento local a partir de outro selecionado</item>
+        <item>Atualizar dados em todos os eventos locais semelhantes ao salvar</item>
+        <item>Importar eventos de arquivos</item>
+        <item>Adicionada busca por informações de referência</item>
+        <item>🏖️ Adicionados feriados para 2026</item>
+        <item>Correções de bugs</item>
 
         <item>#1.8.8</item>
         <item>Adicionados os campos "Descrição" e "Link da Web" aos 📅 eventos locais, além da possibilidade de especificar datas em BC</item>
