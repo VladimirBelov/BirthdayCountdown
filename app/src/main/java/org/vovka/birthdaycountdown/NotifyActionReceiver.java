@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.10.2025, 10:59
+ *  * Created by Vladimir Belov on 22.12.2025, 16:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 21.10.2025, 10:36
+ *  * Last modified 22.12.2025, 15:12
  *
  */
 
@@ -78,7 +78,7 @@ public class NotifyActionReceiver extends BroadcastReceiver {
                 notificationID = extras.getInt(Constants.EXTRA_NOTIFICATION_ID, 0);
                 notificationData = extras.getString(Constants.EXTRA_NOTIFICATION_DATA, Constants.STRING_EMPTY);
 
-                if (!notificationData.equals(Constants.STRING_EMPTY)) {
+                if (!notificationData.isEmpty()) {
                     singleEventArray = notificationData.split(Constants.STRING_EOT, -1);
                     if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
                         eventKey = eventsData.getEventKey(singleEventArray);
@@ -90,7 +90,7 @@ public class NotifyActionReceiver extends BroadcastReceiver {
                 notificationDetails = extras.getStringArray(Constants.EXTRA_NOTIFICATION_DETAILS);
             }
 
-            if (notificationID == 0 || notificationData.equals(Constants.STRING_EMPTY)) {
+            if (notificationID == 0 || notificationData.isEmpty()) {
                 ToastExpander.showDebugMsg(context, eventsData.getContext().getString(R.string.msg_debug_notify_action_empty, action));
                 return;
             }
@@ -157,7 +157,7 @@ public class NotifyActionReceiver extends BroadcastReceiver {
 
                 if (!singleEventArray[ContactsEvents.Position_contactID].isEmpty()) {
                     String phone = eventsData.getContactPhone(Long.parseLong(singleEventArray[ContactsEvents.Position_contactID]));
-                    if (!phone.equals(Constants.STRING_EMPTY)) {
+                    if (!phone.isEmpty()) {
                         //https://stackoverflow.com/questions/4275678/how-to-make-a-phone-call-using-intent-in-android
                         Intent intentDial = new Intent(Intent.ACTION_DIAL);
                         intentDial.setData(Uri.parse(WebView.SCHEME_TEL.concat(Uri.encode(phone.trim()))));

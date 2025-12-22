@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 22.12.2025, 16:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 08.12.2025, 23:48
+ *  * Last modified 22.12.2025, 15:19
  *
  */
 
@@ -452,7 +452,6 @@ public final class Constants {
     static final String MAILTO_TEMPLATE = "mailto:belov.vladimir@mail.ru?subject=";
     static final String ANCHOR_LINK_START = "<script>window.location.hash=\"";
     static final String ANCHOR_LINK_END = "\";</script>";
-    static final String DRAWABLE_BASE_URL = "file:///android_res/drawable/";
 
     static final String STORE_LINK_GOOGLE_MARKET = "market://details?id=";
     static final String STORE_LINK_PLAY_MARKET = "https://play.google.com/store/apps/details?id=";

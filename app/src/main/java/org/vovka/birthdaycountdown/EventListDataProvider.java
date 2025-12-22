@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 22.12.2025, 16:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 02:01
+ *  * Last modified 22.12.2025, 15:12
  *
  */
 
@@ -125,7 +125,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             }
 
             if (widgetPref.size() > 4 && !widgetPref.get(4).isEmpty()) {
-                if (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(resources.getString(R.string.pref_EventInfo_None_ID))) {
+                if (widgetPref.get(4).isEmpty() || widgetPref.get(4).equals(resources.getString(R.string.pref_EventInfo_None_ID))) {
                     widgetPref.set(4, resources.getString(R.string.widget_config_defaultPref_List).split(Constants.STRING_COMMA)[4]);
                 }
 

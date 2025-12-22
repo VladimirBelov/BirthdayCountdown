@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 22.12.2025, 16:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 02:01
+ *  * Last modified 22.12.2025, 15:12
  *
  */
 
@@ -113,7 +113,7 @@ public class SuggestionProvider extends ContentProvider{
                                                 )
                                                 .concat(Constants.STRING_SPACE)
                                                 .concat(eventDistance[0].toLowerCase()),
-                                        !(singleEventArray[ContactsEvents.Position_photo_uri].trim().equals(Constants.STRING_EMPTY)
+                                        !(singleEventArray[ContactsEvents.Position_photo_uri].trim().isEmpty()
                                                 || singleEventArray[ContactsEvents.Position_photo_uri].equals(Constants.STRING_NULL)) ?
                                                     singleEventArray[ContactsEvents.Position_photo_uri] :
                                                     Constants.STRING_EMPTY,

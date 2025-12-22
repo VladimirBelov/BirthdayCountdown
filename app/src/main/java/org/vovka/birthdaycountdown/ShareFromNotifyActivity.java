@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2025, 10:49
+ *  * Created by Vladimir Belov on 22.12.2025, 16:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 31.03.2025, 10:12
+ *  * Last modified 22.12.2025, 15:12
  *
  */
 
@@ -46,7 +46,7 @@ public class ShareFromNotifyActivity extends Activity {
                 notificationData = extras.getString(Intent.EXTRA_TEXT, Constants.STRING_EMPTY);
             }
             //ToastExpander.showDebugMsg(this, TAG.concat(Constants.STRING_COLON_SPACE).concat(notificationData));
-            if (notificationData.equals(Constants.STRING_EMPTY)) finish();
+            if (notificationData.isEmpty()) finish();
 
             Intent intentShare = new Intent(Intent.ACTION_SEND);
             intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);

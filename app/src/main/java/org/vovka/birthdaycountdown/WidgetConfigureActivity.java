@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.12.2025, 01:54
+ *  * Created by Vladimir Belov on 22.12.2025, 16:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.12.2025, 16:25
+ *  * Last modified 22.12.2025, 15:12
  *
  */
 
@@ -607,7 +607,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             String[] infoArray = null;
             try {
                 if (widgetPref.size() > 4) {
-                    if (Constants.WIDGET_TYPE_LIST.equals(widgetType) && (widgetPref.get(4).equals(Constants.STRING_EMPTY) || widgetPref.get(4).equals(getString(R.string.pref_EventInfo_None_ID)))) {
+                    if (Constants.WIDGET_TYPE_LIST.equals(widgetType) && (widgetPref.get(4).isEmpty() || widgetPref.get(4).equals(getString(R.string.pref_EventInfo_None_ID)))) {
                         widgetPref.set(4, getString(R.string.widget_config_defaultPref_List).split(Constants.STRING_COMMA, -1)[4]);
                     }
 

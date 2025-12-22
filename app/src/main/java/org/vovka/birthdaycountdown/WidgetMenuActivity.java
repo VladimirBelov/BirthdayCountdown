@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.07.2025, 23:38
+ *  * Created by Vladimir Belov on 22.12.2025, 16:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 28.07.2025, 23:23
+ *  * Last modified 22.12.2025, 15:12
  *
  */
 
@@ -167,7 +167,7 @@ public class WidgetMenuActivity extends Activity {
                     menuActions.add(Constants.ContextMenu_OpenContact);
 
                     String phone = eventsData.getContactPhone(Long.parseLong(singleEventArray[ContactsEvents.Position_contactID]));
-                    if (!phone.equals(Constants.STRING_EMPTY)) {
+                    if (!phone.isEmpty()) {
                         menuItems.add(getString(R.string.menu_context_dial));
                         menuIcons.add(getDrawable(android.R.drawable.ic_menu_call));
                         menuActions.add(Constants.ContextMenu_DialContact);
@@ -430,7 +430,7 @@ public class WidgetMenuActivity extends Activity {
 
                     if (!singleEventArray[ContactsEvents.Position_contactID].isEmpty()) {
                         String phone = eventsData.getContactPhone(Long.parseLong(singleEventArray[ContactsEvents.Position_contactID]));
-                        if (!phone.equals(Constants.STRING_EMPTY)) {
+                        if (!phone.isEmpty()) {
                             //https://stackoverflow.com/questions/4275678/how-to-make-a-phone-call-using-intent-in-android
                             Intent intentDial = new Intent(Intent.ACTION_DIAL);
                             intentDial.setData(Uri.parse(WebView.SCHEME_TEL.concat(Uri.encode(phone.trim()))));

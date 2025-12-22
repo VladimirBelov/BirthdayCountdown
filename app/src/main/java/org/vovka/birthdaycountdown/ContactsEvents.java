@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.12.2025, 01:45
+ *  * Created by Vladimir Belov on 22.12.2025, 16:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 21.12.2025, 01:18
+ *  * Last modified 22.12.2025, 15:19
  *
  */
 
@@ -9280,7 +9280,7 @@ public class ContactsEvents {
             //IDs
             Set<String> toRemoveIds = new HashSet<>();
             for (String event : preferences_silentEvents) {
-                if (event.equals(Constants.STRING_EMPTY)) {
+                if (event.isEmpty()) {
                     toRemoveIds.add(event);
                     continue;
                 }
@@ -9299,7 +9299,7 @@ public class ContactsEvents {
             //RawIDs
             Set<String> toRemoveRawIds = new HashSet<>();
             for (String event : preferences_silentEventsRawIds) {
-                if (event.equals(Constants.STRING_EMPTY)) {
+                if (event.isEmpty()) {
                     toRemoveRawIds.add(event);
                     continue;
                 }
@@ -9332,7 +9332,7 @@ public class ContactsEvents {
             //IDs
             Set<String> toRemoveIds = new HashSet<>();
             for (String event : preferences_hiddenEvents) {
-                if (event.equals(Constants.STRING_EMPTY)) {
+                if (event.isEmpty()) {
                     toRemoveIds.add(event);
                     continue;
                 }
@@ -9351,7 +9351,7 @@ public class ContactsEvents {
             //RawIDs
             Set<String> toRemoveRawIds = new HashSet<>();
             for (String event : preferences_hiddenEventsRawIds) {
-                if (event.equals(Constants.STRING_EMPTY)) {
+                if (event.isEmpty()) {
                     toRemoveRawIds.add(event);
                     continue;
                 }
@@ -9670,7 +9670,7 @@ public class ContactsEvents {
                 } catch (Resources.NotFoundException nfe) {
                     anCaption = null;
                 }
-                if (anCaption != null && !anCaption.equals(Constants.STRING_EMPTY)) {
+                if (anCaption != null && !anCaption.isEmpty()) {
                     String holiday = i + Constants.STRING_COLON_SPACE + anCaption;
                     if (i == selectedAge) {
                         selectedPosition = items.size();
@@ -10019,7 +10019,7 @@ public class ContactsEvents {
                         TextView toastMessage = toastView.findViewById(android.R.id.message);
                         toastMessage.setTextColor(getResources().getColor(R.color.white));
                         toastMessage.setTextSize(15);
-                        toastView.setBackgroundColor(getResources().getColor(a[0].equals("1") ? R.color.dark_green : R.color.dark_red));
+                        toastView.setBackgroundColor(getResources().getColor(a[0].equals(Constants.STRING_1) ? R.color.dark_green : R.color.dark_red));
                     }
                     ToastExpander.showFor(toast, 5000);
 
@@ -10037,7 +10037,7 @@ public class ContactsEvents {
                                     (isNotifyInterface && Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
                                             "<b>" + question.replace(Constants.STRING_EOL, "</b><br>") + "<br><br>" :
                                             Constants.STRING_EMPTY)
-                                            + "<font color='" + (a[0].equals("1") ? "#238A10" : "#dd0000") + "'>"
+                                            + "<font color='" + (a[0].equals(Constants.STRING_1) ? "#238A10" : "#dd0000") + "'>"
                                             + a[2].replace(Constants.STRING_EOL, "<br>")
                                             + Constants.HTML_COLOR_END, HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG)
                             .show());

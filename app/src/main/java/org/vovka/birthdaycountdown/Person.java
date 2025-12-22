@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2025, 00:35
+ *  * Created by Vladimir Belov on 22.12.2025, 16:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 00:07
+ *  * Last modified 22.12.2025, 15:12
  *
  */
 
@@ -149,11 +149,11 @@ class Person {
     String getFullNameShort () { //Фамилия И. О.
         //поддержка двойных фамилий и имён пока сделана в WidgetUpdater
         try {
-            if (!LastName.equals(Constants.STRING_EMPTY)) {
+            if (!LastName.isEmpty()) {
                 return LastName
-                        + (!FirstName.equals(Constants.STRING_EMPTY) ? Constants.STRING_SPACE + FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY)
-                        + (!SecondName.equals(Constants.STRING_EMPTY) ? Constants.STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY);
-            } else if (!FirstName.equals(Constants.STRING_EMPTY)) {
+                        + (!FirstName.isEmpty() ? Constants.STRING_SPACE + FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY)
+                        + (!SecondName.isEmpty() ? Constants.STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY);
+            } else if (!FirstName.isEmpty()) {
                 if (!SecondName.isEmpty()) {
                     return FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD + Constants.STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD;
                 } else {

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.12.2025, 01:54
+ *  * Created by Vladimir Belov on 22.12.2025, 16:27
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.12.2025, 23:05
+ *  * Last modified 22.12.2025, 15:05
  *
  */
 
@@ -1804,7 +1804,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
             //удаляем временный канал оповещений
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !testChannelId.equals(Constants.STRING_EMPTY)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !testChannelId.isEmpty()) {
                 NotificationManager notificationManager = getSystemService(NotificationManager.class);
                 if (notificationManager != null && notificationManager.getNotificationChannel(testChannelId) != null) {
                     notificationManager.deleteNotificationChannel(testChannelId);
@@ -2102,7 +2102,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (notificationManager != null) {
 
                 //если был предыдущий тест
-                if (!testChannelId.equals(Constants.STRING_EMPTY) && notificationManager.getNotificationChannel(testChannelId) != null) {
+                if (!testChannelId.isEmpty() && notificationManager.getNotificationChannel(testChannelId) != null) {
                     notificationManager.deleteNotificationChannel(testChannelId);
                 }
 
