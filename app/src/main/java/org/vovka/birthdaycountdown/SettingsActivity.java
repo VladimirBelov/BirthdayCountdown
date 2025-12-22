@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 16:27
+ *  * Created by Vladimir Belov on 22.12.2025, 21:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 15:05
+ *  * Last modified 22.12.2025, 18:55
  *
  */
 
@@ -575,15 +575,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             //Календари
             setSummaryForCalendars(Constants.Type_MultiEvent);
-            setSummaryForCalendars(ContactsEvents.getEventType(Constants.Type_BirthDay));
-            setSummaryForCalendars(ContactsEvents.getEventType(Constants.Type_Other));
-            setSummaryForCalendars(ContactsEvents.getEventType(Constants.Type_HolidayEvent));
+            setSummaryForCalendars(Constants.EventType_BirthDay);
+            setSummaryForCalendars(Constants.EventType_Other);
+            setSummaryForCalendars(Constants.EventType_Holiday);
 
             //Файлы
             setSummaryForFiles(Constants.Type_MultiEvent);
-            setSummaryForFiles(ContactsEvents.getEventType(Constants.Type_BirthDay));
-            setSummaryForFiles(ContactsEvents.getEventType(Constants.Type_Other));
-            setSummaryForFiles(ContactsEvents.getEventType(Constants.Type_HolidayEvent));
+            setSummaryForFiles(Constants.EventType_BirthDay);
+            setSummaryForFiles(Constants.EventType_Other);
+            setSummaryForFiles(Constants.EventType_Holiday);
 
             //Нераспознанные события
             setSummaryForList(
@@ -761,18 +761,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             int prefKey = 0;
             Set<String> calendars = null;
 
-            if (eventType.equals(Constants.Type_MultiEvent)) {
-                prefKey = R.string.pref_CustomEvents_MultiType_Calendars_key;
-                calendars = eventsData.preferences_MultiType_calendars;
-            } else if (eventType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay))) {
-                prefKey = R.string.pref_CustomEvents_Birthday_Calendars_key;
-                calendars = eventsData.preferences_BirthDay_calendars;
-            } else if (eventType.equals(ContactsEvents.getEventType(Constants.Type_Other))) {
-                prefKey = R.string.pref_CustomEvents_Other_Calendars_key;
-                calendars = eventsData.preferences_OtherEvent_calendars;
-            } else if (eventType.equals(ContactsEvents.getEventType(Constants.Type_HolidayEvent))) {
-                prefKey = R.string.pref_CustomEvents_Holiday_Calendars_key;
-                calendars = eventsData.preferences_HolidayEvent_calendars;
+            switch (eventType) {
+                case Constants.Type_MultiEvent:
+                    prefKey = R.string.pref_CustomEvents_MultiType_Calendars_key;
+                    calendars = eventsData.preferences_MultiType_calendars;
+                    break;
+                case Constants.EventType_BirthDay:
+                    prefKey = R.string.pref_CustomEvents_Birthday_Calendars_key;
+                    calendars = eventsData.preferences_BirthDay_calendars;
+                    break;
+                case Constants.EventType_Other:
+                    prefKey = R.string.pref_CustomEvents_Other_Calendars_key;
+                    calendars = eventsData.preferences_OtherEvent_calendars;
+                    break;
+                case Constants.EventType_Holiday:
+                    prefKey = R.string.pref_CustomEvents_Holiday_Calendars_key;
+                    calendars = eventsData.preferences_HolidayEvent_calendars;
+                    break;
             }
 
             if (prefKey != 0 && calendars != null) {
@@ -809,18 +814,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             int prefKey = 0;
             Set<String> files = null;
 
-            if (eventType.equals(Constants.Type_MultiEvent)) {
-                prefKey = R.string.pref_CustomEvents_MultiType_LocalFiles_key;
-                files = eventsData.preferences_MultiType_files;
-            } else if (eventType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay))) {
-                prefKey = R.string.pref_CustomEvents_Birthday_LocalFiles_key;
-                files = eventsData.preferences_Birthday_files;
-            } else if (eventType.equals(ContactsEvents.getEventType(Constants.Type_Other))) {
-                prefKey = R.string.pref_CustomEvents_Other_LocalFiles_key;
-                files = eventsData.preferences_OtherEvent_files;
-            } else if (eventType.equals(ContactsEvents.getEventType(Constants.Type_HolidayEvent))) {
-                prefKey = R.string.pref_CustomEvents_Holiday_LocalFiles_key;
-                files = eventsData.preferences_HolidayEvent_files;
+            switch (eventType) {
+                case Constants.Type_MultiEvent:
+                    prefKey = R.string.pref_CustomEvents_MultiType_LocalFiles_key;
+                    files = eventsData.preferences_MultiType_files;
+                    break;
+                case Constants.EventType_BirthDay:
+                    prefKey = R.string.pref_CustomEvents_Birthday_LocalFiles_key;
+                    files = eventsData.preferences_Birthday_files;
+                    break;
+                case Constants.EventType_Other:
+                    prefKey = R.string.pref_CustomEvents_Other_LocalFiles_key;
+                    files = eventsData.preferences_OtherEvent_files;
+                    break;
+                case Constants.EventType_Holiday:
+                    prefKey = R.string.pref_CustomEvents_Holiday_LocalFiles_key;
+                    files = eventsData.preferences_HolidayEvent_files;
+                    break;
             }
             if (prefKey != 0 && files != null) {
                 if (files.isEmpty()) {
@@ -1303,7 +1313,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)) { //Календари (Дни рождения)
 
-                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_BirthDay);
+                this.eventTypeForSelect = Constants.EventType_BirthDay;
                 if (eventsData.checkNoCalendarAccess()) {
 
                     requestCalendarPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
@@ -1317,7 +1327,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_CustomEvents_Other_Calendars_key).equals(key)) { //Календари (Другие события)
 
-                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_Other);
+                this.eventTypeForSelect = Constants.EventType_Other;
 
                 if (eventsData.checkNoCalendarAccess()) {
 
@@ -1330,7 +1340,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_CustomEvents_Holiday_Calendars_key).equals(key)) { //Календари (Праздники)
 
-                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_HolidayEvent);
+                this.eventTypeForSelect = Constants.EventType_Holiday;
 
                 if (eventsData.checkNoCalendarAccess()) {
 
@@ -1407,7 +1417,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else {
                     filesList = new HashSet<>();
                 }
-                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_BirthDay);
+                this.eventTypeForSelect = Constants.EventType_BirthDay;
                 selectFiles(this.eventTypeForSelect);
                 return true;
 
@@ -1418,7 +1428,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else {
                     filesList = new HashSet<>();
                 }
-                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_Other);
+                this.eventTypeForSelect = Constants.EventType_Other;
                 selectFiles(this.eventTypeForSelect);
                 return true;
 
@@ -1429,7 +1439,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else {
                     filesList = new HashSet<>();
                 }
-                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_HolidayEvent);
+                this.eventTypeForSelect = Constants.EventType_Holiday;
                 selectFiles(this.eventTypeForSelect);
                 return true;
 
@@ -1440,7 +1450,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else {
                     filesList = new HashSet<>();
                 }
-                this.eventTypeForSelect = ContactsEvents.getEventType(Constants.Type_Fact);
+                this.eventTypeForSelect = Constants.EventType_Fact;
                 selectFiles(this.eventTypeForSelect);
                 return true;
 

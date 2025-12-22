@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.12.2025, 01:54
+ *  * Created by Vladimir Belov on 22.12.2025, 21:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 19.12.2025, 16:25
+ *  * Last modified 22.12.2025, 19:00
  *
  */
 
@@ -350,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             .setIcon(android.R.drawable.ic_menu_month);
                 }
 
-                if (ContactsEvents.getEventType(Constants.Type_BirthDay).equals(eventSubtype)) {
+                if (Constants.EventType_BirthDay.equals(eventSubtype)) {
                     if (!eventsData.getMergedID(selectedEvent[ContactsEvents.Position_eventID]).isEmpty()) {
                         menu.add(Menu.NONE, Constants.ContextMenu_UnmergeEvent, Menu.NONE, getString(R.string.menu_context_unmerge_event))
                                 .setIcon(R.drawable.ic_menu_chat_dashboard);
@@ -438,14 +438,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             sub.add(Menu.NONE, Constants.ContextMenu_ShareAsImage, Menu.NONE, getString(R.string.menu_context_share_as_image));
             sub.add(Menu.NONE, Constants.ContextMenu_ShareAsText, Menu.NONE, getString(R.string.menu_context_share_as_text));
 
-            if (selectedEvent[ContactsEvents.Position_eventType].equals(ContactsEvents.getEventType(Constants.Type_Anniversary)) ) {
+            if (selectedEvent[ContactsEvents.Position_eventType].equals(Constants.EventType_Anniversary) ) {
                 menu.add(Menu.NONE, Constants.ContextMenu_AnniversaryList, Menu.NONE, getString(R.string.menu_context_anniversary_list))
                         .setIcon(android.R.drawable.ic_menu_info_details);
             }
 
             if (!selectedEvent[ContactsEvents.Position_age].equals(Constants.STRING_MINUS1)) {
                 if (!eventsData.isXDaysEvent(eventKey)) {
-                    if (eventsData.preferences_extrafun && !eventSubtype.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
+                    if (eventsData.preferences_extrafun && !eventSubtype.equals(Constants.EventType_5K)) {
                         menuItem = menu.add(Menu.NONE, Constants.ContextMenu_xDaysEvent, Menu.NONE, getString(R.string.menu_context_xDaysEvent_add))
                                 .setIcon(android.R.drawable.ic_menu_myplaces);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -564,7 +564,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 String eventSubType = selectedEvent[ContactsEvents.Position_eventSubType];
                 int roundingFactor;
-                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_CalendarEvent)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_FileEvent))) {
+                if (eventSubType.equals(Constants.EventType_Calendar) || eventSubType.equals(Constants.EventType_File)) {
                     roundingFactor = 1;
                 } else {
                     roundingFactor = eventsData.preferences_list_photostyle;
@@ -640,7 +640,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.unsetHiddenEvent(eventKey, eventKeyWithRawId)) {
 
-                    // Если удалили последнего скрытого и нет доп. функций - используем для показа все источники
+                    // Если удалили последнего скрытого и дополнительные функции выключены - используем для показа все источники
                     if (!eventsData.preferences_extrafun && eventsData.getHiddenEventsCount() == 0
                             && !eventsData.preferences_list_EventSources.isEmpty()) {
                         eventsData.preferences_list_EventSources.clear();
@@ -840,7 +840,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Age))) {
                 String eventSubType = selectedEvent[ContactsEvents.Position_eventSubType];
 
-                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) { //Если это день рождения или 5K
+                if (eventSubType.equals(Constants.EventType_BirthDay) || eventSubType.equals(Constants.EventType_5K)) { //Если это день рождения или 5K
                     final String currentAge = selectedEvent[ContactsEvents.Position_age_current];
                     if (!currentAge.isEmpty() && !currentAge.startsWith(Constants.STRING_0)) {
                         if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
@@ -853,10 +853,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 } else if (eventsData.birthdayDatesForIds.containsKey(contactID)) {
                     Date birthDate = eventsData.birthdayDatesForIds.get(contactID);
-                    if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_Death))) { //Если это годовщина смерти
-                        Locale locale_en = new Locale(Constants.LANG_EN);
-                        SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                        Date eventDate = null;
+                    Locale locale_en = new Locale(Constants.LANG_EN);
+                    SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
+                    Date eventDate = null;
+                    if (eventSubType.equals(Constants.EventType_Death)) { //Если это годовщина смерти
                         try {
                             eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
                         } catch (ParseException ignored) { /**/ }
@@ -865,9 +865,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             textBig.append(getString(R.string.msg_age_was)).append(eventsData.countDaysDiffText(birthDate, eventDate, 3));
                         }
                     } else { //Другие события
-                        Locale locale_en = new Locale(Constants.LANG_EN);
-                        SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                        Date eventDate = null;
                         try {
                             eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateNextTime]);
                         } catch (ParseException ignored) { /**/ }
@@ -2458,7 +2455,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private boolean isUnrecognizedEvent(@NonNull String[] singleEventArray) {
-        return ContactsEvents.getEventType(Constants.Type_Unrecognized).equals(singleEventArray[ContactsEvents.Position_eventType]);
+        return Constants.EventType_Unrecognized.equals(singleEventArray[ContactsEvents.Position_eventType]);
     }
 
     private void drawList() {
@@ -2837,7 +2834,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 String eventCaption = singleEventArray[ContactsEvents.Position_eventCaption].trim();
 
                 String strZodiac = Constants.STRING_EMPTY;
-                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
+                if (eventSubType.equals(Constants.EventType_BirthDay) || eventSubType.equals(Constants.EventType_5K)) {
                     final String strZodiacInfo = eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_ZodiacSign)) ?
                             singleEventArray[ContactsEvents.Position_zodiacSign].trim() : Constants.STRING_EMPTY;
                     final String strZodiacYearInfo = eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_ZodiacYear)) ?
@@ -2940,9 +2937,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //Фото
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Photo))) {
                     int roundingFactor;
-                    if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_CalendarEvent))
-                            || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_FileEvent))
-                            || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_HolidayEvent))) {
+                    if (eventSubType.equals(Constants.EventType_Calendar)
+                            || eventSubType.equals(Constants.EventType_File)
+                            || eventSubType.equals(Constants.EventType_Holiday)) {
                         roundingFactor = 1;
                     } else {
                         roundingFactor = eventsData.preferences_list_photostyle;

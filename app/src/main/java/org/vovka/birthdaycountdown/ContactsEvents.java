@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 16:27
+ *  * Created by Vladimir Belov on 22.12.2025, 21:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 15:19
+ *  * Last modified 22.12.2025, 19:02
  *
  */
 
@@ -222,7 +222,7 @@ public class ContactsEvents {
         put(Constants.Type_Anniversary, Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY));
         put(Constants.Type_Another, Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_OTHER));
         put(Constants.Type_Custom, Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM));
-        put(Constants.Type_5K, "11");
+        put(Constants.Type_5K, "11"); //todo: можно удалить
         put(Constants.Type_Death, "12");
         put(Constants.Type_NameDay, "13");
         put(Constants.Type_Crowning, "14");
@@ -231,11 +231,11 @@ public class ContactsEvents {
         put(Constants.Type_Custom3, "17");
         put(Constants.Type_Custom4, "18");
         put(Constants.Type_Custom5, "19");
-        put(Constants.Type_CalendarEvent, "20");
-        put(Constants.Type_FileEvent, "21");
-        put(Constants.Type_Xdays, "22");
+        put(Constants.Type_CalendarEvent, "20"); //todo: можно удалить
+        put(Constants.Type_FileEvent, "21"); //todo: можно удалить
+        put(Constants.Type_Xdays, "22"); //todo: можно удалить
         put(Constants.Type_Other, "23");
-        put(Constants.Type_Fact, "24");
+        put(Constants.Type_Fact, "24"); //todo: можно удалить
         put(Constants.Type_HolidayEvent, "4");
         put(Constants.Type_Unrecognized, "99");
     }};
@@ -1132,7 +1132,7 @@ public class ContactsEvents {
         return c;
     }
 
-    /** Возвращает дату  нулевым временем
+    /** Возвращает дату с нулевым временем
      * @param c Дата
      * @return Дата с нулевым временем
      */
@@ -1487,7 +1487,7 @@ public class ContactsEvents {
             long daysDiff;
             boolean diffOnlyDays = true;
 
-            //если включить desugaring https://www.youtube.com/watch?v=heCvGfOGH0s , то размер приложения +200К
+            //если включить desugaring https://www.youtube.com/watch?v=heCvGfOGH0s, то размер приложения +200К
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
                 //https://stackoverflow.com/questions/4710206/calculate-age-in-years-months-days-hours-minutes-and-seconds
@@ -2548,19 +2548,15 @@ public class ContactsEvents {
             //https://stackoverflow.com/questions/61252550/android-how-to-use-kotlin-coroutine-in-java
             //https://stackoverflow.com/questions/58767733/the-asynctask-api-is-deprecated-in-android-11-what-are-the-alternatives
 
-            final String idBirthday = getEventType(Constants.Type_BirthDay);
-            final String idOther = getEventType(Constants.Type_Other);
-            final String idHoliday = getEventType(Constants.Type_HolidayEvent);
-
             boolean result = getContactsEvents()
                     | getLocalEvents()
-                    | getCalendarEvents(idBirthday)
-                    | getCalendarEvents(idOther)
-                    | getCalendarEvents(idHoliday)
+                    | getCalendarEvents(Constants.EventType_BirthDay)
+                    | getCalendarEvents(Constants.EventType_Other)
+                    | getCalendarEvents(Constants.EventType_Holiday)
                     | getCalendarEvents(Constants.Type_MultiEvent)
-                    | getFileEvents(idBirthday)
-                    | getFileEvents(idOther)
-                    | getFileEvents(idHoliday)
+                    | getFileEvents(Constants.EventType_BirthDay)
+                    | getFileEvents(Constants.EventType_Other)
+                    | getFileEvents(Constants.EventType_Holiday)
                     | getFileEvents(Constants.Type_MultiEvent)
                     | getHolidayEvents()
                     | getFactsEvents(true);
@@ -2984,7 +2980,7 @@ public class ContactsEvents {
                 if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH))
                     continue;
 
-                if (eventType.equals(getEventType(Constants.Type_Fact))) {
+                if (eventType.equals(Constants.EventType_Fact)) {
                     count++;
                     continue;
                 }
@@ -3057,15 +3053,15 @@ public class ContactsEvents {
 
                     event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, true, true);
 
-                } else if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
+                } else if (eventType.equals(Constants.EventType_BirthDay)) {
 
                     event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
 
-                } else if (eventType.equals(getEventType(Constants.Type_Other))) {
+                } else if (eventType.equals(Constants.EventType_Other)) {
 
                     event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
 
-                } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
+                } else if (eventType.equals(Constants.EventType_Holiday)) {
 
                     event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
 
@@ -3203,32 +3199,32 @@ public class ContactsEvents {
                 statContactsEventCount++;
                 boolean isUnrecognized = false;
 
-                if (eventType.equals(getEventType(Constants.Type_BirthDay))
+                if (eventType.equals(Constants.EventType_BirthDay)
                         || (isEventLabel && preferences_birthday_labels != null && preferences_birthday_labels.reset(eventLabel.toLowerCase()).find())) {
 
                     event = createTypedEvent(Constants.Type_BirthDay, eventLabel, Constants.Storage_Contacts);
 
-                } else if (eventType.equals(getEventType(Constants.Type_Death))
+                } else if (eventType.equals(Constants.EventType_Death)
                         || (isEventLabel && preferences_death_labels != null && preferences_death_labels.reset(eventLabel.toLowerCase()).find())) {
 
                     event = createTypedEvent(Constants.Type_Death, eventLabel, Constants.Storage_Contacts);
 
-                } else if (eventType.equals(getEventType(Constants.Type_Anniversary))
+                } else if (eventType.equals(Constants.EventType_Anniversary)
                         || (isEventLabel && preferences_wedding_labels != null && preferences_wedding_labels.reset(eventLabel.toLowerCase()).find())) {
 
                     event = createTypedEvent(Constants.Type_Anniversary, eventLabel, Constants.Storage_Contacts);
 
-                } else if (eventType.equals(getEventType(Constants.Type_Another))
+                } else if (eventType.equals(Constants.EventType_Another)
                         || (isEventLabel && preferences_another_event_labels != null && preferences_another_event_labels.reset(eventLabel.toLowerCase()).find())) {
 
                     event = createTypedEvent(Constants.Type_Another, eventLabel, Constants.Storage_Contacts);
 
-                } else if (eventType.equals(getEventType(Constants.Type_Other))
+                } else if (eventType.equals(Constants.EventType_Other)
                         || (isEventLabel && preferences_other_event_labels != null && preferences_other_event_labels.reset(eventLabel.toLowerCase()).find())) {
 
                     event = createTypedEvent(Constants.Type_Other, eventLabel, Constants.Storage_Contacts);
 
-                } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))
+                } else if (eventType.equals(Constants.EventType_Holiday)
                         || (isEventLabel && preferences_holiday_event_labels != null && preferences_holiday_event_labels.reset(eventLabel.toLowerCase()).find())) {
 
                     event = createTypedEvent(Constants.Type_HolidayEvent, eventLabel, Constants.Storage_Contacts);
@@ -3301,7 +3297,7 @@ public class ContactsEvents {
                 String eventKey_next = contactName.concat(Constants.STRING_COMMA).concat(eventType);
 
                 //Наименование события в ключе только для пользовательских событий
-                if (eventType.equals(getEventType(Constants.Type_Custom)) || isUnrecognized) {
+                if (eventType.equals(Constants.EventType_Custom) || isUnrecognized) {
                     eventKey_next = eventKey_next.concat(Constants.STRING_COMMA).concat(eventLabel);
                 }
 
@@ -3457,13 +3453,13 @@ public class ContactsEvents {
             boolean useEventYear;
 
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
-            if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
+            if (eventType.equals(Constants.EventType_BirthDay)) {
                 event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_Calendar);
                 useEventYear = preferences_birthday_calendars_useyear;
-            } else if (eventType.equals(getEventType(Constants.Type_Other))) {
+            } else if (eventType.equals(Constants.EventType_Other)) {
                 event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_Calendar);
                 useEventYear = true;
-            } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
+            } else if (eventType.equals(Constants.EventType_Holiday)) {
                 event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_Calendar);
                 useEventYear = true;
             } else if (isMultiTypeSource) {
@@ -3472,7 +3468,7 @@ public class ContactsEvents {
                 return false;
             }
 
-            if (eventType.equals(getEventType(Constants.Type_BirthDay)) || isMultiTypeSource) {
+            if (eventType.equals(Constants.EventType_BirthDay) || isMultiTypeSource) {
                 arrRules = preferences_birthday_calendars_rules.split(Constants.STRING_PIPE, -1);
                 if (!arrRules[0].isEmpty()) {
                     for (String rule : arrRules) {
@@ -4026,9 +4022,9 @@ public class ContactsEvents {
                                 if (eventListUpdated.add(eventRow)) {
                                     statEventsCount++;
                                     statLocalEventCount++;
-                                    if (event.subType.equals(getEventType(Constants.Type_BirthDay))) {
+                                    if (event.subType.equals(Constants.EventType_BirthDay)) {
                                         birthdayDatesForNames.put(personFullName, dateEventFirstTime);
-                                    } else if (event.subType.equals(getEventType(Constants.Type_Death))) {
+                                    } else if (event.subType.equals(Constants.EventType_Death)) {
                                         deathDatesForNames.put(personFullName, dateEventFirstTime);
                                     }
                                     map_eventsBySubtypeAndPersonName_offset.put(personFullName + Constants.STRING_2HASH + eventData.get(Position_eventSubType), eventListUpdated.size() - 1);
@@ -4442,15 +4438,15 @@ public class ContactsEvents {
             Set<String> fileList = null;
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
 
-            if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
+            if (eventType.equals(Constants.EventType_BirthDay)) {
 
                 fileList = preferences_Birthday_files;
 
-            } else if (eventType.equals(getEventType(Constants.Type_Other))) {
+            } else if (eventType.equals(Constants.EventType_Other)) {
 
                 fileList = preferences_OtherEvent_files;
 
-            } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
+            } else if (eventType.equals(Constants.EventType_Holiday)) {
 
                 fileList = preferences_HolidayEvent_files;
 
@@ -4542,12 +4538,12 @@ public class ContactsEvents {
                     emptyEventYear = "2000";
 
                 } else if (line.startsWith(Constants.iCal_EventBegin)) {
-                    if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
+                    if (eventType.equals(Constants.EventType_BirthDay)) {
 
                         event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
                         useEventYear = true;
 
-                    } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
+                    } else if (eventType.equals(Constants.EventType_Holiday)) {
 
                         event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
                         useEventYear = false;
@@ -4555,7 +4551,7 @@ public class ContactsEvents {
                     } else {
 
                         event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
-                        event.subType = getEventType(Constants.Type_FileEvent);
+                        event.subType = Constants.EventType_File;
                         useEventYear = false;
 
                     }
@@ -4619,7 +4615,7 @@ public class ContactsEvents {
                         String eventID = Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle);
 
                         eventData.put(Position_personFullName, eventTitle);
-                        if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
+                        if (eventType.equals(Constants.EventType_BirthDay)) {
                             personFullNameAlt = Person.getAltName(eventTitle, FormatName.NameFirst, context);
                             eventData.put(Position_personFullNameAlt, personFullNameAlt);
                         }
@@ -4890,16 +4886,16 @@ public class ContactsEvents {
 
                 event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, true, true);
 
-            } else if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
+            } else if (eventType.equals(Constants.EventType_BirthDay)) {
 
                 event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
 
-            } else if (eventType.equals(getEventType(Constants.Type_Other))) {
+            } else if (eventType.equals(Constants.EventType_Other)) {
 
                 event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
-                event.subType = getEventType(Constants.Type_FileEvent);
+                event.subType = Constants.EventType_File;
 
-            } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
+            } else if (eventType.equals(Constants.EventType_Holiday)) {
 
                 event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
                 event.subType = eventType;
@@ -5156,9 +5152,9 @@ public class ContactsEvents {
                             }
                             String personFullName = eventData.get(Position_personFullName);
                             if (result.dateEventFirstTime != null) {
-                                if (event.subType.equals(getEventType(Constants.Type_BirthDay))) {
+                                if (event.subType.equals(Constants.EventType_BirthDay)) {
                                     birthdayDatesForNames.put(personFullName, result.dateEventFirstTime);
-                                } else if (event.subType.equals(getEventType(Constants.Type_Death))) {
+                                } else if (event.subType.equals(Constants.EventType_Death)) {
                                     deathDatesForNames.put(personFullName, result.dateEventFirstTime);
                                 }
                             }
@@ -5742,33 +5738,27 @@ public class ContactsEvents {
 
             if (eventType == Constants.Type_BirthDay) {
 
-                String eventTypeInt = getEventType(Constants.Type_BirthDay);
-
                 event.caption = getResources().getString(R.string.event_type_birthday);
-                event.type = eventTypeInt;
-                event.subType = eventTypeInt;
+                event.type = Constants.EventType_BirthDay;
+                event.subType = Constants.EventType_BirthDay;
                 event.icon = R.drawable.ic_event_birthday;
                 event.emoji = getResources().getString(R.string.event_type_birthday_emoji);
                 event.needScanContacts = true;
 
             } else if (eventType == Constants.Type_Other) {
 
-                String eventTypeInt = getEventType(Constants.Type_Other);
-
                 event.caption = getResources().getString(R.string.event_type_other);
-                event.type = eventTypeInt;
-                event.subType = eventTypeInt;
+                event.type = Constants.EventType_Other;
+                event.subType = Constants.EventType_Other;
                 event.icon = R.drawable.ic_event_other;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
                 event.needScanContacts = false;
 
             } else if (eventType == Constants.Type_HolidayEvent) {
 
-                String eventTypeInt = getEventType(Constants.Type_HolidayEvent);
-
                 event.caption = getResources().getString(R.string.event_type_holiday);
-                event.type = eventTypeInt;
-                event.subType = eventTypeInt;
+                event.type = Constants.EventType_Holiday;
+                event.subType = Constants.EventType_Holiday;
                 event.icon = R.drawable.ic_event_holiday;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
                 event.needScanContacts = false;
@@ -5776,19 +5766,17 @@ public class ContactsEvents {
             } else if (eventType == Constants.Type_Death) {
 
                 event.caption = getResources().getString(R.string.event_type_death);
-                event.type = getEventType(Constants.Type_Custom);
-                event.subType = getEventType(Constants.Type_Death);
+                event.type = Constants.EventType_Custom;
+                event.subType = Constants.EventType_Death;
                 event.icon = R.drawable.ic_event_death;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_death_emoji) : "\uD83D\uDCC5";
                 event.needScanContacts = true;
 
             } else if (eventType == Constants.Type_Anniversary) {
 
-                String eventTypeInt = getEventType(Constants.Type_Anniversary);
-
                 event.caption = getResources().getString(R.string.event_type_anniversary);
-                event.type = eventTypeInt;
-                event.subType = eventTypeInt;
+                event.type = Constants.EventType_Anniversary;
+                event.subType = Constants.EventType_Anniversary;
                 event.icon = R.drawable.ic_event_wedding;
                 event.emoji = getResources().getString(R.string.event_type_wedding_emoji);
                 event.needScanContacts = true;
@@ -5796,8 +5784,8 @@ public class ContactsEvents {
             } else if (eventType == Constants.Type_NameDay) {
 
                 event.caption = getResources().getString(R.string.event_type_nameday);
-                event.type = getEventType(Constants.Type_Custom);
-                event.subType = getEventType(Constants.Type_NameDay);
+                event.type = Constants.EventType_Custom;
+                event.subType = Constants.EventType_NameDay;
                 event.icon = R.drawable.ic_event_nameday;
                 event.emoji = getResources().getString(R.string.event_type_nameday_emoji);
                 event.needScanContacts = true;
@@ -5805,8 +5793,8 @@ public class ContactsEvents {
             } else if (eventType == Constants.Type_Crowning) {
 
                 event.caption = getResources().getString(R.string.event_type_crowning);
-                event.type = getEventType(Constants.Type_Custom);
-                event.subType = getEventType(Constants.Type_Crowning);
+                event.type = Constants.EventType_Custom;
+                event.subType = Constants.EventType_Crowning;
                 event.icon = R.drawable.ic_event_crowning;
                 event.emoji = getResources().getString(R.string.event_type_crowning_emoji);
                 event.needScanContacts = true;
@@ -5814,7 +5802,7 @@ public class ContactsEvents {
             } else if (eventType == Constants.Type_Another) {
 
                 event.caption = getResources().getString(R.string.event_type_another);
-                event.type = getEventType(Constants.Type_Another);
+                event.type = Constants.EventType_Another;
                 event.icon = R.drawable.ic_event_other;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
                 event.needScanContacts = true;
@@ -5822,8 +5810,8 @@ public class ContactsEvents {
             } else if (eventType == Constants.Type_Custom1) {
 
                 event.caption = preferences_customevent1_caption;
-                event.type = getEventType(Constants.Type_Custom);
-                event.subType = getEventType(Constants.Type_Custom1);
+                event.type = Constants.EventType_Custom;
+                event.subType = Constants.EventType_Custom1;
                 event.icon = R.drawable.ic_event_custom1;
                 event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_custom1_emoji) : "\uD83D\uDCC6";
                 event.needScanContacts = true;
@@ -5831,8 +5819,8 @@ public class ContactsEvents {
             } else if (eventType == Constants.Type_Custom2) {
 
                 event.caption = preferences_customevent2_caption;
-                event.type = getEventType(Constants.Type_Custom);
-                event.subType = getEventType(Constants.Type_Custom2);
+                event.type = Constants.EventType_Custom;
+                event.subType = Constants.EventType_Custom2;
                 event.icon = R.drawable.ic_event_custom2;
                 event.emoji = getResources().getString(R.string.event_type_custom2_emoji);
                 event.needScanContacts = true;
@@ -5840,8 +5828,8 @@ public class ContactsEvents {
             } else if (eventType == Constants.Type_Custom3) {
 
                 event.caption = preferences_customevent3_caption;
-                event.type = getEventType(Constants.Type_Custom);
-                event.subType = getEventType(Constants.Type_Custom3);
+                event.type = Constants.EventType_Custom;
+                event.subType = Constants.EventType_Custom3;
                 event.icon = R.drawable.ic_event_custom3;
                 event.emoji = getResources().getString(R.string.event_type_custom3_emoji);
                 event.needScanContacts = true;
@@ -5849,8 +5837,8 @@ public class ContactsEvents {
             } else if (eventType == Constants.Type_Custom4) {
 
                 event.caption = preferences_customevent4_caption;
-                event.type = getEventType(Constants.Type_Custom);
-                event.subType = getEventType(Constants.Type_Custom4);
+                event.type = Constants.EventType_Custom;
+                event.subType = Constants.EventType_Custom4;
                 event.icon = R.drawable.ic_event_custom4;
                 event.emoji = getResources().getString(R.string.event_type_custom4_emoji);
                 event.needScanContacts = true;
@@ -5858,8 +5846,8 @@ public class ContactsEvents {
             } else if (eventType == Constants.Type_Custom5) {
 
                 event.caption = preferences_customevent5_caption;
-                event.type = getEventType(Constants.Type_Custom);
-                event.subType = getEventType(Constants.Type_Custom5);
+                event.type = Constants.EventType_Custom;
+                event.subType = Constants.EventType_Custom5;
                 event.icon = R.drawable.ic_event_custom5;
                 event.emoji = getResources().getString(R.string.event_type_custom5_emoji);
                 event.needScanContacts = true;
@@ -5867,8 +5855,8 @@ public class ContactsEvents {
             } else { //if (eventType == Constants.Type_Unrecognized) {
 
                 event.caption = getResources().getString(R.string.event_type_unrecognized);
-                event.type = getEventType(Constants.Type_Unrecognized);
-                event.subType = getEventType(Constants.Type_Unrecognized);
+                event.type = Constants.EventType_Unrecognized;
+                event.subType = Constants.EventType_Unrecognized;
                 event.icon = R.drawable.ic_event_unknown;
                 event.emoji = getResources().getString(R.string.event_type_unknown_emoji);
                 event.needScanContacts = false;
@@ -5878,10 +5866,10 @@ public class ContactsEvents {
             if (event.subType.isEmpty()) {
                 if (eventSource == Constants.Storage_Calendar) {
                     event.caption = getResources().getString(R.string.event_type_calendar);
-                    event.subType = getEventType(Constants.Type_CalendarEvent);
+                    event.subType = Constants.EventType_Calendar;
                 } else if (eventSource == Constants.Storage_File) {
                     event.caption = getResources().getString(R.string.event_type_file);
-                    event.subType = getEventType(Constants.Type_FileEvent);
+                    event.subType = Constants.EventType_File;
                 }
             }
 
@@ -5911,7 +5899,7 @@ public class ContactsEvents {
     }
 
     @NonNull
-    String readFileToString(@NonNull String file, String delimeter) {
+    String readFileToString(@NonNull String file, String delimiter) {
 
         StringBuilder sb = new StringBuilder();
 
@@ -5937,7 +5925,7 @@ public class ContactsEvents {
                     while (line != null) {
                         if (!line.startsWith(Constants.STRING_HASH) || !line.startsWith(Constants.STRING_DSLASH)) {
                             sb.append(line);
-                            if (delimeter != null) sb.append(delimeter);
+                            if (delimiter != null) sb.append(delimiter);
                         }
                         line = reader.readLine();
                     }
@@ -6027,21 +6015,21 @@ public class ContactsEvents {
             }
 
             if (bm == null) {
-                if (eventType.equals(getEventType(Constants.Type_Unrecognized))) {
+                if (eventType.equals(Constants.EventType_Unrecognized)) {
 
                     bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_unknown);
                     type = PhotoType.ICON;
 
                 } else if ((
-                        eventSubType.equals(getEventType(Constants.Type_CalendarEvent))
-                                || eventSubType.equals(getEventType(Constants.Type_FileEvent))
-                                || eventSubType.equals(getEventType(Constants.Type_Other))
+                        eventSubType.equals(Constants.EventType_Calendar)
+                                || eventSubType.equals(Constants.EventType_File)
+                                || eventSubType.equals(Constants.EventType_Other)
                 ) && TextUtils.isEmpty(singleEventArray[Position_photo_uri])) {
 
                     bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_other);
                     type = PhotoType.ICON;
 
-                } else if (eventSubType.equals(getEventType(Constants.Type_HolidayEvent))) {
+                } else if (eventSubType.equals(Constants.EventType_Holiday)) {
 
                     bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_holiday);
                     type = PhotoType.ICON;
@@ -6055,7 +6043,7 @@ public class ContactsEvents {
                     @NonNull String contactID = getNotNullString(singleEventArray[Position_contactID]);
                     String personFullName = singleEventArray[Position_personFullName];
 
-                    addMourningTape = (preferences_sad_photo == 1 && eventSubType.equals(getEventType(Constants.Type_Death))) ||
+                    addMourningTape = (preferences_sad_photo == 1 && eventSubType.equals(Constants.EventType_Death)) ||
                             (preferences_sad_photo == 2 && (deathDatesForIds.containsKey(contactID) || deathDatesForNames.containsKey(personFullName)));
 
                     if (showPhotos && !TextUtils.isEmpty(singleEventArray[Position_photo_uri]) && !singleEventArray[Position_photo_uri].equalsIgnoreCase(Constants.STRING_NULL)) {
@@ -6086,7 +6074,7 @@ public class ContactsEvents {
                         Date BDay = null;
                         boolean setNoAge = false;
 
-                        if (!eventSubType.equals(getEventType(Constants.Type_BirthDay))) {
+                        if (!eventSubType.equals(Constants.EventType_BirthDay)) {
                             if (!contactID.isEmpty() && birthdayDatesForIds.containsKey(contactID)) {
                                 birthDate = birthdayDatesForIds.get(contactID);
                             } else if (birthdayDatesForNames.containsKey(personFullName)) {
@@ -6110,7 +6098,7 @@ public class ContactsEvents {
                             }
                             singleEventArray = singleRowList.toArray(new String[0]);
 
-                        } else if (eventSubType.equals(getEventType(Constants.Type_Death)) && setNoAge) {
+                        } else if (eventSubType.equals(Constants.EventType_Death) && setNoAge) {
 
                             //Если у персоны с годовщиной смерти нет дня рождения
                             List<String> singleRowList = Arrays.asList(singleEventArray);
@@ -6304,41 +6292,40 @@ public class ContactsEvents {
      * @return Ссылка на ресурс иконки события
      */
     private static int getEventIcon(@NonNull String eventType, @NonNull String eventSubType) {
-        int iconResId;
-        if (eventSubType.equals(getEventType(Constants.Type_BirthDay))) {
-            iconResId = R.drawable.ic_event_birthday;
-        } else if (eventSubType.equals(getEventType(Constants.Type_Anniversary))) {
-            iconResId = R.drawable.ic_event_wedding;
-        } else if (eventSubType.equals(getEventType(Constants.Type_NameDay))) {
-            iconResId = R.drawable.ic_event_nameday;
-        } else if (eventSubType.equals(getEventType(Constants.Type_Crowning))) {
-            iconResId = R.drawable.ic_event_crowning;
-        } else if (eventSubType.equals(getEventType(Constants.Type_Death))) {
-            iconResId = R.drawable.ic_event_death;
-        } else if (eventSubType.equals(getEventType(Constants.Type_HolidayEvent))) {
-            iconResId = R.drawable.ic_event_holiday;
-        } else if (eventSubType.equals(getEventType(Constants.Type_Custom1))) {
-            iconResId = R.drawable.ic_event_custom1;
-        } else if (eventSubType.equals(getEventType(Constants.Type_Custom2))) {
-            iconResId = R.drawable.ic_event_custom2;
-        } else if (eventSubType.equals(getEventType(Constants.Type_Custom3))) {
-            iconResId = R.drawable.ic_event_custom3;
-        } else if (eventSubType.equals(getEventType(Constants.Type_Custom4))) {
-            iconResId = R.drawable.ic_event_custom4;
-        } else if (eventSubType.equals(getEventType(Constants.Type_Custom5))) {
-            iconResId = R.drawable.ic_event_custom5;
-        } else if (eventSubType.equals(getEventType(Constants.Type_5K))) {
-            iconResId = R.drawable.ic_event_medal;
-        } else if (eventSubType.equals(getEventType(Constants.Type_Xdays))) {
-            iconResId = R.drawable.ic_event_xdays;
-        } else if (eventSubType.equals(getEventType(Constants.Type_Another))) {
-            iconResId = R.drawable.ic_event_other;
-        } else if (eventType.equals(getEventType(Constants.Type_Other))) {
-            iconResId = R.drawable.ic_event_other;
-        } else {
-            iconResId = R.drawable.ic_event_unknown;
+        switch (eventSubType) {
+            case Constants.EventType_BirthDay:
+                return R.drawable.ic_event_birthday;
+            case Constants.EventType_Anniversary:
+                return R.drawable.ic_event_wedding;
+            case Constants.EventType_NameDay:
+                return R.drawable.ic_event_nameday;
+            case Constants.EventType_Crowning:
+                return R.drawable.ic_event_crowning;
+            case Constants.EventType_Death:
+                return R.drawable.ic_event_death;
+            case Constants.EventType_Holiday:
+                return R.drawable.ic_event_holiday;
+            case Constants.EventType_Custom1:
+                return R.drawable.ic_event_custom1;
+            case Constants.EventType_Custom2:
+                return R.drawable.ic_event_custom2;
+            case Constants.EventType_Custom3:
+                return R.drawable.ic_event_custom3;
+            case Constants.EventType_Custom4:
+                return R.drawable.ic_event_custom4;
+            case Constants.EventType_Custom5:
+                return R.drawable.ic_event_custom5;
+            case Constants.EventType_5K:
+                return R.drawable.ic_event_medal;
+            case Constants.EventType_Xdays:
+                return R.drawable.ic_event_xdays;
+            case Constants.EventType_Another:
+                return R.drawable.ic_event_other;
         }
-        return iconResId;
+        if (eventType.equals(Constants.EventType_Other)) {
+            return R.drawable.ic_event_other;
+        }
+        return R.drawable.ic_event_unknown;
     }
 
     @NonNull
@@ -6679,9 +6666,9 @@ public class ContactsEvents {
                     age = countYearsDiff(eventDateFirstTime, eventDateThisTime); //Считаем, сколько будет лет
                     if (!isAD) age--;
                     if (!TextUtils.isEmpty(contactID)) {
-                        if (eventSubType.equals(getEventType(Constants.Type_BirthDay)) && !birthdayDatesForIds.containsKey(contactID)) {
+                        if (eventSubType.equals(Constants.EventType_BirthDay) && !birthdayDatesForIds.containsKey(contactID)) {
                             birthdayDatesForIds.put(contactID, eventDateFirstTime);
-                        } else if (eventSubType.equals(getEventType(Constants.Type_Death))) {
+                        } else if (eventSubType.equals(Constants.EventType_Death)) {
                             deathDatesForIds.put(contactID, eventDateFirstTime);
                         }
                     }
@@ -6708,7 +6695,7 @@ public class ContactsEvents {
                     singleEventArray[Position_age] = Integer.toString(age);
                     singleEventArray[Position_age_caption] = setAgeFormatting(getAgeString(age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20));
 
-                    if (eventType.equals(getEventType(Constants.Type_Anniversary))) {
+                    if (eventType.equals(Constants.EventType_Anniversary)) {
                         @Nullable String anCaption;
                         try {
                             anCaption = context.getString(resources.getIdentifier(Constants.STRING_TYPE_WEDDING + age, Constants.RES_TYPE_STRING, context.getPackageName()));
@@ -6731,7 +6718,7 @@ public class ContactsEvents {
                 }
             }
 
-            if (eventSubType.equals(getEventType(Constants.Type_BirthDay))) {
+            if (eventSubType.equals(Constants.EventType_BirthDay)) {
                 singleEventArray[Position_zodiacSign] = ZodiacHelper.getZodiacSignTitle(context, singleEventArray[Position_eventDateFirstTime]);
                 singleEventArray[Position_zodiacYear] = ZodiacHelper.getChineseZodiacYear(context, singleEventArray[Position_eventDateFirstTime]);
             }
@@ -6754,7 +6741,7 @@ public class ContactsEvents {
                 final DayType.Type dayType = DayType.Type.Holiday;
                 final String key = packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(eventDateThisTime));
                 fillDayTypeAndInfo(key, dayType, eventTitle);
-            } else if (getEventType(Constants.Type_HolidayEvent).equals(singleEventArray[Position_eventSubType])
+            } else if (Constants.EventType_Holiday.equals(singleEventArray[Position_eventSubType])
                     && singleEventArray[Position_dates].contains(Constants.eventSourceLocalPrefix)) {
                 //Праздники в локальном событии для календарного виджета
                 String[] dates = singleEventArray[Position_dates].split(Constants.STRING_2TILDA, -1);
@@ -6772,7 +6759,7 @@ public class ContactsEvents {
 
             if (age > 0) {
 
-                if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
+                if (eventType.equals(Constants.EventType_BirthDay)) {
 
                     //Вычисляем 5K даты
                     long days = countDaysDiff(eventDateFirstTime, currentDay);
@@ -6790,11 +6777,11 @@ public class ContactsEvents {
 
                         String[] singleEventArray5K = singleEventArray.clone();
 
-                        singleEventArray5K[Position_eventType] = getEventType(Constants.Type_5K);
-                        singleEventArray5K[Position_eventSubType] = getEventType(Constants.Type_5K);
+                        singleEventArray5K[Position_eventType] = Constants.EventType_5K;
+                        singleEventArray5K[Position_eventSubType] = Constants.EventType_5K;
                         singleEventArray5K[Position_eventCaption] = "5K+";
                         singleEventArray5K[Position_eventLabel] = sdf_DDMMYYYY.format(cal5K.getTime());
-                        //для выдачи даты юбилея,а не первоначального события: sdfYear.format(sdf.parse(cal5K.get(YEAR) + "-" + (cal5K.get(Calendar.MONTH) + 1) + "-" + cal5K.get(Calendar.DAY_OF_MONTH)));
+                        //для выдачи даты юбилея, а не первоначального события: sdfYear.format(sdf.parse(cal5K.get(YEAR) + "-" + (cal5K.get(Calendar.MONTH) + 1) + "-" + cal5K.get(Calendar.DAY_OF_MONTH)));
                         singleEventArray5K[Position_eventDateNextTime] = sdf_DDMMYYYY.format(cal5K.getTime());
                         singleEventArray5K[Position_eventDateFirstTime] = sdf_DDMMYYYY.format(eventDateFirstTime);
                         singleEventArray5K[Position_age] = Integer.toString(age);
@@ -6811,7 +6798,7 @@ public class ContactsEvents {
                                 statFavoriteEventsCount++;
                             }
                             magicList.add(TextUtils.join(Constants.STRING_EOT, singleEventArray5K));
-                            increaseStatForEventTypes(getEventType(Constants.Type_5K));
+                            increaseStatForEventTypes(Constants.EventType_5K);
                         } else if (isEventVisibleInList(singleEventArray5K)) {
                             eventListPrev.add(TextUtils.join(Constants.STRING_EOT, singleEventArray5K));
                         }
@@ -6882,11 +6869,11 @@ public class ContactsEvents {
 
             return textDistance.substring(textDistance.length() - 3)
                     + (isFavoriteEvent ? "0" : checkIsHiddenEvent(eventKey, eventKeyWithRawIs) ? "3" : checkIsSilencedEvent(eventKey, eventKeyWithRawIs) ? "2" : "1")
-                    + (eventType.equals(getEventType(Constants.Type_BirthDay)) ? "1"
-                    : eventType.equals(getEventType(Constants.Type_Anniversary)) ? "2"
-                    : eventType.equals(getEventType(Constants.Type_Custom)) ? "3"
-                    : eventType.equals(getEventType(Constants.Type_5K)) ? "5"
-                    : eventType.equals(getEventType(Constants.Type_Other)) ? "6" : "4");
+                    + (eventType.equals(Constants.EventType_BirthDay) ? "1"
+                    : eventType.equals(Constants.EventType_Anniversary) ? "2"
+                    : eventType.equals(Constants.EventType_Custom) ? "3"
+                    : eventType.equals(Constants.EventType_5K) ? "5"
+                    : eventType.equals(Constants.EventType_Other) ? "6" : "4");
 
 
         } catch (Exception e) {
@@ -6913,14 +6900,14 @@ public class ContactsEvents {
             @NonNull final String contactID = getNotNullString(singleEventArray[Position_contactID]);
             @NonNull final String personFullName = getNotNullString(singleEventArray[Position_personFullName]);
 
-            if (eventSubType.equals(getEventType(Constants.Type_BirthDay)) //Если это день рождения или 5K
-                    || eventSubType.equals(getEventType(Constants.Type_5K))) {
+            if (eventSubType.equals(Constants.EventType_BirthDay) //Если это день рождения или 5K
+                    || eventSubType.equals(Constants.EventType_5K)) {
                 if (!currentAge.isEmpty() && !currentAge.startsWith(Constants.STRING_0)) {
                     if (deathDatesForIds.containsKey(contactID)) { //Но есть годовщина смерти
                         agePrefix = resources.getString(R.string.msg_age_could_be_now);
 
                         //Если годовщина смерти попалась раньше дня рождения, то у неё currentAge будет содержать текущий возраст - надо обновить
-                        final String key = contactID + Constants.STRING_2HASH + getEventType(Constants.Type_Death);
+                        final String key = contactID + Constants.STRING_2HASH + Constants.EventType_Death;
                         if (map_eventsBySubtypeAndPersonID_offset.containsKey(key)) {
                             Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(key);
                             if (eventIndex != null && eventIndex <= eventList.size()) {
@@ -6939,7 +6926,7 @@ public class ContactsEvents {
                         if (deathDatesForNames.containsKey(personFullName)) {
                             agePrefix = resources.getString(R.string.msg_age_could_be_now);
 
-                            final String key = personFullName + Constants.STRING_2HASH + getEventType(Constants.Type_Death);
+                            final String key = personFullName + Constants.STRING_2HASH + Constants.EventType_Death;
                             Integer eventIndex = map_eventsBySubtypeAndPersonName_offset.get(key);
                             if (eventIndex != null && eventIndex <= eventList.size()) {
                                 List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
@@ -6961,13 +6948,13 @@ public class ContactsEvents {
             } else if (birthdayDatesForIds.containsKey(contactID)) {
                 Date birthDate = birthdayDatesForIds.get(contactID);
                 if (birthDate != null) {
-                    if (eventSubType.equals(getEventType(Constants.Type_Death))) { //Если это годовщина смерти
+                    if (eventSubType.equals(Constants.EventType_Death)) { //Если это годовщина смерти
                         Date eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateFirstTime]);
                         if (eventDate != null) {
                             agePrefix = resources.getString(R.string.msg_age_was).concat(countDaysDiffText(birthDate, eventDate, 3));
                         }
                         //Необходимо обновить текущий возраст в дне рождении
-                        final String key = contactID + Constants.STRING_2HASH + getEventType(Constants.Type_BirthDay);
+                        final String key = contactID + Constants.STRING_2HASH + Constants.EventType_BirthDay;
                         if (map_eventsBySubtypeAndPersonID_offset.containsKey(key)) {
                             Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(key);
                             if (eventIndex != null && eventIndex <= eventList.size()) {
@@ -6993,13 +6980,13 @@ public class ContactsEvents {
             } else if (birthdayDatesForNames.containsKey(personFullName)) {
                 Date birthDate = birthdayDatesForNames.get(personFullName);
                 if (birthDate != null) {
-                    if (eventSubType.equals(getEventType(Constants.Type_Death))) { //Если это годовщина смерти
+                    if (eventSubType.equals(Constants.EventType_Death)) { //Если это годовщина смерти
                         Date eventDate = sdf_DDMMYYYY.parse(singleEventArray[Position_eventDateFirstTime]);
                         if (eventDate != null) {
                             agePrefix = resources.getString(R.string.msg_age_was).concat(countDaysDiffText(birthDate, eventDate, 3));
                         }
                         //Необходимо обновить текущий возраст в дне рождении
-                        final String key = personFullName + Constants.STRING_2HASH + getEventType(Constants.Type_BirthDay);
+                        final String key = personFullName + Constants.STRING_2HASH + Constants.EventType_BirthDay;
                         if (map_eventsBySubtypeAndPersonName_offset.containsKey(key)) {
                             Integer eventIndex = map_eventsBySubtypeAndPersonName_offset.get(key);
                             if (eventIndex != null && eventIndex <= eventList.size()) {
@@ -7024,7 +7011,7 @@ public class ContactsEvents {
                 }
             } else if (Constants.STRING_STORAGE_CONTACTS.equals(singleEventArray[Position_eventStorage])
                     || Constants.STRING_STORAGE_LOCAL.equals(singleEventArray[Position_eventStorage])) {
-                if (eventSubType.equals(getEventType(Constants.Type_Death))) { //Если это годовщина смерти
+                if (eventSubType.equals(Constants.EventType_Death)) { //Если это годовщина смерти
                     agePrefix = resources.getString(R.string.msg_age_passed).concat(currentAge);
                 } else {
                     agePrefix = resources.getString(R.string.msg_age_now).concat(currentAge);
@@ -7177,8 +7164,8 @@ public class ContactsEvents {
             for (int i = dataList.size() - 1; i >= 0 && statEventsPrevEventsFound < params_events; i--) {
                 String li = dataList.get(i);
                 String[] singleEventArray = li.split(Constants.STRING_EOT, -1);
-                if (!singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_5K)) //пропускаем 5K+
-                        && !singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_CalendarEvent)) //пропускаем события календаря
+                if (!singleEventArray[Position_eventSubType].equals(Constants.EventType_5K) //пропускаем 5K+
+                        && !singleEventArray[Position_eventSubType].equals(Constants.EventType_Calendar) //пропускаем события календаря
                         && !singleEventArray[Position_notAnnualEvent].equals(Constants.STRING_1) //пропускаем не ежегодные события
                 ) {
                     Date eventDate = null;
@@ -7280,7 +7267,7 @@ public class ContactsEvents {
 
                     if (eventDate != null) {
 
-                        if (!singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_5K))) {
+                        if (!singleEventArray[Position_eventSubType].equals(Constants.EventType_5K)) {
                             long dayDistance = countDaysDiff(currentDay, eventDate);
                             singleEventArray[Position_eventDistance] = Long.toString(dayDistance);
                             singleEventArray[Position_eventDistanceText] = getEventDistanceText(dayDistance, eventDate);
@@ -7292,12 +7279,12 @@ public class ContactsEvents {
                         } catch (NumberFormatException e) { /**/ }
                         if (Age > 1) {
                             Age--;
-                            if (!singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_5K))) {
+                            if (!singleEventArray[Position_eventSubType].equals(Constants.EventType_5K)) {
                                 singleEventArray[Position_age] = Integer.toString(Age);
                                 singleEventArray[Position_age_caption] = setAgeFormatting(getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20));
                             }
 
-                            if (singleEventArray[Position_eventType].equals(getEventType(Constants.Type_Anniversary))) {
+                            if (singleEventArray[Position_eventType].equals(Constants.EventType_Anniversary)) {
                                 @Nullable String anCaption;
                                 try {
                                     anCaption = context.getString(getResources().getIdentifier(Constants.STRING_TYPE_WEDDING + Age, Constants.RES_TYPE_STRING, context.getPackageName()));
@@ -8069,7 +8056,7 @@ public class ContactsEvents {
                         //todo: .addPerson для телефона и почты
 
                         if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Dial))
-                                && !event.singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_CalendarEvent))
+                                && !event.singleEventArray[Position_eventSubType].equals(Constants.EventType_Calendar)
                                 && !TextUtils.isEmpty(event.singleEventArray[Position_contactID])
                                 && !TextUtils.isEmpty(getContactPhone(parseToLong(event.singleEventArray[Position_contactID])))) {
 
@@ -8155,7 +8142,7 @@ public class ContactsEvents {
 
                         String eventSubType = event.singleEventArray[Position_eventSubType];
                         int roundingFactor;
-                        if (eventSubType.equals(getEventType(Constants.Type_CalendarEvent)) || eventSubType.equals(getEventType(Constants.Type_FileEvent))) {
+                        if (eventSubType.equals(Constants.EventType_Calendar) || eventSubType.equals(Constants.EventType_File)) {
                             roundingFactor = 1;
                         } else {
                             roundingFactor = preferences_list_photostyle;
@@ -8271,7 +8258,7 @@ public class ContactsEvents {
                 eventDetails.append(event.singleEventArray[Position_age_caption]);
             }
             if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_WeddingName_ID))
-                    && event.singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_Anniversary))) {
+                    && event.singleEventArray[Position_eventSubType].equals(Constants.EventType_Anniversary)) {
 
                 if (!eventDetails.toString().endsWith(Constants.STRING_SPACE)) eventDetails.append(Constants.STRING_SPACE);
 
@@ -8289,7 +8276,7 @@ public class ContactsEvents {
 
             }
             if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID))
-                    && !event.singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_Anniversary))) {
+                    && !event.singleEventArray[Position_eventSubType].equals(Constants.EventType_Anniversary)) {
                 eventDetails
                         .append(Constants.STRING_COMMA_SPACE)
                         .append(event.singleEventArray[Position_eventLabel].trim().isEmpty() ? event.singleEventArray[Position_eventCaption] :
@@ -8521,7 +8508,7 @@ public class ContactsEvents {
 
             String eventSubType = singleEventArray[Position_eventSubType];
             int roundingFactor;
-            if (eventSubType.equals(getEventType(Constants.Type_CalendarEvent)) || eventSubType.equals(getEventType(Constants.Type_FileEvent))) {
+            if (eventSubType.equals(Constants.EventType_Calendar) || eventSubType.equals(Constants.EventType_File)) {
                 roundingFactor = 1;
             } else {
                 roundingFactor = preferences_list_photostyle;
@@ -8547,7 +8534,7 @@ public class ContactsEvents {
             }
 
             if (prefQuickActions.contains(context.getString(R.string.pref_Notifications_QuickActions_Dial))
-                    && !singleEventArray[Position_eventSubType].equals(getEventType(Constants.Type_CalendarEvent))
+                    && !singleEventArray[Position_eventSubType].equals(Constants.EventType_Calendar)
                     && !TextUtils.isEmpty(singleEventArray[Position_contactID])
                     && !TextUtils.isEmpty(getContactPhone(parseToLong(singleEventArray[Position_contactID])))) {
 
@@ -9285,7 +9272,7 @@ public class ContactsEvents {
                     continue;
                 }
                 final String[] keyParts = getKeyParts(event);
-                if (keyParts[1].equals(getEventType(Constants.Type_CalendarEvent))) {
+                if (keyParts[1].equals(Constants.EventType_Calendar)) {
                     if (!idsAllCalendarEvents.contains(keyParts[0])) toRemoveIds.add(event);
                 } else {
                     if (!map_contacts_ids.containsKey(keyParts[0])) toRemoveIds.add(event);
@@ -9337,7 +9324,7 @@ public class ContactsEvents {
                     continue;
                 }
                 final String[] keyParts = getKeyParts(event);
-                if (keyParts[1].equals(getEventType(Constants.Type_CalendarEvent))) {
+                if (keyParts[1].equals(Constants.EventType_Calendar)) {
                     if (!idsAllCalendarEvents.contains(keyParts[0])) toRemoveIds.add(event);
                 } else {
                     if (!map_contacts_ids.containsKey(keyParts[0])) toRemoveIds.add(event);
@@ -9516,46 +9503,58 @@ public class ContactsEvents {
 
     Set<String> getPreferences_Calendars(@NonNull String eventType) {
 
-        if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
-            return preferences_BirthDay_calendars;
-        } else if (eventType.equals(getEventType(Constants.Type_Other))) {
-            return preferences_OtherEvent_calendars;
-        } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
-            return preferences_HolidayEvent_calendars;
-        } else if (eventType.equals(Constants.Type_MultiEvent)) {
-            return preferences_MultiType_calendars;
-        } else {
-            return new HashSet<>();
+        switch (eventType) {
+            case Constants.EventType_BirthDay:
+                return preferences_BirthDay_calendars;
+            case Constants.EventType_Other:
+                return preferences_OtherEvent_calendars;
+            case Constants.EventType_Holiday:
+                return preferences_HolidayEvent_calendars;
+            case Constants.Type_MultiEvent:
+                return preferences_MultiType_calendars;
+            default:
+                return new HashSet<>();
         }
 
     }
 
     void setPreferences_Calendars(@NonNull String eventType, Set<String> preferences_Calendars) {
 
-        if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
-            this.preferences_BirthDay_calendars = preferences_Calendars;
-        } else if (eventType.equals(getEventType(Constants.Type_Other))) {
-            this.preferences_OtherEvent_calendars = preferences_Calendars;
-        } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
-            this.preferences_HolidayEvent_calendars = preferences_Calendars;
-        } else if (eventType.equals(Constants.Type_MultiEvent)) {
-            this.preferences_MultiType_calendars = preferences_Calendars;
+        switch (eventType) {
+            case Constants.EventType_BirthDay:
+                this.preferences_BirthDay_calendars = preferences_Calendars;
+                break;
+            case Constants.EventType_Other:
+                this.preferences_OtherEvent_calendars = preferences_Calendars;
+                break;
+            case Constants.EventType_Holiday:
+                this.preferences_HolidayEvent_calendars = preferences_Calendars;
+                break;
+            case Constants.Type_MultiEvent:
+                this.preferences_MultiType_calendars = preferences_Calendars;
+                break;
         }
 
     }
 
     void setPreferences_Files(String eventType, Set<String> preferences_Files) {
 
-        if (eventType.equals(getEventType(Constants.Type_BirthDay))) {
-            this.preferences_Birthday_files = preferences_Files;
-        } else if (eventType.equals(getEventType(Constants.Type_Other))) {
-            this.preferences_OtherEvent_files = preferences_Files;
-        } else if (eventType.equals(getEventType(Constants.Type_HolidayEvent))) {
-            this.preferences_HolidayEvent_files = preferences_Files;
-        } else if (eventType.equals(getEventType(Constants.Type_Fact))) {
-            this.preferences_FactEvent_files = preferences_Files;
-        } else if (eventType.equals(Constants.Type_MultiEvent)) {
-            this.preferences_MultiType_files = preferences_Files;
+        switch (eventType) {
+            case Constants.EventType_BirthDay:
+                this.preferences_Birthday_files = preferences_Files;
+                break;
+            case Constants.EventType_Other:
+                this.preferences_OtherEvent_files = preferences_Files;
+                break;
+            case Constants.EventType_Holiday:
+                this.preferences_HolidayEvent_files = preferences_Files;
+                break;
+            case Constants.EventType_Fact:
+                this.preferences_FactEvent_files = preferences_Files;
+                break;
+            case Constants.Type_MultiEvent:
+                this.preferences_MultiType_files = preferences_Files;
+                break;
         }
 
     }
@@ -10233,7 +10232,7 @@ public class ContactsEvents {
                 eventInfo = event.split(Constants.STRING_EOT, -1);
                 final String eventKey = getEventKey(eventInfo);
                 final String eventKeyWithRawId = getEventKeyWithRawId(eventInfo);
-                if (eventInfo[Position_eventSubType].equals(getEventType(Constants.Type_BirthDay)) && (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey, eventKeyWithRawId))) {
+                if (eventInfo[Position_eventSubType].equals(Constants.EventType_BirthDay) && (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey, eventKeyWithRawId))) {
                     try {
                         BDay = sdf_DDMMYYYY.parse(eventInfo[Position_eventDateNextTime]);
                         if (BDay != null) {
@@ -10334,7 +10333,7 @@ public class ContactsEvents {
                 eventInfo = event.split(Constants.STRING_EOT, -1);
                 final String eventKey = getEventKey(eventInfo);
                 final String eventKeyWithRawId = getEventKeyWithRawId(eventInfo);
-                if (eventInfo[Position_eventSubType].equals(getEventType(Constants.Type_BirthDay)) && (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey, eventKeyWithRawId))) {
+                if (eventInfo[Position_eventSubType].equals(Constants.EventType_BirthDay) && (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey, eventKeyWithRawId))) {
                     try {
                         BDay = sdf_DDMMYYYY.parse(eventInfo[Position_eventDateFirstTime]);
                         if (BDay != null) {
@@ -10431,7 +10430,7 @@ public class ContactsEvents {
                 eventInfo = event.split(Constants.STRING_EOT, -1);
                 final String eventKey = getEventKey(eventInfo);
                 final String eventKeyWithRawId = getEventKeyWithRawId(eventInfo);
-                if (eventInfo[Position_eventSubType].equals(getEventType(Constants.Type_BirthDay)) && (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey, eventKeyWithRawId))) {
+                if (eventInfo[Position_eventSubType].equals(Constants.EventType_BirthDay) && (getHiddenEventsCount() == 0 || !checkIsHiddenEvent(eventKey, eventKeyWithRawId))) {
                     try {
                         BDay = sdf_DDMMYYYY.parse(eventInfo[Position_eventDateFirstTime]);
                         eventDay = sdf_DDMMYYYY.parse(eventInfo[Position_eventDateNextTime]);
@@ -11377,13 +11376,13 @@ public class ContactsEvents {
             } else if (algorithm.equals(context.getString(R.string.pref_List_Jubilee_Algorithm_Every_5))) {
                 return age % 5 == 0;
             } else if (algorithm.equals(context.getString(R.string.pref_List_Jubilee_Algorithm_Every_Flex))) {
-                if (eventSubType.equals(getEventType(Constants.Type_BirthDay))) {
+                if (eventSubType.equals(Constants.EventType_BirthDay)) {
                     if (age < 45) {
                         return Arrays.asList(1, 3, 5, 10, 14, 18, 21, 30).contains(age);
                     } else {
                         return age % 5 == 0;
                     }
-                } else if (eventSubType.equals(getEventType(Constants.Type_Anniversary))) {
+                } else if (eventSubType.equals(Constants.EventType_Anniversary)) {
                     return age % 10 == 0;
                 } else {
                     return false;
@@ -12104,8 +12103,8 @@ public class ContactsEvents {
                                     eventData.put(Position_personFullName, eventTitle);
                                     eventData.put(Position_personFullNameAlt, eventTitle);
                                     eventData.put(Position_eventCaption, getResources().getString(R.string.event_type_holiday)); //Наименование события
-                                    eventData.put(Position_eventType, getEventType(Constants.Type_HolidayEvent)); //Тип события
-                                    eventData.put(Position_eventSubType, getEventType(Constants.Type_HolidayEvent)); //Подтип события
+                                    eventData.put(Position_eventType, Constants.EventType_Holiday); //Тип события
+                                    eventData.put(Position_eventSubType, Constants.EventType_Holiday); //Подтип события
                                     eventData.put(Position_eventDateNextTime, eventDateString);
                                     eventData.put(Position_eventDateFirstTime, eventDateString);
                                     eventData.put(Position_dates, eventNewDate);
@@ -12411,7 +12410,7 @@ public class ContactsEvents {
      * @param eventSources Доступные источники событий
      * @param preselectedSources Предвыбранные источники
      * @param baseContext Контекст вызова (для наследования темы и возврата результата)
-     * @param eventConsumer Id потребителя, для которого выбирали источники событий и который необходимо вернуть с результатом
+     * @param eventConsumer Id потребителя, для которого выбирали источники событий
      */
     void selectEventSources(@NonNull EventSources eventSources, @NonNull List<String> preselectedSources, @NonNull Context baseContext, String eventConsumer) {
 
@@ -12455,7 +12454,7 @@ public class ContactsEvents {
                     sourceChoices.add(sourceTitle
                             + Constants.STRING_BRACKETS_OPEN
                             //todo: тут жертвуем типом события в пользу "фактов" и скорости
-                            + getFileEventsCount(sourceId, getEventType(Constants.Type_Fact), false)
+                            + getFileEventsCount(sourceId, Constants.EventType_Fact, false)
                             + Constants.STRING_BRACKETS_CLOSE);
 
                 } else if (sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {

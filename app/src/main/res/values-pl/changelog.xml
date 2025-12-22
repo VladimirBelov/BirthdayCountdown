@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.12.2025, 17:21
+  ~  * Created by Vladimir Belov on 22.12.2025, 21:21
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.12.2025, 16:58
+  ~  * Last modified 22.12.2025, 20:36
   ~  */
   -->
 
@@ -20,6 +20,7 @@
         <item>↩️ Importuj zdarzenia z plików</item>
         <item>Dodano wyszukiwanie informacji referencyjnych</item>
         <item>🏖️ Dodano święta w 2026 roku</item>
+        <item>Nadchodzące wydarzenia są wyświetlane jako pierwsze; wydarzenia z przeszłości są ukryte i znajdują się na górze listy</item>
         <item>Poprawki błędów</item>
 
         <item>#1.8.8</item>

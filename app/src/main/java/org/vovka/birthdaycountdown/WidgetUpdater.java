@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 22.12.2025, 21:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 02:01
+ *  * Last modified 22.12.2025, 19:09
  *
  */
 
@@ -382,9 +382,9 @@ class WidgetUpdater {
             final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
 
             //Типы событий
-            if  (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_CalendarEvent)) ||
-                    eventSubType.equals(ContactsEvents.getEventType(Constants.Type_FileEvent)) ||
-                            eventSubType.equals(ContactsEvents.getEventType(Constants.Type_HolidayEvent))) {
+            if  (eventSubType.equals(Constants.EventType_Calendar) ||
+                    eventSubType.equals(Constants.EventType_File) ||
+                    eventSubType.equals(Constants.EventType_Holiday)) {
                 //пропускаем события календарей, из файлов и праздники
                 useEventListPrefs = false;
             } else if (!eventsPrefList.isEmpty()) {
@@ -752,10 +752,11 @@ class WidgetUpdater {
             int id_widget_ZodiacIcon = resources.getIdentifier(Constants.WIDGET_ICON_ZODIAC + eventsDisplayed, Constants.STRING_ID, packageName);
 
             String contactID = singleEventArray[ContactsEvents.Position_contactID];
+            boolean isBirthdayEvent = eventSubType.equals(Constants.EventType_BirthDay) || eventSubType.equals(Constants.EventType_5K);
             if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_ZodiacSign_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
 
-                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
+                if (isBirthdayEvent) {
 
                     strZodiacInfo = ContactsEvents.ZodiacHelper.getZodiacSign(singleEventArray[ContactsEvents.Position_eventDateFirstTime]); //нам нужна только иконка
 
@@ -789,7 +790,7 @@ class WidgetUpdater {
             if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_ZodiacYear_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ZodiacYear_ID))) {
 
-                if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
+                if (isBirthdayEvent) {
 
                     strZodiacYearInfo = ContactsEvents.ZodiacHelper.getChineseZodiacYearSymbol(context, singleEventArray[ContactsEvents.Position_eventDateFirstTime]); //нам нужна только иконка
 

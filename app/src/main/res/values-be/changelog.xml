@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.12.2025, 17:21
+  ~  * Created by Vladimir Belov on 22.12.2025, 21:21
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.12.2025, 16:58
+  ~  * Last modified 22.12.2025, 20:37
   ~  */
   -->
 
@@ -19,6 +19,7 @@
         <item>↩️ Імпарт падзей з файлаў</item>
         <item>Дададзены пошук па даведачнай інфармацыі</item>
         <item>🏖️ Дададзеныя святы на 2026 год</item>
+        <item>Першымі ў спісе ідуць маючыя адбыцца падзеі, якія прайшлі - схаваны ўверсе спісу</item>
         <item>Выпраўленне памылак</item>
 
         <item>#1.8.8</item>

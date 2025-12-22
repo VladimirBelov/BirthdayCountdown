@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.12.2025, 17:21
+  ~  * Created by Vladimir Belov on 22.12.2025, 21:21
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.12.2025, 16:58
+  ~  * Last modified 22.12.2025, 20:37
   ~  */
   -->
 
@@ -20,6 +20,7 @@
         <item>↩️ Importovat události ze souborů</item>
         <item>Přidáno vyhledávání referenčních informací</item>
         <item>🏖️ Přidány svátky pro rok 2026</item>
+        <item>Nadcházející události jsou uvedeny jako první; minulé události jsou skryty na začátku seznamu</item>
         <item>Opravy chyb</item>
 
         <item>#1.8.8</item>

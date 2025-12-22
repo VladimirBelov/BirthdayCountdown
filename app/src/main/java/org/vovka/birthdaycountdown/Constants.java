@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 16:27
+ *  * Created by Vladimir Belov on 22.12.2025, 21:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 15:19
+ *  * Last modified 22.12.2025, 17:44
  *
  */
 
@@ -152,6 +152,7 @@ public final class Constants {
     static final String WIDGET_ICON_SILENCED = "iconSilenced";
     static final String WIDGET_TEXT_VIEW_DISTANCE = "textViewDistance";
 
+    //Типы событий (хранимые)
     static final int Type_BirthDay = 0;
     static final int Type_Anniversary = 1;
     static final int Type_Other = 2;
@@ -173,6 +174,29 @@ public final class Constants {
     static final int Type_Fact = 24;
     static final int Type_Unrecognized = 99;
     static final String Type_MultiEvent = "30";
+
+    //Типы событий (ID)
+    static final String EventType_BirthDay = "3"; //ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY
+    static final String EventType_Anniversary = "1"; //ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY
+    static final String EventType_Other = "23";
+    static final String EventType_Custom = "0"; //ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM
+    static final String EventType_5K = "11";
+    static final String EventType_Death = "12";
+    static final String EventType_NameDay = "13";
+    static final String EventType_Crowning = "14";
+    static final String EventType_Custom1 = "15";
+    static final String EventType_Custom2 = "16";
+    static final String EventType_Custom3 = "17";
+    static final String EventType_Custom4 = "18";
+    static final String EventType_Custom5 = "19";
+    static final String EventType_Another = "2"; //ContactsContract.CommonDataKinds.Event.TYPE_OTHER
+    static final String EventType_Holiday = "4";
+    static final String EventType_Calendar = "20";
+    static final String EventType_File = "21";
+    static final String EventType_Xdays = "22";
+    static final String EventType_Fact = "24";
+    static final String EventType_Unrecognized = "99";
+
     static final int pref_List_NameFormat_FirstSecondLast = 1;
     static final int pref_List_NameFormat_LastFirstSecond = 2;
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 16:27
+ *  * Created by Vladimir Belov on 22.12.2025, 21:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 15:12
+ *  * Last modified 22.12.2025, 21:17
  *
  */
 
@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -262,8 +263,6 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
             } else {
 
-                StringBuilder eventDetails = new StringBuilder();
-
                 //Дата события
                 String eventDistance = singleEventArray[ContactsEvents.Position_eventDistance];
                 int eventDistance_Days;
@@ -290,244 +289,15 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 } catch (Resources.NotFoundException nfe) { /**/ }
 
                 //Составление события
-                final String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];
-                final String eventKey = eventsData.getEventKey(singleEventArray);
-                final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
-                final String[] eventDistanceInfo = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
-                boolean colorizeEntireRow = false;
-
-                for (String eventItem: widgetPref_eventInfo) {
-
-                    final boolean notEndWithBR = !eventDetails.toString().endsWith(Constants.HTML_BR);
-                    final boolean notEndWithBRorBracket = notEndWithBR && !eventDetails.toString().endsWith(Constants.STRING_PARENTHESIS_START);
-
-                    if (eventItem.equals(resources.getString(R.string.pref_EventInfo_Photo_ID))) {
-
-                        //Фото
-                        int roundingFactor = getRoundingFactor();
-                        Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, false, roundingFactor);
-                        if (photo != null) {
-                            int outWidth;
-                            if (widgetWidth > 0) {
-                                outWidth = (int) ((widgetWidth * floatDensity * 1.2) / 6);
-                            } else {
-                                DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-                                outWidth = (int) (displayMetrics.widthPixels * 1.2 / 7);
-                            }
-
-                            int inWidth = photo.getWidth();
-                            int inHeight = photo.getHeight();
-                            double resizeFactor = ContactsEvents.getSizeForWidgetElement(widgetPref, 2, 1, 1);
-                            if (inHeight > 0 && inWidth > 0) {
-                                int outHeight = inHeight * outWidth / inWidth;
-
-                                if (outHeight > 0 && outWidth > 0) {
-                                    Bitmap photo_small = Bitmap.createScaledBitmap(photo, (int) (outWidth * resizeFactor), (int) (outHeight * resizeFactor), true);
-                                    views.setImageViewBitmap(R.id.eventPhoto, photo_small);
-                                    views.setViewVisibility(R.id.eventPhoto, View.VISIBLE);
-                                }
-                            }
-                        }
-
-                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventIcon_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        eventDetails.append(singleEventArray[ContactsEvents.Position_eventEmoji]).append(Constants.STRING_SPACE);
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_FavIcon_ID))) {
-
-                        if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
-                            if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                            eventDetails.append(Constants.eventTitleFavoritePrefix);
-                        }
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
-
-                        if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay)) || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
-                            if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                            final String zodiacSign = singleEventArray[ContactsEvents.Position_zodiacSign];
-                            int indexSpace = zodiacSign.indexOf(Constants.STRING_SPACE);
-                            if (indexSpace > -1) {
-                                eventDetails.append(zodiacSign.substring(0, indexSpace)).append(Constants.STRING_SPACE);
-                            } else {
-                                eventDetails.append(zodiacSign).append(Constants.STRING_SPACE);
-                            }
-                        }
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_ZodiacYear_ID))) {
-
-                        if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_BirthDay))
-                                || eventSubType.equals(ContactsEvents.getEventType(Constants.Type_5K))) {
-                            if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                            final String zodiacYear = singleEventArray[ContactsEvents.Position_zodiacYear];
-                            int indexSpace = zodiacYear.indexOf(Constants.STRING_SPACE);
-                            if (indexSpace > -1) {
-                                eventDetails.append(zodiacYear.substring(0, indexSpace)).append(Constants.STRING_SPACE);
-                            } else {
-                                eventDetails.append(zodiacYear).append(Constants.STRING_SPACE);
-                            }
-                        }
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventCaption_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        if (!singleEventArray[ContactsEvents.Position_eventCaption].trim().isEmpty()) {
-                            eventDetails.append(singleEventArray[ContactsEvents.Position_eventCaption]);
-                        }
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDate_Original_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithoutYear);
-                        eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDate_Original_WithYear_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
-                        eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDate_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime], ContactsEvents.FormatDate.WithoutYear);
-                        eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDate_WithYear_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime], ContactsEvents.FormatDate.WithYear);
-                        eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_DaysBeforeEventShort_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        if (eventDistance_Days < 2) {
-                            eventDetails.append(eventDistanceInfo[0]);
-                        } else {
-                            eventDetails.append(eventDistance).append(eventsData.getResources().getString(R.string.msg_after_day_prefix_short));
-                        }
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventTitle_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        eventDetails.append(eventsData.getFullName(singleEventArray));
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_Age_ID))) {
-
-                        if (!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty()) {
-                            if (notEndWithBRorBracket) eventDetails.append(Constants.STRING_COLON_SPACE);
-                            eventDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
-                        }
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_AgeShort_ID))) {
-
-                        String age = singleEventArray[ContactsEvents.Position_age].trim();
-                        if (!age.isEmpty() && !Constants.STRING_MINUS1.equals(age)) {
-                            if (notEndWithBRorBracket) eventDetails.append(Constants.STRING_COLON_SPACE);
-                            eventDetails.append(singleEventArray[ContactsEvents.Position_age]);
-                        }
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_WeddingName_ID))) {
-
-                        if (eventSubType.equals(ContactsEvents.getEventType(Constants.Type_Anniversary))) {
-                            int ind1 = singleEventArray[ContactsEvents.Position_eventCaption].indexOf(Constants.STRING_PARENTHESIS_OPEN);
-                            if (ind1 > -1) {
-                                if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                                eventDetails.append(singleEventArray[ContactsEvents.Position_eventCaption].substring(ind1));
-                            }
-                        }
-
-                    } else if (dateColorId > 2 && eventItem.equals(resources.getString(R.string.pref_EventInfo_DaysBeforeEventFar_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDistanceInfo[0]).append(Constants.HTML_COLOR_END);
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_DaysBeforeEvent_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDistanceInfo[0]).append(Constants.HTML_COLOR_END);
-
-                    } else if (dateColorId > 2 && eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDayOfWeekFar_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        if (eventDistanceInfo.length >= 1) eventDetails.append(eventDistanceInfo[1]);
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDayOfWeek_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        if (eventDistanceInfo.length >= 1) eventDetails.append(eventDistanceInfo[1]);
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDayOfWeekShort_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        if (eventDistanceInfo.length >= 3) eventDetails.append(eventDistanceInfo[3]);
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_SourceIcon_ID))) {
-
-                        String[] dates = singleEventArray[ContactsEvents.Position_dates].split(Constants.STRING_2TILDA, -1);
-                        if (dates.length > 0) {
-                            if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                            eventDetails.append(eventsData.getEventSourceIcon(singleEventArray));
-                        }
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_LinkIcon_ID))) {
-
-                        if (!singleEventArray[ContactsEvents.Position_eventURL].trim().isEmpty()) {
-                            if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                            eventDetails.append("🔗");
-                        }
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_NewLine1_ID))
-                            || eventItem.equals(resources.getString(R.string.pref_EventInfo_NewLine2_ID))
-                            || eventItem.equals(resources.getString(R.string.pref_EventInfo_NewLine3_ID))) {
-
-                        eventDetails.append(Constants.HTML_BR);
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_CurrentAge_ID)) && !singleEventArray[ContactsEvents.Position_eventDistance].equals(Constants.STRING_0)) {
-
-                        final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
-                        if (!TextUtils.isEmpty(currentAge)) {
-                            if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                            int ind = currentAge.indexOf(Constants.STRING_PARENTHESIS_OPEN);
-                            eventDetails.append(ind != -1 ? currentAge.substring(0, ind) : currentAge);
-                        }
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_LeftBracket_ID))
-                            || eventItem.equals(resources.getString(R.string.pref_EventInfo_LeftBracket2_ID))) {
-
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        eventDetails.append(Constants.STRING_PARENTHESIS_START);
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_RightBracket_ID))
-                            || eventItem.equals(resources.getString(R.string.pref_EventInfo_RightBracket2_ID))) {
-
-                        if (eventDetails.toString().endsWith(Constants.STRING_PARENTHESIS_START)) {
-                            eventDetails.setLength(eventDetails.length() - Constants.STRING_PARENTHESIS_START.length());
-                        } else{
-                            eventDetails.append(Constants.STRING_PARENTHESIS_CLOSE);
-                        }
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_ColorizeEntireRow_ID))) {
-
-                        colorizeEntireRow = true;
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_BoldStart_ID))) {
-
-                        eventDetails.append(Constants.HTML_BOLD_START);
-
-                    } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_BoldEnd_ID))) {
-
-                        eventDetails.append(Constants.HTML_BOLD_END);
-
-                    }
-                }
+                final AtomicBoolean colorizeEntireRow = new AtomicBoolean(false);
+                StringBuilder eventDetails = getEventDetails(singleEventArray, eventInfo, views,
+                        colorDate, eventDistance_Days, eventDistance, dateColorId, colorizeEntireRow);
 
                 if (eventDetails.length() - eventDetails.lastIndexOf(Constants.HTML_BR) == Constants.HTML_BR.length()) {
                     eventDetails.setLength(eventDetails.lastIndexOf(Constants.HTML_BR));
                 }
 
-                if (colorizeEntireRow) {
+                if (colorizeEntireRow.get()) {
                     eventText = Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + eventDetails + Constants.HTML_COLOR_END;
 
                 } else {
@@ -553,6 +323,259 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
         return views;
 
+    }
+
+    /** Возвращает детальную информацию о событии для виджета
+     * @param singleEventArray Информация о событии массивом
+     * @param eventInfo Информация о событии строкой
+     * @param views RemoteViews события
+     * @param colorDate Цвет дня
+     * @param eventDistance_Days Дней до события
+     * @param eventDistance Дней до события строкой
+     * @param dateColorId Id цвета дня (1 - сегодня, 2 - скоро, 3 - подальше)
+     * @param colorizeEntireRow Подсвечивать цветом события всю строку
+     * @return Детали события
+     */
+    private StringBuilder getEventDetails(String[] singleEventArray, String eventInfo, RemoteViews views, String colorDate,
+                                          int eventDistance_Days, String eventDistance, int dateColorId, AtomicBoolean colorizeEntireRow) {
+
+        StringBuilder eventDetails = new StringBuilder();
+
+        try {
+            final String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];
+            final String eventKey = eventsData.getEventKey(singleEventArray);
+            final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
+            final String[] eventDistanceInfo = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
+
+            for (String eventItem : widgetPref_eventInfo) {
+
+                final boolean notEndWithBR = !eventDetails.toString().endsWith(Constants.HTML_BR);
+                final boolean notEndWithBRorBracket = notEndWithBR && !eventDetails.toString().endsWith(Constants.STRING_PARENTHESIS_START);
+                boolean isBirthdayEvent = eventSubType.equals(Constants.EventType_BirthDay) || eventSubType.equals(Constants.EventType_5K);
+
+                if (eventItem.equals(resources.getString(R.string.pref_EventInfo_Photo_ID))) {
+
+                    //Фото
+                    int roundingFactor = getRoundingFactor();
+                    Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, false, roundingFactor);
+                    if (photo != null) {
+                        int outWidth;
+                        if (widgetWidth > 0) {
+                            outWidth = (int) ((widgetWidth * floatDensity * 1.2) / 6);
+                        } else {
+                            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+                            outWidth = (int) (displayMetrics.widthPixels * 1.2 / 7);
+                        }
+
+                        int inWidth = photo.getWidth();
+                        int inHeight = photo.getHeight();
+                        double resizeFactor = ContactsEvents.getSizeForWidgetElement(widgetPref, 2, 1, 1);
+                        if (inHeight > 0 && inWidth > 0) {
+                            int outHeight = inHeight * outWidth / inWidth;
+
+                            if (outHeight > 0 && outWidth > 0) {
+                                Bitmap photo_small = Bitmap.createScaledBitmap(photo, (int) (outWidth * resizeFactor), (int) (outHeight * resizeFactor), true);
+                                views.setImageViewBitmap(R.id.eventPhoto, photo_small);
+                                views.setViewVisibility(R.id.eventPhoto, View.VISIBLE);
+                            }
+                        }
+                    }
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventIcon_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    eventDetails.append(singleEventArray[ContactsEvents.Position_eventEmoji]).append(Constants.STRING_SPACE);
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_FavIcon_ID))) {
+
+                    if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        eventDetails.append(Constants.eventTitleFavoritePrefix);
+                    }
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
+
+                    if (isBirthdayEvent) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        final String zodiacSign = singleEventArray[ContactsEvents.Position_zodiacSign];
+                        int indexSpace = zodiacSign.indexOf(Constants.STRING_SPACE);
+                        if (indexSpace > -1) {
+                            eventDetails.append(zodiacSign.substring(0, indexSpace)).append(Constants.STRING_SPACE);
+                        } else {
+                            eventDetails.append(zodiacSign).append(Constants.STRING_SPACE);
+                        }
+                    }
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_ZodiacYear_ID))) {
+
+                    if (isBirthdayEvent) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        final String zodiacYear = singleEventArray[ContactsEvents.Position_zodiacYear];
+                        int indexSpace = zodiacYear.indexOf(Constants.STRING_SPACE);
+                        if (indexSpace > -1) {
+                            eventDetails.append(zodiacYear.substring(0, indexSpace)).append(Constants.STRING_SPACE);
+                        } else {
+                            eventDetails.append(zodiacYear).append(Constants.STRING_SPACE);
+                        }
+                    }
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventCaption_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    if (!singleEventArray[ContactsEvents.Position_eventCaption].trim().isEmpty()) {
+                        eventDetails.append(singleEventArray[ContactsEvents.Position_eventCaption]);
+                    }
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDate_Original_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithoutYear);
+                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDate_Original_WithYear_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
+                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDate_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime], ContactsEvents.FormatDate.WithoutYear);
+                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDate_WithYear_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime], ContactsEvents.FormatDate.WithYear);
+                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_DaysBeforeEventShort_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    if (eventDistance_Days < 2) {
+                        eventDetails.append(eventDistanceInfo[0]);
+                    } else {
+                        eventDetails.append(eventDistance).append(eventsData.getResources().getString(R.string.msg_after_day_prefix_short));
+                    }
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventTitle_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    eventDetails.append(eventsData.getFullName(singleEventArray));
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_Age_ID))) {
+
+                    if (!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty()) {
+                        if (notEndWithBRorBracket)
+                            eventDetails.append(Constants.STRING_COLON_SPACE);
+                        eventDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
+                    }
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_AgeShort_ID))) {
+
+                    String age = singleEventArray[ContactsEvents.Position_age].trim();
+                    if (!age.isEmpty() && !Constants.STRING_MINUS1.equals(age)) {
+                        if (notEndWithBRorBracket)
+                            eventDetails.append(Constants.STRING_COLON_SPACE);
+                        eventDetails.append(singleEventArray[ContactsEvents.Position_age]);
+                    }
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_WeddingName_ID))) {
+
+                    if (eventSubType.equals(Constants.EventType_Anniversary)) {
+                        int ind1 = singleEventArray[ContactsEvents.Position_eventCaption].indexOf(Constants.STRING_PARENTHESIS_OPEN);
+                        if (ind1 > -1) {
+                            if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                            eventDetails.append(singleEventArray[ContactsEvents.Position_eventCaption].substring(ind1));
+                        }
+                    }
+
+                } else if (dateColorId > 2 && eventItem.equals(resources.getString(R.string.pref_EventInfo_DaysBeforeEventFar_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDistanceInfo[0]).append(Constants.HTML_COLOR_END);
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_DaysBeforeEvent_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDistanceInfo[0]).append(Constants.HTML_COLOR_END);
+
+                } else if (dateColorId > 2 && eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDayOfWeekFar_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    if (eventDistanceInfo.length >= 1) eventDetails.append(eventDistanceInfo[1]);
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDayOfWeek_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    if (eventDistanceInfo.length >= 1) eventDetails.append(eventDistanceInfo[1]);
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventDayOfWeekShort_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    if (eventDistanceInfo.length >= 3) eventDetails.append(eventDistanceInfo[3]);
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_SourceIcon_ID))) {
+
+                    String[] dates = singleEventArray[ContactsEvents.Position_dates].split(Constants.STRING_2TILDA, -1);
+                    if (dates.length > 0) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        eventDetails.append(eventsData.getEventSourceIcon(singleEventArray));
+                    }
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_LinkIcon_ID))) {
+
+                    if (!singleEventArray[ContactsEvents.Position_eventURL].trim().isEmpty()) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        eventDetails.append("🔗");
+                    }
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_NewLine1_ID)) || eventItem.equals(resources.getString(R.string.pref_EventInfo_NewLine2_ID)) || eventItem.equals(resources.getString(R.string.pref_EventInfo_NewLine3_ID))) {
+
+                    eventDetails.append(Constants.HTML_BR);
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_CurrentAge_ID)) && !singleEventArray[ContactsEvents.Position_eventDistance].equals(Constants.STRING_0)) {
+
+                    final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
+                    if (!TextUtils.isEmpty(currentAge)) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        int ind = currentAge.indexOf(Constants.STRING_PARENTHESIS_OPEN);
+                        eventDetails.append(ind != -1 ? currentAge.substring(0, ind) : currentAge);
+                    }
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_LeftBracket_ID)) || eventItem.equals(resources.getString(R.string.pref_EventInfo_LeftBracket2_ID))) {
+
+                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    eventDetails.append(Constants.STRING_PARENTHESIS_START);
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_RightBracket_ID)) || eventItem.equals(resources.getString(R.string.pref_EventInfo_RightBracket2_ID))) {
+
+                    if (eventDetails.toString().endsWith(Constants.STRING_PARENTHESIS_START)) {
+                        eventDetails.setLength(eventDetails.length() - Constants.STRING_PARENTHESIS_START.length());
+                    } else {
+                        eventDetails.append(Constants.STRING_PARENTHESIS_CLOSE);
+                    }
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_ColorizeEntireRow_ID))) {
+
+                    colorizeEntireRow.set(true);
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_BoldStart_ID))) {
+
+                    eventDetails.append(Constants.HTML_BOLD_START);
+
+                } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_BoldEnd_ID))) {
+
+                    eventDetails.append(Constants.HTML_BOLD_END);
+
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return eventDetails;
     }
 
     private int getRoundingFactor() {

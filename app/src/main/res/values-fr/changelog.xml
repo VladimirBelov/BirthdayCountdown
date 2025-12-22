@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.12.2025, 17:21
+  ~  * Created by Vladimir Belov on 22.12.2025, 21:21
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.12.2025, 16:58
+  ~  * Last modified 22.12.2025, 19:35
   ~  */
   -->
 
@@ -21,6 +21,7 @@
     <item>↩️ Importer des événements depuis des fichiers</item>
     <item>"Ajout d'une fonction de recherche pour les informations de référence"</item>
     <item>🏖️ Ajout des jours fériés pour 2026</item>
+    <item>Les premiers événements de la liste sont les plus récents; les événements plus anciens sont masqués en haut de la liste</item>
     <item>Corrections de bugs</item>
 
     <item>#1.8.8</item>

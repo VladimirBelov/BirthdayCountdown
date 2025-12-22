@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.12.2025, 01:45
+ *  * Created by Vladimir Belov on 22.12.2025, 21:21
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 21.12.2025, 00:58
+ *  * Last modified 22.12.2025, 17:32
  *
  */
 
@@ -138,7 +138,7 @@ public class EventImporterActivity extends AppCompatActivity {
                                 details)
                         );
                         if (!hasUnrecognizedEvents && ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
-                                .equals(ContactsEvents.getEventType(Constants.Type_Unrecognized))) {
+                                .equals(Constants.EventType_Unrecognized)) {
                             hasUnrecognizedEvents = true;
                         }
                     }
@@ -336,7 +336,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
                     boolean isUnrecognizedEvent = false;
                     ContactsEvents.Event event = eventsData.recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, false, useEventYear);
-                    if (event.type.equals(ContactsEvents.getEventType(Constants.Type_Unrecognized))) {
+                    if (event.type.equals(Constants.EventType_Unrecognized)) {
                         isUnrecognizedEvent = true;
                     }
 
@@ -581,7 +581,7 @@ public class EventImporterActivity extends AppCompatActivity {
                     if (pos < dataForImport.size()) {
                         TreeMap<Integer, String> eventData = eventsData.getEventData(dataForImport.get(pos));
                         if (ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
-                                .equals(ContactsEvents.getEventType(Constants.Type_Unrecognized))) {
+                                .equals(Constants.EventType_Unrecognized)) {
                             unrecognizedSelected = true;
                             break;
                         }
@@ -598,7 +598,7 @@ public class EventImporterActivity extends AppCompatActivity {
                 if (pos < dataForImport.size()) {
                     TreeMap<Integer, String> eventData = eventsData.getEventData(dataForImport.get(pos));
                     if (ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
-                            .equals(ContactsEvents.getEventType(Constants.Type_Unrecognized))) {
+                            .equals(Constants.EventType_Unrecognized)) {
 
                         Integer eventTypeInt = eventTypesIds.get(selectedEventTypeIndex);
                         eventData.put(ContactsEvents.Position_eventType, String.valueOf(eventTypeInt));
