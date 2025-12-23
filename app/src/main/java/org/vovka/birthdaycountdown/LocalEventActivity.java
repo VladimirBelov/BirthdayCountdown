@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.12.2025, 01:54
+ *  * Created by Vladimir Belov on 23.12.2025, 14:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 20.12.2025, 01:38
+ *  * Last modified 23.12.2025, 11:29
  *
  */
 
@@ -989,7 +989,7 @@ public class LocalEventActivity extends AppCompatActivity {
                     .setMessage(getString(R.string.local_event_dialog_confirmation_remove))
                     .setPositiveButton(R.string.button_yes, (dialog, which) -> {
                         //Хранимый тип события и используемый при отрисовке отличаются
-                        //todo: зачем тут менять тип события?
+                        //Subtype используется в getEventKey(), который используется в removeLocalEvent()
                         String eventType = eventData.get(ContactsEvents.Position_eventType);
                         if (eventType != null) {
                             try {

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 21:21
+ *  * Created by Vladimir Belov on 23.12.2025, 14:13
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 19:02
+ *  * Last modified 23.12.2025, 13:51
  *
  */
 
@@ -217,28 +217,42 @@ public class ContactsEvents {
     /** Размерность массива с данными события (для проверки целостности) */
     static final int Position_attrAmount = 33; //MAX
 
-    private static final HashMap<Integer, String> eventTypesIDs = new HashMap<Integer, String>() {{
-        put(Constants.Type_BirthDay, Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY));
-        put(Constants.Type_Anniversary, Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY));
-        put(Constants.Type_Another, Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_OTHER));
-        put(Constants.Type_Custom, Integer.toString(ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM));
-        put(Constants.Type_5K, "11"); //todo: можно удалить
-        put(Constants.Type_Death, "12");
-        put(Constants.Type_NameDay, "13");
-        put(Constants.Type_Crowning, "14");
-        put(Constants.Type_Custom1, "15");
-        put(Constants.Type_Custom2, "16");
-        put(Constants.Type_Custom3, "17");
-        put(Constants.Type_Custom4, "18");
-        put(Constants.Type_Custom5, "19");
-        put(Constants.Type_CalendarEvent, "20"); //todo: можно удалить
-        put(Constants.Type_FileEvent, "21"); //todo: можно удалить
-        put(Constants.Type_Xdays, "22"); //todo: можно удалить
-        put(Constants.Type_Other, "23");
-        put(Constants.Type_Fact, "24"); //todo: можно удалить
-        put(Constants.Type_HolidayEvent, "4");
-        put(Constants.Type_Unrecognized, "99");
-    }};
+    /** Хранимые Id типа события */
+    private static final Map<Integer, String> eventTypesStoredIDs = createEventTypeStoredIDsMap();
+    private static Map<Integer, String> createEventTypeStoredIDsMap() {
+        Map <Integer, String> map = new HashMap<>();
+        map.put(Constants.Type_BirthDay, Constants.EventType_BirthDay);
+        map.put(Constants.Type_Anniversary, Constants.EventType_Anniversary);
+        map.put(Constants.Type_Another, Constants.EventType_Another);
+        map.put(Constants.Type_Custom, Constants.EventType_Custom);
+        map.put(Constants.Type_5K, Constants.EventType_5K); //todo: можно удалить
+        map.put(Constants.Type_Death, Constants.EventType_Death);
+        map.put(Constants.Type_NameDay, Constants.EventType_NameDay);
+        map.put(Constants.Type_Crowning, Constants.EventType_Crowning);
+        map.put(Constants.Type_Custom1, Constants.EventType_Custom1);
+        map.put(Constants.Type_Custom2, Constants.EventType_Custom2);
+        map.put(Constants.Type_Custom3, Constants.EventType_Custom3);
+        map.put(Constants.Type_Custom4, Constants.EventType_Custom4);
+        map.put(Constants.Type_Custom5, Constants.EventType_Custom5);
+        map.put(Constants.Type_CalendarEvent, Constants.EventType_Calendar); //todo: можно удалить
+        map.put(Constants.Type_FileEvent, Constants.EventType_File); //todo: можно удалить
+        map.put(Constants.Type_Xdays, Constants.EventType_Xdays); //todo: можно удалить
+        map.put(Constants.Type_Other, Constants.EventType_Other);
+        map.put(Constants.Type_Fact, Constants.EventType_Fact); //todo: можно удалить
+        map.put(Constants.Type_HolidayEvent, Constants.EventType_Holiday);
+        map.put(Constants.Type_Unrecognized, Constants.EventType_Unrecognized);
+        return Collections.unmodifiableMap(map);
+    }
+
+    private static final Map<String, Integer> eventTypesIDs = createEventTypeIDsMap();
+    private static Map<String, Integer> createEventTypeIDsMap() {
+        Map <String, Integer> map = new HashMap<>();
+        for (Map.Entry<Integer, String> entry : eventTypesStoredIDs.entrySet()) {
+            map.put(entry.getValue(), entry.getKey());
+        }
+        return Collections.unmodifiableMap(map);
+    }
+
 
     /** Возвращает идентификатор типа события
      * @param typeId Хранимый Id типа события
@@ -246,20 +260,21 @@ public class ContactsEvents {
      */
     @NonNull
     static String getEventType(int typeId) {
-        return getNotNullString(eventTypesIDs.get(typeId));
+        return getNotNullString(eventTypesStoredIDs.get(typeId));
     }
 
     /** Возвращает хранимый Id типа события
      * @param typeStr Идентификатор типа события
      * @return Хранимый Id типа события
      */
-    static int getEventTypeInt(@NonNull String typeStr) {
-        for (Map.Entry<Integer, String> entry : eventTypesIDs.entrySet()) {
-            if (Objects.equals(typeStr, entry.getValue())) {
-                return entry.getKey();
-            }
+    @NonNull
+    static Integer getEventTypeInt(@NonNull String typeStr) {
+        Integer value = eventTypesIDs.get(typeStr);
+        if (value != null) {
+            return value;
+        } else {
+            return Constants.Type_Unrecognized;
         }
-        return Constants.Type_Unrecognized;
     }
 
     private static final String TAG = "ContactsEvents";
@@ -6864,17 +6879,51 @@ public class ContactsEvents {
             final String eventKey = getEventKey(singleEventArray);
             final String eventKeyWithRawIs = getEventKeyWithRawId(singleEventArray);
             boolean isFavoriteEvent = Constants.STRING_1.equals(singleEventArray[Position_starred]);
-            String textDistance = Constants.STRING_00 + singleEventArray[Position_eventDistance].replace(Constants.STRING_MINUS, Constants.STRING_EMPTY);
-            final String eventType = singleEventArray[Position_eventType];
 
-            return textDistance.substring(textDistance.length() - 3)
-                    + (isFavoriteEvent ? "0" : checkIsHiddenEvent(eventKey, eventKeyWithRawIs) ? "3" : checkIsSilencedEvent(eventKey, eventKeyWithRawIs) ? "2" : "1")
-                    + (eventType.equals(Constants.EventType_BirthDay) ? "1"
-                    : eventType.equals(Constants.EventType_Anniversary) ? "2"
-                    : eventType.equals(Constants.EventType_Custom) ? "3"
-                    : eventType.equals(Constants.EventType_5K) ? "5"
-                    : eventType.equals(Constants.EventType_Other) ? "6" : "4");
+            // Оптимизируем textDistance: берём последние 3 символа, дополняя нулями слева
+            String distStr = singleEventArray[Position_eventDistance];
+            // Убираем минус (если есть)
+            if (distStr.startsWith(Constants.STRING_MINUS)) {
+                distStr = distStr.substring(1);
+            }
+            // Обрезаем до 3 символов, если длиннее
+            if (distStr.length() > 3) {
+                distStr = distStr.substring(distStr.length() - 3);
+            }
+            // Дополняем слева нулями до 3
+            String textDistancePart;
+            switch (distStr.length()) {
+                case 1: textDistancePart = "00" + distStr; break;
+                case 2: textDistancePart = "0" + distStr; break;
+                case 3: textDistancePart = distStr; break;
+                default: textDistancePart = "000"; break; // на случай пустой строки
+            }
 
+            final String eventTypeStr = singleEventArray[Position_eventType];
+            Integer typeId = getEventTypeInt(eventTypeStr);
+            String eventTypeSort;
+            switch (typeId) {
+                case Constants.Type_BirthDay:    eventTypeSort = "1"; break;
+                case Constants.Type_Anniversary: eventTypeSort = "2"; break;
+                case Constants.Type_Custom:      eventTypeSort = "3"; break;
+                case Constants.Type_5K:          eventTypeSort = "5"; break;
+                case Constants.Type_Other:       eventTypeSort = "6"; break;
+                default:                         eventTypeSort = "4"; break;
+            }
+
+            // Priority part: "0", "1", "2", "3"
+            String priority;
+            if (isFavoriteEvent) {
+                priority = "0";
+            } else if (checkIsHiddenEvent(eventKey, eventKeyWithRawIs)) {
+                priority = "3";
+            } else if (checkIsSilencedEvent(eventKey, eventKeyWithRawIs)) {
+                priority = "2";
+            } else {
+                priority = "1";
+            }
+
+            return textDistancePart + priority + eventTypeSort;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -8367,38 +8416,35 @@ public class ContactsEvents {
     }
 
     String getEventKey(@NonNull String[] singleEventArray) {
-
-        try {
-
-            if (!TextUtils.isEmpty(singleEventArray[Position_eventSubType].trim())) {
-                if (!TextUtils.isEmpty(singleEventArray[Position_contactID].trim())) {
-                    return singleEventArray[Position_contactID] + Constants.STRING_2HASH + singleEventArray[Position_eventSubType];
-                } else if (!TextUtils.isEmpty(singleEventArray[Position_eventID].trim())) {
-                    return singleEventArray[Position_eventID] + Constants.STRING_2HASH + singleEventArray[Position_eventSubType];
-                }
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        String eventSubType = singleEventArray[Position_eventSubType];
+        if (!hasContent(eventSubType)) {
+            return Constants.STRING_EMPTY;
         }
+
+        String contactId = singleEventArray[Position_contactID];
+        if (hasContent(contactId)) {
+            return contactId + Constants.STRING_2HASH + eventSubType;
+        }
+
+        String eventId = singleEventArray[Position_eventID];
+        if (hasContent(eventId)) {
+            return eventId + Constants.STRING_2HASH + eventSubType;
+        }
+
         return Constants.STRING_EMPTY;
     }
 
     String getEventKeyWithRawId(@NonNull String[] singleEventArray) {
-
-        try {
-
-            if (!TextUtils.isEmpty(singleEventArray[Position_eventSubType].trim())) {
-                if (!TextUtils.isEmpty(singleEventArray[Position_rawContactID].trim())) {
-                    return singleEventArray[Position_rawContactID] + Constants.STRING_2HASH + singleEventArray[Position_eventSubType];
-                }
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        String eventSubType = singleEventArray[Position_eventSubType];
+        if (!hasContent(eventSubType)) {
+            return Constants.STRING_EMPTY;
         }
+
+        String rawContactId = singleEventArray[Position_rawContactID];
+        if (hasContent(rawContactId)) {
+            return rawContactId + Constants.STRING_2HASH + eventSubType;
+        }
+
         return Constants.STRING_EMPTY;
     }
 
@@ -12730,6 +12776,10 @@ public class ContactsEvents {
             chars[0] = Character.toUpperCase(chars[0]);
             return new String(chars);
         } else {return str;}
+    }
+
+    private static boolean hasContent(String s) {
+        return s != null && TextUtils.getTrimmedLength(s) > 0;
     }
 
     public void shutdown() {
