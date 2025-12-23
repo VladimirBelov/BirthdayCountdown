@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 21:21
+ *  * Created by Vladimir Belov on 23.12.2025, 23:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 19:00
+ *  * Last modified 23.12.2025, 23:58
  *
  */
 
@@ -1802,7 +1802,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     for (String strLine : arrFAQ) {
 
                         if (countHintLines == 0 && !strLine.equals(headerStart)) continue;
-                        if (strLine.trim().isEmpty()) {
+                        if (!ContactsEvents.hasContent(strLine)) {
                             break;
                         } else if (strLine.equals(headerStart)) {
                             countHintLines++;
@@ -2824,7 +2824,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     eventDetails.insert(0, Constants.HTML_BOLD_START).append(Constants.HTML_BOLD_END);
                 }
 
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Nickname)) && !singleEventArray[ContactsEvents.Position_nickname].trim().isEmpty()) {
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Nickname)) && ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                     eventDetails.append(singleEventArray[ContactsEvents.Position_nickname]);
                 }

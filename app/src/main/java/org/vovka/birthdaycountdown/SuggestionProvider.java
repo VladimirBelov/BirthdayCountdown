@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 16:27
+ *  * Created by Vladimir Belov on 23.12.2025, 23:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 15:12
+ *  * Last modified 23.12.2025, 23:58
  *
  */
 
@@ -107,16 +107,16 @@ public class SuggestionProvider extends ContentProvider{
                                                 .concat(Constants.STRING_SPACE)
                                                 .concat(singleEventArray[ContactsEvents.Position_eventCaption])
                                                 .concat(Constants.STRING_COLON)
-                                                .concat(!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty() ?
+                                                .concat(ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_age_caption]) ?
                                                         Constants.STRING_SPACE.concat(singleEventArray[ContactsEvents.Position_age_caption]) :
                                                         Constants.STRING_EMPTY
                                                 )
                                                 .concat(Constants.STRING_SPACE)
                                                 .concat(eventDistance[0].toLowerCase()),
-                                        !(singleEventArray[ContactsEvents.Position_photo_uri].trim().isEmpty()
+                                        !(ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_photo_uri])
                                                 || singleEventArray[ContactsEvents.Position_photo_uri].equals(Constants.STRING_NULL)) ?
-                                                    singleEventArray[ContactsEvents.Position_photo_uri] :
-                                                    Constants.STRING_EMPTY,
+                                                singleEventArray[ContactsEvents.Position_photo_uri] :
+                                                Constants.STRING_EMPTY,
                                         Integer.toString(eventNum).concat(Constants.STRING_EOT).concat(fullName).concat(Constants.STRING_EOT)
                                 });
                             }

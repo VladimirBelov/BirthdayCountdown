@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 21:21
+ *  * Created by Vladimir Belov on 23.12.2025, 23:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 19:09
+ *  * Last modified 23.12.2025, 23:58
  *
  */
 
@@ -459,7 +459,7 @@ class WidgetUpdater {
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                 } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))) { //Фамилия Имя Отчество (Псевдоним)
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
-                    if (!singleEventArray[ContactsEvents.Position_nickname].trim().isEmpty()) {
+                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = rowValue
                                 .concat(Constants.STRING_PARENTHESIS_OPEN)
                                 .concat(singleEventArray[ContactsEvents.Position_nickname])
@@ -484,7 +484,7 @@ class WidgetUpdater {
                         rowValue = rowValue.substring(0, indSpace);
                     }
                 } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Nick))) { //Псевдоним (Имя, если отсутствует)
-                    if (!singleEventArray[ContactsEvents.Position_nickname].trim().isEmpty()) {
+                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = singleEventArray[ContactsEvents.Position_nickname];
                     } else if (!captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))
                             && !captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))
@@ -501,10 +501,10 @@ class WidgetUpdater {
                     rowValue = singleEventArray[ContactsEvents.Position_eventCaption];
                 } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventLabel))) { //Наименование события
                     rowValue =
-                            singleEventArray[ContactsEvents.Position_eventLabel].trim().isEmpty() ? singleEventArray[ContactsEvents.Position_eventCaption] :
+                            !ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_eventLabel]) ? singleEventArray[ContactsEvents.Position_eventCaption] :
                                     singleEventArray[ContactsEvents.Position_eventLabel];
                 } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Organization))) { //Организация (Должность, если отсутствует)
-                    rowValue = !singleEventArray[ContactsEvents.Position_organization].trim().isEmpty() ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
+                    rowValue = ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_organization]) ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
                 }
 
             }
@@ -576,7 +576,7 @@ class WidgetUpdater {
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                 } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))) { //Фамилия Имя Отчество (Псевдоним)
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
-                    if (!singleEventArray[ContactsEvents.Position_nickname].trim().isEmpty()) {
+                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = rowValue
                                 .concat(Constants.STRING_PARENTHESIS_OPEN)
                                 .concat(singleEventArray[ContactsEvents.Position_nickname])
@@ -601,7 +601,7 @@ class WidgetUpdater {
                         rowValue = rowValue.substring(0, indSpace);
                     }
                 } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Nick))) { //Псевдоним (Имя, если отсутствует)
-                    if (!singleEventArray[ContactsEvents.Position_nickname].trim().isEmpty()) {
+                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = singleEventArray[ContactsEvents.Position_nickname];
                     } else if (!captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))
                             && !captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))
@@ -618,10 +618,10 @@ class WidgetUpdater {
                     rowValue = singleEventArray[ContactsEvents.Position_eventCaption];
                 } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventLabel))) { //Наименование события
                     rowValue =
-                            singleEventArray[ContactsEvents.Position_eventLabel].trim().isEmpty() ? singleEventArray[ContactsEvents.Position_eventCaption] :
+                            !ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_eventLabel]) ? singleEventArray[ContactsEvents.Position_eventCaption] :
                                     singleEventArray[ContactsEvents.Position_eventLabel];
                 } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Organization))) { //Организация (Должность, если отсутствует)
-                    rowValue = !singleEventArray[ContactsEvents.Position_organization].trim().isEmpty() ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
+                    rowValue = ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_organization]) ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
                 }
 
             }

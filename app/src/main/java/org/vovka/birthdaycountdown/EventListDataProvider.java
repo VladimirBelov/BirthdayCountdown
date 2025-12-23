@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 21:21
+ *  * Created by Vladimir Belov on 23.12.2025, 23:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 21:17
+ *  * Last modified 23.12.2025, 23:58
  *
  */
 
@@ -422,7 +422,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventCaption_ID))) {
 
                     if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                    if (!singleEventArray[ContactsEvents.Position_eventCaption].trim().isEmpty()) {
+                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_eventCaption])) {
                         eventDetails.append(singleEventArray[ContactsEvents.Position_eventCaption]);
                     }
 
@@ -466,7 +466,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_Age_ID))) {
 
-                    if (!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty()) {
+                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_age_caption])) {
                         if (notEndWithBRorBracket)
                             eventDetails.append(Constants.STRING_COLON_SPACE);
                         eventDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
@@ -526,7 +526,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_LinkIcon_ID))) {
 
-                    if (!singleEventArray[ContactsEvents.Position_eventURL].trim().isEmpty()) {
+                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_eventURL])) {
                         if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
                         eventDetails.append("🔗");
                     }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.12.2025, 14:13
+ *  * Created by Vladimir Belov on 23.12.2025, 23:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 23.12.2025, 13:51
+ *  * Last modified 23.12.2025, 23:58
  *
  */
 
@@ -3579,7 +3579,7 @@ public class ContactsEvents {
         try {
 
             final String eventTitle = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.TITLE));
-            if (eventTitle == null || eventTitle.trim().isEmpty()) return 0;
+            if (!hasContent(eventTitle)) return 0;
 
             int importMethod_Standalone = 0; //Календарное событие без контакта
             int importMethod_NewContactEvent = 1; //Контакт найден, но у него нет данных о событии этого типа - обновляем событие по карточке контакта
@@ -5081,12 +5081,12 @@ public class ContactsEvents {
                         needUpdate = true;
                     }
 
-                    if (singleRowList.get(Position_organization).trim().isEmpty() && !orgNameFile.isEmpty()) {
+                    if (!hasContent(singleRowList.get(Position_organization)) && !orgNameFile.isEmpty()) {
                         singleRowList.set(Position_organization, orgNameFile);
                         needUpdate = true;
                     }
 
-                    if (singleRowList.get(Position_title).trim().isEmpty() && !titleFile.isEmpty()) {
+                    if (!hasContent(singleRowList.get(Position_title)) && !titleFile.isEmpty()) {
                         singleRowList.set(Position_title, titleFile);
                         needUpdate = true;
                     }
@@ -8328,7 +8328,7 @@ public class ContactsEvents {
                     && !event.singleEventArray[Position_eventSubType].equals(Constants.EventType_Anniversary)) {
                 eventDetails
                         .append(Constants.STRING_COMMA_SPACE)
-                        .append(event.singleEventArray[Position_eventLabel].trim().isEmpty() ? event.singleEventArray[Position_eventCaption] :
+                        .append(!hasContent(event.singleEventArray[Position_eventLabel]) ? event.singleEventArray[Position_eventCaption] :
                                 event.singleEventArray[Position_eventLabel]);
             }
             final boolean addTitle = prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_JobTitle_ID))
@@ -10294,8 +10294,8 @@ public class ContactsEvents {
 
             //Формируем информацию о персоне
             StringBuilder personInfo = new StringBuilder(getFullName(eventInfo));
-            final boolean isOrg = !eventInfo[Position_organization].trim().isEmpty();
-            final boolean isTitle = !eventInfo[Position_title].trim().isEmpty();
+            final boolean isOrg = hasContent(eventInfo[Position_organization]);
+            final boolean isTitle = hasContent(eventInfo[Position_title]);
             if (isOrg || isTitle) {
                 personInfo.append(Constants.STRING_PARENTHESIS_OPEN);
                 if (isOrg) {
@@ -10396,8 +10396,8 @@ public class ContactsEvents {
 
             //Формируем информацию о персоне
             StringBuilder personInfo = new StringBuilder(getFullName(eventInfo));
-            final boolean isOrg = !eventInfo[Position_organization].trim().isEmpty();
-            final boolean isTitle = !eventInfo[Position_title].trim().isEmpty();
+            final boolean isOrg = hasContent(eventInfo[Position_organization]);
+            final boolean isTitle = hasContent(eventInfo[Position_title]);
             if (isOrg || isTitle) {
                 personInfo.append(Constants.STRING_PARENTHESIS_OPEN);
                 if (isOrg) {
@@ -10496,8 +10496,8 @@ public class ContactsEvents {
             boolean isDead = deathDatesForIds.containsKey(eventInfo[Position_contactID]); //Но есть годовщина смерти
             boolean isPassedBDay = (getCalendarFromDate(eventDay).get(Calendar.YEAR) != Calendar.getInstance().get(Calendar.YEAR)) || (eventDay.equals(currentDay));
             StringBuilder personInfo = new StringBuilder(getFullName(eventInfo));
-            final boolean isOrg = !eventInfo[Position_organization].trim().isEmpty();
-            final boolean isTitle = !eventInfo[Position_title].trim().isEmpty();
+            final boolean isOrg = hasContent(eventInfo[Position_organization]);
+            final boolean isTitle = hasContent(eventInfo[Position_title]);
             if (isOrg || isTitle) {
                 personInfo.append(Constants.STRING_PARENTHESIS_OPEN);
                 if (isOrg) {
@@ -12650,7 +12650,7 @@ public class ContactsEvents {
     void saveRecentFact(@NonNull String factToSave) {
         try {
 
-            if (factToSave.trim().isEmpty()) return;
+            if (!hasContent(factToSave)) return;
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -12778,7 +12778,7 @@ public class ContactsEvents {
         } else {return str;}
     }
 
-    private static boolean hasContent(String s) {
+    static boolean hasContent(String s) {
         return s != null && TextUtils.getTrimmedLength(s) > 0;
     }
 

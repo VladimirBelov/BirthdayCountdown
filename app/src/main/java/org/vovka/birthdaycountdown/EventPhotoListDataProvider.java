@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 21:21
+ *  * Created by Vladimir Belov on 23.12.2025, 23:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 17:24
+ *  * Last modified 23.12.2025, 23:58
  *
  */
 
@@ -179,7 +179,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                     if (sbDetails.length() > 0 && !isEventTypeIcon) sbDetails.append(Constants.HTML_BR);
                     sbDetails.append(singleEventArray[ContactsEvents.Position_eventCaption]);
                     if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventLabel_ID))) {
-                        if (!singleEventArray[ContactsEvents.Position_eventLabel].trim().isEmpty()) {
+                        if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_eventLabel])) {
                             sbDetails
                                     .append(Constants.STRING_PARENTHESIS_OPEN)
                                     .append(singleEventArray[ContactsEvents.Position_eventLabel])
@@ -188,12 +188,12 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         }
                     }
                 } else if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventLabel_ID))) {
-                    if (!singleEventArray[ContactsEvents.Position_eventLabel].trim().isEmpty()) {
+                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_eventLabel])) {
                         sbDetails.append(singleEventArray[ContactsEvents.Position_eventLabel]);
                         isLabel = true;
                     }
                 }
-                if (!singleEventArray[ContactsEvents.Position_age_caption].trim().isEmpty()) {
+                if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_age_caption])) {
                     if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(resources.getString(R.string.pref_EventInfo_Age_ID))
                             : widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_Age_ID))) {
                         if ((widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID)) || isLabel))
