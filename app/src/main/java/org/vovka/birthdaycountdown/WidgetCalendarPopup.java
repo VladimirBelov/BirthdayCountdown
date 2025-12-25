@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.12.2025, 01:45
+ *  * Created by Vladimir Belov on 25.12.2025, 12:20
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 21.12.2025, 00:58
+ *  * Last modified 25.12.2025, 11:54
  *
  */
 
@@ -244,7 +244,7 @@ public class WidgetCalendarPopup extends Activity {
         try {
             if (this.dayInfo.contains(Constants.TRANSPARENT)) {
                 TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                this.dayInfo = this.dayInfo.replaceAll(Constants.TRANSPARENT,
+                this.dayInfo = this.dayInfo.replace(Constants.TRANSPARENT,
                         Integer.toHexString(ta.getColor(R.styleable.Theme_backgroundColor, 0) & 0x00ffffff));
                 ta.recycle();
             }

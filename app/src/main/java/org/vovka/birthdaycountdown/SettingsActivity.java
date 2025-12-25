@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 21:21
+ *  * Created by Vladimir Belov on 25.12.2025, 12:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 18:55
+ *  * Last modified 25.12.2025, 11:54
  *
  */
 
@@ -4020,7 +4020,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         eventDataString = eventsData.getEventData(eventData);
                         sb.append(Constants.HTML_BOLD_START).append(eventId).append(Constants.HTML_BOLD_END)
                                 .append(Constants.STRING_COLON_SPACE)
-                                .append(eventDataString.replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA_SPACE))
+                                .append(eventDataString.replace(Constants.STRING_EOT, Constants.STRING_COMMA_SPACE))
                                 .append(Constants.HTML_BR).append(Constants.HTML_BR);
                     }
                 }

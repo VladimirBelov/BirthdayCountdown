@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.11.2025, 02:33
+ *  * Created by Vladimir Belov on 25.12.2025, 12:20
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 13.11.2025, 18:04
+ *  * Last modified 25.12.2025, 11:54
  *
  */
 
@@ -179,7 +179,7 @@ public class WidgetList extends AppWidgetProvider {
 
             //Сообщение при отсутствии событий
             String prefZeroEventsMessage = Constants.STRING_EMPTY;
-            if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA);
+            if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
             views.setTextViewText(R.id.empty_view, TextUtils.isEmpty(prefZeroEventsMessage) ? context.getString(R.string.msg_no_events) : prefZeroEventsMessage);
 
             //Цвет подложки

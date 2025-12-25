@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.12.2025, 23:59
+ *  * Created by Vladimir Belov on 25.12.2025, 12:19
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 23.12.2025, 23:58
+ *  * Last modified 25.12.2025, 11:54
  *
  */
 
@@ -1809,7 +1809,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         } else {
                             sb.append(Constants.HTML_BR);
                             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                                sb.append(strLine.replaceAll(Constants.HTML_LI, Constants.HTML_LI_ITEM));
+                                sb.append(strLine.replace(Constants.HTML_LI, Constants.HTML_LI_ITEM));
                             } else {
                                 sb.append(strLine);
                             }

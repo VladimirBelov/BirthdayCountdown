@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.12.2025, 23:59
+ *  * Created by Vladimir Belov on 25.12.2025, 12:20
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 23.12.2025, 23:58
+ *  * Last modified 25.12.2025, 11:54
  *
  */
 
@@ -129,7 +129,7 @@ class WidgetUpdater {
             if (eventsData.isEmptyEventList() || eventsData.eventList.size() < startingIndex) {
 
                 String prefZeroEventsMessage = null;
-                if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA);
+                if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
                 if (TextUtils.isEmpty(prefZeroEventsMessage)) prefZeroEventsMessage = context.getString(R.string.msg_no_events);
                 views.setTextViewText(R.id.appwidget_text, prefZeroEventsMessage);
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
@@ -315,7 +315,7 @@ class WidgetUpdater {
             if (eventsDisplayed == 0) { //вообще ничего не нашли
 
                 String prefZeroEventsMessage = null;
-                if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA);
+                if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
                 if (TextUtils.isEmpty(prefZeroEventsMessage)) prefZeroEventsMessage = context.getString(R.string.msg_no_events);
                 views.setTextViewText(R.id.appwidget_text, prefZeroEventsMessage);
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);

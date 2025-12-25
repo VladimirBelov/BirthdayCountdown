@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 16:27
+ *  * Created by Vladimir Belov on 25.12.2025, 12:20
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 15:12
+ *  * Last modified 25.12.2025, 11:54
  *
  */
 
@@ -589,13 +589,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             //Заголовок виджета
             String prefWidgetCaption = Constants.STRING_EMPTY;
-            if (widgetPref.size() > 9) prefWidgetCaption = widgetPref.get(9).replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA);
+            if (widgetPref.size() > 9) prefWidgetCaption = widgetPref.get(9).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
             EditText editCustomWidgetCaption = findViewById(R.id.editCustomWidgetCaption);
             editCustomWidgetCaption.setText(prefWidgetCaption);
 
             //Сообщение при отсутствии событий
             String prefZeroEventsMessage = Constants.STRING_EMPTY;
-            if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replaceAll(Constants.STRING_EOT, Constants.STRING_COMMA);
+            if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
             EditText editCustomZeroEvents = findViewById(R.id.editCustomZeroEventsMessage);
             editCustomZeroEvents.setText(prefZeroEventsMessage);
 
@@ -1111,9 +1111,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             prefsToStore.add(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ?
                     ContactsEvents.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY); //Цвет подложки
             prefsToStore.add(String.valueOf(spinnerPhotoStyle.getSelectedItemPosition())); //Стиль фото
-            prefsToStore.add(editCustomZeroEvents.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)); //Сообщение, когда нет событий
+            prefsToStore.add(editCustomZeroEvents.getText().toString().replace(Constants.STRING_COMMA, Constants.STRING_EOT)); //Сообщение, когда нет событий
             prefsToStore.add(scopeInfo.toString()); //Объём событий
-            prefsToStore.add(editCustomWidgetCaption.getText().toString().replaceAll(Constants.STRING_COMMA, Constants.STRING_EOT)); //Заголовок виджета
+            prefsToStore.add(editCustomWidgetCaption.getText().toString().replace(Constants.STRING_COMMA, Constants.STRING_EOT)); //Заголовок виджета
             prefsToStore.add(eventSources); //Источники событий (через +)
             prefsToStore.add(TextUtils.join(Constants.STRING_PLUS, selectedCaptionsDetails)); //Параметры заголовков (через +)
             prefsToStore.add(spinnerOnClickCommonValue.toString()); //Реакция на нажатие
