@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.12.2025, 23:59
+ *  * Created by Vladimir Belov on 25.12.2025, 23:50
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 23.12.2025, 23:58
+ *  * Last modified 25.12.2025, 23:48
  *
  */
 
@@ -353,7 +353,7 @@ public class ContactsEvents {
     static final SimpleDateFormat sdf_india = new SimpleDateFormat(Constants.DATE_IND, Locale.UK);
     static final SimpleDateFormat sdf_india_G = new SimpleDateFormat(Constants.DATE_IND_G, Locale.UK);
     final SimpleDateFormat sdf_india_no_year = new SimpleDateFormat(Constants.DATE_IND_NO_YEAR, Locale.UK);
-    final SimpleDateFormat sdf_YYYYMMDD_noDiv = new SimpleDateFormat(Constants.DATE_NO_DIV, Locale.UK);
+    static final SimpleDateFormat sdf_YYYYMMDD_noDiv = new SimpleDateFormat(Constants.DATE_NO_DIV, Locale.UK);
     static final SimpleDateFormat sdf_YYYY = new SimpleDateFormat(Constants.DATE_YYYY, Locale.US);
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final HashMap<String, String> map_contacts_data = new HashMap<>(); //кеш данных о контактах
@@ -3644,7 +3644,7 @@ public class ContactsEvents {
                 }
 
                 if (isMultiTypeSource) {
-                    event.icon = R.drawable.ic_event_unknown;
+                    //event.icon = R.drawable.ic_event_unknown;
                     event = recognizeEventByLabel(eventDescription, Constants.Storage_Calendar, false, useEventYear);
                 }
 
@@ -3960,6 +3960,7 @@ public class ContactsEvents {
             SharedPreferences preferences = context.getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
             Map<String, ?> prefs = preferences.getAll();
             Calendar c = getWithoutTime(Calendar.getInstance());
+            String nowYearString = Constants.STRING_PERIOD.concat(String.valueOf(c.get(Calendar.YEAR)));
 
             for (String eventId: prefs.keySet()) {
                 if (prefs.get(eventId) instanceof String) {
@@ -3987,8 +3988,8 @@ public class ContactsEvents {
                                     }
                                 } catch (ParseException pe) {
                                     try {
-                                        dateEventFirstTime = sdf_DDMMYYYY.parse(eventDateString
-                                                .concat(Constants.STRING_PERIOD).concat(String.valueOf(c.get(Calendar.YEAR))));
+                                        dateEventFirstTime = sdf_DDMMYYYY.parse(eventDateString.substring(0, 5)
+                                                .concat(nowYearString));
                                     } catch (ParseException ignored) { /**/ }
                                 }
                             }
@@ -4118,7 +4119,7 @@ public class ContactsEvents {
                 eventData = preferences.getString(eventId, null);
             } catch (ClassCastException ignored) { /**/ }
 
-            return  getEventData(eventData);
+            return eventData == null ? null : getEventData(eventData);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

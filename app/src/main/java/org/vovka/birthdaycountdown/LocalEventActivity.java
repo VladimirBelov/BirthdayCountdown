@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.12.2025, 14:13
+ *  * Created by Vladimir Belov on 25.12.2025, 23:50
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 23.12.2025, 11:29
+ *  * Last modified 25.12.2025, 20:32
  *
  */
 
@@ -447,73 +447,76 @@ public class LocalEventActivity extends AppCompatActivity {
                 if (!isReadOnly) viewActivityTitle.setText(R.string.local_event_dialog_title_edit_event);
                 if (extras != null && extras.containsKey(Constants.EXTRA_EVENT_DATA)) {
                     TreeMap<Integer, String> eventDataStored = eventsData.getLocalEvent(extras.getString(Constants.EXTRA_EVENT_DATA));
-                    if (eventDataStored != null) {
-                        eventData.putAll(eventDataStored);
-                        eventDataStored.clear();
-                        String storedEventSubType = eventData.get(ContactsEvents.Position_eventSubType);
-                        String storedEventType = eventData.get(ContactsEvents.Position_eventType);
-                        boolean isNotContactEvent = false;
-                        if (storedEventType != null) {
-                            isNotContactEvent = storedEventType.equals(String.valueOf(Constants.Type_Other))
-                                    || storedEventType.equals(String.valueOf(Constants.Type_HolidayEvent));
-                        }
+                    if (eventDataStored == null) {
+                        Toast.makeText(LocalEventActivity.this, getString(R.string.msg_event_not_found), Toast.LENGTH_LONG).show();
+                        finish();
+                        return;
+                    }
+                    eventData.putAll(eventDataStored);
+                    eventDataStored.clear();
+                    String storedEventSubType = eventData.get(ContactsEvents.Position_eventSubType);
+                    String storedEventType = eventData.get(ContactsEvents.Position_eventType);
+                    boolean isNotContactEvent = false;
+                    if (storedEventType != null) {
+                        isNotContactEvent = storedEventType.equals(String.valueOf(Constants.Type_Other))
+                                || storedEventType.equals(String.valueOf(Constants.Type_HolidayEvent));
+                    }
 
-                        String oldCaption;
-                        if (isNotContactEvent || eventsData.preferences_name_format == ContactsEvents.FormatName.NameFirst) {
-                            oldCaption = eventData.get(ContactsEvents.Position_personFullName);
-                        } else {
-                            oldCaption = eventData.get(ContactsEvents.Position_personFullNameAlt);
-                        }
-                        if (oldCaption != null) editName.setText(oldCaption);
+                    String oldCaption;
+                    if (isNotContactEvent || eventsData.preferences_name_format == ContactsEvents.FormatName.NameFirst) {
+                        oldCaption = eventData.get(ContactsEvents.Position_personFullName);
+                    } else {
+                        oldCaption = eventData.get(ContactsEvents.Position_personFullNameAlt);
+                    }
+                    if (oldCaption != null) editName.setText(oldCaption);
 
-                        editTitle.setText(eventData.get(ContactsEvents.Position_title));
-                        editOrganization.setText(eventData.get(ContactsEvents.Position_organization));
-                        editDescription.setText(eventData.get(ContactsEvents.Position_eventDescription));
-                        editURL.setText(eventData.get(ContactsEvents.Position_eventURL));
+                    editTitle.setText(eventData.get(ContactsEvents.Position_title));
+                    editOrganization.setText(eventData.get(ContactsEvents.Position_organization));
+                    editDescription.setText(eventData.get(ContactsEvents.Position_eventDescription));
+                    editURL.setText(eventData.get(ContactsEvents.Position_eventURL));
 
-                        String eventDateString = eventData.get(ContactsEvents.Position_eventDateFirstTime);
-                        if (eventDateString != null) {
-                            Date dateEventFirstTime;
+                    String eventDateString = eventData.get(ContactsEvents.Position_eventDateFirstTime);
+                    if (eventDateString != null) {
+                        Date dateEventFirstTime;
 
+                        try {
+                            dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY_G.parse(eventDateString);
+                            if (dateEventFirstTime != null) {
+                                day = dateEventFirstTime.getDate();
+                                month = dateEventFirstTime.getMonth();
+                                year = dateEventFirstTime.getYear() + 1900;
+                                isBC = true;
+                            }
+                        } catch (ParseException peg) {
                             try {
-                                dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY_G.parse(eventDateString);
+                                dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString);
                                 if (dateEventFirstTime != null) {
                                     day = dateEventFirstTime.getDate();
                                     month = dateEventFirstTime.getMonth();
                                     year = dateEventFirstTime.getYear() + 1900;
-                                    isBC = true;
                                 }
-                            } catch (ParseException peg) {
+                            } catch (ParseException pe) {
                                 try {
-                                    dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString);
+                                    dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString
+                                            .concat(Constants.STRING_PERIOD).concat(String.valueOf(cal.get(Calendar.YEAR))));
                                     if (dateEventFirstTime != null) {
                                         day = dateEventFirstTime.getDate();
                                         month = dateEventFirstTime.getMonth();
-                                        year = dateEventFirstTime.getYear() + 1900;
+                                        useYear = false;
                                     }
-                                } catch (ParseException pe) {
-                                    try {
-                                        dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString
-                                                .concat(Constants.STRING_PERIOD).concat(String.valueOf(cal.get(Calendar.YEAR))));
-                                        if (dateEventFirstTime != null) {
-                                            day = dateEventFirstTime.getDate();
-                                            month = dateEventFirstTime.getMonth();
-                                            useYear = false;
-                                        }
-                                    } catch (ParseException ignored) { /**/ }
-                                }
+                                } catch (ParseException ignored) { /**/ }
                             }
                         }
-                        if (storedEventSubType != null) {
-                            try {
-                                Integer eventSubTypeId = Integer.valueOf(storedEventSubType);
-                                if (eventSubTypesIds.contains(eventSubTypeId)) {
-                                    int indexEventSubType = eventSubTypesIds.indexOf(eventSubTypeId);
-                                    spinnerEventTypes.setSelection(indexEventSubType);
-                                    viewEventType.setText(eventTypesValues.get(indexEventSubType));
-                                }
-                            } catch (NumberFormatException ignored) { /**/ }
-                        }
+                    }
+                    if (storedEventSubType != null) {
+                        try {
+                            Integer eventSubTypeId = Integer.valueOf(storedEventSubType);
+                            if (eventSubTypesIds.contains(eventSubTypeId)) {
+                                int indexEventSubType = eventSubTypesIds.indexOf(eventSubTypeId);
+                                spinnerEventTypes.setSelection(indexEventSubType);
+                                viewEventType.setText(eventTypesValues.get(indexEventSubType));
+                            }
+                        } catch (NumberFormatException ignored) { /**/ }
                     }
                 }
             }
@@ -805,7 +808,7 @@ public class LocalEventActivity extends AppCompatActivity {
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
             }
         } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
-                pickContactData();
+            pickContactData();
         }
     }
 
@@ -1143,55 +1146,55 @@ public class LocalEventActivity extends AppCompatActivity {
     }
 
     private static void prepareEventData(LocalEventActivity activity) {
-       try {
+        try {
 
-           String eventTitle = activity.editName.getText().toString();
-           int indexType = eventTypesValues.indexOf((String) activity.spinnerEventTypes.getSelectedItem());
-           Integer subType = eventSubTypesIds.get(indexType);
-           boolean isNotContactEvent = subType.equals(Constants.Type_HolidayEvent) || subType.equals(Constants.Type_Other);
+            String eventTitle = activity.editName.getText().toString();
+            int indexType = eventTypesValues.indexOf((String) activity.spinnerEventTypes.getSelectedItem());
+            Integer subType = eventSubTypesIds.get(indexType);
+            boolean isNotContactEvent = subType.equals(Constants.Type_HolidayEvent) || subType.equals(Constants.Type_Other);
 
-           if (isNotContactEvent) {
-               eventData.put(ContactsEvents.Position_personFullName, eventTitle);
-               eventData.put(ContactsEvents.Position_personFullNameAlt, Constants.STRING_EMPTY);
-           } else if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
-               eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
-               String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, activity);
-               eventData.put(ContactsEvents.Position_personFullName, personFullNameAlt);
-           } else {
-               eventData.put(ContactsEvents.Position_personFullName, eventTitle);
-               String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst, activity);
-               eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
-           }
+            if (isNotContactEvent) {
+                eventData.put(ContactsEvents.Position_personFullName, eventTitle);
+                eventData.put(ContactsEvents.Position_personFullNameAlt, Constants.STRING_EMPTY);
+            } else if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
+                eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
+                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, activity);
+                eventData.put(ContactsEvents.Position_personFullName, personFullNameAlt);
+            } else {
+                eventData.put(ContactsEvents.Position_personFullName, eventTitle);
+                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst, activity);
+                eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
+            }
 
-           String eventDateString;
-           if (eventUseYear) {
-               eventDateString = ContactsEvents.sdf_DDMMYYYY.format(new Date(eventYear - 1900, eventMonth, eventDay));
-           } else {
-               eventDateString = ContactsEvents.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay));
-           }
-           eventData.put(ContactsEvents.Position_eventDateFirstTime,
-                   eventDateString.concat(eventIsBC ? Constants.STRING_SPACE.concat(Constants.STRING_BC) : Constants.STRING_EMPTY));
+            String eventDateString;
+            if (eventUseYear) {
+                eventDateString = ContactsEvents.sdf_DDMMYYYY.format(new Date(eventYear - 1900, eventMonth, eventDay));
+            } else {
+                eventDateString = ContactsEvents.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay));
+            }
+            eventData.put(ContactsEvents.Position_eventDateFirstTime,
+                    eventDateString.concat(eventIsBC ? Constants.STRING_SPACE.concat(Constants.STRING_BC) : Constants.STRING_EMPTY));
 
-           eventData.put(ContactsEvents.Position_eventType, String.valueOf(eventTypesIds.get(indexType)));
-           eventData.put(ContactsEvents.Position_eventSubType, String.valueOf(subType));
+            eventData.put(ContactsEvents.Position_eventType, String.valueOf(eventTypesIds.get(indexType)));
+            eventData.put(ContactsEvents.Position_eventSubType, String.valueOf(subType));
 
-           if (isNotContactEvent) {
-               eventData.put(ContactsEvents.Position_title, Constants.STRING_EMPTY);
-               eventData.put(ContactsEvents.Position_organization, Constants.STRING_EMPTY);
-           } else {
-               eventData.put(ContactsEvents.Position_title, activity.editTitle.getText().toString());
-               eventData.put(ContactsEvents.Position_organization, activity.editOrganization.getText().toString());
-           }
-           eventData.put(ContactsEvents.Position_eventDescription, activity.editDescription.getText().toString());
-           eventData.put(ContactsEvents.Position_eventURL, activity.editURL.getText().toString());
-           eventData.put(ContactsEvents.Position_age, Constants.STRING_EMPTY);
+            if (isNotContactEvent) {
+                eventData.put(ContactsEvents.Position_title, Constants.STRING_EMPTY);
+                eventData.put(ContactsEvents.Position_organization, Constants.STRING_EMPTY);
+            } else {
+                eventData.put(ContactsEvents.Position_title, activity.editTitle.getText().toString());
+                eventData.put(ContactsEvents.Position_organization, activity.editOrganization.getText().toString());
+            }
+            eventData.put(ContactsEvents.Position_eventDescription, activity.editDescription.getText().toString());
+            eventData.put(ContactsEvents.Position_eventURL, activity.editURL.getText().toString());
+            eventData.put(ContactsEvents.Position_age, Constants.STRING_EMPTY);
 
-           eventsData.fillEmptyEventData(eventData);
+            eventsData.fillEmptyEventData(eventData);
 
-       } catch (Exception e) {
-           Log.e(TAG, e.getMessage(), e);
-           ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-       }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     private static void updateEventPhoto(LocalEventActivity activity) {

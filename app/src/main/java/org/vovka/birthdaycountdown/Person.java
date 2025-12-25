@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 16:27
+ *  * Created by Vladimir Belov on 25.12.2025, 23:50
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 15:12
+ *  * Last modified 25.12.2025, 12:21
  *
  */
 
@@ -147,7 +147,7 @@ class Person {
 
     @NonNull
     String getFullNameShort () { //Фамилия И. О.
-        //поддержка двойных фамилий и имён пока сделана в WidgetUpdater
+        //Поддержка двойных фамилий и имён пока сделана в WidgetUpdater
         try {
             if (!LastName.isEmpty()) {
                 return LastName

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 21:21
+ *  * Created by Vladimir Belov on 25.12.2025, 23:50
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 17:32
+ *  * Last modified 25.12.2025, 19:50
  *
  */
 
@@ -50,6 +50,7 @@ import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class EventImporterActivity extends AppCompatActivity {
 
@@ -64,6 +65,7 @@ public class EventImporterActivity extends AppCompatActivity {
     private final List<Integer> eventSubTypesIds = new ArrayList<>();
     boolean hasUnrecognizedEvents = false;
     RecyclerView recyclerView;
+    CheckBox checkUseYear;
     TextView viewEventType;
     Spinner spinnerEventTypes;
     TextView buttonSelectAll;
@@ -107,6 +109,7 @@ public class EventImporterActivity extends AppCompatActivity {
             summary.setText(dataForImport.get(0));
             dataForImport.remove(0);
 
+            checkUseYear = findViewById(R.id.checkUseYear);
             viewEventType = findViewById(R.id.captionType);
             spinnerEventTypes = findViewById(R.id.spinnerEventType);
             buttonSelectAll = findViewById(R.id.buttonFirstAction);
@@ -245,11 +248,11 @@ public class EventImporterActivity extends AppCompatActivity {
      */
     @NotNull
     private List<String> getEventsToImport(Uri uri) {
-        List<String> eventsList = new ArrayList<>();
-        List<String> details = new ArrayList<>();
-        int statEventsSkipped = 0; //Не поддерживается или с ошибкой
-        int statEventsDoubles = 0; //Дубль с существующим событием
-        int statEventsUnRecognized = 0; //Тип не распознан или без типа
+        final List<String> eventsList = new ArrayList<>();
+        final List<String> details = new ArrayList<>();
+        final AtomicInteger statEventsSkipped = new AtomicInteger(); //Не поддерживается или с ошибкой
+        final AtomicInteger statEventsDoubles = new AtomicInteger(); //Дубль с существующим событием
+        final AtomicInteger statEventsUnRecognized = new AtomicInteger(); //Тип не распознан или без типа
 
         try {
 
@@ -263,286 +266,17 @@ public class EventImporterActivity extends AppCompatActivity {
                 return eventsList;
             }
 
+            String[] fileLines =  fileContent.split(Constants.STRING_EOL, -1);
+
             if (fileContent.startsWith(Constants.iCal_CalendarBegin)) {
-                details.add(getString(R.string.pref_Tools_Events_Import_result_notSupported));
+
+                getMultilineEvents(fileLines, eventsList, statEventsSkipped, statEventsDoubles, statEventsUnRecognized);
 
             } else {
 
-                //BirthdayPro, DarkBirthday: <Дата без пробелов>[,<пробел>флаги[тип события]] название праздника или ФИО [(должность)] [http:// или https:// ссылка]
                 Calendar today = ContactsEvents.getWithoutTime(new GregorianCalendar());
-                String[] eventsArray =  fileContent.split(Constants.STRING_EOL, -1);
-                for (String eventString : eventsArray) {
-
-                    String eventLine = eventString.trim().replace("\uFEFF", Constants.STRING_EMPTY);
-                    if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH)) continue;
-                    int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
-                    if (indexFirstSpace == -1) continue;
-
-                    String eventDateString;
-                    String eventLabel_forSearch = Constants.STRING_EMPTY;
-                    String eventTitle;
-                    boolean isEndless = true;
-                    boolean isAD = true;
-
-                    final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
-                    if (indexComma > -1 && indexComma < indexFirstSpace) { //Есть флаги
-
-                        if (indexFirstSpace - indexComma == 1) { //После запятой пробел - убираем
-                            eventLine = eventLine.substring(0, indexComma + 1) + eventLine.substring(indexFirstSpace + 1);
-                            indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
-                            if (indexFirstSpace == -1) {
-                                statEventsSkipped++;
-                                continue;
-                            }
-                        }
-
-                        eventDateString = eventLine.substring(0, indexComma);
-                        String flags = eventLine.substring(indexComma + 1, indexFirstSpace);
-                        eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
-
-                        if (!flags.isEmpty()) {
-                            if (flags.contains(Constants.STRING_1)) {
-                                isEndless = false;
-                                flags = flags.replace(Constants.STRING_1, Constants.STRING_EMPTY);
-                            }
-                            if (flags.contains(Constants.STRING_BC)) {
-                                isAD = false;
-                                flags = flags.replace(Constants.STRING_BC, Constants.STRING_EMPTY);
-                            }
-                            eventLabel_forSearch = flags.replace(Constants.STRING_UNDERSCORE, Constants.STRING_SPACE);
-                        }
-
-                    } else {
-
-                        eventDateString = eventLine.substring(0, indexFirstSpace);
-                        eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
-
-                    }
-
-                    if (eventDateString.isEmpty() || eventTitle.isEmpty()) {
-                        statEventsSkipped++;
-                        continue;
-                    }
-
-                    boolean useEventYear = true;
-                    int indexDateNoYear = eventDateString.indexOf(Constants.STRING_0000);
-                    if (indexDateNoYear != -1) useEventYear = false;
-
-                    ContactsEvents.ComputedDateForFileEvent result = eventsData.getComputedDateForFileEvent(today, indexDateNoYear, isAD, false, eventDateString, null, isEndless);
-                    if (result.dateEvent == null) {
-                        statEventsSkipped++;
-                        continue;
-                    }
-
-                    boolean isUnrecognizedEvent = false;
-                    ContactsEvents.Event event = eventsData.recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, false, useEventYear);
-                    if (event.type.equals(Constants.EventType_Unrecognized)) {
-                        isUnrecognizedEvent = true;
-                    }
-
-                    @Nullable Date dateEvent = null;
-                    if (indexDateNoYear == -1) { //С годом
-                        try {
-                            if (isAD) {
-                                    String dateNextFloatingEvent = eventsData.computeFloatingDate(eventDateString, 0);
-                                    if (!eventDateString.equals(dateNextFloatingEvent)) {
-                                        //Пока не поддерживается
-                                        statEventsSkipped++;
-                                        continue;
-                                    }
-                                dateEvent = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString);
-                            } else {
-                                dateEvent = ContactsEvents.sdf_DDMMYYYY_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
-                            }
-                        } catch (ParseException e1) {
-                            try {
-                                if (isAD) {
-                                    dateEvent = ContactsEvents.sdf_india.parse(eventDateString);
-                                } else {
-                                    dateEvent = ContactsEvents.sdf_india_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
-                                }
-                            } catch (ParseException e2) {
-                                try {
-                                    if (isAD) {
-                                        dateEvent = ContactsEvents.sdf_uk.parse(eventDateString);
-                                    } else {
-                                        dateEvent = ContactsEvents.sdf_uk_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
-                                    }
-                                } catch (ParseException e3) {
-                                    try {
-                                        if (isAD) {
-                                            dateEvent = ContactsEvents.sdf_java.parse(eventDateString);
-                                        } else {
-                                            dateEvent = ContactsEvents.sdf_java_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
-                                        }
-                                    } catch (ParseException e4) {
-                                        //Не получилось распознать
-                                    }
-                                }
-                            }
-                        }
-
-                    } else { //Без года
-
-                        String dateNextEvent = eventDateString.replace(Constants.STRING_0000, String.valueOf(today.get(Calendar.YEAR)));
-                        try {
-                                String dateNextFloatingEvent = eventsData.computeFloatingDate(dateNextEvent, 0);
-                                if (!dateNextEvent.equals(dateNextFloatingEvent)) {
-                                    //Пока не поддерживается
-                                    statEventsSkipped++;
-                                    continue;
-                                }
-                            dateEvent = ContactsEvents.sdf_DDMMYYYY.parse(dateNextEvent);
-                        } catch (ParseException e1) {
-                            try {
-                                dateEvent = ContactsEvents.sdf_india.parse(dateNextEvent);
-                            } catch (ParseException e2) {
-                                try {
-                                    dateEvent = ContactsEvents.sdf_uk.parse(dateNextEvent);
-                                } catch (ParseException e3) {
-                                    try {
-                                        dateEvent = ContactsEvents.sdf_java.parse(dateNextEvent);
-                                    } catch (ParseException e4) {
-                                        //Не получилось распознать
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (dateEvent == null) {
-                        statEventsSkipped++;
-                        continue;
-                    } else {
-                        eventDateString = ContactsEvents.sdf_DDMMYYYY.format(dateEvent);
-                    }
-
-                    //Собираем событие
-                    TreeMap<Integer, String> eventData = new TreeMap<>();
-
-                    //URLs
-                    String eventURL = Constants.STRING_EMPTY;
-                    String eventTitle_lowered = eventTitle.toLowerCase();
-                    int urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTP);
-                    if (urlOffset > -1) {
-                        eventURL = eventTitle.substring(urlOffset);
-                    } else {
-                        urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTPS);
-                        if (urlOffset > -1) {
-                            eventURL = eventTitle.substring(urlOffset);
-                        }
-                    }
-                    if (urlOffset > -1) {
-                        eventURL = ContactsEvents.substringBefore(eventURL, Constants.STRING_SPACE);
-                        eventData.put(ContactsEvents.Position_eventURL, eventURL);
-                        eventTitle = eventTitle.replace(eventURL, Constants.STRING_EMPTY).trim();
-                    }
-
-                    //Описание события
-                    int indStartDescription = eventTitle.indexOf(Constants.STRING_BAR);
-                    if (indStartDescription > -1) {
-                        int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
-                        if (pStartFirst > -1) {
-                            if (indStartDescription < pStartFirst) { //"|" до "("
-                                String eventDescription = eventTitle.substring(indStartDescription + 1, pStartFirst);
-                                if (!eventDescription.isEmpty()) {
-                                    eventData.put(ContactsEvents.Position_eventDescription, eventDescription.trim());
-                                    eventTitle = eventTitle.replace(eventDescription.concat(Constants.STRING_BAR), Constants.STRING_EMPTY).trim();
-                                }
-                            }
-                        } else {
-                            String eventDescription = eventTitle.substring(indStartDescription + 1);
-                            if (!eventDescription.isEmpty()) {
-                                eventData.put(ContactsEvents.Position_eventDescription, eventDescription.trim());
-                                eventTitle = eventTitle.replace(eventDescription, Constants.STRING_EMPTY).trim();
-                            }
-                        }
-                    }
-
-                    if (event.needScanContacts) {
-                        //всё, что внутри скобок в имени - в должность и организацию
-                        int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
-                        int pStartLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_START);
-                        int pEndFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_CLOSE);
-                        int pEndLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
-                        String contactTitle = null;
-
-                        if (pStartFirst > -1 && pEndFirst > pStartFirst) { //хотя бы пара скобок
-                            if (pStartFirst == pStartLast && pEndFirst == pEndLast) { //одна пара скобок
-                                contactTitle = eventTitle.substring(pStartFirst + 1, pEndFirst);
-                                eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
-                            } else if (pStartLast < pEndFirst && pStartLast < pEndLast) { //скобки внутри скобок
-                                contactTitle = eventTitle.substring(pStartFirst + 1, pEndLast);
-                                eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
-                            } else if (pEndFirst < pStartLast) { //пара скобок за другой парой
-                                contactTitle = eventTitle.substring(pStartLast + 1, pEndLast);
-                                eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
-                            }
-                            if (contactTitle != null) {
-                                int cStart = contactTitle.indexOf(Constants.STRING_COMMA);
-                                if (cStart > 0) {
-                                    eventData.put(ContactsEvents.Position_organization, contactTitle.substring(0, cStart).trim());
-                                    eventData.put(ContactsEvents.Position_title, contactTitle.substring(cStart + 1).trim());
-                                } else {
-                                    eventData.put(ContactsEvents.Position_title, contactTitle.trim());
-                                }
-                            }
-                        }
-                    }
-
-                    if (!event.needScanContacts) {
-                        eventData.put(ContactsEvents.Position_personFullName, eventTitle);
-                        eventData.put(ContactsEvents.Position_personFullNameAlt, Constants.STRING_EMPTY);
-                    } else if (eventsData.preferences_rules_files_name_format == ContactsEvents.FormatName.LastnameFirst) {
-                        eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
-                        String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, this);
-                        eventData.put(ContactsEvents.Position_personFullName, personFullNameAlt);
-                    } else {
-                        eventData.put(ContactsEvents.Position_personFullName, eventTitle);
-                        String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst, this);
-                        eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
-                    }
-
-                    eventData.put(ContactsEvents.Position_eventCaption, event.caption);
-                    eventData.put(ContactsEvents.Position_eventType, event.type);
-                    eventData.put(ContactsEvents.Position_eventSubType, event.subType);
-                    eventData.put(ContactsEvents.Position_eventIcon, Integer.toString(event.icon));
-                    eventData.put(ContactsEvents.Position_eventEmoji, event.emoji);
-                    if (useEventYear) {
-                        eventData.put(ContactsEvents.Position_eventDateFirstTime, eventDateString);
-                    } else {
-                        eventData.put(ContactsEvents.Position_eventDateFirstTime, eventDateString.substring(0, indexDateNoYear - 1));
-                    }
-
-                    eventsData.fillEmptyEventData(eventData);
-                    String eventDataAsString = eventsData.getEventData(eventData);
-
-                    //Проверка на существующие локальные события
-                    List<String> similarEventIds;
-                    if (isUnrecognizedEvent) {
-                        similarEventIds = eventsData.getSimilarLocalEventIds(eventDataAsString,
-                                EnumSet.of(
-                                        ContactsEvents.getSimilarFields.PERSON_FULL_NAME,
-                                        ContactsEvents.getSimilarFields.ORGANIZATION
-                                ));
-                    } else {
-                        similarEventIds = eventsData.getSimilarLocalEventIds(eventDataAsString,
-                                EnumSet.of(
-                                        ContactsEvents.getSimilarFields.PERSON_FULL_NAME,
-                                        ContactsEvents.getSimilarFields.ORGANIZATION,
-                                        ContactsEvents.getSimilarFields.EVENT_TYPE,
-                                        ContactsEvents.getSimilarFields.EVENT_SUBTYPE
-                                ));
-                    }
-
-                    if (similarEventIds != null) {
-                        statEventsDoubles++;
-                    } else {
-                        if (isUnrecognizedEvent) {
-                            statEventsUnRecognized++;
-                        }
-                        eventsList.add(eventDataAsString);
-                    }
+                for (String eventString : fileLines) {
+                    getSingleLineEvent(eventString, eventsList, today, statEventsSkipped, statEventsDoubles, statEventsUnRecognized);
                 }
 
             }
@@ -555,18 +289,430 @@ public class EventImporterActivity extends AppCompatActivity {
             if (!eventsList.isEmpty()) {
                 details.add(getString(R.string.pref_Tools_Events_Import_result_EventsFound, eventsList.size()));
             }
-            if (statEventsUnRecognized > 0) {
-                details.add(getString(R.string.pref_Tools_Events_Import_result_EventsUnrecognized, statEventsUnRecognized));
+            if (statEventsUnRecognized.get() > 0) {
+                details.add(getString(R.string.pref_Tools_Events_Import_result_EventsUnrecognized, statEventsUnRecognized.get()));
             }
-            if (statEventsSkipped > 0) {
-                details.add(getString(R.string.pref_Tools_Events_Import_result_EventsSkipped, statEventsSkipped));
+            if (statEventsSkipped.get() > 0) {
+                details.add(getString(R.string.pref_Tools_Events_Import_result_EventsSkipped, statEventsSkipped.get()));
             }
-            if (statEventsDoubles > 0) {
-                details.add(getString(R.string.pref_Tools_Events_Import_result_EventsDoubles, statEventsDoubles));
+            if (statEventsDoubles.get() > 0) {
+                details.add(getString(R.string.pref_Tools_Events_Import_result_EventsDoubles, statEventsDoubles.get()));
             }
             eventsList.add(0, String.join(Constants.STRING_EOL, details));
         }
         return eventsList;
+    }
+
+    /** Добавляет в список события icalendar
+     * @param fileLines Строки с данными событий
+     * @param eventsList Список событий
+     * @param statEventsSkipped Счётчик пропущенных строк
+     * @param statEventsDoubles Счётчик дублирований с существующими локальными событиями
+     * @param statEventsUnRecognized Счётчик событий с нераспознанным или неуказанным типом
+     */
+    private void getMultilineEvents(String[] fileLines, List<String> eventsList, AtomicInteger statEventsSkipped, AtomicInteger statEventsDoubles, AtomicInteger statEventsUnRecognized) {
+        try {
+
+            TreeMap<Integer, String> eventData = new TreeMap<>();
+            @Nullable ContactsEvents.Event event = null;
+            @Nullable Date eventDateFirstTime = null;
+            @Nullable String eventTitle = null;
+            String eventDescription = Constants.STRING_EMPTY;
+            String eventURL = Constants.STRING_EMPTY;
+            boolean useEventYear = true;
+            StringBuilder eventLines = new StringBuilder();
+            String emptyEventYear = null;
+
+            for (String line: fileLines) {
+
+                if (emptyEventYear == null && line.startsWith(Constants.iCal_PROD_ID_VK)) {
+
+                    //Если год рождения скрыт, VkFriendExporter ставит год = 2000
+                    emptyEventYear = "2000";
+
+                } else if (line.startsWith(Constants.iCal_EventBegin)) {
+
+                    event = eventsData.createTypedEvent(Constants.Type_Unrecognized, Constants.STRING_EMPTY, Constants.Storage_File);
+                    useEventYear = true;
+
+                    eventData.clear();
+                    eventDateFirstTime = null;
+                    eventTitle = null;
+                    eventDescription = Constants.STRING_EMPTY;
+                    eventURL = Constants.STRING_EMPTY;
+                    eventLines.setLength(0);
+
+                } else if (line.startsWith(Constants.iCal_Summary)) {
+
+                    eventTitle = ContactsEvents.substringAfter(line, Constants.iCal_Summary);
+                    eventLines.append(line).append(Constants.STRING_EOL);
+
+                } else if (line.startsWith(Constants.iCal_Description)) {
+
+                    eventDescription = ContactsEvents.substringAfter(line, Constants.iCal_Description);
+                    eventLines.append(line).append(Constants.STRING_EOL);
+
+                } else if (line.startsWith(Constants.STRING_SPACE)) {
+
+                    eventDescription = eventDescription.concat(ContactsEvents.substringAfter(line, Constants.STRING_SPACE));
+
+                } else if (line.startsWith(Constants.iCal_Url)) {
+
+                    eventURL = ContactsEvents.substringAfter(line, Constants.iCal_Url);
+                    eventLines.append(line).append(Constants.STRING_EOL);
+
+                } else if (line.startsWith(Constants.iCal_Date)) {
+
+                    String storedDate = ContactsEvents.substringAfter(line, Constants.STRING_COLON);
+                    try {
+                        eventDateFirstTime = ContactsEvents.sdf_YYYYMMDD_noDiv.parse(storedDate);
+
+                        if (useEventYear && emptyEventYear != null && storedDate.startsWith(emptyEventYear)) {
+                            useEventYear = false;
+                        }
+                    } catch (ParseException ignored) { /**/ }
+                    eventLines.append(line).append(Constants.STRING_EOL);
+
+                } else if (line.startsWith(Constants.iCal_EventEnd) && event != null) {
+
+                    if (eventDateFirstTime == null || eventTitle == null) {
+                        statEventsSkipped.getAndIncrement();
+                        continue;
+                    }
+
+                    eventDescription = eventDescription.replace(eventURL, Constants.STRING_EMPTY);
+
+                    eventData.put(ContactsEvents.Position_personFullName, eventTitle);
+                    eventData.put(ContactsEvents.Position_eventDescription, eventDescription.replace(Constants.REGEX_BS, Constants.STRING_EMPTY));
+                    eventData.put(ContactsEvents.Position_eventCaption, event.caption);
+                    eventData.put(ContactsEvents.Position_eventURL, eventURL);
+                    eventData.put(ContactsEvents.Position_eventType, event.type);
+                    eventData.put(ContactsEvents.Position_eventSubType, event.subType);
+                    eventData.put(ContactsEvents.Position_eventIcon, Integer.toString(event.icon));
+                    eventData.put(ContactsEvents.Position_eventEmoji, event.emoji);
+
+                    String eventDateString = ContactsEvents.sdf_DDMMYYYY.format(eventDateFirstTime);
+                    if (emptyEventYear != null && eventDateString.endsWith(emptyEventYear)) {
+                        eventData.put(ContactsEvents.Position_eventDateFirstTime, eventDateString.substring(0, eventDateString.indexOf(emptyEventYear) - 1));
+                    } else {
+                        eventData.put(ContactsEvents.Position_eventDateFirstTime, eventDateString);
+                    }
+
+                    eventsData.fillEmptyEventData(eventData);
+                    String eventDataAsString = eventsData.getEventData(eventData);
+
+                    //Проверка на существующие локальные события
+                    List<String> similarEventIds = eventsData.getSimilarLocalEventIds(eventDataAsString,
+                                EnumSet.of(
+                                        ContactsEvents.getSimilarFields.PERSON_FULL_NAME
+                                ));
+
+                    if (similarEventIds != null) {
+                        statEventsDoubles.getAndIncrement();
+                    } else {
+                            statEventsUnRecognized.getAndIncrement();
+                        eventsList.add(eventDataAsString);
+                    }
+
+                }
+
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Добавляет в список событие, хранящееся одной строкой
+     * формат: <Дата без пробелов>[,<пробел>флаги[тип события]] название праздника или ФИО [(должность)] [http:// или https:// ссылка]
+     *
+     * @param eventString Строка с данными события
+     * @param eventsList Список событий
+     * @param today Сегодня
+     * @param statEventsSkipped Счётчик пропущенных строк
+     * @param statEventsDoubles Счётчик дублирований с существующими локальными событиями
+     * @param statEventsUnRecognized Счётчик событий с нераспознанным или неуказанным типом
+     */
+    private void getSingleLineEvent(String eventString, List<String> eventsList, Calendar today, AtomicInteger statEventsSkipped, AtomicInteger statEventsDoubles, AtomicInteger statEventsUnRecognized) {
+        try {
+
+            String eventLine = eventString.trim().replace("\uFEFF", Constants.STRING_EMPTY);
+            if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH))
+                return;
+            int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
+            if (indexFirstSpace == -1) return;
+
+            String eventDateString;
+            String eventLabel_forSearch = Constants.STRING_EMPTY;
+            String eventTitle;
+            boolean isEndless = true;
+            boolean isAD = true;
+
+            final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
+            if (indexComma > -1 && indexComma < indexFirstSpace) { //Есть флаги
+
+                if (indexFirstSpace - indexComma == 1) { //После запятой пробел - убираем
+                    eventLine = eventLine.substring(0, indexComma + 1) + eventLine.substring(indexFirstSpace + 1);
+                    indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
+                    if (indexFirstSpace == -1) {
+                        statEventsSkipped.getAndIncrement();
+                        return;
+                    }
+                }
+
+                eventDateString = eventLine.substring(0, indexComma);
+                String flags = eventLine.substring(indexComma + 1, indexFirstSpace);
+                eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
+
+                if (!flags.isEmpty()) {
+                    if (flags.contains(Constants.STRING_1)) {
+                        isEndless = false;
+                        flags = flags.replace(Constants.STRING_1, Constants.STRING_EMPTY);
+                    }
+                    if (flags.contains(Constants.STRING_BC)) {
+                        isAD = false;
+                        flags = flags.replace(Constants.STRING_BC, Constants.STRING_EMPTY);
+                    }
+                    eventLabel_forSearch = flags.replace(Constants.STRING_UNDERSCORE, Constants.STRING_SPACE);
+                }
+
+            } else {
+
+                eventDateString = eventLine.substring(0, indexFirstSpace);
+                eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
+
+            }
+
+            if (eventDateString.isEmpty() || eventTitle.isEmpty()) {
+                statEventsSkipped.getAndIncrement();
+                return;
+            }
+
+            boolean useEventYear = true;
+            int indexDateNoYear = eventDateString.indexOf(Constants.STRING_0000);
+            if (indexDateNoYear != -1) useEventYear = false;
+
+            ContactsEvents.ComputedDateForFileEvent result = eventsData.getComputedDateForFileEvent(today, indexDateNoYear, isAD, false, eventDateString, null, isEndless);
+            if (result.dateEvent == null) {
+                statEventsSkipped.getAndIncrement();
+                return;
+            }
+
+            boolean isUnrecognizedEvent = false;
+            ContactsEvents.Event event = eventsData.recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, false, useEventYear);
+            if (event.type.equals(Constants.EventType_Unrecognized)) {
+                isUnrecognizedEvent = true;
+            }
+
+            @Nullable Date dateEvent = null;
+            if (indexDateNoYear == -1) { //С годом
+                try {
+                    if (isAD) {
+                        String dateNextFloatingEvent = eventsData.computeFloatingDate(eventDateString, 0);
+                        if (!eventDateString.equals(dateNextFloatingEvent)) {
+                            //Пока не поддерживается
+                            statEventsSkipped.getAndIncrement();
+                            return;
+                        }
+                        dateEvent = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString);
+                    } else {
+                        dateEvent = ContactsEvents.sdf_DDMMYYYY_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                    }
+                } catch (ParseException e1) {
+                    try {
+                        if (isAD) {
+                            dateEvent = ContactsEvents.sdf_india.parse(eventDateString);
+                        } else {
+                            dateEvent = ContactsEvents.sdf_india_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                        }
+                    } catch (ParseException e2) {
+                        try {
+                            if (isAD) {
+                                dateEvent = ContactsEvents.sdf_uk.parse(eventDateString);
+                            } else {
+                                dateEvent = ContactsEvents.sdf_uk_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                            }
+                        } catch (ParseException e3) {
+                            try {
+                                if (isAD) {
+                                    dateEvent = ContactsEvents.sdf_java.parse(eventDateString);
+                                } else {
+                                    dateEvent = ContactsEvents.sdf_java_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                                }
+                            } catch (ParseException e4) {
+                                //Не получилось распознать
+                            }
+                        }
+                    }
+                }
+
+            } else { //Без года
+
+                String dateNextEvent = eventDateString.replace(Constants.STRING_0000, String.valueOf(today.get(Calendar.YEAR)));
+                try {
+                    String dateNextFloatingEvent = eventsData.computeFloatingDate(dateNextEvent, 0);
+                    if (!dateNextEvent.equals(dateNextFloatingEvent)) {
+                        //Пока не поддерживается
+                        statEventsSkipped.getAndIncrement();
+                        return;
+                    }
+                    dateEvent = ContactsEvents.sdf_DDMMYYYY.parse(dateNextEvent);
+                } catch (ParseException e1) {
+                    try {
+                        dateEvent = ContactsEvents.sdf_india.parse(dateNextEvent);
+                    } catch (ParseException e2) {
+                        try {
+                            dateEvent = ContactsEvents.sdf_uk.parse(dateNextEvent);
+                        } catch (ParseException e3) {
+                            try {
+                                dateEvent = ContactsEvents.sdf_java.parse(dateNextEvent);
+                            } catch (ParseException e4) {
+                                //Не получилось распознать
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (dateEvent == null) {
+                statEventsSkipped.getAndIncrement();
+                return;
+            } else {
+                eventDateString = ContactsEvents.sdf_DDMMYYYY.format(dateEvent);
+            }
+
+            //Собираем событие
+            TreeMap<Integer, String> eventData = new TreeMap<>();
+
+            //URLs
+            String eventURL = Constants.STRING_EMPTY;
+            String eventTitle_lowered = eventTitle.toLowerCase();
+            int urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTP);
+            if (urlOffset > -1) {
+                eventURL = eventTitle.substring(urlOffset);
+            } else {
+                urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTPS);
+                if (urlOffset > -1) {
+                    eventURL = eventTitle.substring(urlOffset);
+                }
+            }
+            if (urlOffset > -1) {
+                eventURL = ContactsEvents.substringBefore(eventURL, Constants.STRING_SPACE);
+                eventData.put(ContactsEvents.Position_eventURL, eventURL);
+                eventTitle = eventTitle.replace(eventURL, Constants.STRING_EMPTY).trim();
+            }
+
+            //Описание события
+            int indStartDescription = eventTitle.indexOf(Constants.STRING_BAR);
+            if (indStartDescription > -1) {
+                int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
+                if (pStartFirst > -1) {
+                    if (indStartDescription < pStartFirst) { //"|" до "("
+                        String eventDescription = eventTitle.substring(indStartDescription + 1, pStartFirst);
+                        if (!eventDescription.isEmpty()) {
+                            eventData.put(ContactsEvents.Position_eventDescription, eventDescription.trim());
+                            eventTitle = eventTitle.replace(eventDescription.concat(Constants.STRING_BAR), Constants.STRING_EMPTY).trim();
+                        }
+                    }
+                } else {
+                    String eventDescription = eventTitle.substring(indStartDescription + 1);
+                    if (!eventDescription.isEmpty()) {
+                        eventData.put(ContactsEvents.Position_eventDescription, eventDescription.trim());
+                        eventTitle = eventTitle.replace(eventDescription, Constants.STRING_EMPTY).trim();
+                    }
+                }
+            }
+
+            if (event.needScanContacts) {
+                //всё, что внутри скобок в имени - в должность и организацию
+                int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
+                int pStartLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_START);
+                int pEndFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                int pEndLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                String contactTitle = null;
+
+                if (pStartFirst > -1 && pEndFirst > pStartFirst) { //хотя бы пара скобок
+                    if (pStartFirst == pStartLast && pEndFirst == pEndLast) { //одна пара скобок
+                        contactTitle = eventTitle.substring(pStartFirst + 1, pEndFirst);
+                        eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                    } else if (pStartLast < pEndFirst && pStartLast < pEndLast) { //скобки внутри скобок
+                        contactTitle = eventTitle.substring(pStartFirst + 1, pEndLast);
+                        eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                    } else if (pEndFirst < pStartLast) { //пара скобок за другой парой
+                        contactTitle = eventTitle.substring(pStartLast + 1, pEndLast);
+                        eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                    }
+                    if (contactTitle != null) {
+                        int cStart = contactTitle.indexOf(Constants.STRING_COMMA);
+                        if (cStart > 0) {
+                            eventData.put(ContactsEvents.Position_organization, contactTitle.substring(0, cStart).trim());
+                            eventData.put(ContactsEvents.Position_title, contactTitle.substring(cStart + 1).trim());
+                        } else {
+                            eventData.put(ContactsEvents.Position_title, contactTitle.trim());
+                        }
+                    }
+                }
+            }
+
+            if (!event.needScanContacts) {
+                eventData.put(ContactsEvents.Position_personFullName, eventTitle);
+                eventData.put(ContactsEvents.Position_personFullNameAlt, Constants.STRING_EMPTY);
+            } else if (eventsData.preferences_rules_files_name_format == ContactsEvents.FormatName.LastnameFirst) {
+                eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
+                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, this);
+                eventData.put(ContactsEvents.Position_personFullName, personFullNameAlt);
+            } else {
+                eventData.put(ContactsEvents.Position_personFullName, eventTitle);
+                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst, this);
+                eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
+            }
+
+            eventData.put(ContactsEvents.Position_eventCaption, event.caption);
+            eventData.put(ContactsEvents.Position_eventType, event.type);
+            eventData.put(ContactsEvents.Position_eventSubType, event.subType);
+            eventData.put(ContactsEvents.Position_eventIcon, Integer.toString(event.icon));
+            eventData.put(ContactsEvents.Position_eventEmoji, event.emoji);
+            if (useEventYear) {
+                eventData.put(ContactsEvents.Position_eventDateFirstTime, eventDateString);
+            } else {
+                eventData.put(ContactsEvents.Position_eventDateFirstTime, eventDateString.substring(0, indexDateNoYear - 1));
+            }
+
+            eventsData.fillEmptyEventData(eventData);
+            String eventDataAsString = eventsData.getEventData(eventData);
+
+            //Проверка на существующие локальные события
+            List<String> similarEventIds;
+            if (isUnrecognizedEvent) {
+                similarEventIds = eventsData.getSimilarLocalEventIds(eventDataAsString,
+                        EnumSet.of(
+                                ContactsEvents.getSimilarFields.PERSON_FULL_NAME,
+                                ContactsEvents.getSimilarFields.ORGANIZATION
+                        ));
+            } else {
+                similarEventIds = eventsData.getSimilarLocalEventIds(eventDataAsString,
+                        EnumSet.of(
+                                ContactsEvents.getSimilarFields.PERSON_FULL_NAME,
+                                ContactsEvents.getSimilarFields.ORGANIZATION,
+                                ContactsEvents.getSimilarFields.EVENT_TYPE,
+                                ContactsEvents.getSimilarFields.EVENT_SUBTYPE
+                        ));
+            }
+
+            if (similarEventIds != null) {
+                statEventsDoubles.getAndIncrement();
+            } else {
+                if (isUnrecognizedEvent) {
+                    statEventsUnRecognized.getAndIncrement();
+                }
+                eventsList.add(eventDataAsString);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     void doImport() {
@@ -576,23 +722,24 @@ public class EventImporterActivity extends AppCompatActivity {
             List<Integer> selectedPositions = adapter.getSelectedPositions();
             int selectedEventTypeIndex = spinnerEventTypes.getSelectedItemPosition();
             if (hasUnrecognizedEvents && selectedEventTypeIndex == 0) {
-                boolean unrecognizedSelected = false;
+                boolean isUnrecognizedSelected = false;
                 for (Integer pos: selectedPositions) {
                     if (pos < dataForImport.size()) {
                         TreeMap<Integer, String> eventData = eventsData.getEventData(dataForImport.get(pos));
                         if (ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
                                 .equals(Constants.EventType_Unrecognized)) {
-                            unrecognizedSelected = true;
+                            isUnrecognizedSelected = true;
                             break;
                         }
                     }
                 }
-               if (unrecognizedSelected) {
-                   Toast.makeText(this, getString(R.string.pref_Tools_Events_Import_msg_SelectType), Toast.LENGTH_LONG).show();
-                   return;
-               }
+                if (isUnrecognizedSelected) {
+                    Toast.makeText(this, getString(R.string.pref_Tools_Events_Import_msg_SelectType), Toast.LENGTH_LONG).show();
+                    return;
+                }
             }
 
+            boolean useYear = checkUseYear.isChecked();
             int countImported = 0;
             for (Integer pos: selectedPositions) {
                 if (pos < dataForImport.size()) {
@@ -664,6 +811,15 @@ public class EventImporterActivity extends AppCompatActivity {
                     eventData.put(ContactsEvents.Position_eventCaption, Constants.STRING_EMPTY);
                     eventData.put(ContactsEvents.Position_eventIcon, Constants.STRING_EMPTY);
                     eventData.put(ContactsEvents.Position_eventEmoji, Constants.STRING_EMPTY);
+
+                    //Если не надо использовать год, обрезаем дату
+                    if (!useYear) {
+                        String eventDateString = eventData.get(ContactsEvents.Position_eventDateFirstTime);
+                        if (eventDateString != null && eventDateString.length() > 5) {
+                            eventData.put(ContactsEvents.Position_eventDateFirstTime, eventDateString.substring(0, 5));
+                        }
+                    }
+
                     eventsData.fillEmptyEventData(eventData);
                     eventsData.saveLocalEvent(eventData);
                     eventsData.needUpdateEventList = true;
@@ -696,8 +852,8 @@ public class EventImporterActivity extends AppCompatActivity {
     }
 
     public void buttonCancelOnClick(final View view) {
-            setResult(RESULT_CANCELED);
-            finish();
+        setResult(RESULT_CANCELED);
+        finish();
     }
 
     static class EventItem {
