@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.12.2025, 23:50
+ *  * Created by Vladimir Belov on 26.12.2025, 13:52
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.12.2025, 23:48
+ *  * Last modified 26.12.2025, 11:01
  *
  */
 
@@ -8352,6 +8352,10 @@ public class ContactsEvents {
         return eventDetails.toString();
     }
 
+    /** Возвращает список фактов как единую строку с иконками и переводом строк
+     * @param listFacts Список фактов
+     * @return Единая строка с фактами
+     */
     @NonNull
     private String composeFactsAsString(@NonNull List<String> listFacts) {
         StringBuilder eventDetails = new StringBuilder();

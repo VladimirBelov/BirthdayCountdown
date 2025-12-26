@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 26.12.2025, 13:52
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 01:04
+ *  * Last modified 26.12.2025, 10:45
  *
  */
 
@@ -53,6 +53,12 @@ public class FactsPopupActivity extends Activity {
 
             setContentView(R.layout.activity_popup);
 
+            TextView buttonClose = findViewById(R.id.buttonClose);
+            if (buttonClose != null) {
+                buttonClose.setText(Constants.BUTTON_X);
+                buttonClose.setOnClickListener(view -> finish());
+            }
+
             eventsData.getFactsEvents(false);
 
             Set<String> eventSources = new HashSet<String>(){};
@@ -69,57 +75,54 @@ public class FactsPopupActivity extends Activity {
                 txtInfo.setText(getString(R.string.event_type_fact_emoji).concat(Constants.STRING_SPACE).concat(facts.get(0)));
             } else {
                 txtInfo.setText(R.string.facts_popup_empty);
+                return;
             }
 
             List<String> listPrevFacts = new ArrayList<String>(){};
 
-            if (!facts.isEmpty()) {
-                TextView buttonShare = findViewById(R.id.buttonSecondAction);
-                buttonShare.setText(R.string.facts_popup_action_share);
-                buttonShare.setOnClickListener(v -> {
-                    Intent intentShare = new Intent(Intent.ACTION_SEND);
-                    intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
-                    intentShare.putExtra(Intent.EXTRA_TEXT, txtInfo.getText());
-                    startActivity(Intent.createChooser(intentShare, ""));
-                });
-                addClickEffect(buttonShare);
-                buttonShare.getBackground().setAlpha(50);
-                buttonShare.setVisibility(View.VISIBLE);
+            TextView buttonShare = findViewById(R.id.buttonSecondAction);
+            buttonShare.setText(R.string.facts_popup_action_share);
+            buttonShare.setOnClickListener(v -> {
+                Intent intentShare = new Intent(Intent.ACTION_SEND);
+                intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+                intentShare.putExtra(Intent.EXTRA_TEXT, txtInfo.getText());
+                startActivity(Intent.createChooser(intentShare, ""));
+            });
+            addClickEffect(buttonShare);
+            buttonShare.getBackground().setAlpha(50);
+            buttonShare.setVisibility(View.VISIBLE);
 
-                TextView buttonAction = findViewById(R.id.buttonThirdAction);
-                buttonAction.setText(R.string.facts_popup_action_next_fact);
-                addClickEffect(buttonAction);
-                buttonAction.getBackground().setAlpha(50);
-                buttonAction.setVisibility(View.VISIBLE);
+            TextView buttonAction = findViewById(R.id.buttonThirdAction);
+            buttonAction.setText(R.string.facts_popup_action_next_fact);
+            addClickEffect(buttonAction);
+            buttonAction.getBackground().setAlpha(50);
+            buttonAction.setVisibility(View.VISIBLE);
 
-                TextView buttonPrev = findViewById(R.id.buttonFirstAction);
-                buttonPrev.setText(R.string.popup_action_prev);
-                addClickEffect(buttonPrev);
-                buttonPrev.getBackground().setAlpha(50);
+            TextView buttonPrev = findViewById(R.id.buttonFirstAction);
+            buttonPrev.setText(R.string.popup_action_prev);
+            addClickEffect(buttonPrev);
+            buttonPrev.getBackground().setAlpha(50);
+            if (!listPrevFacts.isEmpty()) {
+                buttonPrev.setVisibility(View.VISIBLE);
+            }
 
-                buttonAction.setOnClickListener(view -> {
-                    List<String> factsNext = eventsData.getNextRandomFacts(1, eventSources);
-                    if (!factsNext.isEmpty()) {
-                        listPrevFacts.add(txtInfo.getText().toString());
-                        txtInfo.setText(getString(R.string.event_type_fact_emoji).concat(Constants.STRING_SPACE).concat(factsNext.get(0)));
-                        buttonPrev.setVisibility(View.VISIBLE);
-                    }
-                });
+            buttonAction.setOnClickListener(view -> {
+                List<String> factsNext = eventsData.getNextRandomFacts(1, eventSources);
+                if (!factsNext.isEmpty()) {
+                    listPrevFacts.add(txtInfo.getText().toString());
+                    txtInfo.setText(getString(R.string.event_type_fact_emoji).concat(Constants.STRING_SPACE).concat(factsNext.get(0)));
+                    buttonPrev.setVisibility(View.VISIBLE);
+                }
+            });
 
-                buttonPrev.setOnClickListener(viewPrev -> {
+            buttonPrev.setOnClickListener(viewPrev -> {
+                if (!listPrevFacts.isEmpty()) {
                     txtInfo.setText(listPrevFacts.remove(listPrevFacts.size() - 1));
-                    if (listPrevFacts.isEmpty()) {
-                        buttonPrev.setVisibility(View.GONE);
-                    }
-                });
-
-            }
-
-            TextView buttonClose = findViewById(R.id.buttonClose);
-            if (buttonClose != null) {
-                buttonClose.setText(Constants.BUTTON_X);
-                buttonClose.setOnClickListener(view -> finish());
-            }
+                }
+                if (listPrevFacts.isEmpty()) {
+                    buttonPrev.setVisibility(View.GONE);
+                }
+            });
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
