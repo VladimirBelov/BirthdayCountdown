@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.12.2025, 01:45
+  ~  * Created by Vladimir Belov on 26.12.2025, 10:37
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.12.2025, 01:30
+  ~  * Last modified 26.12.2025, 00:44
   ~  */
   -->
 
@@ -1196,6 +1196,7 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="pref_Tools_Events_Import_Unrecognized_type">- nevybráno -</string>
     <string name="pref_Tools_Events_Import_result">Importováno událostí: %1$d</string>
     <string name="pref_Tools_Events_Import_result_noAccess">🚫 Soubor je prázdný nebo k němu není přístup</string>
+    <string name="pref_Tools_Events_Import_result_noEvents">🚫 Události nenalezeny</string>
     <string name="pref_Tools_Events_Import_result_notSupported">🛑 Zatím nepodporováno</string>
     <string name="pref_Tools_Events_Import_result_EventsFound">Nalezené události: %1$d</string>
     <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Typy událostí nerozpoznané: %1$d</string>

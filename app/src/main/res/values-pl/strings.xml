@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.12.2025, 01:45
+  ~  * Created by Vladimir Belov on 26.12.2025, 10:37
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.12.2025, 01:41
+  ~  * Last modified 26.12.2025, 00:45
   ~  */
   -->
 
@@ -1196,6 +1196,7 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="pref_Tools_Events_Import_Unrecognized_type">- nie wybrano -</string>
     <string name="pref_Tools_Events_Import_result">Zaimportowano zdarzenia: %1$d</string>
     <string name="pref_Tools_Events_Import_result_noAccess">🚫 Plik jest pusty lub Brak dostępu</string>
+    <string name="pref_Tools_Events_Import_result_noEvents">🚫 Nie znaleziono wydarzeń</string>
     <string name="pref_Tools_Events_Import_result_notSupported">🛑 Jeszcze nieobsługiwane</string>
     <string name="pref_Tools_Events_Import_result_EventsFound">Znaleziono zdarzenia: %1$d</string>
     <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Nierozpoznane typy zdarzeń: %1$d</string>

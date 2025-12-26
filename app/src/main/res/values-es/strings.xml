@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.12.2025, 01:45
+  ~  * Created by Vladimir Belov on 26.12.2025, 10:37
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.12.2025, 01:37
+  ~  * Last modified 26.12.2025, 00:45
   ~  */
   -->
 
@@ -1196,6 +1196,7 @@ Haga clic largo en el elemento para seleccionar el color"</string>
     <string name="pref_Tools_Events_Import_Unrecognized_type">- no seleccionado -</string>
     <string name="pref_Tools_Events_Import_result">Eventos importados: %1$d</string>
     <string name="pref_Tools_Events_Import_result_noAccess">🚫 El archivo está vacío o no se puede acceder a él</string>
+    <string name="pref_Tools_Events_Import_result_noEvents">🚫 Eventos no encontrados</string>
     <string name="pref_Tools_Events_Import_result_notSupported">🛑 No compatible Todavía</string>
     <string name="pref_Tools_Events_Import_result_EventsFound">Eventos encontrados: %1$d</string>
     <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Tipos de eventos no reconocidos: %1$d</string>

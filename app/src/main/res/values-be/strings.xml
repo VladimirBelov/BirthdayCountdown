@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.12.2025, 01:45
+  ~  * Created by Vladimir Belov on 26.12.2025, 10:37
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.12.2025, 01:37
+  ~  * Last modified 26.12.2025, 00:44
   ~  */
   -->
 
@@ -1195,6 +1195,7 @@
     <string name="pref_Tools_Events_Import_Unrecognized_type">- не выбрана -</string>
     <string name="pref_Tools_Events_Import_result">Імпартавана падзей: %1$d</string>
     <string name="pref_Tools_Events_Import_result_noAccess">🚫 Файл пусты або няма доступу</string>
+    <string name="pref_Tools_Events_Import_result_noEvents">🚫 Падзеі не знойдзены</string>
     <string name="pref_Tools_Events_Import_result_notSupported">🛑 Пакуль не падтрымліваецца</string>
     <string name="pref_Tools_Events_Import_result_EventsFound">Знойдзена падзей: %1$d</string>
     <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Тыпы падзей нераспазнаныя: %1$d</string>

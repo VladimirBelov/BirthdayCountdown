@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.12.2025, 23:50
+  ~  * Created by Vladimir Belov on 26.12.2025, 10:37
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.12.2025, 19:06
+  ~  * Last modified 26.12.2025, 10:17
   ~  */
   -->
 
@@ -83,10 +83,12 @@
     </ScrollView>
 
     <View
+        android:id="@+id/dividerOptions"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:paddingTop="2dp"
-        android:background="?attr/colorAccent" />
+        android:layout_height="1dp"
+        android:paddingTop="1dp"
+        android:background="?attr/colorAccent"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/captionType"
@@ -123,7 +125,8 @@
         android:drawablePadding="8dp"
         android:textColor="?attr/dialogTextColor"
         android:checked="true"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="8dp"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="match_parent"

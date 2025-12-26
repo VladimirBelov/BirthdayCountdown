@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.12.2025, 01:45
+  ~  * Created by Vladimir Belov on 26.12.2025, 10:37
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 21.12.2025, 01:43
+  ~  * Last modified 26.12.2025, 00:46
   ~  */
   -->
 
@@ -1196,6 +1196,7 @@
     <string name="pref_Tools_Events_Import_Unrecognized_type">- не вибрано -</string>
     <string name="pref_Tools_Events_Import_result">Імпортовано подій: %1$d</string>
     <string name="pref_Tools_Events_Import_result_noAccess">🚫 Файл порожній або до нього немає доступу</string>
+    <string name="pref_Tools_Events_Import_result_noEvents">🚫 Події не знайдено</string>
     <string name="pref_Tools_Events_Import_result_notSupported">🛑 Ще не підтримується</string>
     <string name="pref_Tools_Events_Import_result_EventsFound">Знайдено подій: %1$d</string>
     <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Типи подій не розпізнано: %1$d</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.12.2025, 23:50
+ *  * Created by Vladimir Belov on 26.12.2025, 10:37
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.12.2025, 19:50
+ *  * Last modified 26.12.2025, 01:02
  *
  */
 
@@ -127,6 +127,9 @@ public class EventImporterActivity extends AppCompatActivity {
                             DividerItemDecoration.VERTICAL
                     );
                     recyclerView.addItemDecoration(divider);
+
+                    findViewById(R.id.dividerOptions).setVisibility(View.VISIBLE);
+                    checkUseYear.setVisibility(View.VISIBLE);
 
                     List<EventItem> events = new ArrayList<>();
                     for (String eventStr : dataForImport) {
@@ -297,6 +300,9 @@ public class EventImporterActivity extends AppCompatActivity {
             }
             if (statEventsDoubles.get() > 0) {
                 details.add(getString(R.string.pref_Tools_Events_Import_result_EventsDoubles, statEventsDoubles.get()));
+            }
+            if (details.size() <= 1) {
+                details.add(getString(R.string.pref_Tools_Events_Import_result_noEvents));
             }
             eventsList.add(0, String.join(Constants.STRING_EOL, details));
         }
