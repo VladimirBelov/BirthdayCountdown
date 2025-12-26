@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.12.2025, 12:20
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.12.2025, 11:54
+ *  * Last modified 26.12.2025, 16:23
  *
  */
 
@@ -16,10 +16,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,6 +29,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
+
+import org.vovka.birthdaycountdown.utils.UiTools;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -145,35 +143,35 @@ public class WidgetCalendarPopup extends Activity {
             //Календарь
             this.buttonCalendar = findViewById(R.id.buttonSecondAction);
             this.buttonCalendar.setText(getString(R.string.event_type_other_emoji).concat(Constants.STRING_SPACE).concat(getString(R.string.appwidget_label_Calendar)));
-            addClickEffect(this.buttonCalendar);
+            UiTools.addClickEffect(this.buttonCalendar);
             this.buttonCalendar.getBackground().setAlpha(50);
             this.buttonCalendar.setVisibility(View.VISIBLE);
 
             //Поделиться
             this.buttonShare = findViewById(R.id.buttonThirdAction);
             this.buttonShare.setText(R.string.facts_popup_action_share);
-            addClickEffect(this.buttonShare);
+            UiTools.addClickEffect(this.buttonShare);
             this.buttonShare.getBackground().setAlpha(50);
             this.buttonShare.setVisibility(View.VISIBLE);
 
             //Предыдущий день
             this.buttonPrevDay = findViewById(R.id.buttonFirstAction);
             this.buttonPrevDay.setText(R.string.popup_action_prev);
-            addClickEffect(this.buttonPrevDay);
+            UiTools.addClickEffect(this.buttonPrevDay);
             this.buttonPrevDay.getBackground().setAlpha(50);
             this.buttonPrevDay.setVisibility(View.VISIBLE);
 
             //Выбрать день
             this.buttonSelectDay = findViewById(R.id.buttonFourthAction);
             this.buttonSelectDay.setText(R.string.popup_action_calendar);
-            addClickEffect(this.buttonSelectDay);
+            UiTools.addClickEffect(this.buttonSelectDay);
             this.buttonSelectDay.getBackground().setAlpha(50);
             this.buttonSelectDay.setVisibility(View.VISIBLE);
 
             //Следующий день
             this.buttonNextDay = findViewById(R.id.buttonFirthAction);
             this.buttonNextDay.setText(R.string.popup_action_next);
-            addClickEffect(this.buttonNextDay);
+            UiTools.addClickEffect(this.buttonNextDay);
             this.buttonNextDay.getBackground().setAlpha(50);
             this.buttonNextDay.setVisibility(View.VISIBLE);
 
@@ -337,22 +335,6 @@ public class WidgetCalendarPopup extends Activity {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-    }
-
-    void addClickEffect(View view)
-    {
-        Drawable drawableNormal = view.getBackground();
-
-        if (view.getBackground().getConstantState() != null) {
-            Drawable drawablePressed = view.getBackground().getConstantState().newDrawable();
-            drawablePressed.mutate();
-            drawablePressed.setColorFilter(Color.argb(50, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
-
-            StateListDrawable listDrawable = new StateListDrawable();
-            listDrawable.addState(new int[]{android.R.attr.state_pressed}, drawablePressed);
-            listDrawable.addState(new int[]{}, drawableNormal);
-            view.setBackground(listDrawable);
         }
     }
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 16:27
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 15:12
+ *  * Last modified 26.12.2025, 14:38
  *
  */
 
@@ -48,6 +48,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
+
+import org.vovka.birthdaycountdown.utils.ImageUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -332,7 +335,7 @@ public class WidgetMenuActivity extends Activity {
                 case Constants.ContextMenu_OpenCalendar:
 
                     Uri eventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI,
-                            ContactsEvents.parseToLong(singleEventArray[ContactsEvents.Position_eventID]));
+                            StringUtils.parseToLong(singleEventArray[ContactsEvents.Position_eventID]));
                     Intent openCalendarIntent = new Intent(Intent.ACTION_VIEW).setData(eventUri);
                     try {
                         if (openCalendarIntent.resolveActivity(getPackageManager()) != null) {
@@ -510,7 +513,7 @@ public class WidgetMenuActivity extends Activity {
                 TextView textView = listItemView.findViewById(android.R.id.text1);
 
                 textView.setText(Constants.STRING_SPACE.concat(items.get(position)));
-                textView.setPadding(ContactsEvents.Dip2Px(context.getResources(), 6), 0, 0, 0);
+                textView.setPadding(ImageUtils.Dip2Px(context.getResources(), 6), 0, 0, 0);
                 textView.setCompoundDrawablesRelativeWithIntrinsicBounds(icons.get(position), null, null, null);
 
             } catch (Exception e) {

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 10:37
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 01:02
+ *  * Last modified 26.12.2025, 20:42
  *
  */
 
@@ -10,10 +10,6 @@ package org.vovka.birthdaycountdown;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -40,6 +36,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
+import org.vovka.birthdaycountdown.utils.DeviceTools;
+import org.vovka.birthdaycountdown.utils.StringUtils;
+import org.vovka.birthdaycountdown.utils.UiTools;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -135,15 +135,15 @@ public class EventImporterActivity extends AppCompatActivity {
                     for (String eventStr : dataForImport) {
                         TreeMap<Integer, String> eventData = eventsData.getEventData(eventStr);
 
-                        String details = ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventCaption))
+                        String details = StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventCaption))
                                 .concat(Constants.STRING_COLON_SPACE)
-                                .concat(ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventDateFirstTime)));
+                                .concat(StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventDateFirstTime)));
                         events.add(new EventItem(
                                 eventData.get(ContactsEvents.Position_eventIcon),
                                 eventData.get(ContactsEvents.Position_personFullName), //todo: вывод Position_personFullNameAlt
                                 details)
                         );
-                        if (!hasUnrecognizedEvents && ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
+                        if (!hasUnrecognizedEvents && StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
                                 .equals(Constants.EventType_Unrecognized)) {
                             hasUnrecognizedEvents = true;
                         }
@@ -160,7 +160,7 @@ public class EventImporterActivity extends AppCompatActivity {
                     recyclerView.setVisibility(View.VISIBLE);
 
                     buttonSelectAll.setText(R.string.pref_Tools_Events_Import_Button_SelectAll);
-                    addClickEffect(buttonSelectAll);
+                    UiTools.addClickEffect(buttonSelectAll);
                     buttonSelectAll.setVisibility(View.VISIBLE);
                     buttonSelectAll.setOnClickListener(v -> {
                         saveRecyclerViewScrollPosition();
@@ -169,7 +169,7 @@ public class EventImporterActivity extends AppCompatActivity {
                     });
 
                     buttonSelectNone.setText(R.string.pref_Tools_Events_Import_Button_SelectNone);
-                    addClickEffect(buttonSelectNone);
+                    UiTools.addClickEffect(buttonSelectNone);
                     buttonSelectNone.setVisibility(View.VISIBLE);
                     buttonSelectNone.setOnClickListener(v -> {
                         saveRecyclerViewScrollPosition();
@@ -178,7 +178,7 @@ public class EventImporterActivity extends AppCompatActivity {
                     });
 
                     buttonImport.setText(R.string.pref_Tools_Events_Import_Button_Import);
-                    addClickEffect(buttonImport);
+                    UiTools.addClickEffect(buttonImport);
                     buttonImport.setVisibility(View.VISIBLE);
                     buttonImport.setOnClickListener(v -> doImport());
 
@@ -205,7 +205,7 @@ public class EventImporterActivity extends AppCompatActivity {
             }
 
             buttonCancel.setText(R.string.pref_Tools_Events_Import_Button_Cancel);
-            addClickEffect(buttonCancel);
+            UiTools.addClickEffect(buttonCancel);
             buttonCancel.setVisibility(View.VISIBLE);
             buttonCancel.setOnClickListener(this::buttonCancelOnClick);
 
@@ -259,7 +259,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
         try {
 
-            details.add(getString(R.string.pref_Tools_Events_Import_result_Filename, eventsData.getPath(this, uri)));
+            details.add(getString(R.string.pref_Tools_Events_Import_result_Filename, DeviceTools.getPath(this, uri)));
             String fileContent = Constants.STRING_EMPTY;
 
             if (uri != null) fileContent = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL);
@@ -277,7 +277,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
             } else {
 
-                Calendar today = ContactsEvents.getWithoutTime(new GregorianCalendar());
+                Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
                 for (String eventString : fileLines) {
                     getSingleLineEvent(eventString, eventsList, today, statEventsSkipped, statEventsDoubles, statEventsUnRecognized);
                 }
@@ -350,26 +350,26 @@ public class EventImporterActivity extends AppCompatActivity {
 
                 } else if (line.startsWith(Constants.iCal_Summary)) {
 
-                    eventTitle = ContactsEvents.substringAfter(line, Constants.iCal_Summary);
+                    eventTitle = StringUtils.substringAfter(line, Constants.iCal_Summary);
                     eventLines.append(line).append(Constants.STRING_EOL);
 
                 } else if (line.startsWith(Constants.iCal_Description)) {
 
-                    eventDescription = ContactsEvents.substringAfter(line, Constants.iCal_Description);
+                    eventDescription = StringUtils.substringAfter(line, Constants.iCal_Description);
                     eventLines.append(line).append(Constants.STRING_EOL);
 
                 } else if (line.startsWith(Constants.STRING_SPACE)) {
 
-                    eventDescription = eventDescription.concat(ContactsEvents.substringAfter(line, Constants.STRING_SPACE));
+                    eventDescription = eventDescription.concat(StringUtils.substringAfter(line, Constants.STRING_SPACE));
 
                 } else if (line.startsWith(Constants.iCal_Url)) {
 
-                    eventURL = ContactsEvents.substringAfter(line, Constants.iCal_Url);
+                    eventURL = StringUtils.substringAfter(line, Constants.iCal_Url);
                     eventLines.append(line).append(Constants.STRING_EOL);
 
                 } else if (line.startsWith(Constants.iCal_Date)) {
 
-                    String storedDate = ContactsEvents.substringAfter(line, Constants.STRING_COLON);
+                    String storedDate = StringUtils.substringAfter(line, Constants.STRING_COLON);
                     try {
                         eventDateFirstTime = ContactsEvents.sdf_YYYYMMDD_noDiv.parse(storedDate);
 
@@ -605,7 +605,7 @@ public class EventImporterActivity extends AppCompatActivity {
                 }
             }
             if (urlOffset > -1) {
-                eventURL = ContactsEvents.substringBefore(eventURL, Constants.STRING_SPACE);
+                eventURL = StringUtils.substringBefore(eventURL, Constants.STRING_SPACE);
                 eventData.put(ContactsEvents.Position_eventURL, eventURL);
                 eventTitle = eventTitle.replace(eventURL, Constants.STRING_EMPTY).trim();
             }
@@ -732,7 +732,7 @@ public class EventImporterActivity extends AppCompatActivity {
                 for (Integer pos: selectedPositions) {
                     if (pos < dataForImport.size()) {
                         TreeMap<Integer, String> eventData = eventsData.getEventData(dataForImport.get(pos));
-                        if (ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
+                        if (StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
                                 .equals(Constants.EventType_Unrecognized)) {
                             isUnrecognizedSelected = true;
                             break;
@@ -750,7 +750,7 @@ public class EventImporterActivity extends AppCompatActivity {
             for (Integer pos: selectedPositions) {
                 if (pos < dataForImport.size()) {
                     TreeMap<Integer, String> eventData = eventsData.getEventData(dataForImport.get(pos));
-                    if (ContactsEvents.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
+                    if (StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
                             .equals(Constants.EventType_Unrecognized)) {
 
                         Integer eventTypeInt = eventTypesIds.get(selectedEventTypeIndex);
@@ -1016,19 +1016,4 @@ public class EventImporterActivity extends AppCompatActivity {
         }
     }
 
-    private void addClickEffect(@NonNull View view)
-    {
-        Drawable drawableNormal = view.getBackground();
-
-        if (view.getBackground().getConstantState() != null) {
-            Drawable drawablePressed = view.getBackground().getConstantState().newDrawable();
-            drawablePressed.mutate();
-            drawablePressed.setColorFilter(Color.argb(50, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
-
-            StateListDrawable listDrawable = new StateListDrawable();
-            listDrawable.addState(new int[]{android.R.attr.state_pressed}, drawablePressed);
-            listDrawable.addState(new int[]{}, drawableNormal);
-            view.setBackground(listDrawable);
-        }
-    }
 }

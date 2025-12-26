@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 21:21
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 17:44
+ *  * Last modified 26.12.2025, 20:42
  *
  */
 
@@ -31,7 +31,7 @@ public final class Constants {
     static final String STRING_000 = "000";
     static final String STRING_0000 = "0000";
     static final String STRING_0000_MINUS = "0000-";
-    static final String STRING_HASH = "#";
+    public static final String STRING_HASH = "#";
     static final String STRING_2HASH = "##";
     static final String STRING_2MINUS = "--";
     static final String STRING_MINUS = "-";
@@ -52,12 +52,12 @@ public final class Constants {
     static final String STRING_12 = "12";
     static final String STRING_13 = "13";
     static final String STRING_BAR = "|";
-    static final String STRING_COLON = ":";
+    public static final String STRING_COLON = ":";
     public static final String STRING_COLON_SPACE = ": ";
-    static final String STRING_COMMA = ",";
+    public static final String STRING_COMMA = ",";
     static final String STRING_COMMA_SPACE = ", ";
-    static final String STRING_EMPTY = "";
-    static final String STRING_EOL = "\n";
+    public static final String STRING_EMPTY = "";
+    public static final String STRING_EOL = "\n";
     static final String STRING_TAB = "\t";
     static final String STRING_EOL_RN = "\\r?\\n";
     static final String STRING_EOT = "\u0004";
@@ -72,9 +72,9 @@ public final class Constants {
     static final String STRING_BRACKETS_CLOSE = "]";
     static final String STRING_PERIOD = ".";
     static final String STRING_PIPE = "\\|";
-    static final String STRING_SLASH = "/";
+    public static final String STRING_SLASH = "/";
     static final String STRING_DSLASH = "//";
-    static final String STRING_SPACE = " ";
+    public static final String STRING_SPACE = " ";
     static final String STRING_BC = "BC";
     static final String STRING_UNDERSCORE = "_";
     static final String STRING_BDP_DIV = "❙"; //Birthdays Plus: |ДДДД-ММ-ДД|ИОФ|тип (Birthday, Anniversary, Custom)|наименование события или null|
@@ -356,10 +356,10 @@ public final class Constants {
 
     static final String quiz_error_button_OK = "-##OK##";
     static final String BUTTON_X = "X";
-    static final String FilePrefix_Media = "com.android.providers.media.documents";
-    static final String FilePrefix_Downloads = "com.android.providers.downloads.documents";
-    static final String FilePrefix_ExternalStorage = "com.android.externalstorage.documents";
-    static final String FilePrefix_GooglePhotos = "com.google.android.apps.photos.content";
+    public static final String FilePrefix_Media = "com.android.providers.media.documents";
+    public static final String FilePrefix_Downloads = "com.android.providers.downloads.documents";
+    public static final String FilePrefix_ExternalStorage = "com.android.externalstorage.documents";
+    public static final String FilePrefix_GooglePhotos = "com.google.android.apps.photos.content";
 
     static final String STRING_HTTP = "http://";
     static final String STRING_HTTPS = "https://";

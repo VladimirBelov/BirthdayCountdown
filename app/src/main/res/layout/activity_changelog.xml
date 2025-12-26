@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.06.2025, 15:43
+  ~  * Created by Vladimir Belov on 26.12.2025, 20:59
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.06.2025, 15:08
+  ~  * Last modified 26.12.2025, 20:24
   ~  */
   -->
 
@@ -115,6 +115,7 @@
 			android:maxLines="1"
 			android:paddingEnd="10dp"
 			android:paddingStart="10dp"
+			android:textColor="?attr/dialogButtonColor"
 			android:text="@string/button_mail" />
 
 		<Button
@@ -135,6 +136,7 @@
 			android:maxLines="1"
 			android:paddingEnd="10dp"
 			android:paddingStart="10dp"
+			android:textColor="?attr/dialogButtonColor"
 			android:text="@string/button_rate" />
 
 		<Button
@@ -153,10 +155,8 @@
 			android:paddingEnd="10dp"
 			android:paddingStart="10dp"
 			android:text="@string/button_rate"
+			android:textColor="?attr/dialogButtonColor"
 			android:visibility="invisible" />
-
-		<!--android:contentDescription="@string/hint_Rate_OtherAppStore"
-			android:drawableStart="@drawable/ic_huawei_appgallery"-->
 
 		<Button
 			android:id="@+id/button4PDA"
@@ -173,6 +173,7 @@
 			android:maxLines="1"
 			android:paddingEnd="10dp"
 			android:paddingStart="10dp"
+			android:textColor="?attr/dialogButtonColor"
 			android:text="@string/button_discuss" />
 
 		<WebView

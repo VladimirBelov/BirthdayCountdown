@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 01:05
+ *  * Last modified 26.12.2025, 20:42
  *
  */
 
@@ -38,6 +38,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.vovka.birthdaycountdown.utils.DeviceTools;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
+
 /**
  * FAQActivity - это активность для отображения справочной информации о функциях приложения.
  */
@@ -66,7 +69,7 @@ public class FAQActivity extends AppCompatActivity {
             setContentView(R.layout.activity_faq);
 
             View layoutMain = findViewById(R.id.layout_main);
-            if (ContactsEvents.isEdgeToEdge()) {
+            if (DeviceTools.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
@@ -75,14 +78,14 @@ public class FAQActivity extends AppCompatActivity {
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
-                layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
+                layoutMain.setPadding(0, ImageUtils.Dip2Px(getResources(), 50), 0, 0);
             }
 
             //Отступы всего окна
             RelativeLayout.MarginLayoutParams marginParams = (RelativeLayout.MarginLayoutParams) layoutMain.getLayoutParams();
             marginParams.setMargins(
                     (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
-                    ContactsEvents.Dip2Px(getResources(), eventsData.preferences_list_top_padding),
+                    ImageUtils.Dip2Px(getResources(), eventsData.preferences_list_top_padding),
                     (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
                     marginParams.bottomMargin);
             layoutMain.setLayoutParams(marginParams);

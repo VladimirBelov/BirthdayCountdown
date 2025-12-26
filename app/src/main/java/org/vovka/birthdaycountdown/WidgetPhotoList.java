@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.12.2025, 12:20
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.12.2025, 11:54
+ *  * Last modified 26.12.2025, 20:42
  *
  */
 
@@ -30,6 +30,8 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
+import org.vovka.birthdaycountdown.utils.DeviceTools;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -119,7 +121,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             }
 
             //Кнопка настроек
-            if (ContactsEvents.isWidgetSupportConfig() && !widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ButtonConfig_ID))) {
+            if (DeviceTools.isWidgetSupportConfig() && !widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ButtonConfig_ID))) {
                 views.setViewVisibility(R.id.config_button, View.GONE);
             } else {
                 views.setViewVisibility(R.id.config_button, View.VISIBLE);

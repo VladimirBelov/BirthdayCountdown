@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.10.2025, 00:27
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 30.10.2025, 20:57
+ *  * Last modified 26.12.2025, 14:35
  *
  */
 
@@ -39,6 +39,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.view.ContextThemeWrapper;
+
+import org.vovka.birthdaycountdown.utils.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -236,7 +238,7 @@ class ColorPreference extends Preference {
                     Toast.makeText(getActivity(),
                             getActivity().getString(R.string.pref_Color_title) +
                                     Constants.STRING_SPACE +
-                                    ContactsEvents.toARGBString(mAdapter.getItem(position))
+                                    ImageUtils.toARGBString(mAdapter.getItem(position))
                             , Toast.LENGTH_SHORT).show();
                     return true;
                 });
@@ -300,7 +302,7 @@ class ColorPreference extends Preference {
 
                 final int[] colorValue = {mPreference.getValue()};
                 TextView color_edit = view.findViewById(R.id.color_edit);
-                color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
 
                 ImageView color_preview = view.findViewById(R.id.color_preview);
                 setColorViewValue(color_preview, colorValue[0]);
@@ -358,7 +360,7 @@ class ColorPreference extends Preference {
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         seek1_progress.setText(String.valueOf(progress));
                         colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                        color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                        color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                         setColorViewValue(color_preview, colorValue[0]);
                     }
                     @Override
@@ -371,7 +373,7 @@ class ColorPreference extends Preference {
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         seek2_progress.setText(String.valueOf(progress));
                         colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                        color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                        color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                         setColorViewValue(color_preview, colorValue[0]);
                     }
                     @Override
@@ -384,7 +386,7 @@ class ColorPreference extends Preference {
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         seek3_progress.setText(String.valueOf(progress));
                         colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                        color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                        color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                         setColorViewValue(color_preview, colorValue[0]);
                     }
                     @Override
@@ -397,7 +399,7 @@ class ColorPreference extends Preference {
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         seek4_progress.setText(String.valueOf(progress));
                         colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                        color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                        color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                         setColorViewValue(color_preview, colorValue[0]);
                     }
                     @Override

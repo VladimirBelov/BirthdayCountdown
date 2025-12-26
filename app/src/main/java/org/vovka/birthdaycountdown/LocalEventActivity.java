@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.12.2025, 23:50
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.12.2025, 20:32
+ *  * Last modified 26.12.2025, 16:23
  *
  */
 
@@ -21,9 +21,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,6 +54,10 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import org.vovka.birthdaycountdown.imagecropper.CropIntent;
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
+import org.vovka.birthdaycountdown.utils.UiTools;
 
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
@@ -265,7 +266,7 @@ public class LocalEventActivity extends AppCompatActivity {
                     int dow = DayOfWeekCalculator.getDayOfWeek(isBC, year, month + 1, day);
                     String name = DayOfWeekCalculator.getDayName(dow, Locale.getDefault());
                     textWeekDay.setText(getResources().getString(R.string.local_event_date_picker_week_day,
-                            ContactsEvents.toProperCase(name)));
+                            StringUtils.toProperCase(name)));
                 } else {
                     textWeekDay.setVisibility(View.INVISIBLE);
                 }
@@ -587,7 +588,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
                 TextView buttonEdit = findViewById(R.id.buttonSecondAction);
                 buttonEdit.setText(R.string.button_edit);
-                addClickEffect(buttonEdit);
+                UiTools.addClickEffect(buttonEdit);
                 buttonEdit.getBackground().setAlpha(50);
                 buttonEdit.setVisibility(View.VISIBLE);
                 buttonEdit.setOnClickListener(this::buttonSwitchToEdit);
@@ -595,12 +596,12 @@ public class LocalEventActivity extends AppCompatActivity {
                 TextView buttonClose = findViewById(R.id.buttonThirdAction);
                 buttonClose.setText(R.string.button_ok);
                 buttonClose.setPadding(
-                        ContactsEvents.Dip2Px(getResources(), 15),
+                        ImageUtils.Dip2Px(getResources(), 15),
                         buttonClose.getPaddingTop(),
-                        ContactsEvents.Dip2Px(getResources(), 15),
+                        ImageUtils.Dip2Px(getResources(), 15),
                         buttonClose.getPaddingBottom()
                 );
-                addClickEffect(buttonClose);
+                UiTools.addClickEffect(buttonClose);
                 buttonClose.getBackground().setAlpha(50);
                 buttonClose.setVisibility(View.VISIBLE);
                 buttonClose.setOnClickListener(view -> finish());
@@ -656,12 +657,12 @@ public class LocalEventActivity extends AppCompatActivity {
 
                 viewEventType.setVisibility(View.GONE);
 
-                editDate.setPadding(ContactsEvents.Dip2Px(getResources(), 10), 0, 0, 0);
+                editDate.setPadding(ImageUtils.Dip2Px(getResources(), 10), 0, 0, 0);
 
                 if (Intent.ACTION_EDIT.equals(action)) {
                     TextView buttonRemove = findViewById(R.id.buttonFirstAction);
                     buttonRemove.setText(R.string.button_remove);
-                    addClickEffect(buttonRemove);
+                    UiTools.addClickEffect(buttonRemove);
                     buttonRemove.getBackground().setAlpha(50);
                     buttonRemove.setVisibility(View.VISIBLE);
                     buttonRemove.setOnClickListener(this::buttonRemoveOnClick);
@@ -669,14 +670,14 @@ public class LocalEventActivity extends AppCompatActivity {
 
                 TextView buttonCancel = findViewById(R.id.buttonSecondAction);
                 buttonCancel.setText(R.string.button_cancel);
-                addClickEffect(buttonCancel);
+                UiTools.addClickEffect(buttonCancel);
                 buttonCancel.getBackground().setAlpha(50);
                 buttonCancel.setVisibility(View.VISIBLE);
                 buttonCancel.setOnClickListener(this::buttonCancelOnClick);
 
                 TextView buttonSave = findViewById(R.id.buttonThirdAction);
                 buttonSave.setText(R.string.button_save);
-                addClickEffect(buttonSave);
+                UiTools.addClickEffect(buttonSave);
                 buttonSave.getBackground().setAlpha(50);
                 buttonSave.setVisibility(View.VISIBLE);
                 buttonSave.setOnClickListener(this::buttonSaveOnClick);
@@ -825,7 +826,7 @@ public class LocalEventActivity extends AppCompatActivity {
                         String contactID = contactUri.toString().substring(contactUri.toString().lastIndexOf(Constants.STRING_SLASH) + 1);
                         if (!contactID.isEmpty()) {
                             try {
-                                HashMap<String, String> contactDataMap = eventsData.getContactDataMulti(ContactsEvents.parseToLong(contactID), new String[]{
+                                HashMap<String, String> contactDataMap = eventsData.getContactDataMulti(StringUtils.parseToLong(contactID), new String[]{
                                         ContactsContract.Contacts.PHOTO_URI,
                                         ContactsContract.Data.DISPLAY_NAME,
                                         ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE
@@ -858,7 +859,7 @@ public class LocalEventActivity extends AppCompatActivity {
                                 maxSize = step + step * eventsData.preferences_local_events_photo_size;
                             } catch (NumberFormatException ignored) { /**/ }
 
-                            eventData.put(ContactsEvents.Position_photo, ContactsEvents.encodeImageToBase64(this, croppedUri, maxSize));
+                            eventData.put(ContactsEvents.Position_photo, ImageUtils.encodeImageToBase64(this, croppedUri, maxSize));
                             eventData.put(ContactsEvents.Position_photo_uri, Constants.STRING_EMPTY);
                             updateCaptionsAndVisibility(this);
                             updateEventPhoto(this);
@@ -905,22 +906,6 @@ public class LocalEventActivity extends AppCompatActivity {
             Log.e(TAG, e.getMessage(), e);
             ContextThemeWrapper context = new ContextThemeWrapper(editDate.getContext(), eventsData.preferences_theme.themeMain);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-    }
-
-    private void addClickEffect(@NonNull View view)
-    {
-        Drawable drawableNormal = view.getBackground();
-
-        if (view.getBackground().getConstantState() != null) {
-            Drawable drawablePressed = view.getBackground().getConstantState().newDrawable();
-            drawablePressed.mutate();
-            drawablePressed.setColorFilter(Color.argb(50, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
-
-            StateListDrawable listDrawable = new StateListDrawable();
-            listDrawable.addState(new int[]{android.R.attr.state_pressed}, drawablePressed);
-            listDrawable.addState(new int[]{}, drawableNormal);
-            view.setBackground(listDrawable);
         }
     }
 
@@ -1035,7 +1020,7 @@ public class LocalEventActivity extends AppCompatActivity {
             if (eventEventTitle.isEmpty()) {
                 TextView captionEventTitle = findViewById(R.id.captionName);
                 Toast.makeText(context, getString(R.string.msg_empty_required_field,
-                        ContactsEvents.substringBefore(captionEventTitle.getText().toString(), Constants.STRING_COLON)), Toast.LENGTH_LONG).show();
+                        StringUtils.substringBefore(captionEventTitle.getText().toString(), Constants.STRING_COLON)), Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -1206,10 +1191,10 @@ public class LocalEventActivity extends AppCompatActivity {
 
                 if (eventUseYear) {
                     final Date eventDate = new Date(eventYear - 1900, eventMonth, eventDay);
-                    final Date today = ContactsEvents.getWithoutTime(Calendar.getInstance()).getTime();
+                    final Date today = AppDateUtils.getWithoutTime(Calendar.getInstance()).getTime();
                     int age = -1;
                     if (eventDate.before(today)) {
-                        age = eventsData.countYearsDiff(eventDate, today);
+                        age = AppDateUtils.countYearsDiff(eventDate, today);
                     }
                     eventDataForPhoto.put(ContactsEvents.Position_age, String.valueOf(age));
                 }

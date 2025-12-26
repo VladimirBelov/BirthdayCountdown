@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 01:09
+ *  * Last modified 26.12.2025, 20:42
  *
  */
 
@@ -48,6 +48,10 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.transition.TransitionManager;
+
+import org.vovka.birthdaycountdown.utils.DeviceTools;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,24 +105,24 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             setContentView(R.layout.widget_calendar_config);
 
             View layoutMain = findViewById(R.id.layout_main);
-            if (ContactsEvents.isEdgeToEdge()) {
+            if (DeviceTools.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
                     Insets insetsStatus = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
                     layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
-                    layoutMain.setPadding(0, insetsStatus.bottom + ContactsEvents.Sp2Px(getResources(), 50), 0, 0);
+                    layoutMain.setPadding(0, insetsStatus.bottom + ImageUtils.Sp2Px(getResources(), 50), 0, 0);
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
-                layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
+                layoutMain.setPadding(0, ImageUtils.Dip2Px(getResources(), 50), 0, 0);
             }
 
             //Отступы всего окна
             RelativeLayout.MarginLayoutParams marginParams = (RelativeLayout.MarginLayoutParams) layoutMain.getLayoutParams();
             marginParams.setMargins(
                     (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
-                    ContactsEvents.Dip2Px(getResources(), eventsData.preferences_list_top_padding),
+                    ImageUtils.Dip2Px(getResources(), eventsData.preferences_list_top_padding),
                     (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
                     marginParams.bottomMargin);
             layoutMain.setLayoutParams(marginParams);
@@ -545,37 +549,37 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackground);
             final int colorWidgetBackground = colorWidgetBackgroundPicker.getColor();
             final String selectedWidgetBackground = colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Back_default)
-                    ? ContactsEvents.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY;
 
             final ColorPicker colorCommonPicker = findViewById(R.id.colorCommon);
             final int colorCommon = colorCommonPicker.getColor();
             final String selectedCommon = colorCommon != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Common_default)
-                    ? ContactsEvents.toARGBString(colorCommon) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorCommon) : Constants.STRING_EMPTY;
 
             final ColorPicker colorMonthTitlePicker = findViewById(R.id.colorMonthTitle);
             final int colorMonthTitle = colorMonthTitlePicker.getColor();
             final String selectedMonthTitle = colorMonthTitle != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_MonthTitle_default)
-                    ? ContactsEvents.toARGBString(colorMonthTitle) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorMonthTitle) : Constants.STRING_EMPTY;
 
             final ColorPicker colorHeaderBackPicker = findViewById(R.id.colorHeaderBack);
             final int colorHeaderBack = colorHeaderBackPicker.getColor();
             final String selectedHeaderBack = colorHeaderBack != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_HeaderBack_default)
-                    ? ContactsEvents.toARGBString(colorHeaderBack) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorHeaderBack) : Constants.STRING_EMPTY;
 
             final ColorPicker colorArrowsPicker = findViewById(R.id.colorArrows);
             final int colorArrows = colorArrowsPicker.getColor();
             final String selectedArrows = colorArrows != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Arrows_default)
-                    ? ContactsEvents.toARGBString(colorArrows) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorArrows) : Constants.STRING_EMPTY;
 
             final ColorPicker colorWeeksPicker = findViewById(R.id.colorWeeks);
             final int colorWeeks = colorWeeksPicker.getColor();
             final String selectedWeeks = colorWeeks != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Weeks_default)
-                    ? ContactsEvents.toARGBString(colorWeeks) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorWeeks) : Constants.STRING_EMPTY;
 
             final ColorPicker colorTodayPicker = findViewById(R.id.colorToday);
             final int colorToday = colorTodayPicker.getColor();
             final String selectedToday = colorToday != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Today_default)
-                    ? ContactsEvents.toARGBString(colorToday) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorToday) : Constants.STRING_EMPTY;
 
             List<String> listColors = new ArrayList<>();
             for (String sourceId : eventSourcesColors.keySet()) {
@@ -733,7 +737,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         if (eventsData.map_calendars.containsKey(calendar)) {
                             String calendarId = ContactsEvents.getHash(Constants.eventSourceCalendarPrefix + calendar);
                             eventSourcesIds.add(calendarId);
-                            eventSourcesTitles.add(Constants.eventTitleCalendarPrefix + ContactsEvents.substringBefore(eventsData.map_calendars.get(calendar), Constants.STRING_EOT));
+                            eventSourcesTitles.add(Constants.eventTitleCalendarPrefix + StringUtils.substringBefore(eventsData.map_calendars.get(calendar), Constants.STRING_EOT));
                             if (eventsData.map_calendars_colors.containsKey(calendarId)) {
                                 eventSourcesColors.put(calendarId, eventsData.map_calendars_colors.get(calendarId));
                             }
@@ -746,7 +750,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             if (!eventsData.preferences_HolidayEvent_files.isEmpty()) {
                 for (String file: eventsData.preferences_HolidayEvent_files) {
                     eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
-                    eventSourcesTitles.add(Constants.eventTitleFilePrefix.concat(ContactsEvents.substringBefore(file, Constants.STRING_BAR)));
+                    eventSourcesTitles.add(Constants.eventTitleFilePrefix.concat(StringUtils.substringBefore(file, Constants.STRING_BAR)));
                 }
             }
 
@@ -855,7 +859,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
                 //Только здесь работает
                 for (int i = 0; i < sourceChoices.size(); i++) {
-                    String title = ContactsEvents.substringBefore(sourceChoices.get(i), Constants.STRING_BRACKETS_OPEN);
+                    String title = StringUtils.substringBefore(sourceChoices.get(i), Constants.STRING_BRACKETS_OPEN);
                     if (eventSourcesTitles.contains(title)) {
                         if (eventSourcesSelected.contains(eventSourcesIds.get(eventSourcesTitles.indexOf(title)))) {
                             listView.setItemChecked(i, true);

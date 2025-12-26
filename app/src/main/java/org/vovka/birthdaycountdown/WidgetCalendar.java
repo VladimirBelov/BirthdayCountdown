@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.12.2025, 01:45
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 21.12.2025, 01:18
+ *  * Last modified 26.12.2025, 20:42
  *
  */
 
@@ -33,6 +33,8 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
 import org.intellij.lang.annotations.JdkConstants;
+import org.vovka.birthdaycountdown.utils.DeviceTools;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -238,7 +240,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 if (widgetOptions != null) {
                     int minWidthDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
                     float minHeightDp = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT) / fontMagnify_Common;
-                    int minWidthPixel = ContactsEvents.Dip2Px(res, minWidthDp);
+                    int minWidthPixel = ImageUtils.Dip2Px(res, minWidthDp);
                     float heightRatio = (float)res.getDisplayMetrics().heightPixels * fontMagnify_Common / minWidthPixel;
 
                     if (heightRatio > 4.5) {
@@ -247,11 +249,11 @@ public class WidgetCalendar extends AppWidgetProvider {
                         columnsToDraw = 2;
                     }
 
-                    if (minHeightDp < (ContactsEvents.isSamsung() ? 125 : 60)) { //s: 118, 8.1: 58, 13+12+11: 54
+                    if (minHeightDp < (DeviceTools.isSamsung() ? 125 : 60)) { //s: 118, 8.1: 58, 13+12+11: 54
                         rowsToDraw = 1;
-                    } else if (minHeightDp < (ContactsEvents.isSamsung() ? 255 : 140)) { //s:249, 8.1: 133, 13+12+11: 125
+                    } else if (minHeightDp < (DeviceTools.isSamsung() ? 255 : 140)) { //s:249, 8.1: 133, 13+12+11: 125
                         rowsToDraw = 2;
-                    } else if (minHeightDp < (ContactsEvents.isSamsung() ? 385 : 210)) { //s:379, 8.1: 207, 13: 195, 12: 196
+                    } else if (minHeightDp < (DeviceTools.isSamsung() ? 385 : 210)) { //s:379, 8.1: 207, 13: 195, 12: 196
                         rowsToDraw = 3;
                     }
                 }
@@ -512,11 +514,11 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 rv.setViewVisibility(id, View.VISIBLE);
                                 rv.setViewVisibility(idDiv, View.VISIBLE);
                                 if (column == 1) { //Отступ слева
-                                    rv.setViewPadding(id, ContactsEvents.Dip2Px(res, sidePadding), 0, 0, ContactsEvents.Dip2Px(res, 4));
+                                    rv.setViewPadding(id, ImageUtils.Dip2Px(res, sidePadding), 0, 0, ImageUtils.Dip2Px(res, 4));
                                 } else if (column == columnsToDraw) { //Отступ справа
-                                    rv.setViewPadding(id, 0, 0, ContactsEvents.Dip2Px(res, sidePadding), ContactsEvents.Dip2Px(res, 4));
+                                    rv.setViewPadding(id, 0, 0, ImageUtils.Dip2Px(res, sidePadding), ImageUtils.Dip2Px(res, 4));
                                 } else {
-                                    rv.setViewPadding(id, 0, 0, 0, ContactsEvents.Dip2Px(res, 4));
+                                    rv.setViewPadding(id, 0, 0, 0, ImageUtils.Dip2Px(res, 4));
                                 }
 
                             }
@@ -694,7 +696,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                             calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, 1);
                             calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
                         } else {
-                            calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, ContactsEvents.Dip2Px(res, 17));
+                            calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, ImageUtils.Dip2Px(res, 17));
                             calendarRv.setTextViewText(R.id.prev_month_button, res.getText(R.string.previous_month_arrow));
                             calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
                             calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
@@ -710,7 +712,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                             calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, 1);
                             calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
                         } else {
-                            calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, ContactsEvents.Dip2Px(res, 17));
+                            calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, ImageUtils.Dip2Px(res, 17));
                             calendarRv.setTextViewText(R.id.next_month_button, res.getText(R.string.next_month_arrow));
                             calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
                             calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
@@ -722,7 +724,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         }
 
                         calendarRv.setInt(R.id.month_label, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
-                        if (!ContactsEvents.isWidgetSupportConfig() && row == 1 && column == columnsToDraw) {
+                        if (!DeviceTools.isWidgetSupportConfig() && row == 1 && column == columnsToDraw) {
                             Intent intentConfig = new Intent(context, WidgetCalendarConfigureActivity.class);
                             intentConfig.setAction(Constants.ACTION_LAUNCH);
                             intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);

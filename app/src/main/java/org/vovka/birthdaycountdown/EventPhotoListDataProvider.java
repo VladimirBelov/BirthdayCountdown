@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.12.2025, 23:59
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 23.12.2025, 23:58
+ *  * Last modified 26.12.2025, 15:14
  *
  */
 
@@ -25,6 +25,9 @@ import android.widget.RemoteViewsService;
 
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
+
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -138,7 +141,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                     if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
                         eventCaption = eventCaption
                                 .concat(Constants.STRING_SPACE)
-                                .concat(ContactsEvents.substringBefore(resources.getString(R.string.pref_EventInfo_FavIcon), Constants.STRING_SPACE));
+                                .concat(StringUtils.substringBefore(resources.getString(R.string.pref_EventInfo_FavIcon), Constants.STRING_SPACE));
                     }
                 }
                 if (colorizeEntireRow) {
@@ -153,7 +156,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
                 //Организация и должность
                 if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_Organization_ID))) {
-                    final String contactOrganization = ContactsEvents.getNotNullString(singleEventArray[ContactsEvents.Position_organization]).trim();
+                    final String contactOrganization = StringUtils.getNotNullString(singleEventArray[ContactsEvents.Position_organization]).trim();
                     if (!contactOrganization.isEmpty()) sbDetails.append(contactOrganization.trim());
                 }
                 if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_JobTitle_ID))) {
@@ -179,7 +182,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                     if (sbDetails.length() > 0 && !isEventTypeIcon) sbDetails.append(Constants.HTML_BR);
                     sbDetails.append(singleEventArray[ContactsEvents.Position_eventCaption]);
                     if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventLabel_ID))) {
-                        if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_eventLabel])) {
+                        if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_eventLabel])) {
                             sbDetails
                                     .append(Constants.STRING_PARENTHESIS_OPEN)
                                     .append(singleEventArray[ContactsEvents.Position_eventLabel])
@@ -188,12 +191,12 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         }
                     }
                 } else if (widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventLabel_ID))) {
-                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_eventLabel])) {
+                    if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_eventLabel])) {
                         sbDetails.append(singleEventArray[ContactsEvents.Position_eventLabel]);
                         isLabel = true;
                     }
                 }
-                if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_age_caption])) {
+                if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_age_caption])) {
                     if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(resources.getString(R.string.pref_EventInfo_Age_ID))
                             : widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_Age_ID))) {
                         if ((widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventCaption_ID)) || isLabel))
@@ -486,7 +489,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         } catch (Exception e) { /**/ }
 
                         if (eventDate != null) {
-                            long countDays = eventsData.countDaysDiff(currentDay, eventDate);
+                            long countDays = AppDateUtils.countDaysDiff(currentDay, eventDate);
                             if (countDays + 1 > maxDays) break;
                         }
                     }

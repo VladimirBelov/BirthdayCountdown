@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.10.2025, 03:07
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 11.10.2025, 02:00
+ *  * Last modified 26.12.2025, 14:35
  *
  */
 
@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+
+import org.vovka.birthdaycountdown.utils.ImageUtils;
 
 import java.util.List;
 
@@ -93,7 +95,7 @@ class ImageSelectAdapter extends BaseAdapter {
             Bitmap bmp;
             int targetBitmapSize = 130;
             if (position < images.size() && images.get(position) != null) {
-                bmp = ContactsEvents.getBitmap(this.context, images.get(position));
+                bmp = ImageUtils.getBitmap(this.context, images.get(position));
             } else {
                 Bitmap.Config conf = Bitmap.Config.ARGB_8888;
                 bmp = Bitmap.createBitmap(targetBitmapSize, targetBitmapSize, conf);

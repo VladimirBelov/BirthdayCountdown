@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.12.2025, 23:50
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.12.2025, 12:21
+ *  * Last modified 26.12.2025, 16:03
  *
  */
 
@@ -12,6 +12,8 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 /**
  * Представляет человека, содержащего информацию об имени, возрасте и поле.
@@ -41,7 +43,7 @@ class Person {
             int spaceFirst = FIO_str.indexOf(Constants.STRING_SPACE);
             if (spaceFirst == -1) { //Имя из одного слова
                 final ContactsEvents contactsEvents = ContactsEvents.getInstance();
-                final String normalizedName = ContactsEvents.normalizeName(FIO_str);
+                final String normalizedName = StringUtils.normalizeName(FIO_str);
                 if (normalizedName == null) {
                     FirstName = FIO_str;
                 } else if (contactsEvents.preferences_first_names_male.reset(normalizedName).find()
@@ -181,7 +183,7 @@ class Person {
 
             int ind = 0;
             if (!this.LastName.isEmpty()) {
-                final String normalizedLastName = ContactsEvents.normalizeName(this.LastName);
+                final String normalizedLastName = StringUtils.normalizeName(this.LastName);
                 if (normalizedLastName != null) {
                     if (contactsEvents.preferences_last_name_completions_male.reset(normalizedLastName).find()) {
                         ind++;
@@ -192,7 +194,7 @@ class Person {
             }
 
             if (!this.SecondName.isEmpty()) {
-                final String normalizedSecondName = ContactsEvents.normalizeName(this.SecondName);
+                final String normalizedSecondName = StringUtils.normalizeName(this.SecondName);
                 if (normalizedSecondName != null) {
                     if (contactsEvents.preferences_second_name_completions_male.reset(normalizedSecondName).find()) {
                         ind++;
@@ -203,7 +205,7 @@ class Person {
             }
 
             if (!this.FirstName.isEmpty()) {
-                final String normalizedFirstName = ContactsEvents.normalizeName(this.FirstName);
+                final String normalizedFirstName = StringUtils.normalizeName(this.FirstName);
                 if (normalizedFirstName != null) {
                     if (contactsEvents.preferences_first_names_male.reset(normalizedFirstName).find()) {
                         ind++;

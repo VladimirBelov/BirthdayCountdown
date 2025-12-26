@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.12.2025, 12:19
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.12.2025, 11:54
+ *  * Last modified 26.12.2025, 20:42
  *
  */
 
@@ -82,6 +82,11 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
+import org.vovka.birthdaycountdown.utils.DeviceTools;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -167,16 +172,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             setContentView(R.layout.activity_main);
 
             View layoutMain = findViewById(R.id.layout_main);
-            if (ContactsEvents.isEdgeToEdge()) {
+            if (DeviceTools.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
                     layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
-                    layoutMain.setPadding(0, insets.bottom + ContactsEvents.Sp2Px(getResources(), 62), 0, 0);
+                    layoutMain.setPadding(0, insets.bottom + ImageUtils.Sp2Px(getResources(), 62), 0, 0);
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
-                layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
+                layoutMain.setPadding(0, ImageUtils.Dip2Px(getResources(), 62), 0, 0);
             }
             //Цвет CutoutAppearance на повёрнутом экране
             //https://stackoverflow.com/questions/58896621/how-can-i-color-the-cutout-notch-area-in-non-full-screen-landscape-mode
@@ -351,7 +356,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 if (Constants.EventType_BirthDay.equals(eventSubtype)) {
-                    if (!eventsData.getMergedID(selectedEvent[ContactsEvents.Position_eventID]).isEmpty()) {
+                    String mergedID = eventsData.getMergedID(selectedEvent[ContactsEvents.Position_eventID]);
+                    if (!TextUtils.isEmpty(mergedID)) {
                         menu.add(Menu.NONE, Constants.ContextMenu_UnmergeEvent, Menu.NONE, getString(R.string.menu_context_unmerge_event))
                                 .setIcon(R.drawable.ic_menu_chat_dashboard);
                         menu.add(Menu.NONE, Constants.ContextMenu_RemergeEvent, Menu.NONE, getString(R.string.menu_context_remerge_event))
@@ -531,7 +537,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.ContextMenu_OpenCalendar) {
 
-                Uri selectedEventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, ContactsEvents.parseToLong(selectedEvent[ContactsEvents.Position_eventID]));
+                Uri selectedEventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, StringUtils.parseToLong(selectedEvent[ContactsEvents.Position_eventID]));
                 Intent openCalendarIntent = new Intent(Intent.ACTION_VIEW).setData(selectedEventUri);
                 try {
                     if (openCalendarIntent.resolveActivity(getPackageManager()) != null) {
@@ -869,7 +875,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateNextTime]);
                         } catch (ParseException ignored) { /**/ }
                         if (eventDate != null && birthDate != null) {
-                            Date today = ContactsEvents.getWithoutTime(Calendar.getInstance()).getTime();
+                            Date today = AppDateUtils.getWithoutTime(Calendar.getInstance()).getTime();
                             if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
                             if (eventsData.deathDatesForIds.containsKey(contactID)) { //Но есть годовщина смерти
                                 textBig.append(getString(R.string.msg_age_could_be));
@@ -1059,7 +1065,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Иконка и заголовок
             ImageView icon = view.findViewById(R.id.icon);
-            if (icon != null) icon.setImageBitmap(ContactsEvents.getBitmap(this, android.R.drawable.ic_menu_myplaces));
+            if (icon != null) icon.setImageBitmap(ImageUtils.getBitmap(this, android.R.drawable.ic_menu_myplaces));
             TextView title = view.findViewById(R.id.title);
             if (title != null) title.setText(R.string.xDaysCounter_Dialog_Title);
 
@@ -1151,7 +1157,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         try {
                             Date eventDate = ContactsEvents.sdf_DDMMYYYY.parse(selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
                             if (eventDate != null) {
-                                Calendar dateEnd = ContactsEvents.getWithoutTime(Calendar.getInstance());
+                                Calendar dateEnd = AppDateUtils.getWithoutTime(Calendar.getInstance());
                                 dateEnd.add(Calendar.YEAR, 15);
                                 int toRepeat = 8;
                                 try {
@@ -1160,9 +1166,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     }
                                 } catch (NumberFormatException e) { /**/ }
                                 events = ContactsEvents.getInstance().getNextRepeatsForEvent(
-                                        ContactsEvents.getWithoutTime(Calendar.getInstance()),
+                                        AppDateUtils.getWithoutTime(Calendar.getInstance()),
                                         dateEnd,
-                                        ContactsEvents.getCalendarFromDate(eventDate),
+                                        AppDateUtils.getCalendarFromDate(eventDate),
                                         valuePeriods,
                                         toRepeat
                                 );
@@ -1802,7 +1808,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     for (String strLine : arrFAQ) {
 
                         if (countHintLines == 0 && !strLine.equals(headerStart)) continue;
-                        if (!ContactsEvents.hasContent(strLine)) {
+                        if (!StringUtils.hasContent(strLine)) {
                             break;
                         } else if (strLine.equals(headerStart)) {
                             countHintLines++;
@@ -2256,7 +2262,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             LinearLayout.MarginLayoutParams marginParams = (LinearLayout.MarginLayoutParams) mainLayout.getLayoutParams();
             marginParams.setMargins(
                     (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
-                    ContactsEvents.Dip2Px(resources, eventsData.preferences_list_top_padding),
+                    ImageUtils.Dip2Px(resources, eventsData.preferences_list_top_padding),
                     (int) (eventsData.preferences_list_margin * displayMetrics.density + 0.5f),
                     marginParams.bottomMargin);
             mainLayout.setLayoutParams(marginParams);
@@ -2441,7 +2447,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             if (statsUnrecognizedEvents > 0 && eventsData.preferences_rules_unrecognized == ContactsEvents.Rules_Unrecognized_Type_Unrecognized) {
-                ToastExpander.showInfoMsg(this, ContactsEvents.toProperCase(resources.getString(R.string.msg_stats_unrecognized_prefix)) + statsUnrecognizedEvents);
+                ToastExpander.showInfoMsg(this, StringUtils.toProperCase(resources.getString(R.string.msg_stats_unrecognized_prefix)) + statsUnrecognizedEvents);
             }
 
             eventsData.statUnrecognizedEvents = statsUnrecognizedEvents;
@@ -2810,11 +2816,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 StringBuilder eventDetails = new StringBuilder();
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Organization))) {
-                    final String contactOrganization = ContactsEvents.getNotNullString(singleEventArray[ContactsEvents.Position_organization]).trim();
+                    final String contactOrganization = StringUtils.getNotNullString(singleEventArray[ContactsEvents.Position_organization]).trim();
                     if (!contactOrganization.isEmpty()) eventDetails.append(contactOrganization.trim());
                 }
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_JobTitle))) {
-                    final String positionJobTitle = ContactsEvents.getNotNullString(singleEventArray[ContactsEvents.Position_title]).trim();
+                    final String positionJobTitle = StringUtils.getNotNullString(singleEventArray[ContactsEvents.Position_title]).trim();
                     if (!positionJobTitle.isEmpty()) {
                         if (eventDetails.length() > 0) eventDetails.append(Constants.STRING_COMMA_SPACE);
                         eventDetails.append(positionJobTitle);
@@ -2824,7 +2830,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     eventDetails.insert(0, Constants.HTML_BOLD_START).append(Constants.HTML_BOLD_END);
                 }
 
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Nickname)) && ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
+                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Nickname)) && StringUtils.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                     eventDetails.append(singleEventArray[ContactsEvents.Position_nickname]);
                 }
@@ -3124,7 +3130,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     } else {
                         //для поиска AND используем <строка1>+<строка2>
                         //для поиска OR используем <строка1>,<строка2>
-                        filterNames = ContactsEvents.normalizeName(constraint.toString());
+                        filterNames = StringUtils.normalizeName(constraint.toString());
                         if (filterNames != null) {
                             final List<String> searchSource =
                                     eventsData.preferences_list_search_depth == ContactsEvents.SearchDepth.AllEvents ? eventsData.eventList : listAll;

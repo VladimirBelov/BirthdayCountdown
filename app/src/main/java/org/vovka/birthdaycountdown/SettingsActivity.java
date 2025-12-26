@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.12.2025, 12:19
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.12.2025, 11:54
+ *  * Last modified 26.12.2025, 20:42
  *
  */
 
@@ -106,6 +106,10 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.vovka.birthdaycountdown.utils.DeviceTools;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -169,7 +173,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             w.setStatusBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0)); //почему-то сама из темы не ставится
             w.setNavigationBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0));
 
-            if (ContactsEvents.isEdgeToEdge()) {
+            if (DeviceTools.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
@@ -837,7 +841,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     valueBuilder.append(getString(R.string.msg_no_files_selected).trim());
                 } else {
                     for (String file : files) {
-                        String filePath = ContactsEvents.substringBefore(file, Constants.STRING_BAR);
+                        String filePath = StringUtils.substringBefore(file, Constants.STRING_BAR);
                         int indexFilename = filePath.lastIndexOf(Constants.STRING_SLASH);
                         if (valueBuilder.length() != 0) valueBuilder.append(Constants.STRING_EOL);
                         valueBuilder.append(indexFilename > -1 ? filePath.substring(indexFilename + 1) : filePath);
@@ -984,7 +988,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             for (int i = 0; i < eventSourcesHashes.size(); i++) {
                 String hash = eventSourcesHashes.get(i);
                 if (currentValue.contains(hash)) {
-                    displayNames.add(ContactsEvents.substringBefore(eventSources.getTitles().get(i), Constants.STRING_BRACKETS_OPEN));
+                    displayNames.add(StringUtils.substringBefore(eventSources.getTitles().get(i), Constants.STRING_BRACKETS_OPEN));
                 }
             }
             String summary = displayNames.isEmpty() ? getString(R.string.msg_all) : TextUtils.join(Constants.STRING_EOL, displayNames);
@@ -2010,7 +2014,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
 
                 ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) list.getLayoutParams();
-                marginParams.setMargins(0, this.statusBarInsets.top + ContactsEvents.Dip2Px(getResources(), 48), 0, this.statusBarInsets.bottom);
+                marginParams.setMargins(0, this.statusBarInsets.top + ImageUtils.Dip2Px(getResources(), 48), 0, this.statusBarInsets.bottom);
                 ViewGroup root = (ViewGroup) list.getParent();
                 bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
 
@@ -2200,7 +2204,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 for (String accountString: accountsList) {
                     if (!accountNames.contains(accountString)) {
                         accountNames.add(accountString);
-                        final String accountType = ContactsEvents.substringBetween(accountString, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
+                        final String accountType = StringUtils.substringBetween(accountString, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
                         int accountEventsCount = eventsData.getContactsEventsCount(accountType, null);
 
                         choiceList.add(accountString
@@ -2991,13 +2995,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             dialog.setCustomTitle(view);
 
             ImageView icon = view.findViewById(R.id.icon);
-            if (icon != null) icon.setImageBitmap(ContactsEvents.getBitmap(this, R.drawable.ic_menu_find));
+            if (icon != null) icon.setImageBitmap(ImageUtils.getBitmap(this, R.drawable.ic_menu_find));
             TextView title = view.findViewById(R.id.title);
             if (title != null) title.setText(R.string.pref_List_FontMagnify_title);
 
             //Данные события
             ImageView iconEvent = view.findViewById(R.id.entryEventIcon);
-            if (iconEvent != null) iconEvent.setImageBitmap(ContactsEvents.getBitmap(this, R.drawable.ic_event_birthday));
+            if (iconEvent != null) iconEvent.setImageBitmap(ImageUtils.getBitmap(this, R.drawable.ic_event_birthday));
 
             ImageView photoEvent = view.findViewById(R.id.entryPhotoImageView);
             if (photoEvent != null) {
@@ -3387,7 +3391,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
 
                 } catch (java.lang.SecurityException se) {
-                    ToastExpander.showDebugMsg(this, getResources().getText(R.string.msg_file_open_error) + eventsData.getPath(this, uri));
+                    ToastExpander.showDebugMsg(this, getResources().getText(R.string.msg_file_open_error) + DeviceTools.getPath(this, uri));
                 }
 
             }
@@ -3841,7 +3845,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
 
                 } catch (java.lang.SecurityException se) {
-                    ToastExpander.showDebugMsg(this, getResources().getText(R.string.msg_file_open_error) + eventsData.getPath(this, uri));
+                    ToastExpander.showDebugMsg(this, getResources().getText(R.string.msg_file_open_error) + DeviceTools.getPath(this, uri));
                 }
 
             }
@@ -4256,7 +4260,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     if (uri != null) {
                         final String fileContent = eventsData.readFileToString(uri.toString(), null);
                         if (!fileContent.isEmpty()) {
-                            String filename = eventsData.getPath(this, uri);
+                            String filename = DeviceTools.getPath(this, uri);
                             if (!filename.isEmpty()) {
                                 try {
                                     this.grantUriPermission(this.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION | android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);

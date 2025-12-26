@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.12.2025, 23:59
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 23.12.2025, 23:58
+ *  * Last modified 26.12.2025, 15:14
  *
  */
 
@@ -25,6 +25,9 @@ import android.widget.RemoteViewsService;
 
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
+
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -218,7 +221,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                         } catch (Exception e) { /**/ }
 
                         if (eventDate != null) {
-                            long countDays = eventsData.countDaysDiff(currentDay, eventDate);
+                            long countDays = AppDateUtils.countDaysDiff(currentDay, eventDate);
                             if (countDays + 1 > maxDays) break;
                         }
                     }
@@ -422,7 +425,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_EventCaption_ID))) {
 
                     if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_eventCaption])) {
+                    if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_eventCaption])) {
                         eventDetails.append(singleEventArray[ContactsEvents.Position_eventCaption]);
                     }
 
@@ -466,7 +469,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_Age_ID))) {
 
-                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_age_caption])) {
+                    if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_age_caption])) {
                         if (notEndWithBRorBracket)
                             eventDetails.append(Constants.STRING_COLON_SPACE);
                         eventDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
@@ -526,7 +529,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 } else if (eventItem.equals(resources.getString(R.string.pref_EventInfo_LinkIcon_ID))) {
 
-                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_eventURL])) {
+                    if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_eventURL])) {
                         if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
                         eventDetails.append("🔗");
                     }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.07.2025, 21:58
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 14.07.2025, 21:56
+ *  * Last modified 26.12.2025, 14:35
  *
  */
 
@@ -41,6 +41,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
+
+import org.vovka.birthdaycountdown.utils.ImageUtils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -223,7 +225,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
             final int[] colorValue = {mValue};
             TextView color_edit = view.findViewById(R.id.color_edit);
-            color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+            color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
 
             ImageView color_preview = view.findViewById(R.id.color_preview);
             setColorViewValue(color_preview, colorValue[0]);
@@ -281,7 +283,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     seek1_progress.setText(String.valueOf(progress));
                     colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                    color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                    color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                     setColorViewValue(color_preview, colorValue[0]);
                 }
                 @Override
@@ -294,7 +296,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     seek2_progress.setText(String.valueOf(progress));
                     colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                    color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                    color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                     setColorViewValue(color_preview, colorValue[0]);
                 }
                 @Override
@@ -307,7 +309,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     seek3_progress.setText(String.valueOf(progress));
                     colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                    color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                    color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                     setColorViewValue(color_preview, colorValue[0]);
                 }
                 @Override
@@ -320,7 +322,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     seek4_progress.setText(String.valueOf(progress));
                     colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                    color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                    color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                     setColorViewValue(color_preview, colorValue[0]);
                 }
                 @Override
@@ -357,7 +359,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     final Button buttonNeutral = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
                     buttonNeutral.setOnClickListener(v -> {
                         colorValue[0] = defaultValue;
-                        color_edit.setText(ContactsEvents.toARGBString(colorValue[0]));
+                        color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                         seek1.setProgress(Color.red(colorValue[0]));
                         seek2.setProgress(Color.green(colorValue[0]));
                         seek3.setProgress(Color.blue(colorValue[0]));
@@ -440,7 +442,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     Toast.makeText(context,
                             context.getString(R.string.pref_Color_title) +
                                     Constants.STRING_SPACE +
-                                    ContactsEvents.toARGBString(mAdapter.getItem(position))
+                                    ImageUtils.toARGBString(mAdapter.getItem(position))
                             , Toast.LENGTH_SHORT).show();
                     return true;
                 });

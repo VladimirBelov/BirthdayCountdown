@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.06.2025, 12:16
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.06.2025, 11:35
+ *  * Last modified 26.12.2025, 20:42
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -12,10 +12,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,7 +23,6 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -36,6 +31,8 @@ import org.vovka.birthdaycountdown.Constants;
 import org.vovka.birthdaycountdown.ContactsEvents;
 import org.vovka.birthdaycountdown.R;
 import org.vovka.birthdaycountdown.ToastExpander;
+import org.vovka.birthdaycountdown.utils.DeviceTools;
+import org.vovka.birthdaycountdown.utils.UiTools;
 
 import java.io.Closeable;
 import java.io.File;
@@ -75,7 +72,7 @@ public class CropImageActivity extends Activity {
             setContentView(R.layout.activity_cropimage);
 
             View layoutMain = findViewById(R.id.layout_main);
-            if (ContactsEvents.isEdgeToEdge()) {
+            if (DeviceTools.isEdgeToEdge()) {
                 ViewCompat.setOnApplyWindowInsetsListener(layoutMain, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
                     layoutMain.setPadding(insets.left, insets.top, insets.right, insets.bottom);
@@ -111,16 +108,16 @@ public class CropImageActivity extends Activity {
             mCropImageView.initialize(mBitmap, getCropParam(intent));
 
             TextView buttonSave = findViewById(R.id.buttonSave);
-            addClickEffect(buttonSave);
+            UiTools.addClickEffect(buttonSave);
             buttonSave.getBackground().setAlpha(125);
             TextView buttonRotate = findViewById(R.id.buttonRotate);
-            addClickEffect(buttonRotate);
+            UiTools.addClickEffect(buttonRotate);
             buttonRotate.getBackground().setAlpha(125);
             TextView buttonReset = findViewById(R.id.buttonReset);
-            addClickEffect(buttonReset);
+            UiTools.addClickEffect(buttonReset);
             buttonReset.getBackground().setAlpha(125);
             TextView buttonCrop = findViewById(R.id.buttonCrop);
-            addClickEffect(buttonCrop);
+            UiTools.addClickEffect(buttonCrop);
             buttonCrop.getBackground().setAlpha(125);
 
         } catch (Exception e) {
@@ -283,19 +280,4 @@ public class CropImageActivity extends Activity {
         startActivityForResult(intent, 0);
     }
 
-    private void addClickEffect(@NonNull View view)
-    {
-        Drawable drawableNormal = view.getBackground();
-
-        if (view.getBackground().getConstantState() != null) {
-            Drawable drawablePressed = view.getBackground().getConstantState().newDrawable();
-            drawablePressed.mutate();
-            drawablePressed.setColorFilter(Color.argb(50, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
-
-            StateListDrawable listDrawable = new StateListDrawable();
-            listDrawable.addState(new int[]{android.R.attr.state_pressed}, drawablePressed);
-            listDrawable.addState(new int[]{}, drawableNormal);
-            view.setBackground(listDrawable);
-        }
-    }
 }

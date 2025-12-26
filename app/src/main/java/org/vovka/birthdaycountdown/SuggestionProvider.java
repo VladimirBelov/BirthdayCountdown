@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.12.2025, 23:59
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 23.12.2025, 23:58
+ *  * Last modified 26.12.2025, 14:38
  *
  */
 
@@ -18,6 +18,8 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 // https://habr.com/ru/post/111961/
 // https://stackoverflow.com/questions/47917200/android-custom-suggestions-wont-show-up
@@ -107,13 +109,13 @@ public class SuggestionProvider extends ContentProvider{
                                                 .concat(Constants.STRING_SPACE)
                                                 .concat(singleEventArray[ContactsEvents.Position_eventCaption])
                                                 .concat(Constants.STRING_COLON)
-                                                .concat(ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_age_caption]) ?
+                                                .concat(StringUtils.hasContent(singleEventArray[ContactsEvents.Position_age_caption]) ?
                                                         Constants.STRING_SPACE.concat(singleEventArray[ContactsEvents.Position_age_caption]) :
                                                         Constants.STRING_EMPTY
                                                 )
                                                 .concat(Constants.STRING_SPACE)
                                                 .concat(eventDistance[0].toLowerCase()),
-                                        !(ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_photo_uri])
+                                        !(StringUtils.hasContent(singleEventArray[ContactsEvents.Position_photo_uri])
                                                 || singleEventArray[ContactsEvents.Position_photo_uri].equals(Constants.STRING_NULL)) ?
                                                 singleEventArray[ContactsEvents.Position_photo_uri] :
                                                 Constants.STRING_EMPTY,

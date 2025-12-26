@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.12.2025, 12:20
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.12.2025, 11:54
+ *  * Last modified 26.12.2025, 20:42
  *
  */
 
@@ -41,6 +41,10 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.transition.TransitionManager;
+
+import org.vovka.birthdaycountdown.utils.DeviceTools;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,24 +106,24 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             setContentView(R.layout.widget_config);
 
             View layoutMain = findViewById(R.id.layout_main);
-            if (ContactsEvents.isEdgeToEdge()) {
+            if (DeviceTools.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
                     Insets insetsStatus = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
                     layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
-                    layoutMain.setPadding(0, insetsStatus.bottom + ContactsEvents.Sp2Px(getResources(), 50), 0, 0);
+                    layoutMain.setPadding(0, insetsStatus.bottom + ImageUtils.Sp2Px(getResources(), 50), 0, 0);
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
-                layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 50), 0, 0);
+                layoutMain.setPadding(0, ImageUtils.Dip2Px(getResources(), 50), 0, 0);
             }
 
             //Отступы всего окна
             RelativeLayout.MarginLayoutParams marginParams = (RelativeLayout.MarginLayoutParams) layoutMain.getLayoutParams();
             marginParams.setMargins(
                     (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
-                    ContactsEvents.Dip2Px(getResources(), eventsData.preferences_list_top_padding),
+                    ImageUtils.Dip2Px(getResources(), eventsData.preferences_list_top_padding),
                     (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
                     marginParams.bottomMargin);
             layoutMain.setLayoutParams(marginParams);
@@ -744,7 +748,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_None_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_None));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Border));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Dividers_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Dividers));
-                    if (ContactsEvents.isWidgetSupportConfig()) {
+                    if (DeviceTools.isWidgetSupportConfig()) {
                         eventInfoIDs.add(getString(R.string.pref_EventInfo_ButtonConfig_ID));
                         eventInfoValues.add(getString(R.string.pref_EventInfo_ButtonConfig));
                     }
@@ -796,7 +800,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 if (ind > -1) {
                     if (sb.length() > 0) sb.append(Constants.STRING_EOL);
 
-                    String sourceId = ContactsEvents.getNotNullString(eventSources.getIds().get(ind));
+                    String sourceId = StringUtils.getNotNullString(eventSources.getIds().get(ind));
                     if (sourceId.startsWith(Constants.eventSourceCalendarPrefix)) {
                         sb.append(Constants.eventTitleCalendarPrefix);
                     } else if (sourceId.startsWith(Constants.eventSourceFilePrefix) || sourceId.startsWith(Constants.eventSourceMultiFilePrefix)) {
@@ -925,7 +929,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             final MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
             List<String> selectedEventTypes = new ArrayList<>();
             for (String eventType: spinnerEventTypes.getSelectedStrings()) {
-                selectedEventTypes.add(ContactsEvents.substringBefore(eventType, Constants.STRING_BRACKETS_OPEN));
+                selectedEventTypes.add(StringUtils.substringBefore(eventType, Constants.STRING_BRACKETS_OPEN));
             }
             findViewById(R.id.blockFacts).setVisibility(
                     Constants.WIDGET_TYPE_LIST.equals(widgetType)
@@ -1109,7 +1113,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             prefsToStore.add(eventTypes.toString()); //Типы событий (через +)
             prefsToStore.add(eventInfo.toString()); //Детали события (через +)
             prefsToStore.add(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ?
-                    ContactsEvents.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY); //Цвет подложки
+                    ImageUtils.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY); //Цвет подложки
             prefsToStore.add(String.valueOf(spinnerPhotoStyle.getSelectedItemPosition())); //Стиль фото
             prefsToStore.add(editCustomZeroEvents.getText().toString().replace(Constants.STRING_COMMA, Constants.STRING_EOT)); //Сообщение, когда нет событий
             prefsToStore.add(scopeInfo.toString()); //Объём событий

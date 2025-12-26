@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 13:52
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 10:45
+ *  * Last modified 26.12.2025, 16:20
  *
  */
 
@@ -11,17 +11,14 @@ package org.vovka.birthdaycountdown;
 import android.app.Activity;
 import android.content.ClipDescription;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import org.vovka.birthdaycountdown.utils.UiTools;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -88,19 +85,19 @@ public class FactsPopupActivity extends Activity {
                 intentShare.putExtra(Intent.EXTRA_TEXT, txtInfo.getText());
                 startActivity(Intent.createChooser(intentShare, ""));
             });
-            addClickEffect(buttonShare);
+            UiTools.addClickEffect(buttonShare);
             buttonShare.getBackground().setAlpha(50);
             buttonShare.setVisibility(View.VISIBLE);
 
             TextView buttonAction = findViewById(R.id.buttonThirdAction);
             buttonAction.setText(R.string.facts_popup_action_next_fact);
-            addClickEffect(buttonAction);
+            UiTools.addClickEffect(buttonAction);
             buttonAction.getBackground().setAlpha(50);
             buttonAction.setVisibility(View.VISIBLE);
 
             TextView buttonPrev = findViewById(R.id.buttonFirstAction);
             buttonPrev.setText(R.string.popup_action_prev);
-            addClickEffect(buttonPrev);
+            UiTools.addClickEffect(buttonPrev);
             buttonPrev.getBackground().setAlpha(50);
             if (!listPrevFacts.isEmpty()) {
                 buttonPrev.setVisibility(View.VISIBLE);
@@ -130,19 +127,4 @@ public class FactsPopupActivity extends Activity {
         }
     }
 
-    void addClickEffect(@NonNull View view)
-    {
-        Drawable drawableNormal = view.getBackground();
-
-        if (view.getBackground().getConstantState() != null) {
-            Drawable drawablePressed = view.getBackground().getConstantState().newDrawable();
-            drawablePressed.mutate();
-            drawablePressed.setColorFilter(Color.argb(50, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
-
-            StateListDrawable listDrawable = new StateListDrawable();
-            listDrawable.addState(new int[]{android.R.attr.state_pressed}, drawablePressed);
-            listDrawable.addState(new int[]{}, drawableNormal);
-            view.setBackground(listDrawable);
-        }
-    }
 }

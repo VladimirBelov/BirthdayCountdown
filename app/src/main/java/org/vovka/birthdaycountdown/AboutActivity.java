@@ -1,17 +1,15 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 01:00
+ *  * Last modified 26.12.2025, 20:42
  *
  */
 
 package org.vovka.birthdaycountdown;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -45,7 +43,9 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.lang.reflect.Method;
+import org.vovka.birthdaycountdown.utils.DeviceTools;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
+
 import java.util.Date;
 import java.util.Map;
 
@@ -82,23 +82,23 @@ public class AboutActivity extends AppCompatActivity {
             setContentView(R.layout.activity_changelog);
 
             View layoutMain = findViewById(R.id.layout_main);
-            if (ContactsEvents.isEdgeToEdge()) {
+            if (DeviceTools.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
                     layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
-                    layoutMain.setPadding(0, insets.bottom + ContactsEvents.Sp2Px(getResources(), 62), 0, 0);
+                    layoutMain.setPadding(0, insets.bottom + ImageUtils.Sp2Px(getResources(), 62), 0, 0);
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
-                layoutMain.setPadding(0, ContactsEvents.Dip2Px(getResources(), 62), 0, 0);
+                layoutMain.setPadding(0, ImageUtils.Dip2Px(getResources(), 62), 0, 0);
             }
 
             //Отступы всего окна
             RelativeLayout.MarginLayoutParams marginParams = (RelativeLayout.MarginLayoutParams) layoutMain.getLayoutParams();
             marginParams.setMargins(
                     (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
-                    ContactsEvents.Dip2Px(getResources(), eventsData.preferences_list_top_padding),
+                    ImageUtils.Dip2Px(getResources(), eventsData.preferences_list_top_padding),
                     (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
                     marginParams.bottomMargin);
             layoutMain.setLayoutParams(marginParams);
@@ -247,12 +247,11 @@ public class AboutActivity extends AppCompatActivity {
                                 ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_RED) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_GREEN)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
                     }
 
-                    //https://stackoverflow.com/questions/39366231/how-to-check-miui-autostart-permission-programmatically
-                    if (ContactsEvents.isXiaomi()) {
-                        final State state = getMIUIAutoStartState();
+                    if (DeviceTools.isXiaomi()) {
+                        final DeviceTools.MIUIAutoStartState state = DeviceTools.getMIUIAutoStartState(this);
                         sb.append(getString(R.string.stats_permissions_xiaomi_autostart,
-                                state == State.ENABLED ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) :
-                                        state == State.DISABLED  ? eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED) :
+                                state == DeviceTools.MIUIAutoStartState.ENABLED ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) :
+                                        state == DeviceTools.MIUIAutoStartState.DISABLED  ? eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED) :
                                                 eventsData.setHTMLColor(getString(R.string.msg_unknown), Constants.HTML_COLOR_DEFAULT)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
                     }
 
@@ -375,7 +374,7 @@ public class AboutActivity extends AppCompatActivity {
             if (installedFrom > 0) {
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) button4PDA.getLayoutParams();
                 params.addRule(RelativeLayout.END_OF, R.id.centerPoint);
-                params.leftMargin = ContactsEvents.Dip2Px(getResources(), 5);
+                params.leftMargin = ImageUtils.Dip2Px(getResources(), 5);
                 button4PDA.setLayoutParams(params);
 
                 Button buttonOtherAppStore = findViewById(R.id.buttonOtherAppStore);
@@ -438,38 +437,6 @@ public class AboutActivity extends AppCompatActivity {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-    }
-
-    private enum State {
-        ENABLED, DISABLED, NO_INFO, UNEXPECTED_RESULT
-    }
-
-    @SuppressLint("PrivateApi")
-    private State getMIUIAutoStartState() throws Exception {
-
-        Class<?> clazz = null;
-        try {
-            clazz = Class.forName("android.miui.AppOpsUtils");
-        } catch (ClassNotFoundException ignored) { /**/ }
-        if (clazz == null) return State.NO_INFO;
-
-        Method method = null;
-        try {
-            method = clazz.getDeclaredMethod("getApplicationAutoStart", Context.class, String.class);
-            method.setAccessible(true);
-        } catch (Exception ignored) { /**/ }
-        if (method == null) return State.NO_INFO;
-
-        final Object result = method.invoke(null, this, this.getPackageName());
-
-        if (!(result instanceof Integer)) {return State.UNEXPECTED_RESULT;}
-        final int _int = (int) result;
-        if (_int == 0) {
-            return State.ENABLED;
-        } else if (_int == 1) {
-            return State.DISABLED;
-        }
-        return State.UNEXPECTED_RESULT;
     }
 
 }

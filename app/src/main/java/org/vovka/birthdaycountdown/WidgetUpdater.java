@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.12.2025, 12:20
+ *  * Created by Vladimir Belov on 26.12.2025, 20:59
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.12.2025, 11:54
+ *  * Last modified 26.12.2025, 15:14
  *
  */
 
@@ -31,6 +31,9 @@ import android.widget.RemoteViews;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -415,7 +418,7 @@ class WidgetUpdater {
                 if (eventDate != null) {
                     Calendar now = Calendar.getInstance();
                     Date currentDay = new Date(now.getTimeInMillis());
-                    long countDays = eventsData.countDaysDiff(currentDay, eventDate);
+                    long countDays = AppDateUtils.countDaysDiff(currentDay, eventDate);
                     if (countDays + 1 > daysCount) isVisibleEvent = false;
                 }
             }
@@ -459,7 +462,7 @@ class WidgetUpdater {
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                 } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))) { //Фамилия Имя Отчество (Псевдоним)
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
-                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
+                    if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = rowValue
                                 .concat(Constants.STRING_PARENTHESIS_OPEN)
                                 .concat(singleEventArray[ContactsEvents.Position_nickname])
@@ -484,7 +487,7 @@ class WidgetUpdater {
                         rowValue = rowValue.substring(0, indSpace);
                     }
                 } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Nick))) { //Псевдоним (Имя, если отсутствует)
-                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
+                    if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = singleEventArray[ContactsEvents.Position_nickname];
                     } else if (!captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))
                             && !captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))
@@ -501,10 +504,10 @@ class WidgetUpdater {
                     rowValue = singleEventArray[ContactsEvents.Position_eventCaption];
                 } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventLabel))) { //Наименование события
                     rowValue =
-                            !ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_eventLabel]) ? singleEventArray[ContactsEvents.Position_eventCaption] :
+                            !StringUtils.hasContent(singleEventArray[ContactsEvents.Position_eventLabel]) ? singleEventArray[ContactsEvents.Position_eventCaption] :
                                     singleEventArray[ContactsEvents.Position_eventLabel];
                 } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Organization))) { //Организация (Должность, если отсутствует)
-                    rowValue = ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_organization]) ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
+                    rowValue = StringUtils.hasContent(singleEventArray[ContactsEvents.Position_organization]) ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
                 }
 
             }
@@ -576,7 +579,7 @@ class WidgetUpdater {
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                 } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))) { //Фамилия Имя Отчество (Псевдоним)
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
-                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
+                    if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = rowValue
                                 .concat(Constants.STRING_PARENTHESIS_OPEN)
                                 .concat(singleEventArray[ContactsEvents.Position_nickname])
@@ -601,7 +604,7 @@ class WidgetUpdater {
                         rowValue = rowValue.substring(0, indSpace);
                     }
                 } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Nick))) { //Псевдоним (Имя, если отсутствует)
-                    if (ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
+                    if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = singleEventArray[ContactsEvents.Position_nickname];
                     } else if (!captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))
                             && !captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))
@@ -618,10 +621,10 @@ class WidgetUpdater {
                     rowValue = singleEventArray[ContactsEvents.Position_eventCaption];
                 } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventLabel))) { //Наименование события
                     rowValue =
-                            !ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_eventLabel]) ? singleEventArray[ContactsEvents.Position_eventCaption] :
+                            !StringUtils.hasContent(singleEventArray[ContactsEvents.Position_eventLabel]) ? singleEventArray[ContactsEvents.Position_eventCaption] :
                                     singleEventArray[ContactsEvents.Position_eventLabel];
                 } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Organization))) { //Организация (Должность, если отсутствует)
-                    rowValue = ContactsEvents.hasContent(singleEventArray[ContactsEvents.Position_organization]) ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
+                    rowValue = StringUtils.hasContent(singleEventArray[ContactsEvents.Position_organization]) ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
                 }
 
             }
