@@ -1,15 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
+ *  * Created by Vladimir Belov on 26.12.2025, 23:42
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 14:38
+ *  * Last modified 26.12.2025, 21:21
  *
  */
 
 package org.vovka.birthdaycountdown;
 
 import android.app.Activity;
-import android.app.LocaleManager;
 import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
 import android.content.ClipDescription;
@@ -17,15 +16,11 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.LocaleList;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
@@ -54,7 +49,6 @@ import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Класс WidgetMenuActivity отвечает за отображение контекстного меню
@@ -89,30 +83,7 @@ public class WidgetMenuActivity extends Activity {
             eventsData = ContactsEvents.getInstance();
             if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
             eventsData.getPreferences();
-
-            //Без этого на Android 8 и 9 не меняет динамически язык
-            Locale locale;
-            if (eventsData.preferences_language.equals(getString(R.string.pref_Language_default))) {
-                locale = new Locale(eventsData.systemLocale);
-            } else {
-                locale = new Locale(eventsData.preferences_language);
-            }
-            Resources applicationRes = getBaseContext().getResources();
-            Configuration applicationConf = applicationRes.getConfiguration();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    LocaleList list = getSystemService(LocaleManager.class).getApplicationLocales();
-                    if (!list.isEmpty()) {
-                        locale = getSystemService(LocaleManager.class).getApplicationLocales().get(0);
-                    }
-                }
-                applicationConf.setLocales(new LocaleList(locale));
-            } else {
-                applicationConf.setLocale(locale);
-            }
-            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-
-            eventsData.setLocale(true);
+            eventsData.initLanguage(this);
 
             appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
             String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);

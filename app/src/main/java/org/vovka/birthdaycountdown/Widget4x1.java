@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.12.2025, 01:45
+ *  * Created by Vladimir Belov on 26.12.2025, 23:42
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 21.12.2025, 01:18
+ *  * Last modified 26.12.2025, 22:21
  *
  */
 
@@ -62,7 +62,6 @@ public class Widget4x1 extends AppWidgetProvider {
         try {
 
             if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
-            eventsData.getPreferences();
             eventsData.initLanguage(context);
 
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);

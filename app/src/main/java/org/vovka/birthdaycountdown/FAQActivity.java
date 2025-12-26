@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
+ *  * Created by Vladimir Belov on 26.12.2025, 23:42
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 20:42
+ *  * Last modified 26.12.2025, 21:56
  *
  */
 
@@ -109,7 +109,7 @@ public class FAQActivity extends AppCompatActivity {
             //Цвет CutoutAppearance на повёрнутом экране
             getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
 
-            eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит язык по-умолчанию
+            //eventsData.setLocale(true); //Без этого на Android 9+ при первом показе webview грузит язык по-умолчанию
             webView = findViewById(R.id.webView);
             if (webView != null) {
                 webView.setVerticalScrollBarEnabled(true);

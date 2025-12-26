@@ -1,27 +1,23 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
+ *  * Created by Vladimir Belov on 26.12.2025, 23:42
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 20:42
+ *  * Last modified 26.12.2025, 22:21
  *
  */
 
 package org.vovka.birthdaycountdown;
 
-import android.app.LocaleManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -64,31 +60,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
         try {
 
             if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
-            eventsData.getPreferences();
-
-            //Без этого на Android 8 и 9 не меняет динамически язык
-            Locale locale;
-            if (eventsData.preferences_language.equals(context.getString(R.string.pref_Language_default))) {
-                locale = new Locale(eventsData.systemLocale);
-            } else {
-                locale = new Locale(eventsData.preferences_language);
-            }
-            Resources applicationRes = context.getResources();
-            Configuration applicationConf = applicationRes.getConfiguration();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    LocaleList list = context.getSystemService(LocaleManager.class).getApplicationLocales();
-                    if (!list.isEmpty()) {
-                        locale = context.getSystemService(LocaleManager.class).getApplicationLocales().get(0);
-                    }
-                }
-                applicationConf.setLocales(new android.os.LocaleList(locale));
-            } else {
-                applicationConf.setLocale(locale);
-            }
-            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-
-            eventsData.setLocale(true);
+            eventsData.initLanguage(context);
 
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
             String widgetType = Constants.WIDGET_TYPE_PHOTO_LIST;
@@ -135,7 +107,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
             if (eventsData.preferences_debug_on) {
                 views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated)
-                        + new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, locale).format(new Date(Calendar.getInstance().getTimeInMillis()))
+                        + new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, Locale.forLanguageTag(eventsData.currentLocale)).format(new Date(Calendar.getInstance().getTimeInMillis()))
                         + Constants.STRING_EOL + context.getString(R.string.widget_msg_events) + eventsToShow + Constants.STRING_SLASH + eventsData.eventList.size());
             } else {
                 views.setTextViewText(R.id.info, Constants.STRING_EMPTY);

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
+ *  * Created by Vladimir Belov on 26.12.2025, 23:42
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 20:42
+ *  * Last modified 26.12.2025, 23:34
  *
  */
 
@@ -291,7 +291,6 @@ public class ContactsEvents {
     final List<String> eventListUpdated = new ArrayList<>(); //Список всех событий (обновлённый)
     final List<String> eventListFacts = new ArrayList<>(); //Факты
     final List<String> eventListPrev = new ArrayList<>(); //Список предыдущих событий
-    final String systemLocale = Locale.getDefault().getLanguage();
     //final HashSet<String> idsWithDeathEvent = new HashSet<>(); //ID контактов с годовщиной смерти
     /** Даты годовщин смерти по ID */
     final HashMap<String, Date> deathDatesForIds = new HashMap<>();
@@ -1032,30 +1031,7 @@ public class ContactsEvents {
     void initLanguage(@NonNull Activity activity) {
         if (getContext() == null) setContext(activity.getApplicationContext());
         getPreferences();
-
-        //Без этого на Android 8 и 9 не меняет динамически язык
-        Locale locale;
-        if (preferences_language.equals(getContext().getString(R.string.pref_Language_default))) {
-            locale = new Locale(systemLocale);
-        } else {
-            locale = new Locale(preferences_language);
-        }
-        Resources applicationRes = activity.getBaseContext().getResources();
-        Configuration applicationConf = applicationRes.getConfiguration();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                LocaleList list = activity.getSystemService(LocaleManager.class).getApplicationLocales();
-                if (!list.isEmpty()) {
-                    locale = activity.getSystemService(LocaleManager.class).getApplicationLocales().get(0);
-                }
-            }
-            applicationConf.setLocales(new LocaleList(locale));
-        } else {
-            applicationConf.setLocale(locale);
-        }
-        applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-
-        setLocale(true);
+        setLocale(false);
     }
 
     /** Устанавливает язык для текущей активности
@@ -1063,30 +1039,110 @@ public class ContactsEvents {
      */
     void initLanguage(@NonNull Context context) {
         if (getContext() == null) setContext(context.getApplicationContext());
+        getPreferences();
+        setLocale(false);
+    }
 
-        //Без этого на Android 8 и 9 не меняет динамически язык
-        Locale locale;
-        if (preferences_language.equals(context.getString(R.string.pref_Language_default))) {
-            locale = new Locale(systemLocale);
-        } else {
-            locale = new Locale(preferences_language);
-        }
-        Resources applicationRes = context.getResources();
-        Configuration applicationConf = applicationRes.getConfiguration();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                LocaleList list = context.getSystemService(LocaleManager.class).getApplicationLocales();
-                if (!list.isEmpty()) {
-                    locale = context.getSystemService(LocaleManager.class).getApplicationLocales().get(0);
+    /**
+     * Установка языка (локали) приложению
+     *
+     * @param force Принудительно, даже если этот язык уже устанавливали ранее
+     */
+    void setLocale(boolean force) {
+        if (context == null) return;
+
+        boolean isAutoMode = preferences_language.equals(context.getString(R.string.pref_Language_default));
+        Locale targetLocale;
+
+        // === Android 14+ (API 34) ===
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            if (isAutoMode) {
+                // НЕ устанавливаем application locales → система сама даст язык
+                // Но определяем, какой язык реально используется
+                LocaleList appLocales = context.getSystemService(LocaleManager.class).getApplicationLocales();
+                if (!appLocales.isEmpty()) {
+                    // Язык был задан явно ранее — используем его
+                    targetLocale = appLocales.get(0);
+                } else {
+                    // Режим "АВТО" — используем язык системы
+                    targetLocale = Locale.getDefault(); // или Resources.getSystem().getConfiguration().getLocales().get(0)
                 }
+                currentLocale = targetLocale.getLanguage();
+                // НЕ вызываем setApplicationLocales() — оставляем систему управлять
+            } else {
+                // Язык задан явно
+                targetLocale = new Locale(preferences_language);
+                LocaleManager lm = context.getSystemService(LocaleManager.class);
+                lm.setApplicationLocales(new LocaleList(targetLocale));
+                currentLocale = preferences_language;
             }
-            applicationConf.setLocales(new android.os.LocaleList(locale));
-        } else {
-            applicationConf.setLocale(locale);
+            // Важно: НЕ вызываем updateConfiguration() на Android 14+
+            initLocaleStrings();
+            return;
         }
-        applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
 
-        setLocale(true);
+        // === Android 5–13 ===
+        if (isAutoMode) {
+            targetLocale = Locale.getDefault(); // всегда текущий системный язык
+        } else {
+            targetLocale = new Locale(preferences_language);
+        }
+
+        String targetLang = targetLocale.getLanguage();
+        if (targetLang.isEmpty()) targetLang = "en";
+
+        // Проверка на необходимость обновления
+        if (!force && currentLocale != null && currentLocale.equals(targetLang)) {
+            initLocaleStrings();
+            return;
+        }
+
+        // Применяем локаль
+        Configuration config = context.getResources().getConfiguration();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            config.setLocales(new LocaleList(targetLocale));
+        } else {
+            config.locale = targetLocale;
+        }
+        Locale.setDefault(targetLocale);
+        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+        currentLocale = targetLang;
+        initLocaleStrings();
+    }
+
+    private void initLocaleStrings() {
+        weekDaysShort = resources.getStringArray(R.array.weekDaysShort);
+        eventNameNY = resources.getString(R.string.Event_NY).toLowerCase();
+        eventNameEaster = resources.getString(R.string.Event_Easter).toLowerCase();
+        eventNameCatholicEaster = resources.getString(R.string.Event_CatholicEaster).toLowerCase();
+
+        zodiacSignStrings.clear();
+        zodiacSignStrings.put("♐", R.string.zodiac_sign_sagittarius);
+        zodiacSignStrings.put("♏", R.string.zodiac_sign_scorpio);
+        zodiacSignStrings.put("♎", R.string.zodiac_sign_libra);
+        zodiacSignStrings.put("♍", R.string.zodiac_sign_virgo);
+        zodiacSignStrings.put("♌", R.string.zodiac_sign_leo);
+        zodiacSignStrings.put("♋", R.string.zodiac_sign_cancer);
+        zodiacSignStrings.put("♊", R.string.zodiac_sign_gemini);
+        zodiacSignStrings.put("♉", R.string.zodiac_sign_taurus);
+        zodiacSignStrings.put("♈", R.string.zodiac_sign_aries);
+        zodiacSignStrings.put("♓", R.string.zodiac_sign_pisces);
+        zodiacSignStrings.put("♒", R.string.zodiac_sign_aquarius);
+        zodiacSignStrings.put("♑", R.string.zodiac_sign_capricorn);
+
+        chineseZodiacYearStrings.clear();
+        chineseZodiacYearStrings.put(0, R.string.zodiac_year_rat);
+        chineseZodiacYearStrings.put(1, R.string.zodiac_year_ox);
+        chineseZodiacYearStrings.put(2, R.string.zodiac_year_tiger);
+        chineseZodiacYearStrings.put(3, R.string.zodiac_year_rabbit);
+        chineseZodiacYearStrings.put(4, R.string.zodiac_year_dragon);
+        chineseZodiacYearStrings.put(5, R.string.zodiac_year_snake);
+        chineseZodiacYearStrings.put(6, R.string.zodiac_year_horse);
+        chineseZodiacYearStrings.put(7, R.string.zodiac_year_sheep);
+        chineseZodiacYearStrings.put(8, R.string.zodiac_year_monkey);
+        chineseZodiacYearStrings.put(9, R.string.zodiac_year_rooster);
+        chineseZodiacYearStrings.put(10, R.string.zodiac_year_dog);
+        chineseZodiacYearStrings.put(11, R.string.zodiac_year_pig);
     }
 
     @Nullable
@@ -2082,88 +2138,7 @@ public class ContactsEvents {
         }
     }
 
-    /**
-     * Установка языка (локали) приложению
-     *
-     * @param force Принудительно, даже если этот язык уже устанавливали ранее
-     */
-    void setLocale(boolean force) {
-
-        if (context == null) return;
-
-        //сделать так: https://stackoverflow.com/questions/39705739/android-n-change-language-programmatically/
-        //для Android > N переделать выбор локали https://stackoverflow.com/questions/47165311/how-to-change-android-o-oreo-api-26-app-language
-        //http://developer.alexanderklimov.ru/android/locale.php
-        //https://stackoverflow.com/questions/9475589/how-to-get-string-from-different-locales-in-android
-
-        try {
-
-            Configuration configuration = context.getResources().getConfiguration();
-            if (force || !preferences_language.equals(currentLocale) || !currentLocale.equals(configuration.locale.toString())) {
-
-                Locale locale;
-                if (preferences_language.equals(context.getString(R.string.pref_Language_default))) {
-                    locale = new Locale(systemLocale);
-                } else {
-                    locale = new Locale(preferences_language);
-                }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    configuration.setLocales(new android.os.LocaleList(locale));
-                } else {
-                    configuration.setLocale(locale);
-                }
-                Locale.setDefault(locale);
-                resources = context.getResources();
-                setDisplayMetrics(this.getResources().getDisplayMetrics());
-                displayMetrics_density = displayMetrics.density;
-                resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-                currentLocale = locale.toString();
-
-                weekDaysShort = resources.getStringArray(R.array.weekDaysShort);
-                eventNameNY = resources.getString(R.string.Event_NY).toLowerCase();
-                eventNameEaster = resources.getString(R.string.Event_Easter).toLowerCase();
-                eventNameCatholicEaster = resources.getString(R.string.Event_CatholicEaster).toLowerCase();
-
-                zodiacSignStrings.clear();
-                zodiacSignStrings.put("♐", R.string.zodiac_sign_sagittarius);
-                zodiacSignStrings.put("♏", R.string.zodiac_sign_scorpio);
-                zodiacSignStrings.put("♎", R.string.zodiac_sign_libra);
-                zodiacSignStrings.put("♍", R.string.zodiac_sign_virgo);
-                zodiacSignStrings.put("♌", R.string.zodiac_sign_leo);
-                zodiacSignStrings.put("♋", R.string.zodiac_sign_cancer);
-                zodiacSignStrings.put("♊", R.string.zodiac_sign_gemini);
-                zodiacSignStrings.put("♉", R.string.zodiac_sign_taurus);
-                zodiacSignStrings.put("♈", R.string.zodiac_sign_aries);
-                zodiacSignStrings.put("♓", R.string.zodiac_sign_pisces);
-                zodiacSignStrings.put("♒", R.string.zodiac_sign_aquarius);
-                zodiacSignStrings.put("♑", R.string.zodiac_sign_capricorn);
-
-                chineseZodiacYearStrings.clear();
-                chineseZodiacYearStrings.put(0, R.string.zodiac_year_rat);
-                chineseZodiacYearStrings.put(1, R.string.zodiac_year_ox);
-                chineseZodiacYearStrings.put(2, R.string.zodiac_year_tiger);
-                chineseZodiacYearStrings.put(3, R.string.zodiac_year_rabbit);
-                chineseZodiacYearStrings.put(4, R.string.zodiac_year_dragon);
-                chineseZodiacYearStrings.put(5, R.string.zodiac_year_snake);
-                chineseZodiacYearStrings.put(6, R.string.zodiac_year_horse);
-                chineseZodiacYearStrings.put(7, R.string.zodiac_year_sheep);
-                chineseZodiacYearStrings.put(8, R.string.zodiac_year_monkey);
-                chineseZodiacYearStrings.put(9, R.string.zodiac_year_rooster);
-                chineseZodiacYearStrings.put(10, R.string.zodiac_year_dog);
-                chineseZodiacYearStrings.put(11, R.string.zodiac_year_pig);
-
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-
-    }
-
-    /** Считывание всех доступных событий
-     */
+    /** Считывание всех доступных событий */
     synchronized boolean getEvents() {
 
         if (flagIsUpdating) return false;
