@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.12.2025, 03:04
+  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 09.12.2025, 00:17
+  ~  * Last modified 27.12.2025, 11:56
   ~  */
   -->
 
@@ -221,6 +221,11 @@
             android:excludeFromRecents="true"/>
 
         <activity android:name=".FactsPopupActivity"
+            android:theme="@android:style/Theme.Dialog"
+            android:exported="false"
+            android:excludeFromRecents="true"/>
+
+        <activity android:name=".EventsPopupActivity"
             android:theme="@android:style/Theme.Dialog"
             android:exported="false"
             android:excludeFromRecents="true"/>

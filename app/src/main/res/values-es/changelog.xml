@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.12.2025, 21:21
+  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 22.12.2025, 19:34
+  ~  * Last modified 27.12.2025, 13:46
   ~  */
   -->
 
@@ -21,6 +21,7 @@
         <item>Se añadió la búsqueda de información de referencia</item>
         <item>🏖️ Se añadieron los días festivos para 2026</item>
         <item>Los primeros eventos en la lista son los más recientes; los anteriores están ocultos en la parte superior de la lista</item>
+        <item>Al hacer clic en una notificación con múltiples eventos, se muestra un cuadro de diálogo para ver eventos (con la opción de compartir)</item>
         <item>Corrección de errores</item>
 
         <item>#1.8.8</item>

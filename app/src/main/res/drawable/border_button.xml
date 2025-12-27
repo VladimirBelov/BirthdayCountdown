@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.12.2025, 23:50
+  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 25.12.2025, 19:30
+  ~  * Last modified 27.12.2025, 11:14
   ~  */
   -->
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle" >
 
-    <solid android:color="?attr/dialogBackgroundColor" />
+    <solid android:color="?attr/dialogButtonBackgroundColor" />
     <corners android:radius="3dp" />
     <stroke
         android:width="1dp"

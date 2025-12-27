@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 23:42
+ *  * Created by Vladimir Belov on 27.12.2025, 13:49
  *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 23:34
+ *  * Last modified 27.12.2025, 13:18
  *
  */
 
@@ -7464,22 +7464,28 @@ public class ContactsEvents {
                     prefType == 4 //За сегодня -> отдельные, остальные -> общее
             ) {
 
+                final ArrayList<String> eventsList = new ArrayList<>();
                 StringBuilder textBig = new StringBuilder();
                 String textSmall = null;
                 int countEvents = 0;
                 if (!listFacts.isEmpty()) {
-                    textBig.append(composeFactsAsString(listFacts));
+                    String factsDetails = composeFactsAsString(listFacts);
+                    textBig.append(factsDetails);
+                    eventsList.addAll(Arrays.asList(factsDetails.split(Constants.STRING_EOL)));
                 }
                 boolean noEventsMsg = false;
-                Map<String, Integer> mostEventIcons = new HashMap<>();
+                final Map<String, Integer> mostEventIcons = new HashMap<>();
                 if (!listNotify.isEmpty()) {
                     for (NotifyEvent event : listNotify) {
                         if (prefType != 4 || event.eventDate.after(currentDay)) {
                             countEvents++;
-                            if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
-                            textBig.append(composeNotifyEventDetails(event, prefEventDetails));
+                            final String eventDetails = composeNotifyEventDetails(event, prefEventDetails);
+                            final String eventIcon = event.singleEventArray[Position_eventIcon];
 
-                            String eventIcon = event.singleEventArray[Position_eventIcon];
+                            if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
+                            textBig.append(eventDetails);
+                            eventsList.add(eventDetails);
+
                             if (eventIcon != null) {
                                 Integer currentCount = mostEventIcons.get(eventIcon);
                                 if (currentCount != null) {
@@ -7488,7 +7494,6 @@ public class ContactsEvents {
                                     mostEventIcons.put(eventIcon, 1);
                                 }
                             }
-
                         }
                     }
 
@@ -7510,9 +7515,16 @@ public class ContactsEvents {
                 }
 
                 if (textSmall != null) {
-                    Intent intent = new Intent(context, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
+                    //Запуск основной активности
+                    //Intent intent = new Intent(context, MainActivity.class);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    //PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
+
+                    //Запуск диалога со списком событий
+                    Intent intent = new Intent(context, EventsPopupActivity.class);
+                    intent.putStringArrayListExtra(Constants.EXTRA_LIST, eventsList);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                     int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
                     final String notificationDetails = textBig.toString().concat(Constants.STRING_EOL).concat(textSmall);
@@ -7547,7 +7559,6 @@ public class ContactsEvents {
                         mostEventIcons.clear();
                     }
                     builder.setSmallIcon(eventIcon);
-
 
                     if (preferences_debug_on) {
                         builder.setSubText(Constants.NOTIFY_ID + notificationID);
@@ -7767,19 +7778,26 @@ public class ContactsEvents {
                     }
                 }
 
+                //Только факты
                 if (prefType != 4 && !listFacts.isEmpty()) {
                     int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
-                    final String eventDetails = composeFactsAsString(listFacts);
+                    final String factsDetails = composeFactsAsString(listFacts);
+                    ArrayList<String> eventsList = new ArrayList<>(Arrays.asList(factsDetails.split(Constants.STRING_EOL)));
+
+                    //Запуск диалога со списком событий
+                    Intent intent = new Intent(context, EventsPopupActivity.class);
+                    intent.putStringArrayListExtra(Constants.EXTRA_LIST, eventsList);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
-                            //.setColor(this.getResources().getColor(R.color.dark_green))
                             .setColor(getThemeBackColor())
-                            //.setSmallIcon(R.drawable.ic_icon_notify)
                             .setSmallIcon(R.drawable.ic_event_fact)
-                            .setContentText(eventDetails)
+                            .setContentText(factsDetails)
                             .setContentTitle(context.getString(R.string.pref_CustomEvents_Fact_title))
-                            .setStyle(new NotificationCompat.BigTextStyle().bigText(eventDetails))
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(factsDetails))
                             .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setContentIntent(pendingIntent)
                             .setAutoCancel(true);
 
                     if (preferences_debug_on) {

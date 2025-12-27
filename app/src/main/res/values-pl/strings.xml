@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2025, 10:37
+  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.12.2025, 00:45
+  ~  * Last modified 27.12.2025, 13:48
   ~  */
   -->
 
@@ -1197,7 +1197,6 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="pref_Tools_Events_Import_result">Zaimportowano zdarzenia: %1$d</string>
     <string name="pref_Tools_Events_Import_result_noAccess">🚫 Plik jest pusty lub Brak dostępu</string>
     <string name="pref_Tools_Events_Import_result_noEvents">🚫 Nie znaleziono wydarzeń</string>
-    <string name="pref_Tools_Events_Import_result_notSupported">🛑 Jeszcze nieobsługiwane</string>
     <string name="pref_Tools_Events_Import_result_EventsFound">Znaleziono zdarzenia: %1$d</string>
     <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Nierozpoznane typy zdarzeń: %1$d</string>
     <string name="pref_Tools_Events_Import_result_EventsSkipped">Pominięte zdarzenia: %1$d</string>
@@ -1350,6 +1349,7 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="facts_popup_action_next_fact">⏩ Następny</string>
     <string name="facts_popup_action_share">📤 Udostępnij</string>
     <string name="facts_popup_empty">Pula faktów jest pusta</string>
+    <string name="popup_events_title">Wydarzenie (%1$d z %2$d)</string>
 
     <string name="local_event_date_picker_use_year">Podaj rok</string>
     <string name="local_event_date_picker_week_day">Dzień tygodnia: %1$s</string>

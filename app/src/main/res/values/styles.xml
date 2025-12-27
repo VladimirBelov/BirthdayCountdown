@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2025, 10:37
+  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.12.2025, 10:17
+  ~  * Last modified 27.12.2025, 11:40
   ~  */
   -->
 
@@ -27,28 +27,29 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/theme_green_secondary</item>
+        <item name="borderCardColor">@color/theme_green_primary</item>
         <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/light_green</item> <!-- Цвет вторичных элементов: переключатели в настройках и.т.п. -->
         <item name="colorPrimary">@color/theme_green_primary</item> <!-- Основной цвет: заголовки окон -->
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item> <!-- Цвет статусной строки -->
+        <item name="dialogBackgroundColor">@color/theme_green_secondary</item>
+        <item name="dialogButtonBackgroundColor">@color/theme_green_secondary</item>
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray_darker</item>
-        <item name="dialogTextColor">@color/theme_black_primary</item>
-        <item name="dialogBackgroundColor">@color/theme_green_secondary</item>
         <item name="dialogPanelsBackgroundColor">@color/theme_green_panels</item>
+        <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="editTextBackgroundCustom">@color/theme_green_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
         <item name="eventDistanceColor">@color/light_gray_darker</item>
         <item name="eventFullNameColor">@color/theme_grey_primary</item>
+        <item name="gradientEndColor">@color/theme_green_status_transp</item>
+        <item name="gradientStartColor">@color/theme_green_secondary</item>
         <item name="listDividerColor">@color/theme_green_status_transp</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_green_status</item>
         <item name="windowTitleColor">@color/white</item>
-        <item name="windowEditHintColor">@color/lighter_gray</item>
-        <item name="borderCardColor">@color/theme_green_primary</item>
-        <item name="gradientStartColor">@color/theme_green_secondary</item>
-        <item name="gradientEndColor">@color/theme_green_status_transp</item>
-        <item name="editTextBackgroundCustom">@color/theme_green_secondary</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.Green" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -104,28 +105,29 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/lighter_gray</item>
+        <item name="borderCardColor">@color/light_gray</item>
         <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/light_gray</item>
         <item name="colorPrimary">@color/theme_grey_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
+        <item name="dialogBackgroundColor">@color/theme_grey_primary</item>
+        <item name="dialogButtonBackgroundColor">@color/medium_dark_gray_trans_25</item>
         <item name="dialogButtonColor">@color/lighter_gray</item>
         <item name="dialogHintColor">@color/light_gray</item>
-        <item name="dialogTextColor">@color/lighter_gray</item>
-        <item name="dialogBackgroundColor">@color/theme_grey_primary</item>
         <item name="dialogPanelsBackgroundColor">@color/theme_grey_panels</item>
+        <item name="dialogTextColor">@color/lighter_gray</item>
+        <item name="editTextBackgroundCustom">@color/theme_grey_primary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
         <item name="eventDistanceColor">@color/light_gray_darker</item>
         <item name="eventFullNameColor">@color/theme_grey_primary</item>
+        <item name="gradientEndColor">@color/light_gray</item>
+        <item name="gradientStartColor">@color/lighter_gray</item>
         <item name="listDividerColor">@color/light_gray_transp</item>
+        <item name="windowEditHintColor">@color/light_gray</item>
         <item name="windowStatusbarColor">@color/medium_dark_gray</item>
         <item name="windowTitleColor">@color/lighter_gray</item>
-        <item name="windowEditHintColor">@color/light_gray</item>
-        <item name="borderCardColor">@color/light_gray</item>
-        <item name="gradientStartColor">@color/lighter_gray</item>
-        <item name="gradientEndColor">@color/light_gray</item>
-        <item name="editTextBackgroundCustom">@color/theme_grey_primary</item>
     </style>
 
     <!--https://stackoverflow.com/questions/24652964/android-popup-menu-text-color-appcompat-->
@@ -177,29 +179,30 @@
         <item name="android:textColorPrimary">@color/text_color_primary_dark</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_dark</item>
         <item name="backgroundColor">@color/theme_black_primary</item>
-        <item name="borderWindowColor">@color/lighter_gray</item>
         <item name="borderCardColor">@color/light_gray</item>
+        <item name="borderWindowColor">@color/lighter_gray</item>
         <item name="colorAccent">@color/lighter_gray</item>
         <item name="colorPrimary">@color/theme_black_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
+        <item name="dialogBackgroundColor">@color/theme_black_primary</item>
+        <item name="dialogButtonBackgroundColor">@color/theme_black_primary</item>
         <item name="dialogButtonColor">@color/lighter_gray</item>
         <item name="dialogHintColor">@color/light_gray</item>
-        <item name="dialogTextColor">@color/lighter_gray</item>
-        <item name="dialogBackgroundColor">@color/theme_black_primary</item>
         <item name="dialogPanelsBackgroundColor">@color/theme_black_panels</item>
+        <item name="dialogTextColor">@color/lighter_gray</item>
+        <item name="editTextBackgroundCustom">@color/theme_black_primary</item>
         <item name="eventAgeColor">@color/lighter_gray</item>
         <item name="eventDateColor">@color/light_gray</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
         <item name="eventDistanceColor">@color/light_gray</item>
         <item name="eventFullNameColor">@color/lighter_gray</item>
-        <item name="gradientStartColor">@color/medium_dark_gray</item>
         <item name="gradientEndColor">@color/theme_black_primary</item>
+        <item name="gradientStartColor">@color/medium_dark_gray</item>
         <item name="listDividerColor">@color/light_gray_transp</item>
+        <item name="windowEditHintColor">@color/light_gray</item>
         <item name="windowNavbarDividerColor">@color/medium_dark_gray_trans_25</item>
         <item name="windowStatusbarColor">@color/theme_black_primary</item>
         <item name="windowTitleColor">@color/lighter_gray</item>
-        <item name="windowEditHintColor">@color/light_gray</item>
-        <item name="editTextBackgroundCustom">@color/theme_black_primary</item>
     </style>
 
     <!-- Чёрная тема без панели действий -->
@@ -248,28 +251,29 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/theme_blue_secondary</item>
+        <item name="borderCardColor">@color/theme_blue_primary</item>
         <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/theme_blue_primary</item>
         <item name="colorPrimary">@color/theme_blue_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
+        <item name="dialogBackgroundColor">@color/theme_blue_secondary</item>
+        <item name="dialogButtonBackgroundColor">@color/theme_blue_secondary</item>
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray_darker</item>
-        <item name="dialogTextColor">@color/theme_black_primary</item>
-        <item name="dialogBackgroundColor">@color/theme_blue_secondary</item>
         <item name="dialogPanelsBackgroundColor">@color/theme_blue_panels</item>
+        <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="editTextBackgroundCustom">@color/theme_blue_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
         <item name="eventDistanceColor">@color/light_gray_darker</item>
         <item name="eventFullNameColor">@color/theme_grey_primary</item>
+        <item name="gradientEndColor">@color/dark_blue_transp</item>
+        <item name="gradientStartColor">@color/light_blue_transp</item>
         <item name="listDividerColor">@color/medium_dark_gray_trans_25</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_blue_status</item>
         <item name="windowTitleColor">@color/white</item>
-        <item name="windowEditHintColor">@color/lighter_gray</item>
-        <item name="borderCardColor">@color/theme_blue_primary</item>
-        <item name="gradientStartColor">@color/light_blue_transp</item>
-        <item name="gradientEndColor">@color/dark_blue_transp</item>
-        <item name="editTextBackgroundCustom">@color/theme_blue_secondary</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.Blue" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -327,11 +331,13 @@
         <item name="colorAccent">@color/blue_gray_light</item>
         <item name="colorPrimary">@color/theme_blue_gray_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
+        <item name="dialogBackgroundColor">@color/theme_blue_gray_secondary</item>
+        <item name="dialogButtonBackgroundColor">@color/theme_blue_gray_secondary</item>
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray</item>
-        <item name="dialogTextColor">@color/theme_black_primary</item>
-        <item name="dialogBackgroundColor">@color/theme_blue_gray_secondary</item>
         <item name="dialogPanelsBackgroundColor">@color/theme_blue_gray_panels</item>
+        <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="editTextBackgroundCustom">@color/theme_blue_gray_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
@@ -340,10 +346,9 @@
         <item name="gradientEndColor">@color/blue_gray_gradient1</item>
         <item name="gradientStartColor">@color/theme_blue_gray_secondary</item>
         <item name="listDividerColor">@color/theme_blue_gray_status_transp</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_blue_gray_status</item>
         <item name="windowTitleColor">@color/white</item>
-        <item name="windowEditHintColor">@color/lighter_gray</item>
-        <item name="editTextBackgroundCustom">@color/theme_blue_gray_secondary</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.BlueGrey" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -396,28 +401,29 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/theme_orange_secondary</item>
+        <item name="borderCardColor">@color/theme_orange_primary_transp</item>
         <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/theme_orange_primary</item>
         <item name="colorPrimary">@color/theme_orange_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
+        <item name="dialogBackgroundColor">@color/theme_orange_secondary</item>
+        <item name="dialogButtonBackgroundColor">@color/theme_orange_secondary</item>
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray_darker</item>
-        <item name="dialogTextColor">@color/theme_black_primary</item>
-        <item name="dialogBackgroundColor">@color/theme_orange_secondary</item>
         <item name="dialogPanelsBackgroundColor">@color/theme_orange_panels</item>
+        <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="editTextBackgroundCustom">@color/theme_orange_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
         <item name="eventDistanceColor">@color/light_gray_darker</item>
         <item name="eventFullNameColor">@color/theme_grey_primary</item>
+        <item name="gradientEndColor">@color/theme_orange_status_transp</item>
+        <item name="gradientStartColor">@color/theme_orange_secondary</item>
         <item name="listDividerColor">@color/theme_orange_status_transp</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_orange_status</item>
         <item name="windowTitleColor">@color/white</item>
-        <item name="windowEditHintColor">@color/lighter_gray</item>
-        <item name="borderCardColor">@color/theme_orange_primary_transp</item>
-        <item name="gradientStartColor">@color/theme_orange_secondary</item>
-        <item name="gradientEndColor">@color/theme_orange_status_transp</item>
-        <item name="editTextBackgroundCustom">@color/theme_orange_secondary</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.Orange" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -473,28 +479,29 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/theme_teal_secondary</item>
+        <item name="borderCardColor">@color/theme_teal_primary</item>
         <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/theme_teal_primary</item>
         <item name="colorPrimary">@color/theme_teal_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
+        <item name="dialogBackgroundColor">@color/theme_teal_secondary</item>
+        <item name="dialogButtonBackgroundColor">@color/theme_teal_secondary</item>
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray_darker</item>
-        <item name="dialogTextColor">@color/theme_black_primary</item>
-        <item name="dialogBackgroundColor">@color/theme_teal_secondary</item>
         <item name="dialogPanelsBackgroundColor">@color/theme_teal_panels</item>
+        <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="editTextBackgroundCustom">@color/theme_teal_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
         <item name="eventDistanceColor">@color/light_gray_darker</item>
         <item name="eventFullNameColor">@color/theme_grey_primary</item>
+        <item name="gradientEndColor">@color/theme_teal_status_transp</item>
+        <item name="gradientStartColor">@color/theme_teal_secondary</item>
         <item name="listDividerColor">@color/theme_teal_status_transp</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_teal_status</item>
         <item name="windowTitleColor">@color/white</item>
-        <item name="windowEditHintColor">@color/lighter_gray</item>
-        <item name="borderCardColor">@color/theme_teal_primary</item>
-        <item name="gradientStartColor">@color/theme_teal_secondary</item>
-        <item name="gradientEndColor">@color/theme_teal_status_transp</item>
-        <item name="editTextBackgroundCustom">@color/theme_teal_secondary</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.Teal" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -550,28 +557,29 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/theme_brown_secondary</item>
+        <item name="borderCardColor">@color/theme_brown_primary_transp</item>
         <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/theme_brown_primary</item>
         <item name="colorPrimary">@color/theme_brown_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
+        <item name="dialogBackgroundColor">@color/theme_brown_secondary</item>
+        <item name="dialogButtonBackgroundColor">@color/theme_brown_secondary</item>
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray_darker</item>
-        <item name="dialogTextColor">@color/theme_black_primary</item>
-        <item name="dialogBackgroundColor">@color/theme_brown_secondary</item>
         <item name="dialogPanelsBackgroundColor">@color/theme_brown_panels</item>
+        <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="editTextBackgroundCustom">@color/theme_brown_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
         <item name="eventDistanceColor">@color/light_gray_darker</item>
         <item name="eventFullNameColor">@color/theme_grey_primary</item>
+        <item name="gradientEndColor">@color/theme_brown_status_transp</item>
+        <item name="gradientStartColor">@color/theme_brown_secondary</item>
         <item name="listDividerColor">@color/theme_brown_status_transp</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_brown_status</item>
         <item name="windowTitleColor">@color/white</item>
-        <item name="windowEditHintColor">@color/lighter_gray</item>
-        <item name="borderCardColor">@color/theme_brown_primary_transp</item>
-        <item name="gradientStartColor">@color/theme_brown_secondary</item>
-        <item name="gradientEndColor">@color/theme_brown_status_transp</item>
-        <item name="editTextBackgroundCustom">@color/theme_brown_secondary</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.Brown" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -627,28 +635,29 @@
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
         <item name="backgroundColor">@color/theme_indigo_secondary</item>
+        <item name="borderCardColor">@color/theme_indigo_primary_transp</item>
         <item name="borderWindowColor">?attr/windowStatusbarColor</item>
         <item name="colorAccent">@color/theme_indigo_primary</item>
         <item name="colorPrimary">@color/theme_indigo_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
+        <item name="dialogBackgroundColor">@color/theme_indigo_secondary</item>
+        <item name="dialogButtonBackgroundColor">@color/theme_indigo_secondary</item>
         <item name="dialogButtonColor">@color/theme_black_primary</item>
         <item name="dialogHintColor">@color/light_gray_darker</item>
-        <item name="dialogTextColor">@color/theme_black_primary</item>
-        <item name="dialogBackgroundColor">@color/theme_indigo_secondary</item>
         <item name="dialogPanelsBackgroundColor">@color/theme_indigo_panels</item>
+        <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="editTextBackgroundCustom">@color/theme_indigo_secondary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
         <item name="eventDistanceColor">@color/light_gray_darker</item>
         <item name="eventFullNameColor">@color/theme_grey_primary</item>
+        <item name="gradientEndColor">@color/theme_indigo_status_transp</item>
+        <item name="gradientStartColor">@color/theme_indigo_secondary</item>
         <item name="listDividerColor">@color/theme_indigo_status_transp</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_indigo_status</item>
         <item name="windowTitleColor">@color/white</item>
-        <item name="windowEditHintColor">@color/lighter_gray</item>
-        <item name="borderCardColor">@color/theme_indigo_primary_transp</item>
-        <item name="gradientStartColor">@color/theme_indigo_secondary</item>
-        <item name="gradientEndColor">@color/theme_indigo_status_transp</item>
-        <item name="editTextBackgroundCustom">@color/theme_indigo_secondary</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.Indigo" parent="@android:style/TextAppearance.Widget.IconMenu.Item">

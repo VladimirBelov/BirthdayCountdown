@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2025, 10:37
+  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.12.2025, 00:44
+  ~  * Last modified 27.12.2025, 13:48
   ~  */
   -->
 
@@ -1197,7 +1197,6 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="pref_Tools_Events_Import_result">Importováno událostí: %1$d</string>
     <string name="pref_Tools_Events_Import_result_noAccess">🚫 Soubor je prázdný nebo k němu není přístup</string>
     <string name="pref_Tools_Events_Import_result_noEvents">🚫 Události nenalezeny</string>
-    <string name="pref_Tools_Events_Import_result_notSupported">🛑 Zatím nepodporováno</string>
     <string name="pref_Tools_Events_Import_result_EventsFound">Nalezené události: %1$d</string>
     <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Typy událostí nerozpoznané: %1$d</string>
     <string name="pref_Tools_Events_Import_result_EventsSkipped">Přeskočené události: %1$d</string>
@@ -1352,6 +1351,7 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="facts_popup_action_next_fact">⏩ Další</string>
     <string name="facts_popup_action_share">📤 Sdílet</string>
     <string name="facts_popup_empty">Soubor faktů je prázdný</string>
+    <string name="popup_events_title">Událost (%1$d z %2$d)</string>
 
     <string name="local_event_date_picker_use_year">Uveďte rok</string>
     <string name="local_event_date_picker_week_day">Den v týdnu: %1$s</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.12.2025, 21:21
+  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 22.12.2025, 20:38
+  ~  * Last modified 27.12.2025, 13:46
   ~  */
   -->
 
@@ -21,6 +21,7 @@
         <item>Suche nach Referenzinformationen hinzugefügt</item>
         <item>🏖️ Feiertage für 2026 hinzugefügt</item>
         <item>Anstehende Ereignisse werden zuerst aufgelistet; vergangene Ereignisse werden oben in der Liste ausgeblendet</item>
+        <item>Durch Klicken auf eine Benachrichtigung mit mehreren Ereignissen wird ein Dialogfeld zum Anzeigen der Ereignisse (mit der Option zum Teilen) angezeigt</item>
         <item>Fehlerbehebungen</item>
 
         <item>#1.8.8</item>

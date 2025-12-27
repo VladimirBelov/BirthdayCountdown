@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.12.2025, 21:21
+  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 22.12.2025, 20:37
+  ~  * Last modified 27.12.2025, 13:45
   ~  */
   -->
 
@@ -20,6 +20,7 @@
         <item>Adicionada busca por informações de referência</item>
         <item>🏖️ Adicionados feriados para 2026</item>
         <item>Os próximos eventos são listados primeiro; os eventos passados ficam ocultos no topo da lista</item>
+        <item>Ao clicar em uma notificação com vários eventos, uma caixa de diálogo será exibida para visualizar os eventos (com a opção de compartilhar)</item>
         <item>Correções de bugs</item>
 
         <item>#1.8.8</item>

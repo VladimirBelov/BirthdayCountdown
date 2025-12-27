@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2025, 10:37
+  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.12.2025, 00:44
+  ~  * Last modified 27.12.2025, 13:48
   ~  */
   -->
 
@@ -1197,7 +1197,6 @@ Long click on item to select color"</string>
     <string name="pref_Tools_Events_Import_result">Events imported: %1$d</string>
     <string name="pref_Tools_Events_Import_result_noAccess">🚫 File is empty or no access</string>
     <string name="pref_Tools_Events_Import_result_noEvents">🚫 Events not found</string>
-    <string name="pref_Tools_Events_Import_result_notSupported">🛑 Not supported yet</string>
     <string name="pref_Tools_Events_Import_result_EventsFound">Events found: %1$d</string>
     <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Events types unrecognized: %1$d</string>
     <string name="pref_Tools_Events_Import_result_EventsSkipped">Events skipped: %1$d</string>
@@ -1352,6 +1351,7 @@ Long click on item to select color"</string>
     <string name="facts_popup_action_next_fact">⏩ Next one</string>
     <string name="facts_popup_action_share">📤 Share</string>
     <string name="facts_popup_empty">The facts pool is empty</string>
+    <string name="popup_events_title">Event (%1$d of %2$d)</string>
 
     <string name="local_event_date_picker_use_year">Provide year</string>
     <string name="local_event_date_picker_week_day">Weekday: %1$s</string>

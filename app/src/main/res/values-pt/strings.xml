@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2025, 10:37
+  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.12.2025, 00:46
+  ~  * Last modified 27.12.2025, 13:48
   ~  */
   -->
 
@@ -1197,7 +1197,6 @@ Clique longamente no item para selecionar a cor"</string>
     <string name="pref_Tools_Events_Import_result">Eventos importados: %1$d</string>
     <string name="pref_Tools_Events_Import_result_noAccess">🚫 Arquivo vazio ou sem acesso</string>
     <string name="pref_Tools_Events_Import_result_noEvents">🚫 Eventos não encontrados</string>
-    <string name="pref_Tools_Events_Import_result_notSupported">🛑 Ainda não suportado</string>
     <string name="pref_Tools_Events_Import_result_EventsFound">Eventos encontrados: %1$d</string>
     <string name="pref_Tools_Events_Import_result_EventsUnrecognized">Tipos de eventos não reconhecidos: %1$d</string>
     <string name="pref_Tools_Events_Import_result_EventsSkipped">Eventos ignorados: %1$d</string>
@@ -1351,6 +1350,7 @@ Clique longamente no item para selecionar a cor"</string>
     <string name="facts_popup_action_next_fact">⏩ Próximo</string>
     <string name="facts_popup_action_share">📤 Compartilhar</string>
     <string name="facts_popup_empty">O pool de fatos está vazio</string>
+    <string name="popup_events_title">Evento (%1$d de %2$d)</string>
 
     <string name="local_event_date_picker_use_year">Fornecer ano</string>
     <string name="local_event_date_picker_week_day">Dia da semana: %1$s</string>

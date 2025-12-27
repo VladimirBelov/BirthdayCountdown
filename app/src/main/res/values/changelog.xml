@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.12.2025, 21:21
+  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
   ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 22.12.2025, 20:35
+  ~  * Last modified 27.12.2025, 13:47
   ~  */
   -->
 
@@ -21,6 +21,7 @@
         <item>Added search for reference information</item>
         <item>🏖️ Added holidays for 2026</item>
         <item>Upcoming events are listed first; past events are hidden at the top of the list</item>
+        <item>Clicking on a notification with multiple events displays a dialog for viewing events (with the option to share)</item>
         <item>Bug fixes</item>
 
         <item>#1.8.8</item>
