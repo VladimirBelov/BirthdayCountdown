@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 23:42
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 22:21
+ *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 18:14
  *
  */
 
@@ -106,6 +106,7 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
@@ -213,7 +214,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     eventsData.getPreferences();
                     //todo: проверить для 13+
                     if ((eventsData.preferences_notifications_ringtone.contains(Constants.PATH_MEDIA_EXTERNAL) || eventsData.preferences_notifications2_ringtone.contains(Constants.PATH_MEDIA_EXTERNAL)) &&
-                            eventsData.checkNoStorageAccess()) {
+                            DeviceTools.checkNoStorageAccess(this)) {
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
@@ -416,16 +417,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Tools_Events_key, R.string.pref_Tools_Events_Import_key);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-                hidePreference(eventsData.checkNoBatteryOptimization(), R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
+                hidePreference(DeviceTools.checkNoBatteryOptimization(this), R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
                 hidePreference(true, R.string.pref_Help_key, R.string.pref_Help_ExactAlarmsAccess_key);
             } else {
-                hidePreference(eventsData.checkCanExactAlarm(), R.string.pref_Help_key, R.string.pref_Help_ExactAlarmsAccess_key);
+                hidePreference(DeviceTools.checkCanExactAlarm(this), R.string.pref_Help_key, R.string.pref_Help_ExactAlarmsAccess_key);
                 hidePreference(true, R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
             }
-            hidePreference(!eventsData.preferences_extrafun || eventsData.checkNoContactsAccess() || eventsData.checkNoCalendarAccess(), R.string.pref_Help_key, R.string.pref_Help_CalendarSync_key);
-            hidePreference(!eventsData.checkNoNotificationAccess(), R.string.pref_Help_key, R.string.pref_Help_NotificationsAccess_key);
-            hidePreference(!eventsData.checkNoContactsAccess(), R.string.pref_Help_key, R.string.pref_Help_ContactsAccess_key);
-            hidePreference(!eventsData.checkNoCalendarAccess(), R.string.pref_Help_key, R.string.pref_Help_CalendarAccess_key);
+            hidePreference(!eventsData.preferences_extrafun || DeviceTools.checkNoContactsAccess(this) || DeviceTools.checkNoCalendarAccess(this), R.string.pref_Help_key, R.string.pref_Help_CalendarSync_key);
+            hidePreference(!DeviceTools.checkNoNotificationAccess(this), R.string.pref_Help_key, R.string.pref_Help_NotificationsAccess_key);
+            hidePreference(!DeviceTools.checkNoContactsAccess(this), R.string.pref_Help_key, R.string.pref_Help_ContactsAccess_key);
+            hidePreference(!DeviceTools.checkNoCalendarAccess(this), R.string.pref_Help_key, R.string.pref_Help_CalendarAccess_key);
             hidePreference(Build.VERSION.SDK_INT < Build.VERSION_CODES.O, R.string.pref_Widgets_key, R.string.pref_Widgets_AddWidget_key);
 
             //Уведомления
@@ -761,7 +762,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         try {
 
             StringBuilder valueBuilder = new StringBuilder();
-            if (eventsData.map_calendars.isEmpty()) eventsData.fillCalendarList();
+            if (eventsData.map_calendars.isEmpty()) AppDateUtils.fillCalendarList(eventsData.getContext(), eventsData.map_calendars, eventsData.map_calendars_colors);
             int prefKey = 0;
             Set<String> calendars = null;
 
@@ -796,7 +797,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         String calData = eventsData.map_calendars.get(id);
                         if (calData != null) {
                             if (valueBuilder.length() > 0) valueBuilder.append(Constants.STRING_EOL);
-                            String[] calInfo = ContactsEvents.getKeyParts(calData);
+                            String[] calInfo = StringUtils.getKeyParts(calData);
                             valueBuilder.append(calInfo[0]);
                         } else valueBuilder.append(id);
                     }
@@ -1286,7 +1287,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Accounts_key).equals(key)) { //Аккаунты
 
-                if (eventsData.checkNoContactsAccess()) {
+                if (DeviceTools.checkNoContactsAccess(this)) {
                     requestContactsPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
                     //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS);
                     return true;
@@ -1318,7 +1319,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)) { //Календари (Дни рождения)
 
                 this.eventTypeForSelect = Constants.EventType_BirthDay;
-                if (eventsData.checkNoCalendarAccess()) {
+                if (DeviceTools.checkNoCalendarAccess(this)) {
 
                     requestCalendarPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
 
@@ -1333,7 +1334,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 this.eventTypeForSelect = Constants.EventType_Other;
 
-                if (eventsData.checkNoCalendarAccess()) {
+                if (DeviceTools.checkNoCalendarAccess(this)) {
 
                     requestCalendarPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
 
@@ -1346,7 +1347,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 this.eventTypeForSelect = Constants.EventType_Holiday;
 
-                if (eventsData.checkNoCalendarAccess()) {
+                if (DeviceTools.checkNoCalendarAccess(this)) {
 
                     requestCalendarPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
 
@@ -1359,7 +1360,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 this.eventTypeForSelect = Constants.Type_MultiEvent;
 
-                if (eventsData.checkNoCalendarAccess()) {
+                if (DeviceTools.checkNoCalendarAccess(this)) {
 
                     requestCalendarPermission(Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR);
 
@@ -1673,7 +1674,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 try {
                     String[] eventsPack = getResources().getStringArray(packId);
 
-                    eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceFactPrefix + eventsPack[0]));
+                    eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceFactPrefix + eventsPack[0]));
                     eventSourcesTitles.add(eventsPack[0]);
 
                 } catch (Resources.NotFoundException ignored) { /**/ }
@@ -1742,7 +1743,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 try {
                     String[] eventsPack = getResources().getStringArray(packId);
 
-                    eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
+                    eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
                     eventSourcesTitles.add(eventsPack[0]);
 
                 } catch (Resources.NotFoundException ignored) { /**/ }
@@ -1950,9 +1951,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     private void checkAndRequestNotificationAccess(ContactsEvents eventsData) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (eventsData.checkNoNotificationAccess()) {
+            if (DeviceTools.checkNoNotificationAccess(this)) {
                 String[] permissions;
-                if (!eventsData.checkCanExactAlarm()) {
+                if (!DeviceTools.checkCanExactAlarm(this)) {
                     permissions = new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.SCHEDULE_EXACT_ALARM};
                 } else {
                     permissions = new String[]{Manifest.permission.POST_NOTIFICATIONS};
@@ -1960,7 +1961,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 ActivityCompat.requestPermissions(this, permissions, Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS);
 
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
-                    && !eventsData.checkCanExactAlarm() && !eventsData.checkNoBatteryOptimization()) {
+                    && !DeviceTools.checkCanExactAlarm(eventsData.getContext()) && !DeviceTools.checkNoBatteryOptimization(eventsData.getContext())) {
 
                 //https://www.esper.io/blog/android-13-exact-alarm-api-restrictions
                 //https://stackoverflow.com/questions/77283995/schedule-exact-alarm-permission-not-granted-and-not-working
@@ -2150,7 +2151,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             List<String> choiceList = new ArrayList<>();
             ContactsEvents eventsData = ContactsEvents.getInstance();
 
-            if (!eventsData.checkNoContactsAccess()) {
+            if (!DeviceTools.checkNoContactsAccess(this)) {
                 //https://stackoverflow.com/questions/10657096/how-to-get-an-icon-associated-with-specific-account-from-accountmanager-getaccou
 
                 AuthenticatorDescription[] descriptions = AccountManager.get(this).getAuthenticatorTypes();
@@ -2462,7 +2463,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
 
-            eventsData.fillCalendarList();
+            AppDateUtils.fillCalendarList(eventsData.getContext(), eventsData.map_calendars, eventsData.map_calendars_colors);
 
             if (eventsData.map_calendars.isEmpty()) {
 
@@ -2487,16 +2488,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Set<String> preferences_calendars = eventsData.getPreferences_Calendars(eventType);
             for (Map.Entry<String,String> entry: eventsData.map_calendars.entrySet()) {
                 calIDs.add(entry.getKey());
-                String[] calInfo = ContactsEvents.getKeyParts(entry.getValue());
-                String calTitle = calInfo[0];
-                if (calInfo.length > 2 && calInfo[2].equals(Constants.STRING_0)) calTitle = calTitle + " 🚫";
+                String[] calendarInfo = StringUtils.getKeyParts(entry.getValue());
+                String calTitle = calendarInfo[0].concat(Constants.STRING_SPACE);
+                if (eventsData.preferences_extrafun) {
+                    if (calendarInfo.length > 2 && calendarInfo[2].equals(Constants.STRING_0))
+                        calTitle = calTitle + "🙈"; // Невидимый календарь
+                    if (calendarInfo.length > 3 && calendarInfo[3].equals(Constants.STRING_1))
+                        calTitle = calTitle + "🔒"; // Только для чтения
+                }
                 calTitles.add(
                         calTitle
-                                + Constants.STRING_BRACKETS_OPEN
+                                + Constants.STRING_BRACKETS_START
                                 + eventsData.getCalendarEventsCount(entry.getKey())
                                 + Constants.STRING_BRACKETS_CLOSE
                 );
-                String calId = ContactsEvents.getHash(Constants.eventSourceCalendarPrefix + entry.getKey());
+                String calId = StringUtils.getHash(Constants.eventSourceCalendarPrefix + entry.getKey());
                 if (eventsData.map_calendars_colors.containsKey(calId)) {
                     calColors.add(eventsData.map_calendars_colors.get(calId));
                 } else calColors.add(null);
@@ -4174,7 +4180,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     public void syncCalendars() {
         try {
 
-            if (eventsData.checkNoCalendarAccess()) return;
+            if (DeviceTools.checkNoCalendarAccess(this)) return;
 
             String authority = CalendarContract.Calendars.CONTENT_URI.getAuthority();
             AccountManager accountManager = AccountManager.get(getApplicationContext());

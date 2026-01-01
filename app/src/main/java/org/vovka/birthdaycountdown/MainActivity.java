@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 20:42
+ *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 18:01
  *
  */
 
@@ -1058,7 +1058,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (entryLayout != null) {
                 GradientDrawable drawableBack = new GradientDrawable();
                 drawableBack.setStroke((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics),
-                        ta.getColor(R.styleable.Theme_borderCardColor, ContextCompat.getColor(eventsData.getContext(), R.color.light_gray_darker)));
+                        ta.getColor(R.styleable.Theme_borderCardColor, ContextCompat.getColor(this, R.color.light_gray_darker)));
                 drawableBack.setCornerRadius(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, displayMetrics));
                 entryLayout.setBackground(drawableBack);
             }
@@ -1370,7 +1370,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 case 0: //при первом запуске показывать welcome screen
 
-                    if (eventsData.checkNoContactsAccess()) {
+                    if (DeviceTools.checkNoContactsAccess(eventsData.getContext())) {
                         //https://developer.android.com/training/permissions/requesting.html#java
                         swipeRefresh.setEnabled(false);
                         swipeRefresh.setRefreshing(false);
@@ -2576,7 +2576,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void showZeroEventsHints() {
         try {
             //Сообщение для тех, у кого не найдено ни одного события контактов
-            if (!triggeredMsgNoEvents && !eventsData.checkNoContactsAccess() && dataListFull.isEmpty()) {
+            if (!triggeredMsgNoEvents && !DeviceTools.checkNoContactsAccess(eventsData.getContext()) && dataListFull.isEmpty()) {
                 triggeredMsgNoEvents = true;
                 if (!eventsData.getPreferences_Accounts().isEmpty()
                         && !eventsData.getPreferences_Accounts().contains(Constants.account_none)

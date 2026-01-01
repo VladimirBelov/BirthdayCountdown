@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 20:42
+ *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 14:10
  *
  */
 
@@ -813,7 +813,7 @@ public class EventImporterActivity extends AppCompatActivity {
                             eventData.put(ContactsEvents.Position_eventSubType, String.valueOf(ContactsEvents.getEventTypeInt(subtypeStr)));
                         }
                     }
-                    eventData.put(ContactsEvents.Position_eventID, ContactsEvents.getHash(String.valueOf(System.currentTimeMillis())));
+                    eventData.put(ContactsEvents.Position_eventID, StringUtils.getHash(String.valueOf(System.currentTimeMillis())));
                     eventData.put(ContactsEvents.Position_eventCaption, Constants.STRING_EMPTY);
                     eventData.put(ContactsEvents.Position_eventIcon, Constants.STRING_EMPTY);
                     eventData.put(ContactsEvents.Position_eventEmoji, Constants.STRING_EMPTY);

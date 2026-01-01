@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.12.2025, 13:49
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.12.2025, 13:18
+ *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 18:08
  *
  */
 
@@ -49,7 +49,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.Looper;
-import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
@@ -91,6 +90,7 @@ import androidx.core.graphics.drawable.IconCompat;
 import androidx.core.text.HtmlCompat;
 
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
+import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
 
@@ -609,16 +609,21 @@ public class ContactsEvents {
     }
     static final int themeEditText_default = R.style.EditText_Default;
 
-    static class ColumnIndexCache implements AutoCloseable {
+    public static class ColumnIndexCache implements AutoCloseable {
         //https://android.jlelse.eu/using-a-cache-to-optimize-data-retrieval-from-cursors-56f9eaa1e0d2
 
         final private HashMap<String, Integer> mMap = new HashMap<>();
 
-        int getColumnIndex(Cursor cursor, String columnName) {
+        /** Возвращает номер колонки
+         * @param cursor Курсор
+         * @param columnName Название колонки
+         * @return Номер колонки или -1
+         */
+        public int getColumnIndex(Cursor cursor, String columnName) {
             if (!mMap.containsKey(columnName))
                 mMap.put(columnName, cursor.getColumnIndex(columnName));
             Integer ind = mMap.get(columnName);
-            return ind != null ? ind : 0;
+            return ind != null ? ind : -1;
         }
 
         void clear() {
@@ -2236,7 +2241,7 @@ public class ContactsEvents {
 
         try {
 
-            if (checkNoContactsAccess()) return false;
+            if (DeviceTools.checkNoContactsAccess(context)) return false;
             if (preferences_Accounts.contains(Constants.account_none)) return false;
 
             long statCurrentModuleStart = System.currentTimeMillis();
@@ -2515,7 +2520,7 @@ public class ContactsEvents {
     int getContactsEventsCount(String accountType, String accountName) {
 
         int count = 0;
-        if (checkNoContactsAccess()) return count;
+        if (DeviceTools.checkNoContactsAccess(context)) return count;
 
         try {
 
@@ -2555,7 +2560,7 @@ public class ContactsEvents {
     int getCalendarEventsCount(String calID) {
 
         int count = 0;
-        if (checkNoCalendarAccess()) return count;
+        if (DeviceTools.checkNoCalendarAccess(context)) return count;
 
         try {
 
@@ -2946,7 +2951,7 @@ public class ContactsEvents {
                 }
 
                 String newEventDate = accountType + Constants.STRING_COLON_SPACE + eventDateStr + Constants.STRING_COLON_SPACE
-                        + getHash(((!accountType.equals(Constants.STRING_NULL) && !accountType.equals(accountName)) ? Constants.eventSourceContactPrefix : Constants.eventSourcePhonePrefix) + accountKey);
+                        + StringUtils.getHash(((!accountType.equals(Constants.STRING_NULL) && !accountType.equals(accountName)) ? Constants.eventSourceContactPrefix : Constants.eventSourcePhonePrefix) + accountKey);
 
                 if (!eventKey_next.equalsIgnoreCase(eventKey_current)) { //Начало данных нового контакта
 
@@ -3050,14 +3055,14 @@ public class ContactsEvents {
         long statCurrentModuleStart = System.currentTimeMillis();
         try (ColumnIndexCache cache = new ColumnIndexCache()) {
 
-            if (checkNoCalendarAccess()) return false;
+            if (DeviceTools.checkNoCalendarAccess(context)) return false;
 
             Set<String> preferences_calendars = getPreferences_Calendars(eventType);
             if (preferences_calendars.isEmpty()) return false;
 
             Event event = new Event();
 
-            if (map_calendars.isEmpty()) fillCalendarList();
+            if (map_calendars.isEmpty()) AppDateUtils.fillCalendarList(context, map_calendars, map_calendars_colors);
 
             //https://stackoverflow.com/questions/25734285/how-to-get-the-real-time-of-recurring-events
             //https://stackoverflow.com/questions/10133616/reading-all-of-todays-events-using-calendarcontract-android-4-0
@@ -3160,7 +3165,7 @@ public class ContactsEvents {
             if (cursor != null) {
                 if (cursor.getCount() > 0) {
                     while (cursor.moveToNext()) {
-                        counterTotalAddedEvents += getCalendarEventsFromCursor(cursor, cache, zoneOffset, dateRubicon, endPeriod,
+                        counterTotalAddedEvents += addCalendarEventsFromCursor(cursor, cache, zoneOffset, dateRubicon, endPeriod,
                                 useEventYear, isMultiTypeSource, event, matcherNameAndTypes, matcherTypes, matcherTypeAndNames, matcherNames);
                     }
                 }
@@ -3199,7 +3204,7 @@ public class ContactsEvents {
      * @param matcherNames        Правила распознавания ИМЯ
      * @return Количество добавленных событий
      */
-    private int getCalendarEventsFromCursor(@NonNull Cursor cursor, @NonNull ColumnIndexCache cache, int zoneOffset,
+    private int addCalendarEventsFromCursor(@NonNull Cursor cursor, @NonNull ColumnIndexCache cache, int zoneOffset,
                                             @NonNull Calendar dateRubicon, @NonNull Calendar endPeriod,
                                             boolean useEventYear, boolean isMultiTypeSource, Event event,
                                             List<Matcher> matcherNameAndTypes, List<Matcher> matcherTypes,
@@ -3214,17 +3219,20 @@ public class ContactsEvents {
             int importMethod_NewContactEvent = 1; //Контакт найден, но у него нет данных о событии этого типа - обновляем событие по карточке контакта
             int importMethod_AdditionalDateToContactEvent = 2; //Контакт найден, у него есть такое же событие - добавляем к источникам дат ещё одно значение
             String calendarId = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.CALENDAR_ID));
-            String calendarTitle = map_calendars.get(calendarId);
+            String calendarInfoString = map_calendars.get(calendarId);
 
-            final String eventSource = calendarTitle != null
-                    ? getResources().getString(R.string.msg_calendar_info, getKeyParts(calendarTitle)[0])
+            final String eventSource = calendarInfoString != null
+                    ? getResources().getString(R.string.msg_calendar_info, StringUtils.getKeyParts(calendarInfoString)[0])
                     : getResources().getString(R.string.event_type_calendar);
             Calendar dateStartNextTime = AppDateUtils.getCalendarFromDate(new Date(StringUtils.parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.BEGIN)))));
             Calendar dateEndNextTime = AppDateUtils.getCalendarFromDate(new Date(StringUtils.parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.END)))));
             Calendar dateFirstTime = AppDateUtils.getCalendarFromDate(new Date(StringUtils.parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.DTSTART)))));
             final TreeMap<Integer, String> eventData = new TreeMap<>();
 
+            boolean isAllDayEvent = false;
             if (cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Events.ALL_DAY)) == 1) {
+                isAllDayEvent = true;
+
                 //У AllDay событий зона всегда UTC
                 dateFirstTime.add(Calendar.MILLISECOND, -zoneOffset);
                 dateStartNextTime.add(Calendar.MILLISECOND, -zoneOffset);
@@ -3316,11 +3324,29 @@ public class ContactsEvents {
 
             if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && event.icon == R.drawable.ic_event_unknown) return 0;
 
+            //Если:
+            // событие на весь день
+            // год начала и окончания события совпадают
+            // тип события "Праздник" или "Другое событие"
+            // календарь "только для чтения"
+            // - считаем, что это событие без начальной даты
+            if (isAllDayEvent
+                    && calendarInfoString != null
+                    && dateFirstTime.get(Calendar.YEAR) == dateEndNextTime.get(Calendar.YEAR)
+                    && (Objects.equals(event.type, Constants.EventType_Other) || Objects.equals(event.type, Constants.EventType_Holiday))
+            ) {
+
+                String[] calendarInfo = StringUtils.getKeyParts(calendarInfoString);
+                if (calendarInfo.length > 3 && calendarInfo[3].equals(Constants.STRING_1)) {
+                    event.useEventYear = false;
+                }
+            }
+
             do {
                 eventData.clear();
                 final String eventNewDate = Constants.EVENT_PREFIX_CALENDAR_EVENT + Constants.STRING_COLON_SPACE
                         + (event.useEventYear ? sdf_java.format(dateFirstTime.getTime()) : sdf_java_no_year.format(dateFirstTime.getTime())) + Constants.STRING_COLON_SPACE
-                        + getHash(Constants.eventSourceCalendarPrefix + calendarId);
+                        + StringUtils.getHash(Constants.eventSourceCalendarPrefix + calendarId);
                 int importMethod = importMethod_Standalone;
                 final String eventID = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.EVENT_ID));
                 idsAllCalendarEvents.add(eventID);
@@ -3631,7 +3657,7 @@ public class ContactsEvents {
                             String eventDates = Constants.EVENT_PREFIX_LOCAL_EVENT + Constants.STRING_COLON_SPACE
                                     + (eventUseYear ? eventIsBC ? sdf_java_G.format(dateEventFirstTime) : sdf_java.format(dateEventFirstTime) : sdf_java_no_year.format(dateEventFirstTime))
                                     + Constants.STRING_COLON_SPACE
-                                    + getHash(Constants.eventSourceLocalPrefix);
+                                    + StringUtils.getHash(Constants.eventSourceLocalPrefix);
 
                             int eventSubType = Constants.Type_BirthDay;
                             try {
@@ -3902,57 +3928,6 @@ public class ContactsEvents {
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return eventData;
-    }
-
-    void fillCalendarList() {
-
-        Cursor cursor = null;
-
-        try {
-
-            if (checkNoCalendarAccess()) return;
-
-            if (contentResolver == null) contentResolver = context.getContentResolver();
-            Uri uri = CalendarContract.Calendars.CONTENT_URI;
-            cursor = contentResolver.query(
-                    uri,
-                    new String[]{
-                            android.provider.BaseColumns._ID,
-                            CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
-                            CalendarContract.Calendars.ACCOUNT_NAME,
-                            CalendarContract.Calendars.CALENDAR_COLOR,
-                            CalendarContract.Calendars.VISIBLE
-                    },
-                    null,
-                    null,
-                    null);
-
-            if (cursor != null) {
-                if (cursor.getCount() > 0) {
-                    cursor.moveToFirst();
-                    for (int i = 0; i < cursor.getCount(); i++) {
-                        String calId = cursor.getString(0);
-                        map_calendars.put(calId, cursor.getString(1)
-                                .concat(Constants.STRING_EOT)
-                                .concat(cursor.getString(2))
-                                .concat(Constants.STRING_EOT)
-                                .concat(cursor.getString(4))
-                        );
-                        String calendarId = getHash(Constants.eventSourceCalendarPrefix.concat(calId));
-                        map_calendars_colors.put(calendarId, cursor.getInt(3));
-                        cursor.moveToNext();
-                    }
-                }
-                cursor.close();
-            }
-
-        } catch (SecurityException se) {
-            if (cursor != null && !cursor.isClosed()) cursor.close();
-        } catch (Exception e) {
-            if (cursor != null && !cursor.isClosed()) cursor.close();
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
     }
 
     void initNotifications() {
@@ -4250,7 +4225,7 @@ public class ContactsEvents {
                         eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
                                 + (useEventYear ? sdf_java.format(eventDateFirstTime) : sdf_java_no_year.format(eventDateFirstTime))
                                 + Constants.STRING_COLON_SPACE
-                                + getHash((isMultiTypeSource ? Constants.eventSourceMultiFilePrefix : Constants.eventSourceFilePrefix) + file);
+                                + StringUtils.getHash((isMultiTypeSource ? Constants.eventSourceMultiFilePrefix : Constants.eventSourceFilePrefix) + file);
 
                         eventDescription = eventDescription.replace(eventURL, Constants.STRING_EMPTY);
 
@@ -4258,7 +4233,7 @@ public class ContactsEvents {
                         String personFullNameNormalized = null;
                         String personFullNameAltNormalized = null;
                         String contactID = null;
-                        String eventID = Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle);
+                        String eventID = Constants.PREFIX_FileEventID + StringUtils.getHash(file.substring(indexFileNameEnd) + eventTitle);
 
                         eventData.put(Position_personFullName, eventTitle);
                         if (eventType.equals(Constants.EventType_BirthDay)) {
@@ -4603,11 +4578,11 @@ public class ContactsEvents {
             }
             if (preferences_list_prev_events_scan_distance == 0 && result.isPassedEvent) return; //Событие прошло и показ прошедших выключен
 
-            String eventID = Constants.PREFIX_FileEventID + getHash(file.substring(indexFileNameEnd) + eventTitle);
+            String eventID = Constants.PREFIX_FileEventID + StringUtils.getHash(file.substring(indexFileNameEnd) + eventTitle);
             eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
                     + (useEventYear ? isAD ? sdf_java.format(result.dateEvent) : sdf_java_G.format(result.dateEvent) : sdf_java_no_year.format(result.dateEvent))
                     + Constants.STRING_COLON_SPACE
-                    + getHash((isMultiTypeSource ? Constants.eventSourceMultiFilePrefix : Constants.eventSourceFilePrefix) + file);
+                    + StringUtils.getHash((isMultiTypeSource ? Constants.eventSourceMultiFilePrefix : Constants.eventSourceFilePrefix) + file);
 
             eventData.put(Position_eventStorage, Constants.STRING_STORAGE_FILE);
             eventData.put(Position_eventCaption, event.caption);
@@ -6313,7 +6288,7 @@ public class ContactsEvents {
 
             if (checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])) {
                 //Избранные для календарного виджета
-                final String packHash = getHash(Constants.eventSourceFavoritePrefix);
+                final String packHash = StringUtils.getHash(Constants.eventSourceFavoritePrefix);
                 final String eventTitle = Constants.eventTitleFavoritePrefix
                         .concat(singleEventArray[Position_eventCaption])
                         .concat(Constants.STRING_COLON_SPACE)
@@ -7391,7 +7366,7 @@ public class ContactsEvents {
                                     int prefSmallIconStyle, int randomFactsCount) {
         //https://startandroid.ru/ru/uroki/vse-uroki-spiskom/511-urok-186-notifications-rasshirennye-uvedomlenija.html
 
-        if (checkNoNotificationAccess()) return;
+        if (DeviceTools.checkNoNotificationAccess(context)) return;
 
         try {
 
@@ -8035,10 +8010,6 @@ public class ContactsEvents {
         return Constants.STRING_EMPTY;
     }
 
-    static String[] getKeyParts(@NonNull String eventKey) {
-        return eventKey.replace(Constants.STRING_2HASH, Constants.STRING_EOT).split(Constants.STRING_EOT, -1);
-    }
-
     void snoozeNotification(@NonNull String notifyData, String[] notifyDetails, String[] notifyActions, int snoozeHours, Date wakeDateTime) {
 
         try {
@@ -8253,7 +8224,7 @@ public class ContactsEvents {
             }
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            if (!checkNoNotificationAccess()) {
+            if (!DeviceTools.checkNoNotificationAccess(context)) {
                 notificationManager.notify(notificationID, builder.build());
             }
 
@@ -8903,7 +8874,7 @@ public class ContactsEvents {
                     toRemoveIds.add(event);
                     continue;
                 }
-                final String[] keyParts = getKeyParts(event);
+                final String[] keyParts = StringUtils.getKeyParts(event);
                 if (keyParts[1].equals(Constants.EventType_Calendar)) {
                     if (!idsAllCalendarEvents.contains(keyParts[0])) toRemoveIds.add(event);
                 } else {
@@ -8922,7 +8893,7 @@ public class ContactsEvents {
                     toRemoveRawIds.add(event);
                     continue;
                 }
-                final String[] keyParts = getKeyParts(event);
+                final String[] keyParts = StringUtils.getKeyParts(event);
                 if (!map_contacts_rawIds.containsKey(keyParts[0])) toRemoveRawIds.add(event);
             }
             if (!toRemoveRawIds.isEmpty()) {
@@ -8955,7 +8926,7 @@ public class ContactsEvents {
                     toRemoveIds.add(event);
                     continue;
                 }
-                final String[] keyParts = getKeyParts(event);
+                final String[] keyParts = StringUtils.getKeyParts(event);
                 if (keyParts[1].equals(Constants.EventType_Calendar)) {
                     if (!idsAllCalendarEvents.contains(keyParts[0])) toRemoveIds.add(event);
                 } else {
@@ -8974,7 +8945,7 @@ public class ContactsEvents {
                     toRemoveRawIds.add(event);
                     continue;
                 }
-                final String[] keyParts = getKeyParts(event);
+                final String[] keyParts = StringUtils.getKeyParts(event);
                 if (!map_contacts_ids.containsKey(keyParts[0])) toRemoveRawIds.add(event);
             }
             if (!toRemoveRawIds.isEmpty()) {
@@ -9750,7 +9721,7 @@ public class ContactsEvents {
                     }
                 }
 
-                if (!checkNoNotificationAccess()) {
+                if (!DeviceTools.checkNoNotificationAccess(context)) {
                     notificationManager.notify(Constants.defaultQuizID, builder.build());
                 }
 
@@ -10212,70 +10183,6 @@ public class ContactsEvents {
         return resultList;
     }
 
-    /**
-     * @return True if battery optimization for this application is OFF
-     */
-    boolean checkNoBatteryOptimization() {
-
-        //https://stackoverflow.com/questions/32627342/how-to-whitelist-app-in-doze-mode-android-6-0/32627788#32627788
-
-        try {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                String packageName = context.getPackageName();
-                PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-                return pm.isIgnoringBatteryOptimizations(packageName);
-            } else {
-                return true;
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return true;
-        }
-    }
-
-    /**
-     * @return True if no access to contacts
-     */
-    boolean checkNoContactsAccess() {
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED;
-    }
-
-    /**
-     * @return True if no access to calendars
-     */
-    boolean checkNoCalendarAccess() {
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED;
-    }
-
-    boolean checkNoStorageAccess() {
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
-    }
-
-    boolean checkNoNotificationAccess() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            return ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED;
-        } else {
-            return false;
-        }
-    }
-
-    boolean checkCanExactAlarm() {
-        //Если стоит isIgnoringBatteryOptimizations, то canScheduleExactAlarms возвращает true
-        boolean canExact = false;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            if (alarmManager.canScheduleExactAlarms()) {
-                canExact = true;
-            }
-        } else {
-            canExact = true;
-        }
-        return canExact;
-    }
-
     void fillEmptyEventData(TreeMap<Integer, String> eventData) {
 
         try {
@@ -10428,7 +10335,7 @@ public class ContactsEvents {
                             ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END
                             : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END)
                     + resources.getString(R.string.stats_permissions_contacts,
-                    !checkNoContactsAccess()
+                    !DeviceTools.checkNoContactsAccess(context)
                             ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END
                             : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END);
 
@@ -10440,27 +10347,27 @@ public class ContactsEvents {
                     + Constants.HTML_COLOR_END;
 
             String calendarPermissionParam = resources.getString(R.string.stats_permissions_calendar,
-                    !checkNoCalendarAccess()
+                    !DeviceTools.checkNoCalendarAccess(context)
                             ? Constants.FONT_COLOR_GREEN + resources.getString(R.string.msg_on) + Constants.HTML_COLOR_END
                             : Constants.FONT_COLOR_RED + resources.getString(R.string.msg_off) + Constants.HTML_COLOR_END);
 
-            if (map_calendars.isEmpty()) fillCalendarList();
+            if (map_calendars.isEmpty()) AppDateUtils.fillCalendarList(context, map_calendars, map_calendars_colors);
 
             String birthdayCalendarsParam = preferences_BirthDay_calendars.isEmpty()
                     ? msg_not_selected
-                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_BirthDay_calendars, map_calendars) + Constants.HTML_COLOR_END;
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + StringUtils.replaceCalendarIDtoTitle(preferences_BirthDay_calendars, map_calendars) + Constants.HTML_COLOR_END;
 
             String otherEventCalendarsParam = preferences_OtherEvent_calendars.isEmpty()
                     ? msg_not_selected
-                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_OtherEvent_calendars, map_calendars) + Constants.HTML_COLOR_END;
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + StringUtils.replaceCalendarIDtoTitle(preferences_OtherEvent_calendars, map_calendars) + Constants.HTML_COLOR_END;
 
             String holidayEventCalendarsParam = preferences_HolidayEvent_calendars.isEmpty()
                     ? msg_not_selected
-                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_HolidayEvent_calendars, map_calendars) + Constants.HTML_COLOR_END;
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + StringUtils.replaceCalendarIDtoTitle(preferences_HolidayEvent_calendars, map_calendars) + Constants.HTML_COLOR_END;
 
             String multiTypeCalendarsParam = preferences_MultiType_calendars.isEmpty()
                     ? msg_not_selected
-                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + replaceCalendarIDtoTitle(preferences_MultiType_calendars, map_calendars) + Constants.HTML_COLOR_END;
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + StringUtils.replaceCalendarIDtoTitle(preferences_MultiType_calendars, map_calendars) + Constants.HTML_COLOR_END;
 
             String birthdayFilesParam = preferences_Birthday_files.isEmpty()
                     ? msg_not_selected
@@ -10544,28 +10451,6 @@ public class ContactsEvents {
             return Constants.STRING_EMPTY;
         }
 
-    }
-
-    String replaceCalendarIDtoTitle(Set<String> setIDs, HashMap<String, String> mapTitles){
-
-        StringBuilder sb = new StringBuilder();
-        try {
-
-            for(String id: setIDs){
-                if (sb.length() > 0) sb.append(Constants.STRING_COMMA_SPACE);
-                String calData = mapTitles.get(id);
-                if (calData != null) {
-                    String[] calInfo = getKeyParts(calData);
-                    sb.append(calInfo[0]);
-                    if (calInfo.length > 1) sb.append(Constants.STRING_PARENTHESIS_OPEN).append(calInfo[1]).append(Constants.STRING_PARENTHESIS_CLOSE);
-                } else sb.append(id);
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-        return sb.toString();
     }
 
     @NonNull
@@ -11002,11 +10887,6 @@ public class ContactsEvents {
         return baseSize;
     }
 
-    @NonNull
-    static String getHash(@NonNull String from) {
-        return String.valueOf(Math.abs(from.hashCode()));
-    }
-
     private synchronized static void setDisplayMetrics(DisplayMetrics ds) {displayMetrics = ds;}
 
 
@@ -11105,7 +10985,7 @@ public class ContactsEvents {
                     String[] eventsPack = getResources().getStringArray(packId);
                     int countEvents = eventsPack.length;
                     if (countEvents > 1) {
-                        final String packHash = getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
+                        final String packHash = StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
                         if (fileHashes == null || fileHashes.contains(packHash)) {
                             Log.i("HOLIDAY", eventsPack[0] + Constants.STRING_PARENTHESIS_OPEN + packHash + Constants.STRING_PARENTHESIS_CLOSE);
                             for (int i = 1; i < countEvents; i++) {
@@ -11134,7 +11014,7 @@ public class ContactsEvents {
 
             for (String file : fileList) {
 
-                final String packHash = getHash(Constants.eventSourceFilePrefix + file);
+                final String packHash = StringUtils.getHash(Constants.eventSourceFilePrefix + file);
                 if (fileHashes == null || fileHashes.contains(packHash)) {
                     if (!preferences_DaysTypes.containsKey(packHash)) {
                         String[] fileDetails = file.split(Constants.STRING_PIPE);
@@ -11280,14 +11160,14 @@ public class ContactsEvents {
     void fillDaysTypesFromCalendars(List<String> calendarHashes, @NonNull Calendar startPeriod, @NonNull Calendar endPeriod) {
         try {
 
-            if (checkNoCalendarAccess()) return;
+            if (DeviceTools.checkNoCalendarAccess(context)) return;
 
             StringBuilder calIDs = new StringBuilder();
             for (String calHash: calendarHashes) {
                 String calKey = calHash + sdf_DDMMYYYY.format(startPeriod.getTime()) + sdf_DDMMYYYY.format(endPeriod.getTime());
                 if (!preferences_DaysTypes.containsKey(calKey)) {
                     for (String calId: preferences_HolidayEvent_calendars) {
-                        if (getHash(Constants.eventSourceCalendarPrefix + calId).equals(calHash)) {
+                        if (StringUtils.getHash(Constants.eventSourceCalendarPrefix + calId).equals(calHash)) {
                             Log.i("CALENDAR", calId + Constants.STRING_PARENTHESIS_OPEN + calHash + Constants.STRING_PARENTHESIS_CLOSE);
                             if (calIDs.length() > 0)
                                 calIDs.append(Constants.QUERY_PARAM_OR + CalendarContract.Events.CALENDAR_ID + Constants.SQL_EQUAL);
@@ -11346,7 +11226,7 @@ public class ContactsEvents {
                         if (dateEnd.before(startPeriod)) continue;
 
                         final String calId = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.CALENDAR_ID));
-                        final String calHash = getHash(Constants.eventSourceCalendarPrefix + calId);
+                        final String calHash = StringUtils.getHash(Constants.eventSourceCalendarPrefix + calId);
                         String eventTitle = Constants.eventTitleCalendarPrefix + cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.TITLE));
 
                         if (!AppDateUtils.isSameDay(dateStart, dateEnd)) {
@@ -11409,7 +11289,7 @@ public class ContactsEvents {
                         String[] eventsPack = getResources().getStringArray(packId);
                         int countEvents = eventsPack.length;
                         if (countEvents > 1) {
-                            final String packHash = getHash(Constants.eventSourceFactPrefix + eventsPack[0]);
+                            final String packHash = StringUtils.getHash(Constants.eventSourceFactPrefix + eventsPack[0]);
                             if (preferences_FactEvent_ids.contains(packHash)) {
                                 for (int i = 1; i < countEvents; i++) {
                                     String eventsArray = eventsPack[i];
@@ -11452,7 +11332,7 @@ public class ContactsEvents {
                         ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
                         continue;
                     }
-                    final String packHash = getHash(Constants.eventSourceFilePrefix + file);
+                    final String packHash = StringUtils.getHash(Constants.eventSourceFilePrefix + file);
 
                     for (String eventRow: eventsArray) {
                         String fact = eventRow.trim().replace("\uFEFF", Constants.STRING_EMPTY);
@@ -11512,7 +11392,7 @@ public class ContactsEvents {
                     String[] eventsPack = getResources().getStringArray(packId);
                     int countEvents = eventsPack.length;
                     if (countEvents > 1) {
-                        final String packHash = getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
+                        final String packHash = StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
                         if (preferences_HolidayEvent_ids.contains(packHash)) {
 
                             String eventEmoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
@@ -11589,7 +11469,7 @@ public class ContactsEvents {
 
                                     final String eventNewDate = Constants.EVENT_PREFIX_HOLIDAY_EVENT + Constants.STRING_COLON_SPACE
                                             + sdf_java.format(dateEvent) + Constants.STRING_COLON_SPACE
-                                            + getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
+                                            + StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
 
                                     eventData.put(Position_personFullName, eventTitle);
                                     eventData.put(Position_personFullNameAlt, eventTitle);
@@ -11603,7 +11483,7 @@ public class ContactsEvents {
                                     eventData.put(Position_eventEmoji, eventEmoji);
                                     eventData.put(Position_eventStorage, Constants.STRING_STORAGE_HOLIDAYS); //Где искать событие по ID
                                     eventData.put(Position_eventSource, getResources().getString(R.string.msg_source_info, eventsPack[0]));
-                                    eventData.put(Position_eventID, Constants.PREFIX_HolidayEventID + getHash(packHash + day));
+                                    eventData.put(Position_eventID, Constants.PREFIX_HolidayEventID + StringUtils.getHash(packHash + day));
                                     eventData.put(Position_notAnnualEvent, !isEndless ? Constants.STRING_1 : Constants.STRING_EMPTY);
 
                                     fillEmptyEventData(eventData);
@@ -11686,7 +11566,7 @@ public class ContactsEvents {
                 ids.add(Constants.eventSourceLocalPrefix);
                 icons.add(android.R.drawable.ic_menu_add);
                 packages.add(packageName);
-                hashes.add(getHash(Constants.eventSourceLocalPrefix));
+                hashes.add(StringUtils.getHash(Constants.eventSourceLocalPrefix));
 
                 //Справочники праздников и выходных
 
@@ -11695,7 +11575,7 @@ public class ContactsEvents {
                 while (packId > 0) {
                     try {
                         String[] eventsPack = getResources().getStringArray(packId);
-                        String packHash = getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
+                        String packHash = StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
 
                         if (preferences_HolidayEvent_ids.contains(packHash)) {
                             ids.add(Constants.eventSourceHolidayPrefix + eventsPack[0]);
@@ -11709,7 +11589,7 @@ public class ContactsEvents {
                             titles.add(sourceTitle);
                             icons.add(R.drawable.ic_event_holiday);
                             packages.add(packageName);
-                            hashes.add(getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
+                            hashes.add(StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
                         }
 
                     } catch (Resources.NotFoundException ignored) { /**/ }
@@ -11728,7 +11608,7 @@ public class ContactsEvents {
                     while (packId > 0) {
                         try {
                             String[] eventsPack = getResources().getStringArray(packId);
-                            String packHash = getHash(Constants.eventSourceFactPrefix + eventsPack[0]);
+                            String packHash = StringUtils.getHash(Constants.eventSourceFactPrefix + eventsPack[0]);
 
                             if (preferences_FactEvent_ids.contains(packHash)) {
                                 ids.add(Constants.eventSourceFactPrefix + eventsPack[0]);
@@ -11742,7 +11622,7 @@ public class ContactsEvents {
                                 titles.add(sourceTitle);
                                 icons.add(R.drawable.ic_event_fact);
                                 packages.add(packageName);
-                                hashes.add(getHash(Constants.eventSourceFactPrefix + eventsPack[0]));
+                                hashes.add(StringUtils.getHash(Constants.eventSourceFactPrefix + eventsPack[0]));
                             }
 
                         } catch (Resources.NotFoundException ignored) { /**/ }
@@ -11754,7 +11634,7 @@ public class ContactsEvents {
 
 
 
-                if (!checkNoContactsAccess()) {
+                if (!DeviceTools.checkNoContactsAccess(ContactsEvents.this.context)) {
                     final Set<String> preferences_accounts = getPreferences_Accounts();
                     AuthenticatorDescription[] descriptions = AccountManager.get(context).getAuthenticatorTypes();
 
@@ -11770,7 +11650,7 @@ public class ContactsEvents {
                                     titles.add(accountName);
                                     icons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
                                     packages.add(desc.packageName);
-                                    hashes.add(getHash(eventId));
+                                    hashes.add(StringUtils.getHash(eventId));
                                     break;
                                 }
                             }
@@ -11806,7 +11686,7 @@ public class ContactsEvents {
                                             icons.add(R.drawable.emo_im_happy);
                                         }
                                         packages.add(packageName);
-                                        hashes.add(getHash(eventId));
+                                        hashes.add(StringUtils.getHash(eventId));
                                     }
                                 }
                             } while (cursor.moveToNext());
@@ -11816,8 +11696,8 @@ public class ContactsEvents {
                 }
 
                 //Календари
-                if (!checkNoCalendarAccess()){
-                    if (map_calendars.isEmpty()) fillCalendarList();
+                if (!DeviceTools.checkNoCalendarAccess(ContactsEvents.this.context)){
+                    if (map_calendars.isEmpty()) AppDateUtils.fillCalendarList(ContactsEvents.this.context, ContactsEvents.this.map_calendars, ContactsEvents.this.map_calendars_colors);
                     List<String> allCalendars = new ArrayList<>();
                     allCalendars.addAll(preferences_MultiType_calendars);
                     allCalendars.addAll(preferences_BirthDay_calendars);
@@ -11830,7 +11710,7 @@ public class ContactsEvents {
                                 ids.add(Constants.eventSourceCalendarPrefix + calendar);
                                 icons.add(android.R.drawable.ic_menu_month);
                                 packages.add(packageName);
-                                hashes.add(getHash(Constants.eventSourceCalendarPrefix + calendar));
+                                hashes.add(StringUtils.getHash(Constants.eventSourceCalendarPrefix + calendar));
                             }
                         }
                     }
@@ -11843,7 +11723,7 @@ public class ContactsEvents {
                         titles.add(StringUtils.substringBefore(file, Constants.STRING_BAR));
                         icons.add(android.R.drawable.ic_menu_save);
                         packages.add(packageName);
-                        hashes.add(getHash(Constants.eventSourceMultiFilePrefix + file));
+                        hashes.add(StringUtils.getHash(Constants.eventSourceMultiFilePrefix + file));
                     }
                 }
                 if (!preferences_Birthday_files.isEmpty()) {
@@ -11852,7 +11732,7 @@ public class ContactsEvents {
                         titles.add(StringUtils.substringBefore(file, Constants.STRING_BAR));
                         icons.add(android.R.drawable.ic_menu_save);
                         packages.add(packageName);
-                        hashes.add(getHash(Constants.eventSourceFilePrefix + file));
+                        hashes.add(StringUtils.getHash(Constants.eventSourceFilePrefix + file));
                     }
                 }
                 if (!preferences_OtherEvent_files.isEmpty()) {
@@ -11861,7 +11741,7 @@ public class ContactsEvents {
                         titles.add(StringUtils.substringBefore(file, Constants.STRING_BAR));
                         icons.add(android.R.drawable.ic_menu_save);
                         packages.add(packageName);
-                        hashes.add(getHash(Constants.eventSourceFilePrefix + file));
+                        hashes.add(StringUtils.getHash(Constants.eventSourceFilePrefix + file));
                     }
                 }
                 if (!preferences_HolidayEvent_files.isEmpty()) {
@@ -11871,7 +11751,7 @@ public class ContactsEvents {
                         titles.add(StringUtils.substringBefore(file, Constants.STRING_BAR));
                         icons.add(android.R.drawable.ic_menu_save);
                         packages.add(packageName);
-                        hashes.add(getHash(Constants.eventSourceFilePrefix + file));
+                        hashes.add(StringUtils.getHash(Constants.eventSourceFilePrefix + file));
                     }
                 }
                 if (eventConsumer.equals(resources.getString(R.string.pref_Notifications_EventSources_key))
@@ -11884,7 +11764,7 @@ public class ContactsEvents {
                             titles.add(StringUtils.substringBefore(file, Constants.STRING_BAR));
                             icons.add(android.R.drawable.ic_menu_save);
                             packages.add(packageName);
-                            hashes.add(getHash(Constants.eventSourceFilePrefix + file));
+                            hashes.add(StringUtils.getHash(Constants.eventSourceFilePrefix + file));
                         }
                     }
                 }

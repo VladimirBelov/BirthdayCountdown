@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 16:23
+ *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 18:01
  *
  */
 
@@ -55,6 +55,7 @@ import androidx.core.app.ActivityCompat;
 
 import org.vovka.birthdaycountdown.imagecropper.CropIntent;
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
+import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
 import org.vovka.birthdaycountdown.utils.UiTools;
@@ -419,12 +420,12 @@ public class LocalEventActivity extends AppCompatActivity {
 
             if (Intent.ACTION_INSERT.equals(action)) {
 
-                eventData.put(ContactsEvents.Position_eventID, ContactsEvents.getHash(String.valueOf(cal.getTimeInMillis())));
+                eventData.put(ContactsEvents.Position_eventID, StringUtils.getHash(String.valueOf(cal.getTimeInMillis())));
                 viewActivityTitle.setText(R.string.local_event_dialog_title_new_event);
 
             } else if (Intent.ACTION_INSERT_OR_EDIT.equals(action)) {
 
-                eventData.put(ContactsEvents.Position_eventID, ContactsEvents.getHash(String.valueOf(cal.getTimeInMillis())));
+                eventData.put(ContactsEvents.Position_eventID, StringUtils.getHash(String.valueOf(cal.getTimeInMillis())));
                 viewActivityTitle.setText(R.string.local_event_dialog_title_new_event);
                 if (extras != null && extras.containsKey(Constants.EXTRA_EVENT_DATA)) {
                     TreeMap<Integer, String> eventDataTemplate;
@@ -766,7 +767,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
     private void pickContactData() {
 
-        if (eventsData.checkNoContactsAccess()) {
+        if (DeviceTools.checkNoContactsAccess(eventsData.getContext())) {
             //https://issuetracker.google.com/issues/118400813 - без доступа к контактам не работает
             requestContactsPermission();
         } else {

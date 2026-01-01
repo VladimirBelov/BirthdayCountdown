@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 20:42
+ *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 14:10
  *
  */
 
@@ -49,6 +49,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.transition.TransitionManager;
 
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
@@ -711,7 +712,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 try {
                     String[] eventsPack = getResources().getStringArray(packId);
 
-                    eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
+                    eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
                     eventSourcesTitles.add(eventsPack[0]);
 
                 } catch (Resources.NotFoundException ignored) { /**/ }
@@ -721,21 +722,21 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             }
 
             //События избранных контактов
-            eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceFavoritePrefix));
+            eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceFavoritePrefix));
             eventSourcesTitles.add(getString(R.string.widget_config_events_favorites));
 
             //Локальные события
-            eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceLocalPrefix));
+            eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceLocalPrefix));
             eventSourcesTitles.add(getString(R.string.widget_config_events_local_events));
 
             //Календари
-            if (!eventsData.checkNoCalendarAccess()){
-                if (eventsData.map_calendars.isEmpty()) eventsData.fillCalendarList();
+            if (!DeviceTools.checkNoCalendarAccess(eventsData.getContext())){
+                if (eventsData.map_calendars.isEmpty()) AppDateUtils.fillCalendarList(eventsData.getContext(), eventsData.map_calendars, eventsData.map_calendars_colors);
                 List<String> allCalendars = new ArrayList<>(eventsData.preferences_HolidayEvent_calendars);
                 if (!allCalendars.isEmpty()) {
                     for (String calendar: allCalendars) {
                         if (eventsData.map_calendars.containsKey(calendar)) {
-                            String calendarId = ContactsEvents.getHash(Constants.eventSourceCalendarPrefix + calendar);
+                            String calendarId = StringUtils.getHash(Constants.eventSourceCalendarPrefix + calendar);
                             eventSourcesIds.add(calendarId);
                             eventSourcesTitles.add(Constants.eventTitleCalendarPrefix + StringUtils.substringBefore(eventsData.map_calendars.get(calendar), Constants.STRING_EOT));
                             if (eventsData.map_calendars_colors.containsKey(calendarId)) {
@@ -749,7 +750,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             //Файлы
             if (!eventsData.preferences_HolidayEvent_files.isEmpty()) {
                 for (String file: eventsData.preferences_HolidayEvent_files) {
-                    eventSourcesIds.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
+                    eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceFilePrefix + file));
                     eventSourcesTitles.add(Constants.eventTitleFilePrefix.concat(StringUtils.substringBefore(file, Constants.STRING_BAR)));
                 }
             }

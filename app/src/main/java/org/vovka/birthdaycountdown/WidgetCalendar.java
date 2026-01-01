@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 23:42
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 22:21
+ *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 21:18
  *
  */
 
@@ -61,18 +61,38 @@ public class WidgetCalendar extends AppWidgetProvider {
     private Resources res;
     private final HashMap<String, Integer> eventsColorsInMonth = new HashMap<>();
     private final HashMap<String, Integer> eventsColorsOutMonth = new HashMap<>();
-    private boolean showUpdateProgress = false;
     private final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
     @ColorInt private int colorCommon;
     @ColorInt private int colorCommonOutMonth;
     @ColorInt private int colorToday;
+    @ColorInt private int colorHeaderBack;
+    @ColorInt private int colorMonthTitle;
+    @ColorInt private int colorArrows;
+    @ColorInt private int colorWeeks;
+    private boolean showUpdateProgress = false;
     private boolean colorizeSaturdays;
     private boolean colorizeSundays;
     private boolean enabledFillDays;
+    private boolean enabledHeader;
+    private boolean enabledWeeks;
+    private boolean highlightDayOfWeek;
+    private boolean weekdaysFromSunday;
+    private float fontMagnify_Month;
+    private float fontMagnify_Weekdays;
+    private float fontMagnify_Days;
+    private float monthRowTextSize;
+    private int today;
+    private int todayYear;
+    @JdkConstants.CalendarMonth int todayMonth;
+    private int todayWeekday;
+    private String[] weekdays;
+    private final List<String> prefElements = new ArrayList<>();
     private ArrayList<String> prefOtherEvents;
     private int prefOnClickCommon = Constants.onClick_None;
     private int prefOnClickHolidays = Constants.onClick_None;
     private boolean atLeastOneDayInMonth;
+    private int rowsToDraw = 4;
+    private int columnsToDraw = 3;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -178,18 +198,13 @@ public class WidgetCalendar extends AppWidgetProvider {
                 eventsData.getEvents();
             }
 
-            int columnsMax = 4;
-            int columnsToDraw = 3;
-            int rowsMax = 4;
-            int rowsToDraw = 4;
-            int numWeeks = 6;
-
             RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_calendar);
 
             //Прогресс обновления
+            int maxRows = 4;
             if (showUpdateProgress) {
                 rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_COLOR, 0);
-                for (int row = 1; row <= rowsMax; row++) {
+                for (int row = 1; row <= maxRows; row++) {
                     int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)), Constants.STRING_ID, context.getPackageName());
                     rv.setViewVisibility(id, View.GONE);
                 }
@@ -223,9 +238,9 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             float fontMagnify_Common = (float) (1 + prefFontMagnify_Common * 0.1);
-            float fontMagnify_Month = (float) (1 + prefFontMagnify_Month * 0.1);
-            float fontMagnify_Weekdays = (float) (1 + prefFontMagnify_Weekdays * 0.1);
-            float fontMagnify_Days = (float) (1 + prefFontMagnify_Days * 0.1);
+            fontMagnify_Month = (float) (1 + prefFontMagnify_Month * 0.1);
+            fontMagnify_Weekdays = (float) (1 + prefFontMagnify_Weekdays * 0.1);
+            fontMagnify_Days = (float) (1 + prefFontMagnify_Days * 0.1);
 
             //Количество месяцев
             String prefLayout = res.getString(R.string.widget_config_layout_default);
@@ -310,14 +325,14 @@ public class WidgetCalendar extends AppWidgetProvider {
             prefMonthsShift += customMonthShift * rowsToDraw * columnsToDraw;
 
             //Элементы календаря
-            List<String> prefElements = new ArrayList<>();
+            prefElements.clear();
             try {
-                if (widgetPref.size() > 4) prefElements = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS, -1));
+                if (widgetPref.size() > 4) prefElements.addAll(Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS, -1)));
              } catch (Exception e) {/**/}
-            boolean enabledHeader = prefElements.contains(res.getString(R.string.widget_config_elements_month));
-            boolean enabledWeeks = prefElements.contains(res.getString(R.string.widget_config_elements_weeks));
+            enabledHeader = prefElements.contains(res.getString(R.string.widget_config_elements_month));
+            enabledWeeks = prefElements.contains(res.getString(R.string.widget_config_elements_weeks));
             boolean enabledMargins = prefElements.contains(res.getString(R.string.widget_config_elements_margins));
-            boolean highlightDayOfWeek = prefElements.contains(res.getString(R.string.widget_config_elements_highlight_weekday));
+            highlightDayOfWeek = prefElements.contains(res.getString(R.string.widget_config_elements_highlight_weekday));
             enabledFillDays = prefElements.contains(res.getString(R.string.widget_config_elements_fill_days));
 
             //Источники событий и цвета по умолчанию
@@ -403,7 +418,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             //Заголовок
-            @ColorInt int colorMonthTitle = res.getColor(R.color.pref_Widgets_Color_Calendar_MonthTitle_default);
+            colorMonthTitle = res.getColor(R.color.pref_Widgets_Color_Calendar_MonthTitle_default);
             if (widgetPref.size() > 9 && !widgetPref.get(9).isEmpty()) {
                 try {
                     colorMonthTitle = Color.parseColor(widgetPref.get(9));
@@ -411,7 +426,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             //Фон заголовка
-            @ColorInt int colorHeaderBack = res.getColor(R.color.pref_Widgets_Color_Calendar_HeaderBack_default);
+            colorHeaderBack = res.getColor(R.color.pref_Widgets_Color_Calendar_HeaderBack_default);
             if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
                 try {
                     colorHeaderBack = Color.parseColor(widgetPref.get(10));
@@ -419,7 +434,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             //Стрелки
-            @ColorInt int colorArrows = res.getColor(R.color.pref_Widgets_Color_Calendar_Arrows_default);
+            colorArrows = res.getColor(R.color.pref_Widgets_Color_Calendar_Arrows_default);
             if (widgetPref.size() > 11 && !widgetPref.get(11).isEmpty()) {
                 try {
                     colorArrows = Color.parseColor(widgetPref.get(11));
@@ -427,7 +442,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             //Дни недели
-            @ColorInt int colorWeeks = res.getColor(R.color.pref_Widgets_Color_Calendar_Weeks_default);
+            colorWeeks = res.getColor(R.color.pref_Widgets_Color_Calendar_Weeks_default);
             if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty()) {
                 try {
                     colorWeeks = Color.parseColor(widgetPref.get(12));
@@ -469,8 +484,6 @@ public class WidgetCalendar extends AppWidgetProvider {
             Calendar cal = Calendar.getInstance();
             cal.setMinimalDaysInFirstWeek(1);
             DateFormatSymbols dfs = DateFormatSymbols.getInstance();
-            String[] weekdays;
-            boolean weekdaysFromSunday;
             if (cal.getFirstDayOfWeek() == Calendar.SUNDAY) {
                 weekdays = dfs.getShortWeekdays();
                 weekdaysFromSunday = true;
@@ -489,18 +502,19 @@ public class WidgetCalendar extends AppWidgetProvider {
                 }
             }
 
-            int today = cal.get(Calendar.DAY_OF_YEAR);
-            int todayYear = cal.get(Calendar.YEAR);
-            int todayMonth = cal.get(Calendar.MONTH);
-            int todayWeekday = cal.get(Calendar.DAY_OF_WEEK);
+            today = cal.get(Calendar.DAY_OF_YEAR);
+            todayYear = cal.get(Calendar.YEAR);
+            todayMonth = cal.get(Calendar.MONTH);
+            todayWeekday = cal.get(Calendar.DAY_OF_WEEK);
 
             rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_COLOR, colorWidgetBackground);
 
-            for (int row = 1; row <= rowsMax; row++) {
+            int maxColumns = 4;
+            for (int row = 1; row <= maxRows; row++) {
                 int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)), Constants.STRING_ID, context.getPackageName());
                 if (row <= rowsToDraw) {
                     rv.setViewVisibility(id, View.VISIBLE);
-                    for (int column = 1; column <= columnsMax; column++) {
+                    for (int column = 1; column <= maxColumns; column++) {
                         String idRow = Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)).concat("x").concat(String.valueOf(column));
                         id = res.getIdentifier(idRow, Constants.STRING_ID, context.getPackageName());
                         int idDiv = res.getIdentifier(idRow.concat("div"), Constants.STRING_ID, context.getPackageName());
@@ -529,7 +543,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             //Определение периода показа дней
-            int monthsInYear = rowsToDraw * columnsToDraw;
+            int monthsToDraw = rowsToDraw * columnsToDraw;
             Calendar calFirstDay;
             Calendar calLastDay;
             {
@@ -542,7 +556,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 calFirstDay.set(Calendar.MILLISECOND, 0);
                 int monthStartDayOfWeek = calFirstDay.get(Calendar.DAY_OF_WEEK);
                 calLastDay = (Calendar) calFirstDay.clone();
-                calLastDay.add(Calendar.MONTH, monthsInYear - 1);
+                calLastDay.add(Calendar.MONTH, monthsToDraw - 1);
                 calLastDay.set(Calendar.DATE, calLastDay.getActualMaximum(Calendar.DATE));
 
                 if (calFirstDay.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
@@ -573,7 +587,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 eventsData.fillDaysTypesFromFiles(prefOtherEvents);
             }
 
-            float monthRowTextSize = 12 * fontMagnify_Month;
+            monthRowTextSize = 12 * fontMagnify_Month;
 
             for (int row = 1; row <= rowsToDraw; row++) {
                 for (int column = 1; column <= columnsToDraw; column++) {
@@ -584,163 +598,9 @@ public class WidgetCalendar extends AppWidgetProvider {
                         cal.add(Calendar.MONTH, ((row - 1) * columnsToDraw) + column - 1);
                     }
                     cal.add(Calendar.MONTH, prefMonthsShift);
-                    final int thisMonth = cal.get(Calendar.MONTH);
-                    final int thisYear = cal.get(Calendar.YEAR);
                     cal.set(Calendar.DAY_OF_MONTH, 1);
 
-                    //Шапка
-                    RemoteViews calendarRv = new RemoteViews(context.getPackageName(), R.layout.widget_calendar_month);
-                    calendarRv.setInt(R.id.month_bar, Constants.METHOD_SET_BACKGROUND_COLOR, colorHeaderBack);
-
-                    if (enabledHeader) {
-                        calendarRv.setViewVisibility(R.id.month_bar, View.VISIBLE);
-                        calendarRv.setTextColor(R.id.month_label, colorMonthTitle);
-                        calendarRv.setTextColor(R.id.prev_month_button, colorArrows);
-                        calendarRv.setTextColor(R.id.next_month_button, colorArrows);
-                        if (prefElements.contains(res.getString(R.string.widget_config_elements_year)) || (monthsInYear == 12 && cal.get(Calendar.MONTH) == Calendar.JANUARY)) {
-                            calendarRv.setTextViewText(R.id.month_label, DateFormat.format(Constants.DATE_LLLL_YYYY, cal).toString().toUpperCase());
-                        } else {
-                            calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL", cal).toString().toUpperCase());
-                        }
-                        calendarRv.setTextViewTextSize(R.id.month_label, COMPLEX_UNIT_SP, monthRowTextSize);
-                        if (row == rowsToDraw) {
-                            calendarRv.setViewVisibility(R.id.bottom_divider, View.GONE);
-                        } else {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                                calendarRv.setViewLayoutHeight(R.id.bottom_divider, 2 * fontMagnify_Month, COMPLEX_UNIT_SP);
-                            }
-                        }
-                    } else {
-                        calendarRv.setViewVisibility(R.id.month_bar, View.GONE);
-                    }
-
-                    //Первый день недели - ПН или ВСК
-                    cal.set(Calendar.DAY_OF_MONTH, 1);
-                    int monthStartDayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-
-                    if (cal.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
-                        cal.add(Calendar.DAY_OF_MONTH, 1 - monthStartDayOfWeek);
-                    } else {
-                        if (monthStartDayOfWeek == 1) {
-                            cal.add(Calendar.DAY_OF_MONTH, -6);
-                        } else {
-                            cal.add(Calendar.DAY_OF_MONTH, 2 - monthStartDayOfWeek);
-
-                        }
-                    }
-
-                    //Дни недели
-                    if (enabledWeeks) {
-                        RemoteViews headerRowRv = new RemoteViews(context.getPackageName(), R.layout.row_weekdays);
-
-                        boolean inMonth = thisMonth == todayMonth;
-                        boolean inYear = thisYear == todayYear;
-                        int todayWeekdayFromSunday = weekdaysFromSunday ? todayWeekday : (todayWeekday == Calendar.SUNDAY ? 7 : todayWeekday - 1);
-
-                        for (int day = Calendar.SUNDAY; day <= Calendar.SATURDAY; day++) {
-                            RemoteViews dayRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
-                            if (highlightDayOfWeek && inYear && inMonth && todayWeekdayFromSunday == day) {
-                                //Подсветка дня недели
-                                int sundayPosition =  weekdaysFromSunday ? 1 : 7;
-                                int saturdayPosition =  weekdaysFromSunday ? 7 : 6;
-                                @ColorInt int color = Color.argb(Constants.WIDGET_CALENDAR_DAY_OF_WEEK_TINT, Color.red(colorToday), Color.green(colorToday), Color.blue(colorToday));
-                                if (day == sundayPosition) {
-                                    Integer colorFromPref = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_sunday_id));
-                                    if (colorFromPref != null) {
-                                        color = colorFromPref;
-                                    }
-                                } else if (day == saturdayPosition) {
-                                    Integer colorFromPref = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_saturday_id));
-                                    if (colorFromPref != null) {
-                                        color = colorFromPref;
-                                    }
-                                }
-                                dayRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_COLOR, color);
-                                if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
-                                    dayRv.setTextColor(android.R.id.text1, res.getColor(R.color.black));
-                                } else {
-                                    dayRv.setTextColor(android.R.id.text1, res.getColor(R.color.white));
-                                }
-                            } else {
-                                dayRv.setTextColor(android.R.id.text1, colorWeeks);
-                            }
-                            dayRv.setTextViewText(android.R.id.text1, weekdays[day]);
-                            dayRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify_Weekdays);
-                            headerRowRv.addView(R.id.row_container, dayRv);
-                        }
-                        headerRowRv.setInt(R.id.row_container, Constants.METHOD_SET_BACKGROUND_COLOR, colorHeaderBack);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                            headerRowRv.setViewLayoutMargin(R.id.row_container, RemoteViews.MARGIN_TOP, -4, COMPLEX_UNIT_SP);
-                        }
-                        calendarRv.addView(R.id.days, headerRowRv);
-                    }
-
-                    //Дни
-                    for (int week = 0; week < numWeeks; week++) {
-                        RemoteViews rowRv = new RemoteViews(context.getPackageName(), R.layout.row_week);
-                        atLeastOneDayInMonth = false;
-                        for (int day = 0; day < 7; day++) {
-                            RemoteViews rvCell = composeDayCell(cal, todayYear, thisMonth, today, appWidgetId, fontMagnify_Days, calFirstDay, calLastDay);
-                            if (rvCell != null) rowRv.addView(R.id.row_container, rvCell);
-                            cal.add(Calendar.DAY_OF_MONTH, 1);
-                        }
-                        if (week < numWeeks - 1 || atLeastOneDayInMonth) { //Если не последняя неделя или есть хоть 1 день в месяце
-                            calendarRv.addView(R.id.days, rowRv);
-                        }
-                    }
-
-                    if (enabledHeader) {
-                        if (row > 1 || (column != 1 && columnsToDraw > 1)) {
-                            calendarRv.setViewVisibility(R.id.prev_month_button, View.INVISIBLE);
-                            calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, 1);
-                            calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
-                        } else {
-                            calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, ImageUtils.Dip2Px(res, 17));
-                            calendarRv.setTextViewText(R.id.prev_month_button, res.getText(R.string.previous_month_arrow));
-                            calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
-                            calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
-                            calendarRv.setOnClickPendingIntent(R.id.prev_month_button, PendingIntent.getBroadcast(context, appWidgetId,
-                                    new Intent(context, WidgetCalendar.class)
-                                            .setAction(Constants.ACTION_PREVIOUS_MONTH)
-                                            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                                    , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
-                        }
-
-                        if (row > 1 || (column < columnsToDraw && columnsToDraw > 1)) {
-                            calendarRv.setViewVisibility(R.id.next_month_button, View.INVISIBLE);
-                            calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, 1);
-                            calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
-                        } else {
-                            calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, ImageUtils.Dip2Px(res, 17));
-                            calendarRv.setTextViewText(R.id.next_month_button, res.getText(R.string.next_month_arrow));
-                            calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
-                            calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
-                            calendarRv.setOnClickPendingIntent(R.id.next_month_button, PendingIntent.getBroadcast(context, appWidgetId,
-                                    new Intent(context, WidgetCalendar.class)
-                                            .setAction(Constants.ACTION_NEXT_MONTH)
-                                            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                                    , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
-                        }
-
-                        calendarRv.setInt(R.id.month_label, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
-                        if (!DeviceTools.isWidgetSupportConfig() && row == 1 && column == columnsToDraw) {
-                            Intent intentConfig = new Intent(context, WidgetCalendarConfigureActivity.class);
-                            intentConfig.setAction(Constants.ACTION_LAUNCH);
-                            intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                            calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
-                        } else {
-                            calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getBroadcast(context, appWidgetId,
-                                    new Intent(context, WidgetCalendar.class)
-                                            .setAction(Constants.ACTION_RESET_MONTH)
-                                            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                                    , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
-                        }
-                    }
-
-                    int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR + row + "x" + column, Constants.STRING_ID, context.getPackageName());
-                    if (id != 0) {
-                        rv.addView(id, calendarRv);
-                    }
+                    addMonth(appWidgetId, row, column, monthsToDraw, cal, calFirstDay, calLastDay, rv);
                 }
             }
 
@@ -755,6 +615,184 @@ public class WidgetCalendar extends AppWidgetProvider {
         } finally {
             eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
             eventsData.statActiveWidgets++;
+        }
+    }
+
+    /** Добавляет месяц на разметку
+     * @param appWidgetId id виджета
+     * @param row Порядковый номер строки месяца в отображаемом календаре
+     * @param column Порядковый номер колонки месяца в отображаемом календаре
+     * @param monthsToDraw Количество отображаемых месяцев (если 12 - обязательно показываем год для первого месяца года)
+     * @param cal Первый день отображаемого месяца
+     * @param calFirstDay Первый день календаря в виджете
+     * @param calLastDay Последний день календаря в виджете
+     * @param rv Разметка виджета
+     */
+    private void addMonth(int appWidgetId, int row, int column, int monthsToDraw, Calendar cal,
+                          Calendar calFirstDay, Calendar calLastDay, RemoteViews rv) {
+        try {
+
+            final int thisMonth = cal.get(Calendar.MONTH);
+            final int thisYear = cal.get(Calendar.YEAR);
+
+            //Шапка
+            RemoteViews calendarRv = new RemoteViews(context.getPackageName(), R.layout.widget_calendar_month);
+            calendarRv.setInt(R.id.month_bar, Constants.METHOD_SET_BACKGROUND_COLOR, colorHeaderBack);
+
+            if (enabledHeader) {
+                calendarRv.setViewVisibility(R.id.month_bar, View.VISIBLE);
+                calendarRv.setTextColor(R.id.month_label, colorMonthTitle);
+                calendarRv.setTextColor(R.id.prev_month_button, colorArrows);
+                calendarRv.setTextColor(R.id.next_month_button, colorArrows);
+                if (prefElements.contains(res.getString(R.string.widget_config_elements_year)) || (monthsToDraw == 12 && cal.get(Calendar.MONTH) == Calendar.JANUARY)) {
+                    calendarRv.setTextViewText(R.id.month_label, DateFormat.format(Constants.DATE_LLLL_YYYY, cal).toString().toUpperCase());
+                } else {
+                    calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL", cal).toString().toUpperCase());
+                }
+                calendarRv.setTextViewTextSize(R.id.month_label, COMPLEX_UNIT_SP, monthRowTextSize);
+                if (row == rowsToDraw) {
+                    calendarRv.setViewVisibility(R.id.bottom_divider, View.GONE);
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        calendarRv.setViewLayoutHeight(R.id.bottom_divider, 2 * fontMagnify_Month, COMPLEX_UNIT_SP);
+                    }
+                }
+            } else {
+                calendarRv.setViewVisibility(R.id.month_bar, View.GONE);
+            }
+
+            //Первый день недели - ПН или ВСК
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+            int monthStartDayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+
+            if (cal.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
+                cal.add(Calendar.DAY_OF_MONTH, 1 - monthStartDayOfWeek);
+            } else {
+                if (monthStartDayOfWeek == 1) {
+                    cal.add(Calendar.DAY_OF_MONTH, -6);
+                } else {
+                    cal.add(Calendar.DAY_OF_MONTH, 2 - monthStartDayOfWeek);
+
+                }
+            }
+
+            //Дни недели
+            if (enabledWeeks) {
+                RemoteViews headerRowRv = new RemoteViews(context.getPackageName(), R.layout.row_weekdays);
+
+                boolean inMonth = thisMonth == todayMonth;
+                boolean inYear = thisYear == todayYear;
+                int todayWeekdayFromSunday = weekdaysFromSunday ? todayWeekday : (todayWeekday == Calendar.SUNDAY ? 7 : todayWeekday - 1);
+
+                for (int day = Calendar.SUNDAY; day <= Calendar.SATURDAY; day++) {
+                    RemoteViews dayRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
+                    if (highlightDayOfWeek && inYear && inMonth && todayWeekdayFromSunday == day) {
+                        //Подсветка дня недели
+                        int sundayPosition =  weekdaysFromSunday ? 1 : 7;
+                        int saturdayPosition =  weekdaysFromSunday ? 7 : 6;
+                        @ColorInt int color = Color.argb(Constants.WIDGET_CALENDAR_DAY_OF_WEEK_TINT, Color.red(colorToday), Color.green(colorToday), Color.blue(colorToday));
+                        if (day == sundayPosition) {
+                            Integer colorFromPref = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_sunday_id));
+                            if (colorFromPref != null) {
+                                color = colorFromPref;
+                            }
+                        } else if (day == saturdayPosition) {
+                            Integer colorFromPref = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_saturday_id));
+                            if (colorFromPref != null) {
+                                color = colorFromPref;
+                            }
+                        }
+                        dayRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_COLOR, color);
+                        if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
+                            dayRv.setTextColor(android.R.id.text1, res.getColor(R.color.black));
+                        } else {
+                            dayRv.setTextColor(android.R.id.text1, res.getColor(R.color.white));
+                        }
+                    } else {
+                        dayRv.setTextColor(android.R.id.text1, colorWeeks);
+                    }
+                    dayRv.setTextViewText(android.R.id.text1, weekdays[day]);
+                    dayRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify_Weekdays);
+                    headerRowRv.addView(R.id.row_container, dayRv);
+                }
+                headerRowRv.setInt(R.id.row_container, Constants.METHOD_SET_BACKGROUND_COLOR, colorHeaderBack);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    headerRowRv.setViewLayoutMargin(R.id.row_container, RemoteViews.MARGIN_TOP, -4, COMPLEX_UNIT_SP);
+                }
+                calendarRv.addView(R.id.days, headerRowRv);
+            }
+
+            //Дни
+            int maxWeeks = 6;
+            for (int week = 0; week < maxWeeks; week++) {
+                RemoteViews rowRv = new RemoteViews(context.getPackageName(), R.layout.row_week);
+                atLeastOneDayInMonth = false;
+                for (int day = 0; day < 7; day++) {
+                    RemoteViews rvCell = composeDayCell(cal, todayYear, thisMonth, today, appWidgetId, fontMagnify_Days, calFirstDay, calLastDay);
+                    if (rvCell != null) rowRv.addView(R.id.row_container, rvCell);
+                    cal.add(Calendar.DAY_OF_MONTH, 1);
+                }
+                if (week < maxWeeks - 1 || atLeastOneDayInMonth) { //Если не последняя неделя или есть хоть 1 день в месяце
+                    calendarRv.addView(R.id.days, rowRv);
+                }
+            }
+
+            if (enabledHeader) {
+                if (row > 1 || (column != 1 && columnsToDraw > 1)) {
+                    calendarRv.setViewVisibility(R.id.prev_month_button, View.INVISIBLE);
+                    calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, 1);
+                    calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
+                } else {
+                    calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_MIN_WIDTH, ImageUtils.Dip2Px(res, 17));
+                    calendarRv.setTextViewText(R.id.prev_month_button, res.getText(R.string.previous_month_arrow));
+                    calendarRv.setTextViewTextSize(R.id.prev_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
+                    calendarRv.setInt(R.id.prev_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
+                    calendarRv.setOnClickPendingIntent(R.id.prev_month_button, PendingIntent.getBroadcast(context, appWidgetId,
+                            new Intent(context, WidgetCalendar.class)
+                                    .setAction(Constants.ACTION_PREVIOUS_MONTH)
+                                    .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                            , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
+                }
+
+                if (row > 1 || (column < columnsToDraw && columnsToDraw > 1)) {
+                    calendarRv.setViewVisibility(R.id.next_month_button, View.INVISIBLE);
+                    calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, 1);
+                    calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
+                } else {
+                    calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_MIN_WIDTH, ImageUtils.Dip2Px(res, 17));
+                    calendarRv.setTextViewText(R.id.next_month_button, res.getText(R.string.next_month_arrow));
+                    calendarRv.setTextViewTextSize(R.id.next_month_button, COMPLEX_UNIT_SP, monthRowTextSize);
+                    calendarRv.setInt(R.id.next_month_button, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
+                    calendarRv.setOnClickPendingIntent(R.id.next_month_button, PendingIntent.getBroadcast(context, appWidgetId,
+                            new Intent(context, WidgetCalendar.class)
+                                    .setAction(Constants.ACTION_NEXT_MONTH)
+                                    .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                            , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
+                }
+
+                calendarRv.setInt(R.id.month_label, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
+                if (!DeviceTools.isWidgetSupportConfig() && row == 1 && column == columnsToDraw) {
+                    Intent intentConfig = new Intent(context, WidgetCalendarConfigureActivity.class);
+                    intentConfig.setAction(Constants.ACTION_LAUNCH);
+                    intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                    calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
+                } else {
+                    calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getBroadcast(context, appWidgetId,
+                            new Intent(context, WidgetCalendar.class)
+                                    .setAction(Constants.ACTION_RESET_MONTH)
+                                    .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                            , PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
+                }
+            }
+
+            @SuppressLint("DiscouragedApi") int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR + row + "x" + column, Constants.STRING_ID, context.getPackageName());
+            if (id != 0) {
+                rv.addView(id, calendarRv);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

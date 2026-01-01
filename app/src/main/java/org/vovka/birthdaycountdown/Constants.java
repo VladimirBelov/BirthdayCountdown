@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 20:42
+ *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 15:40
  *
  */
 
@@ -32,13 +32,13 @@ public final class Constants {
     static final String STRING_0000 = "0000";
     static final String STRING_0000_MINUS = "0000-";
     public static final String STRING_HASH = "#";
-    static final String STRING_2HASH = "##";
+    public static final String STRING_2HASH = "##";
     static final String STRING_2MINUS = "--";
     static final String STRING_MINUS = "-";
     static final String STRING_PLUS = "+";
     static final String STRING_2TILDA = "~~";
-    static final String STRING_0 = "0";
-    static final String STRING_1 = "1";
+    public static final String STRING_0 = "0";
+    public static final String STRING_1 = "1";
     static final String STRING_2 = "2";
     static final String STRING_3 = "3";
     static final String STRING_4 = "4";
@@ -55,17 +55,17 @@ public final class Constants {
     public static final String STRING_COLON = ":";
     public static final String STRING_COLON_SPACE = ": ";
     public static final String STRING_COMMA = ",";
-    static final String STRING_COMMA_SPACE = ", ";
+    public static final String STRING_COMMA_SPACE = ", ";
     public static final String STRING_EMPTY = "";
     public static final String STRING_EOL = "\n";
     static final String STRING_TAB = "\t";
     static final String STRING_EOL_RN = "\\r?\\n";
-    static final String STRING_EOT = "\u0004";
+    public static final String STRING_EOT = "\u0004";
     static final String STRING_EQ = "=?";
     static final String STRING_MINUS1 = "-1";
     static final String STRING_NULL = "null";
-    static final String STRING_PARENTHESIS_CLOSE = ")";
-    static final String STRING_PARENTHESIS_OPEN = " (";
+    public static final String STRING_PARENTHESIS_CLOSE = ")";
+    public static final String STRING_PARENTHESIS_OPEN = " (";
     static final String STRING_PARENTHESIS_START = "(";
     static final String STRING_BRACKETS_OPEN = " [";
     static final String STRING_BRACKETS_START = "[";
@@ -414,7 +414,7 @@ public final class Constants {
 
     static final String eventSourcePhonePrefix = "phone:";
     static final String eventSourceContactPrefix = "contact:";
-    static final String eventSourceCalendarPrefix = "calendar:";
+    public static final String eventSourceCalendarPrefix = "calendar:";
     static final String eventSourceFilePrefix = "file:";
     static final String eventSourceMultiFilePrefix = "multifile:";
     static final String eventSourceHolidayPrefix = "holiday:";

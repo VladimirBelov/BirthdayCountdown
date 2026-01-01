@@ -1,21 +1,30 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 16:03
+ *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 15:40
  *
  */
 
 package org.vovka.birthdaycountdown.utils;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.CalendarContract;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.vovka.birthdaycountdown.Constants;
+import org.vovka.birthdaycountdown.ContactsEvents;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 public class AppDateUtils {
     static final String TAG = "DateUtils";
@@ -257,6 +266,65 @@ public class AppDateUtils {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             return null;
+        }
+    }
+
+    public static void fillCalendarList(Context context, HashMap<String, String> mapCalendars, HashMap<String, Integer> mapCalendarsColors) {
+
+        Cursor cursor = null;
+
+        try {
+
+            if (DeviceTools.checkNoCalendarAccess(context)) return;
+
+            ContentResolver contentResolver = context.getContentResolver();
+            ContactsEvents.ColumnIndexCache cache = new ContactsEvents.ColumnIndexCache();
+            Uri uri = CalendarContract.Calendars.CONTENT_URI;
+            cursor = contentResolver.query(
+                    uri,
+                    new String[]{
+                            android.provider.BaseColumns._ID,
+                            CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
+                            CalendarContract.Calendars.ACCOUNT_NAME,
+                            CalendarContract.Calendars.CALENDAR_COLOR,
+                            CalendarContract.Calendars.VISIBLE,
+                            CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL
+                    },
+                    null,
+                    null,
+                    null);
+
+            if (cursor != null) {
+                if (cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    for (int i = 0; i < cursor.getCount(); i++) {
+                        String calId = cursor.getString(cache.getColumnIndex(cursor, android.provider.BaseColumns._ID));
+                        int columnAccessLevelIndex = cache.getColumnIndex(cursor, CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL);
+                        String isReadOnly = Constants.STRING_EMPTY;
+                        if (columnAccessLevelIndex > 0) {
+                            isReadOnly = cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL)) < CalendarContract.Calendars.CAL_ACCESS_CONTRIBUTOR ? Constants.STRING_1 : Constants.STRING_0;
+                        }
+                        mapCalendars.put(calId, cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME))
+                                .concat(Constants.STRING_EOT)
+                                .concat(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Calendars.ACCOUNT_NAME)))
+                                .concat(Constants.STRING_EOT)
+                                .concat(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Calendars.VISIBLE)))
+                                .concat(Constants.STRING_EOT)
+                                .concat(isReadOnly)
+                        );
+                        String calendarId = StringUtils.getHash(Constants.eventSourceCalendarPrefix.concat(calId));
+                        mapCalendarsColors.put(calendarId, cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Calendars.CALENDAR_COLOR)));
+                        cursor.moveToNext();
+                    }
+                }
+                cursor.close();
+            }
+
+        } catch (SecurityException se) {
+            if (cursor != null && !cursor.isClosed()) cursor.close();
+        } catch (Exception e) {
+            if (cursor != null && !cursor.isClosed()) cursor.close();
+            Log.e(TAG, e.getMessage(), e);
         }
     }
 }

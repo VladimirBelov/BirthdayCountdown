@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 23:42
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 21:56
+ *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 18:01
  *
  */
 
@@ -215,14 +215,14 @@ public class AboutActivity extends AppCompatActivity {
                     sb.append(getString(R.string.stats_permissions_accounts, ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
-                    sb.append(getString(R.string.stats_permissions_contacts, !eventsData.checkNoContactsAccess()
+                    sb.append(getString(R.string.stats_permissions_contacts, !DeviceTools.checkNoContactsAccess(this)
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
-                    sb.append(getString(R.string.stats_permissions_calendar, !eventsData.checkNoCalendarAccess()
+                    sb.append(getString(R.string.stats_permissions_calendar, !DeviceTools.checkNoCalendarAccess(eventsData.getContext())
                             ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                        sb.append(getString(R.string.stats_permissions_files, !eventsData.checkNoStorageAccess()
+                        sb.append(getString(R.string.stats_permissions_files, !DeviceTools.checkNoStorageAccess(this)
                                 ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
                     }
 
@@ -240,10 +240,11 @@ public class AboutActivity extends AppCompatActivity {
                     }
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        sb.append(getString(R.string.stats_permissions_schedule_exact_alarm, eventsData.checkCanExactAlarm()
+                        sb.append(getString(R.string.stats_permissions_schedule_exact_alarm, DeviceTools.checkCanExactAlarm(this
+                        )
                                 ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
                     } else {
-                        sb.append(getString(R.string.stats_permissions_battery, !eventsData.checkNoBatteryOptimization()
+                        sb.append(getString(R.string.stats_permissions_battery, !DeviceTools.checkNoBatteryOptimization(this)
                                 ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_RED) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_GREEN)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
                     }
 

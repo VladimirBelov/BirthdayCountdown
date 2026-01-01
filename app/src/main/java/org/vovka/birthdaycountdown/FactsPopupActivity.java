@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 16:20
+ *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 14:10
  *
  */
 
@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import org.vovka.birthdaycountdown.utils.StringUtils;
 import org.vovka.birthdaycountdown.utils.UiTools;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class FactsPopupActivity extends Activity {
 
             Set<String> eventSources = new HashSet<String>(){};
             for (String file: eventsData.preferences_FactEvent_files) {
-                eventSources.add(ContactsEvents.getHash(Constants.eventSourceFilePrefix + file));
+                eventSources.add(StringUtils.getHash(Constants.eventSourceFilePrefix + file));
             }
 
             TextView txtCaption = findViewById(R.id.textCaption);

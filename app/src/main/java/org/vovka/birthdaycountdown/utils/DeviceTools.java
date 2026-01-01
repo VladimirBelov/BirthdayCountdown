@@ -1,20 +1,24 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 20:48
+ *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 18:01
  *
  */
 
 package org.vovka.birthdaycountdown.utils;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.PowerManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -23,6 +27,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.Constants;
 
@@ -194,6 +199,72 @@ public class DeviceTools {
         }
         return null;
 
+    }
+
+    /** Возвращает невозможность доступа до данных календарей
+     * @param context Контекст
+     * @return true, если нет доступа до данных календарей
+     */
+    public static boolean checkNoCalendarAccess(Context context) {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * @return True if battery optimization for this application is OFF
+     * @param context Контекст
+     */
+    public static boolean checkNoBatteryOptimization(Context context) {
+
+        //https://stackoverflow.com/questions/32627342/how-to-whitelist-app-in-doze-mode-android-6-0/32627788#32627788
+
+        try {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                String packageName = context.getPackageName();
+                PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+                return pm.isIgnoringBatteryOptimizations(packageName);
+            } else {
+                return true;
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            return true;
+        }
+    }
+
+    /**
+     * @return True if no access to contacts
+     * @param context Контекст
+     */
+    public static boolean checkNoContactsAccess(Context context) {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static boolean checkNoStorageAccess(Context context) {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static boolean checkNoNotificationAccess(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean checkCanExactAlarm(Context context) {
+        //Если стоит isIgnoringBatteryOptimizations, то canScheduleExactAlarms возвращает true
+        boolean canExact = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager.canScheduleExactAlarms()) {
+                canExact = true;
+            }
+        } else {
+            canExact = true;
+        }
+        return canExact;
     }
 
     public enum MIUIAutoStartState {

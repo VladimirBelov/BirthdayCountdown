@@ -1,23 +1,27 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 19:38
+ *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 14:10
  *
  */
 
 package org.vovka.birthdaycountdown.utils;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.vovka.birthdaycountdown.Constants;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Set;
 
 public class StringUtils {
+    static final String TAG = "StringUtils";
 
     public static boolean hasContent(String s) {
         return s != null && TextUtils.getTrimmedLength(s) > 0;
@@ -104,5 +108,41 @@ public class StringUtils {
             normalName = normalName.replace("\t", Constants.STRING_SPACE);
         }
         return normalName;
+    }
+
+    @NonNull
+    public static String[] getKeyParts(@NonNull String eventKey) {
+        return eventKey.replace(Constants.STRING_2HASH, Constants.STRING_EOT).split(Constants.STRING_EOT, -1);
+    }
+
+    @NonNull
+    public static String getHash(@NonNull String from) {
+        return String.valueOf(Math.abs(from.hashCode()));
+    }
+
+    /** Заменяет id календарей его наименованием
+     * @param setIDs Список id календарей
+     * @param mapTitles Список данных о календаре
+     * @return Строка с наименованиями календарей через запятую
+     */
+    public static String replaceCalendarIDtoTitle(Set<String> setIDs, HashMap<String, String> mapTitles){
+
+        StringBuilder sb = new StringBuilder();
+        try {
+
+            for(String id: setIDs){
+                if (sb.length() > 0) sb.append(Constants.STRING_COMMA_SPACE);
+                String calData = mapTitles.get(id);
+                if (calData != null) {
+                    String[] calInfo = getKeyParts(calData);
+                    sb.append(calInfo[0]);
+                    if (calInfo.length > 1) sb.append(Constants.STRING_PARENTHESIS_OPEN).append(calInfo[1]).append(Constants.STRING_PARENTHESIS_CLOSE);
+                } else sb.append(id);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        return sb.toString();
     }
 }
