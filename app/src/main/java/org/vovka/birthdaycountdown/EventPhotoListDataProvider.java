@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 15:14
+ *  * Created by Vladimir Belov on 01.01.2026, 22:00
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 21:50
  *
  */
 
@@ -444,7 +444,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             List<String> filteredEventList = eventsData.getFilteredEventList(eventsData.eventList, widgetPref);
 
             //Ограничения объёма
-            int maxEvents = 0;
+            int maxEvents = 50;
             int maxDays = 0;
             String prefScope = Constants.STRING_EMPTY;
             if (widgetPref.size() > 8) prefScope = widgetPref.get(8);

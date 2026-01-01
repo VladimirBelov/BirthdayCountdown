@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:48
+  ~  * Created by Vladimir Belov on 01.01.2026, 22:00
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 01.01.2026, 21:56
   ~  */
   -->
 
@@ -2242,7 +2242,7 @@ Long click on item to select color"</string>
 
     <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,,,1+7</string>
     <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,,,,,1</string>
-    <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,,,,</string>
+    <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,50e0d,,,</string>
     <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,0,1+2+3+4+5,01+02,0,,,,,,,,,2+1</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
     <color name="pref_Widgets_Color_Calendar_Back_default" translatable="false">@color/black_transp</color>

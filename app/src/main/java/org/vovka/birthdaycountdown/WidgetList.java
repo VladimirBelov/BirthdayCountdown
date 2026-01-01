@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 23:42
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 22:21
+ *  * Created by Vladimir Belov on 01.01.2026, 22:00
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 21:50
  *
  */
 
@@ -93,10 +93,7 @@ public class WidgetList extends AppWidgetProvider {
             Uri data = Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME));
             adapter.setData(data); //Чтобы разные виджеты одного адаптера отличались для системы
             views.setRemoteAdapter(R.id.widget_list, adapter);
-
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.BAKLAVA) {
-                views.setEmptyView(R.id.widget_list, R.id.empty_view);
-            }
+            views.setEmptyView(R.id.widget_list, R.id.empty_view);
 
             //Кнопка настроек
             if (DeviceTools.isWidgetSupportConfig() && !widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ButtonConfig_ID))) {
