@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.11.2025, 02:33
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 13.11.2025, 18:04
+ *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 22:47
  *
  */
 
@@ -51,9 +51,7 @@ public class DateReceiver extends BroadcastReceiver {
 
                 StringBuilder log = new StringBuilder();
 
-                if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
-                eventsData.getPreferences();
-                eventsData.setLocale(true);
+                eventsData.initLanguage(context);
 
                 //Переинициализируем уведомления
                 if (!eventsData.preferences_notifications_days.isEmpty()) {

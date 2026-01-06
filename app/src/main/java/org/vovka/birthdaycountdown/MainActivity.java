@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Created by Vladimir Belov on 07.01.2026, 01:04
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 18:01
+ *  * Last modified 06.01.2026, 13:49
  *
  */
 
@@ -103,8 +103,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * MainActivity - это активность для отображения списка событий.
@@ -2166,7 +2164,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (!filterNames.isEmpty()) return; //Чтобы не было обновления списка после просмотра контакта (при непустой строке поиска)
 
             if (eventsData == null) eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
 
             //если "выходили" посмотреть карточку контакта или события на 5 сек
             if (eventsData.statLastPausedForOtherActivity > 0 && !this.dataList.isEmpty()
@@ -2177,10 +2174,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 return;
             }
 
-            eventsData.getPreferences();
-
             //Устанавливаем язык приложения
-            eventsData.setLocale(true);
+            eventsData.initLanguage(this);
             resources = getResources();
 
             //Устанавливаем тему и переоткрываем окно
@@ -2743,8 +2738,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             try {
 
-                if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
-                eventsData.setLocale(false);
                 if (convertedView == null) {
                     //https://stackoverflow.com/questions/10641144/difference-between-getcontext-getapplicationcontext-getbasecontext-and
                         convertedView = LayoutInflater.from(getBaseContext()).inflate(R.layout.entry_main, parent, false);
@@ -3120,56 +3113,106 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
 
-                List<String> dataList_filtered = new ArrayList<>();
+                FilterResults results = new FilterResults();
+                List<String> filteredList = new ArrayList<>();
+
+                if (constraint == null || constraint.length() < 2) {
+                    filteredList.addAll(listAll);
+                    filterNames = Constants.STRING_EMPTY;
+                    results.values = filteredList;
+                    return results;
+                }
 
                 try {
 
-                    if (constraint == null || constraint.length() < 2) {
-                        dataList_filtered.addAll(listAll);
-                        filterNames = Constants.STRING_EMPTY;
-                    } else {
-                        //для поиска AND используем <строка1>+<строка2>
-                        //для поиска OR используем <строка1>,<строка2>
-                        filterNames = StringUtils.normalizeName(constraint.toString());
-                        if (filterNames != null) {
-                            final List<String> searchSource =
-                                    eventsData.preferences_list_search_depth == ContactsEvents.SearchDepth.AllEvents ? eventsData.eventList : listAll;
-                            if (filterNames.contains("+")) {
-                                String[] params = filterNames.split(Constants.REGEX_PLUS);
-                                for (String listItem : searchSource) {
-                                    final String item = listItem.toLowerCase();
-                                    int matches = 0;
-                                    for (String param : params) {
-                                        if (!item.contains(param)) {
-                                            break;
-                                        }
-                                        matches++;
-                                    }
-                                    if (matches == params.length) {
-                                        dataList_filtered.add(listItem);
-                                    }
-                                }
+                    List<String> searchSource = (eventsData.preferences_list_search_depth == ContactsEvents.SearchDepth.AllEvents)
+                            ? eventsData.eventList
+                            : listAll;
 
-                            } else {
-                                Matcher filter = Pattern.compile(filterNames.replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA).replace(Constants.STRING_COMMA, "|"), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
-                                for (String listItem : searchSource) {
-                                    if (filter.reset(listItem).find()) {
-                                        if (!dataList_filtered.contains(listItem)) {
-                                            dataList_filtered.add(listItem);
-                                        }
-                                    }
+                    filterNames = constraint.toString().trim();
+
+                    //для поиска AND используем <строка1>+<строка2>
+                    //для поиска OR используем <строка1>,<строка2>
+
+                    if (filterNames.contains(Constants.STRING_PLUS)) {
+                        String[] rawTerms = filterNames.split(Constants.REGEX_PLUS, -1);
+                        List<String> normalizedTerms = new ArrayList<>();
+                        for (String term : rawTerms) {
+                            String norm = StringUtils.normalizeString(term.trim());
+                            if (norm != null && !norm.isEmpty()) {
+                                normalizedTerms.add(norm);
+                            }
+                        }
+                        if (normalizedTerms.isEmpty()) {
+                            results.values = filteredList; // пустой список
+                            return results;
+                        }
+                        for (String itemRaw : searchSource) {
+                            String itemNorm = StringUtils.normalizeString(itemRaw);
+                            if (itemNorm != null && matchesAll(itemNorm, normalizedTerms)) {
+                                filteredList.add(itemRaw);
+                            }
+                        }
+
+                    } else if (filterNames.contains(Constants.STRING_COMMA)) {
+                        String[] rawTerms = filterNames.split(Constants.STRING_COMMA, -1);
+                        List<String> normalizedTerms = new ArrayList<>();
+                        for (String term : rawTerms) {
+                            String norm = StringUtils.normalizeString(term.trim());
+                            if (norm != null && !norm.isEmpty()) {
+                                normalizedTerms.add(norm);
+                            }
+                        }
+                        if (normalizedTerms.isEmpty()) {
+                            results.values = filteredList; // пустой список
+                            return results;
+                        }
+                        for (String itemRaw : searchSource) {
+                            String itemNorm = StringUtils.normalizeString(itemRaw);
+                            if (itemNorm != null && matchesAny(itemNorm, normalizedTerms)) {
+                                filteredList.add(itemRaw);
+                            }
+                        }
+
+                    } else {
+                        // Простой поиск: нормализуем весь запрос как один терм
+                        String searchTerm = StringUtils.normalizeString(filterNames);
+                        if (searchTerm != null && !searchTerm.isEmpty()) {
+                            for (String itemRaw : searchSource) {
+                                String itemNorm = StringUtils.normalizeString(itemRaw);
+                                if (itemNorm != null && itemNorm.contains(searchTerm)) {
+                                    filteredList.add(itemRaw);
                                 }
                             }
                         }
                     }
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage(), e);
-                    ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-                }
 
-                FilterResults results = new FilterResults();
-                results.values = dataList_filtered;
+                } catch (Exception e) {
+                    Log.e(TAG, "Filtering error", e);
+                    ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + ": " + e.getMessage());
+                }
+                results.values = filteredList;
                 return results;
+            }
+
+            private boolean matchesAll(String text, List<String> terms) {
+                for (String term : terms) {
+                    if (term.isEmpty()) continue;
+                    if (!text.contains(term)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            private boolean matchesAny(String text, List<String> terms) {
+                for (String term : terms) {
+                    if (term.isEmpty()) continue;
+                    if (text.contains(term)) {
+                        return true;
+                    }
+                }
+                return false;
             }
 
             @Override

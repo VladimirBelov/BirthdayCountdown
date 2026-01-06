@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Created by Vladimir Belov on 07.01.2026, 01:04
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 18:14
+ *  * Last modified 01.01.2026, 22:47
  *
  */
 
@@ -1867,7 +1867,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 //https://stackoverflow.com/questions/2486934/programmatically-relaunch-recreate-an-activity
                 //не доверяйте this.recreate(), если в настройках несколько вложенных PreferenceScreen!
-                eventsData.setLocale(true);
+                eventsData.initLanguage(this);
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);

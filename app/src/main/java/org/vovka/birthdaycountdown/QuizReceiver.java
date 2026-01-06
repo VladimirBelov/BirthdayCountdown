@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.12.2025, 03:04
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 09.12.2025, 03:03
+ *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 07.01.2026, 01:00
  *
  */
 
@@ -28,7 +28,7 @@ public class QuizReceiver extends BroadcastReceiver {
         try {
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
+            eventsData.initLanguage(context);
 
             Bundle extras = intent.getExtras();
             String quizQuestion = null;

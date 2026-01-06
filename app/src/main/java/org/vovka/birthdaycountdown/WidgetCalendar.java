@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Created by Vladimir Belov on 07.01.2026, 01:04
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 21:18
+ *  * Last modified 01.01.2026, 22:47
  *
  */
 
@@ -194,7 +194,6 @@ public class WidgetCalendar extends AppWidgetProvider {
             eventsData.initLanguage(context);
 
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
-                if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
                 eventsData.getEvents();
             }
 

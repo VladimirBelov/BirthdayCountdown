@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 16:27
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 15:12
+ *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 22:47
  *
  */
 
@@ -60,9 +60,7 @@ public class NotifyActionReceiver extends BroadcastReceiver {
             if (action == null) return;
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
-            eventsData.getPreferences();
-            eventsData.setLocale(true);
+            eventsData.initLanguage(context);
 
             //Получаем входные параметры
             Bundle extras = intent.getExtras();

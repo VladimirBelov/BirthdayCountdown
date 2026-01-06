@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.12.2025, 13:49
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.12.2025, 13:28
+ *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 23:04
  *
  */
 
@@ -36,8 +36,6 @@ public class EventsPopupActivity extends Activity {
             super.onCreate(savedInstanceState);
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
-            eventsData.getPreferences();
             eventsData.initLanguage(this);
 
             this.setTheme(eventsData.preferences_theme.themeDialog);

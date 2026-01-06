@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 14:38
+ *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 22:47
  *
  */
 
@@ -54,7 +54,9 @@ public class SuggestionProvider extends ContentProvider{
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
         eventsData = ContactsEvents.getInstance();
-        if (eventsData.getContext() == null && getContext() != null) eventsData.setContext(getContext().getApplicationContext());
+        if (getContext() != null) {
+            eventsData.initLanguage(getContext());
+        }
 
         //to protect from running twice
         if (System.currentTimeMillis() - eventsData.statLastSearchSuggestion < 500) return null;
@@ -80,11 +82,11 @@ public class SuggestionProvider extends ContentProvider{
 
                 //Получаем данные
                 eventsData = ContactsEvents.getInstance();
-                if (eventsData.getContext() == null && getContext() != null) eventsData.setContext(getContext().getApplicationContext());
+                if (getContext() != null) {
+                    eventsData.initLanguage(getContext());
+                }
 
                 if (eventsData.isEmptyEventList()) {
-                    eventsData.getPreferences();
-                    eventsData.setLocale(true);
                     eventsData.getEvents();
                 }
 

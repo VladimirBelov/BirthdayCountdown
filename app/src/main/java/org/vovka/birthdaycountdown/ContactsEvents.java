@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Created by Vladimir Belov on 07.01.2026, 01:04
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 18:08
+ *  * Last modified 07.01.2026, 01:00
  *
  */
 
@@ -466,8 +466,12 @@ public class ContactsEvents {
     int preferences_list_magnify_date;
     int preferences_list_magnify_age;
     boolean preference_list_fastscroll;
-    private Set<String> pref_List_Event_Info_Default;
-    private Set<String> pref_List_Age_Format_Default;
+
+    //Номера брать из R.string.pref_List_EventInfo_XXX
+    private final Set<String> pref_List_Event_Info_Default = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("6", "1", "2", "3", "12", "5")));
+    //Номера брать из R.string.pref_List_AgeFormat_XXX
+    private final Set<String> pref_List_Age_Format_Default = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("1", "2", "3")));
+
     Set<String> preferences_list_EventSources = new HashSet<>();
     SearchDepth preferences_list_search_depth;
     int preferences_list_quick_action;
@@ -510,7 +514,10 @@ public class ContactsEvents {
     private Set<String> preferences_notifications2_quick_actions;
 
     //Виджеты
-    private Set<String> pref_Widgets_EventInfo_Info_Default;
+
+    // Номера брать из R.string.pref_EventInfo_XXX_ID
+    private final Set<String> pref_Widgets_EventInfo_Info_Default = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("1", "2", "3", "10")));
+
     int preferences_widgets_update_period;
     Set<String> preferences_widgets_event_info;
     String preferences_widgets_bottom_info;
@@ -1030,87 +1037,62 @@ public class ContactsEvents {
         eventSubTypesIds.add(Constants.Type_Custom5);
     }
 
-    /** Устанавливает язык для текущей активности
-     * @param activity Активность
-     */
-    void initLanguage(@NonNull Activity activity) {
-        if (getContext() == null) setContext(activity.getApplicationContext());
-        getPreferences();
-        setLocale(false);
-    }
-
-    /** Устанавливает язык для текущей активности
+    /** Устанавливает язык для текущего контекста
      * @param context Контекст
      */
     void initLanguage(@NonNull Context context) {
-        if (getContext() == null) setContext(context.getApplicationContext());
+        setContext(context);
+        getPreferences_Language(context);
+        setLocale();
         getPreferences();
-        setLocale(false);
     }
 
-    /**
-     * Установка языка (локали) приложению
-     *
-     * @param force Принудительно, даже если этот язык уже устанавливали ранее
-     */
-    void setLocale(boolean force) {
+    void setContext(@NonNull Context con) {
+        context = con;
+        contentResolver = context.getContentResolver();
+        setDisplayMetrics(con.getResources().getDisplayMetrics());
+        displayMetrics_density = displayMetrics.density;
+    }
+
+    /** Установка языка (локали) приложению */
+    void setLocale() {
         if (context == null) return;
 
         boolean isAutoMode = preferences_language.equals(context.getString(R.string.pref_Language_default));
-        Locale targetLocale;
-
-        // === Android 14+ (API 34) ===
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            if (isAutoMode) {
-                // НЕ устанавливаем application locales → система сама даст язык
-                // Но определяем, какой язык реально используется
-                LocaleList appLocales = context.getSystemService(LocaleManager.class).getApplicationLocales();
-                if (!appLocales.isEmpty()) {
-                    // Язык был задан явно ранее — используем его
-                    targetLocale = appLocales.get(0);
-                } else {
-                    // Режим "АВТО" — используем язык системы
-                    targetLocale = Locale.getDefault(); // или Resources.getSystem().getConfiguration().getLocales().get(0)
-                }
-                currentLocale = targetLocale.getLanguage();
-                // НЕ вызываем setApplicationLocales() — оставляем систему управлять
-            } else {
-                // Язык задан явно
-                targetLocale = new Locale(preferences_language);
-                LocaleManager lm = context.getSystemService(LocaleManager.class);
-                lm.setApplicationLocales(new LocaleList(targetLocale));
-                currentLocale = preferences_language;
-            }
-            // Важно: НЕ вызываем updateConfiguration() на Android 14+
-            initLocaleStrings();
-            return;
-        }
-
-        // === Android 5–13 ===
-        if (isAutoMode) {
-            targetLocale = Locale.getDefault(); // всегда текущий системный язык
-        } else {
-            targetLocale = new Locale(preferences_language);
-        }
+        Locale targetLocale = isAutoMode ? Locale.getDefault() : new Locale(preferences_language);
 
         String targetLang = targetLocale.getLanguage();
         if (targetLang.isEmpty()) targetLang = "en";
 
-        // Проверка на необходимость обновления
-        if (!force && currentLocale != null && currentLocale.equals(targetLang)) {
-            initLocaleStrings();
-            return;
+        // Для Android 14+ — используем LocaleManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            if (!isAutoMode) {
+                LocaleManager lm = context.getSystemService(LocaleManager.class);
+                lm.setApplicationLocales(new LocaleList(targetLocale));
+            }
+            // На Android 14+ не трогаем Resources — система сама управляет
         }
 
-        // Применяем локаль
-        Configuration config = context.getResources().getConfiguration();
+        // === Для ВСЕХ версий: обновляем наш resources ===
+        Configuration config = new Configuration();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             config.setLocales(new LocaleList(targetLocale));
         } else {
             config.locale = targetLocale;
         }
         Locale.setDefault(targetLocale);
-        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+
+        // Обновляем наш внутренний resources
+        Context localizedContext = context.createConfigurationContext(config);
+        resources = localizedContext.getResources();
+
+        // === ДОПОЛНИТЕЛЬНО: для Android < 14 — обновляем конфигурацию контекста ===
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            Resources res = context.getResources();
+            // updateConfiguration устарел, но необходим для Android < 14
+            res.updateConfiguration(config, res.getDisplayMetrics());
+        }
+
         currentLocale = targetLang;
         initLocaleStrings();
     }
@@ -1259,38 +1241,8 @@ public class ContactsEvents {
         return context;
     }
 
-    void setContext(@NonNull Context con) {
-        context = con;
-        resources = con.getResources();
-        contentResolver = context.getContentResolver();
-        setDisplayMetrics(this.getResources().getDisplayMetrics());
-        displayMetrics_density = displayMetrics.density;
-
-        pref_Widgets_EventInfo_Info_Default = new HashSet<>();
-        pref_Widgets_EventInfo_Info_Default.add(context.getString(R.string.pref_EventInfo_Photo_ID));
-        pref_Widgets_EventInfo_Info_Default.add(context.getString(R.string.pref_EventInfo_EventIcon_ID));
-        pref_Widgets_EventInfo_Info_Default.add(context.getString(R.string.pref_EventInfo_FavIcon_ID));
-        pref_Widgets_EventInfo_Info_Default.add(context.getString(R.string.pref_EventInfo_Border_ID));
-
-        pref_List_Event_Info_Default = new HashSet<>();
-        pref_List_Event_Info_Default.add(context.getString(R.string.pref_List_EventInfo_Photo));
-        pref_List_Event_Info_Default.add(context.getString(R.string.pref_List_EventInfo_JobTitle));
-        pref_List_Event_Info_Default.add(context.getString(R.string.pref_List_EventInfo_Organization));
-        pref_List_Event_Info_Default.add(context.getString(R.string.pref_List_EventInfo_EventCaption));
-        pref_List_Event_Info_Default.add(context.getString(R.string.pref_List_EventInfo_EventIcon));
-        pref_List_Event_Info_Default.add(context.getString(R.string.pref_List_EventInfo_FavoritesIcon));
-
-        pref_List_Age_Format_Default = new HashSet<>();
-        pref_List_Age_Format_Default.add(context.getString(R.string.pref_List_AgeFormat_AddPostfix));
-        pref_List_Age_Format_Default.add(context.getString(R.string.pref_List_AgeFormat_Convert000toK));
-        pref_List_Age_Format_Default.add(context.getString(R.string.pref_List_AgeFormat_SeparateThousands));
-
-    }
-
     @NonNull
     Resources getResources() {
-        //if (this.resources == null) this.resources = context.getResources();
-        //return this.resources;
         return context.getResources();
     }
 
@@ -1457,6 +1409,11 @@ public class ContactsEvents {
         }
     }
 
+    void getPreferences_Language(@NonNull Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences_language = getPreferenceString(preferences, context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
+    }
+
     /**
      * Инициализация и считывание настроек из SharedPreferences
      */
@@ -1474,7 +1431,7 @@ public class ContactsEvents {
             preferences_debug_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_Debug_On_key), getResources().getBoolean(R.bool.pref_Help_Debug_On_default));
             preferences_info_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_InfoMsg_On_key), getResources().getBoolean(R.bool.pref_Help_InfoMsg_On_default));
             preferences_extrafun = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_ExtraFun_On_key), getResources().getBoolean(R.bool.pref_Help_ExtraFun_On_default));
-            preferences_language = getPreferenceString(preferences, context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
+            //preferences_language = getPreferenceString(preferences, context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
             preferences_Icon = getPreferenceString(preferences, context.getString(R.string.pref_Icon_key), context.getString(R.string.pref_Icon_default));
             preferences_IconPackNumber = getPreferenceInt(preferences, context.getString(R.string.pref_IconPack_key), 0);
             initIconPack();
@@ -2146,8 +2103,7 @@ public class ContactsEvents {
     /** Считывание всех доступных событий */
     synchronized boolean getEvents() {
 
-        if (flagIsUpdating) return false;
-        if (getContext() == null) setContext(getContext().getApplicationContext());
+        if (flagIsUpdating || getContext() == null) return false;
         flagIsUpdating = true;
 
         try {
@@ -2399,7 +2355,7 @@ public class ContactsEvents {
                         //ИОФ
                         final String personName = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.Data.DISPLAY_NAME));
                         if (personName != null && personID != null) {
-                            final String personNameNormalized = StringUtils.normalizeName(personName);
+                            final String personNameNormalized = StringUtils.normalizeString(personName);
                             if (!TextUtils.isEmpty(personNameNormalized) && !map_contacts_names.containsKey(personNameNormalized)) {
                                 map_contacts_names.put(personNameNormalized, personID);
                             }
@@ -2417,7 +2373,7 @@ public class ContactsEvents {
                         //ФИО
                         final String personNameAlt = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE));
                         if (personNameAlt != null) {
-                            final String personNameAltNormalized = StringUtils.normalizeName(personNameAlt);
+                            final String personNameAltNormalized = StringUtils.normalizeString(personNameAlt);
                             if (!TextUtils.isEmpty(personNameAltNormalized) && !map_contacts_names.containsKey(personNameAltNormalized)) {
                                 map_contacts_names.put(personNameAltNormalized, personID);
                             }
@@ -3384,15 +3340,15 @@ public class ContactsEvents {
                     String personFullNameNormalized;
                     String personFullNameAltNormalized;
                     if (preferences_rules_calendars_name_format == FormatName.NameFirst) {
-                        personFullNameNormalized = StringUtils.normalizeName(foundName);
+                        personFullNameNormalized = StringUtils.normalizeString(foundName);
                         String personFullNameAlt = Person.getAltName(foundName, FormatName.NameFirst, context);
-                        personFullNameAltNormalized = StringUtils.normalizeName(personFullNameAlt);
+                        personFullNameAltNormalized = StringUtils.normalizeString(personFullNameAlt);
                         eventData.put(Position_personFullName, foundName);
                         eventData.put(Position_personFullNameAlt, personFullNameAlt);
                     } else {
                         String personFullNameAlt = Person.getAltName(foundName, FormatName.LastnameFirst, context);
-                        personFullNameNormalized = StringUtils.normalizeName(personFullNameAlt);
-                        personFullNameAltNormalized = StringUtils.normalizeName(foundName);
+                        personFullNameNormalized = StringUtils.normalizeString(personFullNameAlt);
+                        personFullNameAltNormalized = StringUtils.normalizeString(foundName);
                         eventData.put(Position_personFullName, personFullNameAlt);
                         eventData.put(Position_personFullNameAlt, foundName);
                     }
@@ -4242,8 +4198,8 @@ public class ContactsEvents {
                         }
 
                         if (event.needScanContacts) {
-                            personFullNameNormalized = StringUtils.normalizeName(eventTitle);
-                            personFullNameAltNormalized = StringUtils.normalizeName(personFullNameAlt);
+                            personFullNameNormalized = StringUtils.normalizeString(eventTitle);
+                            personFullNameAltNormalized = StringUtils.normalizeString(personFullNameAlt);
                         }
 
                         eventData.put(Position_eventDescription, eventDescription.replace(Constants.REGEX_BS, Constants.STRING_EMPTY));
@@ -4669,15 +4625,15 @@ public class ContactsEvents {
                 String personFullNameNormalized;
                 String personFullNameAltNormalized;
                 if (preferences_rules_files_name_format == FormatName.NameFirst) {
-                    personFullNameNormalized = StringUtils.normalizeName(eventTitle);
+                    personFullNameNormalized = StringUtils.normalizeString(eventTitle);
                     String personFullNameAlt = Person.getAltName(eventTitle, FormatName.NameFirst, context);
-                    personFullNameAltNormalized = StringUtils.normalizeName(personFullNameAlt);
+                    personFullNameAltNormalized = StringUtils.normalizeString(personFullNameAlt);
                     eventData.put(Position_personFullName, eventTitle);
                     eventData.put(Position_personFullNameAlt, personFullNameAlt);
                 } else {
                     String personFullNameAlt = Person.getAltName(eventTitle, FormatName.LastnameFirst, context);
-                    personFullNameNormalized = StringUtils.normalizeName(personFullNameAlt);
-                    personFullNameAltNormalized = StringUtils.normalizeName(eventTitle);
+                    personFullNameNormalized = StringUtils.normalizeString(personFullNameAlt);
+                    personFullNameAltNormalized = StringUtils.normalizeString(eventTitle);
                     eventData.put(Position_personFullName, personFullNameAlt);
                     eventData.put(Position_personFullNameAlt, eventTitle);
                 }
@@ -5995,7 +5951,7 @@ public class ContactsEvents {
             Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
             Date currentDay = today.getTime();
 
-            setLocale(false);
+            //setLocale();
 
             for (int i = 0; i < eventList.size(); i++) {
                 computeDateForEvent(i, magicList, today, currentDay);
@@ -7372,8 +7328,6 @@ public class ContactsEvents {
 
             Set<String> notifications_days = new HashSet<>(prefDays); //За сколько дней уведомлять
             if (notifications_days.isEmpty()) return;
-
-            setLocale(true);
 
             Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
             Date currentDay = today.getTime();

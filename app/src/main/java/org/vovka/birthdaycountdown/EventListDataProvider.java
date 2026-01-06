@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 15:14
+ *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 01.01.2026, 22:47
  *
  */
 
@@ -114,9 +114,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             this.floatDensity = displayMetrics.density;
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
-            eventsData.getPreferences();
-            eventsData.setLocale(true);
+            eventsData.initLanguage(context);
 
             //Получаем данные
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetID);
@@ -242,8 +240,6 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
         RemoteViews views = new RemoteViews(this.context.getPackageName(), R.layout.widgetlist_item);
 
         try {
-
-            eventsData.setLocale(false);
 
             //Размер
             views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP,

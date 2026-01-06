@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Created by Vladimir Belov on 07.01.2026, 01:04
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 14:10
+ *  * Last modified 06.01.2026, 12:36
  *
  */
 
@@ -16,12 +16,16 @@ import androidx.annotation.Nullable;
 
 import org.vovka.birthdaycountdown.Constants;
 
+import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class StringUtils {
     static final String TAG = "StringUtils";
+    private static final Pattern DIACRITICS_AND_ACCENTS_PATTERN =
+            Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
 
     public static boolean hasContent(String s) {
         return s != null && TextUtils.getTrimmedLength(s) > 0;
@@ -83,31 +87,35 @@ public class StringUtils {
         } else {return str;}
     }
 
+    /** Подготовка строки для поиска
+     * @param inName Входная строка
+     * @return Нормализованная строка для поиска
+     */
     @Nullable
-    public static String normalizeName(String inName) {
-
+    public static String normalizeString(@Nullable String inName) {
         if (inName == null) return null;
 
-        String normalName = inName.toLowerCase(Locale.ROOT);
-        if (normalName.contains(Constants.STRING_COMMA)) {
-            normalName = normalName.replace(Constants.STRING_COMMA, Constants.STRING_EMPTY);
-        }
-        if (normalName.contains("ё")) {
-            normalName = normalName.replace("ё", "е");
-        }
-        if (normalName.contains("é")) {
-            normalName = normalName.replace("é", "e");
-        }
-        if (normalName.contains(Constants.STRING_EOL)) {
-            normalName = normalName.replace(Constants.STRING_EOL, Constants.STRING_EMPTY);
-        }
-        if (normalName.contains("\r")) {
-            normalName = normalName.replace("\r", Constants.STRING_EMPTY);
-        }
-        if (normalName.contains("\t")) {
-            normalName = normalName.replace("\t", Constants.STRING_SPACE);
-        }
-        return normalName;
+        // Шаг 1: приведение к нижнему регистру
+        String normalized = inName.toLowerCase(Locale.ROOT);
+
+        // Шаг 2: декомпозиция символов (разделение буквы и диакритики)
+        normalized = Normalizer.normalize(normalized, Normalizer.Form.NFD);
+
+        // Шаг 3: удаление всех комбинирующихся диакритических знаков
+        // (остаются только "чистые" буквы)
+        normalized = DIACRITICS_AND_ACCENTS_PATTERN.matcher(normalized).replaceAll("");
+
+        // Шаг 4: замена кириллической "ё" на "е"
+        normalized = normalized.replace("ё", "е");
+
+        // Шаг 5: очистка от нежелательных символов
+        normalized = normalized
+                .replace(Constants.STRING_COMMA, Constants.STRING_EMPTY)
+                .replace(Constants.STRING_EOL, Constants.STRING_EMPTY)
+                .replace("\r", Constants.STRING_EMPTY)
+                .replace("\t", Constants.STRING_SPACE);
+
+        return normalized;
     }
 
     @NonNull

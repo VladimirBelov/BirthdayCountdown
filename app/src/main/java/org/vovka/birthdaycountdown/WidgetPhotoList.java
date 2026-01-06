@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 22:00
+ *  * Created by Vladimir Belov on 07.01.2026, 01:04
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 21:50
+ *  * Last modified 07.01.2026, 01:00
  *
  */
 
@@ -59,7 +59,6 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
         try {
 
-            if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
             eventsData.initLanguage(context);
 
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
@@ -210,9 +209,8 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
         try {
 
-            if (eventsData.getContext() == null) eventsData.setContext(context.getApplicationContext());
-            eventsData.getPreferences();
-            eventsData.setLocale(true);
+            ContactsEvents eventsData = ContactsEvents.getInstance();
+            eventsData.initLanguage(context);
 
             updateAppWidget(context, appWidgetManager, appWidgetId);
             super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 23:42
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 21:17
+ *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 07.01.2026, 01:00
  *
  */
 
@@ -89,8 +89,6 @@ public class WidgetCalendarPopup extends Activity {
             super.onCreate(savedInstanceState);
 
             eventsData = ContactsEvents.getInstance();
-            if (eventsData.getContext() == null) eventsData.setContext(getApplicationContext());
-            eventsData.getPreferences();
             eventsData.initLanguage(this);
 
             this.setTheme(eventsData.preferences_theme.themeDialog);
