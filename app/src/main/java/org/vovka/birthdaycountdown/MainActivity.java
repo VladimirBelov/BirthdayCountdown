@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 03:00
+ *  * Created by Vladimir Belov on 07.01.2026, 16:55
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 02:44
+ *  * Last modified 07.01.2026, 15:43
  *
  */
 
@@ -1850,35 +1850,35 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             List<String> fileNames = new ArrayList<>();
             List<String> fileURIs = new ArrayList<>();
             for (String file: eventsData.preferences_Birthday_files) {
-                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                String[] fileDetails = file.split(Constants.REGEX_BAR);
                 if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
                     fileNames.add(getString(R.string.event_type_birthday_emoji) + Constants.STRING_SPACE + fileDetails[0]);
                     fileURIs.add(fileDetails[1]);
                 }
             }
             for (String file: eventsData.preferences_OtherEvent_files) {
-                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                String[] fileDetails = file.split(Constants.REGEX_BAR);
                 if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
                     fileNames.add(getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + fileDetails[0]);
                     fileURIs.add(fileDetails[1]);
                 }
             }
             for (String file: eventsData.preferences_MultiType_files) {
-                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                String[] fileDetails = file.split(Constants.REGEX_BAR);
                 if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
                     fileNames.add(getString(R.string.event_type_multi_emoji) + Constants.STRING_SPACE + fileDetails[0]);
                     fileURIs.add(fileDetails[1]);
                 }
             }
             for (String file: eventsData.preferences_HolidayEvent_files) {
-                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                String[] fileDetails = file.split(Constants.REGEX_BAR);
                 if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
                     fileNames.add(getString(R.string.event_type_holiday_emoji) + Constants.STRING_SPACE + fileDetails[0]);
                     fileURIs.add(fileDetails[1]);
                 }
             }
             for (String file: eventsData.preferences_FactEvent_files) {
-                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                String[] fileDetails = file.split(Constants.REGEX_BAR);
                 if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
                     fileNames.add(getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE + fileDetails[0]);
                     fileURIs.add(fileDetails[1]);
@@ -2755,7 +2755,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 person = new Person(eventsData.getContext(), event);
 
                 String eventDistance = singleEventArray[ContactsEvents.Position_eventDistance];
-                String[] eventDistanceText = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
+                String[] eventDistanceText = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.REGEX_BAR, -1);
                 switch (eventDistance) {
 
                     case Constants.STRING_0: //Сегодня

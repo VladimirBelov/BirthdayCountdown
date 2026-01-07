@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2025, 21:51
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.03.2025, 22:41
+  ~  * Created by Vladimir Belov on 07.01.2026, 16:55
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 07.01.2026, 16:25
   ~  */
   -->
 
@@ -73,7 +73,7 @@
                     android:id="@+id/widget_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="?android:attr/textColorPrimary"
+                    android:divider="@color/light_gray"
                     android:dividerHeight="0.5dp"
                     android:paddingBottom="1dp"
                     android:paddingEnd="1dp"

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 07.01.2026, 16:55
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 01:00
+ *  * Last modified 07.01.2026, 15:43
  *
  */
 
@@ -3074,7 +3074,7 @@ public class ContactsEvents {
             }
 
             if (eventType.equals(Constants.EventType_BirthDay) || isMultiTypeSource) {
-                arrRules = preferences_birthday_calendars_rules.split(Constants.STRING_PIPE, -1);
+                arrRules = preferences_birthday_calendars_rules.split(Constants.REGEX_BAR, -1);
                 if (!arrRules[0].isEmpty()) {
                     for (String rule : arrRules) {
                         final int indName = rule.indexOf(Constants.RULE_TAG_NAME);
@@ -4039,7 +4039,7 @@ public class ContactsEvents {
 
             for (String file : fileList) {
 
-                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                String[] fileDetails = file.split(Constants.REGEX_BAR);
                 String[] eventsArray =  readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
                 if (eventsArray[0].isEmpty()) {
                     ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
@@ -5416,7 +5416,7 @@ public class ContactsEvents {
 
         try {
 
-            String[] fileDetails = file.split(Constants.STRING_PIPE);
+            String[] fileDetails = file.split(Constants.REGEX_BAR);
             Uri uri = null;
             if (contentResolver == null) contentResolver = context.getContentResolver();
             try {
@@ -7552,7 +7552,7 @@ public class ContactsEvents {
                     if (prefType != 4 || event.eventDate.equals(currentDay)) {
 
                         int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
-                        final String[] eventDistance = event.singleEventArray[Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
+                        final String[] eventDistance = event.singleEventArray[Position_eventDistanceText].split(Constants.REGEX_BAR, -1);
                         final String eventDetails = composeNotifyEventDetails(event, prefEventDetails);
                         final String eventTitle = event.singleEventArray[Position_eventDistance].equals(Constants.STRING_0) ? eventDistance[0] : eventDistance[0] + Constants.STRING_SPACE + eventDistance[1];
 
@@ -8030,7 +8030,7 @@ public class ContactsEvents {
 
             final String eventDetails = composeNotifyEventDetails(new NotifyEvent(singleEventArray, eventDate), new HashSet<>(Arrays.asList(details)));
             int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
-            final String[] eventDistance = singleEventArray[Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
+            final String[] eventDistance = singleEventArray[Position_eventDistanceText].split(Constants.REGEX_BAR, -1);
             Set<String> prefEventDetails = preferences_notifications_details;
             final String eventTitle = singleEventArray[Position_eventDistance].equals(Constants.STRING_0) ? eventDistance[0] : eventDistance[0] + Constants.STRING_SPACE + eventDistance[1];
 
@@ -8684,7 +8684,7 @@ public class ContactsEvents {
 
             final String eventRow = preferences_xDaysEvents.get(eventId);
             if (eventRow != null)
-                result.addAll(Arrays.asList(eventRow.split(Constants.STRING_PIPE, -1)));
+                result.addAll(Arrays.asList(eventRow.split(Constants.REGEX_BAR, -1)));
             while (result.size() < 2) {
                 result.add(Constants.STRING_EMPTY);
             }
@@ -10971,7 +10971,7 @@ public class ContactsEvents {
                 final String packHash = StringUtils.getHash(Constants.eventSourceFilePrefix + file);
                 if (fileHashes == null || fileHashes.contains(packHash)) {
                     if (!preferences_DaysTypes.containsKey(packHash)) {
-                        String[] fileDetails = file.split(Constants.STRING_PIPE);
+                        String[] fileDetails = file.split(Constants.REGEX_BAR);
                         Log.i("FILE", fileDetails[0] + Constants.STRING_PARENTHESIS_OPEN + packHash + Constants.STRING_PARENTHESIS_CLOSE);
                         String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
                         if (eventsArray[0].isEmpty()) {
@@ -11280,7 +11280,7 @@ public class ContactsEvents {
             if (!preferences_FactEvent_files.isEmpty()) {
                 for (String file : preferences_FactEvent_files) {
 
-                    String[] fileDetails = file.split(Constants.STRING_PIPE);
+                    String[] fileDetails = file.split(Constants.REGEX_BAR);
                     String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
                     if (eventsArray[0].isEmpty()) {
                         ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);

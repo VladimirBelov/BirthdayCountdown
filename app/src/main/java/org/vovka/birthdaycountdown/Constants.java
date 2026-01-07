@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Created by Vladimir Belov on 07.01.2026, 16:55
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 15:40
+ *  * Last modified 07.01.2026, 15:43
  *
  */
 
@@ -27,6 +27,7 @@ public final class Constants {
     static final String REGEX_CALENDAR_LAYOUT = "(\\d+?)[r](\\d+?)[c]";
     static final String REGEX_PERIOD = "\\.";
     static final String REGEX_BS = "\\";
+    static final String REGEX_BAR = "\\|";
     static final String STRING_00 = "00";
     static final String STRING_000 = "000";
     static final String STRING_0000 = "0000";
@@ -71,7 +72,6 @@ public final class Constants {
     static final String STRING_BRACKETS_START = "[";
     static final String STRING_BRACKETS_CLOSE = "]";
     static final String STRING_PERIOD = ".";
-    static final String STRING_PIPE = "\\|";
     public static final String STRING_SLASH = "/";
     static final String STRING_DSLASH = "//";
     public static final String STRING_SPACE = " ";

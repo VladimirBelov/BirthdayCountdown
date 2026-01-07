@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 07.01.2026, 16:55
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 22:47
+ *  * Last modified 07.01.2026, 15:43
  *
  */
 
@@ -268,7 +268,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 }
 
                 //Срок до события и день недели
-                final String[] eventDistanceText = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
+                final String[] eventDistanceText = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.REGEX_BAR, -1);
                 final boolean showDistance = widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_DaysBeforeEvent_ID));
                 final boolean showDayOfWeek = widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventDayOfWeek_ID));
                 final boolean showEventDate = widgetPref_eventInfo.contains(resources.getString(R.string.pref_EventInfo_EventDate_ID));

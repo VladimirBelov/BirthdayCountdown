@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 07.01.2026, 16:55
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 22:47
+ *  * Last modified 07.01.2026, 15:43
  *
  */
 
@@ -2841,7 +2841,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 int ind = 0;
                 for (String file : filesList) {
                     filesPaths.add(
-                            file.split(Constants.STRING_PIPE)[0]
+                            file.split(Constants.REGEX_BAR)[0]
                                 + Constants.STRING_BRACKETS_OPEN
                                 + eventsData.getFileEventsCount(file, eventType, eventType.equals(Constants.Type_MultiEvent))
                                 + Constants.STRING_BRACKETS_CLOSE
@@ -2866,7 +2866,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             if (filesSelected.get(i)) {
                                 toStore.add(file);
                             } else {
-                                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                                String[] fileDetails = file.split(Constants.REGEX_BAR);
                                 try {
                                     uri = Uri.parse(fileDetails[1]);
                                 } catch (NullPointerException e) { /**/ }
@@ -2897,7 +2897,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             if (filesSelected.get(i)) {
                                 filesList.add(file);
                             } else {
-                                String[] fileDetails = file.split(Constants.STRING_PIPE);
+                                String[] fileDetails = file.split(Constants.REGEX_BAR);
                                 try {
                                     uri = Uri.parse(fileDetails[1]);
                                 } catch (NullPointerException e) { /**/ }
@@ -2935,7 +2935,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 if (!filesPaths.isEmpty()) {
                     listView.setOnItemLongClickListener((parent, view, position, id) -> {
 
-                        String[] fileDetails = filesFullData.get(position).split(Constants.STRING_PIPE);
+                        String[] fileDetails = filesFullData.get(position).split(Constants.REGEX_BAR);
                         Uri uri = Uri.parse(fileDetails[1]);
                         if (uri != null) {
                             eventsData.launchIntentOnFile(uri);
@@ -3935,7 +3935,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 for (String eventLine: eventsArray) {
                     if (eventLine != null) {
-                        //String eventString = eventLine.replaceAll(Constants.STRING_PIPE, Constants.STRING_EOT);
+                        //String eventString = eventLine.replaceAll(Constants.REGEX_BAR, Constants.STRING_EOT);
                         String eventString = eventLine
                                 .replace(Constants.STRING_TAB, Constants.STRING_EOL)
                                 .replace(Constants.STRING_BAR, Constants.STRING_EOT);

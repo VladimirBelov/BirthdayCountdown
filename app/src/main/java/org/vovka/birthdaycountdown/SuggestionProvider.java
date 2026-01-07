@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 07.01.2026, 16:55
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 22:47
+ *  * Last modified 07.01.2026, 15:55
  *
  */
 
@@ -76,63 +76,63 @@ public class SuggestionProvider extends ContentProvider{
 
         try {
 
-            if (!eventsData.isUIOpen && query != null) {
+            if (query == null) return matrixCursor;
 
-                final String queryString = query.toLowerCase();
+            final String queryString = StringUtils.normalizeString(query);
+            if (!StringUtils.hasContent(queryString)) return matrixCursor;
 
-                //Получаем данные
-                eventsData = ContactsEvents.getInstance();
-                if (getContext() != null) {
-                    eventsData.initLanguage(getContext());
+            if (eventsData.isEmptyEventList()) {
+                eventsData.getEvents();
+                if (eventsData.isEmptyEventList()) return matrixCursor;
+            }
+
+            int eventNum = -1;
+            for (String event : eventsData.eventList) {
+                eventNum++;
+                final String eventDataNormalized = StringUtils.normalizeString(event);
+                if (eventDataNormalized == null || !eventDataNormalized.contains(queryString)) {
+                    continue;
                 }
 
-                if (eventsData.isEmptyEventList()) {
-                    eventsData.getEvents();
+                String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
+                String eventKey = eventsData.getEventKey(singleEventArray);
+                String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
+                if (eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
+                    eventNum--; //Если событие скрыто, то оно будет скрыто и в основной активности со списком событий
+                    continue;
                 }
-
-                if (!eventsData.isEmptyEventList()) {
-                    int eventNum = -1;
-                    for (String event : eventsData.eventList) {
-                        eventNum++;
-                        if (event != null && event.toLowerCase().contains(queryString)) {
-                            String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
-
-                            String eventKey = eventsData.getEventKey(singleEventArray);
-                            String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
-                            if (eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
-                                eventNum--;
-                            } else {
-                                final String[] eventDistance = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
-                                String fullName = eventsData.getFullName(singleEventArray);
-                                matrixCursor.addRow(new Object[]{
-                                        (long) eventNum,
-                                        fullName,
-                                        singleEventArray[ContactsEvents.Position_eventEmoji]
-                                                .concat(Constants.STRING_SPACE)
-                                                .concat(singleEventArray[ContactsEvents.Position_eventCaption])
-                                                .concat(Constants.STRING_COLON)
-                                                .concat(StringUtils.hasContent(singleEventArray[ContactsEvents.Position_age_caption]) ?
-                                                        Constants.STRING_SPACE.concat(singleEventArray[ContactsEvents.Position_age_caption]) :
-                                                        Constants.STRING_EMPTY
-                                                )
-                                                .concat(Constants.STRING_SPACE)
-                                                .concat(eventDistance[0].toLowerCase()),
-                                        !(StringUtils.hasContent(singleEventArray[ContactsEvents.Position_photo_uri])
-                                                || singleEventArray[ContactsEvents.Position_photo_uri].equals(Constants.STRING_NULL)) ?
-                                                singleEventArray[ContactsEvents.Position_photo_uri] :
-                                                Constants.STRING_EMPTY,
-                                        Integer.toString(eventNum).concat(Constants.STRING_EOT).concat(fullName).concat(Constants.STRING_EOT)
-                                });
-                            }
-                        }
+                final String primaryLine = eventsData.getFullName(singleEventArray);
+                String secondaryLine = singleEventArray[ContactsEvents.Position_eventEmoji]
+                        .concat(Constants.STRING_SPACE)
+                        .concat(singleEventArray[ContactsEvents.Position_eventCaption])
+                        .concat(Constants.STRING_COLON)
+                        .concat(StringUtils.hasContent(singleEventArray[ContactsEvents.Position_age_caption]) ?
+                                Constants.STRING_SPACE.concat(singleEventArray[ContactsEvents.Position_age_caption]) :
+                                Constants.STRING_EMPTY
+                        );
+                final String eventDistanceText = singleEventArray[ContactsEvents.Position_eventDistanceText];
+                if (eventDistanceText != null && eventDistanceText.contains(Constants.STRING_BAR)) {
+                    final String eventDistance = StringUtils.substringBefore(eventDistanceText, Constants.STRING_BAR);
+                    if (!eventDistance.isEmpty()) {
+                        secondaryLine = secondaryLine.concat(Constants.STRING_SPACE)
+                                .concat(eventDistance.toLowerCase());
                     }
-
                 }
+                final String icon = !(StringUtils.hasContent(singleEventArray[ContactsEvents.Position_photo_uri])
+                        || singleEventArray[ContactsEvents.Position_photo_uri].equals(Constants.STRING_NULL)) ?
+                        singleEventArray[ContactsEvents.Position_photo_uri] :
+                        Constants.STRING_EMPTY;
 
+                matrixCursor.addRow(new Object[]{
+                        (long) eventNum,
+                        primaryLine,
+                        secondaryLine,
+                        icon,
+                        Integer.toString(eventNum).concat(Constants.STRING_EOT).concat(primaryLine).concat(Constants.STRING_EOT)
+                });
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            Log.e(TAG, "Failed to generate suggestions for query: " + query, e);
         }
 
         return matrixCursor;

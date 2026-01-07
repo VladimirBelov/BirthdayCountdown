@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 07.01.2026, 16:55
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 22:47
+ *  * Last modified 07.01.2026, 15:43
  *
  */
 
@@ -344,7 +344,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             final String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];
             final String eventKey = eventsData.getEventKey(singleEventArray);
             final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
-            final String[] eventDistanceInfo = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.STRING_PIPE, -1);
+            final String[] eventDistanceInfo = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.REGEX_BAR, -1);
 
             for (String eventItem : widgetPref_eventInfo) {
 
