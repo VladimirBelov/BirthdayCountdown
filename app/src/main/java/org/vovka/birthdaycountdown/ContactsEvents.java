@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 16:55
+ *  * Created by Vladimir Belov on 07.01.2026, 21:23
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 15:43
+ *  * Last modified 07.01.2026, 21:17
  *
  */
 
@@ -6947,6 +6947,7 @@ public class ContactsEvents {
                     return;
                 }
 
+                ContactsEvents.getInstance().initLanguage(context);
                 int[] ids;
 
                 if (widgetID == 0) {
