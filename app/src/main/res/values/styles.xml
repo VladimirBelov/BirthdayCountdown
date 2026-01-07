@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 11:40
+  ~  * Created by Vladimir Belov on 07.01.2026, 03:00
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 07.01.2026, 02:26
   ~  */
   -->
 
@@ -65,6 +65,8 @@
 
     <!-- Меню главной активности и контекстное меню-->
     <style name="AppTheme.Green.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/theme_green_secondary</item>
+        <item name="android:textCursorDrawable">@null</item>
         <item name="android:colorBackground">@color/theme_green_secondary</item>
         <item name="android:textColor">@color/theme_green_primary</item>
         <item name="android:textColorHint">@color/theme_green_secondary</item>
@@ -287,9 +289,11 @@
     </style>
 
     <style name="AppTheme.Blue.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/theme_blue_secondary</item>
+        <item name="android:textCursorDrawable">@null</item>
         <item name="android:colorBackground">@color/theme_blue_secondary</item>
-        <item name="android:textColor">@color/black</item>
         <item name="android:listDivider">@color/medium_dark_gray_trans_25</item>
+        <item name="android:textColor">@color/theme_blue_primary</item>
         <item name="android:textColorHint">@color/theme_blue_secondary</item>
         <item name="android:textColorPrimary">@color/theme_blue_secondary</item>
         <item name="android:textColorSecondary">@color/theme_blue_secondary</item>
@@ -438,6 +442,8 @@
 
     <!-- Меню главной активности -->
     <style name="AppTheme.Orange.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/theme_orange_secondary</item>
+        <item name="android:textCursorDrawable">@null</item>
         <item name="android:colorBackground">@color/theme_orange_secondary</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:listDivider">@color/theme_orange_status_transp</item>
@@ -516,6 +522,8 @@
 
     <!-- Меню главной активности -->
     <style name="AppTheme.Teal.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/theme_teal_secondary</item>
+        <item name="android:textCursorDrawable">@null</item>
         <item name="android:colorBackground">@color/theme_teal_secondary</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:listDivider">@color/theme_teal_status_transp</item>
@@ -594,6 +602,8 @@
 
     <!-- Меню главной активности -->
     <style name="AppTheme.Brown.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/theme_brown_secondary</item>
+        <item name="android:textCursorDrawable">@null</item>
         <item name="android:colorBackground">@color/theme_brown_secondary</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:listDivider">@color/theme_brown_status_transp</item>
@@ -672,6 +682,8 @@
 
     <!-- Меню главной активности -->
     <style name="AppTheme.Indigo.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/theme_indigo_secondary</item>
+        <item name="android:textCursorDrawable">@null</item>
         <item name="android:colorBackground">@color/theme_indigo_secondary</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:listDivider">@color/theme_indigo_status_transp</item>

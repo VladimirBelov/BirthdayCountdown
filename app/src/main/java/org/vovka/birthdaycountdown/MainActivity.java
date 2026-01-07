@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 07.01.2026, 03:00
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.01.2026, 13:49
+ *  * Last modified 07.01.2026, 02:44
  *
  */
 
@@ -10,7 +10,6 @@ package org.vovka.birthdaycountdown;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.ClipDescription;
 import android.content.ContentUris;
@@ -1670,8 +1669,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     searchView.setMaxWidth(Integer.MAX_VALUE);
 
                     //https://stackoverflow.com/questions/17845980/how-to-implement-voice-search-to-searchview
-                    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-                    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+                    //SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+                    //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
                 }
             }
 
