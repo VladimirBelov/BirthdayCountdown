@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:48
+  ~  * Created by Vladimir Belov on 10.01.2026, 11:20
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 10.01.2026, 11:10
   ~  */
   -->
 
@@ -637,8 +637,8 @@
 
     <string-array name="pref_List_EventInfo_entries">
         <item>Foto</item>
-        <item>Position</item>
-        <item>Organisation</item>
+        <item>Titel</item>
+        <item>Unternehmen</item>
         <item>Spitzname</item>
         <item>Ereignistyp</item>
         <item>Ursprünglicher Ereignisname</item>
@@ -744,7 +744,7 @@
     <string name="pref_EventInfo_EventDayOfWeekShort">Wochentag des Ereignisses (kurzes Format)</string>
     <string name="pref_EventInfo_EventDayOfWeekFar">Wochentag des Ereignisses (ferneres Ereignis)</string>
     <string name="pref_EventInfo_Organization">Unternehmen</string>
-    <string name="pref_EventInfo_JobTitle">Position</string>
+    <string name="pref_EventInfo_JobTitle">Titel</string>
     <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Symbol für die Ereignisquelle</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Weblink vorhanden</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Alle Ereignisse nach Datumsfarbe einfärben</string>
@@ -1231,7 +1231,7 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="stats_counters_favorite_events"><![CDATA[<li>Lieblingsereignisse: %1$d]]></string>
     <string name="stats_counters_contacts"><![CDATA[<li>Kontakte: %1$d]]></string>
     <string name="stats_counters_titles"><![CDATA[<li>Beiträge: %1$d]]></string>
-    <string name="stats_counters_organizations"><![CDATA[<li>Organisationen: %1$d]]></string>
+    <string name="stats_counters_organizations"><![CDATA[<li>Unternehmen: %1$d]]></string>
     <string name="stats_counters_nicknames"><![CDATA[<li>Spitznamen: %1$d]]></string>
     <string name="stats_counters_URLs"><![CDATA[<li>Web-Links: %1$d]]></string>
     <string name="stats_counters_widgets"><![CDATA[<li>Widgets: %1$d]]></string>
@@ -1360,8 +1360,8 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="local_event_dialog_caption_name">Vorname Nachname:</string>
     <string name="local_event_dialog_caption_name_alt">Nachname Vorname:</string>
     <string name="local_event_dialog_caption_name_holiday">Veranstaltungstitel:</string>
-    <string name="local_event_dialog_caption_title">Position, Beruf:</string>
-    <string name="local_event_dialog_caption_org">Organisation:</string>
+    <string name="local_event_dialog_caption_title">Titel, Beruf:</string>
+    <string name="local_event_dialog_caption_org">Unternehmen:</string>
     <string name="local_event_dialog_date_title">Datum:</string>
     <string name="local_event_dialog_type_title">Veranstaltungstyp:</string>
     <string name="local_event_dialog_caption_desc">Beschreibung:</string>
