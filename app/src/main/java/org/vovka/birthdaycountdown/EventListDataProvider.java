@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 17:10
+ *  * Created by Vladimir Belov on 10.01.2026, 10:47
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 17:03
+ *  * Last modified 10.01.2026, 10:24
  *
  */
 
@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
 
 /**
  * EventListDataProvider предоставляет данные для ListView, используемого в виджете приложения.
- * Он реализует интерфейс RemoteViewsService.RemoteViewsFactory для предоставления коллекции RemoteViews,
+ * Он реализует интерфейс {@link RemoteViewsService.RemoteViewsFactory} для предоставления коллекции RemoteViews,
  * которые будут отображаться в ListView виджета.
  *
  * <p>Этот класс отвечает за:</p>

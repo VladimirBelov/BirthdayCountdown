@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 17:10
+ *  * Created by Vladimir Belov on 10.01.2026, 10:47
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 17:03
+ *  * Last modified 10.01.2026, 10:24
  *
  */
 
@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 
 /**
  * EventPhotoListDataProvider - это поставщик данных для спискового виджета с фото.
- * Он реализует интерфейс RemoteViewsService.RemoteViewsFactory для предоставления данных ListView виджета.
+ * Он реализует интерфейс {@link RemoteViewsService.RemoteViewsFactory} для предоставления данных ListView виджета.
  * Он получает данные о событиях, обрабатывает их и предоставляет отформатированные данные и изображения для отображения в виджете.
  */
 public class EventPhotoListDataProvider implements RemoteViewsService.RemoteViewsFactory {

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 25.04.2023, 10:18
+  ~  * Created by Vladimir Belov on 10.01.2026, 10:47
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 10.01.2026, 10:24
   ~  */
   -->
 
-<!-- размеры по-умолчанию  https://material.io/tools/devices/ -->
+<!-- размеры по-умолчанию https://material.io/tools/devices/ -->
 <!-- https://stackoverflow.com/questions/32860815/how-to-define-dimens-xml-for-every-different-screen-size-in-android -->
 
 <resources>

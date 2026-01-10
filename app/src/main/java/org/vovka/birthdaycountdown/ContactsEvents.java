@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 21:23
+ *  * Created by Vladimir Belov on 10.01.2026, 10:47
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 21:17
+ *  * Last modified 10.01.2026, 10:02
  *
  */
 
@@ -1048,7 +1048,7 @@ public class ContactsEvents {
     }
 
     void setContext(@NonNull Context con) {
-        context = con;
+        context = con.getApplicationContext();
         contentResolver = context.getContentResolver();
         setDisplayMetrics(con.getResources().getDisplayMetrics());
         displayMetrics_density = displayMetrics.density;
@@ -1066,9 +1066,12 @@ public class ContactsEvents {
 
         // Для Android 14+ — используем LocaleManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            LocaleManager lm = context.getSystemService(LocaleManager.class);
             if (!isAutoMode) {
-                LocaleManager lm = context.getSystemService(LocaleManager.class);
                 lm.setApplicationLocales(new LocaleList(targetLocale));
+            } else {
+                // Сбрасываем application locales → возвращаемся к системному языку
+                lm.setApplicationLocales(new LocaleList());
             }
             // На Android 14+ не трогаем Resources — система сама управляет
         }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 10.01.2026, 10:47
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 01:00
+ *  * Last modified 10.01.2026, 09:59
  *
  */
 
@@ -50,12 +50,11 @@ public class WidgetPhotoList extends AppWidgetProvider {
     private static final String TAG = "WidgetPhotoList";
     final ContactsEvents eventsData = ContactsEvents.getInstance();
 
-    private static void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
+    private void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
         long statCurrentModuleStart = System.currentTimeMillis();
         final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
         final int PendingIntentMutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
-        ContactsEvents eventsData = ContactsEvents.getInstance();
 
         try {
 

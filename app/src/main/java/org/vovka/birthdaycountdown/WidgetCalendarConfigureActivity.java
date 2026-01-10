@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Created by Vladimir Belov on 10.01.2026, 10:47
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 14:10
+ *  * Last modified 10.01.2026, 09:37
  *
  */
 
@@ -632,7 +632,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.widgetId);
             setResult(Activity.RESULT_OK, intent);
 
-            //Посылаем сообщение на обновление виджета
+            // Логи ServiceConnectionLeaked в AppWidgetManager — игнорировать, это фальшивая ошибка
             this.eventsData.updateWidgets(this.widgetId, null);
 
             finish();
