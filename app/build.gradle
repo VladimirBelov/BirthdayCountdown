@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.12.2025, 00:19
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 04.12.2025, 19:39
+ *  * Created by Vladimir Belov on 18.01.2026, 16:20
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 18.01.2026, 16:02
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -16,6 +16,8 @@ def keystoreProperties = new Properties()
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
+
+def appVersionName = "1.9.0"
 
 android {
 
@@ -88,7 +90,7 @@ android {
             //minSdkVersion (lowest possible) <= targetSdkVersion == compileSdkVersion (latest SDK)
             targetSdkVersion 36 //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
             versionCode code
-            versionName "1.8.9"
+            versionName appVersionName
             vectorDrawables.useSupportLibrary = true //https://stackoverflow.com/questions/41407811/android-vectordrawables-usesupportlibrary-true-is-stopping-app
         }
     } else {
@@ -136,13 +138,15 @@ android {
     }
     namespace = 'org.vovka.birthdaycountdown'
 
-    //https://stackoverflow.com/questions/28249036/app-release-apk-how-to-change-this-default-generated-apk-name
-    applicationVariants.configureEach { variant ->
-        variant.outputs.configureEach { output ->
-            outputFileName = new File("Birthdays&Events_" + variant.versionName + ".apk")
+}
+
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        variant.outputs.each { output ->
+            def apkName = "Birthdays&Events_${appVersionName}.apk"
+            output.outputFileName.set(apkName)
         }
     }
-
 }
 
 dependencies {
