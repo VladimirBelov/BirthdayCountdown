@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.01.2026, 22:00
+  ~  * Created by Vladimir Belov on 02.02.2026, 00:43
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 01.01.2026, 21:56
+  ~  * Last modified 02.02.2026, 00:41
   ~  */
   -->
 
@@ -748,6 +748,7 @@
     <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Event source icon</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Web link available</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Colorize all event by date color</string>
+    <string name="pref_EventInfo_ShowNearestEventPhoto">Show contact photo for the nearest event</string>
     <string name="pref_EventInfo_NewLine1">"- new line -"</string>
     <string name="pref_EventInfo_NewLine2">"- new line - "</string>
     <string name="pref_EventInfo_NewLine3">"- new line -  "</string>
@@ -757,6 +758,7 @@
     <string name="pref_EventInfo_RightBracket2">") "</string>
     <string name="pref_EventInfo_BoldStart">"- bold - (start)"</string>
     <string name="pref_EventInfo_BoldEnd">"- bold - (end)"</string>
+    <string name="pref_EventInfo_Tab">"- tab (4 spaces) -"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -2116,6 +2118,8 @@ Long click on item to select color"</string>
     <string name="pref_EventInfo_BoldEnd_ID" translatable="false">43</string>
     <string name="pref_EventInfo_EventYear_ID" translatable="false">44</string>
     <string name="pref_EventInfo_EventYear_Original_ID" translatable="false">45</string>
+    <string name="pref_EventInfo_Tab_ID" translatable="false">46</string>
+    <string name="pref_EventInfo_ShowNearestEventPhoto_ID" translatable="false">47</string>
 
     <string-array name="pref_Widgets_EventInfo_values" translatable="false">
         <item>@string/pref_EventInfo_Border_ID</item>

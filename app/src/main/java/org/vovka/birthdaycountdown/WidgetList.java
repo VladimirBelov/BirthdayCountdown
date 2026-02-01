@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.01.2026, 10:47
+ *  * Created by Vladimir Belov on 02.02.2026, 00:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.01.2026, 09:59
+ *  * Last modified 02.02.2026, 00:36
  *
  */
 
@@ -15,11 +15,13 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -104,7 +106,8 @@ public class WidgetList extends AppWidgetProvider {
             }
             //todo: https://stackoverflow.com/questions/5070413/widget-double-click
 
-            int eventsToShow = eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size();
+            List<String> filteredEventList = eventsData.getFilteredEventList(eventsData.eventList, widgetPref);
+            int eventsToShow = filteredEventList.size();
 
             if (eventsData.preferences_debug_on) {
                 views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated)
@@ -172,6 +175,40 @@ public class WidgetList extends AppWidgetProvider {
                 views.setInt(R.id.widget_layout,Constants.METHOD_SET_BACKGROUND_RES, 0);
             }
 
+            if (widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ShowNearestEventPhoto_ID))) {
+                //Фото ближайшего события
+                if (!filteredEventList.isEmpty()) {
+                    String eventInfo = filteredEventList.getFirst();
+                    Bundle options = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
+                    int widgetWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+                    int roundingFactor = getRoundingFactor(widgetPref);
+                    Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, false, roundingFactor);
+                    if (photo != null) {
+                        int outWidth;
+                        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+                        if (widgetWidth > 0) {
+                            float floatDensity = displayMetrics.density;
+                            outWidth = (int) ((widgetWidth * floatDensity * 1.2) / 6);
+                        } else {
+                            outWidth = (int) (displayMetrics.widthPixels * 1.2 / 7);
+                        }
+
+                        int inWidth = photo.getWidth();
+                        int inHeight = photo.getHeight();
+                        double resizeFactor = ContactsEvents.getSizeForWidgetElement(widgetPref, 2, 1, 1);
+                        if (inHeight > 0 && inWidth > 0) {
+                            int outHeight = inHeight * outWidth / inWidth;
+
+                            if (outHeight > 0 && outWidth > 0) {
+                                Bitmap photo_small = Bitmap.createScaledBitmap(photo, (int) (outWidth * resizeFactor), (int) (outHeight * resizeFactor), true);
+                                views.setImageViewBitmap(R.id.widgetPhoto, photo_small);
+                                views.setViewVisibility(R.id.widgetPhoto, View.VISIBLE);
+                            }
+                        }
+                    }
+                }
+            }
+
             ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
                     context.getResources().getString(R.string.msg_debug_widget_list_config, widgetType, appWidgetId,
                             context.getResources().getResourceEntryName(views.getLayoutId()), TextUtils.join(Constants.STRING_COMMA, widgetPref))
@@ -191,6 +228,19 @@ public class WidgetList extends AppWidgetProvider {
             eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
             eventsData.statActiveWidgets++;
         }
+    }
+
+    private int getRoundingFactor(List<String> widgetPref) {
+        int roundingFactor = 1;
+        if (widgetPref != null && widgetPref.size() > 6) {
+            switch (widgetPref.get(6)) {
+                case Constants.STRING_1: roundingFactor = 2; break;
+                case Constants.STRING_2: roundingFactor = 3; break;
+                case Constants.STRING_3: roundingFactor = 4; break;
+                case Constants.STRING_4: roundingFactor = 9; break;
+            }
+        }
+        return roundingFactor;
     }
 
     @Override

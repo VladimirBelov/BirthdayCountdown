@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.01.2026, 10:47
+ *  * Created by Vladimir Belov on 02.02.2026, 00:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.01.2026, 09:37
+ *  * Last modified 02.02.2026, 00:40
  *
  */
 
@@ -254,23 +254,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
-
-            /*
-            int prefTextMagnifyIndex = 0;
-            int prefPhotoMagnifyIndex = 0;
-            try {
-                if (widgetPref.size() > 1) {
-                    String[] prefMagnify = widgetPref.get(1).split(Constants.REGEX_PLUS, -1);
-                    prefTextMagnifyIndex = Integer.parseInt(prefMagnify[0]);
-                    if (prefMagnify.length > 1) prefPhotoMagnifyIndex = Integer.parseInt(prefMagnify[1]);
-                }
-            } catch (Exception e) {*//**//*}
-
-            Spinner spinnerTextMagnify = findViewById(R.id.spinnerTextMagnify);
-            spinnerTextMagnify.setSelection(prefTextMagnifyIndex, true);
-
-            Spinner spinnerPhotoMagnify = findViewById(R.id.spinnerPhotoMagnify);
-            spinnerPhotoMagnify.setSelection(prefPhotoMagnifyIndex, true);*/
 
             //Реакция на нажатие
             //todo: https://stackoverflow.com/questions/2695746/how-to-get-a-list-of-installed-android-applications-and-pick-one-to-run
@@ -644,6 +627,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     add(getString(R.string.pref_EventInfo_Dividers));
                     add(getString(R.string.pref_EventInfo_ButtonConfig));
                     add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
+                    add(getString(R.string.pref_EventInfo_ShowNearestEventPhoto));
                     add(getString(R.string.pref_EventInfo_Photo));
                 }};
                 spinnerEventInfo.setNonSorted(listNonSorted);
@@ -709,6 +693,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Dividers_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Dividers));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ButtonConfig_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ButtonConfig));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ColorizeEntireRow_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_ShowNearestEventPhoto_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ShowNearestEventPhoto));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Photo_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Photo));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_Original_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate_Original));
@@ -741,6 +726,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_RightBracket2_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_RightBracket2));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_BoldStart_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_BoldStart));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_BoldEnd_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_BoldEnd));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Tab_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Tab));
                     break;
 
                 case Constants.WIDGET_TYPE_PHOTO_LIST:

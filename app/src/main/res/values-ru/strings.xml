@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:48
+  ~  * Created by Vladimir Belov on 02.02.2026, 00:43
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 02.02.2026, 00:41
   ~  */
   -->
 
@@ -748,6 +748,7 @@
     <string name="pref_EventInfo_SourceIcon">👨‍💼‍📆📁 Иконка источника события</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Есть web ссылка</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Окрашивать цветом даты всё событие</string>
+    <string name="pref_EventInfo_ShowNearestEventPhoto">Показать фото контакта для ближайшего события</string>
     <string name="pref_EventInfo_NewLine1">"- новая строка -"</string>
     <string name="pref_EventInfo_NewLine2">"- новая строка - "</string>
     <string name="pref_EventInfo_NewLine3">"- новая строка -  "</string>
@@ -757,6 +758,7 @@
     <string name="pref_EventInfo_RightBracket2">") "</string>
     <string name="pref_EventInfo_BoldStart">"- жирным - (начало)"</string>
     <string name="pref_EventInfo_BoldEnd">"- жирным - (конец)"</string>
+    <string name="pref_EventInfo_Tab">"- табуляция (4 пробела) -"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>

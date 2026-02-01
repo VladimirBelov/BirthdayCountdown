@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.01.2026, 10:47
+ *  * Created by Vladimir Belov on 02.02.2026, 00:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.01.2026, 10:24
+ *  * Last modified 01.02.2026, 23:26
  *
  */
 
@@ -348,14 +348,14 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
             for (String eventItem : widgetPref_eventInfo) {
 
-                final boolean notEndWithBR = !eventDetails.toString().endsWith(Constants.HTML_BR);
+                final boolean notEndWithBR = !eventDetails.toString().isEmpty() && !eventDetails.toString().endsWith(Constants.HTML_BR);
                 final boolean notEndWithBRorBracket = notEndWithBR && !eventDetails.toString().endsWith(Constants.STRING_PARENTHESIS_START);
                 boolean isBirthdayEvent = eventSubType.equals(Constants.EventType_BirthDay) || eventSubType.equals(Constants.EventType_5K);
 
                 if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Photo_ID))) {
 
                     //Фото
-                    int roundingFactor = getRoundingFactor();
+                    int roundingFactor = getRoundingFactor(widgetPref);
                     Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, false, roundingFactor);
                     if (photo != null) {
                         int outWidth;
@@ -568,6 +568,10 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                     eventDetails.append(Constants.HTML_BOLD_END);
 
+                } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Tab_ID))) {
+
+                    eventDetails.append("&emsp;");
+
                 }
             }
         } catch (Exception e) {
@@ -577,7 +581,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
         return eventDetails;
     }
 
-    private int getRoundingFactor() {
+    private int getRoundingFactor(List<String> widgetPref) {
         int roundingFactor = 1;
         if (widgetPref != null && widgetPref.size() > 6) {
             switch (widgetPref.get(6)) {
