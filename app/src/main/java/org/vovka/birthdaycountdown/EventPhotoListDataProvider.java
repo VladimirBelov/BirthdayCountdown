@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.01.2026, 10:47
+ *  * Created by Vladimir Belov on 10.02.2026, 14:03
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.01.2026, 10:24
+ *  * Last modified 10.02.2026, 13:25
  *
  */
 
@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
 
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.text.ParseException;
@@ -89,9 +90,9 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
             //Размер
             views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP,
-                    ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_SMALL, 1.2));
+                    ImageUtils.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_SMALL, 1.2));
             views.setTextViewTextSize(R.id.eventDetails, TypedValue.COMPLEX_UNIT_SP,
-                    ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, 1.2));
+                    ImageUtils.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, 1.2));
 
             views.setTextColor(R.id.eventCaption, eventsData.preferences_widgets_color_default);
             views.setTextColor(R.id.eventDetails, eventsData.preferences_widgets_color_default);
@@ -323,13 +324,13 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                     if (widgetWidth > 0) {
                         outWidth = (int) ((widgetWidth * floatDensity * 1.2) / 6);
                     } else {
-                        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+                        DisplayMetrics displayMetrics = localizedResources.getDisplayMetrics();
                         outWidth = (int) (displayMetrics.widthPixels * 1.2 / 7);
                     }
 
                     int inWidth = photo.getWidth();
                     int inHeight = photo.getHeight();
-                    double resizeFactor = ContactsEvents.getSizeForWidgetElement(widgetPref, 2, 1, 1);
+                    double resizeFactor = ImageUtils.getSizeForWidgetElement(widgetPref, 2, 1, 1);
                     if (inHeight > 0 && inWidth > 0) {
                         int outHeight = inHeight * outWidth / inWidth;
 
@@ -407,14 +408,14 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
             if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) return;
 
-            Bundle options = AppWidgetManager.getInstance(context).getAppWidgetOptions(widgetID);
-            this.widgetWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-            this.floatDensity = displayMetrics.density;
-
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(context);
             localizedResources = eventsData.getResources();
+
+            Bundle options = AppWidgetManager.getInstance(context).getAppWidgetOptions(widgetID);
+            this.widgetWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+            DisplayMetrics displayMetrics = localizedResources.getDisplayMetrics();
+            this.floatDensity = displayMetrics.density;
 
             //Получаем данные
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetID);

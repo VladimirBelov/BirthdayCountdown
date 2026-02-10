@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 10.02.2026, 14:03
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 01:00
+ *  * Last modified 10.02.2026, 13:25
  *
  */
 
@@ -33,6 +33,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.text.SimpleDateFormat;
@@ -190,7 +191,7 @@ class WidgetUpdater {
             eventsToShow = Math.min(this.eventsCount, eventsData.eventList.size());
 
             if (widgetPref.size() > 1) {
-                fontMagnify = ContactsEvents.getSizeForWidgetElement(widgetPref, 1, 1, 1);
+                fontMagnify = ImageUtils.getSizeForWidgetElement(widgetPref, 1, 1, 1);
             } else {
                 //Увеличение шрифтов в зависимости от размеров окна
                 int cells = getCellsForSize(Math.min(width, height));

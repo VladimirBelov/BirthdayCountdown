@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.02.2026, 00:43
+  ~  * Created by Vladimir Belov on 10.02.2026, 14:03
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.02.2026, 00:41
+  ~  * Last modified 10.02.2026, 12:51
   ~  */
   -->
 
@@ -758,7 +758,8 @@
     <string name="pref_EventInfo_RightBracket2">") "</string>
     <string name="pref_EventInfo_BoldStart">"- bold - (start)"</string>
     <string name="pref_EventInfo_BoldEnd">"- bold - (end)"</string>
-    <string name="pref_EventInfo_Tab">"- tab (4 spaces) -"</string>
+    <string name="pref_EventInfo_Tab">"- tab -"</string>
+    <string name="pref_EventInfo_Tab2">"- tab - "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -2104,7 +2105,6 @@ Long click on item to select color"</string>
     <string name="pref_EventInfo_Dividers_ID" translatable="false">29</string>
     <string name="pref_EventInfo_ButtonConfig_ID" translatable="false">30</string>
     <string name="pref_EventInfo_DaysBeforeEventShort_ID" translatable="false">31</string>
-    <!--<string name="pref_EventInfo_DatesInBrackets_ID" translatable="false">32</string>-->
     <string name="pref_EventInfo_EventDayOfWeekShort_ID" translatable="false">33</string>
     <string name="pref_EventInfo_ColorizeEntireRow_ID" translatable="false">34</string>
     <string name="pref_EventInfo_CurrentAge_ID" translatable="false">35</string>
@@ -2120,6 +2120,7 @@ Long click on item to select color"</string>
     <string name="pref_EventInfo_EventYear_Original_ID" translatable="false">45</string>
     <string name="pref_EventInfo_Tab_ID" translatable="false">46</string>
     <string name="pref_EventInfo_ShowNearestEventPhoto_ID" translatable="false">47</string>
+    <string name="pref_EventInfo_Tab2_ID" translatable="false">48</string>
 
     <string-array name="pref_Widgets_EventInfo_values" translatable="false">
         <item>@string/pref_EventInfo_Border_ID</item>

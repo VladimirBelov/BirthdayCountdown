@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 16:55
+ *  * Created by Vladimir Belov on 10.02.2026, 14:03
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 15:43
+ *  * Last modified 10.02.2026, 13:25
  *
  */
 
@@ -18,7 +18,7 @@ public final class Constants {
 
     //https://coolefriend.com/know-names-of-symbols-in-your-computer-keyboard/
     static final String REGEX_COMMAS = " *, *";
-    static final String REGEX_PLUS = "\\+";
+    public static final String REGEX_PLUS = "\\+";
     static final String REGEX_INTER = "\\Z|";
     static final String REGEX_LAST = "\\Z";
     static final String REGEX_EVENTS_SCOPE = "(\\d+?)[e](\\d+?)[d]";
@@ -40,18 +40,18 @@ public final class Constants {
     static final String STRING_2TILDA = "~~";
     public static final String STRING_0 = "0";
     public static final String STRING_1 = "1";
-    static final String STRING_2 = "2";
-    static final String STRING_3 = "3";
-    static final String STRING_4 = "4";
-    static final String STRING_5 = "5";
-    static final String STRING_6 = "6";
-    static final String STRING_7 = "7";
-    static final String STRING_8 = "8";
-    static final String STRING_9 = "9";
-    static final String STRING_10 = "10";
-    static final String STRING_11 = "11";
-    static final String STRING_12 = "12";
-    static final String STRING_13 = "13";
+    public static final String STRING_2 = "2";
+    public static final String STRING_3 = "3";
+    public static final String STRING_4 = "4";
+    public static final String STRING_5 = "5";
+    public static final String STRING_6 = "6";
+    public static final String STRING_7 = "7";
+    public static final String STRING_8 = "8";
+    public static final String STRING_9 = "9";
+    public static final String STRING_10 = "10";
+    public static final String STRING_11 = "11";
+    public static final String STRING_12 = "12";
+    public static final String STRING_13 = "13";
     static final String STRING_BAR = "|";
     public static final String STRING_COLON = ":";
     public static final String STRING_COLON_SPACE = ": ";
@@ -71,7 +71,7 @@ public final class Constants {
     static final String STRING_BRACKETS_OPEN = " [";
     static final String STRING_BRACKETS_START = "[";
     static final String STRING_BRACKETS_CLOSE = "]";
-    static final String STRING_PERIOD = ".";
+    public static final String STRING_PERIOD = ".";
     public static final String STRING_SLASH = "/";
     static final String STRING_DSLASH = "//";
     public static final String STRING_SPACE = " ";

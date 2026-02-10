@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.02.2026, 00:43
+  ~  * Created by Vladimir Belov on 10.02.2026, 14:03
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.02.2026, 00:41
+  ~  * Last modified 10.02.2026, 12:51
   ~  */
   -->
 
@@ -758,7 +758,8 @@
     <string name="pref_EventInfo_RightBracket2">") "</string>
     <string name="pref_EventInfo_BoldStart">"- жирным - (начало)"</string>
     <string name="pref_EventInfo_BoldEnd">"- жирным - (конец)"</string>
-    <string name="pref_EventInfo_Tab">"- табуляция (4 пробела) -"</string>
+    <string name="pref_EventInfo_Tab">"- табуляция -"</string>
+    <string name="pref_EventInfo_Tab2">"- табуляция - "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>

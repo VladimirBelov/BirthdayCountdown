@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.01.2026, 10:47
+ *  * Created by Vladimir Belov on 10.02.2026, 14:03
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.01.2026, 09:59
+ *  * Last modified 10.02.2026, 13:25
  *
  */
 
@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.utils.DeviceTools;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -113,7 +114,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
                 prefWidgetCaption = widgetPref.get(9);
             }
             double defaultMagnify = 1.6;
-            float sizeForWidgetElement = ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, defaultMagnify);
+            float sizeForWidgetElement = ImageUtils.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, defaultMagnify);
             if (!prefWidgetCaption.isEmpty()) {
                 views.setViewVisibility(R.id.caption, View.VISIBLE);
                 views.setTextViewText(R.id.caption, prefWidgetCaption);

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.02.2026, 00:43
+ *  * Created by Vladimir Belov on 10.02.2026, 14:03
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.02.2026, 00:40
+ *  * Last modified 10.02.2026, 12:51
  *
  */
 
@@ -727,6 +727,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_BoldStart_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_BoldStart));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_BoldEnd_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_BoldEnd));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Tab_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Tab));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Tab2_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Tab2));
                     break;
 
                 case Constants.WIDGET_TYPE_PHOTO_LIST:

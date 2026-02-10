@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.01.2026, 16:55
+  ~  * Created by Vladimir Belov on 10.02.2026, 14:03
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 07.01.2026, 16:25
+  ~  * Last modified 10.02.2026, 13:59
   ~  */
   -->
 
@@ -63,32 +63,49 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/widget_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="top"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-                <ListView
-                    android:id="@+id/widget_list"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/widgetPhoto"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:divider="@color/light_gray"
-                    android:dividerHeight="0.5dp"
-                    android:paddingBottom="1dp"
-                    android:paddingEnd="1dp"
-                    android:paddingStart="4dp"
-                    android:paddingTop="1dp" />
+                    android:layout_gravity="top"
+                    android:contentDescription="@string/hint_ContactIcon"
+                    android:layout_marginEnd="4dp"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/empty_view"
+                <LinearLayout
+                    android:id="@+id/widget_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top"
+                    android:orientation="vertical">
+
+                        <ListView
+                            android:id="@+id/widget_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:divider="@color/light_gray"
+                            android:dividerHeight="0.5dp"
+                            android:paddingStart="4dp"
+                            android:paddingTop="1dp"
+                        android:paddingEnd="1dp"
+                        android:paddingBottom="1dp" />
+
+                        <TextView
+                            android:id="@+id/empty_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                </LinearLayout>
 
         </LinearLayout>
 

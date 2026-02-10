@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.02.2026, 00:43
+ *  * Created by Vladimir Belov on 10.02.2026, 14:03
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.02.2026, 00:36
+ *  * Last modified 10.02.2026, 13:31
  *
  */
 
@@ -31,6 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.utils.DeviceTools;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,19 +82,6 @@ public class WidgetList extends AppWidgetProvider {
                 views = new RemoteViews(context.getPackageName(), R.layout.widgetlist);
             }
 
-            //Привязываем адаптер
-            //todo: переделать под RemoteCollectionItems https://developer.android.com/about/versions/12/features/widgets
-            //в Android 16 setRemoteAdapter принудительно (внутри framework) конвертируется в RemoteCollectionItems
-            // https://issuetracker.google.com/issues/398066578
-            // list widget it now calls ListWidgetRemoteViewsFactory#getViewAt for all items, regardless of how many are actually visible
-            // https://github.com/UweTrottmann/SeriesGuide/issues/1118
-            Intent adapter = new Intent(context, EventListWidgetService.class);
-            adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-            Uri data = Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME));
-            adapter.setData(data); //Чтобы разные виджеты одного адаптера отличались для системы
-            views.setRemoteAdapter(R.id.widget_list, adapter);
-            views.setEmptyView(R.id.widget_list, R.id.empty_view);
-
             //Кнопка настроек
             if (DeviceTools.isWidgetSupportConfig() && !widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ButtonConfig_ID))) {
                 views.setViewVisibility(R.id.config_button, View.GONE);
@@ -122,7 +110,7 @@ public class WidgetList extends AppWidgetProvider {
                 prefWidgetCaption = widgetPref.get(9);
             }
             double defaultMagnify = 1.6;
-            float sizeForWidgetElement = ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, defaultMagnify);
+            float sizeForWidgetElement = ImageUtils.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, defaultMagnify);
             if (!prefWidgetCaption.isEmpty()) {
                 views.setViewVisibility(R.id.caption, View.VISIBLE);
                 views.setTextViewText(R.id.caption, prefWidgetCaption);
@@ -178,10 +166,10 @@ public class WidgetList extends AppWidgetProvider {
             if (widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ShowNearestEventPhoto_ID))) {
                 //Фото ближайшего события
                 if (!filteredEventList.isEmpty()) {
-                    String eventInfo = filteredEventList.getFirst();
+                    String eventInfo = filteredEventList.get(0);
                     Bundle options = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
                     int widgetWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-                    int roundingFactor = getRoundingFactor(widgetPref);
+                    int roundingFactor = ImageUtils.getRoundingFactor(widgetPref);
                     Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, false, roundingFactor);
                     if (photo != null) {
                         int outWidth;
@@ -195,7 +183,7 @@ public class WidgetList extends AppWidgetProvider {
 
                         int inWidth = photo.getWidth();
                         int inHeight = photo.getHeight();
-                        double resizeFactor = ContactsEvents.getSizeForWidgetElement(widgetPref, 2, 1, 1);
+                        double resizeFactor = ImageUtils.getSizeForWidgetElement(widgetPref, 2, 1, 1);
                         if (inHeight > 0 && inWidth > 0) {
                             int outHeight = inHeight * outWidth / inWidth;
 
@@ -207,7 +195,21 @@ public class WidgetList extends AppWidgetProvider {
                         }
                     }
                 }
+            } else {
+                views.setViewVisibility(R.id.widgetPhoto, View.GONE);
             }
+
+            //Привязываем адаптер
+            //в Android 16 setRemoteAdapter принудительно (внутри framework) конвертируется в RemoteCollectionItems
+            // https://issuetracker.google.com/issues/398066578
+            // list widget it now calls ListWidgetRemoteViewsFactory#getViewAt for all items, regardless of how many are actually visible
+            // https://github.com/UweTrottmann/SeriesGuide/issues/1118
+            Intent adapter = new Intent(context, EventListWidgetService.class);
+            adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            Uri data = Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME));
+            adapter.setData(data); //Чтобы разные виджеты одного адаптера отличались для системы
+            views.setRemoteAdapter(R.id.widget_list, adapter);
+            views.setEmptyView(R.id.widget_list, R.id.empty_view);
 
             ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
                     context.getResources().getString(R.string.msg_debug_widget_list_config, widgetType, appWidgetId,
@@ -228,19 +230,6 @@ public class WidgetList extends AppWidgetProvider {
             eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
             eventsData.statActiveWidgets++;
         }
-    }
-
-    private int getRoundingFactor(List<String> widgetPref) {
-        int roundingFactor = 1;
-        if (widgetPref != null && widgetPref.size() > 6) {
-            switch (widgetPref.get(6)) {
-                case Constants.STRING_1: roundingFactor = 2; break;
-                case Constants.STRING_2: roundingFactor = 3; break;
-                case Constants.STRING_3: roundingFactor = 4; break;
-                case Constants.STRING_4: roundingFactor = 9; break;
-            }
-        }
-        return roundingFactor;
     }
 
     @Override

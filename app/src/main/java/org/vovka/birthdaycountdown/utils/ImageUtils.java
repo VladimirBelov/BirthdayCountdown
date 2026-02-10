@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 15:33
+ *  * Created by Vladimir Belov on 10.02.2026, 14:03
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 10.02.2026, 13:25
  *
  */
 
@@ -35,6 +35,7 @@ import org.vovka.birthdaycountdown.Constants;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public class ImageUtils {
     static final String TAG = "ImageUtils";
@@ -190,5 +191,99 @@ public class ImageUtils {
 
         resultBitmap.setPixels(pixels, 0, width, 0, 0, width, height);
         return resultBitmap;
+    }
+
+    /** Возвращает уровень закругления для фото из настроек виджета
+     * @param widgetPref Настройки виджета
+     * @return Уровень закругления
+     */
+    public static int getRoundingFactor(List<String> widgetPref) {
+        int roundingFactor = 1;
+        if (widgetPref != null && widgetPref.size() > 6) {
+            switch (widgetPref.get(6)) {
+                case Constants.STRING_1: roundingFactor = 2; break;
+                case Constants.STRING_2: roundingFactor = 3; break;
+                case Constants.STRING_3: roundingFactor = 4; break;
+                case Constants.STRING_4: roundingFactor = 9; break;
+            }
+        }
+        return roundingFactor;
+    }
+
+    /** Возвращает коэффициент масштабирования размера элементов виджета
+     * @param widgetPref Настройки виджета
+     * @param elementNumber Порядковый номер мультипликатора размера в настройке (они хранятся как размер1+размер2+...)
+     * @param baseSize Базовый размер, который нужно изменять. например {Constants#WIDGET_TEXT_SIZE_TINY}
+     * @param defaultMagnify Мультипликатор по-умолчанию ("Авто")
+     * @return Коэффициент масштабирования
+     */
+    public static float getSizeForWidgetElement(List<String> widgetPref, int elementNumber, int baseSize, double defaultMagnify) {
+        double magnify = defaultMagnify;
+        try {
+
+            if (widgetPref != null && widgetPref.size() > elementNumber) {
+                String[] prefArrayMagnify = widgetPref.get(1).split(Constants.REGEX_PLUS, -1);
+                if (prefArrayMagnify.length >= elementNumber) {
+                    String prefMagnify = prefArrayMagnify[elementNumber - 1];
+
+                    if (prefMagnify.contains(Constants.STRING_PERIOD)) { //В настройке - сам мультипликатор
+
+                        try {
+                            double value = Double.parseDouble(prefMagnify);
+                            if (value > 0) magnify *= value;
+                        } catch (NumberFormatException ignored) { /**/ }
+
+                    } else { //В настройке - индекс из списка выбора
+
+                        switch (prefMagnify) {
+                            case Constants.STRING_1:
+                                magnify *= 0.5;
+                                break;
+                            case Constants.STRING_2:
+                                magnify *= 0.65;
+                                break;
+                            case Constants.STRING_3:
+                                magnify *= 0.75;
+                                break;
+                            case Constants.STRING_4:
+                                magnify *= 0.85;
+                                break;
+                            case Constants.STRING_5:
+                                magnify *= 1; //То же, что и "Авто"
+                                break;
+                            case Constants.STRING_6:
+                                magnify *= 1.1;
+                                break;
+                            case Constants.STRING_7:
+                                magnify *= 1.2;
+                                break;
+                            case Constants.STRING_8:
+                                magnify *= 1.3;
+                                break;
+                            case Constants.STRING_9:
+                                magnify *= 1.4;
+                                break;
+                            case Constants.STRING_10:
+                                magnify *= 1.5;
+                                break;
+                            case Constants.STRING_11:
+                                magnify *= 1.6;
+                                break;
+                            case Constants.STRING_12:
+                                magnify *= 1.75;
+                                break;
+                            case Constants.STRING_13:
+                                magnify *= 2.0;
+                                break;
+                        }
+                    }
+                }
+            }
+            return (float) (baseSize * magnify);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        return baseSize;
     }
 }

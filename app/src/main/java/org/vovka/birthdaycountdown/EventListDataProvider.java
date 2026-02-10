@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.02.2026, 00:43
+ *  * Created by Vladimir Belov on 10.02.2026, 14:03
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.02.2026, 23:26
+ *  * Last modified 10.02.2026, 13:25
  *
  */
 
@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
 
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -107,14 +108,14 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
             if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) return;
 
-            Bundle options = AppWidgetManager.getInstance(context).getAppWidgetOptions(widgetID);
-            this.widgetWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-            this.floatDensity = displayMetrics.density;
-
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(context);
             localizedResources = eventsData.getResources();
+
+            Bundle options = AppWidgetManager.getInstance(context).getAppWidgetOptions(widgetID);
+            this.widgetWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+            DisplayMetrics displayMetrics = localizedResources.getDisplayMetrics();
+            this.floatDensity = displayMetrics.density;
 
             //Получаем данные
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(widgetID);
@@ -243,7 +244,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
             //Размер
             views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP,
-                    ContactsEvents.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, 1.6));
+                    ImageUtils.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, 1.6));
 
             if (eventListView.size() < position + 1) return views;
 
@@ -355,20 +356,20 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Photo_ID))) {
 
                     //Фото
-                    int roundingFactor = getRoundingFactor(widgetPref);
+                    int roundingFactor = ImageUtils.getRoundingFactor(widgetPref);
                     Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, false, roundingFactor);
                     if (photo != null) {
                         int outWidth;
                         if (widgetWidth > 0) {
                             outWidth = (int) ((widgetWidth * floatDensity * 1.2) / 6);
                         } else {
-                            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+                            DisplayMetrics displayMetrics = localizedResources.getDisplayMetrics();
                             outWidth = (int) (displayMetrics.widthPixels * 1.2 / 7);
                         }
 
                         int inWidth = photo.getWidth();
                         int inHeight = photo.getHeight();
-                        double resizeFactor = ContactsEvents.getSizeForWidgetElement(widgetPref, 2, 1, 1);
+                        double resizeFactor = ImageUtils.getSizeForWidgetElement(widgetPref, 2, 1, 1);
                         if (inHeight > 0 && inWidth > 0) {
                             int outHeight = inHeight * outWidth / inWidth;
 
@@ -455,7 +456,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                     if (eventDistance_Days < 2) {
                         eventDetails.append(eventDistanceInfo[0]);
                     } else {
-                        eventDetails.append(eventDistance).append(eventsData.getResources().getString(R.string.msg_after_day_prefix_short));
+                        eventDetails.append(eventDistance).append(localizedResources.getString(R.string.msg_after_day_prefix_short));
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventTitle_ID))) {
@@ -579,19 +580,6 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return eventDetails;
-    }
-
-    private int getRoundingFactor(List<String> widgetPref) {
-        int roundingFactor = 1;
-        if (widgetPref != null && widgetPref.size() > 6) {
-            switch (widgetPref.get(6)) {
-                case Constants.STRING_1: roundingFactor = 2; break;
-                case Constants.STRING_2: roundingFactor = 3; break;
-                case Constants.STRING_3: roundingFactor = 4; break;
-                case Constants.STRING_4: roundingFactor = 9; break;
-            }
-        }
-        return roundingFactor;
     }
 
     @Nullable
