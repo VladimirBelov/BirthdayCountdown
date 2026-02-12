@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.2026, 14:03
+ *  * Created by Vladimir Belov on 12.02.2026, 11:24
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.02.2026, 13:25
+ *  * Last modified 10.02.2026, 16:23
  *
  */
 
@@ -209,8 +209,8 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
         try {
 
-            ContactsEvents eventsData = ContactsEvents.getInstance();
-            eventsData.initLanguage(context);
+            //ContactsEvents eventsData = ContactsEvents.getInstance();
+            //eventsData.initLanguage(context);
 
             updateAppWidget(context, appWidgetManager, appWidgetId);
             super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);

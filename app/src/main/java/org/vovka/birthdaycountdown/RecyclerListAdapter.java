@@ -1,14 +1,13 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.07.2025, 14:02
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 06.07.2025, 13:49
+ *  * Created by Vladimir Belov on 12.02.2026, 11:24
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 12.02.2026, 09:23
  *
  */
 
 package org.vovka.birthdaycountdown;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -96,27 +95,44 @@ class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemV
         return new ItemViewHolder(view);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
         holder.textView.setText(mItems.get(position));
+
+        // Стилизация текста
         if (mColoredItems.contains(mItems.get(position)) && colorAlt != 0) {
             holder.textView.setTextColor(colorAlt);
         } else {
             holder.textView.setTextColor(colorItem);
         }
+
         if (mBoldItems.contains(mItems.get(position))) {
             holder.textView.setTypeface(null, Typeface.BOLD);
         } else {
             holder.textView.setTypeface(null, Typeface.NORMAL);
         }
-        holder.checkBoxView.setChecked(mSelected.get(mIndex.get(position)) == 1);
-        holder.checkBoxView.setOnClickListener(view -> mSelected.set(position, mSelected.get(position) == 1 ? 0 : 1));
 
+        // Устанавливаем состояние чекбокса через правильный индекс
+        holder.checkBoxView.setChecked(mSelected.get(mIndex.get(position)) == 1);
+
+        // Единый метод для переключения состояния
+        View.OnClickListener toggleListener = view -> {
+            int index = mIndex.get(position);
+            int newValue = mSelected.get(index) == 1 ? 0 : 1;
+            mSelected.set(index, newValue);
+            holder.checkBoxView.setChecked(newValue == 1); // Обновляем UI
+        };
+
+        // Применяем одинаковый обработчик для CheckBox и TextView
+        holder.checkBoxView.setOnClickListener(toggleListener);
+        holder.textView.setOnClickListener(toggleListener);
+
+        // Логика перетаскивания (без изменений)
         if (!mNonSortableItems.isEmpty() && mNonSortableItems.contains(mItems.get(position))) {
             holder.handleView.setVisibility(View.GONE);
         } else {
             holder.handleView.setVisibility(View.VISIBLE);
+            // noinspection ClickableViewAccessibility
             holder.handleView.setOnTouchListener((v, event) -> {
                 if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
                     mDragStartListener.onStartDrag(holder);

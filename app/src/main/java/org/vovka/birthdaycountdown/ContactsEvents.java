@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.2026, 14:03
+ *  * Created by Vladimir Belov on 12.02.2026, 11:24
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.02.2026, 13:25
+ *  * Last modified 10.02.2026, 17:29
  *
  */
 
@@ -6963,12 +6963,11 @@ public class ContactsEvents {
                         Log.d(TAG, "Сон задачи был прерван");
                         return;
                     }
-                }
-
-                // Проверяем снова после сна
-                if (Thread.currentThread().isInterrupted()) {
-                    Log.d(TAG, "Задача была прервана после сна");
-                    return;
+                    // Проверяем снова после сна
+                    if (Thread.currentThread().isInterrupted()) {
+                        Log.d(TAG, "Задача была прервана после сна");
+                        return;
+                    }
                 }
 
                 statTimeUpdateWidgets = 0;

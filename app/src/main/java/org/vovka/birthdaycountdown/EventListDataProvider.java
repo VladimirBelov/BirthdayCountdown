@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.2026, 14:03
+ *  * Created by Vladimir Belov on 12.02.2026, 11:24
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.02.2026, 13:25
+ *  * Last modified 12.02.2026, 10:10
  *
  */
 
@@ -351,6 +351,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 final boolean notEndWithBR = !eventDetails.toString().isEmpty() && !eventDetails.toString().endsWith(Constants.HTML_BR);
                 final boolean notEndWithBRorBracket = notEndWithBR && !eventDetails.toString().endsWith(Constants.STRING_PARENTHESIS_START);
+                final boolean notEndWithSpace = notEndWithBR && !eventDetails.toString().endsWith(Constants.STRING_SPACE);
                 boolean isBirthdayEvent = eventSubType.equals(Constants.EventType_BirthDay) || eventSubType.equals(Constants.EventType_5K);
 
                 if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Photo_ID))) {
@@ -476,7 +477,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                     String age = singleEventArray[ContactsEvents.Position_age].trim();
                     if (!age.isEmpty() && !Constants.STRING_MINUS1.equals(age)) {
-                        if (notEndWithBRorBracket)
+                        if (notEndWithBRorBracket && notEndWithSpace)
                             eventDetails.append(Constants.STRING_COLON_SPACE);
                         eventDetails.append(singleEventArray[ContactsEvents.Position_age]);
                     }
@@ -569,7 +570,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                     eventDetails.append(Constants.HTML_BOLD_END);
 
-                } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Tab_ID))) {
+                } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Tab_ID)) || eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Tab2_ID))) {
 
                     eventDetails.append("&emsp;");
 

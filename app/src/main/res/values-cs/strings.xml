@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:48
+  ~  * Created by Vladimir Belov on 12.02.2026, 11:24
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 12.02.2026, 09:37
   ~  */
   -->
 
@@ -92,7 +92,7 @@
     <string name="msg_tomorrow">Zítra</string>
     <string name="msg_yesterday">Včera</string>
     <string name="msg_before_yesterday">Předevčírem</string>
-    <string name="msg_day_after_tomorrow">pozítří</string>
+    <string name="msg_day_after_tomorrow">Pozítří</string>
     <string name="msg_stats_prefix">"události: "</string>
     <string name="msg_stats_filtered_prefix">"nalezené události: "</string>
     <string name="msg_stats_hidden_prefix">"skryté události: "</string>
