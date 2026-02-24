@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 24.02.2026, 20:01
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 22:47
+ *  * Last modified 24.02.2026, 19:59
  *
  */
 
@@ -61,7 +61,6 @@ public class WidgetCalendar extends AppWidgetProvider {
     private Resources res;
     private final HashMap<String, Integer> eventsColorsInMonth = new HashMap<>();
     private final HashMap<String, Integer> eventsColorsOutMonth = new HashMap<>();
-    private final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
     @ColorInt private int colorCommon;
     @ColorInt private int colorCommonOutMonth;
     @ColorInt private int colorToday;
@@ -774,7 +773,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     Intent intentConfig = new Intent(context, WidgetCalendarConfigureActivity.class);
                     intentConfig.setAction(Constants.ACTION_LAUNCH);
                     intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                    calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntentImmutable));
+                    calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getActivity(context, appWidgetId, intentConfig, PendingIntent.FLAG_IMMUTABLE));
                 } else {
                     calendarRv.setOnClickPendingIntent(R.id.month_label, PendingIntent.getBroadcast(context, appWidgetId,
                             new Intent(context, WidgetCalendar.class)
@@ -953,7 +952,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,
-                            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntentImmutable);
+                            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                 }
             } else if (action == Constants.onClick_Calendar) {
                 Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
@@ -961,7 +960,8 @@ public class WidgetCalendar extends AppWidgetProvider {
                 builder.appendPath(Long.toString(cal.getTimeInMillis()));
                 Intent intent = new Intent(Intent.ACTION_VIEW, builder.build());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntentImmutable);
+                pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             }
 
         } catch (Exception e) {
