@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.01.2026, 16:20
+ *  * Created by Vladimir Belov on 24.02.2026, 19:30
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.01.2026, 16:05
+ *  * Last modified 19.02.2026, 22:04
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -15,7 +15,7 @@ buildscript {
     }
     dependencies {
         //https://developer.android.com/build/releases/gradle-plugin
-        classpath 'com.android.tools.build:gradle:9.0.0'
+        classpath 'com.android.tools.build:gradle:9.0.1'
     }
 }
 
