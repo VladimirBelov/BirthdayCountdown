@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2026, 17:39
+ *  * Created by Vladimir Belov on 26.02.2026, 18:28
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.02.2026, 17:32
+ *  * Last modified 26.02.2026, 18:02
  *
  */
 
@@ -394,6 +394,10 @@ public class QuizActivity extends Activity {
                     .putStringSet(PREF_ACTIVE_QUESTION_TYPES, codes)
                     .apply();
         }
+
+        protected static int getConfiguredAnswerCount() {
+            return 5; // todo: читать из SharedPreferences
+        }
     }
 
     enum QuestionType {
@@ -684,9 +688,6 @@ public class QuizActivity extends Activity {
                 return result;
             }
 
-            protected int getConfiguredAnswerCount() {
-                return 5; // todo: читать из SharedPreferences
-            }
         }
 
         /**
@@ -727,7 +728,7 @@ public class QuizActivity extends Activity {
                     );
                     result.event = event;
 
-                    int answerCount = getConfiguredAnswerCount();
+                    int answerCount = QuizSettings.getConfiguredAnswerCount();
                     List<Integer> answerMonths = generateUniqueAnswers(correctMonth, 0, 11, answerCount, Collections.emptySet());
 
                     Calendar calAns = Calendar.getInstance();
@@ -794,7 +795,7 @@ public class QuizActivity extends Activity {
                     );
                     result.event = event;
 
-                    int answerCount = getConfiguredAnswerCount();
+                    int answerCount = QuizSettings.getConfiguredAnswerCount();
                     List<Integer> answerYears = generateUniqueAnswers(
                             correctYear, correctYear - 50, correctYear + 10, answerCount, Collections.emptySet());
 
@@ -874,7 +875,7 @@ public class QuizActivity extends Activity {
                     QuizQuestion result = new QuizQuestion(quizTitle, personInfo);
                     result.event = event;
 
-                    int answerCount = getConfiguredAnswerCount();
+                    int answerCount = QuizSettings.getConfiguredAnswerCount();
                     int minAge = Math.max(0, correctAge - 15);
                     int maxAge = correctAge + 15;
                     List<Integer> answerAges = generateUniqueAnswers(correctAge, minAge, maxAge, answerCount, Collections.emptySet());

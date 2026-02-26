@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
+  ~  * Created by Vladimir Belov on 26.02.2026, 18:28
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 24.02.2026, 23:07
+  ~  * Last modified 26.02.2026, 18:19
   ~  */
   -->
 
@@ -283,7 +283,6 @@
         <receiver android:name=".NotifyActionReceiver" />
         <receiver android:name=".WidgetUpdateReceiver" />
         <receiver android:name=".WidgetUpdateDailyReceiver" />
-        <receiver android:name=".QuizReceiver" />
 
         <!--Widgets-->
         <receiver
