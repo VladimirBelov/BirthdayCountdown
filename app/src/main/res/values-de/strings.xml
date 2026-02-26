@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.01.2026, 11:20
+  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.01.2026, 11:10
+  ~  * Last modified 26.02.2026, 16:25
   ~  */
   -->
 
@@ -1309,7 +1309,7 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="quiz_msg_error_get_question">"Fehler beim Empfang der nächsten Frage"</string>
 
     <string name="quiz_answer_true">"Richtig, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Antwort: %1$s\nRichtig: %2$s (%3$s)"</string>
+    <string name="quiz_answer_false">"Falsch: %1$s (%2$s)"</string>
 
     <string name="quiz_month01_title">"Welcher ist der Geburtsmonat?"</string>
 

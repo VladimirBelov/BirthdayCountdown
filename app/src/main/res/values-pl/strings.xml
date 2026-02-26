@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:48
+  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 26.02.2026, 16:27
   ~  */
   -->
 
@@ -1308,8 +1308,8 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="quiz_msg_error_title">"Błąd"</string>
     <string name="quiz_msg_error_get_question">"Błąd podczas pobierania następnego pytania!"</string>
 
-    <string name="quiz_answer_true">"Poprawnie, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Odpowiedź: %1$s\nPoprawna: %2$s (%3$s)"</string>
+    <string name="quiz_answer_true">"Prawda, %1$s (%2$s)"</string>
+    <string name="quiz_answer_false">"Fałsz: %1$s (%2$s)"</string>
 
     <string name="quiz_month01_title">"W jakim miesiącu urodzenia?"</string>
 

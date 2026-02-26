@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.07.2025, 22:38
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 27.06.2025, 01:59
+ *  * Created by Vladimir Belov on 26.02.2026, 17:39
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 26.02.2026, 13:01
  *
  */
 
@@ -106,7 +106,7 @@ final class SnackbarHandler extends Handler {
     }
 
     public void setNotImportantByType(int type) {
-        //if (!mQueue.isEmpty()) removeMessages(type);
+        //if (!mQueue.isEmpty()) removeMessages(question);
 
         for (FluentSnackbar.Builder msg: mQueue) {
             if (msg.getType() == type) {

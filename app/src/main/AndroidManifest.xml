@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 11:56
+  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 24.02.2026, 23:07
   ~  */
   -->
 
@@ -211,7 +211,7 @@
         <activity android:name=".QuizActivity"
             android:autoRemoveFromRecents="true"
             android:excludeFromRecents="true"
-            android:theme="@android:style/Theme.NoDisplay"
+            android:theme="@android:style/Theme.Dialog"
             android:parentActivityName=".MainActivity"
             android:exported="false"/>
 

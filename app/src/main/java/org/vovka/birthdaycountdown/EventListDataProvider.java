@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.02.2026, 11:24
+ *  * Created by Vladimir Belov on 26.02.2026, 17:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.02.2026, 10:10
+ *  * Last modified 25.02.2026, 13:33
  *
  */
 
@@ -463,7 +463,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventTitle_ID))) {
 
                     if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                    eventDetails.append(eventsData.getFullName(singleEventArray));
+                    eventDetails.append(StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format));
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Age_ID))) {
 

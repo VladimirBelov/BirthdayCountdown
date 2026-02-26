@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.2026, 14:03
+ *  * Created by Vladimir Belov on 26.02.2026, 17:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.02.2026, 13:25
+ *  * Last modified 25.02.2026, 13:33
  *
  */
 
@@ -135,7 +135,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 //Заголовок
                 final String eventKey = eventsData.getEventKey(singleEventArray);
                 final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
-                String eventCaption = eventsData.getFullName(singleEventArray);
+                String eventCaption = StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format);
                 //Иконка избранного
                 if (widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_FavIcon_ID))) {
                     if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
@@ -350,7 +350,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                     Constants.STRING_SPACE +
                     singleEventArray[ContactsEvents.Position_eventCaption] +
                     Constants.STRING_COLON_SPACE +
-                    eventsData.getFullName(singleEventArray);
+                    StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format);
 
             Intent clickIntent = new Intent();
             clickIntent.putExtra(Constants.EXTRA_CLICKED_EVENT, eventInfo);

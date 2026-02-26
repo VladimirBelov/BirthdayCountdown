@@ -1,13 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 26.02.2026, 17:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.01.2026, 12:36
+ *  * Last modified 25.02.2026, 14:10
  *
  */
 
 package org.vovka.birthdaycountdown.utils;
 
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -15,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.vovka.birthdaycountdown.Constants;
+import org.vovka.birthdaycountdown.ContactsEvents;
+import org.vovka.birthdaycountdown.R;
 
 import java.text.Normalizer;
 import java.util.HashMap;
@@ -152,5 +155,60 @@ public class StringUtils {
             Log.e(TAG, e.getMessage(), e);
         }
         return sb.toString();
+    }
+
+    @NonNull
+    public static String getAgeString(long age, int id_prefix_1, int id_prefix_1_, int id_prefix_2_3_4, int id_prefix_5_20, @NonNull String locale, @NonNull Resources resources) {
+
+        try {
+
+            StringBuilder result = new StringBuilder();
+            String count_str = Long.toString(age);
+            String count_end = count_str.substring(count_str.length() - 1);
+            boolean isEnd234 = count_end.equals(Constants.STRING_2) || count_end.equals(Constants.STRING_3) || count_end.equals(Constants.STRING_4);
+            long ageMinus100 = age % 100;
+
+            result.append(age);
+
+            if (!resources.getString(R.string.pref_Language_fr).equalsIgnoreCase(locale)) {
+                if (ageMinus100 == 1) { //Единственное число
+                    result.append(resources.getString(id_prefix_1));
+                } else if (ageMinus100 > 4 && ageMinus100 < 21) { //Больше 4, но меньше 21
+                    result.append(resources.getString(id_prefix_5_20));
+                } else if (count_end.equals(Constants.STRING_1)) { //Если заканчивается на 1, но не между 5-20
+                    result.append(resources.getString(id_prefix_1_));
+                } else if (isEnd234) { //Если заканчивается на 2, 3, 4
+                    result.append(resources.getString(id_prefix_2_3_4));
+                } else {
+                    result.append(resources.getString(id_prefix_5_20));
+                }
+            } else { //Французский
+                if (ageMinus100 == 1) { //Единственное число
+                    result.append(resources.getString(id_prefix_1));
+                } else if ((ageMinus100 >= 3 && ageMinus100 <= 5) || (ageMinus100 >= 8 && ageMinus100 <= 10)) { //3-5,8-10
+                    result.append(resources.getString(id_prefix_1_));
+                } else {
+                    result.append(resources.getString(id_prefix_5_20));
+                }
+            }
+            return result.toString();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            return Constants.STRING_EMPTY;
+        }
+    }
+
+    @NonNull
+    public static String getFullName(@NonNull String[] singleEventArray, ContactsEvents.FormatName preferences_name_format) {
+        if (singleEventArray.length < Math.min(ContactsEvents.Position_personFullNameAlt, ContactsEvents.Position_personFullName)) {
+            return Constants.STRING_EMPTY;
+        }
+
+        if (preferences_name_format == ContactsEvents.FormatName.LastnameFirst && !TextUtils.isEmpty(singleEventArray[ContactsEvents.Position_personFullNameAlt])) {
+            return singleEventArray[ContactsEvents.Position_personFullNameAlt];
+        } else {
+            return singleEventArray[ContactsEvents.Position_personFullName];
+        }
     }
 }

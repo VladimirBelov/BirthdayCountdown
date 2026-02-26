@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 16:55
+ *  * Created by Vladimir Belov on 26.02.2026, 17:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 15:43
+ *  * Last modified 25.02.2026, 13:33
  *
  */
 
@@ -574,7 +574,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                        .setTitle(eventsData.getFullName(selectedEvent))
+                        .setTitle(StringUtils.getFullName(selectedEvent, eventsData.preferences_name_format))
                         .setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getEventPhoto(selectedEvent_str, true, false, false, roundingFactor)))
                         .setMessage(eventInfo.toString())
                         .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.dismiss());
@@ -828,7 +828,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             StringBuilder textBig = new StringBuilder();
             textBig
-                    .append(eventsData.getFullName(selectedEvent))
+                    .append(StringUtils.getFullName(selectedEvent, eventsData.preferences_name_format))
                     .append(Constants.STRING_EOL)
                     .append(selectedEvent[ContactsEvents.Position_eventEmoji])
                     .append(Constants.STRING_SPACE)
@@ -1729,11 +1729,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.MainMenu_Quiz) {
 
-                eventsData.quizCheckAndGo(null, null, MainActivity.this);
-                /*Intent intent = new Intent(this, QuizActivity.class);
+                //eventsData.quizCheckAndGo(null, null, MainActivity.this);
+                Intent intent = new Intent(this, QuizActivity.class);
                 try {
                     startActivity(intent);
-                } catch (ActivityNotFoundException e) { *//**//* }*/
+                } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
             } else if (itemId == Constants.MainMenu_Filter) {
@@ -2802,7 +2802,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
 
                 //Фамилия Имя Отчество
-                holder.NameTextView.setText(eventsData.getFullName(singleEventArray));
+                holder.NameTextView.setText(StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format));
 
                 //Информация под именем
                 StringBuilder eventDetails = new StringBuilder();

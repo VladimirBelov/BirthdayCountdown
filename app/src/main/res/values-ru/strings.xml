@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.02.2026, 14:03
+  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.02.2026, 12:51
+  ~  * Last modified 26.02.2026, 16:22
   ~  */
   -->
 
@@ -1312,7 +1312,7 @@
     <string name="quiz_msg_error_get_question">"Ошибка получения следующего вопроса!"</string>
 
     <string name="quiz_answer_true">"Правильно, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Ответ: %1$s\nПравильно: %2$s (%3$s)"</string>
+    <string name="quiz_answer_false">"Неправильно: %1$s (%2$s)"</string>
 
     <string name="quiz_month01_title">"Какой месяц рождения?"</string>
 

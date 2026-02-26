@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 26.02.2026, 17:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 01:00
+ *  * Last modified 24.02.2026, 20:23
  *
  */
 
@@ -93,7 +93,7 @@ public class WidgetCalendarPopup extends Activity {
 
             this.setTheme(eventsData.preferences_theme.themeDialog);
 
-            setContentView(R.layout.activity_popup);
+            setContentView(R.layout.widget_calendar_popup);
 
             intent = getIntent();
             this.dayInfo = intent.getStringExtra(Constants.EXTRA_DAY_INFO);

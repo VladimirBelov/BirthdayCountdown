@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Created by Vladimir Belov on 26.02.2026, 17:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 14:10
+ *  * Last modified 24.02.2026, 20:23
  *
  */
 
@@ -49,7 +49,7 @@ public class FactsPopupActivity extends Activity {
 
             this.setTheme(eventsData.preferences_theme.themeDialog);
 
-            setContentView(R.layout.activity_popup);
+            setContentView(R.layout.widget_calendar_popup);
 
             TextView buttonClose = findViewById(R.id.buttonClose);
             if (buttonClose != null) {

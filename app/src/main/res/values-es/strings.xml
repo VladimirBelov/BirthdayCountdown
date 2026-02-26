@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:48
+  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 26.02.2026, 16:26
   ~  */
   -->
 
@@ -1309,7 +1309,7 @@ Haga clic largo en el elemento para seleccionar el color"</string>
     <string name="quiz_msg_error_get_question">"¡Error al obtener la siguiente pregunta!"</string>
 
     <string name="quiz_answer_true">"Correcto, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Respuesta: %1$s\nCorrecto: %2$s (%3$s)"</string>
+    <string name="quiz_answer_false">"Incorrecto: %1$s (%2$s)"</string>
 
     <string name="quiz_month01_title">"¿Qué mes de nacimiento?"</string>
 

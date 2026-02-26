@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.02.2026, 14:03
+  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.02.2026, 12:51
+  ~  * Last modified 26.02.2026, 16:24
   ~  */
   -->
 
@@ -1313,8 +1313,8 @@ Long click on item to select color"</string>
     <string name="quiz_msg_error_title">"Error"</string>
     <string name="quiz_msg_error_get_question">"Error receiving next question!"</string>
 
-    <string name="quiz_answer_true">"Right, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Answer: %1$s\nRight answer: %2$s (%3$s)"</string>
+    <string name="quiz_answer_true">"Correct, %1$s (%2$s)"</string>
+    <string name="quiz_answer_false">"Incorrect: %1$s (%2$s)"</string>
 
     <string name="quiz_month01_title">"What is the birth month?"</string>
 
@@ -1542,6 +1542,7 @@ Long click on item to select color"</string>
 
     <string name="popup_action_prev" translatable="false">⏪</string>
     <string name="popup_action_next" translatable="false">⏩</string>
+    <string name="popup_action_pref" translatable="false">⚙️</string>
     <string name="popup_action_calendar" translatable="false">📆</string>
 
     <string name="pref_Root_key" translatable="false">Pref</string>

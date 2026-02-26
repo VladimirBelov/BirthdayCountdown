@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 16:55
+ *  * Created by Vladimir Belov on 26.02.2026, 17:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 15:55
+ *  * Last modified 25.02.2026, 13:33
  *
  */
 
@@ -101,7 +101,7 @@ public class SuggestionProvider extends ContentProvider{
                     eventNum--; //Если событие скрыто, то оно будет скрыто и в основной активности со списком событий
                     continue;
                 }
-                final String primaryLine = eventsData.getFullName(singleEventArray);
+                final String primaryLine = StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format);
                 String secondaryLine = singleEventArray[ContactsEvents.Position_eventEmoji]
                         .concat(Constants.STRING_SPACE)
                         .concat(singleEventArray[ContactsEvents.Position_eventCaption])

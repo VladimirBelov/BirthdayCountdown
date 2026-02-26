@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.02.2026, 11:24
+  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 12.02.2026, 09:37
+  ~  * Last modified 26.02.2026, 16:25
   ~  */
   -->
 
@@ -1311,7 +1311,7 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="quiz_msg_error_get_question">"Chyba při přijímání další otázky!"</string>
 
     <string name="quiz_answer_true">"Správně, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Odpověď: %1$s\nSprávná odpověď: %2$s (%3$s)"</string>
+    <string name="quiz_answer_false">"Nesprávně: %1$s (%2$s)"</string>
 
     <string name="quiz_month01_title">"Jaký je měsíc narození?"</string>
 

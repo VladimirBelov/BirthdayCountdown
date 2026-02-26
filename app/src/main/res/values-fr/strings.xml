@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:48
+  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 26.02.2026, 16:26
   ~  */
   -->
 
@@ -1310,8 +1310,8 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
     <string name="quiz_msg_error_title">"Erreur"</string>
     <string name="quiz_msg_error_get_question">"Erreur d'obtention de la question suivante!"</string>
 
-    <string name="quiz_answer_true">"Correctement, %1$s (%2$s)"</string>
-    <string name="quiz_answer_false">"Réponse: %1$s\nBonne réponse: %2$s (%3$s)"</string>
+    <string name="quiz_answer_true">"Correct, %1$s (%2$s)"</string>
+    <string name="quiz_answer_false">"Faux: %1$s (%2$s)"</string>
 
     <string name="quiz_month01_title">"Quel est le mois de naissance ?"</string>
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.2026, 14:03
+ *  * Created by Vladimir Belov on 26.02.2026, 17:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.02.2026, 13:25
+ *  * Last modified 26.02.2026, 13:01
  *
  */
 
@@ -344,7 +344,7 @@ public final class Constants {
     static final String account_none = "none";
 
     static final String RULE_TAG_NAME = "[name]";
-    static final String RULE_TAG_TYPE = "[type]";
+    static final String RULE_TAG_TYPE = "[question]";
     //static final String RULE_TAG_ALIAS = "[alias]";
 
     static final String WIDGET_TYPE_LIST = "WidgetList";

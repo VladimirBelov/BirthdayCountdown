@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.2026, 14:03
+ *  * Created by Vladimir Belov on 26.02.2026, 17:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.02.2026, 13:25
+ *  * Last modified 25.02.2026, 13:33
  *
  */
 
@@ -944,7 +944,7 @@ class WidgetUpdater {
                         Constants.STRING_SPACE +
                         singleEventArray[ContactsEvents.Position_eventCaption] +
                         Constants.STRING_COLON_SPACE +
-                        eventsData.getFullName(singleEventArray);
+                        StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format);
 
                 intentAction = new Intent(context, WidgetMenuActivity.class);
                 intentAction.putExtra(Constants.EXTRA_CLICKED_EVENT, event);
