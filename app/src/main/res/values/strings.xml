@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
+  ~  * Created by Vladimir Belov on 28.02.2026, 12:56
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.02.2026, 16:24
+  ~  * Last modified 28.02.2026, 12:53
   ~  */
   -->
 
@@ -1143,13 +1143,15 @@ Long click on item to select color"</string>
 
     <string name="pref_Quiz_title">Quiz</string>
     <string name="pref_Quiz_summary">Quiz preferences</string>
-    <string name="pref_Quiz_Interface_title">Interface</string>
-    <string name="pref_Quiz_Interface_summary">What interface to use for questions</string>
 
-    <string-array name="pref_Quiz_Interface_entries">
-        <item>Notifications (you can stop at any time and go to look for the right answer)</item>
-        <item>Dialog (you can not rush to answer, but you cannot look for clues)</item>
-    </string-array>
+    <string name="pref_Quiz_Questions_title">Questions</string>
+    <string name="pref_Quiz_Questions_summary">Types of questions to show</string>
+
+    <string name="pref_Quiz_Difficulty_title">Difficulty</string>
+    <string name="pref_Quiz_Difficulty_summary">The number of possible answers</string>
+
+    <string name="pref_Quiz_EventSources_title">Event sources</string>
+    <string name="pref_Quiz_EventSources_summary">Generate questions only from these event sources. If no source is selected, use events from all sources</string>
 
     <string name="pref_FAQ_title">Questions and Answers</string>
     <string name="pref_FAQ_summary">If something works wrong or you just don\'t know how to tune some app preference this is page for you</string>
@@ -2458,15 +2460,18 @@ Long click on item to select color"</string>
     <string name="pref_Notifications2_NotifyTest_key" translatable="false">NotifyTest2</string>
 
     <string name="pref_Quiz_key" translatable="false">Quiz</string>
-    <string name="pref_Quiz_Interface_key" translatable="false">QuizInterface</string>
+    <string name="pref_Quiz_Difficulty_key" translatable="false">QuizDifficulty</string>
 
-    <string name="pref_Quiz_Interface_Notify" translatable="false">1</string>
-    <string name="pref_Quiz_Interface_Dialog" translatable="false">2</string>
-
-    <string-array name="pref_Quiz_Interface_values">
-        <item>@string/pref_Quiz_Interface_Notify</item>
-        <item>@string/pref_Quiz_Interface_Dialog</item>
+    <integer name="pref_Quiz_Difficulty_default" translatable="false">3</integer>
+    <string-array name="pref_Quiz_Difficulty_values" translatable="false">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
     </string-array>
+
+    <string name="pref_Quiz_Questions_key" translatable="false">QuizQuestions</string>
+    <string name="pref_Quiz_EventSources_key" translatable="false">QuizEventSources</string>
 
     <string name="pref_Help_key" translatable="false">Help</string>
 

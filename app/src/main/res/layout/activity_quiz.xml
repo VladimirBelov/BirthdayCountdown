@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
+  ~  * Created by Vladimir Belov on 28.02.2026, 12:56
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.02.2026, 17:29
+  ~  * Last modified 28.02.2026, 12:48
   ~  */
   -->
 
@@ -177,7 +177,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:weightSum="5"
         android:paddingHorizontal="2dp">
 
         <TextView
@@ -190,10 +189,6 @@
             android:gravity="center"
             android:padding="8dp"
             android:minHeight="48dp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:hyphenationFrequency="normal"
-            android:breakStrategy="high_quality"
             android:background="@drawable/border_button"
             tools:ignore="UnusedAttribute" />
 
@@ -207,10 +202,6 @@
             android:gravity="center"
             android:padding="8dp"
             android:minHeight="48dp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:hyphenationFrequency="normal"
-            android:breakStrategy="high_quality"
             android:background="@drawable/border_button"
             tools:ignore="UnusedAttribute" />
 
@@ -224,10 +215,6 @@
             android:gravity="center"
             android:padding="8dp"
             android:minHeight="48dp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:hyphenationFrequency="normal"
-            android:breakStrategy="high_quality"
             android:background="@drawable/border_button"
             tools:ignore="UnusedAttribute" />
 
@@ -241,10 +228,6 @@
             android:gravity="center"
             android:padding="8dp"
             android:minHeight="48dp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:hyphenationFrequency="normal"
-            android:breakStrategy="high_quality"
             android:background="@drawable/border_button"
             tools:ignore="UnusedAttribute" />
 
@@ -258,10 +241,6 @@
             android:gravity="center"
             android:padding="8dp"
             android:minHeight="48dp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:hyphenationFrequency="normal"
-            android:breakStrategy="high_quality"
             android:background="@drawable/border_button"
             tools:ignore="UnusedAttribute" />
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2026, 18:28
+ *  * Created by Vladimir Belov on 28.02.2026, 12:56
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.02.2026, 18:19
+ *  * Last modified 28.02.2026, 12:24
  *
  */
 
@@ -360,7 +360,9 @@ public class ContactsEvents {
     String preferences_Icon;
     boolean preferences_menustyle_compact;
     public ColorTheme preferences_theme;
-    String preferences_quiz_interface;
+    int preferences_quiz_difficulty;
+    Set<String> preferences_quiz_Questions = new HashSet<>();
+    Set<String> preferences_quiz_EventSources = new HashSet<>();
     String preferences_first_names_female_custom;
     String preferences_first_names_male_custom;
     Matcher preferences_last_name_completions_male;
@@ -1453,7 +1455,10 @@ public class ContactsEvents {
             preferences_widgets_color_default = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_EventCaption_key), getResources().getColor(R.color.pref_Widgets_Color_EventCaption_default));
             preferences_widgets_color_widget_caption = getPreferenceInt(preferences, getResources().getString(R.string.pref_Widgets_Color_WidgetCaption_key), getResources().getColor(R.color.pref_Widgets_Color_WidgetCaption_default));
 
-            preferences_quiz_interface = getPreferenceString(preferences, getResources().getString(R.string.pref_Quiz_Interface_key), getResources().getString(R.string.pref_Quiz_Interface_Dialog));
+            //Викторина
+            preferences_quiz_difficulty = getPreferenceInt(preferences, getResources().getString(R.string.pref_Quiz_Difficulty_key), getResources().getInteger(R.integer.pref_Quiz_Difficulty_default));
+            preferences_quiz_Questions = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Quiz_Questions_key), new HashSet<>());
+            preferences_quiz_EventSources = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Quiz_EventSources_key), new HashSet<>());
 
             //Определения событий
 

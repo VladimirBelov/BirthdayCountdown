@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2026, 18:28
+ *  * Created by Vladimir Belov on 28.02.2026, 12:56
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.02.2026, 18:02
+ *  * Last modified 28.02.2026, 12:39
  *
  */
 
@@ -15,11 +15,10 @@ import static org.vovka.birthdaycountdown.ContactsEvents.sdf_DDMMYYYY;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -172,7 +171,7 @@ public class QuizActivity extends Activity {
      * Вызывается при старте и после изменения настроек.
      */
     private void refreshQuizPool() {
-        Set<String> activeTypeCodes = QuizSettings.loadActiveQuestionTypeCodes(this);
+        Set<String> activeTypeCodes = eventsData.preferences_quiz_Questions;
         dispatcher.refreshQuestionPool(masterEventList, activeTypeCodes);
     }
 
@@ -181,8 +180,23 @@ public class QuizActivity extends Activity {
      */
     private List<String> loadMasterEventList() {
         List<String> events = new ArrayList<>(eventsData.eventList);
-        //todo: заглушка. сделать фильтрацию по источникам событий
-        return events;
+        Set<String> sources = eventsData.preferences_quiz_EventSources;
+        if (sources != null && !sources.isEmpty()) {
+            List<String> eventsFiltered = new ArrayList<>();
+            for (String event : events) {
+                String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
+                final String eventDates = singleEventArray[ContactsEvents.Position_dates];
+                for (String source: sources) {
+                    if (eventDates.contains(source)) {
+                        eventsFiltered.add(event);
+                        break;
+                    }
+                }
+            }
+            return eventsFiltered;
+        } else {
+            return events;
+        }
     }
 
     /**
@@ -238,6 +252,9 @@ public class QuizActivity extends Activity {
             }
         }
 
+        // 👇 Определяем, нужно ли разрешать переносы
+        boolean allowLineBreaks = answers.size() > 3;
+
         // Привязываем ответы к кнопкам
         for (int i = 0; i < answerButtons.length; i++) {
             TextView btn = answerButtons[i];
@@ -250,6 +267,20 @@ public class QuizActivity extends Activity {
                 btn.setTag(answer);
                 btn.setVisibility(View.VISIBLE);
                 btn.setEnabled(true);
+
+                // 👇 Динамически настраиваем переносы
+                if (allowLineBreaks) {
+                    // > 3 кнопок: разрешаем 2 строки + перенос по слогам
+                    btn.setMaxLines(2);
+                    btn.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NORMAL);
+                    btn.setBreakStrategy(Layout.BREAK_STRATEGY_HIGH_QUALITY);
+                } else {
+                    // ≤ 3 кнопок: одна строка, без переносов
+                    btn.setMaxLines(1);
+                    btn.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NONE);
+                    btn.setBreakStrategy(Layout.BREAK_STRATEGY_SIMPLE);
+                }
+
             } else {
                 // 👇 Ответов меньше, чем кнопок — скрываем лишние
                 btn.setVisibility(View.GONE);
@@ -259,16 +290,16 @@ public class QuizActivity extends Activity {
             btn.setTextColor(defaultAnswerTextColor);
         }
 
-        for (TextView btn : answerButtons) {
-            if (btn != null && btn.getVisibility() == View.VISIBLE) {
-                // Если текст не влезает — уменьшаем шрифт
-                //btn.setMaxLines(1);
-                btn.setEllipsize(TextUtils.TruncateAt.END);
-                // Или используем AutoSizeText (Android 8.0+)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    btn.setAutoSizeTextTypeUniformWithConfiguration(
-                            10, 16, 2, TypedValue.COMPLEX_UNIT_SP
-                    );
+        // AutoSizeText для адаптивного размера шрифта
+        if (allowLineBreaks) {
+            for (TextView btn : answerButtons) {
+                if (btn != null && btn.getVisibility() == View.VISIBLE) {
+                    btn.setEllipsize(TextUtils.TruncateAt.END);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        btn.setAutoSizeTextTypeUniformWithConfiguration(
+                                10, 16, 2, TypedValue.COMPLEX_UNIT_SP
+                        );
+                    }
                 }
             }
         }
@@ -357,47 +388,6 @@ public class QuizActivity extends Activity {
         titleQuestion.setText(getString(R.string.quiz_msg_error_get_question));
         eventInfo.setVisibility(GONE);
         imageQuestion.setVisibility(GONE);
-    }
-
-    static class QuizSettings {
-        private static final String PREF_ACTIVE_QUESTION_TYPES = "pref_active_question_types";
-
-        /**
-         * Загрузка активных типов вопросов.
-         */
-        public static Set<String> loadActiveQuestionTypeCodes(Context context) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            Set<String> codes = prefs.getStringSet(PREF_ACTIVE_QUESTION_TYPES, null);
-
-            Set<String> result;
-            if (codes == null || codes.isEmpty()) {
-                result = new HashSet<>();
-                for (QuestionType type : QuestionType.values()) {
-                    result.add(type.getCode());
-                }
-            } else {
-                result = new HashSet<>(codes);
-            }
-            return result;
-        }
-
-        /**
-         * Сохранение выбранных типов вопросов.
-         */
-        public static void saveActiveQuestionTypes(Context context, Set<QuestionType> selectedTypes) {
-            Set<String> codes = new HashSet<>(selectedTypes.size());
-            for (QuestionType type : selectedTypes) {
-                codes.add(type.getCode());
-            }
-            PreferenceManager.getDefaultSharedPreferences(context)
-                    .edit()
-                    .putStringSet(PREF_ACTIVE_QUESTION_TYPES, codes)
-                    .apply();
-        }
-
-        protected static int getConfiguredAnswerCount() {
-            return 5; // todo: читать из SharedPreferences
-        }
     }
 
     enum QuestionType {
@@ -625,12 +615,6 @@ public class QuizActivity extends Activity {
             );
         }
 
-        // Геттеры для отладки / UI
-        public List<String> getFilteredAllEvents() { return filteredAllEvents; }
-        public List<String> getFilteredBirthdays() { return filteredBirthdays; }
-        public Random getGenerator() { return generator; }
-        public Context getContext() { return context; }
-
         /**
          * Базовый класс генератора
          */
@@ -728,7 +712,7 @@ public class QuizActivity extends Activity {
                     );
                     result.event = event;
 
-                    int answerCount = QuizSettings.getConfiguredAnswerCount();
+                    int answerCount = eventsData.preferences_quiz_difficulty;
                     List<Integer> answerMonths = generateUniqueAnswers(correctMonth, 0, 11, answerCount, Collections.emptySet());
 
                     Calendar calAns = Calendar.getInstance();
@@ -795,7 +779,7 @@ public class QuizActivity extends Activity {
                     );
                     result.event = event;
 
-                    int answerCount = QuizSettings.getConfiguredAnswerCount();
+                    int answerCount = eventsData.preferences_quiz_difficulty;
                     List<Integer> answerYears = generateUniqueAnswers(
                             correctYear, correctYear - 50, correctYear + 10, answerCount, Collections.emptySet());
 
@@ -875,7 +859,7 @@ public class QuizActivity extends Activity {
                     QuizQuestion result = new QuizQuestion(quizTitle, personInfo);
                     result.event = event;
 
-                    int answerCount = QuizSettings.getConfiguredAnswerCount();
+                    int answerCount = eventsData.preferences_quiz_difficulty;
                     int minAge = Math.max(0, correctAge - 15);
                     int maxAge = correctAge + 15;
                     List<Integer> answerAges = generateUniqueAnswers(correctAge, minAge, maxAge, answerCount, Collections.emptySet());

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.12.2025, 01:54
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 19.12.2025, 23:05
+  ~  * Created by Vladimir Belov on 28.02.2026, 12:56
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 28.02.2026, 12:26
   ~  */
   -->
 
@@ -1245,16 +1245,30 @@
         android:title="@string/pref_Quiz_title"
         android:layout="@layout/settings_category_with_divider">
 
+        <Preference
+            android:key="@string/pref_Quiz_Questions_key"
+            android:title="@string/pref_Quiz_Questions_title"
+            android:summary="@string/pref_Quiz_Questions_summary"
+            android:icon="@android:drawable/ic_menu_more"
+            android:dialogIcon="@android:drawable/ic_menu_more"/>
+
         <ListPreference
-            android:key="@string/pref_Quiz_Interface_key"
-            android:title="@string/pref_Quiz_Interface_title"
-            android:summary="@string/pref_Quiz_Interface_summary"
-            android:defaultValue="@string/pref_Quiz_Interface_Dialog"
-            android:entries="@array/pref_Quiz_Interface_entries"
-            android:entryValues="@array/pref_Quiz_Interface_values"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:dialogIcon="@android:drawable/ic_menu_manage"
+            android:key="@string/pref_Quiz_Difficulty_key"
+            android:title="@string/pref_Quiz_Difficulty_title"
+            android:summary="@string/pref_Quiz_Difficulty_summary"
+            android:defaultValue="@integer/pref_Quiz_Difficulty_default"
+            android:entries="@array/pref_Quiz_Difficulty_values"
+            android:entryValues="@array/pref_Quiz_Difficulty_values"
+            android:icon="@android:drawable/ic_menu_myplaces"
+            android:dialogIcon="@android:drawable/ic_menu_myplaces"
             android:negativeButtonText="@string/button_cancel"/>
+
+        <Preference
+            android:key="@string/pref_Quiz_EventSources_key"
+            android:title="@string/pref_Quiz_EventSources_title"
+            android:summary="@string/pref_Quiz_EventSources_summary"
+            android:icon="@android:drawable/ic_menu_more"
+            android:dialogIcon="@android:drawable/ic_menu_more"/>
 
     </PreferenceCategory>
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 16:55
+ *  * Created by Vladimir Belov on 28.02.2026, 12:56
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 15:43
+ *  * Last modified 28.02.2026, 12:24
  *
  */
 
@@ -3588,7 +3588,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Notifications_Ringtone_key),
                         getString(R.string.pref_Notifications_Type_key),
                         getString(R.string.pref_Notifications_SmallIconsStyle_key),
-                        getString(R.string.pref_Quiz_Interface_key),
+                        getString(R.string.pref_Quiz_Difficulty_key),
                         getString(R.string.pref_Theme_key),
                         getString(R.string.pref_VersionCode_LastRun),
                         getString(R.string.pref_Version_LastRun),
@@ -3634,6 +3634,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Notifications2_EventSources_key),
                         getString(R.string.pref_Events_Silent_key),
                         getString(R.string.pref_Events_Silent_rawIds_key),
+                        getString(R.string.pref_Quiz_EventSources_key),
+                        getString(R.string.pref_Quiz_Questions_key),
                         getString(R.string.pref_xDaysEvents_key),
                         getString(R.string.pref_Widgets_EventInfo_key)
                 ));
