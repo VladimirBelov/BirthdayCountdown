@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.02.2026, 12:56
+  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.02.2026, 12:26
+  ~  * Last modified 08.03.2026, 20:30
   ~  */
   -->
 
@@ -1269,6 +1269,17 @@
             android:summary="@string/pref_Quiz_EventSources_summary"
             android:icon="@android:drawable/ic_menu_more"
             android:dialogIcon="@android:drawable/ic_menu_more"/>
+
+        <ListPreference
+            android:key="@string/pref_Quiz_AutoNext_key"
+            android:title="@string/pref_Quiz_AutoNext_title"
+            android:summary="@string/pref_Quiz_AutoNext_summary"
+            android:defaultValue="@integer/pref_Quiz_AutoNext_default"
+            android:entries="@array/pref_Quiz_AutoNext_values"
+            android:entryValues="@array/pref_Quiz_AutoNext_values"
+            android:icon="@android:drawable/ic_media_ff"
+            android:dialogIcon="@android:drawable/ic_media_ff"
+            android:negativeButtonText="@string/button_cancel"/>
 
     </PreferenceCategory>
 

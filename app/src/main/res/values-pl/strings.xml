@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
+  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.02.2026, 16:27
+  ~  * Last modified 28.02.2026, 13:16
   ~  */
   -->
 
@@ -1140,13 +1140,6 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
 
     <string name="pref_Quiz_title">Kwiz</string>
     <string name="pref_Quiz_summary">Ustawienia quizu</string>
-    <string name="pref_Quiz_Interface_title">Interfejs</string>
-    <string name="pref_Quiz_Interface_summary">Którego interfejsu użyć do wyświetlenia pytań quizowych</string>
-
-    <string-array name="pref_Quiz_Interface_entries">
-        <item>Powiadomienia (możesz przerwać w dowolnym momencie i poszukać poprawnej odpowiedzi)</item>
-        <item>Dialog (nie musisz się spieszyć z odpowiedzią, ale nie możesz szukać wskazówek)</item>
-    </string-array>
 
     <string name="pref_FAQ_title">Pytania i odpowiedzi</string>
     <string name="pref_FAQ_summary">Jeśli coś nie działa poprawnie lub nie wiesz jak skonfigurować tę czy inną funkcję programu, przejdź do tej sekcji</string>

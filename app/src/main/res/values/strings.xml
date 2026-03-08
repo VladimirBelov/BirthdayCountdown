@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.02.2026, 12:56
+  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.02.2026, 12:53
+  ~  * Last modified 08.03.2026, 21:14
   ~  */
   -->
 
@@ -1152,6 +1152,15 @@ Long click on item to select color"</string>
 
     <string name="pref_Quiz_EventSources_title">Event sources</string>
     <string name="pref_Quiz_EventSources_summary">Generate questions only from these event sources. If no source is selected, use events from all sources</string>
+
+    <string name="pref_Quiz_AutoNext_title">Auto switch</string>
+    <string name="pref_Quiz_AutoNext_summary">Switch to next question after success or failure answer</string>
+    <string-array name="pref_Quiz_AutoNext_entries">
+        <item>Off</item>
+        <item>2 seconds</item>
+        <item>3 seconds</item>
+        <item>5 seconds</item>
+    </string-array>
 
     <string name="pref_FAQ_title">Questions and Answers</string>
     <string name="pref_FAQ_summary">If something works wrong or you just don\'t know how to tune some app preference this is page for you</string>
@@ -2473,6 +2482,15 @@ Long click on item to select color"</string>
     <string name="pref_Quiz_Questions_key" translatable="false">QuizQuestions</string>
     <string name="pref_Quiz_EventSources_key" translatable="false">QuizEventSources</string>
 
+    <string name="pref_Quiz_AutoNext_key" translatable="false">QuizAutoNext</string>
+    <integer name="pref_Quiz_AutoNext_default" translatable="false">2</integer>
+    <string-array name="pref_Quiz_AutoNext_values" translatable="false">
+        <item>0</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+    </string-array>
+
     <string name="pref_Help_key" translatable="false">Help</string>
 
     <string name="pref_Help_InfoMsg_On_key" translatable="false">InfoMsg</string>
@@ -2558,4 +2576,6 @@ Long click on item to select color"</string>
     <string name="msg_debug_widget_photo_config" translatable="false">"%s: %d, layout=%s\n minWidth=%d, minHeight=%d\n widgetPref=%s"</string>
     <string name="msg_debug_widget_list_config" translatable="false">"%s: %d, layout=%s\n widgetPref=%s"</string>
     <string name="msg_debug_notify_action_empty" translatable="false">"%s: Empty id or request"</string>
+
+    <item name="tag_original_drawable" type="id" />
 </resources>

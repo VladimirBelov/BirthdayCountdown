@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.02.2026, 12:56
+ *  * Created by Vladimir Belov on 08.03.2026, 21:23
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.02.2026, 12:24
+ *  * Last modified 08.03.2026, 21:14
  *
  */
 
@@ -361,6 +361,7 @@ public class ContactsEvents {
     boolean preferences_menustyle_compact;
     public ColorTheme preferences_theme;
     int preferences_quiz_difficulty;
+    int preferences_quiz_AutoNext;
     Set<String> preferences_quiz_Questions = new HashSet<>();
     Set<String> preferences_quiz_EventSources = new HashSet<>();
     String preferences_first_names_female_custom;
@@ -1457,6 +1458,7 @@ public class ContactsEvents {
 
             //Викторина
             preferences_quiz_difficulty = getPreferenceInt(preferences, getResources().getString(R.string.pref_Quiz_Difficulty_key), getResources().getInteger(R.integer.pref_Quiz_Difficulty_default));
+            preferences_quiz_AutoNext = getPreferenceInt(preferences, getResources().getString(R.string.pref_Quiz_AutoNext_key), getResources().getInteger(R.integer.pref_Quiz_AutoNext_default));
             preferences_quiz_Questions = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Quiz_Questions_key), new HashSet<>());
             preferences_quiz_EventSources = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Quiz_EventSources_key), new HashSet<>());
 

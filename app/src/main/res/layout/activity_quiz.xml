@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.02.2026, 12:56
+  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.02.2026, 12:48
+  ~  * Last modified 08.03.2026, 18:52
   ~  */
   -->
 
@@ -155,18 +155,36 @@
                 android:text="@string/popup_action_prev"
                 android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/buttonNextQuestion"
-                style="@style/ButtonWithIcon"
+            <FrameLayout
+                android:id="@+id/buttonNextQuestionContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:textSize="20sp"
-                android:padding="2dp"
-                android:background="@drawable/border_button"
-                android:text="@string/popup_action_next" />
+                android:layout_gravity="center">
+
+                <!-- 👇 Прогресс-слой -->
+                <View
+                    android:id="@+id/buttonNextProgress"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="bottom"
+                    android:background="@color/quiz_progress_fill"
+                    android:visibility="invisible" />
+
+                <!-- 👇 Кнопка поверх прогресса -->
+                <TextView
+                    android:id="@+id/buttonNextQuestion"
+                    style="@style/ButtonWithIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:textSize="20sp"
+                    android:padding="2dp"
+                    android:background="@drawable/border_button"
+                    android:text="@string/popup_action_next" />
+
+            </FrameLayout>
 
         </LinearLayout>
 

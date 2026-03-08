@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
+  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.02.2026, 16:36
+  ~  * Last modified 28.02.2026, 13:16
   ~  */
   -->
 
@@ -1140,13 +1140,6 @@
 
     <string name="pref_Quiz_title">Вікторина</string>
     <string name="pref_Quiz_summary">Вподобання вікторини</string>
-    <string name="pref_Quiz_Interface_title">Інтерфейс</string>
-    <string name="pref_Quiz_Interface_summary">Який інтерфейс використовувати для запитань</string>
-
-    <string-array name="pref_Quiz_Interface_entries">
-        <item>Повідомлення (в будь-який час можна перерватись та піти пошукати правильну відповідь)</item>
-        <item>Діалог (можна не поспішати з відповіддю, але не можна шукати підказки)</item>
-    </string-array>
 
     <string name="pref_FAQ_title">Питання та Відповіді</string>
     <string name="pref_FAQ_summary">Якщо щось працює не правильно або Ви не знаєте, як налаштувати ту чи іншу функцію програми - Вам в цей розділ</string>

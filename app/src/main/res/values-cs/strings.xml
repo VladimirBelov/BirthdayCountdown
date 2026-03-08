@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
+  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.02.2026, 16:25
+  ~  * Last modified 28.02.2026, 13:16
   ~  */
   -->
 
@@ -1140,13 +1140,6 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
 
     <string name="pref_Quiz_title">Kvíz</string>
     <string name="pref_Quiz_summary">Předvolby kvízu</string>
-    <string name="pref_Quiz_Interface_title">Rozhraní</string>
-    <string name="pref_Quiz_Interface_summary">Jaké rozhraní použít pro dotazy</string>
-
-    <string-array name="pref_Quiz_Interface_entries">
-        <item>Oznámení (můžete kdykoli přestat a jít hledat správnou odpověď)</item>
-        <item>Dialog (nemůžete spěchat s odpovědí, ale nemůžete hledat stopy)</item>
-    </string-array>
 
     <string name="pref_FAQ_title">Otázky a odpovědi</string>
     <string name="pref_FAQ_summary">Pokud něco nefunguje správně nebo si jen nevíte rady s nastavením některých předvoleb aplikace, toto je stránka pro vás</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
+  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.02.2026, 16:26
+  ~  * Last modified 28.02.2026, 13:16
   ~  */
   -->
 
@@ -1140,13 +1140,6 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
 
     <string name="pref_Quiz_title">Quiz</string>
     <string name="pref_Quiz_summary">Paramètres du quiz</string>
-    <string name="pref_Quiz_Interface_title">Interface</string>
-    <string name="pref_Quiz_Interface_summary">Quelle interface utiliser pour les questions</string>
-
-<string-array name="pref_Quiz_Interface_entries">
-          <item>Notifications (vous pouvez vous arrêter à tout moment et aller chercher la bonne réponse)</item>
-          <item>"Dialogue (vous n'êtes pas obligé de vous précipiter pour répondre, mais vous ne pouvez pas chercher d'indices)"</item>
-      </string-array>
 
     <string name="pref_FAQ_title">Questions et Réponses</string>
     <string name="pref_FAQ_summary">"Si quelque chose ne fonctionne pas correctement ou si vous ne savez pas comment configurer une fonction du programme - Vous dans cette section"</string>

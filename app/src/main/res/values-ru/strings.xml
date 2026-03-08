@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.02.2026, 12:56
+  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.02.2026, 12:53
+  ~  * Last modified 08.03.2026, 21:14
   ~  */
   -->
 
@@ -1152,6 +1152,15 @@
 
     <string name="pref_Quiz_EventSources_title">Источники событий</string>
     <string name="pref_Quiz_EventSources_summary">Генерировать вопросы только для этих источников событий. Если ни один источник не выбран - будут использоваться все источники</string>
+
+    <string name="pref_Quiz_AutoNext_title">Автоматическое переключение</string>
+    <string name="pref_Quiz_AutoNext_summary">Переключиться на следующий вопрос после успешного или неудачного ответа</string>
+    <string-array name="pref_Quiz_AutoNext_entries">
+        <item>Выключено</item>
+        <item>2 секунды</item>
+        <item>3 секунды</item>
+        <item>5 секунд</item>
+    </string-array>
 
     <string name="pref_FAQ_title">Вопросы и Ответы</string>
     <string name="pref_FAQ_summary">Если что-то работает не правильно или Вы не знаете, как настроить ту или иную функцию программы - Вам в этот раздел</string>

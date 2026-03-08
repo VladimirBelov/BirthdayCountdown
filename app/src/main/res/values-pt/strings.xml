@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
+  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.02.2026, 16:27
+  ~  * Last modified 28.02.2026, 13:18
   ~  */
   -->
 
@@ -1140,13 +1140,6 @@ Clique longamente no item para selecionar a cor"</string>
 
     <string name="pref_Quiz_title">Teste</string>
     <string name="pref_Quiz_summary">Preferências do questionário</string>
-    <string name="pref_Quiz_Interface_title">Interface</string>
-    <string name="pref_Quiz_Interface_summary">Qual interface usar para perguntas</string>
-
-    <string-array name="pref_Quiz_Interface_entries">
-        <item>Notificações (você pode parar a qualquer momento e procurar a resposta certa)</item>
-        <item>Diálogo (você não pode se apressar em responder, mas não pode procurar pistas)</item>
-    </string-array>
 
     <string name="pref_FAQ_title">\"Guia de como fazer\"</string>
     <string name="pref_FAQ_summary">Se algo funcionar errado ou você simplesmente não souber como ajustar alguma preferência de aplicativo, esta página é para você</string>

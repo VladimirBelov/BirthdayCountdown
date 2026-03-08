@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.02.2026, 12:56
+ *  * Created by Vladimir Belov on 08.03.2026, 21:23
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.02.2026, 12:39
+ *  * Last modified 08.03.2026, 21:14
  *
  */
 
@@ -13,6 +13,9 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static org.vovka.birthdaycountdown.ContactsEvents.sdf_DDMMYYYY;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -23,6 +26,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -64,10 +68,14 @@ public class QuizActivity extends Activity {
     private TextView buttonQuestions;
     private TextView buttonPrevQuestion;
     private TextView buttonNextQuestion;
+    private View buttonNextProgress;
+    private ValueAnimator autoNextAnimator;
     private TextView[] answerButtons;
     private ColorStateList defaultAnswerTextColor;
     int colorTrue;
     int colorFalse;
+    int duration_AutoNext;
+    int duration_AutoNext_failure;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +108,7 @@ public class QuizActivity extends Activity {
                 buttonClose.setOnClickListener(view -> finish());
             }
 
+
             imageQuestion = findViewById(R.id.imageQuestion);
             titleQuestion = findViewById(R.id.titleQuestion);
             eventInfo = findViewById(R.id.eventInfo);
@@ -107,8 +116,18 @@ public class QuizActivity extends Activity {
             answerInfo = findViewById(R.id.answerInfo);
             initAnswerButtons();
             buttonNextQuestion = findViewById(R.id.buttonNextQuestion);
+            UiTools.addClickEffect(buttonNextQuestion);
+            buttonNextProgress = findViewById(R.id.buttonNextProgress);
+            // Скрываем прогресс при старте
+            if (buttonNextProgress != null) {
+                buttonNextProgress.setVisibility(View.INVISIBLE);
+                buttonNextProgress.getLayoutParams().width = 0;
+            }
+
             colorTrue = ContextCompat.getColor(this, R.color.dark_green);
             colorFalse = ContextCompat.getColor(this, R.color.dark_red);
+            duration_AutoNext = eventsData.preferences_quiz_AutoNext * 1000;
+            duration_AutoNext_failure = duration_AutoNext + 2000;
 
             //Загрузка первого вопроса
             masterEventList = loadMasterEventList();
@@ -227,11 +246,19 @@ public class QuizActivity extends Activity {
     }
 
     private void renderQuestion(QuizQuestion q) {
-        titleQuestion.setText(q.question);
 
+        // 👇 Сбрасываем прогресс
+        cancelAutoNextTransition();
+        if (buttonNextProgress != null) {
+            buttonNextProgress.setVisibility(View.INVISIBLE);
+            buttonNextProgress.getLayoutParams().width = 0;
+            buttonNextProgress.requestLayout();
+        }
+        buttonNextQuestion.setEnabled(true);
+
+        titleQuestion.setText(q.question);
         eventInfo.setText(q.eventDetails);
         eventInfo.setVisibility(VISIBLE);
-
         answerInfo.setVisibility(INVISIBLE);
 
         if (!TextUtils.isEmpty(q.event)) {
@@ -305,7 +332,10 @@ public class QuizActivity extends Activity {
         }
 
         // Активируем кнопки
-        buttonNextQuestion.setOnClickListener(v -> showNextQuestion());
+        buttonNextQuestion.setOnClickListener(v -> {
+            cancelAutoNextTransition(); // отменяем авто-переход, если он идёт
+            showNextQuestion();
+        });
     }
 
     /**
@@ -341,6 +371,11 @@ public class QuizActivity extends Activity {
                 // 🔒 Блокируем все остальные кнопки
                 disableRemainingAnswerButtons();
 
+                // 👇 Запускаем авто-переход
+                if (duration_AutoNext > 0) {
+                    startAutoNextTransition(duration_AutoNext);
+                }
+
             } else {
                 // ❌ НЕПРАВИЛЬНЫЙ ОТВЕТ
                 selectedButton.setTextColor(colorFalse);
@@ -353,6 +388,11 @@ public class QuizActivity extends Activity {
                     answerInfo.setTextColor(colorFalse);
                     answerInfo.setVisibility(VISIBLE);
                     highlightLastRemainingButton();
+
+                    // 👇 Запускаем авто-переход
+                    if (duration_AutoNext > 0) {
+                        startAutoNextTransition(duration_AutoNext_failure);
+                    }
                 }
             }
         }
@@ -388,6 +428,66 @@ public class QuizActivity extends Activity {
         titleQuestion.setText(getString(R.string.quiz_msg_error_get_question));
         eventInfo.setVisibility(GONE);
         imageQuestion.setVisibility(GONE);
+    }
+
+    /**
+     * Запускает анимацию заполнения кнопки и авто-переход к следующему вопросу
+     * @param durationMs длительность анимации в миллисекундах (3000-5000)
+     */
+    private void startAutoNextTransition(int durationMs) {
+        buttonNextQuestion.setEnabled(false);
+
+        if (buttonNextProgress != null) {
+            buttonNextProgress.setVisibility(View.VISIBLE);
+            buttonNextProgress.getLayoutParams().width = 0;
+            buttonNextProgress.getLayoutParams().height = 0;
+            buttonNextProgress.requestLayout();
+        }
+
+        buttonNextQuestion.post(() -> {
+            final int targetWidth = buttonNextQuestion.getWidth();
+            final int targetHeight = buttonNextQuestion.getHeight();
+
+            if (targetWidth <= 0 || targetHeight <= 0) {
+                showNextQuestion();
+                return;
+            }
+
+            // 👇 Анимация ширины
+            ValueAnimator widthAnimator = ValueAnimator.ofInt(0, targetWidth);
+            widthAnimator.setDuration(durationMs);
+            widthAnimator.setInterpolator(new LinearInterpolator());
+            widthAnimator.addUpdateListener(animation -> {
+                buttonNextProgress.getLayoutParams().width = (int) (Integer) animation.getAnimatedValue();
+                buttonNextProgress.getLayoutParams().height = targetHeight;
+                buttonNextProgress.requestLayout();
+            });
+            widthAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    showNextQuestion();
+                }
+            });
+            widthAnimator.start();
+
+            autoNextAnimator = widthAnimator;
+        });
+    }
+
+    /**
+     * Отменяет авто-переход, если пользователь нажал кнопку вручную
+     */
+    private void cancelAutoNextTransition() {
+        if (autoNextAnimator != null && autoNextAnimator.isRunning()) {
+            autoNextAnimator.cancel();
+        }
+        if (buttonNextProgress != null) {
+            buttonNextProgress.setVisibility(View.INVISIBLE);
+            buttonNextProgress.getLayoutParams().width = 0;
+            buttonNextProgress.requestLayout();
+        }
+        buttonNextQuestion.setEnabled(true);
+        autoNextAnimator = null;
     }
 
     enum QuestionType {
