@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.03.2026, 21:23
+ *  * Created by Vladimir Belov on 09.03.2026, 13:24
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 08.03.2026, 21:14
+ *  * Last modified 09.03.2026, 10:19
  *
  */
 
@@ -211,6 +211,7 @@ public class ContactsEvents {
 
     /** Хранимые Id типа события */
     private static final Map<Integer, String> eventTypesStoredIDs = createEventTypeStoredIDsMap();
+
     private static Map<Integer, String> createEventTypeStoredIDsMap() {
         Map <Integer, String> map = new HashMap<>();
         map.put(Constants.Type_BirthDay, Constants.EventType_BirthDay);
@@ -363,7 +364,7 @@ public class ContactsEvents {
     int preferences_quiz_difficulty;
     int preferences_quiz_AutoNext;
     Set<String> preferences_quiz_Questions = new HashSet<>();
-    Set<String> preferences_quiz_EventSources = new HashSet<>();
+    Set<String> preferences_quiz_sources = new HashSet<>();
     String preferences_first_names_female_custom;
     String preferences_first_names_male_custom;
     Matcher preferences_last_name_completions_male;
@@ -1460,7 +1461,7 @@ public class ContactsEvents {
             preferences_quiz_difficulty = getPreferenceInt(preferences, getResources().getString(R.string.pref_Quiz_Difficulty_key), getResources().getInteger(R.integer.pref_Quiz_Difficulty_default));
             preferences_quiz_AutoNext = getPreferenceInt(preferences, getResources().getString(R.string.pref_Quiz_AutoNext_key), getResources().getInteger(R.integer.pref_Quiz_AutoNext_default));
             preferences_quiz_Questions = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Quiz_Questions_key), new HashSet<>());
-            preferences_quiz_EventSources = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Quiz_EventSources_key), new HashSet<>());
+            preferences_quiz_sources = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Quiz_EventSources_key), new HashSet<>());
 
             //Определения событий
 
@@ -2014,6 +2015,8 @@ public class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_List_Events_key), preferences_list_event_types);
             editor.putStringSet(context.getString(R.string.pref_Notifications_EventSources_key), preferences_notifications_sources);
             editor.putStringSet(context.getString(R.string.pref_Notifications2_EventSources_key), preferences_notifications2_sources);
+            editor.putStringSet(context.getString(R.string.pref_Quiz_Questions_key), preferences_quiz_Questions);
+            editor.putStringSet(context.getString(R.string.pref_Quiz_EventSources_key), preferences_quiz_sources);
 
             //Чистка
             editor.putString("ColorsResent", null);
@@ -11124,14 +11127,27 @@ public class ContactsEvents {
                         if (baseContext instanceof Activity) {
                             try {
                                 if (eventConsumer == null) {
-                                    Method method = baseContext.getClass().getMethod("getSelectedSources", List.class);
+                                    Method method = baseContext.getClass().getMethod(Constants.GET_SELECTED_SOURCES_METHOD, List.class);
                                     method.invoke(baseContext, eventSourcesSelected);
                                 } else {
-                                    Method method = baseContext.getClass().getMethod("getSelectedSources", String.class, List.class);
+                                    Method method = baseContext.getClass().getMethod(Constants.GET_SELECTED_SOURCES_METHOD, String.class, List.class);
                                     method.invoke(baseContext, eventConsumer, eventSourcesSelected);
                                 }
                             } catch (Exception ignored) {
-                                ToastExpander.showDebugMsg(baseContext, "No method getSelectedSources found for " + baseContext.getClass().getSimpleName());
+                                ToastExpander.showDebugMsg(baseContext, "No method " + Constants.GET_SELECTED_SOURCES_METHOD + " found for " + baseContext.getClass().getSimpleName());
+                            }
+                        } else if (baseContext instanceof ContextThemeWrapper) {
+                            Context parentBaseContext = ((ContextThemeWrapper) baseContext).getBaseContext();
+                            try {
+                                if (eventConsumer == null) {
+                                    Method method = parentBaseContext.getClass().getMethod(Constants.GET_SELECTED_SOURCES_METHOD, List.class);
+                                    method.invoke(parentBaseContext, eventSourcesSelected);
+                                } else {
+                                    Method method = parentBaseContext.getClass().getMethod(Constants.GET_SELECTED_SOURCES_METHOD, String.class, List.class);
+                                    method.invoke(parentBaseContext, eventConsumer, eventSourcesSelected);
+                                }
+                            } catch (Exception ignored) {
+                                ToastExpander.showDebugMsg(baseContext, "No method " + Constants.GET_SELECTED_SOURCES_METHOD + " found for " + parentBaseContext.getClass().getSimpleName());
                             }
                         }
 
@@ -11176,6 +11192,95 @@ public class ContactsEvents {
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(baseContext, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Показывает диалог выбора типов вопросов
+     * @param baseContext контекст
+     * @param onConfirmed коллбэк, который выполнится при нажатии "ОК"
+     */
+    void selectQuizQuestions(@NonNull Context baseContext, @Nullable Runnable onConfirmed) {
+        try {
+
+            TypedArray ta = baseContext.getTheme().obtainStyledAttributes(R.styleable.Theme);
+
+            List<String> questTitles = new ArrayList<>();
+            List<String> questIds = new ArrayList<>();
+
+            for (QuizActivity.QuestionType type : QuizActivity.QuestionType.values()) {
+                questTitles.add(type.getDisplayName(context));
+                questIds.add(type.getCode(context));
+            }
+
+            ListAdapter adapter = new MultiCheckboxesAdapter(baseContext, questTitles, null, null, null, ta);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(baseContext, preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_Quiz_Questions_title)
+                    .setIcon(android.R.drawable.ic_menu_agenda)
+                    .setAdapter(adapter, null)
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+
+                        List<String> questIdsSelected = new ArrayList<>();
+                        SparseBooleanArray checked = ((AlertDialog) dialog).getListView().getCheckedItemPositions();
+                        for (int i = 0; i < checked.size(); i++) {
+                            if (checked.get(checked.keyAt(i))) {
+                                questIdsSelected.add(questIds.get(checked.keyAt(i)));
+                            }
+                        }
+                        preferences_quiz_Questions.clear();
+                        preferences_quiz_Questions.addAll(questIdsSelected);
+                        savePreferences();
+
+                        // 👇 Вызываем коллбэк, если передан
+                        if (onConfirmed != null) {
+                            onConfirmed.run();
+                        }
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setNeutralButton(R.string.msg_all, null)
+                    .setCancelable(true);
+
+            AlertDialog alertToShow = builder.create();
+
+            ListView listView = alertToShow.getListView();
+            listView.setItemsCanFocus(false);
+            listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+            alertToShow.setOnShowListener(arg0 -> {
+
+                //alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                //alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+
+                //Только здесь работает
+                int i = 0;
+                for (QuizActivity.QuestionType type : QuizActivity.QuestionType.values()) {
+                    if (preferences_quiz_Questions.contains(type.getCode(context))) {
+                        listView.setItemChecked(i, true);
+                    }
+                    i++;
+                }
+
+                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> listView.post(() -> {
+                    if (listView.getCheckedItemCount() < listView.getCount()) {
+                        for (int item = 0; item < listView.getCount(); item++) {
+                            listView.setItemChecked(item, true);
+                        }
+                    } else {
+                        listView.clearChoices();
+                    }
+                    listView.invalidateViews();
+                }));
+
+            });
+
+            alertToShow.setOnDismissListener(dialog -> ta.recycle());
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

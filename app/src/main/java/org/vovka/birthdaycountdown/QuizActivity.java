@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.03.2026, 21:23
+ *  * Created by Vladimir Belov on 09.03.2026, 13:24
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 08.03.2026, 21:14
+ *  * Last modified 09.03.2026, 10:34
  *
  */
 
@@ -19,6 +19,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.text.LineBreaker;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
@@ -29,9 +30,11 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
@@ -64,9 +67,6 @@ public class QuizActivity extends Activity {
     private TextView titleQuestion;
     private TextView eventInfo;
     private TextView answerInfo;
-    private TextView buttonSources;
-    private TextView buttonQuestions;
-    private TextView buttonPrevQuestion;
     private TextView buttonNextQuestion;
     private View buttonNextProgress;
     private ValueAnimator autoNextAnimator;
@@ -108,15 +108,43 @@ public class QuizActivity extends Activity {
                 buttonClose.setOnClickListener(view -> finish());
             }
 
-
             imageQuestion = findViewById(R.id.imageQuestion);
             titleQuestion = findViewById(R.id.titleQuestion);
             eventInfo = findViewById(R.id.eventInfo);
             defaultAnswerTextColor = eventInfo.getTextColors();
             answerInfo = findViewById(R.id.answerInfo);
             initAnswerButtons();
+
+            TextView buttonSources = findViewById(R.id.buttonSources);
+            if (buttonSources != null && eventsData.preferences_extrafun) {
+                UiTools.addClickEffect(buttonSources);
+                buttonSources.setOnClickListener(v -> selectEventSources());
+                buttonSources.setOnLongClickListener(v -> {
+                    Toast.makeText(this, getString(R.string.pref_Quiz_EventsSources_hint), Toast.LENGTH_LONG).show();
+                    return true;
+                });
+                buttonSources.setVisibility(VISIBLE);
+            }
+
+            TextView buttonQuestions = findViewById(R.id.buttonQuestions);
+            if (buttonQuestions != null) {
+                UiTools.addClickEffect(buttonQuestions);
+                buttonQuestions.setOnClickListener(v -> selectQuestions());
+                buttonQuestions.setOnLongClickListener(v -> {
+                    Toast.makeText(this, getString(R.string.pref_Quiz_Questions_hint), Toast.LENGTH_LONG).show();
+                    return true;
+                });
+            }
+
             buttonNextQuestion = findViewById(R.id.buttonNextQuestion);
-            UiTools.addClickEffect(buttonNextQuestion);
+            if (buttonNextQuestion != null) {
+                UiTools.addClickEffect(buttonNextQuestion);
+                buttonNextQuestion.setOnLongClickListener(v -> {
+                    Toast.makeText(this, getString(R.string.pref_Quiz_NextQuestion_hint), Toast.LENGTH_LONG).show();
+                    return true;
+                });
+            }
+
             buttonNextProgress = findViewById(R.id.buttonNextProgress);
             // Скрываем прогресс при старте
             if (buttonNextProgress != null) {
@@ -199,7 +227,7 @@ public class QuizActivity extends Activity {
      */
     private List<String> loadMasterEventList() {
         List<String> events = new ArrayList<>(eventsData.eventList);
-        Set<String> sources = eventsData.preferences_quiz_EventSources;
+        Set<String> sources = eventsData.preferences_quiz_sources;
         if (sources != null && !sources.isEmpty()) {
             List<String> eventsFiltered = new ArrayList<>();
             for (String event : events) {
@@ -216,21 +244,6 @@ public class QuizActivity extends Activity {
         } else {
             return events;
         }
-    }
-
-    /**
-     * Обработчик: настройки источников изменены
-     */
-    private void onSourcesSettingsChanged() {
-        masterEventList = loadMasterEventList(); // перезагружаем с новыми фильтрами
-        refreshQuizPool();
-    }
-
-    /**
-     * Обработчик: типы вопросов изменены
-     */
-    private void onQuestionTypesSettingsChanged() {
-        refreshQuizPool(); // activeTypeCodes загрузятся из QuizSettings
     }
 
     /**
@@ -299,13 +312,22 @@ public class QuizActivity extends Activity {
                 if (allowLineBreaks) {
                     // > 3 кнопок: разрешаем 2 строки + перенос по слогам
                     btn.setMaxLines(2);
-                    btn.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NORMAL);
-                    btn.setBreakStrategy(Layout.BREAK_STRATEGY_HIGH_QUALITY);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        btn.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NORMAL);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            btn.setBreakStrategy(LineBreaker.BREAK_STRATEGY_HIGH_QUALITY);
+                        }
+                    }
+
                 } else {
                     // ≤ 3 кнопок: одна строка, без переносов
                     btn.setMaxLines(1);
-                    btn.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NONE);
-                    btn.setBreakStrategy(Layout.BREAK_STRATEGY_SIMPLE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        btn.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NONE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            btn.setBreakStrategy(LineBreaker.BREAK_STRATEGY_SIMPLE);
+                        }
+                    }
                 }
 
             } else {
@@ -336,6 +358,7 @@ public class QuizActivity extends Activity {
             cancelAutoNextTransition(); // отменяем авто-переход, если он идёт
             showNextQuestion();
         });
+        buttonNextQuestion.setVisibility(VISIBLE);
     }
 
     /**
@@ -428,6 +451,13 @@ public class QuizActivity extends Activity {
         titleQuestion.setText(getString(R.string.quiz_msg_error_get_question));
         eventInfo.setVisibility(GONE);
         imageQuestion.setVisibility(GONE);
+        buttonNextQuestion.setVisibility(GONE);
+
+        for (TextView btn : answerButtons) {
+            if (btn != null) {
+                btn.setVisibility(GONE);
+            }
+        }
     }
 
     /**
@@ -490,22 +520,82 @@ public class QuizActivity extends Activity {
         autoNextAnimator = null;
     }
 
+    private void selectEventSources() {
+        try {
+
+            final ContactsEvents.EventSources eventSources = eventsData.new EventSources();
+            String eventConsumer = getString(R.string.pref_Quiz_EventSources_key);
+            eventSources.loadEventSources(eventConsumer);
+
+            eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_quiz_sources),
+                    new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeMain), eventConsumer);
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public void getSelectedSources(String id, List<String> newSelectedSources) {
+        try {
+
+            if (id.equals(getString(R.string.pref_Quiz_EventSources_key))) {
+                eventsData.preferences_quiz_sources.clear();
+                eventsData.preferences_quiz_sources.addAll(newSelectedSources);
+                eventsData.savePreferences();
+                masterEventList = loadMasterEventList(); // перезагружаем с новыми фильтрами
+                refreshQuizPool();
+                showNextQuestion();
+            }
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void selectQuestions() {
+        try {
+
+            eventsData.selectQuizQuestions(
+                    new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeMain),
+                    () -> {
+                        refreshQuizPool();
+                        showNextQuestion();
+                    }
+            );
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
     enum QuestionType {
-        BIRTHDAY_MONTH("birthday_month"),
-        BIRTHDAY_YEAR("birthday_year"),
-        CONTACT_AGE("contact_age");
+        BIRTHDAY_MONTH(R.string.quiz_code_birthday_month, R.string.quiz_month01_title),
+        BIRTHDAY_YEAR(R.string.quiz_code_birthday_year, R.string.quiz_year01_title),
+        CONTACT_AGE(R.string.quiz_code_contact_age, R.string.quiz_age01_title_future);
 
-        private final String code;
+        private final int codeResId;
+        private final int nameResId;
 
-        QuestionType(String code) {
-            this.code = code;
+        QuestionType(int codeResId, int nameResId) {
+            this.codeResId = codeResId;
+            this.nameResId = nameResId;
         }
 
-        public String getCode() { return code; }
+        public String getCode(Context context) {
+            return context.getResources().getString(codeResId);
+        }
 
-        public static QuestionType fromCode(String code) {
+        public String getDisplayName(Context context) {
+            return context.getResources().getString(nameResId);
+        }
+
+        public static QuestionType fromCode(Context context, String code) {
             for (QuestionType type : values()) {
-                if (type.code.equals(code)) return type;
+                if (type.getCode(context).equals(code)) return type;
             }
             return null;
         }
@@ -580,7 +670,7 @@ public class QuizActivity extends Activity {
         private final Set<QuestionType> activeTypes = new HashSet<>();
         private final Random generator = new Random();
         private final Context context;
-        ContactsEvents eventsData;
+        final ContactsEvents eventsData;
         private List<String> filteredAllEvents = new ArrayList<>();    // Все не-скрытые события
         private List<String> filteredBirthdays = new ArrayList<>();    // Только дни рождения
 
@@ -657,7 +747,7 @@ public class QuizActivity extends Activity {
                 return;
             }
             for (String code : activeTypeCodes) {
-                QuestionType type = QuestionType.fromCode(code);
+                QuestionType type = QuestionType.fromCode(context, code);
                 if (type != null && generators.containsKey(type)) {
                     activeTypes.add(type);
                 }

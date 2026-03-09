@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
+  ~  * Created by Vladimir Belov on 09.03.2026, 13:24
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.02.2026, 13:16
+  ~  * Last modified 09.03.2026, 12:55
   ~  */
   -->
 
@@ -202,7 +202,6 @@
     <string name="msg_next_widgetupdate">"Наступне оновлення віджета: %1$s\n"</string>
     <string name="msg_no_action">Немає дій для події</string>
     <string name="msg_icon_changed">"Набір значків програми: %1$s"</string>
-    <string name="msg_created_quiz_channel">Створено канал сповіщень вікторини</string>
     <string name="msg_prefs_import_prefs_clear_confirmation">Очистити всі збережені налаштування перед імпортом нових?</string>
     <string name="msg_prefs_import_unknown">"Невідомий параметр: %1$s"</string>
     <string name="msg_prefs_import_error">"Помилка імпорту: %1$s"</string>
@@ -216,7 +215,6 @@
 
     <string name="pref_Notifications_Notification_Channel_Name">Майбутні події</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показати повiдомлення про майбутні події</string>
-    <string name="pref_Notifications_Quiz_Channel_Name">Вікторина</string>
 
     <string name="hint_ContactIcon">Фото</string>
     <string name="hint_Name">ПІБ</string>

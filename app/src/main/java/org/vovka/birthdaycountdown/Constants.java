@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2026, 17:39
+ *  * Created by Vladimir Belov on 09.03.2026, 13:24
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.02.2026, 13:01
+ *  * Last modified 09.03.2026, 00:44
  *
  */
 
@@ -510,5 +510,5 @@ public final class Constants {
     public static final String iCal_Date = "DTSTART";
     public static final String iCal_Url = "URL:";
 
-
+    static final String GET_SELECTED_SOURCES_METHOD = "getSelectedSources";
 }

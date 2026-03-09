@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.06.2025, 23:05
+ *  * Created by Vladimir Belov on 09.03.2026, 13:24
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 09.03.2026, 12:55
  *
  */
 
@@ -45,34 +45,10 @@ public class ToastExpander {
     FluentSnackbar mFluentSnackbar;
     private static final int msgTypeDebug = 1;
     private static final int msgTypeInfo = 2;
-    private static final int TOAST_SHOW_INTERVAL_MS = 1750;
 
     @NonNull
     static ToastExpander getInstance() {
         return ourInstance;
-    }
-
-    public static void showFor(final Toast aToast, final long durationInMilliseconds) {
-
-        if (durationInMilliseconds <= 0) return;
-
-        aToast.setDuration(Toast.LENGTH_SHORT);
-
-        new Thread(() -> {
-            long timeElapsed = 0;
-
-                try {
-                    while (timeElapsed <= durationInMilliseconds) {
-                        long start = System.currentTimeMillis();
-                        aToast.show();
-                        Thread.sleep(TOAST_SHOW_INTERVAL_MS);
-                        timeElapsed += System.currentTimeMillis() - start;
-                    }
-                } catch (InterruptedException e) {
-                    Log.e(TAG, e.toString());
-                    Thread.currentThread().interrupt();
-                }
-        }).start();
     }
 
     private synchronized void showText(@NonNull Context context, @NonNull String msg, int type) {

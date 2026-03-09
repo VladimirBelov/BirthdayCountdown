@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2025, 15:45
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.06.2025, 14:10
+ *  * Created by Vladimir Belov on 09.03.2026, 13:24
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 09.03.2026, 12:55
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -30,10 +30,6 @@ class RotateBitmap {
 
     public Bitmap getBitmap() {
         return bitmap;
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
     }
 
     public Matrix getRotateMatrix() {

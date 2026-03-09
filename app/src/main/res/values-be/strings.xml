@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
+  ~  * Created by Vladimir Belov on 09.03.2026, 13:24
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.02.2026, 13:16
+  ~  * Last modified 09.03.2026, 12:55
   ~  */
   -->
 
@@ -202,7 +202,6 @@
     <string name="msg_next_widgetupdate">"Наступнае абнаўленне віджэтаў: %1$s\n"</string>
     <string name="msg_no_action">Няма дзеянняў для падзеі</string>
     <string name="msg_icon_changed">"Усталяваны абразок: %1$s"</string>
-    <string name="msg_created_quiz_channel">Створаны канал паведамленняў для віктарыны</string>
     <string name="msg_prefs_import_prefs_clear_confirmation">Выдаліць усе захаваныя налады перад імпартаваннем новых?</string>
     <string name="msg_prefs_import_unknown">"Невядомая налада: %1$s"</string>
     <string name="msg_prefs_import_error">"Памылка імпарту: %1$s"</string>
@@ -216,7 +215,6 @@
 
     <string name="pref_Notifications_Notification_Channel_Name">Маючыя адбыцца падзеі</string>
     <string name="pref_Notifications_Notification_Channel_Description">Паказваць паведамлення аб маючых адбыцца падзеях</string>
-    <string name="pref_Notifications_Quiz_Channel_Name">Віктарына</string>
 
     <string name="hint_ContactIcon">Фота</string>
     <string name="hint_Name">П.І.Імя па бацьку</string>

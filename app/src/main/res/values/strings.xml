@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
+  ~  * Created by Vladimir Belov on 09.03.2026, 13:24
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 08.03.2026, 21:14
+  ~  * Last modified 09.03.2026, 13:13
   ~  */
   -->
 
@@ -202,7 +202,6 @@
     <string name="msg_next_widgetupdate">"Next widget update: %1$s\n"</string>
     <string name="msg_no_action">No action for event</string>
     <string name="msg_icon_changed">"App icon set: %1$s"</string>
-    <string name="msg_created_quiz_channel">Created Quiz notification channel</string>
     <string name="msg_prefs_import_prefs_clear_confirmation">Clear all saved preferences before import new ones?</string>
     <string name="msg_prefs_import_unknown">"Unknown pref: %1$s"</string>
     <string name="msg_prefs_import_error">"Import error: %1$s"</string>
@@ -216,7 +215,6 @@
 
     <string name="pref_Notifications_Notification_Channel_Name">Upcoming events</string>
     <string name="pref_Notifications_Notification_Channel_Description">Show notifications for upcoming events</string>
-    <string name="pref_Notifications_Quiz_Channel_Name">Quiz</string>
 
     <string name="hint_ContactIcon">Photo</string>
     <string name="hint_Name">Full name</string>
@@ -1145,7 +1143,7 @@ Long click on item to select color"</string>
     <string name="pref_Quiz_summary">Quiz preferences</string>
 
     <string name="pref_Quiz_Questions_title">Questions</string>
-    <string name="pref_Quiz_Questions_summary">Types of questions to show</string>
+    <string name="pref_Quiz_Questions_summary">Show questions of selected types only</string>
 
     <string name="pref_Quiz_Difficulty_title">Difficulty</string>
     <string name="pref_Quiz_Difficulty_summary">The number of possible answers</string>
@@ -1154,13 +1152,16 @@ Long click on item to select color"</string>
     <string name="pref_Quiz_EventSources_summary">Generate questions only from these event sources. If no source is selected, use events from all sources</string>
 
     <string name="pref_Quiz_AutoNext_title">Auto switch</string>
-    <string name="pref_Quiz_AutoNext_summary">Switch to next question after success or failure answer</string>
+    <string name="pref_Quiz_AutoNext_summary">Switch to the next question after success or failure answer</string>
     <string-array name="pref_Quiz_AutoNext_entries">
         <item>Off</item>
         <item>2 seconds</item>
         <item>3 seconds</item>
         <item>5 seconds</item>
     </string-array>
+    <string name="pref_Quiz_NextQuestion_hint">Show next question</string>
+    <string name="pref_Quiz_EventsSources_hint">Select events sources</string>
+    <string name="pref_Quiz_Questions_hint">Select questions</string>
 
     <string name="pref_FAQ_title">Questions and Answers</string>
     <string name="pref_FAQ_summary">If something works wrong or you just don\'t know how to tune some app preference this is page for you</string>
@@ -1553,7 +1554,7 @@ Long click on item to select color"</string>
 
     <string name="popup_action_prev" translatable="false">⏪</string>
     <string name="popup_action_next" translatable="false">⏩</string>
-    <string name="popup_action_pref" translatable="false">⚙️</string>
+    <string name="popup_action_pref" translatable="false">📋</string>
     <string name="popup_action_calendar" translatable="false">📆</string>
 
     <string name="pref_Root_key" translatable="false">Pref</string>
@@ -2578,4 +2579,8 @@ Long click on item to select color"</string>
     <string name="msg_debug_notify_action_empty" translatable="false">"%s: Empty id or request"</string>
 
     <item name="tag_original_drawable" type="id" />
+
+    <string name="quiz_code_birthday_month" translatable="false">birthday_month</string>
+    <string name="quiz_code_birthday_year" translatable="false">birthday_year</string>
+    <string name="quiz_code_contact_age" translatable="false">contact_age</string>
 </resources>

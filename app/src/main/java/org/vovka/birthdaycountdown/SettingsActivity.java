@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.02.2026, 12:56
+ *  * Created by Vladimir Belov on 09.03.2026, 13:24
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.02.2026, 12:24
+ *  * Last modified 09.03.2026, 12:55
  *
  */
 
@@ -1557,7 +1557,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 selectFacts();
                 return true;
 
-            } else if (getString(R.string.pref_List_EventSources_key).equals(key) || getString(R.string.pref_Notifications_EventSources_key).equals(key) || getString(R.string.pref_Notifications2_EventSources_key).equals(key)) {
+            } else if (getString(R.string.pref_List_EventSources_key).equals(key) || getString(R.string.pref_Notifications_EventSources_key).equals(key)
+                    || getString(R.string.pref_Notifications2_EventSources_key).equals(key) || getString(R.string.pref_Quiz_EventSources_key).equals(key)) {
 
                 selectEventSources(key);
                 return true;
@@ -1575,6 +1576,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (getString(R.string.pref_Widgets_AddWidget_key).equals(key)) {
 
                 selectWidgetToAdd();
+                return true;
+
+            } else if (getString(R.string.pref_Quiz_Questions_key).equals(key)) {
+
+                eventsData.selectQuizQuestions(this, null);
                 return true;
 
             }
@@ -3293,7 +3299,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     private enum ImportStage {
-        selectFile, analyseFile, doClean, doImport
+        selectFile, doClean, doImport
     }
 
     private void exportPreferences(Uri uri) {
@@ -3589,6 +3595,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Notifications_Type_key),
                         getString(R.string.pref_Notifications_SmallIconsStyle_key),
                         getString(R.string.pref_Quiz_Difficulty_key),
+                        getString(R.string.pref_Quiz_AutoNext_key),
                         getString(R.string.pref_Theme_key),
                         getString(R.string.pref_VersionCode_LastRun),
                         getString(R.string.pref_Version_LastRun),
@@ -4083,6 +4090,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             } else if (eventConsumer.equals(getString(R.string.pref_Notifications2_EventSources_key))) {
                 eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_notifications2_sources),
                         this, eventConsumer);
+            } else if (eventConsumer.equals(getString(R.string.pref_Quiz_EventSources_key))) {
+                eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_quiz_sources),
+                        this, eventConsumer);
             }
 
         } catch (final Exception e) {
@@ -4115,6 +4125,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 eventsData.preferences_notifications2_sources.addAll(newSelectedSources);
                 eventsData.savePreferences();
                 setSummaryForEventSources(R.string.pref_Notifications2_EventSources_key, R.string.pref_Notifications_EventSources_description);
+
+            } else if (id.equals(getString(R.string.pref_Quiz_EventSources_key))) {
+
+                eventsData.preferences_quiz_sources.clear();
+                eventsData.preferences_quiz_sources.addAll(newSelectedSources);
+                eventsData.savePreferences();
+                //setSummaryForEventSources(R.string.pref_Notifications2_EventSources_key, R.string.pref_Notifications_EventSources_description);
 
             }
 
@@ -4380,8 +4397,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } else if (requestCode == Constants.RESULT_PICK_FILE_FOR_IMPORT_EVENTS) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
-                        //importEvents(ImportStage.analyseFile, uri);
-
                         Intent intent = new Intent(this, EventImporterActivity.class);
                         intent.setAction(Constants.ACTION_IMPORT_EVENTS);
                         intent.putExtra(Constants.EXTRA_URL, uri.toString());
@@ -4481,15 +4496,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 textView.setTextSize(16);
                 textView.setMaxLines(5);
 
-                Drawable icon = pm.getDrawable(packages.get(position), images.get(position), null);
-                if (icon != null) {
-                    Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                    Canvas canvas = new Canvas(bmp);
-                    icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                    icon.draw(canvas);
-                    Bitmap bitmapResized = Bitmap.createScaledBitmap(bmp, 100, 100, false);
-                    bmp.recycle();
-                    textView.setCompoundDrawablesRelativeWithIntrinsicBounds(new BitmapDrawable(getContext().getResources(), bitmapResized), null, null, null);
+                if (images != null) {
+                    Drawable icon = pm.getDrawable(packages.get(position), images.get(position), null);
+                    if (icon != null) {
+                        Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                        Canvas canvas = new Canvas(bmp);
+                        icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                        icon.draw(canvas);
+                        Bitmap bitmapResized = Bitmap.createScaledBitmap(bmp, 100, 100, false);
+                        bmp.recycle();
+                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(new BitmapDrawable(getContext().getResources(), bitmapResized), null, null, null);
+                    }
                 }
                 textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, displayMetrics));
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
+  ~  * Created by Vladimir Belov on 09.03.2026, 13:24
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 08.03.2026, 21:14
+  ~  * Last modified 09.03.2026, 13:10
   ~  */
   -->
 
@@ -202,7 +202,6 @@
     <string name="msg_next_widgetupdate">"Следующее обновление виджетов: %1$s\n"</string>
     <string name="msg_no_action">Нет действий для события</string>
     <string name="msg_icon_changed">"Установлена иконка: %1$s"</string>
-    <string name="msg_created_quiz_channel">Создан канал уведомлений для викторины</string>
     <string name="msg_prefs_import_prefs_clear_confirmation">Удалить все сохранённые настройки перед импортированием новых?</string>
     <string name="msg_prefs_import_unknown">"Неизвестная настройка: %1$s"</string>
     <string name="msg_prefs_import_error">"Ошибка импорта: %1$s"</string>
@@ -216,7 +215,6 @@
 
     <string name="pref_Notifications_Notification_Channel_Name">Предстоящие события</string>
     <string name="pref_Notifications_Notification_Channel_Description">Показывать уведомления о предстоящих событиях</string>
-    <string name="pref_Notifications_Quiz_Channel_Name">Викторина</string>
 
     <string name="hint_ContactIcon">Фото</string>
     <string name="hint_Name">ФИО</string>
@@ -1145,7 +1143,7 @@
     <string name="pref_Quiz_summary">Настройки викторины</string>
 
     <string name="pref_Quiz_Questions_title">Вопросы</string>
-    <string name="pref_Quiz_Questions_summary">Какие вопросы показывать</string>
+    <string name="pref_Quiz_Questions_summary">Показывать вопросы только выбранных типов</string>
 
     <string name="pref_Quiz_Difficulty_title">Сложность</string>
     <string name="pref_Quiz_Difficulty_summary">Количество возможных ответов на вопрос</string>
@@ -1161,6 +1159,9 @@
         <item>3 секунды</item>
         <item>5 секунд</item>
     </string-array>
+    <string name="pref_Quiz_NextQuestion_hint">Следующий вопрос…</string>
+    <string name="pref_Quiz_EventsSources_hint">Выбрать источники для вопросов</string>
+    <string name="pref_Quiz_Questions_hint">Выбрать вопросы для викторины</string>
 
     <string name="pref_FAQ_title">Вопросы и Ответы</string>
     <string name="pref_FAQ_summary">Если что-то работает не правильно или Вы не знаете, как настроить ту или иную функцию программы - Вам в этот раздел</string>

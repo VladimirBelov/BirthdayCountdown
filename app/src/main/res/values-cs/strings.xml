@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
+  ~  * Created by Vladimir Belov on 09.03.2026, 13:24
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.02.2026, 13:16
+  ~  * Last modified 09.03.2026, 12:55
   ~  */
   -->
 
@@ -202,7 +202,6 @@
     <string name="msg_next_widgetupdate">"Další aktualizace widgetu: %1$s\n"</string>
     <string name="msg_no_action">Žádná akce pro událost</string>
     <string name="msg_icon_changed">"Sada ikon aplikace: %1$s"</string>
-    <string name="msg_created_quiz_channel">Vytvořený kanál oznámení kvízu</string>
     <string name="msg_prefs_import_prefs_clear_confirmation">Chcete před importem nového vymazat všechny uložené předvolby?</string>
     <string name="msg_prefs_import_unknown">"Neznámá předvolba: %1$s"</string>
     <string name="msg_prefs_import_error">"Chyba importu: %1$s"</string>
@@ -216,7 +215,6 @@
 
     <string name="pref_Notifications_Notification_Channel_Name">Nadcházející události</string>
     <string name="pref_Notifications_Notification_Channel_Description">Zobrazit upozornění na nadcházející události</string>
-    <string name="pref_Notifications_Quiz_Channel_Name">Kvíz</string>
 
     <string name="hint_ContactIcon">Fotografie</string>
     <string name="hint_Name">Celé jméno</string>

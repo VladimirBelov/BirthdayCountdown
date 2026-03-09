@@ -25,6 +25,7 @@
 -keep class org.vovka.birthdaycountdown.WidgetCalendarConfigureActivity { *; }
 -keep class org.vovka.birthdaycountdown.WidgetConfigureActivity { *; }
 -keep class org.vovka.birthdaycountdown.SettingsActivity { *; }
+-keep class org.vovka.birthdaycountdown.QuizActivity { *; }
 
 #section for local images
 -keepclassmembers class **.R$* {
