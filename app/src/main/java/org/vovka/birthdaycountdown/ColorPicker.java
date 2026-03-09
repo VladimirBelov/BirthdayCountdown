@@ -1,11 +1,10 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 14:35
+ *  * Created by Vladimir Belov on 09.03.2026, 15:56
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 09.03.2026, 15:47
  *
  */
-
 package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
@@ -23,6 +22,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -51,23 +51,17 @@ import java.util.List;
 /**
  * ColorPicker - это пользовательский элемент управления, который позволяет пользователю выбрать цвет из предопределенного набора вариантов
  * или выбрать цвет с помощью RGB-слайдеров. Его можно использовать в макетах или программно.
- *
  * <p>
  * Этот класс предоставляет визуальный интерфейс выбора цвета в приложении Android. Он предлагает
  * несколько способов выбора цвета, включая сетку предопределенных вариантов цветов и RGB-селектор.
- * </p>
- *
  * <p>
- *   <b>Основные характеристики:</b>
- *   <ul>
- *     <li><b>Предопределенные варианты цветов:</b> Представляет сетку цветов для удобного выбора.</li>
- *     <li><b>RGB-селектор:</b> Позволяет пользователям точно настроить выбор цвета с помощью слайдеров Красный, Зеленый, Синий и Альфа.</li>
- *     <li><b>Настраиваемый:</b> Может быть настроен через атрибуты XML или программно.</li>
- *   </ul>
- * </p>
+ * Основные характеристики:
+ * <li><b>Предопределенные варианты цветов:</b> Представляет сетку цветов для удобного выбора.</li>
+ * <li><b>RGB-селектор:</b> Позволяет пользователям точно настроить выбор цвета с помощью слайдеров Красный, Зеленый, Синий и Альфа.</li>
+ * <li><b>HSV-спектр:</b> Визуальный выбор цвета через цветовой круг с маркером текущей позиции.</li>
+ * <li><b>Настраиваемый:</b> Может быть настроен через атрибуты XML или программно.</li>
  */
 class ColorPicker extends FrameLayout implements View.OnClickListener {
-
     private static final String TAG = "ColorPicker";
     private int[] mColorChoices = {};
     private int mValue = 0;
@@ -99,7 +93,6 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
     @SuppressLint("DiscouragedApi")
     private void initAttrs(AttributeSet attrs, int defStyleAttr) {
-
         LayoutInflater.from(getContext()).inflate(R.layout.picker_color, this);
         setOnClickListener(this);
 
@@ -110,10 +103,10 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             mSelectDialogIcon = ta.getResourceId(R.styleable.ColorPreference_dialogIcon, 0);
             mItemLayoutId = ta.getResourceId(R.styleable.ColorPreference_itemLayout, mItemLayoutId);
             mNumColumns = ta.getInteger(R.styleable.ColorPreference_numColumns, mNumColumns);
-            mValue = ta.getInteger(R.styleable.ColorPreference_defaultValue, ContextCompat.getColor(getContext(), R.color.pref_Widgets_Color_WidgetBackground_default));
+            mValue = ta.getInteger(R.styleable.ColorPreference_defaultValue,
+                    ContextCompat.getColor(getContext(), R.color.pref_Widgets_Color_WidgetBackground_default));
             int choicesResId = ta.getResourceId(R.styleable.ColorPreference_choices, R.array.default_color_choice_values);
             if (choicesResId > 0) {
-                //https://stackoverflow.com/questions/9114587/how-can-i-save-colors-in-array-xml-and-get-its-back-to-color-array
                 mColorChoices = ta.getResources().getIntArray(choicesResId);
             }
 
@@ -131,7 +124,6 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     if (view != null)
                         view.setText(ta.getString(R.styleable.ColorPreference_summary));
                 }
-
             }
 
             int id = getResources().getIdentifier("icon", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
@@ -155,11 +147,9 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
         } finally {
             ta.recycle();
         }
-
     }
 
     public void setColor(int color) {
-
         mValue = color;
         @SuppressLint("DiscouragedApi") int id = getResources().getIdentifier("icon1", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
         if (id > 0) {
@@ -170,10 +160,99 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    public void selectRGBColor(int initValue, int defaultValue, String methodToInvoke, String idToPass) {
+    public int getColor() {
+        return mValue;
+    }
 
+    @Override
+    public void onClick(View v) {
         try {
+            selectColor(0, 0, null, null);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
 
+    void selectColor(int initValue, int defaultValue, String methodToInvoke, String idToPass) {
+        try {
+            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            View rootView = layoutInflater.inflate(R.layout.dialog_colors, null);
+
+            mAdapter = new ColorGridAdapter();
+            if (initValue != 0) {
+                mAdapter.setSelectedColor(initValue);
+            } else if (defaultValue != 0) {
+                mAdapter.setSelectedColor(defaultValue);
+            } else {
+                mAdapter.setSelectedColor(mValue);
+            }
+
+            AlertDialog.Builder colorDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
+                    .setTitle(mSelectDialogTitle)
+                    .setIcon(mSelectDialogIcon)
+                    .setView(rootView);
+
+            if (eventsData.preferences_extrafun) {
+                colorDialogBuilder.setNeutralButton(R.string.button_rgb, (dialog, which) -> {
+                    dialog.dismiss();
+                    selectRGBColor(initValue, defaultValue, methodToInvoke, idToPass);
+                });
+            }
+
+            AlertDialog colorDialog = colorDialogBuilder.create();
+
+            GridView mColorGrid = rootView.findViewById(R.id.color_grid);
+            if (mColorGrid != null) {
+                mColorGrid.setNumColumns(mNumColumns);
+                mColorGrid.setAdapter(mAdapter);
+                mColorGrid.setOnItemClickListener((listView, view, position, itemId) -> {
+                    int colorInt = mAdapter.getItem(position);
+                    setColor(colorInt);
+                    eventsData.setRecentColor(colorInt);
+
+                    if (methodToInvoke != null && idToPass != null && context instanceof AppCompatActivity) {
+                        try {
+                            Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
+                            method.invoke(context, idToPass, colorInt);
+                        } catch (Exception ignored) { /**/ }
+                    }
+                    colorDialog.dismiss();
+                });
+                mColorGrid.setOnItemLongClickListener((parent, view, position, id) -> {
+                    Toast.makeText(context,
+                            context.getString(R.string.pref_Color_title) +
+                                    Constants.STRING_SPACE +
+                                    ImageUtils.toARGBString(mAdapter.getItem(position))
+                            , Toast.LENGTH_SHORT).show();
+                    return true;
+                });
+            }
+            if (methodToInvoke != null && idToPass != null && context instanceof AppCompatActivity) {
+                colorDialog.setOnCancelListener(dialog -> {
+                    try {
+                        Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
+                        method.invoke(context, Constants.STRING_EMPTY, 0);
+                    } catch (Exception ignored) { /**/ }
+                });
+            }
+            View mCaptionView = rootView.findViewById(R.id.caption);
+            if (mCaptionView != null) {
+                mCaptionView.setVisibility(View.GONE);
+            }
+
+            colorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            colorDialog.show();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    public void selectRGBColor(int initValue, int defaultValue, String methodToInvoke, String idToPass) {
+        try {
             TypedArray ta = getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
@@ -183,7 +262,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                             try {
                                 Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
                                 method.invoke(context, Constants.STRING_EMPTY, 0);
-                            } catch (Exception ignored) {/**/}
+                            } catch (Exception ignored) { /**/ }
                         }
                         dialog.cancel();
                     });
@@ -258,6 +337,99 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             TextView seek4_progress = view.findViewById(R.id.seek4_progress);
             seek4_progress.setText(String.valueOf(255 - Color.alpha(colorValue[0])));
 
+            // === ЦВЕТОВОЙ СПЕКТР ===
+            ImageView colorSpectrum = view.findViewById(R.id.color_spectrum);
+            final View colorMarker = view.findViewById(R.id.color_marker);
+            final int spectrumWidth = 400;
+            final int spectrumHeight = 200;
+            final float[] currentHsv = new float[3];
+            Color.colorToHSV(colorValue[0], currentHsv);
+
+            // Создаём полный HSV спектр
+            Bitmap spectrumBitmap = createFullHSVSpectrumBitmap(spectrumWidth, spectrumHeight);
+            colorSpectrum.setImageBitmap(spectrumBitmap);
+
+            // Метод для обновления позиции маркера
+            Runnable updateMarkerPosition = () -> {
+                if (colorSpectrum.getWidth() > 0 && colorSpectrum.getHeight() > 0) {
+                    Color.colorToHSV(colorValue[0], currentHsv);
+
+                    float hue = currentHsv[0];        // 0-360
+                    float value = currentHsv[2];      // 0-1
+
+                    float x = (hue / 360.0f) * colorSpectrum.getWidth();
+                    float y = (1.0f - value) * colorSpectrum.getHeight();
+
+                    float markerX = x - colorMarker.getWidth() / 2f;
+                    float markerY = y - colorMarker.getHeight() / 2f;
+
+                    markerX = Math.max(0, Math.min(markerX, colorSpectrum.getWidth() - colorMarker.getWidth()));
+                    markerY = Math.max(0, Math.min(markerY, colorSpectrum.getHeight() - colorMarker.getHeight()));
+
+                    colorMarker.setX(markerX);
+                    colorMarker.setY(markerY);
+                }
+            };
+
+            colorSpectrum.post(updateMarkerPosition);
+
+            // Обработчик касаний по спектру
+            colorSpectrum.setOnTouchListener((v, event) -> {
+                if (event.getAction() == MotionEvent.ACTION_DOWN ||
+                        event.getAction() == MotionEvent.ACTION_MOVE) {
+
+                    float x = event.getX();
+                    float y = event.getY();
+
+                    int viewWidth = colorSpectrum.getWidth();
+                    int viewHeight = colorSpectrum.getHeight();
+
+                    if (viewWidth > 0 && viewHeight > 0) {
+                        // Вычисляем hue и saturation/value из координат
+                        float hue = (x / viewWidth) * 360.0f;
+
+                        // Насыщенность зависит от позиции по X:
+                        // - Левые 15%: saturation от 0 до 1 (белый -> цвет)
+                        // - Остальная часть: saturation = 1 (полная насыщенность)
+                        float saturation;
+                        if (x < viewWidth * 0.15f) {
+                            // Левая часть: градиент от белого к цвету
+                            saturation = x / (viewWidth * 0.15f);
+                        } else {
+                            // Правая часть: полная насыщенность
+                            saturation = 1.0f;
+                        }
+
+                        float value = 1.0f - (y / viewHeight);
+
+                        // Получаем текущий alpha
+                        int alpha = Color.alpha(colorValue[0]);
+
+                        // Создаём новый цвет
+                        int newColor = Color.HSVToColor(alpha, new float[]{hue, saturation, value});
+
+                        // Обновляем все UI элементы
+                        colorValue[0] = newColor;
+
+                        seek1.setProgress(Color.red(newColor));
+                        seek2.setProgress(Color.green(newColor));
+                        seek3.setProgress(Color.blue(newColor));
+
+                        seek1_progress.setText(String.valueOf(Color.red(newColor)));
+                        seek2_progress.setText(String.valueOf(Color.green(newColor)));
+                        seek3_progress.setText(String.valueOf(Color.blue(newColor)));
+
+                        color_edit.setText(ImageUtils.toARGBString(newColor));
+                        setColorViewValue(color_preview, newColor);
+
+                        // Обновляем позицию маркера
+                        updateMarkerPosition.run();
+                    }
+                }
+                return true;
+            });
+            // === КОНЕЦ ЦВЕТОВОГО СПЕКТРА ===
+
             color_edit.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) { /**/ }
@@ -267,7 +439,8 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 public void afterTextChanged(Editable s) {
                     try {
                         String colorString = color_edit.getText().toString();
-                        if (!colorString.startsWith(Constants.STRING_HASH) && colorString.matches("\\d+")) colorString = Constants.STRING_HASH + colorString;
+                        if (!colorString.startsWith(Constants.STRING_HASH) && colorString.matches("\\d+"))
+                            colorString = Constants.STRING_HASH + colorString;
                         int colorInt = Color.parseColor(colorString);
                         colorValue[0] = colorInt;
                         seek1.setProgress(Color.red(colorInt));
@@ -275,6 +448,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                         seek3.setProgress(Color.blue(colorInt));
                         seek4.setProgress(255 - Color.alpha(colorInt));
                         setColorViewValue(color_preview, colorInt);
+                        colorSpectrum.post(updateMarkerPosition);
                     } catch (Exception e) { /**/ }
                 }
             });
@@ -283,39 +457,45 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     seek1_progress.setText(String.valueOf(progress));
                     colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                    color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                     setColorViewValue(color_preview, colorValue[0]);
+                    colorSpectrum.post(updateMarkerPosition);
                 }
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
+                }
             });
 
             seek2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     seek2_progress.setText(String.valueOf(progress));
                     colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                    color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                     setColorViewValue(color_preview, colorValue[0]);
+                    colorSpectrum.post(updateMarkerPosition);
                 }
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
+                }
             });
 
             seek3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     seek3_progress.setText(String.valueOf(progress));
                     colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                    color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                     setColorViewValue(color_preview, colorValue[0]);
+                    colorSpectrum.post(updateMarkerPosition);
                 }
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
+                }
             });
 
             seek4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -345,7 +525,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                             try {
                                 Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
                                 method.invoke(context, idToPass, colorInt);
-                            } catch (Exception ignored) {/**/}
+                            } catch (Exception ignored) { /**/ }
                         }
                         dialog.cancel();
                     } catch (IllegalArgumentException e) {
@@ -365,6 +545,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                         seek3.setProgress(Color.blue(colorValue[0]));
                         seek4.setProgress(255 - Color.alpha(colorValue[0]));
                         setColorViewValue(color_preview, colorValue[0]);
+                        colorSpectrum.post(updateMarkerPosition);
                     });
                 }
             });
@@ -378,99 +559,45 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    public int getColor() {return mValue;}
+    /**
+     * Создаёт Bitmap с полным HSV спектром:
+     * - По горизонтали: слева насыщенный белый -> цвет, справа полный цвет
+     * - По вертикали: Value (1.0-0.0) - сверху яркий, снизу тёмный
+     * Левые 15%: градиент насыщенности от 0 до 1
+     * Остальное: полная насыщенность с изменением Hue
+     */
+    @SuppressWarnings("SameParameterValue")
+    private Bitmap createFullHSVSpectrumBitmap(int width, int height) {
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        int[] pixels = new int[width * height];
 
-    public void onClick(View v) {
+        float grayscaleWidth = width * 0.15f;
 
-        try {
+        for (int y = 0; y < height; y++) {
+            float value = 1.0f - (float) y / height;
+            for (int x = 0; x < width; x++) {
+                int color;
 
-            selectColor(0, 0, null, null);
+                if (x < grayscaleWidth) {
+                    // Левая часть: градиент от белого к цвету
+                    float saturation = x / grayscaleWidth;
+                    float hue = 0; // Для белого/серого hue не важен
+                    color = Color.HSVToColor(new float[]{hue, saturation, value});
+                } else {
+                    // Правая часть: полная насыщенность, меняем hue
+                    float hue = ((x - grayscaleWidth) / (width - grayscaleWidth)) * 360.0f;
+                    color = Color.HSVToColor(new float[]{hue, 1.0f, value});
+                }
 
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                pixels[y * width + x] = color;
+            }
         }
-    }
 
-    void selectColor(int initValue, int defaultValue, String methodToInvoke, String idToPass) {
-        try {
-
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            View rootView = layoutInflater.inflate(R.layout.dialog_colors, null);
-
-            mAdapter = new ColorGridAdapter();
-            if (initValue != 0) {
-                mAdapter.setSelectedColor(initValue);
-            } else if (defaultValue != 0) {
-                mAdapter.setSelectedColor(defaultValue);
-            } else {
-                mAdapter.setSelectedColor(mValue);
-            }
-
-            AlertDialog.Builder colorDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
-                    .setTitle(mSelectDialogTitle)
-                    .setIcon(mSelectDialogIcon)
-                    .setView(rootView);
-
-            if (eventsData.preferences_extrafun) {
-                colorDialogBuilder.setNeutralButton(R.string.button_rgb, (dialog, which) -> {
-                    dialog.dismiss();
-                    selectRGBColor(initValue, defaultValue, methodToInvoke, idToPass);
-                });
-            }
-
-            AlertDialog colorDialog = colorDialogBuilder.create();
-
-            GridView mColorGrid = rootView.findViewById(R.id.color_grid);
-            if (mColorGrid != null) {
-                mColorGrid.setNumColumns(mNumColumns);
-                mColorGrid.setAdapter(mAdapter);
-                mColorGrid.setOnItemClickListener((listView, view, position, itemId) -> {
-                    int colorInt = mAdapter.getItem(position);
-                    setColor(colorInt);
-                    eventsData.setRecentColor(colorInt);
-
-                    if (methodToInvoke != null && idToPass != null && context instanceof AppCompatActivity) {
-                        try {
-                            Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
-                            method.invoke(context, idToPass, colorInt);
-                        } catch (Exception ignored) {/**/}
-                    }
-                    colorDialog.dismiss();
-                });
-                mColorGrid.setOnItemLongClickListener((parent, view, position, id) -> {
-                    Toast.makeText(context,
-                            context.getString(R.string.pref_Color_title) +
-                                    Constants.STRING_SPACE +
-                                    ImageUtils.toARGBString(mAdapter.getItem(position))
-                            , Toast.LENGTH_SHORT).show();
-                    return true;
-                });
-            }
-            if (methodToInvoke != null && idToPass != null && context instanceof AppCompatActivity) {
-                colorDialog.setOnCancelListener(dialog -> {
-                    try {
-                        Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
-                        method.invoke(context, Constants.STRING_EMPTY, 0);
-                    } catch (Exception ignored) {/**/}
-                });
-            }
-            View mCaptionView = rootView.findViewById(R.id.caption);
-            if (mCaptionView != null) {
-                mCaptionView.setVisibility(View.GONE);
-            }
-
-            colorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            colorDialog.show();
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+        return bitmap;
     }
 
     private void setColorViewValue(View view, int color) {
-
         try {
             if (view instanceof ImageView) {
                 ImageView imageView = (ImageView) view;
@@ -492,12 +619,10 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     colorChoiceDrawable.setShape(GradientDrawable.OVAL);
                 }
 
-                // А stroke to dark version of color
                 int darkenedColor = Color.rgb(
                         Color.red(color) * 192 / 256,
                         Color.green(color) * 192 / 256,
                         Color.blue(color) * 192 / 256);
-
 
                 colorChoiceDrawable.setSize(radius, radius);
                 colorChoiceDrawable.setColor(color);
@@ -524,7 +649,6 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     mChoices.add(color);
                 }
 
-                //Добавляем текущий и недавние цвета
                 if (!mChoices.contains(mValue)) {
                     mChoices.add(mValue);
                 }
@@ -534,7 +658,6 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                         mChoices.add(valueInt);
                     }
                 }
-
 
             } catch (final Exception e) {
                 Log.e(TAG, e.getMessage(), e);
@@ -580,6 +703,5 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             mSelectedColor = selectedColor;
             notifyDataSetChanged();
         }
-
     }
 }

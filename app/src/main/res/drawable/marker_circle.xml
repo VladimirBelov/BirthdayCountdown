@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 09.03.2026, 15:56
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 09.03.2026, 14:35
+  ~  */
+  -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Внешний круг (жёлтый) -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#FFFF00" />
+            <size android:width="16dp" android:height="16dp" />
+        </shape>
+    </item>
+    <!-- Внутренний круг (чёрная обводка) -->
+    <item
+        android:left="2dp"
+        android:top="2dp"
+        android:right="2dp"
+        android:bottom="2dp">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF" />
+            <size android:width="12dp" android:height="12dp" />
+        </shape>
+    </item>
+</layer-list>

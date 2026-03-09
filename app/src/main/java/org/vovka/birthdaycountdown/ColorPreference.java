@@ -1,13 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 14:35
+ *  * Created by Vladimir Belov on 09.03.2026, 15:56
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 09.03.2026, 15:48
  *
  */
 
 package org.vovka.birthdaycountdown;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -28,6 +29,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -263,6 +265,7 @@ class ColorPreference extends Preference {
             return colorDialogBuilder.create();
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         private void selectRGBColor(ContactsEvents eventsData) {
 
             try {
@@ -335,6 +338,106 @@ class ColorPreference extends Preference {
                 TextView seek4_progress = view.findViewById(R.id.seek4_progress);
                 seek4_progress.setText(String.valueOf(255 - Color.alpha(colorValue[0])));
 
+                // === ЦВЕТОВОЙ СПЕКТР ===
+                ImageView colorSpectrum = view.findViewById(R.id.color_spectrum);
+                final View colorMarker = view.findViewById(R.id.color_marker);
+                final int spectrumWidth = 400;
+                final int spectrumHeight = 200;
+                final float[] currentHsv = new float[3];
+                Color.colorToHSV(colorValue[0], currentHsv);
+
+                // Создаём полный HSV спектр
+                Bitmap spectrumBitmap = createFullHSVSpectrumBitmap(spectrumWidth, spectrumHeight);
+                colorSpectrum.setImageBitmap(spectrumBitmap);
+
+                // Метод для обновления позиции маркера
+                Runnable updateMarkerPosition = () -> {
+                    if (colorSpectrum.getWidth() > 0 && colorSpectrum.getHeight() > 0) {
+                        // Пересчитываем HSV из текущего цвета
+                        Color.colorToHSV(colorValue[0], currentHsv);
+
+                        float hue = currentHsv[0];        // 0-360
+                        float value = currentHsv[2];      // 0-1
+
+                        // Позиция по X: hue (0-360) -> (0-width)
+                        float x = (hue / 360.0f) * colorSpectrum.getWidth();
+
+                        // Позиция по Y: (1-value) * height (инвертируем, т.к. 0 сверху)
+                        float y = (1.0f - value) * colorSpectrum.getHeight();
+
+                        // Центрируем маркер
+                        float markerX = x - colorMarker.getWidth() / 2f;
+                        float markerY = y - colorMarker.getHeight() / 2f;
+
+                        // Ограничиваем границы
+                        markerX = Math.max(0, Math.min(markerX, colorSpectrum.getWidth() - colorMarker.getWidth()));
+                        markerY = Math.max(0, Math.min(markerY, colorSpectrum.getHeight() - colorMarker.getHeight()));
+
+                        colorMarker.setX(markerX);
+                        colorMarker.setY(markerY);
+                    }
+                };
+
+                // Устанавливаем начальную позицию маркера
+                colorSpectrum.post(updateMarkerPosition);
+
+                // Обработчик касаний по спектру
+                colorSpectrum.setOnTouchListener((v, event) -> {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN ||
+                            event.getAction() == MotionEvent.ACTION_MOVE) {
+
+                        float x = event.getX();
+                        float y = event.getY();
+
+                        int viewWidth = colorSpectrum.getWidth();
+                        int viewHeight = colorSpectrum.getHeight();
+
+                        if (viewWidth > 0 && viewHeight > 0) {
+                            // Вычисляем hue и saturation/value из координат
+                            float hue = (x / viewWidth) * 360.0f;
+
+                            // Насыщенность зависит от позиции по X:
+                            // - Левые 15%: saturation от 0 до 1 (белый -> цвет)
+                            // - Остальная часть: saturation = 1 (полная насыщенность)
+                            float saturation;
+                            if (x < viewWidth * 0.15f) {
+                                // Левая часть: градиент от белого к цвету
+                                saturation = x / (viewWidth * 0.15f);
+                            } else {
+                                // Правая часть: полная насыщенность
+                                saturation = 1.0f;
+                            }
+
+                            float value = 1.0f - (y / viewHeight);
+
+                            // Получаем текущий alpha
+                            int alpha = Color.alpha(colorValue[0]);
+
+                            // Создаём новый цвет
+                            int newColor = Color.HSVToColor(alpha, new float[]{hue, saturation, value});
+
+                            // Обновляем все UI элементы
+                            colorValue[0] = newColor;
+
+                            seek1.setProgress(Color.red(newColor));
+                            seek2.setProgress(Color.green(newColor));
+                            seek3.setProgress(Color.blue(newColor));
+
+                            seek1_progress.setText(String.valueOf(Color.red(newColor)));
+                            seek2_progress.setText(String.valueOf(Color.green(newColor)));
+                            seek3_progress.setText(String.valueOf(Color.blue(newColor)));
+
+                            color_edit.setText(ImageUtils.toARGBString(newColor));
+                            setColorViewValue(color_preview, newColor);
+
+                            // Обновляем позицию маркера
+                            updateMarkerPosition.run();
+                        }
+                    }
+                    return true;
+                });
+                // === КОНЕЦ ЦВЕТОВОГО СПЕКТРА ===
+
                 color_edit.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) { /**/ }
@@ -352,6 +455,8 @@ class ColorPreference extends Preference {
                             seek3.setProgress(Color.blue(colorInt));
                             seek4.setProgress(255 - Color.alpha(colorInt));
                             setColorViewValue(color_preview, colorInt);
+                            // Обновляем позицию маркера
+                            colorSpectrum.post(updateMarkerPosition);
                         } catch (Exception e) { /**/ }
                     }
                 });
@@ -360,39 +465,54 @@ class ColorPreference extends Preference {
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         seek1_progress.setText(String.valueOf(progress));
                         colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                        color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
+                        //color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                         setColorViewValue(color_preview, colorValue[0]);
+                        // Обновляем позицию маркера
+                        colorSpectrum.post(updateMarkerPosition);
                     }
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {}
                     @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {}
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        // Обновляем текст только когда пользователь отпустил ползунок
+                        color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
+                    }
                 });
 
                 seek2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         seek2_progress.setText(String.valueOf(progress));
                         colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                        color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
+                        //color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                         setColorViewValue(color_preview, colorValue[0]);
+                        // Обновляем позицию маркера
+                        colorSpectrum.post(updateMarkerPosition);
                     }
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {}
                     @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {}
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        // Обновляем текст только когда пользователь отпустил ползунок
+                        color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
+                    }
                 });
 
                 seek3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         seek3_progress.setText(String.valueOf(progress));
                         colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
-                        color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
+                        //color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                         setColorViewValue(color_preview, colorValue[0]);
+                        // Обновляем позицию маркера
+                        colorSpectrum.post(updateMarkerPosition);
                     }
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {}
                     @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {}
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        // Обновляем текст только когда пользователь отпустил ползунок
+                        color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
+                    }
                 });
 
                 seek4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -516,6 +636,45 @@ class ColorPreference extends Preference {
                 notifyDataSetChanged();
             }
         }
+
+        /**
+         * Создаёт Bitmap с полным HSV спектром:
+         * - По горизонтали: слева насыщенный белый -> цвет, справа полный цвет
+         * - По вертикали: Value (1.0-0.0) - сверху яркий, снизу тёмный
+         * Левые 15%: градиент насыщенности от 0 до 1
+         * Остальное: полная насыщенность с изменением Hue
+         */
+        @SuppressWarnings("SameParameterValue")
+        private Bitmap createFullHSVSpectrumBitmap(int width, int height) {
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            int[] pixels = new int[width * height];
+
+            float grayscaleWidth = width * 0.15f;
+
+            for (int y = 0; y < height; y++) {
+                float value = 1.0f - (float) y / height;
+                for (int x = 0; x < width; x++) {
+                    int color;
+
+                    if (x < grayscaleWidth) {
+                        // Левая часть: градиент от белого к цвету
+                        float saturation = x / grayscaleWidth;
+                        float hue = 0; // Для белого/серого hue не важен
+                        color = Color.HSVToColor(new float[]{hue, saturation, value});
+                    } else {
+                        // Правая часть: полная насыщенность, меняем hue
+                        float hue = ((x - grayscaleWidth) / (width - grayscaleWidth)) * 360.0f;
+                        color = Color.HSVToColor(new float[]{hue, 1.0f, value});
+                    }
+
+                    pixels[y * width + x] = color;
+                }
+            }
+
+            bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+            return bitmap;
+        }
+
     }
 
     private static void setColorViewValue(View view, int color) {

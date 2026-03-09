@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2026, 13:24
+  ~  * Created by Vladimir Belov on 09.03.2026, 15:56
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 09.03.2026, 13:10
+  ~  * Last modified 09.03.2026, 13:43
   ~  */
   -->
 
@@ -535,6 +535,7 @@
     <string name="pref_Blue_title">Синий:</string>
     <string name="pref_Green_title">Зелёный:</string>
     <string name="pref_Alpha_title">Прозрачность:</string>
+    <string name="hint_ColorSpectrum">Цветовой спектр</string>
 
     <string name="pref_List_Style_title">Стиль отображения списка</string>
     <string name="pref_List_Style_summary">Варианты отображения списка событий</string>

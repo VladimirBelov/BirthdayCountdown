@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.04.2025, 20:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 01.04.2025, 22:53
+  ~  * Created by Vladimir Belov on 09.03.2026, 15:56
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 09.03.2026, 14:26
   ~  */
   -->
 
@@ -79,6 +79,30 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <!-- Цветовой спектр HSV -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:id="@+id/color_spectrum"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/hint_ColorSpectrum" />
+
+        <!-- Маркер текущего цвета -->
+        <View
+            android:id="@+id/color_marker"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/marker_circle"
+            android:visibility="visible" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
