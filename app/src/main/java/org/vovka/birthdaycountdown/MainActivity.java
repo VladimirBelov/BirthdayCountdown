@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.03.2026, 16:17
+ *  * Created by Vladimir Belov on 11.03.2026, 01:58
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.03.2026, 14:09
+ *  * Last modified 11.03.2026, 00:39
  *
  */
 
@@ -1586,7 +1586,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             }
 
-            final boolean isItemQuizVisible = !this.dataList.isEmpty()
+            final boolean isItemQuizVisible = !eventsData.isEmptyEventList()
                     && (eventsData.preferences_extrafun || eventsData.preferences_list_quick_action == Constants.MainMenu_Quiz);
             //показывать, если есть события или выбран фильтр
             final boolean isItemFilterVisible = eventsData != null && !eventsData.isEmptyEventList() &&
@@ -2622,6 +2622,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             final List<String> eventTypesIDs = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_values)));
             final List<String> eventTypesTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_entries)));
             ArrayList<Boolean> eventTypesSelected = new ArrayList<>();
+            final boolean[] isProgrammaticChange = {false};
 
             Set<String> preferences_list_types = eventsData.preferences_list_event_types;
             boolean[] sel = new boolean[eventTypesIDs.size()];
@@ -2641,7 +2642,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setTitle(R.string.pref_List_EventTypes_title)
                     .setIcon(R.drawable.ic_menu_copy)
-                    .setMultiChoiceItems(eventTypesTitles.toArray(new CharSequence[0]), sel, (dialog, which, isChecked) -> eventTypesSelected.set(which, isChecked))
+                    .setMultiChoiceItems(eventTypesTitles.toArray(new CharSequence[0]), sel, (dialog, which, isChecked) -> {
+                        // Обновляем eventTypesSelected ТОЛЬКО при ручном изменении пользователем
+                        if (!isProgrammaticChange[0]) {
+                            eventTypesSelected.set(which, isChecked);
+                        }
+                    })
                     .setPositiveButton(R.string.button_ok, (dialog, which) -> {
 
                         Set<String> toStore = new HashSet<>();
@@ -2668,13 +2674,33 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                 alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
 
-                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> listView.post(() -> {
-                    for (int i = 0; i < listView.getCount(); i++) {
-                        eventTypesSelected.set(i, true);
-                        sel[i] = true;
+                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> {
+                    // Определяем целевое состояние
+                    boolean hasUnchecked = false;
+                    for (boolean selected : eventTypesSelected) {
+                        if (!selected) {
+                            hasUnchecked = true;
+                            break;
+                        }
                     }
-                    listView.invalidateViews();
-                }));
+                    boolean stateTo = hasUnchecked;
+
+                    isProgrammaticChange[0] = true;
+
+                    for (int i = 0; i < listView.getCount(); i++) {
+                        // Если текущее состояние не совпадает с целевым — "кликаем"
+                        if (listView.isItemChecked(i) != stateTo) {
+                            // Получаем View для элемента (может быть null для невидимых — это ОК)
+                            View view = listView.getAdapter().getView(i, null, listView);
+                            // Имитируем клик
+                            listView.performItemClick(view, i, listView.getAdapter().getItemId(i));
+                        }
+                        // На всякий случай синхронизируем нашу модель
+                        eventTypesSelected.set(i, stateTo);
+                    }
+
+                    isProgrammaticChange[0] = false;
+                });
             });
 
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
