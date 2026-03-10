@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
+  ~  * Created by Vladimir Belov on 10.03.2026, 20:03
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.03.2026, 14:09
+  ~  * Last modified 10.03.2026, 19:50
   ~  */
   -->
 
@@ -1330,13 +1330,14 @@ Long click on item to select color"</string>
     <string name="quiz_answer_true">"Correct, %1$s (%2$s)"</string>
     <string name="quiz_answer_false">"Incorrect: %1$s (%2$s)"</string>
 
-    <string name="quiz_month01_title">"What is the birth month?"</string>
-
-    <string name="quiz_year01_title">"What is the year of birth?"</string>
-
-    <string name="quiz_age01_title_future">"How old will he/she be?"</string>
-    <string name="quiz_age01_title_past">"How old is he/she?"</string>
-    <string name="quiz_age01_title_dead">"How old would he/she be now?"</string>
+    <string name="quiz_month01_title">What is the birth month?</string>
+    <string name="quiz_year01_title">What is the year of birth?</string>
+    <string name="quiz_age01_title_future">How old will he/she be?</string>
+    <string name="quiz_age01_title_past">How old is he/she?</string>
+    <string name="quiz_age01_title_dead">How old would he/she be now?</string>
+    <string name="quiz_anniversary01_title">What will be title of this wedding anniversary?</string>
+    <string name="quiz_other01_year">What year did this event take place?</string>
+    <string name="quiz_holiday01_day">What will be date of this holiday?</string>
 
     <string name="xDaysCounter_Dialog_Title">Days counter</string>
     <string name="xDaysCounter_Dialog_Repeats_Caption">Periods:</string>
@@ -2586,4 +2587,7 @@ Long click on item to select color"</string>
     <string name="quiz_code_birthday_month" translatable="false">birthday_month</string>
     <string name="quiz_code_birthday_year" translatable="false">birthday_year</string>
     <string name="quiz_code_contact_age" translatable="false">contact_age</string>
+    <string name="quiz_code_anniversary_title" translatable="false">anniversary_title</string>
+    <string name="quiz_code_other_year" translatable="false">other_year</string>
+    <string name="quiz_code_holiday_day" translatable="false">holiday_day</string>
 </resources>

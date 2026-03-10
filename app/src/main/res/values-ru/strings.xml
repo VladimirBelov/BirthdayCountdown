@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
+  ~  * Created by Vladimir Belov on 10.03.2026, 20:03
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.03.2026, 14:09
+  ~  * Last modified 10.03.2026, 19:44
   ~  */
   -->
 
@@ -1328,13 +1328,14 @@
     <string name="quiz_answer_true">"Правильно, %1$s (%2$s)"</string>
     <string name="quiz_answer_false">"Неправильно: %1$s (%2$s)"</string>
 
-    <string name="quiz_month01_title">"Какой месяц рождения?"</string>
-
-    <string name="quiz_year01_title">"Какой год рождения?"</string>
-
-    <string name="quiz_age01_title_future">"Сколько лет исполнится?"</string>
-    <string name="quiz_age01_title_past">"Сколько сейчас лет?"</string>
-    <string name="quiz_age01_title_dead">"Сколько было бы сейчас лет?"</string>
+    <string name="quiz_month01_title">Какой месяц рождения?</string>
+    <string name="quiz_year01_title">Какой год рождения?</string>
+    <string name="quiz_age01_title_future">Сколько лет исполнится?</string>
+    <string name="quiz_age01_title_past">Сколько сейчас лет?</string>
+    <string name="quiz_age01_title_dead">Сколько было бы сейчас лет?</string>
+    <string name="quiz_anniversary01_title">Какая будет годовщина свадьбы?</string>
+    <string name="quiz_other01_year">В каком году произошло это событие?</string>
+    <string name="quiz_holiday01_day">Какого числа будет этот праздник?</string>
 
     <string name="xDaysCounter_Dialog_Title">Счётчик дней</string>
     <string name="xDaysCounter_Dialog_Repeats_Caption">Период(ы) повторения:</string>

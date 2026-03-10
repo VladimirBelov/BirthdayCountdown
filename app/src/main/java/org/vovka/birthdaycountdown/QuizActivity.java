@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.03.2026, 16:17
+ *  * Created by Vladimir Belov on 10.03.2026, 20:03
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.03.2026, 08:42
+ *  * Last modified 10.03.2026, 19:50
  *
  */
 
@@ -575,7 +575,10 @@ public class QuizActivity extends Activity {
     enum QuestionType {
         BIRTHDAY_MONTH(R.string.quiz_code_birthday_month, R.string.quiz_month01_title, R.drawable.ic_event_birthday),
         BIRTHDAY_YEAR(R.string.quiz_code_birthday_year, R.string.quiz_year01_title, R.drawable.ic_event_birthday),
-        CONTACT_AGE(R.string.quiz_code_contact_age, R.string.quiz_age01_title_future, R.drawable.ic_event_birthday);
+        CONTACT_AGE(R.string.quiz_code_contact_age, R.string.quiz_age01_title_future, R.drawable.ic_event_birthday),
+        ANNIVERSARY_TITLE(R.string.quiz_code_anniversary_title, R.string.quiz_anniversary01_title, R.drawable.ic_event_wedding),
+        OTHER_YEAR(R.string.quiz_code_other_year, R.string.quiz_other01_year, R.drawable.ic_event_other),
+        HOLIDAY_DAY(R.string.quiz_code_holiday_day, R.string.quiz_holiday01_day, R.drawable.ic_event_holiday);
 
         private final int codeResId;
         private final int nameResId;
