@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2026, 13:24
+  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 09.03.2026, 12:55
+  ~  * Last modified 10.03.2026, 16:14
   ~  */
   -->
 
@@ -535,6 +535,7 @@
     <string name="pref_Blue_title">Bleu:</string>
     <string name="pref_Green_title">Vert:</string>
     <string name="pref_Alpha_title">Transparence:</string>
+    <string name="hint_ColorSpectrum">Spectre de couleurs</string>
 
     <string name="pref_List_Style_title">"Style de liste des événements"</string>
     <string name="pref_List_Style_summary">"Définir le style de la liste des événements"</string>
@@ -746,6 +747,7 @@
     <string name="pref_EventInfo_SourceIcon">"👨‍💼📆📁 Icône de source d'événement"</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Il y a un lien Web</string>
     <string name="pref_EventInfo_ColorizeEntireRow">"Colorer la date de tout l'événement"</string>
+    <string name="pref_EventInfo_ShowNearestEventPhoto">"Afficher la photo de contact pour l'événement le plus proche"</string>
     <string name="pref_EventInfo_NewLine1">"- nouvelle ligne -"</string>
     <string name="pref_EventInfo_NewLine2">"- nouvelle ligne - "</string>
     <string name="pref_EventInfo_NewLine3">"- nouvelle ligne -  "</string>
@@ -755,6 +757,8 @@
     <string name="pref_EventInfo_RightBracket2">") "</string>
     <string name="pref_EventInfo_BoldStart">"- gras - (début)"</string>
     <string name="pref_EventInfo_BoldEnd">"- gras - (fin)"</string>
+    <string name="pref_EventInfo_Tab">"- onglet -"</string>
+    <string name="pref_EventInfo_Tab2">"- onglet - "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -837,6 +841,7 @@
         <item>"Ouvrir le lien Web, en cas d'absence - fiche de contact, en cas d'absence - événement du calendrier"</item>
         <item>"Ouvrir la fiche de contact, en cas d'absence - lien web, en cas d'absence - événement du calendrier"</item>
         <item>Ouvrir la liste des événements</item>
+        <item>Ouvrir le menu</item>
         <item>Ne rien faire</item>
     </string-array>
 
@@ -1138,6 +1143,27 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
 
     <string name="pref_Quiz_title">Quiz</string>
     <string name="pref_Quiz_summary">Paramètres du quiz</string>
+
+    <string name="pref_Quiz_Questions_title">Questions</string>
+    <string name="pref_Quiz_Questions_summary">Afficher uniquement les questions des types sélectionnés</string>
+
+    <string name="pref_Quiz_Difficulty_title">Difficulté</string>
+    <string name="pref_Quiz_Difficulty_summary">Nombre de réponses possibles</string>
+
+    <string name="pref_Quiz_EventSources_title">"Sources d'événements"</string>
+    <string name="pref_Quiz_EventSources_summary">"Générer uniquement les questions à partir de ces sources d'événements. Si aucune source n'est sélectionnée, utiliser les événements de toutes les sources"</string>
+
+    <string name="pref_Quiz_AutoNext_title">Changement automatique</string>
+    <string name="pref_Quiz_AutoNext_summary">Passer à la question suivante après une réponse positive ou négative</string>
+    <string-array name="pref_Quiz_AutoNext_entries">
+        <item>Désactivé</item>
+        <item>2 secondes</item>
+        <item>3 secondes</item>
+        <item>5 secondes</item>
+    </string-array>
+    <string name="pref_Quiz_NextQuestion_hint">Afficher la question suivante</string>
+    <string name="pref_Quiz_EventsSources_hint">"Sélectionner les sources d'événements"</string>
+    <string name="pref_Quiz_Questions_hint">Sélectionner les questions</string>
 
     <string name="pref_FAQ_title">Questions et Réponses</string>
     <string name="pref_FAQ_summary">"Si quelque chose ne fonctionne pas correctement ou si vous ne savez pas comment configurer une fonction du programme - Vous dans cette section"</string>

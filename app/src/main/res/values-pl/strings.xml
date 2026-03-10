@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2026, 13:24
+  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 09.03.2026, 12:55
+  ~  * Last modified 10.03.2026, 16:15
   ~  */
   -->
 
@@ -535,6 +535,7 @@
     <string name="pref_Blue_title">Niebieski:</string>
     <string name="pref_Green_title">Zielony:</string>
     <string name="pref_Alpha_title">Przejrzystość:</string>
+    <string name="hint_ColorSpectrum">Widmo kolorów</string>
 
     <string name="pref_List_Style_title">Styl wyświetlania listy</string>
     <string name="pref_List_Style_summary">Opcje wyświetlania listy wydarzeń</string>
@@ -746,6 +747,7 @@
     <string name="pref_EventInfo_SourceIcon">👨‍💼‍📆📁 Ikona źródła wydarzenia</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Istnieje link internetowy</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Pokoloruj całe wydarzenie kolorem daty</string>
+    <string name="pref_EventInfo_ShowNearestEventPhoto">Pokaż zdjęcie kontaktowe dla najbliższego wydarzenia</string>
     <string name="pref_EventInfo_NewLine1">"- nowa linia -"</string>
     <string name="pref_EventInfo_NewLine2">"- nowa linia - "</string>
     <string name="pref_EventInfo_NewLine3">"- nowa linia -  "</string>
@@ -755,6 +757,8 @@
     <string name="pref_EventInfo_RightBracket2">") "</string>
     <string name="pref_EventInfo_BoldStart">"- pogrubienie - (początek)"</string>
     <string name="pref_EventInfo_BoldEnd">"- pogrubienie - (koniec)"</string>
+    <string name="pref_EventInfo_Tab">"- tabulator -"</string>
+    <string name="pref_EventInfo_Tab2">"- tabulator - "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -837,6 +841,7 @@
         <item>Otwórz łącze internetowe, jeśli nie - kartę kontaktu, jeśli nie - wydarzenie w kalendarzu</item>
         <item>Otwórz kartę kontaktu, jeśli nie - link internetowy, jeśli nie - wydarzenie w kalendarzu</item>
         <item>Otwórz główną listę wydarzeń</item>
+        <item>Otwórz menu</item>
         <item>Nic nie rób</item>
     </string-array>
 
@@ -1138,6 +1143,27 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
 
     <string name="pref_Quiz_title">Kwiz</string>
     <string name="pref_Quiz_summary">Ustawienia quizu</string>
+
+    <string name="pref_Quiz_Questions_title">Pytania</string>
+    <string name="pref_Quiz_Questions_summary">Pokaż tylko pytania wybranych typów</string>
+
+    <string name="pref_Quiz_Difficulty_title">Poziom trudności</string>
+    <string name="pref_Quiz_Difficulty_summary">Liczba możliwych odpowiedzi</string>
+
+    <string name="pref_Quiz_EventSources_title">Źródła zdarzeń</string>
+    <string name="pref_Quiz_EventSources_summary">Generuj pytania tylko z tych źródeł zdarzeń. Jeśli nie wybrano żadnego źródła, użyj zdarzeń ze wszystkich źródeł</string>
+
+    <string name="pref_Quiz_AutoNext_title">Automatyczne przełączanie</string>
+    <string name="pref_Quiz_AutoNext_summary">Przełącz do następnego pytania po poprawnej lub niepoprawnej odpowiedzi</string>
+    <string-array name="pref_Quiz_AutoNext_entries">
+        <item>Wyłączone</item>
+        <item>2 sekundy</item>
+        <item>3 sekundy</item>
+        <item>5 sekund</item>
+    </string-array>
+    <string name="pref_Quiz_NextQuestion_hint">Pokaż następne pytanie</string>
+    <string name="pref_Quiz_EventsSources_hint">Wybierz źródła zdarzeń</string>
+    <string name="pref_Quiz_Questions_hint">Wybierz pytania</string>
 
     <string name="pref_FAQ_title">Pytania i odpowiedzi</string>
     <string name="pref_FAQ_summary">Jeśli coś nie działa poprawnie lub nie wiesz jak skonfigurować tę czy inną funkcję programu, przejdź do tej sekcji</string>

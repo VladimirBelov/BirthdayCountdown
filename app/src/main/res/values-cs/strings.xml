@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2026, 13:24
+  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 09.03.2026, 12:55
+  ~  * Last modified 10.03.2026, 16:14
   ~  */
   -->
 
@@ -535,6 +535,7 @@
     <string name="pref_Blue_title">Modrá:</string>
     <string name="pref_Green_title">Zelená:</string>
     <string name="pref_Alpha_title">Transparentnost:</string>
+    <string name="hint_ColorSpectrum">Barevné spektrum</string>
 
     <string name="pref_List_Style_title">Styl seznamu událostí</string>
     <string name="pref_List_Style_summary">Nastavit styl seznamu událostí</string>
@@ -746,6 +747,7 @@
     <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Ikona zdroje události</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Webový odkaz je k dispozici</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Vybarvit všechny události barvou data</string>
+    <string name="pref_EventInfo_ShowNearestEventPhoto">Zobrazit kontaktní fotografii pro nejbližší akci</string>
     <string name="pref_EventInfo_NewLine1">"- nový řádek -"</string>
     <string name="pref_EventInfo_NewLine2">"- nový řádek - "</string>
     <string name="pref_EventInfo_NewLine3">"- nový řádek -  "</string>
@@ -755,6 +757,8 @@
     <string name="pref_EventInfo_RightBracket2">") "</string>
     <string name="pref_EventInfo_BoldStart">"- tučné - (začátek)"</string>
     <string name="pref_EventInfo_BoldEnd">"- tučné - (konec)"</string>
+    <string name="pref_EventInfo_Tab">"- karta -"</string>
+    <string name="pref_EventInfo_Tab2">"- karta - "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -837,6 +841,7 @@
         <item>Otevřít webový odkaz, pokud chybí - kontaktní karta, pokud chybí - událost kalendáře</item>
         <item>Otevřít kartu kontaktu, pokud chybí - webový odkaz, pokud chybí - událost kalendáře</item>
         <item>Otevřít seznam událostí</item>
+        <item>Otevřít nabídku</item>
         <item>Nic</item>
     </string-array>
 
@@ -1138,6 +1143,27 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
 
     <string name="pref_Quiz_title">Kvíz</string>
     <string name="pref_Quiz_summary">Předvolby kvízu</string>
+
+    <string name="pref_Quiz_Questions_title">Otázky</string>
+    <string name="pref_Quiz_Questions_summary">Zobrazit pouze otázky vybraných typů</string>
+
+    <string name="pref_Quiz_Difficulty_title">Obtížnost</string>
+    <string name="pref_Quiz_Difficulty_summary">Počet možných odpovědí</string>
+
+    <string name="pref_Quiz_EventSources_title">Zdroje událostí</string>
+    <string name="pref_Quiz_EventSources_summary">Generovat otázky pouze z těchto zdrojů událostí. Pokud není vybrán žádný zdroj, použijí se události ze všech zdrojů</string>
+
+    <string name="pref_Quiz_AutoNext_title">Automatické přepínání</string>
+    <string name="pref_Quiz_AutoNext_summary">Přepnout na další otázku po úspěšné nebo neúspěšné odpovědi</string>
+    <string-array name="pref_Quiz_AutoNext_entries">
+        <item>Vypnuto</item>
+        <item>2 sekundy</item>
+        <item>3 sekundy</item>
+        <item>5 sekund</item>
+    </string-array>
+    <string name="pref_Quiz_NextQuestion_hint">Zobrazit další otázku</string>
+    <string name="pref_Quiz_EventsSources_hint">Vybrat zdroje událostí</string>
+    <string name="pref_Quiz_Questions_hint">Vybrat otázky</string>
 
     <string name="pref_FAQ_title">Otázky a odpovědi</string>
     <string name="pref_FAQ_summary">Pokud něco nefunguje správně nebo si jen nevíte rady s nastavením některých předvoleb aplikace, toto je stránka pro vás</string>

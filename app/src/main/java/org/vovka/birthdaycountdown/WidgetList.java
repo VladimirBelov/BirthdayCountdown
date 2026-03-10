@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.02.2026, 11:24
+ *  * Created by Vladimir Belov on 10.03.2026, 16:17
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.02.2026, 16:21
+ *  * Last modified 10.03.2026, 14:09
  *
  */
 
@@ -32,6 +32,7 @@ import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -284,24 +285,13 @@ public class WidgetList extends AppWidgetProvider {
             String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
             Intent intentAction;
 
-            if (pref_onClick == 8) { //Меню
+            if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
 
-                String eventText = intent.getStringExtra(Constants.EXTRA_CLICKED_TEXT);
-                intentAction = new Intent(context, WidgetMenuActivity.class);
-                intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                intentAction.putExtra(Constants.EXTRA_CLICKED_EVENT, eventInfo);
-                intentAction.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
-                intentAction.setAction(Constants.ACTION_MENU);
-                intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
-                try {
-                    context.getApplicationContext().startActivity(intentAction);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
-
-            } else if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
-
-                intentAction = ContactsEvents.getViewActionIntent(singleEventArray, pref_onClick, context);
+                String eventText = StringUtils.getNotNullString(intent.getStringExtra(Constants.EXTRA_CLICKED_TEXT));
+                intentAction = ContactsEvents.getViewActionIntent(eventInfo, eventText, singleEventArray, pref_onClick, context);
                 if (intentAction != null) {
                     try {
+                        intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                         context.getApplicationContext().startActivity(intentAction);
                     } catch (android.content.ActivityNotFoundException e) { /**/ }
                 }

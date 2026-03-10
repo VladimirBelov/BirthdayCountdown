@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2026, 13:24
+ *  * Created by Vladimir Belov on 10.03.2026, 16:17
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.03.2026, 10:34
+ *  * Last modified 10.03.2026, 08:42
  *
  */
 
@@ -573,16 +573,18 @@ public class QuizActivity extends Activity {
     }
 
     enum QuestionType {
-        BIRTHDAY_MONTH(R.string.quiz_code_birthday_month, R.string.quiz_month01_title),
-        BIRTHDAY_YEAR(R.string.quiz_code_birthday_year, R.string.quiz_year01_title),
-        CONTACT_AGE(R.string.quiz_code_contact_age, R.string.quiz_age01_title_future);
+        BIRTHDAY_MONTH(R.string.quiz_code_birthday_month, R.string.quiz_month01_title, R.drawable.ic_event_birthday),
+        BIRTHDAY_YEAR(R.string.quiz_code_birthday_year, R.string.quiz_year01_title, R.drawable.ic_event_birthday),
+        CONTACT_AGE(R.string.quiz_code_contact_age, R.string.quiz_age01_title_future, R.drawable.ic_event_birthday);
 
         private final int codeResId;
         private final int nameResId;
+        private final int iconResId;
 
-        QuestionType(int codeResId, int nameResId) {
+        QuestionType(int codeResId, int nameResId, int iconResId) {
             this.codeResId = codeResId;
             this.nameResId = nameResId;
+            this.iconResId = iconResId;
         }
 
         public String getCode(Context context) {
@@ -591,6 +593,10 @@ public class QuizActivity extends Activity {
 
         public String getDisplayName(Context context) {
             return context.getResources().getString(nameResId);
+        }
+
+        public int getIcon() {
+            return iconResId;
         }
 
         public static QuestionType fromCode(Context context, String code) {

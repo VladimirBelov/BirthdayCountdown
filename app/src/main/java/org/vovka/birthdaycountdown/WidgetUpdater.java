@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2026, 17:39
+ *  * Created by Vladimir Belov on 10.03.2026, 16:17
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.02.2026, 13:33
+ *  * Last modified 10.03.2026, 14:35
  *
  */
 
@@ -909,7 +909,6 @@ class WidgetUpdater {
 
             int idEventPlaceholder = resources.getIdentifier(Constants.WIDGET_EVENT_INFO + eventsDisplayed, Constants.STRING_ID, packageName);
             int pref_onClick;
-            int requestCode = 0;
             Intent intentAction;
 
             if (eventsToShow > 1 && eventsDisplayed < (eventsToShow - 1)) {
@@ -933,38 +932,23 @@ class WidgetUpdater {
                 }
             }
 
-            if (pref_onClick == 8) { //Меню
-
-                requestCode = event.hashCode();
-
-                final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
-                String eventText = singleEventArray[ContactsEvents.Position_eventEmoji] +
-                        Constants.STRING_SPACE +
-                        Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + eventDay + Constants.HTML_COLOR_END +
-                        Constants.STRING_SPACE +
-                        singleEventArray[ContactsEvents.Position_eventCaption] +
-                        Constants.STRING_COLON_SPACE +
-                        StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format);
-
-                intentAction = new Intent(context, WidgetMenuActivity.class);
-                intentAction.putExtra(Constants.EXTRA_CLICKED_EVENT, event);
-                intentAction.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
-                intentAction.setAction(Constants.ACTION_MENU);
-                intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
-
+            final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
+            String eventText = singleEventArray[ContactsEvents.Position_eventEmoji] +
+                    Constants.STRING_SPACE +
+                    Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + eventDay + Constants.HTML_COLOR_END +
+                    Constants.STRING_SPACE +
+                    singleEventArray[ContactsEvents.Position_eventCaption] +
+                    Constants.STRING_COLON_SPACE +
+                    StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format);
+            if (pref_onClick == 1) { //Из общих настроек
+                intentAction = ContactsEvents.getViewActionIntent(event, eventText, singleEventArray, eventsData.preferences_widgets_on_click_action, context);
             } else {
-
-                if (pref_onClick == 1) { //Из общих настроек
-                    intentAction = ContactsEvents.getViewActionIntent(singleEventArray, eventsData.preferences_widgets_on_click_action, context);
-                } else {
-                    intentAction = ContactsEvents.getViewActionIntent(singleEventArray, pref_onClick, context);
-                }
-
+                intentAction = ContactsEvents.getViewActionIntent(event, eventText, singleEventArray, pref_onClick, context);
             }
 
             if (intentAction != null) {
                 intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intentAction, PendingIntentImmutable);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, event.hashCode(), intentAction, PendingIntentImmutable);
                 views.setOnClickPendingIntent(idEventPlaceholder, pendingIntent);
             } else { //Ничего не показываем
                 views.setOnClickPendingIntent(idEventPlaceholder, null);

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2026, 17:39
+ *  * Created by Vladimir Belov on 10.03.2026, 16:17
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.02.2026, 13:33
+ *  * Last modified 10.03.2026, 14:09
  *
  */
 
@@ -255,8 +255,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             openContextMenu(v1);
                         }
                     } else if (eventsData.preferences_list_on_click_action >= 1 & eventsData.preferences_list_on_click_action <= 4) {
+                        String eventInfo = (String) l.getItemAtPosition(position);
                         Intent intent = ContactsEvents.getViewActionIntent(
-                                ((String) l.getItemAtPosition(position)).split(Constants.STRING_EOT, -1),
+                                eventInfo,
+                                Constants.STRING_EMPTY,
+                                eventInfo.split(Constants.STRING_EOT, -1),
                                 eventsData.preferences_list_on_click_action,
                                 this
                         );

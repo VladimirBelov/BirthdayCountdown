@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2026, 15:56
+  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 09.03.2026, 13:43
+  ~  * Last modified 10.03.2026, 14:09
   ~  */
   -->
 
@@ -841,6 +841,7 @@
         <item>Open web link, if absent - contact card, if absent - calendar event</item>
         <item>Open contact card, if absent - web link, if absent - calendar event</item>
         <item>Open events list</item>
+        <item>Open menu</item>
         <item>Nothing</item>
     </string-array>
 
@@ -2242,6 +2243,7 @@ Long click on item to select color"</string>
         <item>3</item> <!--Ссылка, контакт, календарь-->
         <item>4</item> <!--Контакт, ссылка, календарь-->
         <item>7</item> <!--Открыть список событий-->
+        <item>8</item> <!--Открыть меню-->
         <item>0</item> <!--Ничего-->
     </string-array>
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2026, 13:24
+  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 09.03.2026, 12:55
+  ~  * Last modified 10.03.2026, 16:14
   ~  */
   -->
 
@@ -535,6 +535,7 @@
     <string name="pref_Blue_title">Сіні:</string>
     <string name="pref_Green_title">Зялёны:</string>
     <string name="pref_Alpha_title">Празрыстасць:</string>
+    <string name="hint_ColorSpectrum">Каляровы спектр</string>
 
     <string name="pref_List_Style_title">Стыль адлюстравання спіса</string>
     <string name="pref_List_Style_summary">Варыянты адлюстравання спіса падзей</string>
@@ -746,6 +747,7 @@
     <string name="pref_EventInfo_SourceIcon">👨‍💼‍📆📁 Абразок крыніцы падзеі</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Ёсць web спасылка</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Афарбоўваць колерам даты ўсю падзею</string>
+    <string name="pref_EventInfo_ShowNearestEventPhoto">Паказаць фота кантакту для бліжэйшай падзеі</string>
     <string name="pref_EventInfo_NewLine1">"- новы радок -"</string>
     <string name="pref_EventInfo_NewLine2">"- новы радок - "</string>
     <string name="pref_EventInfo_NewLine3">"- новы радок -  "</string>
@@ -755,6 +757,8 @@
     <string name="pref_EventInfo_RightBracket2">") "</string>
     <string name="pref_EventInfo_BoldStart">"- паўтлусты - (пачатак)"</string>
     <string name="pref_EventInfo_BoldEnd">"- паўтлусты - (канец)"</string>
+    <string name="pref_EventInfo_Tab">"- укладка -"</string>
+    <string name="pref_EventInfo_Tab2">"- укладка - "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -837,6 +841,7 @@
         <item>Адкрыць web спасылку, калі не - картку кантакту, калі не - падзею календара</item> <!--Ссылка, контакт, календарь-->
         <item>Адкрыць картку кантакту, калі не - web спасылку, калі не - падзею календара</item> <!--Контакт, ссылка, календарь-->
         <item>Адкрыць асноўны спіс падзей</item>
+        <item>Адкрыць меню</item>
         <item>Нічога не рабіць</item>
     </string-array>
 
@@ -1137,6 +1142,27 @@
 
     <string name="pref_Quiz_title">Віктарына</string>
     <string name="pref_Quiz_summary">Налады віктарыны</string>
+
+    <string name="pref_Quiz_Questions_title">Пытанні</string>
+    <string name="pref_Quiz_Questions_summary">Паказваць толькі пытанні выбраных тыпаў</string>
+
+    <string name="pref_Quiz_Difficulty_title">Складанасць</string>
+    <string name="pref_Quiz_Difficulty_summary">Колькасць магчымых адказаў</string>
+
+    <string name="pref_Quiz_EventSources_title">Крыніцы падзей</string>
+    <string name="pref_Quiz_EventSources_summary">Генераваць пытанні толькі з гэтых крыніц падзей. Калі крыніца не выбрана, выкарыстоўваць падзеі з усіх крыніц</string>
+
+    <string name="pref_Quiz_AutoNext_title">Аўтаматычнае пераключэнне</string>
+    <string name="pref_Quiz_AutoNext_summary">Пераключыцца на наступнае пытанне пасля паспяховага або няўдалага адказу</string>
+    <string-array name="pref_Quiz_AutoNext_entries">
+        <item>Выключана</item>
+        <item>2 секунды</item>
+        <item>3 секунды</item>
+        <item>5 секунд</item>
+    </string-array>
+    <string name="pref_Quiz_NextQuestion_hint">Паказаць наступнае пытанне</string>
+    <string name="pref_Quiz_EventsSources_hint">Выбраць крыніцы падзей</string>
+    <string name="pref_Quiz_Questions_hint">Выбраць пытанні</string>
 
     <string name="pref_FAQ_title">Пытанні і Адказы</string>
     <string name="pref_FAQ_summary">Калі нешта працуе не правільна ці Вы не ведаеце, як наладзіць тую ці іншую функцыю праграмы - Вам у гэты раздзел</string>

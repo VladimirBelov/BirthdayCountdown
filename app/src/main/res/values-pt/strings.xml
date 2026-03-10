@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2026, 13:24
+  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 09.03.2026, 12:55
+  ~  * Last modified 10.03.2026, 16:16
   ~  */
   -->
 
@@ -535,6 +535,7 @@
     <string name="pref_Blue_title">Azul:</string>
     <string name="pref_Green_title">Verde:</string>
     <string name="pref_Alpha_title">Transparência:</string>
+    <string name="hint_ColorSpectrum">Espectro de cores</string>
 
     <string name="pref_List_Style_title">Estilo da lista de eventos</string>
     <string name="pref_List_Style_summary">Definir estilo da lista de eventos</string>
@@ -746,6 +747,7 @@
     <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Ícone de origem do evento</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Link da Web disponível</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Colorir todos os eventos pela cor da data</string>
+    <string name="pref_EventInfo_ShowNearestEventPhoto">Exibir foto de contato para o evento mais próximo</string>
     <string name="pref_EventInfo_NewLine1">"- nova linha -"</string>
     <string name="pref_EventInfo_NewLine2">"- nova linha - "</string>
     <string name="pref_EventInfo_NewLine3">"- nova linha -  "</string>
@@ -755,6 +757,8 @@
     <string name="pref_EventInfo_RightBracket2">") "</string>
     <string name="pref_EventInfo_BoldStart">"- negrito - (início)"</string>
     <string name="pref_EventInfo_BoldEnd">"- negrito - (fim)"</string>
+    <string name="pref_EventInfo_Tab">"- tab -"</string>
+    <string name="pref_EventInfo_Tab2">"- tab - "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -837,6 +841,7 @@
         <item>Abrir link da web, se ausente - cartão de contato, se ausente - evento de calendário</item>
         <item>Abra o cartão de contato, se estiver ausente - link da web, se estiver ausente - evento do calendário</item>
         <item>Abrir lista de eventos</item>
+        <item>Abrir menu</item>
         <item>Nada</item>
     </string-array>
 
@@ -1138,6 +1143,28 @@ Clique longamente no item para selecionar a cor"</string>
 
     <string name="pref_Quiz_title">Teste</string>
     <string name="pref_Quiz_summary">Preferências do questionário</string>
+
+    <string name="pref_Quiz_Questions_title">Perguntas</string>
+    <string name="pref_Quiz_Questions_summary">Exibir apenas perguntas dos tipos selecionados</string>
+
+    <string name="pref_Quiz_Difficulty_title">Dificuldade</string>
+    <string name="pref_Quiz_Difficulty_summary">Número de respostas possíveis</string>
+
+    <string name="pref_Quiz_EventSources_title">Fontes de eventos</string>
+    <string name="pref_Quiz_EventSources_summary">Gerar perguntas apenas a partir dessas fontes de eventos. Se nenhuma fonte for selecionada, use eventos de todas as fontes</string>
+
+    <string name="pref_Quiz_AutoNext_title">Troca automática</string>
+    <string name="pref_Quiz_AutoNext_summary">Mudar para a próxima pergunta após uma resposta correta ou incorreta</string>
+    <string-array name="pref_Quiz_AutoNext_entries">
+        <item>Desativado</item>
+        <item>2 segundos</item>
+        <item>3 segundos</item>
+        <item>5 segundos</item>
+    </string-array>
+
+    <string name="pref_Quiz_NextQuestion_hint">Mostrar a próxima pergunta</string>
+    <string name="pref_Quiz_EventsSources_hint">Selecionar fontes de eventos</string>
+    <string name="pref_Quiz_Questions_hint">Selecionar perguntas</string>
 
     <string name="pref_FAQ_title">\"Guia de como fazer\"</string>
     <string name="pref_FAQ_summary">Se algo funcionar errado ou você simplesmente não souber como ajustar alguma preferência de aplicativo, esta página é para você</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2026, 13:24
+  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 09.03.2026, 12:55
+  ~  * Last modified 10.03.2026, 16:13
   ~  */
   -->
 
@@ -535,6 +535,7 @@
     <string name="pref_Blue_title">Blau:</string>
     <string name="pref_Green_title">Grün:</string>
     <string name="pref_Alpha_title">Transparenz:</string>
+    <string name="hint_ColorSpectrum">Farbspektrum</string>
 
     <string name="pref_List_Style_title">Stil der Ereignisliste</string>
     <string name="pref_List_Style_summary">Legen Sie den Stil der Ereignisliste fest</string>
@@ -746,6 +747,7 @@
     <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Symbol für die Ereignisquelle</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Weblink vorhanden</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Alle Ereignisse nach Datumsfarbe einfärben</string>
+    <string name="pref_EventInfo_ShowNearestEventPhoto">Kontaktfoto für das nächstgelegene Ereignis anzeigen</string>
     <string name="pref_EventInfo_NewLine1">"- neue Zeile -"</string>
     <string name="pref_EventInfo_NewLine2">"- neue Zeile - "</string>
     <string name="pref_EventInfo_NewLine3">"- neue Zeile -  "</string>
@@ -755,6 +757,8 @@
     <string name="pref_EventInfo_RightBracket2">") "</string>
     <string name="pref_EventInfo_BoldStart">"- fett - (Start)"</string>
     <string name="pref_EventInfo_BoldEnd">"- fett - (Ende)"</string>
+    <string name="pref_EventInfo_Tab">"- tab -"</string>
+    <string name="pref_EventInfo_Tab2">"- tab - "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -837,6 +841,7 @@
         <item>Weblink öffnen, falls nicht vorhanden - Kontakt, falls nicht vorhanden - Kalendertermin</item>
         <item>Kontakt öffnen, falls nicht vorhanden - Weblink, falls nicht vorhanden - Kalendertermin</item>
         <item>Ereignisliste öffnen</item>
+        <item>Menü öffnen</item>
         <item>Keine Aktion</item>
     </string-array>
 
@@ -1138,6 +1143,28 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
 
     <string name="pref_Quiz_title">Quiz</string>
     <string name="pref_Quiz_summary">Quiz-Einstellungen</string>
+
+    <string name="pref_Quiz_Questions_title">Fragen</string>
+    <string name="pref_Quiz_Questions_summary">Nur Fragen der ausgewählten Typen anzeigen</string>
+
+    <string name="pref_Quiz_Difficulty_title">Schwierigkeitsgrad</string>
+    <string name="pref_Quiz_Difficulty_summary">Anzahl der möglichen Antworten</string>
+
+    <string name="pref_Quiz_EventSources_title">Ereignisquellen</string>
+    <string name="pref_Quiz_EventSources_summary">Nur Fragen aus diesen Ereignisquellen generieren. Wenn keine Quelle ausgewählt ist, werden Ereignisse aus allen Quellen verwendet</string>
+
+    <string name="pref_Quiz_AutoNext_title">Automatischer Wechsel</string>
+    <string name="pref_Quiz_AutoNext_summary">Nach erfolgreicher oder fehlgeschlagener Antwort zur nächsten Frage wechseln</string>
+    <string-array name="pref_Quiz_AutoNext_entries">
+        <item>Aus</item>
+        <item>2 Sekunden</item>
+        <item>3 Sekunden</item>
+        <item>5 Sekunden</item>
+    </string-array>
+
+    <string name="pref_Quiz_NextQuestion_hint">Nächste Frage anzeigen</string>
+    <string name="pref_Quiz_EventsSources_hint">Ereignisquellen auswählen</string>
+    <string name="pref_Quiz_Questions_hint">Fragen auswählen</string>
 
     <string name="pref_FAQ_title">Fragen und Antworten</string>
     <string name="pref_FAQ_summary">Wenn etwas nicht richtig funktioniert oder Sie nicht wissen, wie Sie eine bestimmte Funktion des Programms einrichten sollen, finden Sie es in diesem Abschnitt</string>

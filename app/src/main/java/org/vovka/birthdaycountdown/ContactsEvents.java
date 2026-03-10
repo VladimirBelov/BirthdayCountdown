@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2026, 13:24
+ *  * Created by Vladimir Belov on 10.03.2026, 16:17
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.03.2026, 10:19
+ *  * Last modified 10.03.2026, 14:23
  *
  */
 
@@ -1106,8 +1106,16 @@ public class ContactsEvents {
         chineseZodiacYearStrings.put(11, R.string.zodiac_year_pig);
     }
 
+    /** Возвращает действие при нажатии на событие в виджете или списке событий
+     * @param eventInfo Данные о событии в виде строки
+     * @param eventText Отображаемые данные о событии
+     * @param singleEventArray Данные о событии в виде массива
+     * @param prefAction Предпочитаемое действие из настроек
+     * @param context Контекст
+     * @return Действие
+     */
     @Nullable
-    static Intent getViewActionIntent(@NonNull String[] singleEventArray, int prefAction, android.content.Context context) {
+    static Intent getViewActionIntent(@NonNull String eventInfo, @NonNull String eventText, @NonNull String[] singleEventArray, int prefAction, android.content.Context context) {
 
         try {
 
@@ -1126,11 +1134,20 @@ public class ContactsEvents {
 
                 return null;
 
-            } else if (prefAction == 7) {
+            } else if (prefAction == 7) { // Запуск приложения
 
                 Intent intentAction = new Intent(context, MainActivity.class);
                 intentAction.setAction(Constants.ACTION_LAUNCH);
                 intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                return intentAction;
+
+            } else if (prefAction == 8) { // Открыть меню
+
+                Intent intentAction = new Intent(context, WidgetMenuActivity.class);
+                intentAction.putExtra(Constants.EXTRA_CLICKED_EVENT, eventInfo);
+                intentAction.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
+                intentAction.setAction(Constants.ACTION_MENU);
+                intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
                 return intentAction;
 
             } else if (Constants.STRING_STORAGE_HOLIDAYS.equals(singleEventArray[Position_eventStorage])) {
@@ -7192,10 +7209,12 @@ public class ContactsEvents {
     }
 
     private static class NotifyEvent {
+        final String eventInfo;
         final String[] singleEventArray;
         final Date eventDate;
 
-        public NotifyEvent(@NonNull String[] singleEventArray, @NonNull Date eventDate) {
+        public NotifyEvent(@NonNull String eventInfo, @NonNull String[] singleEventArray, @NonNull Date eventDate) {
+            this.eventInfo = eventInfo;
             this.singleEventArray = singleEventArray;
             this.eventDate = eventDate;
         }
@@ -7309,7 +7328,7 @@ public class ContactsEvents {
                             if (countDays > 14) {
                                 break;
                             } else if (notifications_days.contains(String.valueOf(countDays))) {
-                                listNotify.add(new NotifyEvent(singleEventArray, eventDate));
+                                listNotify.add(new NotifyEvent(event, singleEventArray, eventDate));
                             }
                         }
                     }
@@ -7530,10 +7549,19 @@ public class ContactsEvents {
                         Intent intent = null;
 
                         if (prefOnClickAction == 7) { //Основной список событий
+
                             intent = new Intent(context, MainActivity.class);
                             intent.setAction(Constants.ACTION_LAUNCH);
+
                         } else if (prefOnClickAction >= 1 & prefOnClickAction <= 4) {
-                            intent = getViewActionIntent(event.singleEventArray, prefOnClickAction, context);
+
+                            intent = getViewActionIntent(
+                                    event.eventInfo,
+                                    eventTitle,
+                                    event.singleEventArray,
+                                    prefOnClickAction,
+                                    context);
+
                         } else if (prefOnClickAction == 6) { //Закрыть уведомление
                             intent = new Intent();
                         }
@@ -7966,7 +7994,7 @@ public class ContactsEvents {
             } catch (Exception e) { /**/ }
             if (eventDate == null) return;
 
-            final String eventDetails = composeNotifyEventDetails(new NotifyEvent(singleEventArray, eventDate), new HashSet<>(Arrays.asList(details)));
+            final String eventDetails = composeNotifyEventDetails(new NotifyEvent(dataNotify, singleEventArray, eventDate), new HashSet<>(Arrays.asList(details)));
             int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
             final String[] eventDistance = singleEventArray[Position_eventDistanceText].split(Constants.REGEX_BAR, -1);
             Set<String> prefEventDetails = preferences_notifications_details;
@@ -8018,7 +8046,7 @@ public class ContactsEvents {
                 intent = new Intent(context, MainActivity.class);
                 intent.setAction(Constants.ACTION_LAUNCH);
             } else if (preferences_notifications_on_click_action >= 1 & preferences_notifications_on_click_action <= 4) {
-                intent = getViewActionIntent(singleEventArray, preferences_notifications_on_click_action, context);
+                intent = getViewActionIntent(dataNotify, eventTitle, singleEventArray, preferences_notifications_on_click_action, context);
             } else if (preferences_notifications_on_click_action == 6) { //Закрыть уведомление
                 intent = new Intent();
             }
@@ -8681,7 +8709,7 @@ public class ContactsEvents {
     /**
      * @param startDate Start date for period
      * @param endDate End date for period
-     * @param eventDate Original event date
+     * @param eventDate Original eventInfo date
      * @param periods Events repeat periods (by comma)
      * @param toRepeat Positive: how many events to return (total), Negative: how many events of every period to return (from startDate)
      * @return ArrayList of events inside [startDate] ... [endDate] period
@@ -11207,13 +11235,18 @@ public class ContactsEvents {
 
             List<String> questTitles = new ArrayList<>();
             List<String> questIds = new ArrayList<>();
+            List<Integer> questIcons = new ArrayList<>();
+            List<String> questIconsPackages = new ArrayList<>();
+            String packageName = context.getPackageName();
 
             for (QuizActivity.QuestionType type : QuizActivity.QuestionType.values()) {
                 questTitles.add(type.getDisplayName(context));
                 questIds.add(type.getCode(context));
+                questIcons.add(type.getIcon());
+                questIconsPackages.add(packageName);
             }
 
-            ListAdapter adapter = new MultiCheckboxesAdapter(baseContext, questTitles, null, null, null, ta);
+            ListAdapter adapter = new MultiCheckboxesAdapter(baseContext, questTitles, questIcons, questIconsPackages, null, ta);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(baseContext, preferences_theme.themeDialog))
                     .setTitle(R.string.pref_Quiz_Questions_title)

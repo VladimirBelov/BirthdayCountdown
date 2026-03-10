@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2026, 13:24
+  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 09.03.2026, 12:55
+  ~  * Last modified 10.03.2026, 16:15
   ~  */
   -->
 
@@ -535,6 +535,7 @@
     <string name="pref_Blue_title">Синій:</string>
     <string name="pref_Green_title">Зелений:</string>
     <string name="pref_Alpha_title">Прозорість:</string>
+    <string name="hint_ColorSpectrum">Колірний спектр</string>
 
     <string name="pref_List_Style_title">Стиль списку подій</string>
     <string name="pref_List_Style_summary">Встановити стиль списку подій</string>
@@ -746,6 +747,7 @@
     <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Значок джерела події</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Веб-посилання доступне</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Розфарбувати всі події кольором дати</string>
+    <string name="pref_EventInfo_ShowNearestEventPhoto">Показати фотографію контакту для найближчої події</string>
     <string name="pref_EventInfo_NewLine1">"- новий рядок -"</string>
     <string name="pref_EventInfo_NewLine2">"- новий рядок - "</string>
     <string name="pref_EventInfo_NewLine3">"- новий рядок -  "</string>
@@ -755,6 +757,8 @@
     <string name="pref_EventInfo_RightBracket2">") "</string>
     <string name="pref_EventInfo_BoldStart">"- жирний - (початок)"</string>
     <string name="pref_EventInfo_BoldEnd">"- жирний - (кінець)"</string>
+    <string name="pref_EventInfo_Tab">"- вкладка -"</string>
+    <string name="pref_EventInfo_Tab2">"- вкладка - "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -837,6 +841,7 @@
         <item>Відкрити веб-посилання, якщо немає - контактну картку, якщо немає - календарну подію</item>
         <item>Відкрийте картку контакту, якщо немає - посилання на веб-сайт, якщо немає - календарну подію</item>
         <item>Відкрити список подій</item>
+        <item>Відкрити меню</item>
         <item>Нічого</item>
     </string-array>
 
@@ -1138,6 +1143,27 @@
 
     <string name="pref_Quiz_title">Вікторина</string>
     <string name="pref_Quiz_summary">Вподобання вікторини</string>
+
+    <string name="pref_Quiz_Questions_title">Запитання</string>
+    <string name="pref_Quiz_Questions_summary">Показувати лише запитання вибраних типів</string>
+
+    <string name="pref_Quiz_Difficulty_title">Складність</string>
+    <string name="pref_Quiz_Difficulty_summary">Кількість можливих відповідей</string>
+
+    <string name="pref_Quiz_EventSources_title">Джерела подій</string>
+    <string name="pref_Quiz_EventSources_summary">Генерувати запитання лише з цих джерел подій. Якщо джерело не вибрано, використовувати події з усіх джерел</string>
+
+    <string name="pref_Quiz_AutoNext_title">Автоматичне перемикання</string>
+    <string name="pref_Quiz_AutoNext_summary">Переключитися до наступного питання після успішної або невдалої відповіді</string>
+    <string-array name="pref_Quiz_AutoNext_entries">
+        <item>Вимкнено</item>
+        <item>2 секунди</item>
+        <item>3 секунди</item>
+        <item>5 секунд</item>
+    </string-array>
+    <string name="pref_Quiz_NextQuestion_hint">Показати наступне питання</string>
+    <string name="pref_Quiz_EventsSources_hint">Вибрати джерела подій</string>
+    <string name="pref_Quiz_Questions_hint">Вибрати питання</string>
 
     <string name="pref_FAQ_title">Питання та Відповіді</string>
     <string name="pref_FAQ_summary">Якщо щось працює не правильно або Ви не знаєте, як налаштувати ту чи іншу функцію програми - Вам в цей розділ</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2026, 15:56
+ *  * Created by Vladimir Belov on 10.03.2026, 16:17
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.03.2026, 15:47
+ *  * Last modified 10.03.2026, 15:32
  *
  */
 package org.vovka.birthdaycountdown;
@@ -355,9 +355,23 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     Color.colorToHSV(colorValue[0], currentHsv);
 
                     float hue = currentHsv[0];        // 0-360
+                    float saturation = currentHsv[1]; // 0-1
                     float value = currentHsv[2];      // 0-1
 
-                    float x = (hue / 360.0f) * colorSpectrum.getWidth();
+                    float x;
+                    // === ИСПРАВЛЕНО: порог saturation = 1.0, а не 0.15 ===
+                    if (saturation < 1.0f) {
+                        // Мы в левой 15% зоне (серая зона)
+                        // saturation: 0..1.0 -> x: 0..15% ширины
+                        x = saturation * (colorSpectrum.getWidth() * 0.15f);
+                    } else {
+                        // Мы в правой 85% зоне (цветовая зона)
+                        // hue: 0-360 -> x: 15%-100% ширины
+                        x = (0.15f * colorSpectrum.getWidth()) +
+                                ((hue / 360.0f) * (0.85f * colorSpectrum.getWidth()));
+                    }
+                    // =================================================================
+
                     float y = (1.0f - value) * colorSpectrum.getHeight();
 
                     float markerX = x - colorMarker.getWidth() / 2f;
@@ -385,30 +399,28 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     int viewHeight = colorSpectrum.getHeight();
 
                     if (viewWidth > 0 && viewHeight > 0) {
-                        // Вычисляем hue и saturation/value из координат
-                        float hue = (x / viewWidth) * 360.0f;
+                        // Ограничиваем координаты границами ImageView
+                        x = Math.max(0, Math.min(x, viewWidth - 1));
+                        y = Math.max(0, Math.min(y, viewHeight - 1));
 
-                        // Насыщенность зависит от позиции по X:
-                        // - Левые 15%: saturation от 0 до 1 (белый -> цвет)
-                        // - Остальная часть: saturation = 1 (полная насыщенность)
+                        float hue;
                         float saturation;
+
+                        // Левые 15%: градиент от белого к цвету (насыщенность растёт)
                         if (x < viewWidth * 0.15f) {
-                            // Левая часть: градиент от белого к цвету
                             saturation = x / (viewWidth * 0.15f);
+                            hue = 0; // Для белого/серого hue не важен
                         } else {
-                            // Правая часть: полная насыщенность
+                            // Правые 85%: полная насыщенность, меняется hue
                             saturation = 1.0f;
+                            // === ВАЖНО: hue считаем от правой 85% зоны ===
+                            hue = ((x - (viewWidth * 0.15f)) / (viewWidth * 0.85f)) * 360.0f;
                         }
 
                         float value = 1.0f - (y / viewHeight);
-
-                        // Получаем текущий alpha
                         int alpha = Color.alpha(colorValue[0]);
-
-                        // Создаём новый цвет
                         int newColor = Color.HSVToColor(alpha, new float[]{hue, saturation, value});
 
-                        // Обновляем все UI элементы
                         colorValue[0] = newColor;
 
                         seek1.setProgress(Color.red(newColor));

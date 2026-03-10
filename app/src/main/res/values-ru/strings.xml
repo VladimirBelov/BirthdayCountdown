@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 09.03.2026, 15:56
+  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 09.03.2026, 13:43
+  ~  * Last modified 10.03.2026, 14:09
   ~  */
   -->
 
@@ -841,6 +841,7 @@
         <item>Открыть web ссылку, если нет - карточку контакта, если нет - событие календаря</item>
         <item>Открыть карточку контакта, если нет - web ссылку, если нет - событие календаря</item>
         <item>Открыть основной список событий</item>
+        <item>Открыть меню</item>
         <item>Ничего не делать</item>
     </string-array>
 
