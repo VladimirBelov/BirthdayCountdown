@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
+  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.03.2026, 16:14
+  ~  * Last modified 11.03.2026, 12:25
   ~  */
   -->
 
@@ -643,7 +643,7 @@
         <item>"Étiquette d'événement originale"</item>
         <item>"Source de l'événement"</item>
         <item>"Icône de type d'événement"</item>
-        <item>Icône du contact sélectionné</item>
+        <item>"Icône d'événement favori"</item>
         <item>Âge</item>
         <item>Signe du zodiaque</item>
         <item>Animal dans le calendrier oriental</item>
@@ -720,7 +720,7 @@
     <string name="pref_EventInfo_EventIcon">"🎂 Icône de type d'événement"</string>
     <string name="pref_EventInfo_EventLabel">"Étiquette d'événement d'origine"</string>
     <string name="pref_EventInfo_EventCaption">"Légende de l'événement"</string>
-    <string name="pref_EventInfo_FavIcon">🌟 Icône du contact sélectionné</string>
+    <string name="pref_EventInfo_FavIcon">"🌟 Icône d'événement favori"</string>
     <string name="pref_EventInfo_SilentedIcon">"🚫 Icône de l'événement sans préavis"</string>
     <string name="pref_EventInfo_ZodiacSign">♊ Signe du zodiaque</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 Animal dans le calendrier oriental</string>
@@ -1337,6 +1337,9 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
     <string name="quiz_age01_title_future">"Quel âge ça va avoir?"</string>
     <string name="quiz_age01_title_past">"Quel âge est-il maintenant?"</string>
     <string name="quiz_age01_title_dead">"Quel âge aurait-il/elle maintenant?"</string>
+    <string name="quiz_anniversary01_title">Quel sera le titre de cet anniversaire de mariage?</string>
+    <string name="quiz_other01_year">En quelle année cet événement a-t-il eu lieu?</string>
+    <string name="quiz_holiday01_day">Quelle sera la date de cette fête?</string>
 
     <string name="xDaysCounter_Dialog_Title">Compteur de jours</string>
     <string name="xDaysCounter_Dialog_Repeats_Caption">Périodes:</string>

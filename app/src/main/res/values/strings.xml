@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.03.2026, 01:58
+  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.03.2026, 23:13
+  ~  * Last modified 11.03.2026, 11:43
   ~  */
   -->
 
@@ -643,7 +643,7 @@
         <item>Original event label</item>
         <item>Event source</item>
         <item>Event type icon</item>
-        <item>Favorites icon</item>
+        <item>Favorite event icon</item>
         <item>Age</item>
         <item>Zodiac sign</item>
         <item>Chinese calendar year</item>
@@ -720,7 +720,7 @@
     <string name="pref_EventInfo_EventIcon">🎂 Event type icon</string>
     <string name="pref_EventInfo_EventCaption">Event caption</string>
     <string name="pref_EventInfo_EventLabel">Original event label</string>
-    <string name="pref_EventInfo_FavIcon">🌟 Favorites icon</string>
+    <string name="pref_EventInfo_FavIcon">🌟 Favorite event icon</string>
     <string name="pref_EventInfo_SilentedIcon">🚫 Silenced event icon</string>
     <string name="pref_EventInfo_ZodiacSign">♊ Zodiac sign</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 Chinese calendar year</string>

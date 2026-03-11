@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.03.2026, 16:17
+ *  * Created by Vladimir Belov on 11.03.2026, 12:40
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.03.2026, 14:09
+ *  * Last modified 11.03.2026, 12:01
  *
  */
 
@@ -12,7 +12,6 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
-import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -283,31 +282,13 @@ public class WidgetList extends AppWidgetProvider {
             if (pref_onClick == 0 || eventInfo == null || eventInfo.isEmpty()) return;
 
             String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
-            Intent intentAction;
-
-            if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
-
-                String eventText = StringUtils.getNotNullString(intent.getStringExtra(Constants.EXTRA_CLICKED_TEXT));
-                intentAction = ContactsEvents.getViewActionIntent(eventInfo, eventText, singleEventArray, pref_onClick, context);
-                if (intentAction != null) {
-                    try {
-                        intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                        context.getApplicationContext().startActivity(intentAction);
-                    } catch (android.content.ActivityNotFoundException e) { /**/ }
-                }
-
-            } else if (eventInfo.startsWith(context.getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE)) {
-
-                Intent intentShare = new Intent(Intent.ACTION_SEND);
-                intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
-                intentShare.putExtra(Intent.EXTRA_TEXT, eventInfo);
-                intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            String eventText = StringUtils.getNotNullString(intent.getStringExtra(Constants.EXTRA_CLICKED_TEXT));
+            Intent intentAction = ContactsEvents.getViewActionIntent(eventInfo, eventText, singleEventArray, pref_onClick, context);
+            if (intentAction != null) {
                 try {
-                    Intent intentChooser = Intent.createChooser(intentShare, "");
-                    intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    context.startActivity(intentChooser);
+                    intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                    context.getApplicationContext().startActivity(intentAction);
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
-
             }
         }
     }

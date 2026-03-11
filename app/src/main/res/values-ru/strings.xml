@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.03.2026, 20:03
+  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.03.2026, 19:44
+  ~  * Last modified 11.03.2026, 11:40
   ~  */
   -->
 
@@ -643,7 +643,7 @@
         <item>Исходное наименование события</item>
         <item>Источник события</item>
         <item>Иконка типа события</item>
-        <item>Иконка избранного контакта</item>
+        <item>Иконка избранного события</item>
         <item>Возраст</item>
         <item>Знак зодиака</item>
         <item>Животное в восточном календаре</item>
@@ -720,7 +720,7 @@
     <string name="pref_EventInfo_EventIcon">🎂 Иконка типа события</string>
     <string name="pref_EventInfo_EventCaption">Наименование события</string>
     <string name="pref_EventInfo_EventLabel">Исходное наименование события</string>
-    <string name="pref_EventInfo_FavIcon">🌟 Иконка избранного контакта</string>
+    <string name="pref_EventInfo_FavIcon">🌟 Иконка избранного события</string>
     <string name="pref_EventInfo_SilentedIcon">🚫 Иконка события без уведомления</string>
     <string name="pref_EventInfo_ZodiacSign">♊ Знак зодиака</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 Животное в восточном календаре</string>

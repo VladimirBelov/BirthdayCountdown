@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
+  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.03.2026, 16:16
+  ~  * Last modified 11.03.2026, 12:31
   ~  */
   -->
 
@@ -643,7 +643,7 @@
         <item>Etiqueta original do evento</item>
         <item>Fonte do evento</item>
         <item>Ícone de tipo de evento</item>
-        <item>ícone Favoritos</item>
+        <item>Ícone de favoritos</item>
         <item>Idade</item>
         <item>Signo do Zodíaco</item>
         <item>Ano calendário chinês</item>
@@ -1337,6 +1337,9 @@ Clique longamente no item para selecionar a cor"</string>
     <string name="quiz_age01_title_future">"Quantos anos ele/ela terá?"</string>
     <string name="quiz_age01_title_past">"Quantos anos ele(a) tem?"</string>
     <string name="quiz_age01_title_dead">"Quantos anos ele/ela teria agora?"</string>
+    <string name="quiz_anniversary01_title">Qual será o título deste aniversário de casamento?</string>
+    <string name="quiz_other01_year">Em que ano este evento ocorreu?</string>
+    <string name="quiz_holiday01_day">Qual será a data deste feriado?</string>
 
     <string name="xDaysCounter_Dialog_Title">Contador de dias</string>
     <string name="xDaysCounter_Dialog_Repeats_Caption">Períodos:</string>

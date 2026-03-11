@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.03.2026, 16:17
+ *  * Created by Vladimir Belov on 11.03.2026, 12:40
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.03.2026, 14:23
+ *  * Last modified 11.03.2026, 12:01
  *
  */
 
@@ -22,6 +22,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
+import android.content.ClipDescription;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -1119,17 +1120,6 @@ public class ContactsEvents {
 
         try {
 
-            if (singleEventArray.length < Position_attrAmount) return null;
-
-            Uri uri = null;
-            final String contactID = singleEventArray[Position_contactID];
-            final boolean notEmptyContactID = !TextUtils.isEmpty(contactID);
-            final String eventId = singleEventArray[Position_eventID];
-            final boolean notEmptyEventId = !TextUtils.isEmpty(eventId);
-            final String eventUrl = singleEventArray[Position_eventURL].trim();
-            final boolean notEmptyEventUrl = !TextUtils.isEmpty(eventUrl);
-            final boolean isFileOrHoliday = notEmptyEventId && (eventId.startsWith(Constants.PREFIX_FileEventID) || eventId.startsWith(Constants.PREFIX_HolidayEventID));
-
             if (prefAction == 0) {
 
                 return null;
@@ -1150,7 +1140,33 @@ public class ContactsEvents {
                 intentAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
                 return intentAction;
 
-            } else if (Constants.STRING_STORAGE_HOLIDAYS.equals(singleEventArray[Position_eventStorage])) {
+            }
+
+            if (singleEventArray.length < Position_attrAmount) {
+                if (eventInfo.startsWith(context.getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE)) {
+                    Intent intentShare = new Intent(Intent.ACTION_SEND);
+                    intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+                    intentShare.putExtra(Intent.EXTRA_TEXT, eventInfo);
+                    intentShare.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    Intent intentChooser = Intent.createChooser(intentShare, "");
+                    intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    return intentChooser;
+                } else {
+                    return null;
+                }
+            }
+
+            Uri uri = null;
+            final String contactID = singleEventArray[Position_contactID];
+            final boolean notEmptyContactID = !TextUtils.isEmpty(contactID);
+            final String eventId = singleEventArray[Position_eventID];
+            final boolean notEmptyEventId = !TextUtils.isEmpty(eventId);
+            final String eventUrl = singleEventArray[Position_eventURL].trim();
+            final boolean notEmptyEventUrl = !TextUtils.isEmpty(eventUrl);
+            final boolean isFileOrHoliday = notEmptyEventId && (eventId.startsWith(Constants.PREFIX_FileEventID) || eventId.startsWith(Constants.PREFIX_HolidayEventID));
+
+            if (Constants.STRING_STORAGE_HOLIDAYS.equals(singleEventArray[Position_eventStorage])) {
 
                 return null;
 

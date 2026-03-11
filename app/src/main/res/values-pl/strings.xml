@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
+  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.03.2026, 16:15
+  ~  * Last modified 11.03.2026, 12:19
   ~  */
   -->
 
@@ -643,7 +643,7 @@
         <item>Początkowa nazwa wydarzenia</item>
         <item>Źródło wydarzenia</item>
         <item>Ikona typu wydarzenia</item>
-        <item>Ikona ulubionego kontaktu</item>
+        <item>Ikona ulubionego wydarzenia</item>
         <item>Wiek</item>
         <item>Znak zodiaku</item>
         <item>Zwierzę we wschodnim kalendarzu</item>
@@ -720,7 +720,7 @@
     <string name="pref_EventInfo_EventIcon">🎂 Ikona rodzaju wydarzenia</string>
     <string name="pref_EventInfo_EventCaption">Nazwa wydarzenia</string>
     <string name="pref_EventInfo_EventLabel">Początkowa nazwa wydarzenia</string>
-    <string name="pref_EventInfo_FavIcon">🌟 Ikona ulubionego kontaktu</string>
+    <string name="pref_EventInfo_FavIcon">🌟 Ikona ulubionego wydarzenia</string>
     <string name="pref_EventInfo_SilentedIcon">🚫 Ikona wyciszonego wydarzenia</string>
     <string name="pref_EventInfo_ZodiacSign">♊ Znak zodiaku</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 Zwierzę w kalendarzu wschodnim</string>
@@ -1335,6 +1335,9 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="quiz_age01_title_future">"Ile będziesz mieć lat?"</string>
     <string name="quiz_age01_title_past">"Ile masz teraz lat?"</string>
     <string name="quiz_age01_title_dead">"Ile miałbyś teraz lat?"</string>
+    <string name="quiz_anniversary01_title">Jaki będzie tytuł tej rocznicy ślubu?</string>
+    <string name="quiz_other01_year">W którym roku miało miejsce to wydarzenie?</string>
+    <string name="quiz_holiday01_day">Jaka będzie data tego święta?</string>
 
     <string name="xDaysCounter_Dialog_Title">Licznik dni</string>
     <string name="xDaysCounter_Dialog_Repeats_Caption">Powtarzaj okres(y):</string>

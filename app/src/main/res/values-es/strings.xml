@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
+  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.03.2026, 16:14
+  ~  * Last modified 11.03.2026, 12:35
   ~  */
   -->
 
@@ -643,7 +643,7 @@
         <item>Nombre original del evento</item>
         <item>Origen del evento</item>
         <item>Icono de tipo de evento</item>
-        <item>Icono de contacto favorito</item>
+        <item>Icono favorito</item>
         <item>Edad</item>
         <item>Signo del zodiaco</item>
         <item>Año del zodiaco</item>
@@ -717,13 +717,13 @@
     <string name="pref_EventInfo_Dividers">Separadores de eventos</string>
     <string name="pref_EventInfo_ButtonConfig">Botón de configuración</string>
     <string name="pref_EventInfo_Photo">Foto de contacto</string>
-    <string name="pref_EventInfo_EventIcon">Icono de tipo de evento</string>
+    <string name="pref_EventInfo_EventIcon">🎂 Icono de tipo de evento</string>
     <string name="pref_EventInfo_EventLabel">Etiqueta de evento original</string>
     <string name="pref_EventInfo_EventCaption">Título del evento</string>
-    <string name="pref_EventInfo_FavIcon">Icono favorito</string>
-    <string name="pref_EventInfo_SilentedIcon">Icono de evento silenciado</string>
-    <string name="pref_EventInfo_ZodiacSign">Signo del zodiaco</string>
-    <string name="pref_EventInfo_ZodiacYear">Año del zodiaco</string>
+    <string name="pref_EventInfo_FavIcon">🌟 Icono favorito</string>
+    <string name="pref_EventInfo_SilentedIcon">🚫 Icono de evento silenciado</string>
+    <string name="pref_EventInfo_ZodiacSign">♊ Signo del zodiaco</string>
+    <string name="pref_EventInfo_ZodiacYear">🐂 Año del zodiaco</string>
     <string name="pref_EventInfo_EventDate_Original">Fecha original del evento</string>
     <string name="pref_EventInfo_EventYear_Original">Año del evento original</string>
     <string name="pref_EventInfo_EventDate_Original_WithYear">Fecha del evento original con año</string>
@@ -1335,6 +1335,9 @@ Haga clic largo en el elemento para seleccionar el color"</string>
     <string name="quiz_age01_title_future">"¿Qué edad tendrá?"</string>
     <string name="quiz_age01_title_past">"¿Qué edad tiene ahora?"</string>
     <string name="quiz_age01_title_dead">"¿Qué edad tendría ahora?"</string>
+    <string name="quiz_anniversary01_title">¿Cuál será el título de este aniversario de bodas?</string>
+    <string name="quiz_other01_year">¿En qué año tuvo lugar este evento?</string>
+    <string name="quiz_holiday01_day">¿Cuál será la fecha de esta festividad?</string>
 
     <string name="xDaysCounter_Dialog_Title">Contador de días</string>
     <string name="xDaysCounter_Dialog_Repeats_Caption">Períodos:</string>

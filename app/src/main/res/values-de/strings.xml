@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
+  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.03.2026, 16:13
+  ~  * Last modified 11.03.2026, 12:27
   ~  */
   -->
 
@@ -720,7 +720,7 @@
     <string name="pref_EventInfo_EventIcon">🎂 Ereignistyp-Symbol</string>
     <string name="pref_EventInfo_EventLabel">Original-Ereignisbezeichnung</string>
     <string name="pref_EventInfo_EventCaption">Ereignisbildunterschrift</string>
-    <string name="pref_EventInfo_FavIcon">🌟 Favoriten-Symbol</string>
+    <string name="pref_EventInfo_FavIcon">🌟 Favoriten Symbol</string>
     <string name="pref_EventInfo_SilentedIcon">🚫 Symbol für stummgeschaltetes Ereignis</string>
     <string name="pref_EventInfo_ZodiacSign">♊ Sternzeichen</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 Tierkreisjahr</string>
@@ -1336,6 +1336,9 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="quiz_age01_title_future">"Wie alt wird die Person?"</string>
     <string name="quiz_age01_title_past">"Wie alt ist die Person jetzt?"</string>
     <string name="quiz_age01_title_dead">"Wie alt würde die Person jetzt sein?"</string>
+    <string name="quiz_anniversary01_title">Wie lautet der Titel dieses Hochzeitstages?</string>
+    <string name="quiz_other01_year">In welchem Jahr fand dieses Ereignis statt?</string>
+    <string name="quiz_holiday01_day">An welchem Datum findet dieser Feiertag statt?</string>
 
     <string name="xDaysCounter_Dialog_Title">Tageszähler</string>
     <string name="xDaysCounter_Dialog_Repeats_Caption">Zeiträume:</string>

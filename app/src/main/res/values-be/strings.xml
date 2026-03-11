@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
+  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.03.2026, 16:14
+  ~  * Last modified 11.03.2026, 12:26
   ~  */
   -->
 
@@ -643,7 +643,7 @@
         <item>Выточная назва падзеі</item>
         <item>Крыніца падзеі</item>
         <item>Абразок тыпу падзеі</item>
-        <item>Абразок абранага кантакту</item>
+        <item>Значок абранай падзеі</item>
         <item>Узрост</item>
         <item>Знак задыяка</item>
         <item>Жывёла ва ўсходнім календары</item>
@@ -720,7 +720,7 @@
     <string name="pref_EventInfo_EventIcon">🎂 Абразок тыпу падзеі</string>
     <string name="pref_EventInfo_EventCaption">Надпіс падзеі</string>
     <string name="pref_EventInfo_EventLabel">Арыгінальная пазнака падзеі</string>
-    <string name="pref_EventInfo_FavIcon">🌟 Абразок абранага кантакту</string>
+    <string name="pref_EventInfo_FavIcon">🌟 Значок абранай падзеі</string>
     <string name="pref_EventInfo_SilentedIcon">🚫 Абразок падзеі без паведамлення</string>
     <string name="pref_EventInfo_ZodiacSign">♊ Знак задыяка</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 Жывёла ва ўсходнім календары</string>
@@ -1334,6 +1334,9 @@
     <string name="quiz_age01_title_future">"Колькі гадоў выканаецца?"</string>
     <string name="quiz_age01_title_past">"Колькі зараз гадоў?"</string>
     <string name="quiz_age01_title_dead">"Колькі было б зараз гадоў?"</string>
+    <string name="quiz_anniversary01_title">Як будзе называцца гэтая гадавіна вяселля?</string>
+    <string name="quiz_other01_year">У якім годзе адбылася гэта падзея?</string>
+    <string name="quiz_holiday01_day">Якой будзе дата гэтага свята?</string>
 
     <string name="xDaysCounter_Dialog_Title">Лічыльнік дзён</string>
     <string name="xDaysCounter_Dialog_Repeats_Caption">Перыяд(ы) паўтарэння:</string>

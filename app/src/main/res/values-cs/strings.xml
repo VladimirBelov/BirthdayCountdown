@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
+  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.03.2026, 16:14
+  ~  * Last modified 11.03.2026, 12:33
   ~  */
   -->
 
@@ -643,7 +643,7 @@
         <item>Původní štítek události</item>
         <item>Zdroj události</item>
         <item>Ikona typu události</item>
-        <item>Ikona Oblíbené</item>
+        <item>Ikona oblíbené události</item>
         <item>Věk</item>
         <item>Znamení zvěrokruhu</item>
         <item>Čínský kalendářní rok</item>
@@ -720,7 +720,7 @@
     <string name="pref_EventInfo_EventIcon">🎂 Ikona typu události</string>
     <string name="pref_EventInfo_EventCaption">Popis události</string>
     <string name="pref_EventInfo_EventLabel">Původní štítek události</string>
-    <string name="pref_EventInfo_FavIcon">🌟 Ikona oblíbených</string>
+    <string name="pref_EventInfo_FavIcon">🌟 Ikona oblíbené události</string>
     <string name="pref_EventInfo_SilentedIcon">🚫 Ikona umlčené události</string>
     <string name="pref_EventInfo_ZodiacSign">♊ znamení zvěrokruhu</string>
     <string name="pref_EventInfo_ZodiacYear">🐂 čínský kalendářní rok</string>
@@ -1337,6 +1337,9 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="quiz_age01_title_future">"Kolik mu/jí bude?"</string>
     <string name="quiz_age01_title_past">"Kolik je mu/jí?"</string>
     <string name="quiz_age01_title_dead">"Kolik by mu/jí nyní bylo?"</string>
+    <string name="quiz_anniversary01_title">Jaký bude název tohoto výročí svatby?</string>
+    <string name="quiz_other01_year">V jakém roce se tato událost konala?</string>
+    <string name="quiz_holiday01_day">Jaké bude datum tohoto svátku?</string>
 
     <string name="xDaysCounter_Dialog_Title">Počítadlo dnů</string>
     <string name="xDaysCounter_Dialog_Repeats_Caption">Období:</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.03.2026, 16:17
+  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.03.2026, 16:15
+  ~  * Last modified 11.03.2026, 12:36
   ~  */
   -->
 
@@ -717,13 +717,13 @@
     <string name="pref_EventInfo_Dividers">Розділювачі подій</string>
     <string name="pref_EventInfo_ButtonConfig">Кнопка конфігурації</string>
     <string name="pref_EventInfo_Photo">Фото контакту</string>
-    <string name="pref_EventInfo_EventIcon">Іконка типу події</string>
+    <string name="pref_EventInfo_EventIcon">🎂 Іконка типу події</string>
     <string name="pref_EventInfo_EventLabel">Оригінальна мітка події</string>
     <string name="pref_EventInfo_EventCaption">Підпис до події</string>
-    <string name="pref_EventInfo_FavIcon">Іконка обраного контакту</string>
-    <string name="pref_EventInfo_SilentedIcon">Значок події без повiдомлення</string>
-    <string name="pref_EventInfo_ZodiacSign">Знак зодіаку</string>
-    <string name="pref_EventInfo_ZodiacYear">Східний календар</string>
+    <string name="pref_EventInfo_FavIcon">🌟 Значок вибраного</string>
+    <string name="pref_EventInfo_SilentedIcon">🚫 Значок події без повiдомлення</string>
+    <string name="pref_EventInfo_ZodiacSign">♊ Знак зодіаку</string>
+    <string name="pref_EventInfo_ZodiacYear">🐂 Східний календар</string>
     <string name="pref_EventInfo_EventDate_Original">Оригінальна дата події</string>
     <string name="pref_EventInfo_EventYear_Original">Рік початкової події</string>
     <string name="pref_EventInfo_EventDate_Original_WithYear">Оригінальна дата події з роком</string>
@@ -1332,9 +1332,12 @@
 
     <string name="quiz_year01_title">"Який рік народження?"</string>
 
-    <string name="quiz_age01_title_future">"Скільки років виповниться?"</string>
-    <string name="quiz_age01_title_past">"Скільки зараз років?"</string>
-    <string name="quiz_age01_title_dead">"Скільки було б зараз років?"</string>
+    <string name="quiz_age01_title_future">Скільки років виповниться?</string>
+    <string name="quiz_age01_title_past">Скільки зараз років?</string>
+    <string name="quiz_age01_title_dead">Скільки було б зараз років?</string>
+    <string name="quiz_anniversary01_title">Як називатиметься ця річниця весілля?</string>
+    <string name="quiz_other01_year">У якому році відбулася ця подія?</string>
+    <string name="quiz_holiday01_day">Якої дати буде це свято?</string>
 
     <string name="xDaysCounter_Dialog_Title">Лічильник днів</string>
     <string name="xDaysCounter_Dialog_Repeats_Caption">Періоди:</string>
