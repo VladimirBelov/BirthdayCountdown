@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.03.2026, 01:58
+ *  * Created by Vladimir Belov on 11.03.2026, 21:00
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 11.03.2026, 01:32
+ *  * Last modified 11.03.2026, 20:59
  *
  */
 
@@ -349,7 +349,7 @@ public class QuizActivity extends Activity {
                     btn.setEllipsize(TextUtils.TruncateAt.END);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         btn.setAutoSizeTextTypeUniformWithConfiguration(
-                                10, 16, 2, TypedValue.COMPLEX_UNIT_SP
+                                12, 16, 2, TypedValue.COMPLEX_UNIT_SP
                         );
                     }
                 }
@@ -1214,13 +1214,16 @@ public class QuizActivity extends Activity {
                         if (TextUtils.isEmpty(title)) continue;
 
                         StringBuilder sb = new StringBuilder(isCorrect ? Constants.STRING_1 : Constants.STRING_0)
-                                .append(Constants.STRING_EOT)
-                                .append(title.toUpperCase())
+                                .append(Constants.STRING_EOT).
+                                append(title.toUpperCase()).
+                                append(Constants.STRING_PARENTHESIS_OPEN)
+                                .append(age)
+                                .append(Constants.STRING_PARENTHESIS_CLOSE)
                                 .append(Constants.STRING_EOT);
 
                         String eventDetails = eventInfo[ContactsEvents.Position_age_caption]
                                 + Constants.STRING_COMMA_SPACE
-                                + eventInfo[ContactsEvents.Position_eventDateFirstTime];
+                                + eventInfo[ContactsEvents.Position_eventDateNextTime];
                         if (isCorrect) {
                             sb.append(context.getResources().getString(R.string.quiz_answer_true,
                                     title, eventDetails));
