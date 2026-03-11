@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.03.2026, 12:40
+ *  * Created by Vladimir Belov on 12.03.2026, 01:23
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 11.03.2026, 12:01
+ *  * Last modified 11.03.2026, 21:01
  *
  */
 
@@ -253,9 +253,6 @@ public class WidgetList extends AppWidgetProvider {
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
 
         try {
-
-            //ContactsEvents eventsData = ContactsEvents.getInstance();
-            //eventsData.initLanguage(context);
 
             updateAppWidget(context, appWidgetManager, appWidgetId);
             super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);

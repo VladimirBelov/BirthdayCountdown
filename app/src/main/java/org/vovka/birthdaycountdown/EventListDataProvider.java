@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2026, 17:39
+ *  * Created by Vladimir Belov on 12.03.2026, 01:23
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.02.2026, 13:33
+ *  * Last modified 12.03.2026, 01:00
  *
  */
 
@@ -79,6 +79,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
     List<String> widgetPref;
     private List<String> widgetPref_eventInfo = new ArrayList<>();
     int widgetPref_onClick = 0;
+    int columns = 1;
     ContactsEvents eventsData;
 
     public EventListDataProvider(Context context, Intent intent) {
@@ -227,6 +228,10 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                     eventListView.add(event);
                 }
             }
+            //Определяем количество колонок с данными
+            columns = 1;
+            if (widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_Tab_ID))) columns++;
+            if (widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_Tab2_ID))) columns++;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -239,27 +244,27 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
     public RemoteViews getViewAt(int position) {
 
         RemoteViews views = new RemoteViews(this.context.getPackageName(), R.layout.widgetlist_item);
+        views.setViewVisibility(R.id.eventCaption1, View.GONE);
+        views.setViewVisibility(R.id.eventCaption2, View.GONE);
+        views.setViewVisibility(R.id.eventCaption3, View.GONE);
 
         try {
-
-            //Размер
-            views.setTextViewTextSize(R.id.eventCaption, TypedValue.COMPLEX_UNIT_SP,
-                    ImageUtils.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, 1.6));
 
             if (eventListView.size() < position + 1) return views;
 
             //Информация о событии
             String eventInfo = eventListView.get(position);
             String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
-            String eventText;
+            final AtomicBoolean colorizeEntireRow = new AtomicBoolean(false);
+            String colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_far & 0x00ffffff);
 
             views.setImageViewBitmap(R.id.eventPhoto, null);
             views.setViewVisibility(R.id.eventPhoto, View.GONE);
 
+            List<String> eventDetails = new ArrayList<>();
             if (singleEventArray.length < ContactsEvents.Position_attrAmount) {
 
-                eventText = eventInfo;
-                views.setTextViewText(R.id.eventCaption, eventText);
+                eventDetails.add(eventInfo);
 
             } else {
 
@@ -272,7 +277,6 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                     eventDistance_Days = 365;
                 }
 
-                String colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_far & 0x00ffffff);
                 int dateColorId = 3;
                 try {
                     if (eventDistance_Days == 0) { //Сегодня
@@ -289,32 +293,44 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 } catch (Resources.NotFoundException nfe) { /**/ }
 
                 //Составление события
-                final AtomicBoolean colorizeEntireRow = new AtomicBoolean(false);
-                StringBuilder eventDetails = getEventDetails(singleEventArray, eventInfo, views,
-                        colorDate, eventDistance_Days, eventDistance, dateColorId, colorizeEntireRow);
+                eventDetails.addAll(getEventDetails(singleEventArray, eventInfo, views,
+                        colorDate, eventDistance_Days, eventDistance, dateColorId, colorizeEntireRow));
 
-                if (eventDetails.length() - eventDetails.lastIndexOf(Constants.HTML_BR) == Constants.HTML_BR.length()) {
-                    eventDetails.setLength(eventDetails.lastIndexOf(Constants.HTML_BR));
-                }
+            }
 
+            StringBuilder eventText = new StringBuilder();
+            int colNum = 0;
+            float sizeForWidgetElement = ImageUtils.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, 1.6);
+
+            for (String column: eventDetails) {
+                colNum++;
+                String columnText;
                 if (colorizeEntireRow.get()) {
-                    eventText = Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + eventDetails + Constants.HTML_COLOR_END;
-
+                    columnText = Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + column + Constants.HTML_COLOR_END;
                 } else {
-                    eventText = eventDetails.toString();
+                    columnText = column;
+                }
+                eventText.append(columnText).append(Constants.STRING_SPACE);
+
+                int id = 0;
+                switch (colNum) {
+                    case 1: id = R.id.eventCaption1; break;
+                    case 2: id = R.id.eventCaption2; break;
+                    case 3: id = R.id.eventCaption3; break;
                 }
 
-                views.setTextViewText(R.id.eventCaption, HtmlCompat.fromHtml(eventText, HtmlCompat.FROM_HTML_MODE_LEGACY));
-                views.setTextColor(R.id.eventCaption, eventsData.preferences_widgets_color_default);
-
+                views.setTextViewText(id, HtmlCompat.fromHtml(columnText, HtmlCompat.FROM_HTML_MODE_LEGACY));
+                views.setTextColor(id, eventsData.preferences_widgets_color_default);
+                views.setTextViewTextSize(id, TypedValue.COMPLEX_UNIT_SP, sizeForWidgetElement);
+                views.setViewVisibility(id, View.VISIBLE);
             }
 
             Intent clickIntent = new Intent();
             clickIntent.putExtra(Constants.EXTRA_CLICKED_EVENT, eventInfo);
-            clickIntent.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText);
+            clickIntent.putExtra(Constants.EXTRA_CLICKED_TEXT, eventText.toString());
             clickIntent.putExtra(Constants.EXTRA_CLICKED_PREFS, widgetPref_onClick);
             clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
-            views.setOnClickFillInIntent(R.id.eventCaption, clickIntent);
+            views.setOnClickFillInIntent(R.id.eventEntry, clickIntent);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -336,9 +352,10 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
      * @param colorizeEntireRow Подсвечивать цветом события всю строку
      * @return Детали события
      */
-    private StringBuilder getEventDetails(String[] singleEventArray, String eventInfo, RemoteViews views, String colorDate,
+    private List<String> getEventDetails(String[] singleEventArray, String eventInfo, RemoteViews views, String colorDate,
                                           int eventDistance_Days, String eventDistance, int dateColorId, AtomicBoolean colorizeEntireRow) {
 
+        List<String> columns = new ArrayList<>();
         StringBuilder eventDetails = new StringBuilder();
 
         try {
@@ -572,15 +589,22 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Tab_ID)) || eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Tab2_ID))) {
 
-                    eventDetails.append("&emsp;");
+                    columns.add(eventDetails.toString());
+                    eventDetails.setLength(0);
 
                 }
             }
+
+            if (eventDetails.length() - eventDetails.lastIndexOf(Constants.HTML_BR) == Constants.HTML_BR.length()) {
+                eventDetails.setLength(eventDetails.lastIndexOf(Constants.HTML_BR));
+            }
+
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-        return eventDetails;
+        columns.add(eventDetails.toString());
+        return columns;
     }
 
     @Nullable

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.03.2026, 12:40
+ *  * Created by Vladimir Belov on 12.03.2026, 01:23
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 11.03.2026, 12:01
+ *  * Last modified 12.03.2026, 00:51
  *
  */
 
@@ -6241,7 +6241,7 @@ public class ContactsEvents {
 
             if (age > 0) {
 
-                if (eventType.equals(Constants.EventType_BirthDay)) {
+                if (eventType.equals(Constants.EventType_BirthDay) && (TextUtils.isEmpty(contactID) || !deathDatesForIds.containsKey(contactID))) {
 
                     //Вычисляем 5K даты
                     long days = AppDateUtils.countDaysDiff(eventDateFirstTime, currentDay);

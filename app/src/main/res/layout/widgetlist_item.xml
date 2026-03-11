@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.05.2025, 01:10
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 20.05.2025, 10:54
+  ~  * Created by Vladimir Belov on 12.03.2026, 01:23
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 12.03.2026, 00:10
   ~  */
   -->
 
@@ -23,10 +23,33 @@
         android:scaleType="fitCenter" />
 
     <TextView
-        android:id="@+id/eventCaption"
-        android:layout_width="match_parent"
+        android:id="@+id/eventCaption1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:gravity="start"
+        android:fontFamily="sans-serif-condensed"
+        android:contentDescription="@string/hint_EventDetails"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/eventCaption2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="start"
+        android:paddingStart="5dp"
+        android:fontFamily="sans-serif-condensed"
+        android:contentDescription="@string/hint_EventDetails"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/eventCaption3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="start"
+        android:paddingStart="5dp"
         android:fontFamily="sans-serif-condensed"
         android:contentDescription="@string/hint_EventDetails"
         android:textColor="@color/white" />
