@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
+  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 11.03.2026, 12:35
+  ~  * Last modified 15.03.2026, 20:24
   ~  */
   -->
 
@@ -710,7 +710,9 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Detalles del evento</string>
-    <string name="pref_Widgets_EventInfo_summary">Qué detalles de eventos y elementos de widget mostrar de forma predeterminada</string>
+    <string name="pref_Widgets_EventInfo_default_summary">Qué detalles de eventos y elementos de widget mostrar de forma predeterminada</string>
+    <string name="pref_Widgets_EventInfo_summary">Qué detalles de eventos y elementos de widget mostrar</string>
+    <string name="pref_Widgets_EventInfo_list_summary">Qué detalles del evento y elementos del widget mostrar. Mediante pestañas, puede dividir los datos en columnas separadas (hasta tres). Las columnas tienen el mismo ancho. Si añades un "expansor" dentro de una columna, esta tendrá el doble de ancho</string>
 
     <string name="pref_EventInfo_None">Nada</string>
     <string name="pref_EventInfo_Border">Borde del widget</string>
@@ -759,6 +761,7 @@
     <string name="pref_EventInfo_BoldEnd">"- negrita - (fin)"</string>
     <string name="pref_EventInfo_Tab">"- pestaña -"</string>
     <string name="pref_EventInfo_Tab2">"- pestaña - "</string>
+    <string name="pref_EventInfo_Expander">"- expansor -"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>

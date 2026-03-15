@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
+  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 11.03.2026, 12:25
+  ~  * Last modified 15.03.2026, 20:25
   ~  */
   -->
 
@@ -710,7 +710,9 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">"Détails de l'événement"</string>
-    <string name="pref_Widgets_EventInfo_summary">"Quels détails de l'événement et éléments du widget afficher par défaut"</string>
+    <string name="pref_Widgets_EventInfo_default_summary">"Quels détails d'événement et éléments de widget afficher par défaut"</string>
+    <string name="pref_Widgets_EventInfo_summary">"Quels détails d'événement et éléments de widget afficher"</string>
+    <string name="pref_Widgets_EventInfo_list_summary">"Choisissez les détails de l'événement et les éléments du widget à afficher. À l'aide d'onglets, vous pouvez répartir les données en colonnes (jusqu'à trois). Les colonnes ont la même largeur. L'ajout d'un élément extensible à l'intérieur d'une colonne doublera sa largeur"</string>
 
     <string name="pref_EventInfo_None">Aucun</string>
     <string name="pref_EventInfo_Border">Bordure du widget</string>
@@ -759,6 +761,7 @@
     <string name="pref_EventInfo_BoldEnd">"- gras - (fin)"</string>
     <string name="pref_EventInfo_Tab">"- onglet -"</string>
     <string name="pref_EventInfo_Tab2">"- onglet - "</string>
+    <string name="pref_EventInfo_Expander">"- expandeur -"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>

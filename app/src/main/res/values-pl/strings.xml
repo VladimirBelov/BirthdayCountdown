@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
+  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 11.03.2026, 12:19
+  ~  * Last modified 15.03.2026, 20:26
   ~  */
   -->
 
@@ -710,7 +710,9 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Szczegóły wydarzenia</string>
-    <string name="pref_Widgets_EventInfo_summary">Które szczegóły wydarzenia i elementy widżetu mają być wyświetlane domyślnie</string>
+    <string name="pref_Widgets_EventInfo_default_summary">Które szczegóły wydarzenia i elementy widżetu mają być wyświetlane domyślnie</string>
+    <string name="pref_Widgets_EventInfo_summary">Które szczegóły wydarzenia i elementy widżetu mają być wyświetlane</string>
+    <string name="pref_Widgets_EventInfo_list_summary">Które szczegóły wydarzenia i elementy widżetu mają być wyświetlane? Za pomocą zakładek możesz podzielić dane na osobne kolumny (maksymalnie trzy). Kolumny mają równą szerokość. Jeśli dodasz „rozszerzacz” wewnątrz kolumny, kolumna będzie dwa razy szersza</string>
 
     <string name="pref_EventInfo_None">Nic</string>
     <string name="pref_EventInfo_Border">Obramowanie widżetu</string>
@@ -759,6 +761,7 @@
     <string name="pref_EventInfo_BoldEnd">"- pogrubienie - (koniec)"</string>
     <string name="pref_EventInfo_Tab">"- tabulator -"</string>
     <string name="pref_EventInfo_Tab2">"- tabulator - "</string>
+    <string name="pref_EventInfo_Expander">"- ekspander - "</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>

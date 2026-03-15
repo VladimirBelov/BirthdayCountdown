@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
+  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 11.03.2026, 12:26
+  ~  * Last modified 15.03.2026, 20:22
   ~  */
   -->
 
@@ -710,7 +710,9 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Дэталі падзеі</string>
-    <string name="pref_Widgets_EventInfo_summary">Якія дэталі падзеі і элементы віджэта паказваць па змаўчанні</string>
+    <string name="pref_Widgets_EventInfo_default_summary">Якія дэталі падзеі і элементы віджэта паказваць па змаўчанні</string>
+    <string name="pref_Widgets_EventInfo_summary">Якія дэталі падзеі і элементы віджэта паказваць</string>
+    <string name="pref_Widgets_EventInfo_list_summary">Якія дэталі падзеі і элементы фішкі паказваць. З дапамогай "табуляцый" можна дзяліць дадзеныя на асобныя калонкі (да трох). Калонкі маюць аднолькавую шырыню. Калі ўнутр калонкі дадаць "пашыральнік", то гэтая калонка будзе ў 2 разы шырэй</string>
 
     <string name="pref_EventInfo_None">Нічога</string>
     <string name="pref_EventInfo_Border">Бардзюр віджэта</string>
@@ -759,6 +761,7 @@
     <string name="pref_EventInfo_BoldEnd">"- паўтлусты - (канец)"</string>
     <string name="pref_EventInfo_Tab">"- укладка -"</string>
     <string name="pref_EventInfo_Tab2">"- укладка - "</string>
+    <string name="pref_EventInfo_Expander">"- пашыральнік -"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>

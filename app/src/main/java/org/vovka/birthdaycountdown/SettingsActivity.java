@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2026, 13:24
+ *  * Created by Vladimir Belov on 15.03.2026, 22:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.03.2026, 12:55
+ *  * Last modified 15.03.2026, 21:51
  *
  */
 
@@ -87,6 +87,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.AnyRes;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
@@ -646,6 +647,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             //Уведомления
             setSummaryForNotifications();
 
+            //Викторина
+            setSummaryForQuizQuestions();
+            setSummaryForList(
+                    R.string.pref_Quiz_Difficulty_key, R.integer.pref_Quiz_Difficulty_default, R.string.pref_Quiz_Difficulty_summary,
+                    R.array.pref_Quiz_Difficulty_values, R.array.pref_Quiz_Difficulty_values);
+            setSummaryForEventSources(R.string.pref_Quiz_EventSources_key, R.string.pref_Quiz_EventSources_summary);
+            setSummaryForList(
+                    R.string.pref_Quiz_AutoNext_key, R.integer.pref_Quiz_AutoNext_default, R.string.pref_Quiz_AutoNext_summary,
+                    R.array.pref_Quiz_AutoNext_entries, R.array.pref_Quiz_AutoNext_values);
+
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -889,7 +900,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
-    private void setSummaryForList(@StringRes int prefKey, @StringRes int prefDefaultKey,@StringRes int prefSummaryKey,
+    private void setSummaryForList(@StringRes int prefKey, @AnyRes int prefDefaultKey, @StringRes int prefSummaryKey,
                                    @ArrayRes int prefEntries, @ArrayRes int prefValues) {
 
         try {
@@ -907,7 +918,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     return updateSummary(prefKey, realValue, getString(prefSummaryKey), 0, 0);
                 } else {return false;}
             });
-            final String currentValue = preferences.getString(getString(prefKey), getString(prefDefaultKey));
+            final String currentValue = preferences.getString(getString(prefKey), getResourceString(prefDefaultKey));
             if (arrayValues.contains(currentValue)) {
                 final String value = arrayEntries.get(arrayValues.indexOf(currentValue));
                 updateSummary(prefKey, value, getString(prefSummaryKey), 0, 0);
@@ -973,6 +984,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     private void setSummaryForEventSources(@StringRes int prefKey, @StringRes int prefSummaryKey) {
+        //Добавлять и в onCreate и в getSelectedSources
 
         try {
 
@@ -1000,6 +1012,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
+    }
+
+    private void setSummaryForQuizQuestions() {
+
+        try {
+
+            List<String> selectedQuestions = new ArrayList<>();
+            for (QuizActivity.QuestionType type : QuizActivity.QuestionType.values()) {
+                if (eventsData.preferences_quiz_Questions.contains(type.getCode(this))) {
+                    selectedQuestions.add(type.getDisplayName(this));
+                }
+            }
+            String summary = selectedQuestions.isEmpty() ? getString(R.string.msg_all) : TextUtils.join(Constants.STRING_EOL, selectedQuestions);
+            updateSummary(R.string.pref_Quiz_Questions_key, summary, getString(R.string.pref_Quiz_Questions_summary), 0, 0);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     private boolean updateSummary(@StringRes int prefKey, Object value, @NonNull String template, @ColorInt int colorCircle, @DrawableRes int drawable) {
@@ -1580,7 +1611,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Quiz_Questions_key).equals(key)) {
 
-                eventsData.selectQuizQuestions(this, null);
+                eventsData.selectQuizQuestions(this, this::setSummaryForQuizQuestions);
                 return true;
 
             }
@@ -4131,7 +4162,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 eventsData.preferences_quiz_sources.clear();
                 eventsData.preferences_quiz_sources.addAll(newSelectedSources);
                 eventsData.savePreferences();
-                //setSummaryForEventSources(R.string.pref_Notifications2_EventSources_key, R.string.pref_Notifications_EventSources_description);
+                setSummaryForEventSources(R.string.pref_Quiz_EventSources_key, R.string.pref_Quiz_EventSources_summary);
 
             }
 
@@ -4604,5 +4635,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     private synchronized static void setDisplayMetrics(DisplayMetrics ds) {displayMetrics = ds;}
+
+    /** Хелпер для безопасного получения строки из ресурса (String или Integer)
+     * @param resId id ресурса
+     * @return Значение
+     */
+    private String getResourceString(@AnyRes int resId) {
+        if (resId == 0) {
+            return null; // Или пустую строку, в зависимости от логики
+        }
+        try {
+            // Пробуем как строку
+            return getString(resId);
+        } catch (Resources.NotFoundException e) {
+            try {
+                // Если не строка, пробуем как целое число
+                return String.valueOf(getResources().getInteger(resId));
+            } catch (Resources.NotFoundException e2) {
+                // Если ни то ни другое — логгируем или возвращаем null
+                return null;
+            }
+        }
+    }
 
 }

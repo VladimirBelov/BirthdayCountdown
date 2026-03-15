@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2026, 13:24
+ *  * Created by Vladimir Belov on 15.03.2026, 22:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.03.2026, 00:44
+ *  * Last modified 12.03.2026, 11:06
  *
  */
 
@@ -334,6 +334,7 @@ public final class Constants {
     static final int TIME_SPEED_LOAD_CRITICAL = 700;
     static final int TIME_SPEED_LOAD_OVERTIME = 3000;
     static final int TIME_FORCE_UPDATE = 30000;
+    static final int TIME_WIDGET_UPDATE_COOLDOWN = 5000;
     static final int TIME_NOTIFY_COOLDOWN = 30000;
     static final int PREV_EVENTS_MAX_DAYS = 14;
     static final int RECENT_FACTS_MAX = 10;

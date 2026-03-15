@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
+  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 11.03.2026, 11:40
+  ~  * Last modified 15.03.2026, 20:16
   ~  */
   -->
 
@@ -710,7 +710,9 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Детали события</string>
-    <string name="pref_Widgets_EventInfo_summary">Какие детали события и элементы виджета показывать по умолчанию</string>
+    <string name="pref_Widgets_EventInfo_default_summary">Какие детали события и элементы виджета показывать по умолчанию</string>
+    <string name="pref_Widgets_EventInfo_summary">Какие детали события и элементы виджета показывать</string>
+    <string name="pref_Widgets_EventInfo_list_summary">Какие детали события и элементы виджета показывать. С помощью "табуляций" можно делить данные на отдельные колонки (до трёх). Колонки имеют одинаковую ширину. Если внутрь колонки добавить "расширитель", то эта колонка будет в 2 раза шире</string>
 
     <string name="pref_EventInfo_None">Ничего</string>
     <string name="pref_EventInfo_Border">Бордюр виджета</string>
@@ -759,6 +761,7 @@
     <string name="pref_EventInfo_BoldEnd">"- жирным - (конец)"</string>
     <string name="pref_EventInfo_Tab">"- табуляция -"</string>
     <string name="pref_EventInfo_Tab2">"- табуляция - "</string>
+    <string name="pref_EventInfo_Expander">"- расширитель -"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>

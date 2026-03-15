@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
+  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 11.03.2026, 11:43
+  ~  * Last modified 15.03.2026, 20:17
   ~  */
   -->
 
@@ -710,7 +710,9 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Event details</string>
-    <string name="pref_Widgets_EventInfo_summary">What event details and widget elements to show by default</string>
+    <string name="pref_Widgets_EventInfo_default_summary">What event details and widget elements to show by default</string>
+    <string name="pref_Widgets_EventInfo_summary">What event details and widget elements to show</string>
+    <string name="pref_Widgets_EventInfo_list_summary">Which event details and widget elements to display. Using tabs, you can divide data into separate columns (up to three). Columns are equal in width. Adding an expander inside a column will double the width of that column</string>
 
     <string name="pref_EventInfo_None">None</string>
     <string name="pref_EventInfo_Border">Widget border</string>
@@ -759,6 +761,7 @@
     <string name="pref_EventInfo_BoldEnd">"- bold - (end)"</string>
     <string name="pref_EventInfo_Tab">"- tab -"</string>
     <string name="pref_EventInfo_Tab2">"- tab - "</string>
+    <string name="pref_EventInfo_Expander">"- expander -"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
@@ -2137,6 +2140,7 @@ Long click on item to select color"</string>
     <string name="pref_EventInfo_Tab_ID" translatable="false">46</string>
     <string name="pref_EventInfo_ShowNearestEventPhoto_ID" translatable="false">47</string>
     <string name="pref_EventInfo_Tab2_ID" translatable="false">48</string>
+    <string name="pref_EventInfo_Expander_ID" translatable="false">49</string>
 
     <string-array name="pref_Widgets_EventInfo_values" translatable="false">
         <item>@string/pref_EventInfo_Border_ID</item>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.10.2025, 03:14
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 05.10.2025, 21:17
+ *  * Created by Vladimir Belov on 15.03.2026, 22:05
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 15.03.2026, 21:14
  *
  */
 
@@ -14,6 +14,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+/**
+ * Стандартный ListPreference + возможность использования в Summary CharSequence (например, для отображения цветного текста)
+ */
 public class CustomListPreference extends ListPreference {
 
     private CharSequence mSummary;

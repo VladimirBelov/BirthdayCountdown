@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
+  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 08.03.2026, 21:03
+  ~  * Last modified 15.03.2026, 21:11
   ~  */
   -->
 
@@ -874,7 +874,7 @@
         <MultiSelectListPreference
             android:key="@string/pref_Widgets_EventInfo_key"
             android:title="@string/pref_Widgets_EventInfo_title"
-            android:summary="@string/pref_Widgets_EventInfo_summary"
+            android:summary="@string/pref_Widgets_EventInfo_default_summary"
             android:defaultValue="@array/pref_Widgets_EventInfo_values_default"
             android:entries="@array/pref_Widgets_EventInfo_entries"
             android:entryValues="@array/pref_Widgets_EventInfo_values"
@@ -1251,7 +1251,7 @@
             android:icon="@android:drawable/ic_menu_more"
             android:dialogIcon="@android:drawable/ic_menu_more"/>
 
-        <ListPreference
+        <org.vovka.birthdaycountdown.CustomListPreference
             android:key="@string/pref_Quiz_Difficulty_key"
             android:title="@string/pref_Quiz_Difficulty_title"
             android:summary="@string/pref_Quiz_Difficulty_summary"
@@ -1269,7 +1269,7 @@
             android:icon="@android:drawable/ic_menu_more"
             android:dialogIcon="@android:drawable/ic_menu_more"/>
 
-        <ListPreference
+        <org.vovka.birthdaycountdown.CustomListPreference
             android:key="@string/pref_Quiz_AutoNext_key"
             android:title="@string/pref_Quiz_AutoNext_title"
             android:summary="@string/pref_Quiz_AutoNext_summary"

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2026, 17:39
+ *  * Created by Vladimir Belov on 15.03.2026, 22:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.02.2026, 13:33
+ *  * Last modified 12.03.2026, 11:18
  *
  */
 
@@ -59,6 +59,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
     private List<String> widgetPref_eventInfo = new ArrayList<>();
     int widgetPref_onClick = 0;
     ContactsEvents eventsData;
+    long lastUpdated = 0;
 
     public EventPhotoListDataProvider(Context context, Intent intent) {
         this.context = context;
@@ -407,6 +408,8 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
         try {
 
             if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) return;
+            if (System.currentTimeMillis() - lastUpdated < Constants.TIME_WIDGET_UPDATE_COOLDOWN) return;
+            lastUpdated = System.currentTimeMillis();
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(context);

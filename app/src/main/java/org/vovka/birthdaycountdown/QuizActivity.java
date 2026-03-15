@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.03.2026, 21:00
+ *  * Created by Vladimir Belov on 15.03.2026, 22:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 11.03.2026, 20:59
+ *  * Last modified 12.03.2026, 16:49
  *
  */
 
@@ -295,9 +295,6 @@ public class QuizActivity extends Activity {
             }
         }
 
-        // 👇 Определяем, нужно ли разрешать переносы
-        boolean allowLineBreaks = answers.size() > 2;
-
         // Привязываем ответы к кнопкам
         for (int i = 0; i < answerButtons.length; i++) {
             TextView btn = answerButtons[i];
@@ -311,25 +308,18 @@ public class QuizActivity extends Activity {
                 btn.setVisibility(View.VISIBLE);
                 btn.setEnabled(true);
 
-                // 👇 Динамически настраиваем переносы
-                if (allowLineBreaks) {
-                    // > 2 кнопок: разрешаем 2 строки + перенос по слогам
-                    btn.setMaxLines(2);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        btn.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NORMAL);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            btn.setBreakStrategy(LineBreaker.BREAK_STRATEGY_HIGH_QUALITY);
-                        }
-                    }
+                btn.setMaxLines(3);
+                btn.setEllipsize(TextUtils.TruncateAt.END);
 
-                } else {
-                    // < 3 кнопок: одна строка, без переносов
-                    btn.setMaxLines(1);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        btn.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NONE);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            btn.setBreakStrategy(LineBreaker.BREAK_STRATEGY_SIMPLE);
-                        }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    btn.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NORMAL);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        btn.setAutoSizeTextTypeUniformWithConfiguration(
+                                10, 16, 2, TypedValue.COMPLEX_UNIT_SP
+                        );
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        btn.setBreakStrategy(LineBreaker.BREAK_STRATEGY_HIGH_QUALITY);
                     }
                 }
 
@@ -340,20 +330,6 @@ public class QuizActivity extends Activity {
                 btn.setEnabled(false);
             }
             btn.setTextColor(defaultAnswerTextColor);
-        }
-
-        // AutoSizeText для адаптивного размера шрифта
-        if (allowLineBreaks) {
-            for (TextView btn : answerButtons) {
-                if (btn != null && btn.getVisibility() == View.VISIBLE) {
-                    btn.setEllipsize(TextUtils.TruncateAt.END);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        btn.setAutoSizeTextTypeUniformWithConfiguration(
-                                12, 16, 2, TypedValue.COMPLEX_UNIT_SP
-                        );
-                    }
-                }
-            }
         }
 
         // Активируем кнопки
@@ -1395,7 +1371,7 @@ public class QuizActivity extends Activity {
          */
         private class HolidayDayGenerator extends BaseQuestionGenerator {
 
-            Matcher skipHolidays = Pattern.compile(context.getString(R.string.quiz_holiday_day_ignore_titles), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+            final Matcher skipHolidays = Pattern.compile(context.getString(R.string.quiz_holiday_day_ignore_titles), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
 
             @Override
             public QuestionType getType() {

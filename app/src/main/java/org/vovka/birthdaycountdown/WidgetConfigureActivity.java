@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.2026, 14:03
+ *  * Created by Vladimir Belov on 15.03.2026, 22:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.02.2026, 12:51
+ *  * Last modified 15.03.2026, 20:13
  *
  */
 
@@ -638,6 +638,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     add(getString(R.string.pref_EventInfo_BoldEnd));
                 }});
 
+                TextView hintEventInfo = findViewById(R.id.hintEventInfo);
+                if (hintEventInfo != null) {
+                    hintEventInfo.setText(R.string.pref_Widgets_EventInfo_list_summary);
+                }
+
             } else {
                 spinnerEventInfo.setZeroSelectedTitle(getString(R.string.widget_config_event_info_empty));
                 spinnerEventInfo.setZeroSelectedIndex(0);
@@ -728,6 +733,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_BoldEnd_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_BoldEnd));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Tab_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Tab));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Tab2_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Tab2));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Expander_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Expander));
                     break;
 
                 case Constants.WIDGET_TYPE_PHOTO_LIST:

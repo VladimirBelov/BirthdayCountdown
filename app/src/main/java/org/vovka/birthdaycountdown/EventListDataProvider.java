@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.03.2026, 01:23
+ *  * Created by Vladimir Belov on 15.03.2026, 22:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.03.2026, 01:00
+ *  * Last modified 12.03.2026, 15:46
  *
  */
 
@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
 
@@ -79,8 +80,9 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
     List<String> widgetPref;
     private List<String> widgetPref_eventInfo = new ArrayList<>();
     int widgetPref_onClick = 0;
-    int columns = 1;
+    int columnToExpand = 0;
     ContactsEvents eventsData;
+    long lastUpdated = 0;
 
     public EventListDataProvider(Context context, Intent intent) {
         this.context = context;
@@ -108,6 +110,8 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
         try {
 
             if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) return;
+            if (System.currentTimeMillis() - lastUpdated < Constants.TIME_WIDGET_UPDATE_COOLDOWN) return;
+            lastUpdated = System.currentTimeMillis();
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(context);
@@ -132,7 +136,6 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 if (widgetPref.get(4).isEmpty() || widgetPref.get(4).equals(localizedResources.getString(R.string.pref_EventInfo_None_ID))) {
                     widgetPref.set(4, localizedResources.getString(R.string.widget_config_defaultPref_List).split(Constants.STRING_COMMA)[4]);
                 }
-
                 widgetPref_eventInfo = Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS));
             }
 
@@ -228,10 +231,8 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                     eventListView.add(event);
                 }
             }
-            //Определяем количество колонок с данными
-            columns = 1;
-            if (widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_Tab_ID))) columns++;
-            if (widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_Tab2_ID))) columns++;
+            //Определяем, какую колонку расширить
+            columnToExpand = getExpandedColumnIndex(widgetPref_eventInfo);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -240,10 +241,39 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
     }
 
+    private int getExpandedColumnIndex(@NonNull List<String> widgetPrefEventInfo) {
+        int ind = 0;
+        if (!widgetPrefEventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_Expander_ID))) return ind;
+
+        int currentColumn = 1;
+        for (String eventItem : widgetPref_eventInfo) {
+            if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Tab_ID)) || eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Tab2_ID))) {
+                currentColumn++;
+            } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Expander_ID))) {
+                return currentColumn;
+            }
+        }
+        return ind;
+    }
+
     @Override
     public RemoteViews getViewAt(int position) {
 
-        RemoteViews views = new RemoteViews(this.context.getPackageName(), R.layout.widgetlist_item);
+        RemoteViews views;
+        switch (columnToExpand) {
+            case 1:
+                views = new RemoteViews(this.context.getPackageName(), R.layout.widgetlist_item_expanded1);
+                break;
+            case 2:
+                views = new RemoteViews(this.context.getPackageName(), R.layout.widgetlist_item_expanded2);
+                break;
+            case 3:
+                views = new RemoteViews(this.context.getPackageName(), R.layout.widgetlist_item_expanded3);
+                break;
+            default:
+                views = new RemoteViews(this.context.getPackageName(), R.layout.widgetlist_item);
+        }
+
         views.setViewVisibility(R.id.eventCaption1, View.GONE);
         views.setViewVisibility(R.id.eventCaption2, View.GONE);
         views.setViewVisibility(R.id.eventCaption3, View.GONE);
@@ -310,7 +340,10 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 } else {
                     columnText = column;
                 }
-                eventText.append(columnText).append(Constants.STRING_SPACE);
+                if (eventText.length() > 0) {
+                    eventText.append(Constants.STRING_SPACE);
+                }
+                eventText.append(columnText);
 
                 int id = 0;
                 switch (colNum) {
@@ -355,7 +388,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
     private List<String> getEventDetails(String[] singleEventArray, String eventInfo, RemoteViews views, String colorDate,
                                           int eventDistance_Days, String eventDistance, int dateColorId, AtomicBoolean colorizeEntireRow) {
 
-        List<String> columns = new ArrayList<>();
+        List<String> detailsList = new ArrayList<>();
         StringBuilder eventDetails = new StringBuilder();
 
         try {
@@ -589,22 +622,24 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Tab_ID)) || eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Tab2_ID))) {
 
-                    columns.add(eventDetails.toString());
+                    detailsList.add(eventDetails.toString());
                     eventDetails.setLength(0);
 
                 }
             }
 
-            if (eventDetails.length() - eventDetails.lastIndexOf(Constants.HTML_BR) == Constants.HTML_BR.length()) {
-                eventDetails.setLength(eventDetails.lastIndexOf(Constants.HTML_BR));
+            int len = eventDetails.length();
+            int brLen = Constants.HTML_BR.length();
+            if (len >= brLen && eventDetails.substring(len - brLen).equals(Constants.HTML_BR)) {
+                eventDetails.setLength(len - brLen);
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-        columns.add(eventDetails.toString());
-        return columns;
+        detailsList.add(eventDetails.toString());
+        return detailsList;
     }
 
     @Nullable

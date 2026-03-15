@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.03.2026, 12:40
+  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 11.03.2026, 12:33
+  ~  * Last modified 15.03.2026, 20:22
   ~  */
   -->
 
@@ -710,7 +710,9 @@
     </string-array>
 
     <string name="pref_Widgets_EventInfo_title">Podrobnosti události</string>
-    <string name="pref_Widgets_EventInfo_summary">Jaké podrobnosti události a prvky widgetu zobrazit ve výchozím nastavení</string>
+    <string name="pref_Widgets_EventInfo_default_summary">Jaké podrobnosti události a prvky widgetu zobrazit ve výchozím nastavení</string>
+    <string name="pref_Widgets_EventInfo_summary">Jaké podrobnosti události a prvky widgetu zobrazit</string>
+    <string name="pref_Widgets_EventInfo_list_summary">Které podrobnosti o událostech a prvky widgetu se mají zobrazit. Pomocí tabulátorů můžete rozdělit data do samostatných sloupců (až do tří). Sloupce mají stejnou šířku. Přidáním expandéru do sloupce se šířka daného sloupce zdvojnásobí</string>
 
     <string name="pref_EventInfo_None">Žádné</string>
     <string name="pref_EventInfo_Border">Ohraničení widgetu</string>
@@ -759,6 +761,7 @@
     <string name="pref_EventInfo_BoldEnd">"- tučné - (konec)"</string>
     <string name="pref_EventInfo_Tab">"- karta -"</string>
     <string name="pref_EventInfo_Tab2">"- karta - "</string>
+    <string name="pref_EventInfo_Expander">"- expandér -"</string>
 
     <string-array name="pref_Widgets_EventInfo_entries">
         <item>@string/pref_EventInfo_Border</item>
