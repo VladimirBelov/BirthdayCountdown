@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.03.2026, 22:05
+ *  * Created by Vladimir Belov on 18.03.2026, 01:07
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.03.2026, 21:51
+ *  * Last modified 18.03.2026, 00:58
  *
  */
 
@@ -149,6 +149,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private int runningQueue = 0;
     boolean skipSharedPreferenceChangedEvent = false;
     private Insets statusBarInsets;
+    private CustomTextPreference prefEnabledFeatures;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -208,6 +209,28 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 addPreferencesFromResource(R.xml.settings);
             }
             getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+
+            prefEnabledFeatures = (CustomTextPreference) findPreference(getString(R.string.pref_EnabledFeatures_key));
+            if (prefEnabledFeatures != null) {
+                prefEnabledFeatures.setValueProvider(() -> {
+                    int countAll = 0;
+                    int countEnabled = 0;
+                    for (ContactsEvents.EnabledFeatures feature: ContactsEvents.EnabledFeatures.values()) {
+                        countAll++;
+                        if (eventsData.isEnabled(feature.getCode())) countEnabled++;
+                    }
+                    return countEnabled + "/" + countAll;
+                });
+
+                prefEnabledFeatures.setOnPreferenceClickListener(preference -> {
+                    selectEnabledFeatures(() -> {
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    });
+                    return true;
+                });
+            }
 
             Preference notificationSoundPref = findPreference(getString(R.string.pref_Notifications_Ringtone_key));
             if (notificationSoundPref != null && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
@@ -271,6 +294,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 eventsData.getEvents();
             }
 
+            if (prefEnabledFeatures != null) {
+                prefEnabledFeatures.refresh();
+            }
             updateTitles();
             updateVisibility();
             if (eventsData.preferences_extrafun) setSummaryUpdate();
@@ -405,7 +431,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     R.string.pref_Notifications2_FactEvents_Count_key, prefNotify2FactsCount,
                     eventsData.preferences_extrafun ? R.string.pref_Notifications2_EventInfo_key : R.string.pref_Notifications2_Events_key);
 
-            hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Quiz_key);
+            hidePreference(!eventsData.isEnabled(Constants.FEATURE_QUIZ), 0, R.string.pref_Quiz_key);
 
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Tools_key);
             hidePreference(!eventsData.preferences_debug_on, R.string.pref_Tools_key, R.string.pref_Tools_Preferences_Show_key);
@@ -2546,7 +2572,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 calSelected.add(preferences_calendars.contains(entry.getKey()));
             }
 
-            ListAdapter adapter = new ContactsEvents.MultiCheckboxesAdapter(this, calTitles, null, null, calColors, ta);
+            ListAdapter adapter = new ContactsEvents.MultiCheckboxesAdapter(this, calTitles, null, null, null, calColors, ta);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setTitle(R.string.pref_CustomEvents_Calendars_title)
@@ -3650,6 +3676,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_CustomEvents_MultiType_Calendars_key),
                         getString(R.string.pref_CustomEvents_Holiday_Public_Ids_key),
                         getString(R.string.pref_CustomEvents_Fact_Bundled_Ids_key),
+                        getString(R.string.pref_EnabledFeatures_key),
                         getString(R.string.pref_List_Events_key),
                         getString(R.string.pref_Events_Hidden_key),
                         getString(R.string.pref_Events_Hidden_rawIds_key),
@@ -4494,6 +4521,98 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    /**
+     * Показывает диалог выбора доп. функций
+     * @param onConfirmed коллбэк, который выполнится при нажатии "ОК"
+     */
+    void selectEnabledFeatures(@Nullable Runnable onConfirmed) {
+        try {
+
+            TypedArray ta = getTheme().obtainStyledAttributes(R.styleable.Theme);
+
+            List<String> featTitles = new ArrayList<>();
+            List<String> featDescriptions = new ArrayList<>();
+            List<String> featIds = new ArrayList<>();
+            List<Integer> featIcons = new ArrayList<>();
+            List<String> featIconsPackages = new ArrayList<>();
+            String packageName = this.getPackageName();
+
+            for (ContactsEvents.EnabledFeatures feature: ContactsEvents.EnabledFeatures.values()) {
+                featTitles.add(feature.getName(this));
+                featDescriptions.add(feature.getDescription(this));
+                featIds.add(feature.getCode());
+                featIcons.add(feature.getIcon());
+                featIconsPackages.add(packageName);
+            }
+
+            ListAdapter adapter = new ContactsEvents.MultiCheckboxesAdapter(this, featTitles,
+                    featDescriptions, featIcons, featIconsPackages, null, ta);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_ExtraFun_On_title)
+                    .setIcon(android.R.drawable.ic_menu_manage)
+                    .setAdapter(adapter, null)
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+
+                        Set<String> featIdsSelected = new HashSet<>();
+                        SparseBooleanArray checked = ((AlertDialog) dialog).getListView().getCheckedItemPositions();
+                        for (int i = 0; i < checked.size(); i++) {
+                            if (checked.get(checked.keyAt(i))) {
+                                featIdsSelected.add(featIds.get(checked.keyAt(i)));
+                            }
+                        }
+                        eventsData.setEnabledFeatures(featIdsSelected);
+                        eventsData.savePreferences();
+
+                        // 👇 Вызываем коллбэк, если передан
+                        if (onConfirmed != null) {
+                            onConfirmed.run();
+                        }
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setNeutralButton(R.string.msg_all, null)
+                    .setCancelable(true);
+
+            AlertDialog alertToShow = builder.create();
+
+            ListView listView = alertToShow.getListView();
+            listView.setItemsCanFocus(false);
+            listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+            alertToShow.setOnShowListener(arg0 -> {
+
+                //Только здесь работает
+                int i = 0;
+                for (ContactsEvents.EnabledFeatures feature: ContactsEvents.EnabledFeatures.values()) {
+                    if (eventsData.isEnabled(feature.getCode())) {
+                        listView.setItemChecked(i, true);
+                    }
+                    i++;
+                }
+
+                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> listView.post(() -> {
+                    if (listView.getCheckedItemCount() < listView.getCount()) {
+                        for (int item = 0; item < listView.getCount(); item++) {
+                            listView.setItemChecked(item, true);
+                        }
+                    } else {
+                        listView.clearChoices();
+                    }
+                    listView.invalidateViews();
+                }));
+
+            });
+
+            alertToShow.setOnDismissListener(dialog -> ta.recycle());
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
     //https://stackoverflow.com/questions/10932832/multiple-choice-alertdialog-with-custom-adapter
     //https://stackoverflow.com/questions/8533394/icons-in-a-list-dialog
     //https://stackoverflow.com/questions/16932895/how-to-override-the-style-of-android-r-layout-simple-list-item-multiple-choice
@@ -4652,7 +4771,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 // Если не строка, пробуем как целое число
                 return String.valueOf(getResources().getInteger(resId));
             } catch (Resources.NotFoundException e2) {
-                // Если ни то ни другое — логгируем или возвращаем null
+                // Если ни то, ни другое — логируем или возвращаем null
                 return null;
             }
         }

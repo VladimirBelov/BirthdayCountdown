@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.03.2026, 01:23
+ *  * Created by Vladimir Belov on 18.03.2026, 01:07
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.03.2026, 00:51
+ *  * Last modified 18.03.2026, 01:04
  *
  */
 
@@ -87,6 +87,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.IconCompat;
 import androidx.core.text.HtmlCompat;
 
+import org.jetbrains.annotations.NotNull;
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
@@ -151,9 +152,7 @@ public class ContactsEvents {
     static final int Position_eventLabel = 4;
     /** Ник */
     static final int Position_nickname = 5;
-    /** Массив дат события
-     * accountType: date: eventHash
-     */
+    /** Массив дат события: accountType: date: eventHash */
     static final int Position_dates = 6;
     /** Следующая дата появления события */
     static final int Position_eventDateNextTime = 7;
@@ -161,9 +160,8 @@ public class ContactsEvents {
     static final int Position_eventDateFirstTime = 8;
     /** Число дней до события */
     static final int Position_eventDistance = 9;
-    /** Число дней до события с дополнительной информацией
-     * Устанавливается в {@link ContactsEvents#getEventDistanceText}
-     */
+    /** Число дней до события с дополнительной информацией.
+     * Устанавливается в {@link ContactsEvents#getEventDistanceText} */
     static final int Position_eventDistanceText = 10;
     /** Наступающий возраст (число лет) */
     static final int Position_age = 11;
@@ -358,6 +356,7 @@ public class ContactsEvents {
     boolean preferences_debug_on;
     boolean preferences_info_on;
     boolean preferences_extrafun;
+    Set<String> preferences_enabled_features = new HashSet<>();
     String preferences_language;
     String preferences_Icon;
     boolean preferences_menustyle_compact;
@@ -681,17 +680,97 @@ public class ContactsEvents {
         }
     }
 
+    /**
+     * Дополнительные функции приложения
+     */
+    enum EnabledFeatures {
+
+        QUIZ(Constants.FEATURE_QUIZ, R.string.pref_Quiz_title, R.string.pref_Feature_Quiz_description, android.R.drawable.ic_menu_compass);
+
+        private final String code;
+        private final int nameResId;
+        private final int descriptionResId;
+        private final int iconResId;
+
+        EnabledFeatures (@NonNull String code, int nameResId, int descriptionResId, int iconResId) {
+            this.code = code;
+            this.nameResId = nameResId;
+            this.descriptionResId = descriptionResId;
+            this.iconResId = iconResId;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getName(Context context) {
+            return context.getResources().getString(nameResId);
+        }
+
+        public String getDescription(Context context) {
+            return context.getResources().getString(descriptionResId);
+        }
+
+        public int getIcon() {
+            return iconResId;
+        }
+
+        public static EnabledFeatures fromCode(Context context, String code) {
+            for (EnabledFeatures type : values()) {
+                if (type.getCode().equals(code)) return type;
+            }
+            return null;
+        }
+    }
+
+    @NotNull public Set<String> getEnabledFeatures() {
+        return preferences_enabled_features;
+    }
+
+    public void setEnabledFeatures(Set<String> newSet) {
+        preferences_enabled_features.clear();
+        preferences_enabled_features.addAll(newSet);
+    }
+
+    /** Включена ли доп. функция
+     * @param code Код доп. функции
+     * @return True - включена
+     */
+    public boolean isEnabled(String code) {
+        return preferences_enabled_features.contains(code);
+    }
+
+    /**
+     * Адаптер для множественного выбора значений
+     */
     static class MultiCheckboxesAdapter extends ArrayAdapter<String> {
 
         private static final String TAG = "MultiCheckboxesAdapter";
+        private final List<String> descriptions;
         private final List<Integer> images;
         private final List<String> packages;
         private final List<Integer> colorDots;
         private final TypedArray ta;
         private final PackageManager pm = getContext().getPackageManager();
 
-        MultiCheckboxesAdapter(Context context, @NonNull List<String> items, List<Integer> images, List<String> packages, List<Integer> colorDots, TypedArray theme) {
+        /**
+         * @param context Контекст вызова
+         * @param items Список заголовков
+         * @param descriptions Список описаний к заголовкам
+         * @param images Список иконок к заголовкам
+         * @param packages Пакеты для иконок
+         * @param colorDots Список цветов для показа цветных индикаторов слева от заголовков
+         * @param theme Цветовая тема
+         */
+        MultiCheckboxesAdapter(Context context,
+                               @NonNull List<String> items,
+                               List<String> descriptions,
+                               List<Integer> images,
+                               List<String> packages,
+                               List<Integer> colorDots,
+                               TypedArray theme) {
             super(context, R.layout.settings_list_item_multiple_choice, items);
+            this.descriptions = descriptions;
             this.images = images;
             this.packages = packages;
             this.colorDots = colorDots;
@@ -711,14 +790,28 @@ public class ContactsEvents {
                     textView.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
                 }
                 textView.setTextSize(16);
-                textView.setMaxLines(5);
+
+                if (descriptions != null) {
+                    textView.setMaxLines(10);
+                    // 👇 Формируем двухстрочный текст: <b>Заголовок</b><br/>Описание
+                    String title = getItem(position);
+                    String desc = (position < descriptions.size())
+                            ? descriptions.get(position) : Constants.STRING_EMPTY;
+
+                    String htmlText = "<b>" + StringUtils.escapeHtml(title) + "</b><br/><small>" +
+                            StringUtils.escapeHtml(desc) + "</small>";
+                    textView.setText(HtmlCompat.fromHtml(htmlText, HtmlCompat.FROM_HTML_MODE_LEGACY));
+                }
 
                 if (this.colorDots != null && this.colorDots.size() >= position - 1) {
                     @ColorInt Integer dotColor = this.colorDots.get(position);
                     if (dotColor != null) {
                         if (Color.alpha(dotColor) == 0 && ta != null) dotColor = ta.getColor(R.styleable.Theme_dialogBackgroundColor, dotColor);
                         textView.setText(HtmlCompat.fromHtml(
-                                Constants.FONT_COLOR_DOT_START + Integer.toHexString(dotColor & 0x00ffffff) + Constants.FONT_COLOR_DOT_END + textView.getText().toString()
+                                Constants.FONT_COLOR_DOT_START
+                                        + Integer.toHexString(dotColor & 0x00ffffff)
+                                        + Constants.FONT_COLOR_DOT_END
+                                        + textView.getText().toString()
                                 , HtmlCompat.FROM_HTML_MODE_LEGACY));
                     }
                 }
@@ -1395,6 +1488,7 @@ public class ContactsEvents {
             preferences_debug_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_Debug_On_key), getResources().getBoolean(R.bool.pref_Help_Debug_On_default));
             preferences_info_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_InfoMsg_On_key), getResources().getBoolean(R.bool.pref_Help_InfoMsg_On_default));
             preferences_extrafun = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_ExtraFun_On_key), getResources().getBoolean(R.bool.pref_Help_ExtraFun_On_default));
+            preferences_enabled_features = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_EnabledFeatures_key), new HashSet<>());
             //preferences_language = getPreferenceString(preferences, context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
             preferences_Icon = getPreferenceString(preferences, context.getString(R.string.pref_Icon_key), context.getString(R.string.pref_Icon_default));
             preferences_IconPackNumber = getPreferenceInt(preferences, context.getString(R.string.pref_IconPack_key), 0);
@@ -1914,8 +2008,7 @@ public class ContactsEvents {
                 shortcutIdsToRemove.add(Constants.SHORTCUT_FACTS);
             }
 
-            if (enableExtraShortcuts) {
-
+            if (isEnabled(Constants.FEATURE_QUIZ)) {
                 Intent intentQuiz = new Intent(context, QuizActivity.class);
                 intentQuiz.setAction(Intent.ACTION_VIEW);
                 ShortcutInfoCompat shortcutQuiz = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_QUIZ)
@@ -1924,7 +2017,14 @@ public class ContactsEvents {
                         .setIntent(intentQuiz)
                         .setRank(3)
                         .build();
+                try {
+                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutQuiz);
+                } catch (RuntimeException ignored) { /**/ }
+            } else {
+                shortcutIdsToRemove.add(Constants.SHORTCUT_QUIZ);
+            }
 
+            if (enableExtraShortcuts) {
                 Intent intentSettings = new Intent(context, SettingsActivity.class);
                 intentSettings.setAction(Intent.ACTION_VIEW);
                 ShortcutInfoCompat shortcutSettings = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_SETTINGS)
@@ -1934,12 +2034,10 @@ public class ContactsEvents {
                         .setRank(4)
                         .build();
                 try {
-                    ShortcutManagerCompat.pushDynamicShortcut(context, shortcutQuiz);
                     ShortcutManagerCompat.pushDynamicShortcut(context, shortcutSettings);
                 } catch (RuntimeException ignored) { /**/ }
 
             } else {
-                shortcutIdsToRemove.add(Constants.SHORTCUT_QUIZ);
                 shortcutIdsToRemove.add(Constants.SHORTCUT_SETTINGS);
             }
 
@@ -2050,6 +2148,7 @@ public class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_Notifications2_EventSources_key), preferences_notifications2_sources);
             editor.putStringSet(context.getString(R.string.pref_Quiz_Questions_key), preferences_quiz_Questions);
             editor.putStringSet(context.getString(R.string.pref_Quiz_EventSources_key), preferences_quiz_sources);
+            editor.putStringSet(context.getString(R.string.pref_EnabledFeatures_key), preferences_enabled_features);
 
             //Чистка
             editor.putString("ColorsResent", null);
@@ -2096,6 +2195,7 @@ public class ContactsEvents {
             map_contacts_names.clear();
             map_eventsBySubtypeAndPersonID_offset.clear();
             map_eventsBySubtypeAndPersonName_offset.clear();
+            clearDayInfoByHash(StringUtils.getHash(Constants.eventSourceFavoritePrefix).concat(Constants.STRING_COLON));
 
             statEventSources.clear();
             statEventSourcesIds.clear();
@@ -10581,6 +10681,38 @@ public class ContactsEvents {
         }
     }
 
+    /** Удаляет из массивов информации о днях календаря данные по ключу
+     * @param hash Начало ключа
+     */
+    void clearDayInfoByHash(@NonNull String hash) {
+        try {
+
+            Map<String, String> updatedInfoMap = new HashMap<>();
+            for (String key: preferences_DaysInfo.keySet()) {
+                if (!key.startsWith(hash)) updatedInfoMap.put(key, preferences_DaysInfo.get(key));
+            }
+            if (updatedInfoMap.size() != preferences_DaysInfo.size()) {
+                preferences_DaysInfo.clear();
+                preferences_DaysInfo.putAll(updatedInfoMap);
+            }
+            updatedInfoMap.clear();
+
+            Map<String, ContactsEvents.DayType.Type> updatedTypesMap = new HashMap<>();
+            for (String key: preferences_DaysTypes.keySet()) {
+                if (!key.startsWith(hash)) updatedTypesMap.put(key, preferences_DaysTypes.get(key));
+            }
+            if (updatedTypesMap.size() != preferences_DaysTypes.size()) {
+                preferences_DaysTypes.clear();
+                preferences_DaysTypes.putAll(updatedTypesMap);
+            }
+            updatedTypesMap.clear();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
     @SuppressLint("DiscouragedApi")
     protected boolean getFactsEvents(boolean setCounters) {
         try {
@@ -11094,7 +11226,7 @@ public class ContactsEvents {
      * @param eventConsumer Id потребителя, для которого выбирали источники событий
      */
     void selectEventSources(@NonNull EventSources eventSources, @NonNull List<String> preselectedSources, @NonNull Context baseContext, String eventConsumer) {
-
+        //todo: переделать последний параметр на Runnable, как в selectQuizQuestions
         final List<String> eventSourcesSelected = new ArrayList<>();
         try {
 
@@ -11153,7 +11285,8 @@ public class ContactsEvents {
                 }
             }
 
-            ListAdapter adapter = new MultiCheckboxesAdapter(baseContext, sourceChoices, eventSources.getIcons(), eventSources.getPackages(), null, ta);
+            ListAdapter adapter = new MultiCheckboxesAdapter(baseContext, sourceChoices, null,
+                    eventSources.getIcons(), eventSources.getPackages(), null, ta);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(baseContext, preferences_theme.themeDialog))
                     .setTitle(R.string.widget_config_events_sources_label)
@@ -11262,7 +11395,7 @@ public class ContactsEvents {
                 questIconsPackages.add(packageName);
             }
 
-            ListAdapter adapter = new MultiCheckboxesAdapter(baseContext, questTitles, questIcons, questIconsPackages, null, ta);
+            ListAdapter adapter = new MultiCheckboxesAdapter(baseContext, questTitles, null, questIcons, questIconsPackages, null, ta);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(baseContext, preferences_theme.themeDialog))
                     .setTitle(R.string.pref_Quiz_Questions_title)
@@ -11297,9 +11430,6 @@ public class ContactsEvents {
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
             alertToShow.setOnShowListener(arg0 -> {
-
-                //alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                //alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
 
                 //Только здесь работает
                 int i = 0;

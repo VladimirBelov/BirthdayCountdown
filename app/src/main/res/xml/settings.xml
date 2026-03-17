@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
+  ~  * Created by Vladimir Belov on 18.03.2026, 01:07
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.03.2026, 21:11
+  ~  * Last modified 18.03.2026, 00:19
   ~  */
   -->
 
@@ -67,6 +67,13 @@
             android:title="@string/pref_ExtraFun_On_title"
             android:defaultValue="@bool/pref_Help_ExtraFun_On_default"
             android:icon="@android:drawable/ic_menu_manage"/>
+
+        <org.vovka.birthdaycountdown.CustomTextPreference
+            android:key="@string/pref_EnabledFeatures_key"
+            android:summary="@string/pref_ExtraFun_On_description"
+            android:title="@string/pref_ExtraFun_On_title"
+            android:selectable="true"
+            android:icon="@android:drawable/ic_menu_manage" />
 
         <org.vovka.birthdaycountdown.CustomListPreference
             android:key="@string/pref_List_NameFormat_key"

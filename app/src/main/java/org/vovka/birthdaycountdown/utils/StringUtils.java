@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2026, 17:39
+ *  * Created by Vladimir Belov on 18.03.2026, 01:07
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.02.2026, 14:10
+ *  * Last modified 17.03.2026, 21:11
  *
  */
 
@@ -210,5 +210,14 @@ public class StringUtils {
         } else {
             return singleEventArray[ContactsEvents.Position_personFullName];
         }
+    }
+
+    public static String escapeHtml(String text) {
+        if (text == null) return "";
+        return text.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#39;");
     }
 }

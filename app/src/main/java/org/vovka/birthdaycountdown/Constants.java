@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.03.2026, 22:05
+ *  * Created by Vladimir Belov on 18.03.2026, 01:07
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.03.2026, 11:06
+ *  * Last modified 17.03.2026, 13:32
  *
  */
 
@@ -512,4 +512,6 @@ public final class Constants {
     public static final String iCal_Url = "URL:";
 
     static final String GET_SELECTED_SOURCES_METHOD = "getSelectedSources";
+
+    public static final String FEATURE_QUIZ = "enable_quiz";
 }

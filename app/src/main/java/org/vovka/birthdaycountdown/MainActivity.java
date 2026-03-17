@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.03.2026, 01:58
+ *  * Created by Vladimir Belov on 18.03.2026, 01:07
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 11.03.2026, 00:39
+ *  * Last modified 18.03.2026, 00:58
  *
  */
 
@@ -1571,8 +1571,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             subMenuFile.add(Menu.NONE, Constants.MainMenu_AddEvent_OpenFile, Menu.NONE, R.string.menu_open_file_with_events)
                     .setIcon(android.R.drawable.ic_menu_save)
                     .setTitleCondensed(getString(R.string.menu_open_file_with_events_short));
-            menu.add(Menu.NONE, Constants.MainMenu_Quiz, Menu.NONE, R.string.menu_quiz).setIcon(android.R.drawable.ic_menu_help);
             menu.add(Menu.NONE, Constants.MainMenu_Settings, Menu.NONE, R.string.menu_settings).setIcon(R.drawable.ic_sysbar_quicksettings);
+            menu.add(Menu.NONE, Constants.MainMenu_Quiz, Menu.NONE, R.string.menu_quiz).setIcon(android.R.drawable.ic_menu_compass);
             menu.add(Menu.NONE, Constants.MainMenu_Filter, Menu.NONE, R.string.menu_filter_events).setIcon(android.R.drawable.ic_menu_view);
             menu.add(Menu.NONE, Constants.MainMenu_EventsSources, Menu.NONE, R.string.menu_events_sources).setIcon(android.R.drawable.ic_menu_agenda);
             menu.add(Menu.NONE, Constants.MainMenu_EventsTypes, Menu.NONE, R.string.menu_events_types).setIcon(R.drawable.ic_menu_copy);
@@ -1587,7 +1587,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             final boolean isItemQuizVisible = !eventsData.isEmptyEventList()
-                    && (eventsData.preferences_extrafun || eventsData.preferences_list_quick_action == Constants.MainMenu_Quiz);
+                    && (eventsData.isEnabled(Constants.FEATURE_QUIZ) || eventsData.preferences_list_quick_action == Constants.MainMenu_Quiz);
             //показывать, если есть события или выбран фильтр
             final boolean isItemFilterVisible = eventsData != null && !eventsData.isEmptyEventList() &&
                     (

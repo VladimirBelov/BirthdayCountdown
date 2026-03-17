@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.01.2026, 10:47
+ *  * Created by Vladimir Belov on 18.03.2026, 01:07
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.01.2026, 09:37
+ *  * Last modified 17.03.2026, 21:11
  *
  */
 
@@ -825,7 +825,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             }
 
-            ListAdapter adapter = new ContactsEvents.MultiCheckboxesAdapter(this, sourceChoices, null, null, colorDots, ta);
+            ListAdapter adapter = new ContactsEvents.MultiCheckboxesAdapter(this, sourceChoices, null, null, null, colorDots, ta);
 
             //todo: заголовок на несколько строк https://stackoverflow.com/questions/14439538/how-can-i-change-the-color-of-alertdialog-title-and-the-color-of-the-line-under
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
