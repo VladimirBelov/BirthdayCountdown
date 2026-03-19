@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2026, 01:07
+ *  * Created by Vladimir Belov on 19.03.2026, 21:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.03.2026, 00:58
+ *  * Last modified 19.03.2026, 21:40
  *
  */
 
@@ -41,6 +41,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.media.AudioAttributes;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -217,7 +218,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     int countEnabled = 0;
                     for (ContactsEvents.EnabledFeatures feature: ContactsEvents.EnabledFeatures.values()) {
                         countAll++;
-                        if (eventsData.isEnabled(feature.getCode())) countEnabled++;
+                        if (eventsData.isFeatureEnabled(feature.getCode())) countEnabled++;
                     }
                     return countEnabled + "/" + countAll;
                 });
@@ -363,6 +364,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             this.setTheme(eventsData.preferences_theme.themeMain);
 
             final boolean pref_menu_isCompact = eventsData.preferences_menustyle_compact;
+            final boolean disabledSelectSources = !eventsData.isFeatureEnabled(Constants.FEATURE_SELECT_SOURCES);
+            final boolean disabledMoreNotifySettings = !eventsData.isFeatureEnabled(Constants.FEATURE_NOTIFY_MORE_SETTINGS);
 
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Icon_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_DateFormat_key);
@@ -380,7 +383,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Custom4_key, R.string.pref_CustomEvents_Custom4_UseYear_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Custom5_key, R.string.pref_CustomEvents_Custom5_UseYear_key);
 
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_EventSources_key);
+            hidePreference(disabledSelectSources, R.string.pref_EventList_key, R.string.pref_List_EventSources_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_CustomCaption_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_CustomTodayEventCaption_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_OnClick_key);
@@ -396,12 +399,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
             hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_Color_WidgetCaption_key);
 
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_EventSources_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_EventInfo_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_Priority_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_QuickActions_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_OnClick_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Notifications_key, R.string.pref_Notifications_SmallIconsStyle_key);
+            //Уведомления
+            hidePreference(disabledSelectSources, R.string.pref_Notifications_key, R.string.pref_Notifications_EventSources_key);
+            hidePreference(disabledMoreNotifySettings, R.string.pref_Notifications_key, R.string.pref_Notifications_EventInfo_key);
+            hidePreference(disabledMoreNotifySettings, R.string.pref_Notifications_key, R.string.pref_Notifications_Priority_key);
+            hidePreference(disabledMoreNotifySettings, R.string.pref_Notifications_key, R.string.pref_Notifications_QuickActions_key);
+            hidePreference(disabledMoreNotifySettings, R.string.pref_Notifications_key, R.string.pref_Notifications_OnClick_key);
+            hidePreference(disabledMoreNotifySettings, R.string.pref_Notifications_key, R.string.pref_Notifications_SmallIconsStyle_key);
 
             Preference prefNotifyFactsCount = new Preference(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeMain));
             prefNotifyFactsCount.setKey(getString(R.string.pref_Notifications_FactEvents_Count_key));
@@ -414,24 +418,37 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             });
             hideOrAddPreference(!eventsData.preferences_notifications_types.contains(getString(R.string.pref_EventTypes_Facts)), R.string.pref_Notifications_key,
                     R.string.pref_Notifications_FactEvents_Count_key, prefNotifyFactsCount,
-                    eventsData.preferences_extrafun ? R.string.pref_Notifications_EventInfo_key : R.string.pref_Notifications_Events_key);
+                    !disabledMoreNotifySettings ? R.string.pref_Notifications_EventInfo_key : R.string.pref_Notifications_Events_key);
 
-            hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Notifications2_key);
 
-            Preference prefNotify2FactsCount = new Preference(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeMain));
-            prefNotify2FactsCount.setKey(getString(R.string.pref_Notifications2_FactEvents_Count_key));
-            prefNotify2FactsCount.setTitle(R.string.pref_Notifications_FactEvents_Count_title);
-            prefNotify2FactsCount.setSummary(R.string.pref_Notifications_FactEvents_Count_summary);
-            prefNotify2FactsCount.setIcon(android.R.drawable.ic_menu_day);
-            prefNotify2FactsCount.setOnPreferenceClickListener(preference -> {
-                selectFactsCount(2);
-                return true;
-            });
-            hideOrAddPreference(!eventsData.preferences_notifications2_types.contains(getString(R.string.pref_EventTypes_Facts)), R.string.pref_Notifications2_key,
-                    R.string.pref_Notifications2_FactEvents_Count_key, prefNotify2FactsCount,
-                    eventsData.preferences_extrafun ? R.string.pref_Notifications2_EventInfo_key : R.string.pref_Notifications2_Events_key);
+            //Уведомления 2
+            boolean isQ2Enabled = eventsData.isFeatureEnabled(Constants.FEATURE_NOTIFY_Q2);
+            hidePreference(!isQ2Enabled, 0, R.string.pref_Notifications2_key);
 
-            hidePreference(!eventsData.isEnabled(Constants.FEATURE_QUIZ), 0, R.string.pref_Quiz_key);
+            if (isQ2Enabled) {
+                hidePreference(disabledSelectSources, R.string.pref_Notifications2_key, R.string.pref_Notifications2_EventSources_key);
+                hidePreference(disabledMoreNotifySettings, R.string.pref_Notifications2_key, R.string.pref_Notifications2_EventInfo_key);
+                hidePreference(disabledMoreNotifySettings, R.string.pref_Notifications2_key, R.string.pref_Notifications2_Priority_key);
+                hidePreference(disabledMoreNotifySettings, R.string.pref_Notifications2_key, R.string.pref_Notifications2_QuickActions_key);
+                hidePreference(disabledMoreNotifySettings, R.string.pref_Notifications2_key, R.string.pref_Notifications2_OnClick_key);
+                hidePreference(disabledMoreNotifySettings, R.string.pref_Notifications2_key, R.string.pref_Notifications2_SmallIconsStyle_key);
+
+                Preference prefNotify2FactsCount = new Preference(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeMain));
+                prefNotify2FactsCount.setKey(getString(R.string.pref_Notifications2_FactEvents_Count_key));
+                prefNotify2FactsCount.setTitle(R.string.pref_Notifications_FactEvents_Count_title);
+                prefNotify2FactsCount.setSummary(R.string.pref_Notifications_FactEvents_Count_summary);
+                prefNotify2FactsCount.setIcon(android.R.drawable.ic_menu_day);
+                prefNotify2FactsCount.setOnPreferenceClickListener(preference -> {
+                    selectFactsCount(2);
+                    return true;
+                });
+                hideOrAddPreference(!eventsData.preferences_notifications2_types.contains(getString(R.string.pref_EventTypes_Facts)), R.string.pref_Notifications2_key,
+                        R.string.pref_Notifications2_FactEvents_Count_key, prefNotify2FactsCount,
+                        !disabledMoreNotifySettings ? R.string.pref_Notifications2_EventInfo_key : R.string.pref_Notifications2_Events_key);
+            }
+
+            hidePreference(!eventsData.isFeatureEnabled(Constants.FEATURE_QUIZ), 0, R.string.pref_Quiz_key);
+            hidePreference(disabledSelectSources, R.string.pref_Quiz_key, R.string.pref_Quiz_EventSources_key);
 
             hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Tools_key);
             hidePreference(!eventsData.preferences_debug_on, R.string.pref_Tools_key, R.string.pref_Tools_Preferences_Show_key);
@@ -4579,12 +4596,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             listView.setItemsCanFocus(false);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
+            // 👇 Создаем InsetDrawable с отступами по бокам (5% с каждой стороны = 90% ширина)
+            int dividerHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+            int insetWidth = (int) (getResources().getDisplayMetrics().widthPixels * 0.05); // 5% с каждой стороны
+            Drawable divider = new InsetDrawable(
+                    new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)),
+                    insetWidth, 0, insetWidth, 0);
+            listView.setDivider(divider);
+            listView.setDividerHeight(dividerHeight);
+
             alertToShow.setOnShowListener(arg0 -> {
 
                 //Только здесь работает
                 int i = 0;
                 for (ContactsEvents.EnabledFeatures feature: ContactsEvents.EnabledFeatures.values()) {
-                    if (eventsData.isEnabled(feature.getCode())) {
+                    if (eventsData.isFeatureEnabled(feature.getCode())) {
                         listView.setItemChecked(i, true);
                     }
                     i++;

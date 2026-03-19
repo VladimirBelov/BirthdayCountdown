@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2026, 01:07
+ *  * Created by Vladimir Belov on 19.03.2026, 21:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.03.2026, 01:04
+ *  * Last modified 19.03.2026, 21:06
  *
  */
 
@@ -43,7 +43,9 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
 import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
@@ -87,7 +89,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.IconCompat;
 import androidx.core.text.HtmlCompat;
 
-import org.jetbrains.annotations.NotNull;
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
@@ -355,7 +356,10 @@ public class ContactsEvents {
     //Общие настройки
     boolean preferences_debug_on;
     boolean preferences_info_on;
-    boolean preferences_extrafun;
+    /**
+     * @deprecated Следует использовать preferences_enabled_features
+     */
+    @Deprecated boolean preferences_extrafun;
     Set<String> preferences_enabled_features = new HashSet<>();
     String preferences_language;
     String preferences_Icon;
@@ -685,7 +689,16 @@ public class ContactsEvents {
      */
     enum EnabledFeatures {
 
-        QUIZ(Constants.FEATURE_QUIZ, R.string.pref_Quiz_title, R.string.pref_Feature_Quiz_description, android.R.drawable.ic_menu_compass);
+        QUIZ(Constants.FEATURE_QUIZ, R.string.pref_Quiz_title,
+                R.string.pref_Feature_Quiz_description, android.R.drawable.ic_menu_compass),
+        NOTIFY_Q2(Constants.FEATURE_NOTIFY_Q2, R.string.pref_Notifications2_title,
+                R.string.pref_Feature_Notify_Q2_description, R.drawable.ic_menu_notifications2),
+        SELECT_SOURCES(Constants.FEATURE_SELECT_SOURCES, R.string.pref_List_EventSources_title,
+                R.string.pref_Feature_Select_Sources_description, android.R.drawable.ic_menu_agenda),
+        NOTIFY_MORE_SETTINGS(Constants.FEATURE_NOTIFY_MORE_SETTINGS, R.string.pref_Feature_Notify_More_Settings_title,
+                R.string.pref_Feature_Notify_More_Settings_description, R.drawable.ic_menu_notifications1),
+        WIDGETS_MORE_SETTINGS(Constants.FEATURE_WIDGETS_MORE_SETTINGS, R.string.pref_Feature_Widgets_More_Settings_title,
+                R.string.pref_Feature_Widgets_More_Settings_description, android.R.drawable.ic_menu_crop);
 
         private final String code;
         private final int nameResId;
@@ -715,16 +728,6 @@ public class ContactsEvents {
             return iconResId;
         }
 
-        public static EnabledFeatures fromCode(Context context, String code) {
-            for (EnabledFeatures type : values()) {
-                if (type.getCode().equals(code)) return type;
-            }
-            return null;
-        }
-    }
-
-    @NotNull public Set<String> getEnabledFeatures() {
-        return preferences_enabled_features;
     }
 
     public void setEnabledFeatures(Set<String> newSet) {
@@ -736,7 +739,7 @@ public class ContactsEvents {
      * @param code Код доп. функции
      * @return True - включена
      */
-    public boolean isEnabled(String code) {
+    public boolean isFeatureEnabled(String code) {
         return preferences_enabled_features.contains(code);
     }
 
@@ -2008,7 +2011,7 @@ public class ContactsEvents {
                 shortcutIdsToRemove.add(Constants.SHORTCUT_FACTS);
             }
 
-            if (isEnabled(Constants.FEATURE_QUIZ)) {
+            if (isFeatureEnabled(Constants.FEATURE_QUIZ)) {
                 Intent intentQuiz = new Intent(context, QuizActivity.class);
                 intentQuiz.setAction(Intent.ACTION_VIEW);
                 ShortcutInfoCompat shortcutQuiz = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_QUIZ)
@@ -3966,25 +3969,15 @@ public class ContactsEvents {
                 log.append(context.getString(R.string.msg_notifications_disabled));
             } else {
 
+                Set<String> daysQ2 = isFeatureEnabled(Constants.FEATURE_NOTIFY_Q2) ? preferences_notifications2_days : new HashSet<>();
+
                 initNotificationChannel(log, 1, preferences_notifications_days, preferences_notifications_ringtone); //для Android 8+
-                initNotificationChannel(log, 2, preferences_notifications2_days, preferences_notifications2_ringtone); //для Android 8+
+                initNotificationChannel(log, 2, daysQ2, preferences_notifications2_ringtone); //для Android 8+
 
                 initBootReceiver(log);
 
-                if (!preferences_notifications_days.isEmpty()) {
-                    initNotificationSchedule(log,
-                            1,
-                            preferences_notifications_days,
-                            preferences_notifications_alarm_hour,
-                            preferences_notifications_alarm_minute);
-                }
-                if (!preferences_notifications2_days.isEmpty()) {
-                    initNotificationSchedule(log,
-                            2,
-                            preferences_notifications2_days,
-                            preferences_notifications2_alarm_hour,
-                            preferences_notifications2_alarm_minute);
-                }
+                initNotificationSchedule(log, 1, preferences_notifications_days, preferences_notifications_alarm_hour, preferences_notifications_alarm_minute);
+                initNotificationSchedule(log, 2, daysQ2, preferences_notifications2_alarm_hour, preferences_notifications2_alarm_minute);
             }
             initWidgetUpdate(log);
 
@@ -11338,6 +11331,15 @@ public class ContactsEvents {
             ListView listView = alertToShow.getListView();
             listView.setItemsCanFocus(false);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+            // 👇 Создаем InsetDrawable с отступами по бокам (5% с каждой стороны = 90% ширина)
+            int dividerHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+            int insetWidth = (int) (getResources().getDisplayMetrics().widthPixels * 0.05); // 5% с каждой стороны
+            Drawable divider = new InsetDrawable(
+                    new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)),
+                    insetWidth, 0, insetWidth, 0);
+            listView.setDivider(divider);
+            listView.setDividerHeight(dividerHeight);
 
             alertToShow.setOnShowListener(arg0 -> {
                 alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));

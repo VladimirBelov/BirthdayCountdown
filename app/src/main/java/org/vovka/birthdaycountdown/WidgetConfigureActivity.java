@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.03.2026, 22:05
+ *  * Created by Vladimir Belov on 19.03.2026, 21:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.03.2026, 20:13
+ *  * Last modified 19.03.2026, 19:31
  *
  */
 
@@ -865,12 +865,14 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 findViewById(R.id.editCustomZeroEventsMessage).setVisibility(View.GONE);
                 findViewById(R.id.hintCustomZeroEventsMessage).setVisibility(View.GONE);
 
-                //Скрываем источники событий
+            }
+
+            if (!eventsData.isFeatureEnabled(Constants.FEATURE_SELECT_SOURCES)) {
+                //Источники событий
                 findViewById(R.id.dividerEventSources).setVisibility(View.GONE);
                 findViewById(R.id.captionEventSources).setVisibility(View.GONE);
                 findViewById(R.id.listEventSources).setVisibility(View.GONE);
                 findViewById(R.id.hintEventSources).setVisibility(View.GONE);
-
             }
 
             if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)

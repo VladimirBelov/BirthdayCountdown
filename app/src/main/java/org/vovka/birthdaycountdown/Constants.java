@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2026, 01:07
+ *  * Created by Vladimir Belov on 19.03.2026, 21:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 17.03.2026, 13:32
+ *  * Last modified 19.03.2026, 20:17
  *
  */
 
@@ -514,4 +514,11 @@ public final class Constants {
     static final String GET_SELECTED_SOURCES_METHOD = "getSelectedSources";
 
     public static final String FEATURE_QUIZ = "enable_quiz";
+    public static final String FEATURE_NOTIFY_Q2 = "enable_notify_q2";
+    public static final String FEATURE_SELECT_SOURCES = "enable_select_sources";
+    public static final String FEATURE_MORE_SETTINGS = "more_settings";
+    public static final String FEATURE_NOTIFY_MORE_SETTINGS = "notify_more_settings";
+    public static final String FEATURE_WIDGETS_MORE_SETTINGS = "widgets_more_settings";
+    public static final String FEATURE_TOOLS = "enable_tools";
+    public static final String FEATURE_ADV_INFO = "show_adv_info";
 }

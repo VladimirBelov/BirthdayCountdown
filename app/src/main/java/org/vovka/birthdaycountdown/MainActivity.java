@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2026, 01:07
+ *  * Created by Vladimir Belov on 19.03.2026, 21:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.03.2026, 00:58
+ *  * Last modified 19.03.2026, 19:41
  *
  */
 
@@ -1587,7 +1587,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             final boolean isItemQuizVisible = !eventsData.isEmptyEventList()
-                    && (eventsData.isEnabled(Constants.FEATURE_QUIZ) || eventsData.preferences_list_quick_action == Constants.MainMenu_Quiz);
+                    && (eventsData.isFeatureEnabled(Constants.FEATURE_QUIZ) || eventsData.preferences_list_quick_action == Constants.MainMenu_Quiz);
             //показывать, если есть события или выбран фильтр
             final boolean isItemFilterVisible = eventsData != null && !eventsData.isEmptyEventList() &&
                     (
@@ -1597,7 +1597,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     || eventsData.statFavoriteEventsCount > 0
                     );
             final boolean isItemSourcesVisible = eventsData != null
-                    && (eventsData.preferences_extrafun || eventsData.preferences_list_quick_action == Constants.MainMenu_EventsSources);
+                    && (eventsData.isFeatureEnabled(Constants.FEATURE_SELECT_SOURCES) || eventsData.preferences_list_quick_action == Constants.MainMenu_EventsSources);
             final boolean isItemTypesVisible = eventsData != null
                     && (eventsData.preferences_extrafun || eventsData.preferences_list_quick_action == Constants.MainMenu_EventsTypes);
 

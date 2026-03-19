@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2026, 01:07
+ *  * Created by Vladimir Belov on 19.03.2026, 21:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 17.03.2026, 21:11
+ *  * Last modified 19.03.2026, 21:06
  *
  */
 
@@ -18,10 +18,14 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -853,6 +857,15 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             ListView listView = alertToShow.getListView();
             listView.setItemsCanFocus(false);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+            // 👇 Создаем InsetDrawable с отступами по бокам (5% с каждой стороны = 90% ширина)
+            int dividerHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+            int insetWidth = (int) (getResources().getDisplayMetrics().widthPixels * 0.05); // 5% с каждой стороны
+            Drawable divider = new InsetDrawable(
+                    new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)),
+                    insetWidth, 0, insetWidth, 0);
+            listView.setDivider(divider);
+            listView.setDividerHeight(dividerHeight);
 
             alertToShow.setOnShowListener(arg0 -> {
                 alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));

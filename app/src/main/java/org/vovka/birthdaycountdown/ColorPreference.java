@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.03.2026, 16:17
+ *  * Created by Vladimir Belov on 19.03.2026, 21:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.03.2026, 15:32
+ *  * Last modified 18.03.2026, 14:46
  *
  */
 
@@ -250,12 +250,10 @@ class ColorPreference extends Preference {
                 ContactsEvents eventsData = ContactsEvents.getInstance();
                 colorDialogBuilder.setView(rootView);
 
-                if (eventsData.preferences_extrafun) {
-                    colorDialogBuilder.setNeutralButton(R.string.button_rgb, (dialog, which) -> {
-                        dialog.dismiss();
-                        selectRGBColor(eventsData);
-                    });
-                }
+                colorDialogBuilder.setNeutralButton(R.string.button_rgb, (dialog, which) -> {
+                    dialog.dismiss();
+                    selectRGBColor(eventsData);
+                });
 
             } catch (final Exception e) {
                 Log.e(TAG, e.getMessage(), e);

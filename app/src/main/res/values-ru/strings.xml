@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.03.2026, 01:07
+  ~  * Created by Vladimir Belov on 19.03.2026, 21:42
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 17.03.2026, 13:32
+  ~  * Last modified 19.03.2026, 20:17
   ~  */
   -->
 
@@ -1405,6 +1405,12 @@
     <string name="crop_image_saving">Сохранение…</string>
 
     <string name="pref_Feature_Quiz_description">Включить викторину</string>
+    <string name="pref_Feature_Notify_Q2_description">Включить вторую очередь для уведомлений о событиях</string>
+    <string name="pref_Feature_Select_Sources_description">Включить возможность выбирать источники событий для основного списка событий, уведомлений, виджетов, викторины, и.т.д.</string>
+    <string name="pref_Feature_Notify_More_Settings_title">Больше настроек для уведомлений</string>
+    <string name="pref_Feature_Notify_More_Settings_description">Показать больше настроек для уведомлений</string>
+    <string name="pref_Feature_Widgets_More_Settings_title">Больше настроек для виджетов</string>
+    <string name="pref_Feature_Widgets_More_Settings_description">Показать больше настроек для виджетов</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Ситцевая</string>

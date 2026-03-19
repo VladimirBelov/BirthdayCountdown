@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 19.03.2026, 21:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 22:47
+ *  * Last modified 19.03.2026, 19:31
  *
  */
 
@@ -66,7 +66,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
                             eventsData.preferences_notifications_alarm_hour,
                             eventsData.preferences_notifications_alarm_minute);
                 }
-                if (!eventsData.preferences_notifications2_days.isEmpty()) {
+                if (eventsData.isFeatureEnabled(Constants.FEATURE_NOTIFY_Q2) && !eventsData.preferences_notifications2_days.isEmpty()) {
                     eventsData.initNotificationSchedule(log,
                             2,
                             eventsData.preferences_notifications2_days,

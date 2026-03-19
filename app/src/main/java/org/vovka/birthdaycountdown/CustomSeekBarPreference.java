@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.10.2025, 20:46
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.10.2025, 20:40
+ *  * Created by Vladimir Belov on 19.03.2026, 21:42
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 19.03.2026, 19:13
  *
  */
 
@@ -206,19 +206,18 @@ public class CustomSeekBarPreference extends DialogPreference {
             // Если шаблон есть, но без %s, просто используем его
             summary = mSummaryTemplate;
         } else {
-            // Если шаблона нет, можем установить просто числовое значение или оставить пустым
+            // Если шаблона нет, устанавливаем просто числовое значение
             summary = String.valueOf(value);
         }
         ContactsEvents eventsData = ContactsEvents.getInstance();
         SpannableString spannable = new SpannableString(summary);
-        if (eventsData.preferences_extrafun) {
-            if (isEnabled()) {
-                spannable.setSpan(new StyleSpan(Typeface.BOLD), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                Resources.Theme theme = eventsData.getResources().newTheme();
-                theme.applyStyle(eventsData.preferences_theme.themeMain, true);
-                try (TypedArray ta = theme.obtainStyledAttributes(R.styleable.Theme)) {
-                    spannable.setSpan(new ForegroundColorSpan(ta.getColor(R.styleable.Theme_colorAccent, 0)), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
+        if (isEnabled()) {
+            spannable.setSpan(new StyleSpan(Typeface.BOLD), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            Resources.Theme theme = eventsData.getResources().newTheme();
+            theme.applyStyle(eventsData.preferences_theme.themeMain, true);
+            try (TypedArray ta = theme.obtainStyledAttributes(R.styleable.Theme)) {
+                spannable.setSpan(new ForegroundColorSpan(ta.getColor(R.styleable.Theme_colorAccent, 0)),
+                        0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
 
