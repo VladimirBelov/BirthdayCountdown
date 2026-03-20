@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 21:02
+ *  * Created by Vladimir Belov on 21.03.2026, 02:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 18:58
+ *  * Last modified 20.03.2026, 21:24
  *
  */
 
@@ -864,7 +864,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 colorOfDay = eventsColorsOutMonth.get(dayType.sourceId);
                             }
                             if (colorOfDay == null) continue;
-                            if (dayType.type == ContactsEvents.DayType.Type.Workday) { //Рабочий выходной
+                            if (dayType.type == ContactsEvents.DayType.Type.Workday) { //Рабочий в выходной день
                                 isColoredByEvent = true;
                                 maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
                                 continue;
@@ -873,6 +873,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 isColoredByEvent = true;
                                 maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
                                 color = colorOfDay;
+                                if (dayType.type == ContactsEvents.DayType.Type.Holiday) break; //Нашли праздник
                             }
                         }
                     }

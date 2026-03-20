@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 12:34
+ *  * Created by Vladimir Belov on 21.03.2026, 02:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 10:54
+ *  * Last modified 20.03.2026, 22:40
  *
  */
 
@@ -1066,7 +1066,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             List<String> selectedQuestions = new ArrayList<>();
             for (QuizActivity.QuestionType type : QuizActivity.QuestionType.values()) {
-                if (eventsData.preferences_quiz_Questions.contains(type.getCode(this))) {
+                if (eventsData.preferences_quiz_questions.contains(type.getCode(this))) {
                     selectedQuestions.add(type.getDisplayName(this));
                 }
             }
@@ -3695,6 +3695,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_CustomEvents_MultiType_Calendars_key),
                         getString(R.string.pref_CustomEvents_Holiday_Public_Ids_key),
                         getString(R.string.pref_CustomEvents_Fact_Bundled_Ids_key),
+                        getString(R.string.pref_DaysInfo_key),
                         getString(R.string.pref_EnabledFeatures_key),
                         getString(R.string.pref_List_Events_key),
                         getString(R.string.pref_Events_Hidden_key),

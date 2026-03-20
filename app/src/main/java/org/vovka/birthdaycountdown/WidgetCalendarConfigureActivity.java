@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 21:02
+ *  * Created by Vladimir Belov on 21.03.2026, 02:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 18:02
+ *  * Last modified 20.03.2026, 21:32
  *
  */
 
@@ -700,6 +700,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     private void getEventSources() {
         try {
 
+            //Выходные
             eventSourcesIds.add(getString(R.string.widget_config_month_events_saturday_id));
             eventSourcesTitles.add(getString(R.string.month_event_saturdays));
             eventSourcesColors.put(getString(R.string.widget_config_month_events_saturday_id),
@@ -709,6 +710,10 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             eventSourcesTitles.add(getString(R.string.month_event_sundays));
             eventSourcesColors.put(getString(R.string.widget_config_month_events_sunday_id),
                     ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_Sunday_default));
+
+            //События избранных контактов
+            eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceFavoritePrefix));
+            eventSourcesTitles.add(getString(R.string.widget_config_events_favorites));
 
             //Справочники праздников и выходных
             int eventsPackCount = 1;
@@ -725,10 +730,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 eventsPackCount++;
                 packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
             }
-
-            //События избранных контактов
-            eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceFavoritePrefix));
-            eventSourcesTitles.add(getString(R.string.widget_config_events_favorites));
 
             //Локальные события
             eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceLocalPrefix));

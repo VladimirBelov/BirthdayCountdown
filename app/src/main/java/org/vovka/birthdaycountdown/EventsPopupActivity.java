@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2026, 17:39
+ *  * Created by Vladimir Belov on 21.03.2026, 02:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 24.02.2026, 20:23
+ *  * Last modified 20.03.2026, 21:44
  *
  */
 
@@ -61,7 +61,7 @@ public class EventsPopupActivity extends Activity {
             updateInfoText();
 
             //Кнопка "Поделиться"
-            TextView buttonShare = findViewById(R.id.buttonSecondAction);
+            TextView buttonShare = findViewById(R.id.button2);
             buttonShare.setText(R.string.facts_popup_action_share);
             buttonShare.setOnClickListener(v -> shareCurrentEvent());
             UiTools.addClickEffect(buttonShare);
@@ -70,7 +70,7 @@ public class EventsPopupActivity extends Activity {
 
             if (eventsList.size() > 1) {
                 //Кнопка "Следующий"
-                TextView buttonNext = findViewById(R.id.buttonThirdAction);
+                TextView buttonNext = findViewById(R.id.button3);
                 buttonNext.setText(R.string.popup_action_next);
                 buttonNext.setOnClickListener(v -> showNext());
                 UiTools.addClickEffect(buttonNext);
@@ -78,7 +78,7 @@ public class EventsPopupActivity extends Activity {
                 buttonNext.setVisibility(View.VISIBLE);
 
                 //Кнопка "Предыдущий"
-                TextView buttonPrev = findViewById(R.id.buttonFirstAction);
+                TextView buttonPrev = findViewById(R.id.button1);
                 buttonPrev.setText(R.string.popup_action_prev);
                 buttonPrev.setOnClickListener(v -> showPrev());
                 UiTools.addClickEffect(buttonPrev);

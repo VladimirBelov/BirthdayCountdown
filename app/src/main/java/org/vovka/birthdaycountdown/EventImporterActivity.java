@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Created by Vladimir Belov on 21.03.2026, 02:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 14:10
+ *  * Last modified 20.03.2026, 21:44
  *
  */
 
@@ -112,10 +112,10 @@ public class EventImporterActivity extends AppCompatActivity {
             checkUseYear = findViewById(R.id.checkUseYear);
             viewEventType = findViewById(R.id.captionType);
             spinnerEventTypes = findViewById(R.id.spinnerEventType);
-            buttonSelectAll = findViewById(R.id.buttonFirstAction);
-            buttonSelectNone = findViewById(R.id.buttonSecondAction);
-            buttonCancel = findViewById(R.id.buttonThirdAction);
-            buttonImport = findViewById(R.id.buttonFourthAction);
+            buttonSelectAll = findViewById(R.id.button1);
+            buttonSelectNone = findViewById(R.id.button2);
+            buttonCancel = findViewById(R.id.button3);
+            buttonImport = findViewById(R.id.button4);
 
             if (!dataForImport.isEmpty()) {
                 try {

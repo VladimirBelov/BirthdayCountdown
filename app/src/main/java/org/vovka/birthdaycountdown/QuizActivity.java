@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2026, 21:42
+ *  * Created by Vladimir Belov on 21.03.2026, 02:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.03.2026, 19:31
+ *  * Last modified 20.03.2026, 22:32
  *
  */
 
@@ -221,7 +221,7 @@ public class QuizActivity extends Activity {
      * Вызывается при старте и после изменения настроек.
      */
     private void refreshQuizPool() {
-        Set<String> activeTypeCodes = eventsData.preferences_quiz_Questions;
+        Set<String> activeTypeCodes = eventsData.preferences_quiz_questions;
         dispatcher.refreshQuestionPool(masterEventList, activeTypeCodes);
     }
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2026, 17:39
+ *  * Created by Vladimir Belov on 21.03.2026, 02:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 24.02.2026, 20:23
+ *  * Last modified 20.03.2026, 21:44
  *
  */
 
@@ -78,7 +78,7 @@ public class FactsPopupActivity extends Activity {
 
             List<String> listPrevFacts = new ArrayList<String>(){};
 
-            TextView buttonShare = findViewById(R.id.buttonSecondAction);
+            TextView buttonShare = findViewById(R.id.button2);
             buttonShare.setText(R.string.facts_popup_action_share);
             buttonShare.setOnClickListener(v -> {
                 Intent intentShare = new Intent(Intent.ACTION_SEND);
@@ -90,13 +90,13 @@ public class FactsPopupActivity extends Activity {
             buttonShare.getBackground().setAlpha(50);
             buttonShare.setVisibility(View.VISIBLE);
 
-            TextView buttonAction = findViewById(R.id.buttonThirdAction);
+            TextView buttonAction = findViewById(R.id.button3);
             buttonAction.setText(R.string.facts_popup_action_next_fact);
             UiTools.addClickEffect(buttonAction);
             buttonAction.getBackground().setAlpha(50);
             buttonAction.setVisibility(View.VISIBLE);
 
-            TextView buttonPrev = findViewById(R.id.buttonFirstAction);
+            TextView buttonPrev = findViewById(R.id.button1);
             buttonPrev.setText(R.string.popup_action_prev);
             UiTools.addClickEffect(buttonPrev);
             buttonPrev.getBackground().setAlpha(50);

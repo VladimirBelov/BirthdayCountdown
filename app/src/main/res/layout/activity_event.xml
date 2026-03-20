@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 16.09.2025, 22:29
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 16.09.2025, 22:12
+  ~  * Created by Vladimir Belov on 21.03.2026, 02:21
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 20.03.2026, 21:44
   ~  */
   -->
 
@@ -432,7 +432,7 @@
                 android:paddingHorizontal="10dp">
 
                 <TextView
-                    android:id="@+id/buttonFirstAction"
+                    android:id="@+id/button1"
                     style="@style/ButtonWithIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -448,7 +448,7 @@
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <TextView
-                    android:id="@+id/buttonSecondAction"
+                    android:id="@+id/button2"
                     style="@style/ButtonWithIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -465,7 +465,7 @@
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <TextView
-                    android:id="@+id/buttonThirdAction"
+                    android:id="@+id/button3"
                     style="@style/ButtonWithIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

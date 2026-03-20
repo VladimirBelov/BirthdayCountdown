@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Created by Vladimir Belov on 21.03.2026, 02:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 18:01
+ *  * Last modified 20.03.2026, 21:44
  *
  */
 
@@ -587,14 +587,14 @@ public class LocalEventActivity extends AppCompatActivity {
                 spinnerEventTypes.setVisibility(View.GONE);
                 viewEventType.setVisibility(View.VISIBLE);
 
-                TextView buttonEdit = findViewById(R.id.buttonSecondAction);
+                TextView buttonEdit = findViewById(R.id.button2);
                 buttonEdit.setText(R.string.button_edit);
                 UiTools.addClickEffect(buttonEdit);
                 buttonEdit.getBackground().setAlpha(50);
                 buttonEdit.setVisibility(View.VISIBLE);
                 buttonEdit.setOnClickListener(this::buttonSwitchToEdit);
 
-                TextView buttonClose = findViewById(R.id.buttonThirdAction);
+                TextView buttonClose = findViewById(R.id.button3);
                 buttonClose.setText(R.string.button_ok);
                 buttonClose.setPadding(
                         ImageUtils.Dip2Px(getResources(), 15),
@@ -661,7 +661,7 @@ public class LocalEventActivity extends AppCompatActivity {
                 editDate.setPadding(ImageUtils.Dip2Px(getResources(), 10), 0, 0, 0);
 
                 if (Intent.ACTION_EDIT.equals(action)) {
-                    TextView buttonRemove = findViewById(R.id.buttonFirstAction);
+                    TextView buttonRemove = findViewById(R.id.button1);
                     buttonRemove.setText(R.string.button_remove);
                     UiTools.addClickEffect(buttonRemove);
                     buttonRemove.getBackground().setAlpha(50);
@@ -669,14 +669,14 @@ public class LocalEventActivity extends AppCompatActivity {
                     buttonRemove.setOnClickListener(this::buttonRemoveOnClick);
                 }
 
-                TextView buttonCancel = findViewById(R.id.buttonSecondAction);
+                TextView buttonCancel = findViewById(R.id.button2);
                 buttonCancel.setText(R.string.button_cancel);
                 UiTools.addClickEffect(buttonCancel);
                 buttonCancel.getBackground().setAlpha(50);
                 buttonCancel.setVisibility(View.VISIBLE);
                 buttonCancel.setOnClickListener(this::buttonCancelOnClick);
 
-                TextView buttonSave = findViewById(R.id.buttonThirdAction);
+                TextView buttonSave = findViewById(R.id.button3);
                 buttonSave.setText(R.string.button_save);
                 UiTools.addClickEffect(buttonSave);
                 buttonSave.getBackground().setAlpha(50);

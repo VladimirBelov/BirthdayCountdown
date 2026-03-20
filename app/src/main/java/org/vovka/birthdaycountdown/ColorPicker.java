@@ -1,13 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 21:02
+ *  * Created by Vladimir Belov on 21.03.2026, 02:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 19:44
+ *  * Last modified 21.03.2026, 02:19
  *
  */
 package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -35,6 +36,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -105,7 +107,6 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             mNumColumns = ta.getInteger(R.styleable.ColorPreference_numColumns, mNumColumns);
             mDefaultValue = ta.getInteger(R.styleable.ColorPreference_defaultValue, 0);
             mValue = ta.getInteger(R.styleable.ColorPreference_defaultValue, mDefaultValue);
-                    //ContextCompat.getColor(getContext(), R.color.pref_Widgets_Color_WidgetBackground_default));
             int choicesResId = ta.getResourceId(R.styleable.ColorPreference_choices, R.array.default_color_choice_values);
             if (choicesResId > 0) {
                 mColorChoices = ta.getResources().getIntArray(choicesResId);
@@ -115,7 +116,8 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 int id = getResources().getIdentifier("title", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
                 if (id > 0) {
                     TextView view = findViewById(id);
-                    if (view != null) view.setText(ta.getString(R.styleable.ColorPreference_title));
+                    if (view != null)
+                        view.setText(ta.getString(R.styleable.ColorPreference_title));
                 }
             }
             if (ta.hasValue(R.styleable.ColorPreference_summary)) {
@@ -139,7 +141,6 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     }
                 }
             }
-
             setColor(mValue);
 
         } catch (Exception e) {
@@ -177,8 +178,10 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
     void selectColor(int initValue, int defaultValue, String methodToInvoke, String idToPass) {
         try {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            View rootView = layoutInflater.inflate(R.layout.dialog_colors, null);
+
+            //LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            //View rootView = layoutInflater.inflate(R.layout.dialog_colors, null);
+            View rootView = View.inflate(new ContextThemeWrapper(context, eventsData.preferences_theme.themeMain), R.layout.dialog_colors, null);
 
             mAdapter = new ColorGridAdapter();
             if (initValue != 0) {
@@ -200,9 +203,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 selectRGBColor(initValue, defaultValue, methodToInvoke, idToPass);
             });
             if (mDefaultValue != 0 && mDefaultValue != mValue) {
-                colorDialogBuilder.setPositiveButton(R.string.button_reset, (dialog, which) -> {
-                    setColor(mDefaultValue);
-                });
+                colorDialogBuilder.setPositiveButton(R.string.button_reset, (dialog, which) -> setColor(mDefaultValue));
             }
 
             AlertDialog colorDialog = colorDialogBuilder.create();
@@ -216,7 +217,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     setColor(colorInt);
                     eventsData.setRecentColor(colorInt);
 
-                    if (methodToInvoke != null && idToPass != null && context instanceof AppCompatActivity) {
+                    if (methodToInvoke != null && idToPass != null && (context instanceof AppCompatActivity || context instanceof Activity)) {
                         try {
                             Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
                             method.invoke(context, idToPass, colorInt);
@@ -233,7 +234,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     return true;
                 });
             }
-            if (methodToInvoke != null && idToPass != null && context instanceof AppCompatActivity) {
+            if (methodToInvoke != null && idToPass != null && (context instanceof AppCompatActivity || context instanceof Activity)) {
                 colorDialog.setOnCancelListener(dialog -> {
                     try {
                         Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
@@ -258,7 +259,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
     @SuppressLint("ClickableViewAccessibility")
     public void selectRGBColor(int initValue, int defaultValue, String methodToInvoke, String idToPass) {
         try {
-            TypedArray ta = getContext().getTheme().obtainStyledAttributes(R.styleable.Theme);
+            TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
                     .setPositiveButton(R.string.button_ok, null)
@@ -530,6 +531,9 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
             dialog.setOnShowListener(arg0 -> {
                 final Button buttonPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                final View buttonBar = (View) buttonPositive.getParent();
+                buttonBar.setBackgroundColor(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0));
+
                 buttonPositive.setOnClickListener(v -> {
                     try {
                         String colorString = color_edit.getText().toString();
@@ -549,8 +553,6 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                         ToastExpander.showInfoMsg(getContext(), eventsData.getResources().getString(R.string.msg_color_parse_error));
                     }
                 });
-                final View buttonBar = (View) buttonPositive.getParent();
-                buttonBar.setBackgroundColor(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0));
 
                 if (defaultValue != 0) {
                     final Button buttonNeutral = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
@@ -625,8 +627,12 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     Bitmap bm = BitmapFactory.decodeResource(res, R.drawable.transparent);
                     imageView.setImageBitmap(Bitmap.createScaledBitmap(bm, radius, radius, false));
                     bm.recycle();
+                    imageView.setBackgroundColor(Color.TRANSPARENT);
+                    imageView.setBackground(null);
                     return;
                 }
+                imageView.setBackgroundColor(Color.TRANSPARENT);
+                imageView.setBackground(null);
                 Drawable currentDrawable = imageView.getDrawable();
                 GradientDrawable colorChoiceDrawable;
                 if (currentDrawable instanceof GradientDrawable) {
@@ -654,6 +660,14 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    public void setDialogTitle(String title) {
+        mSelectDialogTitle = title;
+    }
+
+    public void setDialogIcon(@DrawableRes int iconRes) {
+        mSelectDialogIcon = iconRes;
     }
 
     private class ColorGridAdapter extends BaseAdapter {

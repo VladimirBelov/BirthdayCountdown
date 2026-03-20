@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 21:02
+ *  * Created by Vladimir Belov on 21.03.2026, 02:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 16:33
+ *  * Last modified 21.03.2026, 01:24
  *
  */
 
@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
 import org.vovka.birthdaycountdown.utils.UiTools;
@@ -67,6 +69,7 @@ public class WidgetCalendarPopup extends Activity {
     TextView buttonShare;
     TextView buttonPrevDay;
     TextView buttonSelectDay;
+    TextView buttonSelectColor;
     TextView buttonNextDay;
     String dayInfo = null;
     String dayCaption = null;
@@ -107,7 +110,7 @@ public class WidgetCalendarPopup extends Activity {
             viewCaption = findViewById(R.id.textCaption);
 
             //Предыдущий день
-            buttonPrevDay = findViewById(R.id.buttonFirstAction);
+            buttonPrevDay = findViewById(R.id.button1);
             if (buttonPrevDay != null) {
                 buttonPrevDay.setText(R.string.popup_action_prev);
                 UiTools.addClickEffect(buttonPrevDay);
@@ -120,7 +123,7 @@ public class WidgetCalendarPopup extends Activity {
             }
 
             //Календарь
-            buttonCalendar = findViewById(R.id.buttonSecondAction);
+            buttonCalendar = findViewById(R.id.button2);
             if (buttonCalendar != null) {
                 buttonCalendar.setText(getString(R.string.event_type_other_emoji).concat(Constants.STRING_SPACE).concat(getString(R.string.appwidget_label_Calendar)));
                 UiTools.addClickEffect(buttonCalendar);
@@ -133,9 +136,9 @@ public class WidgetCalendarPopup extends Activity {
             }
 
             //Поделиться
-            buttonShare = findViewById(R.id.buttonThirdAction);
+            buttonShare = findViewById(R.id.button3);
             if (buttonShare != null) {
-                buttonShare.setText(R.string.facts_popup_action_share);
+                buttonShare.setText(R.string.popup_action_share);
                 UiTools.addClickEffect(buttonShare);
                 buttonShare.getBackground().setAlpha(50);
                 buttonShare.setOnLongClickListener(v -> {
@@ -145,8 +148,21 @@ public class WidgetCalendarPopup extends Activity {
                 buttonShare.setVisibility(View.VISIBLE);
             }
 
+            //Выбрать цвет
+            buttonSelectColor = findViewById(R.id.button4);
+            if (buttonSelectColor != null) {
+                buttonSelectColor.setText(R.string.popup_action_color); //todo: сделать цветом текущего дня, если задан
+                UiTools.addClickEffect(buttonSelectColor);
+                buttonSelectColor.getBackground().setAlpha(50);
+                buttonSelectColor.setOnLongClickListener(v -> {
+                    Toast.makeText(this, getString(R.string.select_color), Toast.LENGTH_LONG).show();
+                    return true;
+                });
+                buttonSelectColor.setVisibility(View.VISIBLE);
+            }
+
             //Выбрать день
-            buttonSelectDay = findViewById(R.id.buttonFourthAction);
+            buttonSelectDay = findViewById(R.id.button5);
             if (buttonSelectDay != null) {
                 buttonSelectDay.setText(R.string.popup_action_calendar);
                 UiTools.addClickEffect(buttonSelectDay);
@@ -159,7 +175,7 @@ public class WidgetCalendarPopup extends Activity {
             }
 
             //Следующий день
-            buttonNextDay = findViewById(R.id.buttonFirthAction);
+            buttonNextDay = findViewById(R.id.button6);
             if (buttonNextDay != null) {
                 buttonNextDay.setText(R.string.popup_action_next);
                 UiTools.addClickEffect(buttonNextDay);
@@ -293,6 +309,14 @@ public class WidgetCalendarPopup extends Activity {
                     showDayInfo();
                 }, newCal.get(Calendar.YEAR), newCal.get(Calendar.MONTH), newCal.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.show();
+            });
+
+            buttonSelectColor.setOnClickListener( v -> {
+                ColorPicker picker = new ColorPicker(new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain));
+                picker.setDialogTitle("Цвет дня");
+                picker.setDialogIcon(R.drawable.ic_menu_paste);
+                Integer colorValue = ContextCompat.getColor(this, android.R.color.transparent);
+                picker.selectColor(colorValue, colorValue, null, null);
             });
 
             buttonPrevDay.setOnClickListener(v -> {

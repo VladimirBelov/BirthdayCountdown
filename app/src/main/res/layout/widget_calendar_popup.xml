@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.02.2026, 17:39
+  ~  * Created by Vladimir Belov on 21.03.2026, 02:21
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 17.10.2025, 09:33
+  ~  * Last modified 20.03.2026, 21:44
   ~  */
   -->
 
@@ -67,7 +67,7 @@
         android:gravity="center|center_horizontal">
 
         <TextView
-            android:id="@+id/buttonFirstAction"
+            android:id="@+id/button1"
             style="@style/ButtonWithIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,21 +80,7 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/buttonSecondAction"
-            style="@style/ButtonWithIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="center_vertical"
-            android:padding="5dp"
-            android:layout_marginStart="6dp"
-            android:maxLines="1"
-            android:background="@drawable/border_button"
-            tools:ignore="TouchTargetSizeCheck"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/buttonThirdAction"
+            android:id="@+id/button2"
             style="@style/ButtonWithIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -108,7 +94,7 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/buttonFourthAction"
+            android:id="@+id/button3"
             style="@style/ButtonWithIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,7 +108,35 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/buttonFirthAction"
+            android:id="@+id/button4"
+            style="@style/ButtonWithIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:layout_marginStart="6dp"
+            android:maxLines="1"
+            android:background="@drawable/border_button"
+            tools:ignore="TouchTargetSizeCheck"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/button5"
+            style="@style/ButtonWithIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:layout_marginStart="6dp"
+            android:maxLines="1"
+            android:background="@drawable/border_button"
+            tools:ignore="TouchTargetSizeCheck"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/button6"
             style="@style/ButtonWithIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

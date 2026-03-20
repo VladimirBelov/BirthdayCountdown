@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 21:02
+ *  * Created by Vladimir Belov on 21.03.2026, 02:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 18:27
+ *  * Last modified 20.03.2026, 23:43
  *
  */
 
@@ -363,7 +363,9 @@ public class ContactsEvents {
     public ColorTheme preferences_theme;
     int preferences_quiz_difficulty;
     int preferences_quiz_AutoNext;
-    Set<String> preferences_quiz_Questions = new HashSet<>();
+    /** Цвета дней */
+    HashMap<String, String> preferences_days_info = new HashMap<>();
+    Set<String> preferences_quiz_questions = new HashSet<>();
     Set<String> preferences_quiz_sources = new HashSet<>();
     String preferences_first_names_female_custom;
     String preferences_first_names_male_custom;
@@ -1499,6 +1501,8 @@ public class ContactsEvents {
             preferences_IconPackNumber = getPreferenceInt(preferences, context.getString(R.string.pref_IconPack_key), 0);
             initIconPack();
             preferences_menustyle_compact = getPreferenceBoolean(preferences, context.getString(R.string.pref_MenuStyle_key), getResources().getBoolean(R.bool.pref_MenuStyle_default));
+            preferences_days_info.clear();
+            preferences_days_info.putAll(getPreferenceStringSetAsMap(preferences, getResources().getString(R.string.pref_DaysInfo_key), Constants.STRING_EOT));
 
             //Список событий
             preferences_list_event_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_Events_key), prefs_EventTypes_Default);
@@ -1592,7 +1596,7 @@ public class ContactsEvents {
             //Викторина
             preferences_quiz_difficulty = getPreferenceInt(preferences, getResources().getString(R.string.pref_Quiz_Difficulty_key), getResources().getInteger(R.integer.pref_Quiz_Difficulty_default));
             preferences_quiz_AutoNext = getPreferenceInt(preferences, getResources().getString(R.string.pref_Quiz_AutoNext_key), getResources().getInteger(R.integer.pref_Quiz_AutoNext_default));
-            preferences_quiz_Questions = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Quiz_Questions_key), new HashSet<>());
+            preferences_quiz_questions = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Quiz_Questions_key), new HashSet<>());
             preferences_quiz_sources = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_Quiz_EventSources_key), new HashSet<>());
 
             //Определения событий
@@ -2150,7 +2154,7 @@ public class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_List_Events_key), preferences_list_event_types);
             editor.putStringSet(context.getString(R.string.pref_Notifications_EventSources_key), preferences_notifications_sources);
             editor.putStringSet(context.getString(R.string.pref_Notifications2_EventSources_key), preferences_notifications2_sources);
-            editor.putStringSet(context.getString(R.string.pref_Quiz_Questions_key), preferences_quiz_Questions);
+            editor.putStringSet(context.getString(R.string.pref_Quiz_Questions_key), preferences_quiz_questions);
             editor.putStringSet(context.getString(R.string.pref_Quiz_EventSources_key), preferences_quiz_sources);
             editor.putStringSet(context.getString(R.string.pref_EnabledFeatures_key), preferences_enabled_features);
 
@@ -6310,10 +6314,16 @@ public class ContactsEvents {
             if (checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])) {
                 //Избранные для календарного виджета
                 final String packHash = StringUtils.getHash(Constants.eventSourceFavoritePrefix);
-                final String eventTitle = Constants.eventTitleFavoritePrefix
+                String eventTitle = Constants.eventTitleFavoritePrefix
                         .concat(singleEventArray[Position_eventCaption])
                         .concat(Constants.STRING_COLON_SPACE)
                         .concat(StringUtils.getFullName(singleEventArray, preferences_name_format));
+                if (age > 0) {
+                    String strDateFirstTime = singleEventArray[Position_eventDateFirstTime];
+                    eventTitle += Constants.STRING_PARENTHESIS_OPEN
+                            + strDateFirstTime.substring(strDateFirstTime.lastIndexOf(Constants.STRING_PERIOD) + 1)
+                            + Constants.STRING_PARENTHESIS_CLOSE;
+                }
                 final DayType.Type dayType = DayType.Type.Holiday;
                 final String key = packHash.concat(Constants.STRING_COLON).concat(sdf_java_no_year.format(eventDateThisTime));
                 fillDayTypeAndInfo(key, dayType, eventTitle);
@@ -9997,6 +10007,24 @@ public class ContactsEvents {
         }
     }
 
+    @NonNull
+    HashMap<String, String> getPreferenceStringSetAsMap(@NonNull SharedPreferences preferences, @NonNull String key, @SuppressWarnings("SameParameterValue") @NonNull String divider) {
+        HashMap<String, String> result = new HashMap<>();
+        try {
+
+            Set<String> pref = preferences.getStringSet(key, null);
+            if (pref == null) return result;
+            for (String value : pref) {
+                int ind = value.indexOf(divider);
+                if (ind > -1) {
+                    result.put(value.substring(0, ind), value.substring(ind + divider.length()));
+                }
+            }
+
+        } catch (Exception ignored) { /**/ }
+        return result;
+    }
+
     boolean getPreferenceBoolean(@NonNull SharedPreferences preferences, @NonNull String key, boolean defValue) {
         try {
             return preferences.getBoolean(key, defValue);
@@ -10484,8 +10512,8 @@ public class ContactsEvents {
                     if (!eventDateString.equals(dateNextFloatingEvent)) {
                         eventDateString = dateNextFloatingEvent;
                         isFloating = true;
-                    } else if (eventDateString.endsWith(Constants.STRING_0000)) {
-                        eventDateString = eventDateString.substring(0, eventDateString.indexOf(Constants.STRING_0000)) + today.get(Calendar.YEAR);
+                    } else if (eventDateString.contains(Constants.STRING_0000)) {
+                        eventDateString = eventDateString.replace(Constants.STRING_0000, String.valueOf(today.get(Calendar.YEAR)));
                     }
                     dateEvent = sdf_DDMMYYYY.parse(eventDateString);
                 } catch (Exception e1) {
@@ -10504,7 +10532,11 @@ public class ContactsEvents {
                     }
                 }
                 if (dateEvent != null) {
-                    final String eventTitle = titlePrefix + day.substring(indexFirstSpace + 1).trim();
+                    final String eventTitle = titlePrefix
+                            + day.substring(indexFirstSpace + 1).trim()
+                            + Constants.STRING_PARENTHESIS_OPEN
+                            + (dateEvent.getYear() + 1900)
+                            + Constants.STRING_PARENTHESIS_CLOSE;
                     final DayType.Type dayType = flags.contains("!") ? DayType.Type.Holiday :
                             flags.contains("?") ? DayType.Type.Workday : defaultDayType;
                     String key;
@@ -10701,6 +10733,43 @@ public class ContactsEvents {
                 preferences_DaysTypes.putAll(updatedTypesMap);
             }
             updatedTypesMap.clear();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /** Возвращает цвет дня
+     * @param date Дата (yyyy-MM-dd)
+     * @return Строка с цветом или пусто
+     */
+    @NonNull String getDayInfo(String date) {
+        return StringUtils.getNotNullString(preferences_days_info.get(date));
+    }
+
+    /** Сохраняет цвет дня
+     * @param date Дата (yyyy-MM-dd)
+     * @param value Значение или null (для удаления)
+     */
+    @SuppressLint("ApplySharedPref")
+    void setDayInfo(String date, String value) {
+        try {
+
+            if (value == null) {
+                preferences_days_info.remove(date);
+            } else {
+                preferences_days_info.put(date, value);
+            }
+
+            Set<String> values = new HashSet<>();
+            for(String key: preferences_days_info.keySet()) {
+                values.add(key + Constants.STRING_EOT + StringUtils.getNotNullString(preferences_days_info.get(key)));
+            }
+
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+            editor.putStringSet(context.getString(R.string.pref_DaysInfo_key), values);
+            editor.commit();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -11414,8 +11483,8 @@ public class ContactsEvents {
                                 questIdsSelected.add(questIds.get(checked.keyAt(i)));
                             }
                         }
-                        preferences_quiz_Questions.clear();
-                        preferences_quiz_Questions.addAll(questIdsSelected);
+                        preferences_quiz_questions.clear();
+                        preferences_quiz_questions.addAll(questIdsSelected);
                         savePreferences();
 
                         // 👇 Вызываем коллбэк, если передан
@@ -11438,7 +11507,7 @@ public class ContactsEvents {
                 //Только здесь работает
                 int i = 0;
                 for (QuizActivity.QuestionType type : QuizActivity.QuestionType.values()) {
-                    if (preferences_quiz_Questions.contains(type.getCode(context))) {
+                    if (preferences_quiz_questions.contains(type.getCode(context))) {
                         listView.setItemChecked(i, true);
                     }
                     i++;
