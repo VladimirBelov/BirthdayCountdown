@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2026, 21:42
+ *  * Created by Vladimir Belov on 20.03.2026, 12:34
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.03.2026, 19:13
+ *  * Last modified 20.03.2026, 12:19
  *
  */
 
@@ -211,7 +211,7 @@ public class CustomSeekBarPreference extends DialogPreference {
         }
         ContactsEvents eventsData = ContactsEvents.getInstance();
         SpannableString spannable = new SpannableString(summary);
-        if (isEnabled()) {
+        if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO) && isEnabled()) {
             spannable.setSpan(new StyleSpan(Typeface.BOLD), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             Resources.Theme theme = eventsData.getResources().newTheme();
             theme.applyStyle(eventsData.preferences_theme.themeMain, true);

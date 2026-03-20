@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2026, 21:42
+ *  * Created by Vladimir Belov on 20.03.2026, 12:34
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.03.2026, 19:41
+ *  * Last modified 20.03.2026, 10:44
  *
  */
 
@@ -340,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (!TextUtils.isEmpty(contactID)) {
                 menu.add(Menu.NONE, Constants.ContextMenu_EditContact, Menu.NONE, getString(R.string.menu_context_edit_contact))
                         .setIcon(android.R.drawable.ic_menu_edit);
-            } else if (eventsData.preferences_extrafun) {
+            } else if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS)) {
                 MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_CreateContact, Menu.NONE, getString(R.string.menu_context_create_contact))
                         .setIcon(R.drawable.ic_menu_invite);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -451,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (!selectedEvent[ContactsEvents.Position_age].equals(Constants.STRING_MINUS1)) {
                 if (!eventsData.isXDaysEvent(eventKey)) {
-                    if (eventsData.preferences_extrafun && !eventSubtype.equals(Constants.EventType_5K)) {
+                    if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS) && !eventSubtype.equals(Constants.EventType_5K)) {
                         menuItem = menu.add(Menu.NONE, Constants.ContextMenu_xDaysEvent, Menu.NONE, getString(R.string.menu_context_xDaysEvent_add))
                                 .setIcon(android.R.drawable.ic_menu_myplaces);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -469,7 +469,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         .setIcon(android.R.drawable.ic_menu_mylocation);
             }
 
-            if (eventsData.preferences_extrafun) {
+            if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS)) {
                 menu.add(Menu.NONE, Constants.ContextMenu_EventInfo, Menu.NONE, getString(R.string.menu_context_event_info))
                         .setIcon(android.R.drawable.ic_menu_view);
             }
@@ -647,8 +647,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (eventsData.unsetHiddenEvent(eventKey, eventKeyWithRawId)) {
 
                     // Если удалили последнего скрытого и дополнительные функции выключены - используем для показа все источники
-                    if (!eventsData.preferences_extrafun && eventsData.getHiddenEventsCount() == 0
-                            && !eventsData.preferences_list_EventSources.isEmpty()) {
+                    if (eventsData.getHiddenEventsCount() == 0 && !eventsData.preferences_list_EventSources.isEmpty()) {
                         eventsData.preferences_list_EventSources.clear();
                         eventsData.savePreferences();
                     }
@@ -1599,7 +1598,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             final boolean isItemSourcesVisible = eventsData != null
                     && (eventsData.isFeatureEnabled(Constants.FEATURE_SELECT_SOURCES) || eventsData.preferences_list_quick_action == Constants.MainMenu_EventsSources);
             final boolean isItemTypesVisible = eventsData != null
-                    && (eventsData.preferences_extrafun || eventsData.preferences_list_quick_action == Constants.MainMenu_EventsTypes);
+                    && (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS) || eventsData.preferences_list_quick_action == Constants.MainMenu_EventsTypes);
 
             MenuItem searchItem = menu.findItem(Constants.MainMenu_Search);
             if (searchItem != null) {
@@ -1943,7 +1942,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Анализ на мёртвые связи
             boolean isDeadLinks = false;
-            final boolean isDebugOrExtraFun = eventsData.preferences_debug_on || eventsData.preferences_extrafun;
+            final boolean isDebugOrExtraFun = eventsData.preferences_debug_on || eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO);
 
             final int hiddenEventsCount = eventsData.getHiddenEventsCount();
             if (hiddenEventsCount > 0) {

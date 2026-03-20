@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2026, 21:42
+ *  * Created by Vladimir Belov on 20.03.2026, 12:34
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.03.2026, 19:31
+ *  * Last modified 20.03.2026, 10:35
  *
  */
 
@@ -324,7 +324,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
             //Добавление количества событий
-            if (eventsData.preferences_extrafun) {
+            if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) {
                 for (int i = 0; i < eventTypesValues.size(); i++) {
                     if (eventsData.statEventTypes.containsKey(eventTypesIDs.get(i))) {
                         eventTypesValues.set(i, eventTypesValues.get(i)
@@ -849,7 +849,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 findViewById(R.id.blockOnClickLastEvent).setVisibility(View.GONE);
             }
 
-            if (!this.eventsData.preferences_extrafun) {
+            if (!eventsData.isFeatureEnabled(Constants.FEATURE_WIDGETS_MORE_SETTINGS)) {
 
                 findViewById(R.id.blockEventShift).setVisibility(View.GONE);
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
+  ~  * Created by Vladimir Belov on 20.03.2026, 12:34
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.03.2026, 20:25
+  ~  * Last modified 20.03.2026, 10:54
   ~  */
   -->
 
@@ -1189,8 +1189,8 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="pref_Debug_On_title">Debug</string>
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate,StringFormatCount">Drücken Sie noch %1$d Mal, um Debug-Meldungen %3$s</string>
     <string name="pref_Debug_On_summary">Debug-Meldungen (Es wird empfohlen dies zu aktivieren, wenn Widgets oder Ereignisse falsch angezeigt werden und dies an den Autor gesendet werden soll)</string>
-    <string name="pref_ExtraFun_On_title">Extrafunktionen</string>
-    <string name="pref_ExtraFun_On_description">Aktivieren Sie Extrafunktionen, um verschiedene Aspekte der Anwendung anzupassen</string>
+    <string name="pref_EnabledFeatures_title">Extrafunktionen</string>
+    <string name="pref_EnabledFeatures_description">Aktivieren Sie Extrafunktionen, um verschiedene Aspekte der Anwendung anzupassen</string>
     <string name="pref_Help_CalendarSync_title">Kalender synchronisieren</string>
     <string name="pref_Help_CalendarSync_summary">Synchronisierung aller Kalender erzwingen</string>
     <string name="pref_Help_CalendarSync_result">"Erzwungene Synchronisierung für %s"</string>

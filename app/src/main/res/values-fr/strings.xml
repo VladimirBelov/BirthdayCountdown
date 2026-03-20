@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
+  ~  * Created by Vladimir Belov on 20.03.2026, 12:34
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.03.2026, 20:25
+  ~  * Last modified 20.03.2026, 10:54
   ~  */
   -->
 
@@ -1188,8 +1188,8 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
     <string name="pref_Debug_On_title">Messages de débogage</string>
     <string name="pref_Debug_On_hint" tools:ignore="StringFormatCount">Appuyez %1$d fois de plus pour %3$s les messages de débogage</string>
     <string name="pref_Debug_On_summary">"Afficher les messages de débogage (il est recommandé de l'activer si les widgets ou les événements ne s'affichent pas correctement et de l'envoyer à l'auteur de l'application)"</string>
-    <string name="pref_ExtraFun_On_title">Fonctionnalités supplémentaires</string>
-    <string name="pref_ExtraFun_On_description">"Activer des fonctionnalités supplémentaires pour personnaliser divers aspects de l'application"</string>
+    <string name="pref_EnabledFeatures_title">Fonctionnalités supplémentaires</string>
+    <string name="pref_EnabledFeatures_description">"Activer des fonctionnalités supplémentaires pour personnaliser divers aspects de l'application"</string>
     <string name="pref_Help_CalendarSync_title">Synchronisation des calendriers</string>
     <string name="pref_Help_CalendarSync_summary">Forcer la synchronisation de tous les calendriers</string>
     <string name="pref_Help_CalendarSync_result">"Synchronisation forcée pour les %s"</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.03.2026, 01:07
+  ~  * Created by Vladimir Belov on 20.03.2026, 12:34
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 17.03.2026, 22:53
+  ~  * Last modified 20.03.2026, 12:16
   ~  */
   -->
 
@@ -12,8 +12,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center_vertical|end"
-    android:textColor="?android:attr/textColorSecondary"
-    android:textSize="14sp"
+    android:textColor="?attr/colorAccent"
+    android:textSize="16sp"
+    android:textStyle="bold"
     android:minWidth="48dp"
     android:paddingStart="8dp"
     android:paddingEnd="8dp" />

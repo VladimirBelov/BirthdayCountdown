@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
+  ~  * Created by Vladimir Belov on 20.03.2026, 12:34
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.03.2026, 20:22
+  ~  * Last modified 20.03.2026, 10:54
   ~  */
   -->
 
@@ -1188,8 +1188,8 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="pref_Debug_On_title">Ladění zpráv</string>
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate">Stiskněte ještě %1$d%2$s pro %3$s oznámení o ladění</string>
     <string name="pref_Debug_On_summary">Zobrazit ladicí zprávy (doporučuje se povolit, pokud se widgety nebo události nezobrazují správně a odeslat autorovi aplikace)</string>
-    <string name="pref_ExtraFun_On_title">Další funkce</string>а
-    <string name="pref_ExtraFun_On_description">Povolte další funkce pro přizpůsobení různých aspektů aplikace</string>
+    <string name="pref_EnabledFeatures_title">Další funkce</string>а
+    <string name="pref_EnabledFeatures_description">Povolte další funkce pro přizpůsobení různých aspektů aplikace</string>
     <string name="pref_Help_CalendarSync_title">Synchronizace kalendářů</string>
     <string name="pref_Help_CalendarSync_summary">Vynutit synchronizaci všech kalendářů</string>
     <string name="pref_Help_CalendarSync_result">"Vynucená synchronizace %s"</string>

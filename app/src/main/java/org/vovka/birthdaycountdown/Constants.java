@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2026, 21:42
+ *  * Created by Vladimir Belov on 20.03.2026, 12:34
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.03.2026, 20:17
+ *  * Last modified 20.03.2026, 12:24
  *
  */
 
@@ -513,12 +513,22 @@ public final class Constants {
 
     static final String GET_SELECTED_SOURCES_METHOD = "getSelectedSources";
 
+    /** Включить викторину */
     public static final String FEATURE_QUIZ = "enable_quiz";
+    /** Включить вторую очередь уведомлений */
     public static final String FEATURE_NOTIFY_Q2 = "enable_notify_q2";
+    /** Включить возможность выбирать источники событий */
     public static final String FEATURE_SELECT_SOURCES = "enable_select_sources";
+    /** Показать больше общих настроек */
     public static final String FEATURE_MORE_SETTINGS = "more_settings";
+    /** Показать больше настроек для уведомлений */
     public static final String FEATURE_NOTIFY_MORE_SETTINGS = "notify_more_settings";
+    /** Показать больше настроек для виджетов */
     public static final String FEATURE_WIDGETS_MORE_SETTINGS = "widgets_more_settings";
+    /** Включить инструменты импорта/экспорта */
     public static final String FEATURE_TOOLS = "enable_tools";
+    /** Показывать больше подробностей в элементах интерфейса */
     public static final String FEATURE_ADV_INFO = "show_adv_info";
+    /** Включить больше действий */
+    public static final String FEATURE_ADV_ACTIONS = "show_adv_actions";
 }

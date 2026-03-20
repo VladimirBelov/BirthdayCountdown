@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2026, 01:07
+ *  * Created by Vladimir Belov on 20.03.2026, 12:34
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 17.03.2026, 23:30
+ *  * Last modified 20.03.2026, 12:32
  *
  */
 
@@ -65,8 +65,6 @@ public class CustomTextPreference extends Preference {
         mValueProvider = provider;
         notifyChanged();
     }
-
-    public void setValueKey(String key) {}
 
     public void refresh() {
         notifyChanged();

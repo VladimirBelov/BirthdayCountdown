@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
+  ~  * Created by Vladimir Belov on 20.03.2026, 12:34
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.03.2026, 20:29
+  ~  * Last modified 20.03.2026, 10:54
   ~  */
   -->
 
@@ -1189,8 +1189,8 @@ Clique longamente no item para selecionar a cor"</string>
     <string name="pref_Debug_On_title">Mensagens de depuração</string>
     <string name="pref_Debug_On_hint">Pressione %1$d mais tempo%2$s para %3$s notificações de depuração</string>
     <string name="pref_Debug_On_summary">Mostrar mensagens de depuração (recomenda-se habilitá-lo se widgets ou eventos forem exibidos incorretamente e enviá-los ao autor do aplicativo)</string>
-    <string name="pref_ExtraFun_On_title">Recursos extras</string>а
-    <string name="pref_ExtraFun_On_description">Ative recursos adicionais para personalizar vários aspectos do aplicativo</string>
+    <string name="pref_EnabledFeatures_title">Recursos extras</string>а
+    <string name="pref_EnabledFeatures_description">Ative recursos adicionais para personalizar vários aspectos do aplicativo</string>
     <string name="pref_Help_CalendarSync_title">Sincronização de calendários</string>
     <string name="pref_Help_CalendarSync_summary">Forçar sincronização de todos os calendários</string>
     <string name="pref_Help_CalendarSync_result">"Sincronização forçada para %s"</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.03.2026, 21:42
+  ~  * Created by Vladimir Belov on 20.03.2026, 12:34
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 19.03.2026, 20:17
+  ~  * Last modified 20.03.2026, 10:54
   ~  */
   -->
 
@@ -1188,8 +1188,8 @@
     <string name="pref_InfoMsg_On_title">Информационные сообщения</string>
     <string name="pref_InfoMsg_On_summary">Показывать информационные сообщения о выполненных действиях или запуске фоновых операций</string>
     <string name="pref_Debug_On_summary">Показывать сообщения для отладки ошибок (рекомендуется включить, если некорректно отображаются виджеты или события, или не определяются какие-то даты, и прислать автору программы)</string>
-    <string name="pref_ExtraFun_On_title">Доп. функции</string>
-    <string name="pref_ExtraFun_On_description">Включить дополнительные функции по настройке различных аспектов приложения</string>
+    <string name="pref_EnabledFeatures_title">Доп. функции</string>
+    <string name="pref_EnabledFeatures_description">Включить дополнительные функции по настройке различных аспектов приложения</string>
     <string name="pref_Help_CalendarSync_title">Синхронизация календарей</string>
     <string name="pref_Help_CalendarSync_summary">Принудительно запустить синхронизацию всех календарей</string>
     <string name="pref_Help_CalendarSync_result">"Запущена синхронизация %s"</string>
@@ -1407,10 +1407,17 @@
     <string name="pref_Feature_Quiz_description">Включить викторину</string>
     <string name="pref_Feature_Notify_Q2_description">Включить вторую очередь для уведомлений о событиях</string>
     <string name="pref_Feature_Select_Sources_description">Включить возможность выбирать источники событий для основного списка событий, уведомлений, виджетов, викторины, и.т.д.</string>
+    <string name="pref_Feature_More_Settings_title">Больше настроек</string>
+    <string name="pref_Feature_More_Settings_description">Показать больше общих настроек для приложения: форматы, настройка событий, и.т.д.</string>
     <string name="pref_Feature_Notify_More_Settings_title">Больше настроек для уведомлений</string>
     <string name="pref_Feature_Notify_More_Settings_description">Показать больше настроек для уведомлений</string>
     <string name="pref_Feature_Widgets_More_Settings_title">Больше настроек для виджетов</string>
     <string name="pref_Feature_Widgets_More_Settings_description">Показать больше настроек для виджетов</string>
+    <string name="pref_Feature_Tools_description">Включить инструменты импорта/экспорта событий и настроек</string>
+    <string name="pref_Feature_Adv_Info_title">Больше подробностей</string>
+    <string name="pref_Feature_Adv_Info_description">Показывать больше подробностей в элементах интерфейса: количество событий, статистика, значения настроек, и.т.д.</string>
+    <string name="pref_Feature_Adv_Actions_title">Больше действий</string>
+    <string name="pref_Feature_Adv_Actions_description">Включить больше действий для обработки событий</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Ситцевая</string>

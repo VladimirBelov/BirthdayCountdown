@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2026, 21:42
+ *  * Created by Vladimir Belov on 20.03.2026, 12:34
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.03.2026, 21:40
+ *  * Last modified 20.03.2026, 10:54
  *
  */
 
@@ -300,7 +300,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
             updateTitles();
             updateVisibility();
-            if (eventsData.preferences_extrafun) setSummaryUpdate();
+            if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) setSummaryUpdate();
         }
     }
 
@@ -365,39 +365,43 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             final boolean pref_menu_isCompact = eventsData.preferences_menustyle_compact;
             final boolean disabledSelectSources = !eventsData.isFeatureEnabled(Constants.FEATURE_SELECT_SOURCES);
+            final boolean disabledMoreSettings = !eventsData.isFeatureEnabled(Constants.FEATURE_MORE_SETTINGS);
             final boolean disabledMoreNotifySettings = !eventsData.isFeatureEnabled(Constants.FEATURE_NOTIFY_MORE_SETTINGS);
+            final boolean disabledMoreWidgetsSettings = !eventsData.isFeatureEnabled(Constants.FEATURE_WIDGETS_MORE_SETTINGS);
+            final boolean enabledNotifyQ2 = eventsData.isFeatureEnabled(Constants.FEATURE_NOTIFY_Q2);
+            final boolean disabledTools = !eventsData.isFeatureEnabled(Constants.FEATURE_TOOLS);
 
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Icon_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_DateFormat_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_AgeFormat_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Female_Names_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_Male_Names_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_List_NameFormat_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Common_key, R.string.pref_LocalEvents_PhotoSize_key);
+            hidePreference(disabledMoreSettings, R.string.pref_Common_key, R.string.pref_Icon_key);
+            hidePreference(disabledMoreSettings, R.string.pref_Common_key, R.string.pref_List_DateFormat_key);
+            hidePreference(disabledMoreSettings, R.string.pref_Common_key, R.string.pref_List_AgeFormat_key);
+            hidePreference(disabledMoreSettings, R.string.pref_Common_key, R.string.pref_Female_Names_key);
+            hidePreference(disabledMoreSettings, R.string.pref_Common_key, R.string.pref_Male_Names_key);
+            hidePreference(disabledMoreSettings, R.string.pref_Common_key, R.string.pref_List_NameFormat_key);
+            hidePreference(disabledMoreSettings, R.string.pref_Common_key, R.string.pref_LocalEvents_PhotoSize_key);
 
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_key, R.string.pref_CustomEvents_Rules_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Birthday_key, R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Custom1_key, R.string.pref_CustomEvents_Custom1_UseYear_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Custom2_key, R.string.pref_CustomEvents_Custom2_UseYear_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Custom3_key, R.string.pref_CustomEvents_Custom3_UseYear_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Custom4_key, R.string.pref_CustomEvents_Custom4_UseYear_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_CustomEvents_Custom5_key, R.string.pref_CustomEvents_Custom5_UseYear_key);
+            hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_key, R.string.pref_CustomEvents_Rules_key);
+            hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_Birthday_key, R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key);
+            hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_Custom1_key, R.string.pref_CustomEvents_Custom1_UseYear_key);
+            hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_Custom2_key, R.string.pref_CustomEvents_Custom2_UseYear_key);
+            hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_Custom3_key, R.string.pref_CustomEvents_Custom3_UseYear_key);
+            hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_Custom4_key, R.string.pref_CustomEvents_Custom4_UseYear_key);
+            hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_Custom5_key, R.string.pref_CustomEvents_Custom5_UseYear_key);
 
             hidePreference(disabledSelectSources, R.string.pref_EventList_key, R.string.pref_List_EventSources_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_CustomCaption_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_CustomTodayEventCaption_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_OnClick_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_FastScroll_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_QuickAction_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_Margin_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_Jubilee_Algorithm_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_SearchDepth_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_QuickAction_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_EventList_key, R.string.pref_List_TopPadding_key);
+            hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_CustomCaption_key);
+            hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_CustomTodayEventCaption_key);
+            hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_OnClick_key);
+            hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_FastScroll_key);
+            hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_QuickAction_key);
+            hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_Margin_key);
+            hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_Jubilee_Algorithm_key);
+            hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_SearchDepth_key);
+            hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_QuickAction_key);
+            hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_TopPadding_key);
 
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Widgets_key, R.string.pref_Widgets_Color_WidgetCaption_key);
+            hidePreference(disabledMoreWidgetsSettings, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
+            hidePreference(disabledMoreWidgetsSettings, R.string.pref_Widgets_key, R.string.pref_Widgets_OnClick_key);
+            hidePreference(disabledMoreWidgetsSettings, R.string.pref_Widgets_key, R.string.pref_Widgets_Color_WidgetCaption_key);
 
             //Уведомления
             hidePreference(disabledSelectSources, R.string.pref_Notifications_key, R.string.pref_Notifications_EventSources_key);
@@ -422,10 +426,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
 
             //Уведомления 2
-            boolean isQ2Enabled = eventsData.isFeatureEnabled(Constants.FEATURE_NOTIFY_Q2);
-            hidePreference(!isQ2Enabled, 0, R.string.pref_Notifications2_key);
+            hidePreference(!enabledNotifyQ2, 0, R.string.pref_Notifications2_key);
 
-            if (isQ2Enabled) {
+            if (enabledNotifyQ2) {
                 hidePreference(disabledSelectSources, R.string.pref_Notifications2_key, R.string.pref_Notifications2_EventSources_key);
                 hidePreference(disabledMoreNotifySettings, R.string.pref_Notifications2_key, R.string.pref_Notifications2_EventInfo_key);
                 hidePreference(disabledMoreNotifySettings, R.string.pref_Notifications2_key, R.string.pref_Notifications2_Priority_key);
@@ -450,15 +453,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(!eventsData.isFeatureEnabled(Constants.FEATURE_QUIZ), 0, R.string.pref_Quiz_key);
             hidePreference(disabledSelectSources, R.string.pref_Quiz_key, R.string.pref_Quiz_EventSources_key);
 
-            hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Tools_key);
+            hidePreference(disabledTools, 0, R.string.pref_Tools_key);
             hidePreference(!eventsData.preferences_debug_on, R.string.pref_Tools_key, R.string.pref_Tools_Preferences_Show_key);
             hidePreference(!eventsData.preferences_debug_on, R.string.pref_Tools_Preferences_key, R.string.pref_Tools_Preferences_Show_key);
-            hidePreference(!eventsData.preferences_extrafun, 0, R.string.pref_Tools_Events_key);
+            hidePreference(disabledTools, 0, R.string.pref_Tools_Events_key);
             hidePreference(!eventsData.preferences_debug_on || eventsData.statLocalEventCount == 0, R.string.pref_Tools_Events_key, R.string.pref_Tools_LocalEvents_Show_key);
-            hidePreference(!eventsData.preferences_extrafun || eventsData.statLocalEventCount == 0, R.string.pref_Tools_Events_key, R.string.pref_Tools_LocalEvents_Export_key);
-            hidePreference(!eventsData.preferences_extrafun || eventsData.statLocalEventCount == 0, R.string.pref_Tools_Events_key, R.string.pref_Tools_LocalEvents_Clear_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Tools_Events_key, R.string.pref_Tools_LocalEvents_Import_key);
-            hidePreference(!eventsData.preferences_extrafun, R.string.pref_Tools_Events_key, R.string.pref_Tools_Events_Import_key);
+            hidePreference(disabledTools || eventsData.statLocalEventCount == 0, R.string.pref_Tools_Events_key, R.string.pref_Tools_LocalEvents_Export_key);
+            hidePreference(disabledTools || eventsData.statLocalEventCount == 0, R.string.pref_Tools_Events_key, R.string.pref_Tools_LocalEvents_Clear_key);
+            hidePreference(disabledTools, R.string.pref_Tools_Events_key, R.string.pref_Tools_LocalEvents_Import_key);
+            hidePreference(disabledTools, R.string.pref_Tools_Events_key, R.string.pref_Tools_Events_Import_key);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 hidePreference(DeviceTools.checkNoBatteryOptimization(this), R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
@@ -467,7 +470,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 hidePreference(DeviceTools.checkCanExactAlarm(this), R.string.pref_Help_key, R.string.pref_Help_ExactAlarmsAccess_key);
                 hidePreference(true, R.string.pref_Help_key, R.string.pref_Help_BatteryOptimization_key);
             }
-            hidePreference(!eventsData.preferences_extrafun || DeviceTools.checkNoContactsAccess(this) || DeviceTools.checkNoCalendarAccess(this), R.string.pref_Help_key, R.string.pref_Help_CalendarSync_key);
+            hidePreference(disabledMoreSettings || DeviceTools.checkNoContactsAccess(this) || DeviceTools.checkNoCalendarAccess(this), R.string.pref_Help_key, R.string.pref_Help_CalendarSync_key);
             hidePreference(!DeviceTools.checkNoNotificationAccess(this), R.string.pref_Help_key, R.string.pref_Help_NotificationsAccess_key);
             hidePreference(!DeviceTools.checkNoContactsAccess(this), R.string.pref_Help_key, R.string.pref_Help_ContactsAccess_key);
             hidePreference(!DeviceTools.checkNoCalendarAccess(this), R.string.pref_Help_key, R.string.pref_Help_CalendarAccess_key);
@@ -479,7 +482,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Preference pref;
             eventsData.preferences_notifications_days.removeAll(new HashSet<String>() {{add(Constants.STRING_EMPTY);}});
             boolean isNotifyEnabled = !eventsData.preferences_notifications_days.isEmpty();
-            boolean isNotify2Enabled = !eventsData.preferences_notifications2_days.isEmpty();
+            boolean isNotify2Enabled = enabledNotifyQ2 && !eventsData.preferences_notifications2_days.isEmpty();
 
             List<Integer> prefsNotify = Arrays.asList(
                     R.string.pref_Notifications_Type_key,
@@ -529,7 +532,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
                 }
 
-                if (eventsData.preferences_extrafun) setSummaryForNotifications();
+                if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) setSummaryForNotifications();
 
             } else {
 
@@ -1943,7 +1946,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             eventsData.getPreferences();
             eventsData.needUpdateEventList = true;
 
-            if (getString(R.string.pref_Language_key).equals(key) || getString(R.string.pref_MenuStyle_key).equals(key) || getString(R.string.pref_Help_ExtraFun_On_key).equals(key)) {
+            if (getString(R.string.pref_Language_key).equals(key) || getString(R.string.pref_MenuStyle_key).equals(key)) {
 
                 //https://stackoverflow.com/questions/2486934/programmatically-relaunch-recreate-an-activity
                 //не доверяйте this.recreate(), если в настройках несколько вложенных PreferenceScreen!
@@ -2570,7 +2573,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 calIDs.add(entry.getKey());
                 String[] calendarInfo = StringUtils.getKeyParts(entry.getValue());
                 String calTitle = calendarInfo[0].concat(Constants.STRING_SPACE);
-                if (eventsData.preferences_extrafun) {
+                if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) {
                     if (calendarInfo.length > 2 && calendarInfo[2].equals(Constants.STRING_0))
                         calTitle = calTitle + "🙈"; // Невидимый календарь
                     if (calendarInfo.length > 3 && calendarInfo[3].equals(Constants.STRING_1))
@@ -3603,7 +3606,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_CustomEvents_Death_UseInternal_key),
                         getString(R.string.pref_CustomEvents_NameDay_UseInternal_key),
                         getString(R.string.pref_Help_Debug_On_key),
-                        getString(R.string.pref_Help_ExtraFun_On_key),
                         getString(R.string.pref_Help_InfoMsg_On_key),
                         getString(R.string.pref_List_FastScroll_key),
                         getString(R.string.pref_MenuStyle_key)
@@ -4566,7 +4568,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     featDescriptions, featIcons, featIconsPackages, null, ta);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog))
-                    .setTitle(R.string.pref_ExtraFun_On_title)
+                    .setTitle(R.string.pref_EnabledFeatures_title)
                     .setIcon(android.R.drawable.ic_menu_manage)
                     .setAdapter(adapter, null)
                     .setPositiveButton(R.string.button_ok, (dialog, which) -> {

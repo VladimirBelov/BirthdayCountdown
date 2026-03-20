@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.03.2026, 21:42
+  ~  * Created by Vladimir Belov on 20.03.2026, 12:34
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 19.03.2026, 20:17
+  ~  * Last modified 20.03.2026, 10:54
   ~  */
   -->
 
@@ -1188,8 +1188,8 @@ Long click on item to select color"</string>
     <string name="pref_Debug_On_title">Debug messages</string>
     <string name="pref_Debug_On_hint" tools:ignore="PluralsCandidate">Press %1$d more time%2$s to %3$s debug notifications</string>
     <string name="pref_Debug_On_summary">Show debug messages (it is recommended to enable it if widgets or events are displayed incorrectly and send it to the application author)</string>
-    <string name="pref_ExtraFun_On_title">Extra features</string>а
-    <string name="pref_ExtraFun_On_description">Enable additional features to customize various aspects of the application</string>
+    <string name="pref_EnabledFeatures_title">Extra features</string>а
+    <string name="pref_EnabledFeatures_description">Enable additional features to customize various aspects of the application</string>
     <string name="pref_Help_CalendarSync_title">Calendars sync</string>
     <string name="pref_Help_CalendarSync_summary">Force sync of all calendars</string>
     <string name="pref_Help_CalendarSync_result">"Forced sync for %s"</string>
@@ -1407,10 +1407,18 @@ Long click on item to select color"</string>
     <string name="pref_Feature_Quiz_description">Enable Quiz</string>
     <string name="pref_Feature_Notify_Q2_description">Enable second queue for event notifications</string>
     <string name="pref_Feature_Select_Sources_description">Enable possibility to select events sources for main events list, notifications, widgets, quiz, etc.</string>
+    <string name="pref_Feature_More_Settings_title">More settings</string>
+    <string name="pref_Feature_More_Settings_description">Show more common settings for entire application: formats, events customizing, etc.</string>
     <string name="pref_Feature_Notify_More_Settings_title">More settings for notifications</string>
     <string name="pref_Feature_Notify_More_Settings_description">Show more settings for notifications</string>
     <string name="pref_Feature_Widgets_More_Settings_title">More settings for widgets</string>
     <string name="pref_Feature_Widgets_More_Settings_description">Show more settings for widgets</string>
+    <string name="pref_Feature_Tools_description">Enable tools for import/export of events and settings</string>
+    <string name="pref_Feature_Adv_Info_title">Details</string>
+    <string name="pref_Feature_Adv_Info_description">Show more detailed information inside interface elements: statistics, events count, settings values summary, etc.</string>
+    <string name="pref_Feature_Adv_Actions_title">More actions</string>
+    <string name="pref_Feature_Adv_Actions_description">Enable more actions for events handling</string>
+
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
     <!--https://en.wikipedia.org/wiki/Wedding_anniversary -->
@@ -2515,8 +2523,6 @@ Long click on item to select color"</string>
     <bool name="pref_Help_Debug_On_default" translatable="false">false</bool>
 
     <string name="pref_EnabledFeatures_key" translatable="false">EnabledFeatures</string>
-    <string name="pref_Help_ExtraFun_On_key" translatable="false">ExtraFun</string>
-    <bool name="pref_Help_ExtraFun_On_default" translatable="false">false</bool>
 
     <string name="pref_Help_BatteryOptimization_key" translatable="false">BatteryOptimization</string>
     <string name="pref_Help_NotificationsAccess_key" translatable="false">NotificationsAccess</string>

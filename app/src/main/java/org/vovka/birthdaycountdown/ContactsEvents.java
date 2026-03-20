@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2026, 21:42
+ *  * Created by Vladimir Belov on 20.03.2026, 12:34
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.03.2026, 21:06
+ *  * Last modified 20.03.2026, 11:00
  *
  */
 
@@ -356,10 +356,6 @@ public class ContactsEvents {
     //Общие настройки
     boolean preferences_debug_on;
     boolean preferences_info_on;
-    /**
-     * @deprecated Следует использовать preferences_enabled_features
-     */
-    @Deprecated boolean preferences_extrafun;
     Set<String> preferences_enabled_features = new HashSet<>();
     String preferences_language;
     String preferences_Icon;
@@ -695,10 +691,18 @@ public class ContactsEvents {
                 R.string.pref_Feature_Notify_Q2_description, R.drawable.ic_menu_notifications2),
         SELECT_SOURCES(Constants.FEATURE_SELECT_SOURCES, R.string.pref_List_EventSources_title,
                 R.string.pref_Feature_Select_Sources_description, android.R.drawable.ic_menu_agenda),
+        MORE_SETTINGS(Constants.FEATURE_MORE_SETTINGS, R.string.pref_Feature_More_Settings_title,
+                R.string.pref_Feature_More_Settings_description, R.drawable.ic_sysbar_quicksettings),
         NOTIFY_MORE_SETTINGS(Constants.FEATURE_NOTIFY_MORE_SETTINGS, R.string.pref_Feature_Notify_More_Settings_title,
                 R.string.pref_Feature_Notify_More_Settings_description, R.drawable.ic_menu_notifications1),
         WIDGETS_MORE_SETTINGS(Constants.FEATURE_WIDGETS_MORE_SETTINGS, R.string.pref_Feature_Widgets_More_Settings_title,
-                R.string.pref_Feature_Widgets_More_Settings_description, android.R.drawable.ic_menu_crop);
+                R.string.pref_Feature_Widgets_More_Settings_description, android.R.drawable.ic_menu_crop),
+        TOOLS(Constants.FEATURE_TOOLS, R.string.pref_Tools_title,
+                R.string.pref_Feature_Tools_description, android.R.drawable.ic_menu_manage),
+        ADV_INFO(Constants.FEATURE_ADV_INFO, R.string.pref_Feature_Adv_Info_title,
+                R.string.pref_Feature_Adv_Info_description, android.R.drawable.ic_menu_info_details),
+        ADV_ACTIONS(Constants.FEATURE_ADV_ACTIONS, R.string.pref_Feature_Adv_Actions_title,
+                R.string.pref_Feature_Adv_Actions_description, android.R.drawable.ic_menu_add);
 
         private final String code;
         private final int nameResId;
@@ -1490,9 +1494,7 @@ public class ContactsEvents {
             //Общие настройки
             preferences_debug_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_Debug_On_key), getResources().getBoolean(R.bool.pref_Help_Debug_On_default));
             preferences_info_on = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_InfoMsg_On_key), getResources().getBoolean(R.bool.pref_Help_InfoMsg_On_default));
-            preferences_extrafun = getPreferenceBoolean(preferences, context.getString(R.string.pref_Help_ExtraFun_On_key), getResources().getBoolean(R.bool.pref_Help_ExtraFun_On_default));
             preferences_enabled_features = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_EnabledFeatures_key), new HashSet<>());
-            //preferences_language = getPreferenceString(preferences, context.getString(R.string.pref_Language_key), context.getString(R.string.pref_Language_default));
             preferences_Icon = getPreferenceString(preferences, context.getString(R.string.pref_Icon_key), context.getString(R.string.pref_Icon_default));
             preferences_IconPackNumber = getPreferenceInt(preferences, context.getString(R.string.pref_IconPack_key), 0);
             initIconPack();
@@ -1971,7 +1973,6 @@ public class ContactsEvents {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return;
 
             List<String> shortcutIdsToRemove = new ArrayList<>();
-            boolean enableExtraShortcuts = preferences_extrafun;
 
             if (!preferences_notifications_days.isEmpty() || !preferences_notifications2_days.isEmpty()) {
 
@@ -2027,7 +2028,7 @@ public class ContactsEvents {
                 shortcutIdsToRemove.add(Constants.SHORTCUT_QUIZ);
             }
 
-            if (enableExtraShortcuts) {
+            if (isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS)) {
                 Intent intentSettings = new Intent(context, SettingsActivity.class);
                 intentSettings.setAction(Intent.ACTION_VIEW);
                 ShortcutInfoCompat shortcutSettings = new ShortcutInfoCompat.Builder(context, Constants.SHORTCUT_SETTINGS)

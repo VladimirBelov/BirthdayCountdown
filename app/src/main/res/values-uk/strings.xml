@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
+  ~  * Created by Vladimir Belov on 20.03.2026, 12:34
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.03.2026, 20:30
+  ~  * Last modified 20.03.2026, 10:54
   ~  */
   -->
 
@@ -1188,8 +1188,8 @@
     <string name="pref_Debug_On_title">Налагоджувальні повідомлення</string>
     <string name="pref_Debug_On_hint">Натисніть ще %1$d раз%2$s для %3$s налагоджувальних повідомлень</string>
     <string name="pref_Debug_On_summary">Показувати повідомлення для налагодження (рекомендується включити, якщо некоректно відображаються віджети або події, і надіслати автору програми)</string>
-    <string name="pref_ExtraFun_On_title">Додаткові функції</string>
-    <string name="pref_ExtraFun_On_description">Увімкніть додаткові функції, щоб налаштувати різні аспекти програми</string>
+    <string name="pref_EnabledFeatures_title">Додаткові функції</string>
+    <string name="pref_EnabledFeatures_description">Увімкніть додаткові функції, щоб налаштувати різні аспекти програми</string>
     <string name="pref_Help_CalendarSync_title">Синхронізація календарів</string>
     <string name="pref_Help_CalendarSync_summary">Примусова синхронізація всіх календарів</string>
     <string name="pref_Help_CalendarSync_result">"Примусова синхронізація %s"</string>

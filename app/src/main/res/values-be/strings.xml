@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.03.2026, 22:05
+  ~  * Created by Vladimir Belov on 20.03.2026, 12:34
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.03.2026, 20:22
+  ~  * Last modified 20.03.2026, 10:54
   ~  */
   -->
 
@@ -1187,8 +1187,8 @@
     <string name="pref_InfoMsg_On_title">Інфармацыйныя паведамленні</string>
     <string name="pref_InfoMsg_On_summary">Паказваць інфармацыйныя паведамленні а выкананых дзеяннях ці запуску фонавых аперацый</string>
     <string name="pref_Debug_On_summary">Паказваць паведамленні для адладкі памылак (рэкамендуецца ўключыць, калі некарэктна адлюстроўваюцца віджэты ці падзеі, ці не вызначаюцца нейкія даты, і даслаць аўтару праграмы)</string>
-    <string name="pref_ExtraFun_On_title">Дад. функцыі</string>
-    <string name="pref_ExtraFun_On_description">Уключыць дадатковыя функцыі па наладзе розных аспектаў праграмы</string>
+    <string name="pref_EnabledFeatures_title">Дад. функцыі</string>
+    <string name="pref_EnabledFeatures_description">Уключыць дадатковыя функцыі па наладзе розных аспектаў праграмы</string>
     <string name="pref_Help_CalendarSync_title">Сінхранізацыя календароў</string>
     <string name="pref_Help_CalendarSync_summary">Прымусова сінхранізаваць усе календары</string>
     <string name="pref_Help_CalendarSync_result">"Прымусовая сінхранізацыя для %s"</string>

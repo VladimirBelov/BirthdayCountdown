@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Created by Vladimir Belov on 20.03.2026, 12:34
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 18:01
+ *  * Last modified 20.03.2026, 10:35
  *
  */
 
@@ -152,7 +152,7 @@ public class AboutActivity extends AppCompatActivity {
             int color = ta.getColor(R.styleable.Theme_eventDateColor, 0); // почему-то #RRGGBB с webView не работает вообще - пустой экран
             sb.append(getString(R.string.changelog_header, Color.red(color) + "," + Color.green(color) + "," + Color.blue(color)));
 
-            if (eventsData.preferences_extrafun || eventsData.preferences_debug_on) {
+            if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO) || eventsData.preferences_debug_on) {
 
                 if (eventsData.statTimeComputeDates > 0) {
                     sb.append(getString(R.string.stats_title));
