@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 20.03.2026, 21:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 22:47
+ *  * Last modified 20.03.2026, 18:58
  *
  */
 
@@ -56,15 +56,15 @@ public class Widget2x2 extends AppWidgetProvider {
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
+            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(eventsData.getContext()).getAppWidgetInfo(appWidgetId);
             String widgetType = Constants.WIDGET_TYPE_2X2;
             if (appWidgetInfo != null) {
                 widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             }
             List<String> widgetPref = eventsData.getWidgetPreference(appWidgetId, widgetType);
-            RemoteViews views = getRemoteViews(context);
+            RemoteViews views = getRemoteViews(eventsData.getContext());
 
-            ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
+            ToastExpander.showDebugMsg(eventsData.getContext(), Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
                             context.getResources().getString(R.string.msg_debug_widget_photo_config, widgetType, appWidgetId,
                                     context.getResources().getResourceEntryName(views.getLayoutId()), minWidth, minHeight, TextUtils.join(Constants.STRING_COMMA, widgetPref))
                     : widgetType.concat(Constants.STRING_COLON)
@@ -72,12 +72,12 @@ public class Widget2x2 extends AppWidgetProvider {
                     .concat(TextUtils.join(Constants.STRING_COMMA, widgetPref))
             );
 
-            new WidgetUpdater(context, ContactsEvents.getInstance(), views, 1, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
+            new WidgetUpdater(eventsData.getContext(), ContactsEvents.getInstance(), views, 1, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
             eventsData.statActiveWidgets++;

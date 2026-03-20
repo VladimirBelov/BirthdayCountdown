@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 12:34
+ *  * Created by Vladimir Belov on 20.03.2026, 21:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 11:00
+ *  * Last modified 20.03.2026, 18:27
  *
  */
 
@@ -1974,7 +1974,7 @@ public class ContactsEvents {
 
             List<String> shortcutIdsToRemove = new ArrayList<>();
 
-            if (!preferences_notifications_days.isEmpty() || !preferences_notifications2_days.isEmpty()) {
+            if (!preferences_notifications_days.isEmpty() || (isFeatureEnabled(Constants.FEATURE_NOTIFY_Q2) && !preferences_notifications2_days.isEmpty())) {
 
                 Intent intentNotify = new Intent(context, NotifyActivity.class);
                 intentNotify.setAction(Intent.ACTION_VIEW);
@@ -10396,11 +10396,11 @@ public class ContactsEvents {
                                 String eventsArray = eventsPack[i];
                                 String[] days = eventsArray.split(Constants.STRING_EOL, -1);
 
-                                String eventIcon = Constants.eventTitleHolidayPrefix;
+                                String eventTite = Constants.eventTitleHolidayPrefix;
                                 if (eventsPack[0].indexOf(Constants.STRING_SPACE) == 4) {
-                                    eventIcon = eventsPack[0].substring(0, eventsPack[0].indexOf(Constants.STRING_SPACE) + 1);
+                                    eventTite = eventsPack[0].substring(0, eventsPack[0].indexOf(Constants.STRING_SPACE) + 1);
                                 }
-                                fillDaysTypesFromFile(packHash, days, eventIcon);
+                                fillDaysTypesFromFile(packHash, days, eventTite, DayType.Type.Common);
                             }
                             preferences_DaysTypes.put(packHash, DayType.Type.Holiday);
                         }
@@ -10428,7 +10428,7 @@ public class ContactsEvents {
                             ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
                             continue;
                         }
-                        fillDaysTypesFromFile(packHash, eventsArray, Constants.eventTitleFilePrefix);
+                        fillDaysTypesFromFile(packHash, eventsArray, Constants.eventTitleFilePrefix, DayType.Type.Holiday);
                     }
                     preferences_DaysTypes.put(packHash, DayType.Type.Holiday);
                 }
@@ -10444,8 +10444,9 @@ public class ContactsEvents {
      * @param packHash Хэш источника (тип источника + путь до источника (файла или внутреннего ресурса))
      * @param events Массив событий (дата + флаги события + описание события)
      * @param titlePrefix Префикс, добавляемый для всех событий (например: иконка)
+     * @param defaultDayType Тип дня по-умолчанию (если не стоят флаги ! или ?)
      */
-    private void fillDaysTypesFromFile(String packHash, String[] events, @NonNull String titlePrefix) {
+    private void fillDaysTypesFromFile(String packHash, String[] events, @NonNull String titlePrefix, @NonNull DayType.Type defaultDayType) {
         try {
 
             if (preferences_DaysTypes.containsKey(packHash)) return;
@@ -10505,7 +10506,7 @@ public class ContactsEvents {
                 if (dateEvent != null) {
                     final String eventTitle = titlePrefix + day.substring(indexFirstSpace + 1).trim();
                     final DayType.Type dayType = flags.contains("!") ? DayType.Type.Holiday :
-                            flags.contains("?") ? DayType.Type.Workday : DayType.Type.Common;
+                            flags.contains("?") ? DayType.Type.Workday : defaultDayType;
                     String key;
                     if (flags.contains(Constants.STRING_1) || isFloating) {
                         key = packHash.concat(Constants.STRING_COLON).concat(sdf_java.format(dateEvent));

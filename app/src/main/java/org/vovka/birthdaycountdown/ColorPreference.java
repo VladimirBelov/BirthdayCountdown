@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2026, 21:42
+ *  * Created by Vladimir Belov on 20.03.2026, 21:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.03.2026, 14:46
+ *  * Last modified 20.03.2026, 20:46
  *
  */
 
@@ -70,6 +70,7 @@ class ColorPreference extends Preference {
     private static final String TAG = "ColorPreference";
     private int[] mColorChoices = {};
     private int mValue = 0;
+    private int mDefaultValue = 0;
     private int mItemLayoutId = R.layout.item_color;
     private int mNumColumns = 5;
     private String mSelectDialogTitle = "";
@@ -107,6 +108,7 @@ class ColorPreference extends Preference {
             mSelectDialogIcon = ta.getResourceId(R.styleable.ColorPreference_dialogIcon, 0);
             mItemLayoutId = ta.getResourceId(R.styleable.ColorPreference_itemLayout, mItemLayoutId);
             mNumColumns = ta.getInteger(R.styleable.ColorPreference_numColumns, mNumColumns);
+            mDefaultValue = ta.getInt(R.styleable.ColorPreference_defaultValue, 0);
             int choicesResId = ta.getResourceId(R.styleable.ColorPreference_choices, R.array.default_color_choice_values);
             if (choicesResId > 0) {
                 //https://stackoverflow.com/questions/9114587/how-can-i-save-colors-in-array-xml-and-get-its-back-to-color-array
@@ -115,7 +117,6 @@ class ColorPreference extends Preference {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            //ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             ta.recycle();
         }
@@ -185,6 +186,10 @@ class ColorPreference extends Preference {
         return mValue;
     }
 
+    public int getDefaultValue() {
+        return mDefaultValue;
+    }
+
     public static class ColorDialogFragment extends DialogFragment {
         private ColorPreference mPreference;
         private ColorGridAdapter mAdapter;
@@ -247,13 +252,17 @@ class ColorPreference extends Preference {
 
                 tryBindLists();
 
-                ContactsEvents eventsData = ContactsEvents.getInstance();
                 colorDialogBuilder.setView(rootView);
-
                 colorDialogBuilder.setNeutralButton(R.string.button_rgb, (dialog, which) -> {
                     dialog.dismiss();
-                    selectRGBColor(eventsData);
+                    selectRGBColor(ContactsEvents.getInstance());
                 });
+                int defaultValue = mPreference.getDefaultValue();
+                if (defaultValue != 0 && defaultValue != mPreference.getValue()) {
+                    colorDialogBuilder.setPositiveButton(R.string.button_reset, (dialog, which) -> {
+                        mPreference.setValue(defaultValue);
+                    });
+                }
 
             } catch (final Exception e) {
                 Log.e(TAG, e.getMessage(), e);

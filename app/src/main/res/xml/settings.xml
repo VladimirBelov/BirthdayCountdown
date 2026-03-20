@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.03.2026, 12:34
+  ~  * Created by Vladimir Belov on 20.03.2026, 21:02
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.03.2026, 10:54
+  ~  * Last modified 20.03.2026, 20:52
   ~  */
   -->
 
@@ -768,8 +768,8 @@
             android:key="@string/pref_List_Color_EventToday_key"
             android:title="@string/pref_List_Color_EventToday_title"
             android:summary="@string/pref_List_Color_EventToday_summary"
-            android:defaultValue="@color/pref_List_Color_EventToday_default"
             android:icon="@drawable/ic_menu_paste"
+            app:defaultValue="@color/pref_List_Color_EventToday_default"
             app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_List_Color_EventToday_title"
@@ -779,8 +779,8 @@
             android:key="@string/pref_List_Color_EventSoon_key"
             android:title="@string/pref_List_Color_EventSoon_title"
             android:summary="@string/pref_List_Color_EventSoon_summary"
-            android:defaultValue="@color/pref_List_Color_EventSoon_default"
             android:icon="@drawable/ic_menu_paste"
+            app:defaultValue="@color/pref_List_Color_EventSoon_default"
             app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_List_Color_EventSoon_title"
@@ -790,8 +790,8 @@
             android:key="@string/pref_List_Color_EventJubilee_key"
             android:title="@string/pref_List_Color_EventJubilee_title"
             android:summary="@string/pref_List_Color_EventJubilee_summary"
-            android:defaultValue="@color/pref_List_Color_EventJubilee_default"
             android:icon="@drawable/ic_menu_paste"
+            app:defaultValue="@color/pref_List_Color_EventJubilee_default"
             app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_List_Color_EventJubilee_title"
@@ -962,8 +962,8 @@
             android:key="@string/pref_Widgets_Color_EventToday_key"
             android:title="@string/pref_Widgets_Color_EventToday_title"
             android:summary="@string/pref_Widgets_Color_EventToday_summary"
-            android:defaultValue="@color/pref_Widgets_Color_EventToday_default"
             android:icon="@drawable/ic_menu_paste"
+            app:defaultValue="@color/pref_Widgets_Color_EventToday_default"
             app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventToday_title"
@@ -973,8 +973,8 @@
             android:key="@string/pref_Widgets_Color_EventSoon_key"
             android:title="@string/pref_Widgets_Color_EventSoon_title"
             android:summary="@string/pref_Widgets_Color_EventSoon_summary"
-            android:defaultValue="@color/pref_Widgets_Color_EventSoon_default"
             android:icon="@drawable/ic_menu_paste"
+            app:defaultValue="@color/pref_Widgets_Color_EventSoon_default"
             app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventSoon_title"
@@ -984,8 +984,8 @@
             android:key="@string/pref_Widgets_Color_EventFar_key"
             android:title="@string/pref_Widgets_Color_EventFar_title"
             android:summary="@string/pref_Widgets_Color_EventFar_summary"
-            android:defaultValue="@color/pref_Widgets_Color_EventFar_default"
             android:icon="@drawable/ic_menu_paste"
+            app:defaultValue="@color/pref_Widgets_Color_EventFar_default"
             app:numColumns="5"
             app:itemLayout="@layout/item_color"
             app:dialogTitle="@string/pref_Widgets_Color_EventFar_title"

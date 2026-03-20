@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2026, 17:39
+ *  * Created by Vladimir Belov on 20.03.2026, 21:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 24.02.2026, 20:23
+ *  * Last modified 20.03.2026, 16:33
  *
  */
 
@@ -45,11 +45,7 @@ import java.util.concurrent.Executors;
  * Это Activity обрабатывает:
  * <ul>
  *   <li>Отображение информации, полученной из экземпляра {@link ContactsEvents}.</li>
- *   <li>Динамическое изменение языка всплывающего окна на основе предпочтений пользователя или системных настроек.</li>
- *   <li>Применение темы к всплывающему окну на основе предпочтений пользователя.</li>
  *   <li>Предоставление действий, таких как просмотр дня в приложении календаря или обмен информацией о дне.</li>
- *   <li>Отображение кнопки "закрыть" для закрытия всплывающего окна.</li>
- *   <li>Добавление эффекта нажатия к кнопкам.</li>
  * </ul>
  * <p>
  * Данные передаются этому Activity через Intent extras. Ожидаемые extras:
@@ -96,54 +92,84 @@ public class WidgetCalendarPopup extends Activity {
             setContentView(R.layout.widget_calendar_popup);
 
             intent = getIntent();
-            this.dayInfo = intent.getStringExtra(Constants.EXTRA_DAY_INFO);
-            this.dayCaption = intent.getStringExtra(Constants.EXTRA_DAY_CAPTION);
-            this.dayMills = intent.getStringExtra(Constants.EXTRA_VALUES);
-            this.listEventsPacks = intent.getStringArrayListExtra(Constants.EXTRA_LIST);
-            this.eventsColorsInMonth = getHashMapFromIntent(intent);
+            dayInfo = intent.getStringExtra(Constants.EXTRA_DAY_INFO);
+            dayCaption = intent.getStringExtra(Constants.EXTRA_DAY_CAPTION);
+            dayMills = intent.getStringExtra(Constants.EXTRA_VALUES);
+            listEventsPacks = intent.getStringArrayListExtra(Constants.EXTRA_LIST);
+            eventsColorsInMonth = getHashMapFromIntent(intent);
 
-            if (this.dayInfo == null || this.dayMills == null) {
+            if (dayInfo == null || dayMills == null) {
                 ToastExpander.showInfoMsg(getApplicationContext(), "No extras!");
                 finish();
             }
 
-            this.viewInfo = findViewById(R.id.textInfo);
-            this.viewCaption = findViewById(R.id.textCaption);
-
-            //Календарь
-            this.buttonCalendar = findViewById(R.id.buttonSecondAction);
-            this.buttonCalendar.setText(getString(R.string.event_type_other_emoji).concat(Constants.STRING_SPACE).concat(getString(R.string.appwidget_label_Calendar)));
-            UiTools.addClickEffect(this.buttonCalendar);
-            this.buttonCalendar.getBackground().setAlpha(50);
-            this.buttonCalendar.setVisibility(View.VISIBLE);
-
-            //Поделиться
-            this.buttonShare = findViewById(R.id.buttonThirdAction);
-            this.buttonShare.setText(R.string.facts_popup_action_share);
-            UiTools.addClickEffect(this.buttonShare);
-            this.buttonShare.getBackground().setAlpha(50);
-            this.buttonShare.setVisibility(View.VISIBLE);
+            viewInfo = findViewById(R.id.textInfo);
+            viewCaption = findViewById(R.id.textCaption);
 
             //Предыдущий день
-            this.buttonPrevDay = findViewById(R.id.buttonFirstAction);
-            this.buttonPrevDay.setText(R.string.popup_action_prev);
-            UiTools.addClickEffect(this.buttonPrevDay);
-            this.buttonPrevDay.getBackground().setAlpha(50);
-            this.buttonPrevDay.setVisibility(View.VISIBLE);
+            buttonPrevDay = findViewById(R.id.buttonFirstAction);
+            if (buttonPrevDay != null) {
+                buttonPrevDay.setText(R.string.popup_action_prev);
+                UiTools.addClickEffect(buttonPrevDay);
+                buttonPrevDay.getBackground().setAlpha(50);
+                buttonPrevDay.setOnLongClickListener(v -> {
+                    Toast.makeText(this, getString(R.string.previous_day), Toast.LENGTH_LONG).show();
+                    return true;
+                });
+                buttonPrevDay.setVisibility(View.VISIBLE);
+            }
+
+            //Календарь
+            buttonCalendar = findViewById(R.id.buttonSecondAction);
+            if (buttonCalendar != null) {
+                buttonCalendar.setText(getString(R.string.event_type_other_emoji).concat(Constants.STRING_SPACE).concat(getString(R.string.appwidget_label_Calendar)));
+                UiTools.addClickEffect(buttonCalendar);
+                buttonCalendar.getBackground().setAlpha(50);
+                buttonCalendar.setOnLongClickListener(v -> {
+                    Toast.makeText(this, getString(R.string.open_calendar), Toast.LENGTH_LONG).show();
+                    return true;
+                });
+                buttonCalendar.setVisibility(View.VISIBLE);
+            }
+
+            //Поделиться
+            buttonShare = findViewById(R.id.buttonThirdAction);
+            if (buttonShare != null) {
+                buttonShare.setText(R.string.facts_popup_action_share);
+                UiTools.addClickEffect(buttonShare);
+                buttonShare.getBackground().setAlpha(50);
+                buttonShare.setOnLongClickListener(v -> {
+                    Toast.makeText(this, getString(R.string.share_day), Toast.LENGTH_LONG).show();
+                    return true;
+                });
+                buttonShare.setVisibility(View.VISIBLE);
+            }
 
             //Выбрать день
-            this.buttonSelectDay = findViewById(R.id.buttonFourthAction);
-            this.buttonSelectDay.setText(R.string.popup_action_calendar);
-            UiTools.addClickEffect(this.buttonSelectDay);
-            this.buttonSelectDay.getBackground().setAlpha(50);
-            this.buttonSelectDay.setVisibility(View.VISIBLE);
+            buttonSelectDay = findViewById(R.id.buttonFourthAction);
+            if (buttonSelectDay != null) {
+                buttonSelectDay.setText(R.string.popup_action_calendar);
+                UiTools.addClickEffect(buttonSelectDay);
+                buttonSelectDay.getBackground().setAlpha(50);
+                buttonSelectDay.setOnLongClickListener(v -> {
+                    Toast.makeText(this, getString(R.string.select_day), Toast.LENGTH_LONG).show();
+                    return true;
+                });
+                buttonSelectDay.setVisibility(View.VISIBLE);
+            }
 
             //Следующий день
-            this.buttonNextDay = findViewById(R.id.buttonFirthAction);
-            this.buttonNextDay.setText(R.string.popup_action_next);
-            UiTools.addClickEffect(this.buttonNextDay);
-            this.buttonNextDay.getBackground().setAlpha(50);
-            this.buttonNextDay.setVisibility(View.VISIBLE);
+            buttonNextDay = findViewById(R.id.buttonFirthAction);
+            if (buttonNextDay != null) {
+                buttonNextDay.setText(R.string.popup_action_next);
+                UiTools.addClickEffect(buttonNextDay);
+                buttonNextDay.getBackground().setAlpha(50);
+                buttonNextDay.setOnLongClickListener(v -> {
+                    Toast.makeText(this, getString(R.string.next_day), Toast.LENGTH_LONG).show();
+                    return true;
+                });
+                buttonNextDay.setVisibility(View.VISIBLE);
+            }
 
             //Закрыть окно
             TextView buttonClose = findViewById(R.id.buttonClose);
@@ -210,37 +236,44 @@ public class WidgetCalendarPopup extends Activity {
     private void showDayInfo() {
 
         try {
-            if (this.dayInfo.contains(Constants.TRANSPARENT)) {
+            if (dayInfo.contains(Constants.TRANSPARENT)) {
                 TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                this.dayInfo = this.dayInfo.replace(Constants.TRANSPARENT,
+                dayInfo = dayInfo.replace(Constants.TRANSPARENT,
                         Integer.toHexString(ta.getColor(R.styleable.Theme_backgroundColor, 0) & 0x00ffffff));
                 ta.recycle();
             }
-            viewInfo.setText(HtmlCompat.fromHtml(this.dayInfo, HtmlCompat.FROM_HTML_MODE_LEGACY));
+            viewInfo.setText(HtmlCompat.fromHtml(dayInfo, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
-            if (!TextUtils.isEmpty(this.dayCaption)) {
-                this.viewCaption.setText(dayCaption);
+            if (!TextUtils.isEmpty(dayCaption)) {
+                viewCaption.setText(dayCaption);
             }
+
+            boolean isEmptyDay = dayInfo.equals(getString(R.string.month_event_empty));
 
             buttonCalendar.setOnClickListener(view -> {
                 Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
                 builder.appendPath(Constants.QUERY_PARAM_TIME);
-                builder.appendPath(this.dayMills);
+                builder.appendPath(dayMills);
                 Intent intentCalendar = new Intent(Intent.ACTION_VIEW, builder.build());
                 intentCalendar.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intentCalendar);
                 finish();
             });
 
-            buttonShare.setOnClickListener(v -> {
-                Intent intentShare = new Intent(Intent.ACTION_SEND);
-                intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
-                intentShare.putExtra(Intent.EXTRA_TEXT,
-                        this.viewCaption.getText().toString().concat(Constants.STRING_EOL).concat(this.viewInfo.getText().toString()));
-                startActivity(Intent.createChooser(intentShare, ""));
-            });
+            if (isEmptyDay) {
+                buttonShare.setVisibility(View.GONE);
+            } else {
+                buttonShare.setOnClickListener(v -> {
+                    Intent intentShare = new Intent(Intent.ACTION_SEND);
+                    intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+                    intentShare.putExtra(Intent.EXTRA_TEXT,
+                            viewCaption.getText().toString().concat(Constants.STRING_EOL).concat(viewInfo.getText().toString()));
+                    startActivity(Intent.createChooser(intentShare, ""));
+                });
+                buttonShare.setVisibility(View.VISIBLE);
+            }
 
-            long millis = Long.parseLong(this.dayMills);
+            long millis = Long.parseLong(dayMills);
             Calendar newCal = Calendar.getInstance();
             SimpleDateFormat sdf = new SimpleDateFormat(" (EEE)", Locale.getDefault());
 
@@ -250,56 +283,44 @@ public class WidgetCalendarPopup extends Activity {
                     newCal.clear();
                     newCal.set(selectedYear, selectedMonth, dayOfMonth);
 
-                    List<String> dayInfo = eventsData.getDayInfo(ContactsEvents.sdf_java.format(newCal.getTime()), this.listEventsPacks, this.eventsColorsInMonth);
-                    this.dayInfo = dayInfo.isEmpty() ? getString(R.string.month_event_empty) : TextUtils.join(Constants.HTML_BR, dayInfo);
-                    this.dayCaption = getString(R.string.month_event_popup_prefix)
+                    List<String> allEventsThisDay = eventsData.getDayInfo(ContactsEvents.sdf_java.format(newCal.getTime()), listEventsPacks, eventsColorsInMonth);
+                    dayInfo = allEventsThisDay.isEmpty() ? getString(R.string.month_event_empty) : TextUtils.join(Constants.HTML_BR, allEventsThisDay);
+                    dayCaption = getString(R.string.month_event_popup_prefix)
                             .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(newCal.getTime()), ContactsEvents.FormatDate.WithYear))
                             .concat(sdf.format(newCal.getTime()));
-                    this.dayMills = Long.toString(newCal.getTimeInMillis());
+                    dayMills = Long.toString(newCal.getTimeInMillis());
 
                     showDayInfo();
                 }, newCal.get(Calendar.YEAR), newCal.get(Calendar.MONTH), newCal.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.show();
-            });
-            buttonSelectDay.setOnLongClickListener(v -> {
-                Toast.makeText(this, getString(R.string.select_day), Toast.LENGTH_LONG).show();
-                return true;
             });
 
             buttonPrevDay.setOnClickListener(v -> {
                 newCal.setTimeInMillis(millis);
                 newCal.add(Calendar.DAY_OF_YEAR, -1);
 
-                List<String> dayInfo = eventsData.getDayInfo(ContactsEvents.sdf_java.format(newCal.getTime()), this.listEventsPacks, this.eventsColorsInMonth);
-                this.dayInfo = dayInfo.isEmpty() ? getString(R.string.month_event_empty) : TextUtils.join(Constants.HTML_BR, dayInfo);
-                this.dayCaption = getString(R.string.month_event_popup_prefix)
+                List<String> allEventsThisDay = eventsData.getDayInfo(ContactsEvents.sdf_java.format(newCal.getTime()), listEventsPacks, eventsColorsInMonth);
+                dayInfo = allEventsThisDay.isEmpty() ? getString(R.string.month_event_empty) : TextUtils.join(Constants.HTML_BR, allEventsThisDay);
+                dayCaption = getString(R.string.month_event_popup_prefix)
                         .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(newCal.getTime()), ContactsEvents.FormatDate.WithYear))
                         .concat(sdf.format(newCal.getTime()));
-                this.dayMills = Long.toString(newCal.getTimeInMillis());
+                dayMills = Long.toString(newCal.getTimeInMillis());
 
                 showDayInfo();
-            });
-            buttonPrevDay.setOnLongClickListener(v -> {
-                Toast.makeText(this, getString(R.string.previous_day), Toast.LENGTH_LONG).show();
-                return true;
             });
 
             buttonNextDay.setOnClickListener(v -> {
                 newCal.setTimeInMillis(millis);
                 newCal.add(Calendar.DAY_OF_YEAR, +1);
 
-                List<String> dayInfo = eventsData.getDayInfo(ContactsEvents.sdf_java.format(newCal.getTime()), this.listEventsPacks, this.eventsColorsInMonth);
-                this.dayInfo = dayInfo.isEmpty() ? getString(R.string.month_event_empty) : TextUtils.join(Constants.HTML_BR, dayInfo);
-                this.dayCaption = getString(R.string.month_event_popup_prefix)
+                List<String> allEventsThisDay = eventsData.getDayInfo(ContactsEvents.sdf_java.format(newCal.getTime()), listEventsPacks, eventsColorsInMonth);
+                dayInfo = allEventsThisDay.isEmpty() ? getString(R.string.month_event_empty) : TextUtils.join(Constants.HTML_BR, allEventsThisDay);
+                dayCaption = getString(R.string.month_event_popup_prefix)
                         .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(newCal.getTime()), ContactsEvents.FormatDate.WithYear))
                         .concat(sdf.format(newCal.getTime()));
-                this.dayMills = Long.toString(newCal.getTimeInMillis());
+                dayMills = Long.toString(newCal.getTimeInMillis());
 
                 showDayInfo();
-            });
-            buttonNextDay.setOnLongClickListener(v -> {
-                Toast.makeText(this, getString(R.string.next_day), Toast.LENGTH_LONG).show();
-                return true;
             });
 
         } catch (Exception e) {

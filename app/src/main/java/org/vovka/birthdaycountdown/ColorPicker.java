@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2026, 21:42
+ *  * Created by Vladimir Belov on 20.03.2026, 21:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.03.2026, 14:46
+ *  * Last modified 20.03.2026, 19:44
  *
  */
 package org.vovka.birthdaycountdown;
@@ -40,7 +40,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 
@@ -65,6 +64,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
     private static final String TAG = "ColorPicker";
     private int[] mColorChoices = {};
     private int mValue = 0;
+    private int mDefaultValue = 0;
     private int mItemLayoutId = R.layout.item_color;
     private int mNumColumns = 5;
     private String mSelectDialogTitle = "";
@@ -103,8 +103,9 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             mSelectDialogIcon = ta.getResourceId(R.styleable.ColorPreference_dialogIcon, 0);
             mItemLayoutId = ta.getResourceId(R.styleable.ColorPreference_itemLayout, mItemLayoutId);
             mNumColumns = ta.getInteger(R.styleable.ColorPreference_numColumns, mNumColumns);
-            mValue = ta.getInteger(R.styleable.ColorPreference_defaultValue,
-                    ContextCompat.getColor(getContext(), R.color.pref_Widgets_Color_WidgetBackground_default));
+            mDefaultValue = ta.getInteger(R.styleable.ColorPreference_defaultValue, 0);
+            mValue = ta.getInteger(R.styleable.ColorPreference_defaultValue, mDefaultValue);
+                    //ContextCompat.getColor(getContext(), R.color.pref_Widgets_Color_WidgetBackground_default));
             int choicesResId = ta.getResourceId(R.styleable.ColorPreference_choices, R.array.default_color_choice_values);
             if (choicesResId > 0) {
                 mColorChoices = ta.getResources().getIntArray(choicesResId);
@@ -184,6 +185,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 mAdapter.setSelectedColor(initValue);
             } else if (defaultValue != 0) {
                 mAdapter.setSelectedColor(defaultValue);
+                mDefaultValue = defaultValue;
             } else {
                 mAdapter.setSelectedColor(mValue);
             }
@@ -197,6 +199,11 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 dialog.dismiss();
                 selectRGBColor(initValue, defaultValue, methodToInvoke, idToPass);
             });
+            if (mDefaultValue != 0 && mDefaultValue != mValue) {
+                colorDialogBuilder.setPositiveButton(R.string.button_reset, (dialog, which) -> {
+                    setColor(mDefaultValue);
+                });
+            }
 
             AlertDialog colorDialog = colorDialogBuilder.create();
 

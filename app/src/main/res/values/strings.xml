@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.03.2026, 12:34
+  ~  * Created by Vladimir Belov on 20.03.2026, 21:02
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.03.2026, 10:54
+  ~  * Last modified 20.03.2026, 16:33
   ~  */
   -->
 
@@ -1360,6 +1360,8 @@ Long click on item to select color"</string>
     <string name="previous_day">Previous day</string>
     <string name="next_day">Next day</string>
     <string name="select_day">Select day…</string>
+    <string name="share_day">Share day events…</string>
+    <string name="open_calendar">Open calendar for selected day</string>
 
     <string name="month_event_saturdays">Saturdays</string>
     <string name="month_event_sundays">Sundays</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.03.2026, 01:23
+ *  * Created by Vladimir Belov on 20.03.2026, 21:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.03.2026, 01:12
+ *  * Last modified 20.03.2026, 18:58
  *
  */
 
@@ -179,8 +179,6 @@ public class WidgetCalendar extends AppWidgetProvider {
     private void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
         long statCurrentModuleStart = System.currentTimeMillis();
-        this.context = context;
-        this.res = context.getResources();
 
         try {
 
@@ -191,6 +189,8 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             eventsData.initLanguage(context);
+            this.context = eventsData.getContext();
+            this.res = eventsData.getResources();
 
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 eventsData.getEvents();
@@ -331,7 +331,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             enabledWeeks = prefElements.contains(res.getString(R.string.widget_config_elements_weeks));
             boolean enabledMargins = prefElements.contains(res.getString(R.string.widget_config_elements_margins));
             highlightDayOfWeek = prefElements.contains(res.getString(R.string.widget_config_elements_highlight_weekday));
-            enabledFillDays = prefElements.contains(res.getString(R.string.widget_config_elements_fill_days));
+            enabledFillDays = prefElements.contains(res.getString(R.string.widget_config_elements_fill_days)); //Дни до и после месяца
 
             //Источники событий и цвета по умолчанию
             List<String> prefEvents = new ArrayList<>();

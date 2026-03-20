@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.03.2026, 01:23
+ *  * Created by Vladimir Belov on 20.03.2026, 21:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 11.03.2026, 21:01
+ *  * Last modified 20.03.2026, 19:04
  *
  */
 
@@ -62,7 +62,7 @@ public class WidgetList extends AppWidgetProvider {
         try {
             eventsData.initLanguage(context);
 
-            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId);
+            final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(eventsData.getContext()).getAppWidgetInfo(appWidgetId);
             String widgetType = Constants.WIDGET_TYPE_LIST;
             if (appWidgetInfo != null) {
                 widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
@@ -77,9 +77,9 @@ public class WidgetList extends AppWidgetProvider {
             RemoteViews views;
             // https://stackoverflow.com/questions/9953892/how-to-put-divider-at-particular-position-in-an-android-list-view
             if (widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Dividers_ID))) {
-                views = new RemoteViews(context.getPackageName(), R.layout.widgetlist_dividers);
+                views = new RemoteViews(eventsData.getContext().getPackageName(), R.layout.widgetlist_dividers);
             } else {
-                views = new RemoteViews(context.getPackageName(), R.layout.widgetlist);
+                views = new RemoteViews(eventsData.getContext().getPackageName(), R.layout.widgetlist);
             }
 
             //Кнопка настроек
@@ -123,7 +123,7 @@ public class WidgetList extends AppWidgetProvider {
             if (!prefWidgetCaption.isEmpty() || eventsData.preferences_debug_on) {
                 int paddingTop = (int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
-                        (float) (22 * sizeForWidgetElement / (Constants.WIDGET_TEXT_SIZE_TINY * defaultMagnify)), context.getResources().getDisplayMetrics()
+                        (float) (22 * sizeForWidgetElement / (Constants.WIDGET_TEXT_SIZE_TINY * defaultMagnify)), eventsData.getResources().getDisplayMetrics()
                 );
                 views.setViewPadding(R.id.widget_layout, 0, paddingTop, 0, 0);
             } else {
