@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Created by Vladimir Belov on 22.03.2026, 20:19
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 19:43
+  ~  * Last modified 22.03.2026, 20:06
   ~  */
   -->
 
@@ -16,7 +16,7 @@
         <item>⚙️ Samostatný výběr povolených dalších funkcí</item>
         <item>🌈 Přidané spektrum při výběru barvy</item>
         <item>🎨 Vyberte barvu dne pro kalendář</item>
-        <item>Do widgetu seznamu přidáno: „Zobrazit fotografii kontaktu pro nadcházející událost“, „Původní název události“, „tabulátor“, „rozbalovací tlačítko“, „:“</item>
+        <item>Do widgetu seznamu přidáno: „Zobrazit fotografii kontaktu pro nejbližší událost“, „Původní název události“, „záložka“, „rozbalovací prvek“, „:“. Pomocí „záložek“ ve widgetu seznamu můžete rozdělit data do samostatných sloupců (až do tří). Ve výchozím nastavení mají sloupce stejnou šířku. Pokud do sloupce přidáte „rozbalovací prvek“, bude tento sloupec dvakrát tak široký</item>
         <item>Ve výchozím nastavení jsou události ze souborů uvedených v sekci svátků považovány za svátky (pokud nemají příznaky „!“ nebo „?“)</item>
         <item>Opravy chyb ve widgetech</item>
 

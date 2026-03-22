@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Created by Vladimir Belov on 22.03.2026, 20:19
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 19:47
+  ~  * Last modified 22.03.2026, 20:16
   ~  */
   -->
 
@@ -16,7 +16,7 @@
         <item>⚙️ Osobny wybór włączonych funkcji dodatkowych</item>
         <item>🌈 Dodano spektrum podczas wybierania koloru</item>
         <item>🎨 Wybór koloru dnia w kalendarzu</item>
-        <item>Dodano do widżetu listy: „Pokaż zdjęcie kontaktu dla nadchodzącego wydarzenia”, „Oryginalna nazwa wydarzenia”, „zakładka”, „rozwijacz”, „:”</item>
+        <item>Dodano do widżetu listy: „Pokaż zdjęcie kontaktu dla najbliższego wydarzenia”, „Oryginalny tytuł wydarzenia”, „zakładka”, „rozszerzenie”, „:”. Za pomocą zakładek w widżecie listy można podzielić dane na osobne kolumny (maksymalnie trzy). Domyślnie kolumny mają równą szerokość. Jeśli dodasz „rozszerzenie” wewnątrz kolumny, będzie ona dwa razy szersza</item>
         <item>Domyślnie wydarzenia z plików określonych w sekcji „święta” są uznawane za święta (jeśli nie mają flag „!” lub „?”)</item>
         <item>Poprawki błędów w widżetach</item>
 

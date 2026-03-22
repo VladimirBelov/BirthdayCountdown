@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Created by Vladimir Belov on 22.03.2026, 20:19
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 18:11
+  ~  * Last modified 22.03.2026, 20:03
   ~  */
   -->
 
@@ -16,8 +16,8 @@
         <item>⚙️ Separate selection of enabled extra features</item>
         <item>🌈 Added spectrum when selecting a color</item>
         <item>🎨 Day color selection for the calendar</item>
-        <item>Added to the list widget: "Show contact photo for the upcoming event", "Original event name", "tab", "expander", ":"</item>
-        <item>By default, events from files specified in the holidays section are considered holidays (if they do not have the "!" or "?" flags)</item>
+        <item>Added to the list widget: \"Show contact photo for the nearest event\", \"Original event title\", \"tab\", \"expander\", \":\". Using \"tabs\" in the list widget, you can divide data into separate columns (up to three). By default, the columns are equal in width. If you add an \"expander\" inside a column, that column will be twice as wide</item>
+        <item>By default, events from files specified in the holidays section are considered holidays (if they do not have the \"!\" or \"?\" flags)</item>
         <item>Bug fixes in widgets</item>
 
         <item>#1.8.9</item>

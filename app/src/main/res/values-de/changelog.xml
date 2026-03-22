@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Created by Vladimir Belov on 22.03.2026, 20:19
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 19:46
+  ~  * Last modified 22.03.2026, 20:11
   ~  */
   -->
 
@@ -16,7 +16,7 @@
         <item>⚙️ Separate Auswahl aktivierter Zusatzfunktionen</item>
         <item>🌈 Farbspektrum bei Farbauswahl hinzugefügt</item>
         <item>🎨 Tagesfarbauswahl für den Kalender</item>
-        <item>Neu im Listen-Widget: „Kontaktfoto für das bevorstehende Ereignis anzeigen“, „Originaler Ereignisname“, „Tab“, „Erweitern“, ":"</item>
+        <item>Dem Listen-Widget hinzugefügt: „Kontaktfoto für das nächstgelegene Ereignis anzeigen“, „Original-Ereignisbezeichnung“, „Tab“, „Expander“, ":". Mithilfe von Tabs im Listen-Widget können Sie Daten in separate Spalten (bis zu drei) aufteilen. Standardmäßig sind die Spalten gleich breit. Wenn Sie innerhalb einer Spalte eine „Erweiterung“ hinzufügen, verdoppelt sich die Breite dieser Spalte</item>
         <item>Ereignisse aus Dateien, die im Abschnitt „Feiertage“ angegeben sind, gelten standardmäßig als Feiertage (sofern sie nicht mit „!“ oder „?“ gekennzeichnet sind)</item>
         <item>Fehlerbehebungen in Widgets</item>
 

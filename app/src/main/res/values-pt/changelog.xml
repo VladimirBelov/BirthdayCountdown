@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Created by Vladimir Belov on 22.03.2026, 20:19
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 19:47
+  ~  * Last modified 22.03.2026, 20:17
   ~  */
   -->
 
@@ -15,8 +15,8 @@
         <item>⚙️ Seleção separada de recursos extras ativados</item>
         <item>🌈 Adicionado espectro ao selecionar uma cor</item>
         <item>🎨 Seleção de cor do dia para o calendário</item>
-        <item>Adicionado ao widget de lista: "Mostrar foto de contato para o próximo evento", "Nome original do evento", "aba", "expansor", ":"</item>
-        <item>Por padrão, eventos de arquivos especificados na seção de feriados são considerados feriados (se não tiverem os indicadores "!" ou "?")</item>
+        <item>Adicionado ao widget de lista: \"Mostrar foto de contato do evento mais próximo\", \"Título original do evento\", \"aba\", \"expansor\", \":\". Usando abas no widget de lista, você pode dividir os dados em colunas separadas (até três). Por padrão, as colunas têm a mesma largura. Se você adicionar um \"expansor\" dentro de uma coluna, essa coluna terá o dobro da largura</item>
+        <item>Por padrão, eventos de arquivos especificados na seção de feriados são considerados feriados (se não tiverem os indicadores \"!\" ou \"?\")</item>
         <item>Correções de bugs em widgets</item>
 
         <item>#1.8.9</item>
