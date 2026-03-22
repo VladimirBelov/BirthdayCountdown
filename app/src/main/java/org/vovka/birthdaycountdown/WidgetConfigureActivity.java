@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 12:34
+ *  * Created by Vladimir Belov on 22.03.2026, 17:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 10:35
+ *  * Last modified 22.03.2026, 17:18
  *
  */
 
@@ -707,6 +707,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_WithYear_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate_WithYear));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventTitle_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventTitle));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventCaption_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventCaption));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventLabel_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventLabel));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Age_Full));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_AgeShort_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Age_Short));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_CurrentAge_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_CurrentAge));
@@ -729,6 +730,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_LeftBracket2_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_LeftBracket2));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_RightBracket_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_RightBracket));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_RightBracket2_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_RightBracket2));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_Colon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Colon));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_BoldStart_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_BoldStart));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_BoldEnd_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_BoldEnd));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Tab_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Tab));

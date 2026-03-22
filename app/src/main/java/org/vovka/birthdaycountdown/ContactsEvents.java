@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.03.2026, 02:21
+ *  * Created by Vladimir Belov on 22.03.2026, 17:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 23:43
+ *  * Last modified 22.03.2026, 16:46
  *
  */
 
@@ -9125,8 +9125,11 @@ public class ContactsEvents {
 
         try {
 
-            PreferenceManager.getDefaultSharedPreferences(context).edit().remove(context.getString(R.string.widget_config_PrefName) + id).apply();
-            ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_widget_prefs_removed, String.valueOf(id)));
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            if (preferences != null) {
+                preferences.edit().remove(context.getString(R.string.widget_config_PrefName) + id).apply();
+                ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_widget_prefs_removed, String.valueOf(id)));
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

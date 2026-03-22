@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.03.2026, 22:05
+ *  * Created by Vladimir Belov on 22.03.2026, 17:21
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.03.2026, 15:46
+ *  * Last modified 22.03.2026, 17:18
  *
  */
 
@@ -15,7 +15,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -157,7 +156,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             String prefScope = Constants.STRING_EMPTY;
             if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
 
-            if (!TextUtils.isEmpty(prefScope)) {
+            if (StringUtils.hasContent(prefScope)) {
                 Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_RAND).matcher(prefScope);
                 boolean found = matchScopes.find();
                 if (!found) {
@@ -434,8 +433,11 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventIcon_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                    eventDetails.append(singleEventArray[ContactsEvents.Position_eventEmoji]).append(Constants.STRING_SPACE);
+                    String eventEmoji = singleEventArray[ContactsEvents.Position_eventEmoji];
+                    if (StringUtils.hasContent(eventEmoji)) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        eventDetails.append(eventEmoji).append(Constants.STRING_SPACE);
+                    }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_FavIcon_ID))) {
 
@@ -472,34 +474,42 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventCaption_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
                     if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_eventCaption])) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
                         eventDetails.append(singleEventArray[ContactsEvents.Position_eventCaption]);
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDate_Original_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
                     final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithoutYear);
-                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
+                    if (StringUtils.hasContent(eventDay)) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
+                    }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDate_Original_WithYear_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
                     final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
-                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
+                    if (StringUtils.hasContent(eventDay)) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
+                    }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDate_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
                     final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime], ContactsEvents.FormatDate.WithoutYear);
-                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
+                    if (StringUtils.hasContent(eventDay)) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
+                    }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDate_WithYear_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
                     final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime], ContactsEvents.FormatDate.WithYear);
-                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
+                    if (StringUtils.hasContent(eventDay)) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
+                    }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_DaysBeforeEventShort_ID))) {
 
@@ -512,8 +522,11 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventTitle_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                    eventDetails.append(StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format));
+                    String fullName = StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format);
+                    if (StringUtils.hasContent(fullName)) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        eventDetails.append(fullName);
+                    }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Age_ID))) {
 
@@ -521,6 +534,18 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                         if (notEndWithBRorBracket)
                             eventDetails.append(Constants.STRING_COLON_SPACE);
                         eventDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
+                    }
+
+                } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventLabel_ID))) {
+
+                    String eventLabel = singleEventArray[ContactsEvents.Position_eventLabel];
+                    if (!StringUtils.hasContent(eventLabel) && !widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_EventCaption_ID))) {
+                        eventLabel = singleEventArray[ContactsEvents.Position_eventCaption];
+                    }
+
+                    if (StringUtils.hasContent(eventLabel)) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        eventDetails.append(eventLabel);
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_AgeShort_ID))) {
@@ -545,27 +570,35 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 } else if (dateColorId > 2 && eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_DaysBeforeEventFar_ID))) {
 
                     if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDistanceInfo[0]).append(Constants.HTML_COLOR_END);
+                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE)
+                            .append(eventDistanceInfo[0]).append(Constants.HTML_COLOR_END);
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_DaysBeforeEvent_ID))) {
 
                     if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDistanceInfo[0]).append(Constants.HTML_COLOR_END);
+                    eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE)
+                            .append(eventDistanceInfo[0]).append(Constants.HTML_COLOR_END);
 
                 } else if (dateColorId > 2 && eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDayOfWeekFar_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                    if (eventDistanceInfo.length >= 1) eventDetails.append(eventDistanceInfo[1]);
+                    if (eventDistanceInfo.length >= 1) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        eventDetails.append(eventDistanceInfo[1]);
+                    }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDayOfWeek_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                    if (eventDistanceInfo.length >= 1) eventDetails.append(eventDistanceInfo[1]);
+                    if (eventDistanceInfo.length >= 1) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        eventDetails.append(eventDistanceInfo[1]);
+                    }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDayOfWeekShort_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                    if (eventDistanceInfo.length >= 3) eventDetails.append(eventDistanceInfo[3]);
+                    if (eventDistanceInfo.length >= 3) {
+                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        eventDetails.append(eventDistanceInfo[3]);
+                    }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_SourceIcon_ID))) {
 
@@ -589,7 +622,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_CurrentAge_ID)) && !singleEventArray[ContactsEvents.Position_eventDistance].equals(Constants.STRING_0)) {
 
                     final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
-                    if (!TextUtils.isEmpty(currentAge)) {
+                    if (StringUtils.hasContent(currentAge)) {
                         if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
                         int ind = currentAge.indexOf(Constants.STRING_PARENTHESIS_OPEN);
                         eventDetails.append(ind != -1 ? currentAge.substring(0, ind) : currentAge);
@@ -624,6 +657,10 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                     detailsList.add(eventDetails.toString());
                     eventDetails.setLength(0);
+
+                } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Colon_ID))) {
+
+                    eventDetails.append(Constants.STRING_COLON_SPACE);
 
                 }
             }
