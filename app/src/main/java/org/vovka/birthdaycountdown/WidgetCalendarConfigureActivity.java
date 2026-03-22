@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.2026, 11:44
+ *  * Created by Vladimir Belov on 22.03.2026, 15:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.03.2026, 09:32
+ *  * Last modified 22.03.2026, 15:40
  *
  */
 
@@ -630,7 +630,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             prefsToStore.add(TextUtils.join(Constants.STRING_PLUS, listColors)); //Цвета календарей
             prefsToStore.add(selectedOnClick); //Действие на нажатие
 
-            this.eventsData.setWidgetPreference(this.widgetId, TextUtils.join(Constants.STRING_COMMA, prefsToStore));
+            eventsData.setWidgetPreference(this.widgetId, TextUtils.join(Constants.STRING_COMMA, prefsToStore));
 
             eventsData.clearDaysTypesAndInfo();
 
@@ -638,7 +638,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.widgetId);
             setResult(Activity.RESULT_OK, intent);
             // Логи ServiceConnectionLeaked в AppWidgetManager — игнорировать, это фальшивая ошибка
-            this.eventsData.updateWidgets(this.widgetId, null);
+            eventsData.updateWidgets(this.widgetId, null);
 
             finish();
         } catch (final Exception e) {

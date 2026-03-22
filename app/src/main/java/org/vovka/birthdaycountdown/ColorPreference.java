@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 21:02
+ *  * Created by Vladimir Belov on 22.03.2026, 15:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 20:46
+ *  * Last modified 22.03.2026, 15:49
  *
  */
 
@@ -259,9 +259,7 @@ class ColorPreference extends Preference {
                 });
                 int defaultValue = mPreference.getDefaultValue();
                 if (defaultValue != 0 && defaultValue != mPreference.getValue()) {
-                    colorDialogBuilder.setPositiveButton(R.string.button_reset, (dialog, which) -> {
-                        mPreference.setValue(defaultValue);
-                    });
+                    colorDialogBuilder.setPositiveButton(R.string.button_reset, (dialog, which) -> mPreference.setValue(defaultValue));
                 }
 
             } catch (final Exception e) {
@@ -367,7 +365,7 @@ class ColorPreference extends Preference {
                         float value = currentHsv[2];      // 0-1
 
                         float x;
-                        // === ИСПРАВЛЕНО: порог saturation = 1.0, а не 0.15 ===
+                        // порог saturation = 1.0, а не 0.15 ===
                         if (saturation < 1.0f) {
                             // Мы в левой 15% зоне (серая зона)
                             // saturation: 0..1.0 -> x: 0..15% ширины
@@ -378,7 +376,6 @@ class ColorPreference extends Preference {
                             x = (0.15f * colorSpectrum.getWidth()) +
                                     ((hue / 360.0f) * (0.85f * colorSpectrum.getWidth()));
                         }
-                        // =================================================================
 
                         float y = (1.0f - value) * colorSpectrum.getHeight();
 
@@ -422,12 +419,12 @@ class ColorPreference extends Preference {
                             } else {
                                 // Правые 85%: полная насыщенность, меняется hue
                                 saturation = 1.0f;
-                                // === ВАЖНО: hue считаем от правой 85% зоны ===
+                                // hue считаем от правой 85% зоны ===
                                 hue = ((x - (viewWidth * 0.15f)) / (viewWidth * 0.85f)) * 360.0f;
                             }
 
                             float value = 1.0f - (y / viewHeight);
-                            int alpha = Color.alpha(colorValue[0]);
+                            int alpha = 255; //Color.alpha(colorValue[0]);
                             int newColor = Color.HSVToColor(alpha, new float[]{hue, saturation, value});
 
                             colorValue[0] = newColor;

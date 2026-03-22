@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.2026, 11:44
+ *  * Created by Vladimir Belov on 22.03.2026, 15:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.03.2026, 11:29
+ *  * Last modified 22.03.2026, 14:33
  *
  */
 
@@ -899,7 +899,6 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (color != null) {
                 if (isToday) {
                     cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_COLOR, color);
-
                     if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
                         cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.black));
                     } else {
@@ -915,6 +914,14 @@ public class WidgetCalendar extends AppWidgetProvider {
                     }
                     if (colorValue != 0) {
                         cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_COLOR, colorValue);
+                        //Если цвет текста совпадает с цветом текста, делаем его немного поярче или потусклее
+                        if (colorValue == color) {
+                            if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
+                                color = ImageUtils.addColorValue(color, -50);
+                            } else {
+                                color = ImageUtils.addColorValue(color, 50);
+                            }
+                        }
                     }
                     cellRv.setTextColor(android.R.id.text1, color);
                 }

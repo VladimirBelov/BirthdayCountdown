@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.02.2026, 14:03
+ *  * Created by Vladimir Belov on 22.03.2026, 15:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.02.2026, 13:25
+ *  * Last modified 22.03.2026, 14:33
  *
  */
 
@@ -285,5 +285,26 @@ public class ImageUtils {
             Log.e(TAG, e.getMessage(), e);
         }
         return baseSize;
+    }
+
+    /**
+     * Добавляет значение ко всем компонентам RGB цвета
+     * @param color Исходный цвет в формате 0xAARRGGBB
+     * @param add Значение для добавления (например, 50)
+     * @return Новый цвет с изменёнными компонентами RGB
+     */
+    public static int addColorValue(int color, int add) {
+        int alpha = (color >> 24) & 0xFF;  // A
+        int red   = (color >> 16) & 0xFF;  // R
+        int green = (color >> 8)  & 0xFF;  // G
+        int blue  = color & 0xFF;          // B
+
+        // Добавляем с проверкой на переполнение (максимум 255)
+        red   = Math.min(255, red + add);
+        green = Math.min(255, green + add);
+        blue  = Math.min(255, blue + add);
+
+        // Собираем обратно в int
+        return (alpha << 24) | (red << 16) | (green << 8) | blue;
     }
 }

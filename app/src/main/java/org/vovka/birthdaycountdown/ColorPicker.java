@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.2026, 11:44
+ *  * Created by Vladimir Belov on 22.03.2026, 15:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.03.2026, 10:41
+ *  * Last modified 22.03.2026, 15:33
  *
  */
 package org.vovka.birthdaycountdown;
@@ -232,14 +232,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     return true;
                 });
             }
-            if (methodToInvoke != null && idToPass != null && (context instanceof AppCompatActivity || context instanceof Activity)) {
-                colorDialog.setOnCancelListener(dialog -> {
-                    try {
-                        Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
-                        method.invoke(context, Constants.STRING_EMPTY, 0);
-                    } catch (Exception ignored) { /**/ }
-                });
-            }
+            colorDialog.setOnCancelListener(dialog -> returnResult(methodToInvoke, null, 0));
             View mCaptionView = rootView.findViewById(R.id.caption);
             if (mCaptionView != null) {
                 mCaptionView.setVisibility(View.GONE);
@@ -255,7 +248,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
     }
 
     private void returnResult(String methodToInvoke, String idToPass, int colorInt) {
-        if (methodToInvoke != null && idToPass != null) {
+        if (methodToInvoke != null) {
             if (context instanceof AppCompatActivity || context instanceof Activity) {
                 try {
                     Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
@@ -279,12 +272,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
                     .setPositiveButton(R.string.button_ok, null)
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> {
-                        if (methodToInvoke != null && idToPass != null && context instanceof AppCompatActivity) {
-                            try {
-                                Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
-                                method.invoke(context, Constants.STRING_EMPTY, 0);
-                            } catch (Exception ignored) { /**/ }
-                        }
+                        returnResult(methodToInvoke, null, 0);
                         dialog.cancel();
                     });
 
@@ -380,7 +368,6 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     float value = currentHsv[2];      // 0-1
 
                     float x;
-                    // === ИСПРАВЛЕНО: порог saturation = 1.0, а не 0.15 ===
                     if (saturation < 1.0f) {
                         // Мы в левой 15% зоне (серая зона)
                         // saturation: 0..1.0 -> x: 0..15% ширины
@@ -391,7 +378,6 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                         x = (0.15f * colorSpectrum.getWidth()) +
                                 ((hue / 360.0f) * (0.85f * colorSpectrum.getWidth()));
                     }
-                    // =================================================================
 
                     float y = (1.0f - value) * colorSpectrum.getHeight();
 
@@ -434,12 +420,12 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                         } else {
                             // Правые 85%: полная насыщенность, меняется hue
                             saturation = 1.0f;
-                            // === ВАЖНО: hue считаем от правой 85% зоны ===
+                            // === hue считаем от правой 85% зоны ===
                             hue = ((x - (viewWidth * 0.15f)) / (viewWidth * 0.85f)) * 360.0f;
                         }
 
                         float value = 1.0f - (y / viewHeight);
-                        int alpha = Color.alpha(colorValue[0]);
+                        int alpha = 255; //Color.alpha(colorValue[0]);
                         int newColor = Color.HSVToColor(alpha, new float[]{hue, saturation, value});
 
                         colorValue[0] = newColor;
@@ -556,13 +542,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                         int colorInt = Color.parseColor(colorString);
                         setColor(colorInt);
                         eventsData.setRecentColor(colorInt);
-
-                        if (methodToInvoke != null && idToPass != null && context instanceof AppCompatActivity) {
-                            try {
-                                Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
-                                method.invoke(context, idToPass, colorInt);
-                            } catch (Exception ignored) { /**/ }
-                        }
+                        returnResult(methodToInvoke, idToPass, colorInt);
                         dialog.cancel();
                     } catch (IllegalArgumentException e) {
                         ToastExpander.showInfoMsg(getContext(), eventsData.getResources().getString(R.string.msg_color_parse_error));
