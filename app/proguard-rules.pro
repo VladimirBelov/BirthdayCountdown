@@ -24,6 +24,7 @@
 -keep class org.vovka.birthdaycountdown.MainActivity { *; }
 -keep class org.vovka.birthdaycountdown.WidgetCalendarConfigureActivity { *; }
 -keep class org.vovka.birthdaycountdown.WidgetConfigureActivity { *; }
+-keep class org.vovka.birthdaycountdown.WidgetCalendarPopup { *; }
 -keep class org.vovka.birthdaycountdown.SettingsActivity { *; }
 -keep class org.vovka.birthdaycountdown.QuizActivity { *; }
 
