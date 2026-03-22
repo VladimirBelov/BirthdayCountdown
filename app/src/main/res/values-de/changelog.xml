@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:46
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 22.03.2026, 19:46
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.0</item>
+        <item>🎯 Quiz-Neugestaltung (zusätzliche Funktionen), 3 weitere Fragetypen hinzugefügt</item>
+        <item>⚙️ Separate Auswahl aktivierter Zusatzfunktionen</item>
+        <item>🌈 Farbspektrum bei Farbauswahl hinzugefügt</item>
+        <item>🎨 Tagesfarbauswahl für den Kalender</item>
+        <item>Neu im Listen-Widget: „Kontaktfoto für das bevorstehende Ereignis anzeigen“, „Originaler Ereignisname“, „Tab“, „Erweitern“, ":"</item>
+        <item>Ereignisse aus Dateien, die im Abschnitt „Feiertage“ angegeben sind, gelten standardmäßig als Feiertage (sofern sie nicht mit „!“ oder „?“ gekennzeichnet sind)</item>
+        <item>Fehlerbehebungen in Widgets</item>
 
         <item>#1.8.9</item>
         <item>🎵 Möglichkeit, eine externe Datei als Benachrichtigungston auszuwählen</item>

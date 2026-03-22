@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:46
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 22.03.2026, 19:41
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.0</item>
+        <item>🎯 Перавынаходства віктарыны (дад. функцыі), дабаўлена яшчэ 3 тыпы пытанняў</item>
+        <item>⚙️ Раздзельны выбар уключаных доп. функцый</item>
+        <item>🌈 Дададзены спектр пры выбары колеру</item>
+        <item>🎨 Выбар колеру дня для календара</item>
+        <item>Дададзена ў спісавы віджэт: "Паказаць фота кантакту для бліжэйшай падзеі", "Зыходнае найменне падзеі", "табуляцыя", "пашыральнік", ":"</item>
+        <item>Па-змаўчанні, падзеі з файлаў паказаных у раздзеле свят, лічацца святамі (калі яны без сцягоў "!" ці "?")</item>
+        <item>Выпраўленне памылак у віджэтах</item>
 
         <item>#1.8.9</item>
         <item>🎵 Магчымасць выбраць знешні файл як мелодыю для апавяшчэнняў</item>

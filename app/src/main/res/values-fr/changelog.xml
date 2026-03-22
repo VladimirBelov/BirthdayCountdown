@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:44
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 22.03.2026, 19:44
   ~  */
   -->
 
@@ -12,6 +12,15 @@
 <string-array name="changelog" tools:ignore="InconsistentArrays">
 
     <item>#1.8.9</item>
+
+    <item>#1.9.0</item>
+    <item>🎯 Refonte du quiz (fonctionnalités supplémentaires), ajout de 3 types de questions</item>
+    <item>⚙️ Sélection séparée des fonctionnalités supplémentaires activées</item>
+    <item>"🌈 Ajout d'un spectre lors du choix d'une couleur"</item>
+    <item>🎨 Choix de la couleur du jour pour le calendrier</item>
+    <item>"Ajout au widget de liste: «Afficher la photo du contact pour l'événement à venir», «Nom original de l'événement», «onglet», «développeur», ":""</item>
+    <item>"Par défaut, les événements des fichiers spécifiés dans la section des jours fériés sont considérés comme des jours fériés (s'ils ne comportent pas les indicateurs «!» ou «?»)"</item>
+    <item>Corrections de bugs dans les widgets</item>
 
     <item>🎵 Possibilité de sélectionner un fichier externe comme sonnerie de notification</item>
     <item>"Code réécrit pour la planification de l'affichage des notifications, la mise à jour des widgets et la fonction «Rappel»"</item>

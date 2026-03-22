@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:43
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 22.03.2026, 18:11
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.0</item>
+        <item>🎯 Переизобретение викторины (доп. функции), добавлено ещё 3 типа вопросов</item>
+        <item>⚙️ Раздельный выбор включённых доп. функций</item>
+        <item>🌈 Добавлен спектр при выборе цвета</item>
+        <item>🎨 Выбор цвета дня для календаря</item>
+        <item>Добавлено в списковый виджет: "Показать фото контакта для ближайшего события", "Исходное наименование события", "табуляция", "расширитель", ":"</item>
+        <item>По-умолчанию, события из файлов указанных в разделе праздников, считаются праздниками (если они без флагов "!" или "?")</item>
+        <item>Исправление ошибок в виджетах</item>
 
         <item>#1.8.9</item>
         <item>🎵 Возможность выбрать внешний файл как мелодию для уведомлений</item>

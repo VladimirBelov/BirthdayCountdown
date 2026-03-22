@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:47
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 22.03.2026, 18:11
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.0</item>
+        <item>🎯 Quiz Reinvention (extra features), 3 more question types added</item>
+        <item>⚙️ Separate selection of enabled extra features</item>
+        <item>🌈 Added spectrum when selecting a color</item>
+        <item>🎨 Day color selection for the calendar</item>
+        <item>Added to the list widget: "Show contact photo for the upcoming event", "Original event name", "tab", "expander", ":"</item>
+        <item>By default, events from files specified in the holidays section are considered holidays (if they do not have the "!" or "?" flags)</item>
+        <item>Bug fixes in widgets</item>
 
         <item>#1.8.9</item>
         <item>🎵 Ability to select an external file as a notification ringtone</item>

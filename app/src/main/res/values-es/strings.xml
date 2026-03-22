@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 11:44
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 09:47
+  ~  * Last modified 22.03.2026, 17:41
   ~  */
   -->
 
@@ -757,6 +757,7 @@
     <string name="pref_EventInfo_LeftBracket2">"( "</string>
     <string name="pref_EventInfo_RightBracket">")"</string>
     <string name="pref_EventInfo_RightBracket2">") "</string>
+    <string name="pref_EventInfo_Colon">":"</string>
     <string name="pref_EventInfo_BoldStart">"- negrita - (inicio)"</string>
     <string name="pref_EventInfo_BoldEnd">"- negrita - (fin)"</string>
     <string name="pref_EventInfo_Tab">"- pestaña -"</string>
@@ -1362,6 +1363,10 @@ Haga clic largo en el elemento para seleccionar el color"</string>
     <string name="widget_calendar_popup_previous_day">Día anterior</string>
     <string name="widget_calendar_popup_next_day">Día siguiente</string>
     <string name="widget_calendar_popup_select_day">Seleccionar día…</string>
+    <string name="widget_calendar_popup_select_color">Seleccione el color de fondo para este día…</string>
+    <string name="widget_calendar_popup_select_color_title">Color del día</string>
+    <string name="widget_calendar_popup_share_day">Compartir eventos del día…</string>
+    <string name="widget_calendar_popup_open_calendar">Abrir calendario para el día seleccionado</string>
 
     <string name="month_event_saturdays">Sábados</string>
     <string name="month_event_sundays">Domingos</string>
@@ -1405,6 +1410,21 @@ Haga clic largo en el elemento para seleccionar el color"</string>
     <string name="crop_image_reset">Restablecer</string>
     <string name="crop_image_crop">Recortar</string>
     <string name="crop_image_saving">Guardando…</string>
+
+    <string name="pref_Feature_Quiz_description">Habilitar cuestionario</string>
+    <string name="pref_Feature_Notify_Q2_description">Habilitar segunda cola para notificaciones de eventos</string>
+    <string name="pref_Feature_Select_Sources_description">Habilitar la posibilidad de seleccionar fuentes de eventos para la lista principal de eventos, notificaciones, widgets, cuestionario, etc.</string>
+    <string name="pref_Feature_More_Settings_title">Más ajustes</string>
+    <string name="pref_Feature_More_Settings_description">Mostrar más ajustes comunes para toda la aplicación: formatos, personalización de eventos, etc.</string>
+    <string name="pref_Feature_Notify_More_Settings_title">Más ajustes para notificaciones</string>
+    <string name="pref_Feature_Notify_More_Settings_description">Mostrar más ajustes para notificaciones</string>
+    <string name="pref_Feature_Widgets_More_Settings_title">Más ajustes para widgets</string>
+    <string name="pref_Feature_Widgets_More_Settings_description">Mostrar más ajustes para widgets</string>
+    <string name="pref_Feature_Tools_description">Habilitar herramientas para importar/exportar eventos y ajustes</string>
+    <string name="pref_Feature_Adv_Info_title">Detalles</string>
+    <string name="pref_Feature_Adv_Info_description">Mostrar información más detallada dentro de los elementos de la interfaz: estadísticas, recuento de eventos, resumen de valores de configuración, etc.</string>
+    <string name="pref_Feature_Adv_Actions_title">Más acciones</string>
+    <string name="pref_Feature_Adv_Actions_description">Habilitar más acciones para el manejo de eventos</string>
 
     <!-- https://es.wikipedia.org/wiki/Aniversario_de_bodas -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papel</string>

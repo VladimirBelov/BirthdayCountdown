@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 11:44
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 09:47
+  ~  * Last modified 22.03.2026, 17:50
   ~  */
   -->
 
@@ -757,6 +757,7 @@
     <string name="pref_EventInfo_LeftBracket2">"( "</string>
     <string name="pref_EventInfo_RightBracket">")"</string>
     <string name="pref_EventInfo_RightBracket2">") "</string>
+    <string name="pref_EventInfo_Colon">":"</string>
     <string name="pref_EventInfo_BoldStart">"- fett - (Start)"</string>
     <string name="pref_EventInfo_BoldEnd">"- fett - (Ende)"</string>
     <string name="pref_EventInfo_Tab">"- tab -"</string>
@@ -1363,6 +1364,10 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="widget_calendar_popup_previous_day">Vorheriger Tag</string>
     <string name="widget_calendar_popup_next_day">Nächster Tag</string>
     <string name="widget_calendar_popup_select_day">Tag auswählen…</string>
+    <string name="widget_calendar_popup_select_color">Hintergrundfarbe für diesen Tag auswählen…</string>
+    <string name="widget_calendar_popup_select_color_title">Tagesfarbe</string>
+    <string name="widget_calendar_popup_share_day">Tagesereignisse teilen…</string>
+    <string name="widget_calendar_popup_open_calendar">Kalender für den ausgewählten Tag öffnen</string>
 
     <string name="month_event_saturdays">Samstags</string>
     <string name="month_event_sundays">Sonntage</string>
@@ -1406,6 +1411,21 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="crop_image_reset">Anfangs</string>
     <string name="crop_image_crop">Trimmen</string>
     <string name="crop_image_saving">Speichern…</string>
+
+    <string name="pref_Feature_Quiz_description">Quiz aktivieren</string>
+    <string name="pref_Feature_Notify_Q2_description">Zweite Warteschlange für Ereignisbenachrichtigungen aktivieren</string>
+    <string name="pref_Feature_Select_Sources_description">Option zur Auswahl von Ereignisquellen für die Hauptereignisliste, Benachrichtigungen, Widgets, Quiz usw. aktivieren</string>
+    <string name="pref_Feature_More_Settings_title">Weitere Einstellungen</string>
+    <string name="pref_Feature_More_Settings_description">Weitere allgemeine Einstellungen für die gesamte Anwendung anzeigen: Formate, Ereignisanpassung usw.</string>
+    <string name="pref_Feature_Notify_More_Settings_title">Weitere Ereignis-Einstellungen</string>
+    <string name="pref_Feature_Notify_More_Settings_description">Weitere Ereignis-Einstellungen anzeigen</string>
+    <string name="pref_Feature_Widgets_More_Settings_title">Weitere Widget-Einstellungen</string>
+    <string name="pref_Feature_Widgets_More_Settings_description">Weitere Widget-Einstellungen anzeigen</string>
+    <string name="pref_Feature_Tools_description">Tools zum Importieren/Exportieren von Ereignissen und Einstellungen aktivieren</string>
+    <string name="pref_Feature_Adv_Info_title">Details</string>
+    <string name="pref_Feature_Adv_Info_description">Detailliertere Informationen zu den Oberflächenelementen anzeigen: Statistiken, Ereignisanzahl, Zusammenfassung der Einstellungswerte usw.</string>
+    <string name="pref_Feature_Adv_Actions_title">Weitere Aktionen</string>
+    <string name="pref_Feature_Adv_Actions_description">Weitere Aktionen für die Ereignisbehandlung aktivieren</string>
 
     <!-- https://blogs.transparent.com/german/7-german-wedding-milestones/   https://de.wikipedia.org/wiki/Hochzeitstag -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papierne Hochzeit</string>

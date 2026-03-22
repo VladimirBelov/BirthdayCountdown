@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 11:44
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 09:47
+  ~  * Last modified 22.03.2026, 17:53
   ~  */
   -->
 
@@ -757,6 +757,7 @@
     <string name="pref_EventInfo_LeftBracket2">"( "</string>
     <string name="pref_EventInfo_RightBracket">")"</string>
     <string name="pref_EventInfo_RightBracket2">") "</string>
+    <string name="pref_EventInfo_Colon">":"</string>
     <string name="pref_EventInfo_BoldStart">"- паўтлусты - (пачатак)"</string>
     <string name="pref_EventInfo_BoldEnd">"- паўтлусты - (канец)"</string>
     <string name="pref_EventInfo_Tab">"- укладка -"</string>
@@ -1361,6 +1362,10 @@
     <string name="widget_calendar_popup_previous_day">Папярэдні дзень</string>
     <string name="widget_calendar_popup_next_day">Наступны дзень</string>
     <string name="widget_calendar_popup_select_day">Выбраць дзень…</string>
+    <string name="widget_calendar_popup_select_color">Выбраць колер фону для гэтага дня…</string>
+    <string name="widget_calendar_popup_select_color_title">Колер дня</string>
+    <string name="widget_calendar_popup_share_day">Падзяліцца падзеямі дня…</string>
+    <string name="widget_calendar_popup_open_calendar">Адкрыць каляндар для выбранага дня</string>
 
     <string name="month_event_saturdays">Суботы</string>
     <string name="month_event_sundays">Нядзеля</string>
@@ -1404,6 +1409,21 @@
     <string name="crop_image_reset">Скінуць</string>
     <string name="crop_image_crop">Абрэзаць</string>
     <string name="crop_image_saving">Захаванне…</string>
+
+    <string name="pref_Feature_Quiz_description">Уключыць віктарыну</string>
+    <string name="pref_Feature_Notify_Q2_description">Уключыць другую чаргу для апавяшчэнняў аб падзеях</string>
+    <string name="pref_Feature_Select_Sources_description">Уключыць магчымасць выбару крыніц падзей для галоўнага спісу падзей, апавяшчэнняў, віджэтаў, віктарыны і г.д.</string>
+    <string name="pref_Feature_More_Settings_title">Дадатковыя налады</string>
+    <string name="pref_Feature_More_Settings_description">Паказаць больш агульных налад для ўсяго прыкладання: фарматы, налада падзей і г.д.</string>
+    <string name="pref_Feature_Notify_More_Settings_title">Дадатковыя налады для апавяшчэнняў</string>
+    <string name="pref_Feature_Notify_More_Settings_description">Паказаць больш налад для апавяшчэнняў</string>
+    <string name="pref_Feature_Widgets_More_Settings_title">Дадатковыя налады для віджэтаў</string>
+    <string name="pref_Feature_Widgets_More_Settings_description">Паказаць больш налад для віджэтаў</string>
+    <string name="pref_Feature_Tools_description">Уключыць інструменты для імпарту/экспарту падзей і налад</string>
+    <string name="pref_Feature_Adv_Info_title">Падрабязнасці</string>
+    <string name="pref_Feature_Adv_Info_description">Паказаць больш падрабязную інфармацыю ўнутры элементаў інтэрфейсу: статыстыка, колькасць падзей, зводка значэнняў налад і г.д.</string>
+    <string name="pref_Feature_Adv_Actions_title">Больш дзеянняў</string>
+    <string name="pref_Feature_Adv_Actions_description">Уключыць больш дзеянняў для апрацоўкі падзей</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Гадавіны_вяселля -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Паркалёвае</string>

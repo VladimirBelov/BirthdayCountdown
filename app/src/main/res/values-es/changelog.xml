@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:46
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 22.03.2026, 19:44
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.0</item>
+        <item>🎯 Reinvención del cuestionario (funciones adicionales), se agregaron 3 tipos de preguntas más</item>
+        <item>⚙️ Selección independiente de las funciones adicionales habilitadas</item>
+        <item>🌈 Se agregó un espectro al elegir un color</item>
+        <item>🎨 Elige un color de día para el calendario</item>
+        <item>Se agregaron al widget de lista: "Mostrar foto de contacto para el próximo evento", "Nombre original del evento", "pestaña", "expandir", ":"</item>
+        <item>Por defecto, los eventos de los archivos especificados en la sección de días festivos se consideran días festivos (si no tienen las banderas "!" o "?")</item>
+        <item>Corrección de errores en los widgets</item>
 
         <item>#1.8.9</item>
         <item>🎵 Posibilidad de seleccionar un archivo externo como tono de notificación</item>

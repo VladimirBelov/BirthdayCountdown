@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 11:44
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 09:47
+  ~  * Last modified 22.03.2026, 17:38
   ~  */
   -->
 
@@ -757,6 +757,7 @@
     <string name="pref_EventInfo_LeftBracket2">"( "</string>
     <string name="pref_EventInfo_RightBracket">")"</string>
     <string name="pref_EventInfo_RightBracket2">") "</string>
+    <string name="pref_EventInfo_Colon">":"</string>
     <string name="pref_EventInfo_BoldStart">"- pogrubienie - (początek)"</string>
     <string name="pref_EventInfo_BoldEnd">"- pogrubienie - (koniec)"</string>
     <string name="pref_EventInfo_Tab">"- tabulator -"</string>
@@ -1362,6 +1363,10 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="widget_calendar_popup_previous_day">Poprzedni dzień</string>
     <string name="widget_calendar_popup_next_day">Następny dzień</string>
     <string name="widget_calendar_popup_select_day">Wybierz dzień…</string>
+    <string name="widget_calendar_popup_select_color">Wybierz kolor tła dla tego dnia…</string>
+    <string name="widget_calendar_popup_select_color_title">Kolor dnia</string>
+    <string name="widget_calendar_popup_share_day">Udostępnij wydarzenia z tego dnia…</string>
+    <string name="widget_calendar_popup_open_calendar">Otwórz kalendarz na wybrany dzień</string>
 
     <string name="month_event_saturdays">Soboty</string>
     <string name="month_event_sundays">Niedziele</string>
@@ -1405,6 +1410,21 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="crop_image_reset">Resetuj</string>
     <string name="crop_image_crop">Przytnij</string>
     <string name="crop_image_saving">Zapisywanie…</string>
+
+    <string name="pref_Feature_Quiz_description">Włącz quiz</string>
+    <string name="pref_Feature_Notify_Q2_description">Włącz drugą kolejkę powiadomień o zdarzeniach</string>
+    <string name="pref_Feature_Select_Sources_description">Włącz możliwość wyboru źródeł zdarzeń dla głównej listy zdarzeń, powiadomień, widżetów, quizu itp.</string>
+    <string name="pref_Feature_More_Settings_title">Więcej ustawień</string>
+    <string name="pref_Feature_More_Settings_description">Pokaż więcej typowych ustawień dla całej aplikacji: formaty, dostosowywanie zdarzeń itp.</string>
+    <string name="pref_Feature_Notify_More_Settings_title">Więcej ustawień powiadomień</string>
+    <string name="pref_Feature_Notify_More_Settings_description">Pokaż więcej ustawień powiadomień</string>
+    <string name="pref_Feature_Widgets_More_Settings_title">Więcej ustawień widżetów</string>
+    <string name="pref_Feature_Widgets_More_Settings_description">Pokaż więcej ustawień widżetów</string>
+    <string name="pref_Feature_Tools_description">Włącz narzędzia do importowania/eksportowania zdarzeń i ustawień</string>
+    <string name="pref_Feature_Adv_Info_title">Szczegóły</string>
+    <string name="pref_Feature_Adv_Info_description">Pokaż więcej szczegółowych informacji w elementach interfejsu: statystyki, liczbę zdarzeń, podsumowanie wartości ustawień itp.</string>
+    <string name="pref_Feature_Adv_Actions_title">Więcej akcje</string>
+    <string name="pref_Feature_Adv_Actions_description">Włącz więcej akcji do obsługi zdarzeń</string>
 
     <!-- https://savicki.pl/nazwy-rocznic-slubu -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papierowa</string>

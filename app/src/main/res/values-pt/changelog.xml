@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 13:45
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 22.03.2026, 19:47
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.0</item>
+        <item>🎯 Reinvenção do Quiz (recursos extras), 3 novos tipos de perguntas adicionados</item>
+        <item>⚙️ Seleção separada de recursos extras ativados</item>
+        <item>🌈 Adicionado espectro ao selecionar uma cor</item>
+        <item>🎨 Seleção de cor do dia para o calendário</item>
+        <item>Adicionado ao widget de lista: "Mostrar foto de contato para o próximo evento", "Nome original do evento", "aba", "expansor", ":"</item>
+        <item>Por padrão, eventos de arquivos especificados na seção de feriados são considerados feriados (se não tiverem os indicadores "!" ou "?")</item>
+        <item>Correções de bugs em widgets</item>
 
         <item>#1.8.9</item>
         <item>🎵 Possibilidade de selecionar um arquivo externo como toque de notificação</item>

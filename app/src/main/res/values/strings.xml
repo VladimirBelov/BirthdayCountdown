@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 17:21
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 17:18
+  ~  * Last modified 22.03.2026, 17:33
   ~  */
   -->
 
@@ -1423,7 +1423,6 @@ Long click on item to select color"</string>
     <string name="pref_Feature_Adv_Info_description">Show more detailed information inside interface elements: statistics, events count, settings values summary, etc.</string>
     <string name="pref_Feature_Adv_Actions_title">More actions</string>
     <string name="pref_Feature_Adv_Actions_description">Enable more actions for events handling</string>
-
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
     <!--https://en.wikipedia.org/wiki/Wedding_anniversary -->

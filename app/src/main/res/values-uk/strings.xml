@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 11:44
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 09:47
+  ~  * Last modified 22.03.2026, 17:34
   ~  */
   -->
 
@@ -757,6 +757,7 @@
     <string name="pref_EventInfo_LeftBracket2">"( "</string>
     <string name="pref_EventInfo_RightBracket">")"</string>
     <string name="pref_EventInfo_RightBracket2">") "</string>
+    <string name="pref_EventInfo_Colon">":"</string>
     <string name="pref_EventInfo_BoldStart">"- жирний - (початок)"</string>
     <string name="pref_EventInfo_BoldEnd">"- жирний - (кінець)"</string>
     <string name="pref_EventInfo_Tab">"- вкладка -"</string>
@@ -1362,6 +1363,10 @@
     <string name="widget_calendar_popup_previous_day">Попередній день</string>
     <string name="widget_calendar_popup_next_day">Наступний день</string>
     <string name="widget_calendar_popup_select_day">Виберіть день…</string>
+    <string name="widget_calendar_popup_select_color">Вибрати колір фону для цього дня…</string>
+    <string name="widget_calendar_popup_select_color_title">Колір дня</string>
+    <string name="widget_calendar_popup_share_day">Поділитися подіями дня…</string>
+    <string name="widget_calendar_popup_open_calendar">Відкрити календар для вибраного дня</string>
 
     <string name="month_event_saturdays">Суботи</string>
     <string name="month_event_sundays">Неділі</string>
@@ -1405,6 +1410,21 @@
     <string name="crop_image_reset">Скинути</string>
     <string name="crop_image_crop">Обрізати</string>
     <string name="crop_image_saving">Збереження…</string>
+
+    <string name="pref_Feature_Quiz_description">Увімкнути вікторину</string>
+    <string name="pref_Feature_Notify_Q2_description">Увімкнути другу чергу для сповіщень про події</string>
+    <string name="pref_Feature_Select_Sources_description">Увімкнути можливість вибору джерел подій для головного списку подій, сповіщень, віджетів, вікторини тощо.</string>
+    <string name="pref_Feature_More_Settings_title">Додаткові налаштування</string>
+    <string name="pref_Feature_More_Settings_description">Показати більше загальних налаштувань для всієї програми: формати, налаштування подій тощо.</string>
+    <string name="pref_Feature_Notify_More_Settings_title">Додаткові налаштування для сповіщень</string>
+    <string name="pref_Feature_Notify_More_Settings_description">Показати більше налаштувань для сповіщень</string>
+    <string name="pref_Feature_Widgets_More_Settings_title">Додаткові налаштування для віджетів</string>
+    <string name="pref_Feature_Widgets_More_Settings_description">Показати більше налаштувань для віджетів</string>
+    <string name="pref_Feature_Tools_description">Увімкнути інструменти для імпорту/експорту подій та налаштувань</string>
+    <string name="pref_Feature_Adv_Info_title">Деталі</string>
+    <string name="pref_Feature_Adv_Info_description">Показати детальнішу інформацію всередині елементів інтерфейсу: статистика, кількість подій, зведення значень налаштувань тощо.</string>
+    <string name="pref_Feature_Adv_Actions_title">Більше дій</string>
+    <string name="pref_Feature_Adv_Actions_description">Увімкнути більше дій для обробки подій</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/
  https://kakaya-svadba.ru/

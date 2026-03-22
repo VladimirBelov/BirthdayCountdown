@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 11:44
+  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 09:47
+  ~  * Last modified 22.03.2026, 17:51
   ~  */
   -->
 
@@ -757,6 +757,7 @@
     <string name="pref_EventInfo_LeftBracket2">"( "</string>
     <string name="pref_EventInfo_RightBracket">")"</string>
     <string name="pref_EventInfo_RightBracket2">") "</string>
+    <string name="pref_EventInfo_Colon">":"</string>
     <string name="pref_EventInfo_BoldStart">"- tučné - (začátek)"</string>
     <string name="pref_EventInfo_BoldEnd">"- tučné - (konec)"</string>
     <string name="pref_EventInfo_Tab">"- karta -"</string>
@@ -1364,6 +1365,10 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="widget_calendar_popup_previous_day">Předchozí den</string>
     <string name="widget_calendar_popup_next_day">Další den</string>
     <string name="widget_calendar_popup_select_day">Vyberte den…</string>
+    <string name="widget_calendar_popup_select_color">Vybrat barvu pozadí pro tento den…</string>
+    <string name="widget_calendar_popup_select_color_title">Barva dne</string>
+    <string name="widget_calendar_popup_share_day">Sdílet události dne…</string>
+    <string name="widget_calendar_popup_open_calendar">Otevřít kalendář pro vybraný den</string>
 
     <string name="month_event_saturdays">Soboty</string>
     <string name="month_event_sundays">Neděle</string>
@@ -1407,6 +1412,21 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="crop_image_reset">Obnovit</string>
     <string name="crop_image_crop">Oříznout</string>
     <string name="crop_image_saving">Ukládání…</string>
+
+    <string name="pref_Feature_Quiz_description">Povolit kvíz</string>
+    <string name="pref_Feature_Notify_Q2_description">Povolit druhou frontu pro oznámení o událostech</string>
+    <string name="pref_Feature_Select_Sources_description">Povolit možnost výběru zdrojů událostí pro hlavní seznam událostí, oznámení, widgety, kvíz atd.</string>
+    <string name="pref_Feature_More_Settings_title">Další nastavení</string>
+    <string name="pref_Feature_More_Settings_description">Zobrazit další běžná nastavení pro celou aplikaci: formáty, přizpůsobení událostí atd.</string>
+    <string name="pref_Feature_Notify_More_Settings_title">Další nastavení pro oznámení</string>
+    <string name="pref_Feature_Notify_More_Settings_description">Zobrazit další nastavení pro oznámení</string>
+    <string name="pref_Feature_Widgets_More_Settings_title">Další nastavení pro widgety</string>
+    <string name="pref_Feature_Widgets_More_Settings_description">Zobrazit další nastavení pro widgety</string>
+    <string name="pref_Feature_Tools_description">Povolit nástroje pro import/export událostí a nastavení</string>
+    <string name="pref_Feature_Adv_Info_title">Podrobnosti</string>
+    <string name="pref_Feature_Adv_Info_description">Zobrazit podrobnější informace uvnitř prvků rozhraní: statistiky, počet událostí, souhrn hodnot nastavení atd.</string>
+    <string name="pref_Feature_Adv_Actions_title">Další akce</string>
+    <string name="pref_Feature_Adv_Actions_description">Povolit další akce pro zpracování událostí</string>
 
     <!-- https://cs.wikipedia.org/wiki/V%C3%BDro%C4%8D%C3%AD_svatby -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Bavlněná svatba</string>
