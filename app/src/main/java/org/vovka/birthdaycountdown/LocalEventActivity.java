@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.03.2026, 02:21
+ *  * Created by Vladimir Belov on 22.03.2026, 11:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 21:44
+ *  * Last modified 21.03.2026, 21:07
  *
  */
 
@@ -649,11 +649,8 @@ public class LocalEventActivity extends AppCompatActivity {
                         updateCaptionsAndVisibility(LocalEventActivity.this);
                         updateEventPhoto(LocalEventActivity.this);
                     }
-
                     @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
+                    public void onNothingSelected(AdapterView<?> parent) {}
                 });
 
                 viewEventType.setVisibility(View.GONE);

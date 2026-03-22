@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.03.2026, 02:21
+ *  * Created by Vladimir Belov on 22.03.2026, 11:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 21:32
+ *  * Last modified 22.03.2026, 09:32
  *
  */
 
@@ -854,9 +854,9 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                     .setCancelable(true);
 
-            AlertDialog alertToShow = builder.create();
+            AlertDialog dialogEventsList = builder.create();
 
-            ListView listView = alertToShow.getListView();
+            ListView listView = dialogEventsList.getListView();
             listView.setItemsCanFocus(false);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
@@ -869,9 +869,9 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             listView.setDivider(divider);
             listView.setDividerHeight(dividerHeight);
 
-            alertToShow.setOnShowListener(arg0 -> {
-                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+            dialogEventsList.setOnShowListener(arg0 -> {
+                dialogEventsList.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                dialogEventsList.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
 
                 //Только здесь работает
                 for (int i = 0; i < sourceChoices.size(); i++) {
@@ -894,6 +894,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         colorValue = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default);
                     }
                     if (colorValue != null) {
+                        //Запоминаем включённые события и временно скрываем диалог со списком событий
                         SparseBooleanArray checked = listView.getCheckedItemPositions();
                         eventSourcesSelected.clear();
                         for (int i = 0; i < checked.size(); i++) {
@@ -901,7 +902,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                                 eventSourcesSelected.add(eventSourcesIds.get(checked.keyAt(i)));
                             }
                         }
-                        alertToShow.dismiss();
+                        dialogEventsList.dismiss();
 
                         int colorDefault;
                         Integer colorCalendar = eventsData.map_calendars_colors.get(sourceId);
@@ -914,7 +915,8 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         } else {
                             colorDefault = ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Events_default);
                         }
-
+                        picker.setDialogTitle(eventSourcesTitles.get(position));
+                        picker.setDialogIcon(R.drawable.ic_menu_paste);
                         picker.selectColor(colorValue, colorDefault, "setCustomColor", sourceId);
                     }
 
@@ -922,9 +924,9 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 });
             });
 
-            alertToShow.setOnDismissListener(dialog -> ta.recycle());
-            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            alertToShow.show();
+            dialogEventsList.setOnDismissListener(dialog -> ta.recycle());
+            dialogEventsList.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialogEventsList.show();
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);

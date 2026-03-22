@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2026, 02:21
+  ~  * Created by Vladimir Belov on 22.03.2026, 11:44
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.03.2026, 22:32
+  ~  * Last modified 22.03.2026, 10:13
   ~  */
   -->
 
@@ -1354,15 +1354,16 @@ Long click on item to select color"</string>
     <string name="Event_CatholicEaster">Catholic_Easter</string>
     <string name="Event_NY">NY</string>
 
-    <string name="month_title">Month title</string>
-    <string name="previous_month">Previous month</string>
-    <string name="next_month">Next month</string>
-    <string name="previous_day">Previous day</string>
-    <string name="next_day">Next day</string>
-    <string name="select_day">Select day…</string>
-    <string name="select_color">Select back color for this day…</string>
-    <string name="share_day">Share day events…</string>
-    <string name="open_calendar">Open calendar for selected day</string>
+    <string name="widget_calendar_popup_month_title">Month title</string>
+    <string name="widget_calendar_popup_previous_month">Previous month</string>
+    <string name="widget_calendar_popup_next_month">Next month</string>
+    <string name="widget_calendar_popup_previous_day">Previous day</string>
+    <string name="widget_calendar_popup_next_day">Next day</string>
+    <string name="widget_calendar_popup_select_day">Select day…</string>
+    <string name="widget_calendar_popup_select_color">Select back color for this day…</string>
+    <string name="widget_calendar_popup_select_color_title">Day color</string>
+    <string name="widget_calendar_popup_share_day">Share day events…</string>
+    <string name="widget_calendar_popup_open_calendar">Open calendar for selected day</string>
 
     <string name="month_event_saturdays">Saturdays</string>
     <string name="month_event_sundays">Sundays</string>

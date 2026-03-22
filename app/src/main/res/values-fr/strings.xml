@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.03.2026, 12:34
+  ~  * Created by Vladimir Belov on 22.03.2026, 11:44
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.03.2026, 10:54
+  ~  * Last modified 22.03.2026, 09:47
   ~  */
   -->
 
@@ -1358,12 +1358,12 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
     <string name="Event_CatholicEaster">Catholique_Pâques</string>
     <string name="Event_NY">NA</string>
 
-    <string name="month_title">Titre du mois</string>
-    <string name="previous_month">Mois précédent</string>
-    <string name="next_month">Le mois prochain</string>
-    <string name="previous_day">Jour précédent</string>
-    <string name="next_day">Jour suivant</string>
-    <string name="select_day">Sélectionner le jour…</string>
+    <string name="widget_calendar_popup_month_title">Titre du mois</string>
+    <string name="widget_calendar_popup_previous_month">Mois précédent</string>
+    <string name="widget_calendar_popup_next_month">Le mois prochain</string>
+    <string name="widget_calendar_popup_previous_day">Jour précédent</string>
+    <string name="widget_calendar_popup_next_day">Jour suivant</string>
+    <string name="widget_calendar_popup_select_day">Sélectionner le jour…</string>
 
     <string name="month_event_saturdays">Samedi</string>
     <string name="month_event_sundays">Dimanche</string>

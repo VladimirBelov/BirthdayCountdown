@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2026, 02:21
+  ~  * Created by Vladimir Belov on 22.03.2026, 11:44
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.03.2026, 21:49
+  ~  * Last modified 22.03.2026, 10:13
   ~  */
   -->
 
@@ -1354,15 +1354,16 @@
     <string name="Event_CatholicEaster">К_Пасха</string>
     <string name="Event_NY">НГ</string>
 
-    <string name="month_title">Наименование месяца</string>
-    <string name="previous_month">Предыдущий месяц</string>
-    <string name="next_month">Следующий месяц</string>
-    <string name="previous_day">Предыдущий день</string>
-    <string name="next_day">Следующий день</string>
-    <string name="select_day">Выбрать день…</string>
-    <string name="select_color">Выбрать цвет фона для этого дня…</string>
-    <string name="share_day">Поделиться событиями дня…</string>
-    <string name="open_calendar">Открыть календарь на выбранный день</string>
+    <string name="widget_calendar_popup_month_title">Наименование месяца</string>
+    <string name="widget_calendar_popup_previous_month">Предыдущий месяц</string>
+    <string name="widget_calendar_popup_next_month">Следующий месяц</string>
+    <string name="widget_calendar_popup_previous_day">Предыдущий день</string>
+    <string name="widget_calendar_popup_next_day">Следующий день</string>
+    <string name="widget_calendar_popup_select_day">Выбрать день…</string>
+    <string name="widget_calendar_popup_select_color">Выбрать цвет фона для этого дня…</string>
+    <string name="widget_calendar_popup_select_color_title">Цвет дня</string>
+    <string name="widget_calendar_popup_share_day">Поделиться событиями дня…</string>
+    <string name="widget_calendar_popup_open_calendar">Открыть календарь на выбранный день</string>
 
     <string name="month_event_saturdays">Субботы</string>
     <string name="month_event_sundays">Воскресенья</string>

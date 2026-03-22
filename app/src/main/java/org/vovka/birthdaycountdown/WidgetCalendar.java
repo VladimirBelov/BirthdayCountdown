@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.03.2026, 02:21
+ *  * Created by Vladimir Belov on 22.03.2026, 11:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 21:24
+ *  * Last modified 22.03.2026, 11:29
  *
  */
 
@@ -348,19 +348,22 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                         eventsColorsInMonth.put(res.getString(R.string.widget_config_month_events_saturday_id), colorSaturday_default);
                         eventsColorsOutMonth.put(res.getString(R.string.widget_config_month_events_saturday_id),
-                                Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorSaturday_default), Color.green(colorSaturday_default), Color.blue(colorSaturday_default)));
+                                Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT,
+                                        Color.red(colorSaturday_default), Color.green(colorSaturday_default), Color.blue(colorSaturday_default)));
 
                     } else if (eventId.equals(res.getString(R.string.widget_config_month_events_sunday_id))) {
 
                         eventsColorsInMonth.put(res.getString(R.string.widget_config_month_events_sunday_id), colorSunday_default);
                         eventsColorsOutMonth.put(res.getString(R.string.widget_config_month_events_sunday_id),
-                                Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorSunday_default), Color.green(colorSunday_default), Color.blue(colorSunday_default)));
+                                Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT,
+                                        Color.red(colorSunday_default), Color.green(colorSunday_default), Color.blue(colorSunday_default)));
 
                     } else {
 
                         eventsColorsInMonth.put(eventId, colorEvents_default);
                         eventsColorsOutMonth.put(eventId,
-                                Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT, Color.red(colorEvents_default), Color.green(colorEvents_default), Color.blue(colorEvents_default)));
+                                Color.argb(Constants.WIDGET_CALENDAR_OUT_MONTH_TINT,
+                                        Color.red(colorEvents_default), Color.green(colorEvents_default), Color.blue(colorEvents_default)));
 
                     }
 
@@ -849,7 +852,8 @@ public class WidgetCalendar extends AppWidgetProvider {
             cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify_Days);
 
             //Цвет дня
-            List<ContactsEvents.DayType> dayTypes = eventsData.getDayTypes(ContactsEvents.sdf_java.format(cal.getTime()), prefOtherEvents);
+            String dateToCompose = ContactsEvents.sdf_java.format(cal.getTime());
+            List<ContactsEvents.DayType> dayTypes = eventsData.getDayTypes(dateToCompose, prefOtherEvents);
 
             boolean isColoredByEvent = false;
             if (!dayTypes.isEmpty()) {
@@ -902,6 +906,16 @@ public class WidgetCalendar extends AppWidgetProvider {
                         cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.white));
                     }
                 } else {
+                    int colorValue = 0;
+                    String storedColorValue = eventsData.getDayInfo(dateToCompose);
+                    if (!storedColorValue.isEmpty()) {
+                        try {
+                            colorValue = Integer.parseInt(storedColorValue);
+                        } catch (NumberFormatException ignored) { /**/ }
+                    }
+                    if (colorValue != 0) {
+                        cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_COLOR, colorValue);
+                    }
                     cellRv.setTextColor(android.R.id.text1, color);
                 }
             }

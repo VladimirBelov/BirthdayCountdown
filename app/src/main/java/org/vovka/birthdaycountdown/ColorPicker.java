@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.03.2026, 02:21
+ *  * Created by Vladimir Belov on 22.03.2026, 11:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.03.2026, 02:19
+ *  * Last modified 22.03.2026, 10:41
  *
  */
 package org.vovka.birthdaycountdown;
@@ -36,6 +36,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -176,11 +177,9 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    void selectColor(int initValue, int defaultValue, String methodToInvoke, String idToPass) {
+    void selectColor(@ColorInt int initValue, @ColorInt int defaultValue, String methodToInvoke, String idToPass) {
         try {
 
-            //LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            //View rootView = layoutInflater.inflate(R.layout.dialog_colors, null);
             View rootView = View.inflate(new ContextThemeWrapper(context, eventsData.preferences_theme.themeMain), R.layout.dialog_colors, null);
 
             mAdapter = new ColorGridAdapter();
@@ -188,9 +187,11 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 mAdapter.setSelectedColor(initValue);
             } else if (defaultValue != 0) {
                 mAdapter.setSelectedColor(defaultValue);
-                mDefaultValue = defaultValue;
             } else {
                 mAdapter.setSelectedColor(mValue);
+            }
+            if (defaultValue != 0) {
+                mDefaultValue = defaultValue;
             }
 
             AlertDialog.Builder colorDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
@@ -202,8 +203,11 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 dialog.dismiss();
                 selectRGBColor(initValue, defaultValue, methodToInvoke, idToPass);
             });
-            if (mDefaultValue != 0 && mDefaultValue != mValue) {
-                colorDialogBuilder.setPositiveButton(R.string.button_reset, (dialog, which) -> setColor(mDefaultValue));
+            if (mDefaultValue != 0 && mDefaultValue != mAdapter.mSelectedColor) {
+                colorDialogBuilder.setPositiveButton(R.string.button_reset, (dialog, which) -> {
+                    setColor(mDefaultValue);
+                    returnResult(methodToInvoke, idToPass, mDefaultValue);
+                });
             }
 
             AlertDialog colorDialog = colorDialogBuilder.create();
@@ -216,13 +220,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     int colorInt = mAdapter.getItem(position);
                     setColor(colorInt);
                     eventsData.setRecentColor(colorInt);
-
-                    if (methodToInvoke != null && idToPass != null && (context instanceof AppCompatActivity || context instanceof Activity)) {
-                        try {
-                            Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
-                            method.invoke(context, idToPass, colorInt);
-                        } catch (Exception ignored) { /**/ }
-                    }
+                    returnResult(methodToInvoke, idToPass, colorInt);
                     colorDialog.dismiss();
                 });
                 mColorGrid.setOnItemLongClickListener((parent, view, position, id) -> {
@@ -253,6 +251,23 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void returnResult(String methodToInvoke, String idToPass, int colorInt) {
+        if (methodToInvoke != null && idToPass != null) {
+            if (context instanceof AppCompatActivity || context instanceof Activity) {
+                try {
+                    Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
+                    method.invoke(context, idToPass, colorInt);
+                } catch (Exception ignored) { /**/ }
+            } else if (context instanceof ContextThemeWrapper) {
+                Context parentBaseContext = ((ContextThemeWrapper) context).getBaseContext();
+                try {
+                    Method method = parentBaseContext.getClass().getMethod(methodToInvoke, String.class, int.class);
+                    method.invoke(parentBaseContext, idToPass, colorInt);
+                } catch (Exception ignored) { /**/ }
+            }
         }
     }
 
