@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.03.2026, 10:48
+ *  * Created by Vladimir Belov on 24.03.2026, 11:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 24.03.2026, 10:17
+ *  * Last modified 24.03.2026, 10:59
  *
  */
 
@@ -6067,7 +6067,6 @@ public class ContactsEvents {
         }
     }
 
-    @SuppressLint("DiscouragedApi")
     void computeDateForEvent(int eventIndex, @NonNull List<String> magicList, @NonNull Calendar now, @NonNull Date currentDay) {
 
         String singleEvent = Constants.STRING_EMPTY;
@@ -6461,6 +6460,7 @@ public class ContactsEvents {
      * @param age Год годовщины
      * @return Название свадьбы
      */
+    @SuppressLint("DiscouragedApi")
     @Nullable
     String getWeddingName(int age) {
         try {
@@ -6764,7 +6764,6 @@ public class ContactsEvents {
         return eventDistance.toString();
     }
 
-    @SuppressLint("DiscouragedApi")
     List<String> getPreviousEvents(@NonNull List<String> dataList) {
 
         List<String> result = new ArrayList<>();
@@ -9292,7 +9291,6 @@ public class ContactsEvents {
         preferences_list_magnify_age = intAge;
     }
 
-    @SuppressLint("DiscouragedApi")
     void showAnniversaryList(Context context, String age) {
 
         int selectedAge = -1;
@@ -10435,7 +10433,7 @@ public class ContactsEvents {
 
             //Справочники праздников и выходных
             int eventsPackCount = 1;
-            @SuppressLint("DiscouragedApi") int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
+            int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
             while (packId > 0) {
                 try {
 
