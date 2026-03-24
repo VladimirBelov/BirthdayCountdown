@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.2026, 15:50
+ *  * Created by Vladimir Belov on 24.03.2026, 10:48
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.03.2026, 15:40
+ *  * Last modified 23.03.2026, 20:34
  *
  */
 
@@ -917,7 +917,13 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         }
                         picker.setDialogTitle(eventSourcesTitles.get(position));
                         picker.setDialogIcon(R.drawable.ic_menu_paste);
-                        picker.selectColor(colorValue, colorDefault, "setCustomColor", sourceId);
+                        picker.selectColor(colorValue, colorDefault, sourceId, (colorId, newColorValue) -> {
+                            if (!colorId.isEmpty()) {
+                                ToastExpander.showDebugMsg(getApplicationContext(), getString(R.string.msg_event_color_selected, Integer.toHexString(newColorValue & 0x00ffffff), colorId));
+                                eventSourcesColors.put(colorId, newColorValue);
+                            }
+                            selectEventSources();
+                        });
                     }
 
                     return true;
@@ -958,14 +964,4 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
-
-    /** @noinspection unused*/
-    public void setCustomColor(@NonNull String colorId, int colorValue) {
-        if (!colorId.isEmpty()) {
-            ToastExpander.showDebugMsg(getApplicationContext(), getString(R.string.msg_event_color_selected, Integer.toHexString(colorValue & 0x00ffffff), colorId));
-            eventSourcesColors.put(colorId, colorValue);
-        }
-        selectEventSources();
-    }
-
 }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.2026, 15:50
+ *  * Created by Vladimir Belov on 24.03.2026, 10:48
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.03.2026, 14:33
+ *  * Last modified 24.03.2026, 10:41
  *
  */
 
@@ -35,6 +35,7 @@ import androidx.annotation.NonNull;
 import org.intellij.lang.annotations.JdkConstants;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -831,6 +832,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             boolean isToday = inYear && inMonth && (cal.get(Calendar.DAY_OF_YEAR) == today);
             @ColorInt Integer color;
 
+            //Рамка
             cellRv = new RemoteViews(context.getPackageName(), R.layout.cell_day);
             if (isToday) {
                 color = colorToday;
@@ -897,7 +899,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 }
             }
             if (color != null) {
-                if (isToday) {
+                if (isToday) { //Фон и цвет текста для "сегодня"
                     cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_COLOR, color);
                     if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
                         cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.black));
@@ -905,25 +907,27 @@ public class WidgetCalendar extends AppWidgetProvider {
                         cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.white));
                     }
                 } else {
-                    int colorValue = 0;
-                    String storedColorValue = eventsData.getDayInfo(dateToCompose);
-                    if (!storedColorValue.isEmpty()) {
-                        try {
-                            colorValue = Integer.parseInt(storedColorValue);
-                        } catch (NumberFormatException ignored) { /**/ }
-                    }
-                    if (colorValue != 0) {
-                        cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_COLOR, colorValue);
-                        //Если цвет текста совпадает с цветом текста, делаем его немного поярче или потусклее
-                        if (colorValue == color) {
-                            if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
-                                color = ImageUtils.addColorValue(color, -50);
-                            } else {
-                                color = ImageUtils.addColorValue(color, 50);
+                    if (inMonth) { //Фон дня
+                        int colorValue = 0;
+                        String storedColorValue = eventsData.getDayInfo(dateToCompose);
+                        if (!storedColorValue.isEmpty()) {
+                            try {
+                                colorValue = Integer.parseInt(storedColorValue);
+                            } catch (NumberFormatException ignored) { /**/ }
+                        }
+                        if (colorValue != 0) {
+                            cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_COLOR, colorValue);
+                            //Если цвет текста совпадает с цветом текста, делаем его немного поярче или потусклее
+                            if (colorValue == color) {
+                                if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
+                                    color = ImageUtils.addColorValue(color, -50);
+                                } else {
+                                    color = ImageUtils.addColorValue(color, 50);
+                                }
                             }
                         }
                     }
-                    cellRv.setTextColor(android.R.id.text1, color);
+                    cellRv.setTextColor(android.R.id.text1, color); //Цвет текста
                 }
             }
 
@@ -970,6 +974,28 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (action == Constants.onClick_Popup) {
                 List<String> dayInfo = eventsData.getDayInfo(ContactsEvents.sdf_java.format(cal.getTime()), prefOtherEvents, eventsColorsInMonth);
                 if (!dayInfo.isEmpty()) {
+                    //Подставляем в годовщину свадьбы её название
+                    final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(context.getString(R.string.event_type_anniversary));
+                    for (int i = 0; i < dayInfo.size(); i++) {
+                        String event = dayInfo.get(i);
+                        if (!event.contains(weddingPrefix)) continue;
+
+                        //Вытаскиваем год первоначального события
+                        int indParOpen = event.lastIndexOf(Constants.STRING_PARENTHESIS_OPEN);
+                        int indParClose = event.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                        if (indParOpen > -1 && indParClose > -1) {
+                            String strYear = event.substring(indParOpen + Constants.STRING_PARENTHESIS_OPEN.length(), indParClose);
+                            try {
+                                int year = Integer.parseInt(strYear);
+                                String anCaption = eventsData.getWeddingName(cal.get(Calendar.YEAR) - year);
+                                if (StringUtils.hasContent(anCaption)) {
+                                    dayInfo.set(i, event.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption)
+                                            .concat(Constants.STRING_PARENTHESIS_CLOSE));
+                                }
+                            } catch (NumberFormatException ignored) { /**/ }
+                        }
+                    }
+
                     Intent intent = new Intent(context, WidgetCalendarPopup.class);
                     SimpleDateFormat sdf = new SimpleDateFormat(" (EEE)", Locale.getDefault());
 

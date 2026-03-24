@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.03.2026, 02:21
+ *  * Created by Vladimir Belov on 24.03.2026, 10:48
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 22:40
+ *  * Last modified 23.03.2026, 22:11
  *
  */
 
@@ -4161,56 +4161,36 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             if (eventConsumer.equals(getString(R.string.pref_List_EventSources_key))) {
                 eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_list_EventSources),
-                        this, eventConsumer);
+                        this, selectedSources -> {
+                            eventsData.preferences_list_EventSources.clear();
+                            eventsData.preferences_list_EventSources.addAll(selectedSources);
+                            eventsData.savePreferences();
+                            setSummaryForEventSources(R.string.pref_List_EventSources_key, R.string.pref_List_EventSources_description);
+                        });
             } else if (eventConsumer.equals(getString(R.string.pref_Notifications_EventSources_key))) {
                 eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_notifications_sources),
-                        this, eventConsumer);
+                        this, selectedSources -> {
+                            eventsData.preferences_notifications_sources.clear();
+                            eventsData.preferences_notifications_sources.addAll(selectedSources);
+                            eventsData.savePreferences();
+                            setSummaryForEventSources(R.string.pref_Notifications_EventSources_key, R.string.pref_Notifications_EventSources_description);
+                        });
             } else if (eventConsumer.equals(getString(R.string.pref_Notifications2_EventSources_key))) {
                 eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_notifications2_sources),
-                        this, eventConsumer);
+                        this, selectedSources -> {
+                            eventsData.preferences_notifications2_sources.clear();
+                            eventsData.preferences_notifications2_sources.addAll(selectedSources);
+                            eventsData.savePreferences();
+                            setSummaryForEventSources(R.string.pref_Notifications2_EventSources_key, R.string.pref_Notifications_EventSources_description);
+                        });
             } else if (eventConsumer.equals(getString(R.string.pref_Quiz_EventSources_key))) {
                 eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_quiz_sources),
-                        this, eventConsumer);
-            }
-
-        } catch (final Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    public void getSelectedSources(String id, List<String> newSelectedSources) {
-        try {
-
-            if (id.equals(getString(R.string.pref_List_EventSources_key))) {
-
-                eventsData.preferences_list_EventSources.clear();
-                eventsData.preferences_list_EventSources.addAll(newSelectedSources);
-                eventsData.savePreferences();
-                setSummaryForEventSources(R.string.pref_List_EventSources_key, R.string.pref_List_EventSources_description);
-
-            } else if (id.equals(getString(R.string.pref_Notifications_EventSources_key))) {
-
-                eventsData.preferences_notifications_sources.clear();
-                eventsData.preferences_notifications_sources.addAll(newSelectedSources);
-                eventsData.savePreferences();
-                setSummaryForEventSources(R.string.pref_Notifications_EventSources_key, R.string.pref_Notifications_EventSources_description);
-
-            } else if (id.equals(getString(R.string.pref_Notifications2_EventSources_key))) {
-
-                eventsData.preferences_notifications2_sources.clear();
-                eventsData.preferences_notifications2_sources.addAll(newSelectedSources);
-                eventsData.savePreferences();
-                setSummaryForEventSources(R.string.pref_Notifications2_EventSources_key, R.string.pref_Notifications_EventSources_description);
-
-            } else if (id.equals(getString(R.string.pref_Quiz_EventSources_key))) {
-
-                eventsData.preferences_quiz_sources.clear();
-                eventsData.preferences_quiz_sources.addAll(newSelectedSources);
-                eventsData.savePreferences();
-                setSummaryForEventSources(R.string.pref_Quiz_EventSources_key, R.string.pref_Quiz_EventSources_summary);
-
+                        this, selectedSources -> {
+                            eventsData.preferences_quiz_sources.clear();
+                            eventsData.preferences_quiz_sources.addAll(selectedSources);
+                            eventsData.savePreferences();
+                            setSummaryForEventSources(R.string.pref_Quiz_EventSources_key, R.string.pref_Quiz_EventSources_summary);
+                        });
             }
 
         } catch (final Exception e) {

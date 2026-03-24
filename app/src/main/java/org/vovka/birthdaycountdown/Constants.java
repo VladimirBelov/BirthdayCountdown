@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 12:34
+ *  * Created by Vladimir Belov on 24.03.2026, 10:48
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 12:24
+ *  * Last modified 24.03.2026, 01:19
  *
  */
 
@@ -229,7 +229,6 @@ public final class Constants {
     static final String NOTIFY_ID = "id: ";
     static final int defaultNotificationID = 1000;
     static final int defaultNotification2ID = 1100;
-    static final int defaultQuizID = 2000;
     static final String ACTION_SNOOZE = "action.SNOOZE";
     static final String ACTION_ATTACH = "action.ATTACH";
     static final String ACTION_NOTIFY = "action.NOTIFY";
@@ -251,8 +250,6 @@ public final class Constants {
     static final String EXTRA_NOTIFICATION_DETAILS = "notificationDetails";
     static final String EXTRA_NOTIFICATION_ACTIONS = "notificationActions";
     static final String EXTRA_FILTER = "filterText";
-    static final String EXTRA_QUIZ_QUESTION = "quizQuestion";
-    static final String EXTRA_QUIZ_RESULT = "quizResult";
     static final String EXTRA_CLICKED_EVENT = "eventDetails";
     static final String EXTRA_CLICKED_PREFS = "actionPreference";
     static final String EXTRA_CLICKED_TEXT = "eventText";
@@ -345,8 +342,7 @@ public final class Constants {
     static final String account_none = "none";
 
     static final String RULE_TAG_NAME = "[name]";
-    static final String RULE_TAG_TYPE = "[question]";
-    //static final String RULE_TAG_ALIAS = "[alias]";
+    static final String RULE_TAG_TYPE = "[type]";
 
     static final String WIDGET_TYPE_LIST = "WidgetList";
     static final String WIDGET_TYPE_PHOTO_LIST = "WidgetPhotoList";
@@ -510,8 +506,6 @@ public final class Constants {
     public static final String iCal_Description = "DESCRIPTION:";
     public static final String iCal_Date = "DTSTART";
     public static final String iCal_Url = "URL:";
-
-    static final String GET_SELECTED_SOURCES_METHOD = "getSelectedSources";
 
     /** Включить викторину */
     public static final String FEATURE_QUIZ = "enable_quiz";

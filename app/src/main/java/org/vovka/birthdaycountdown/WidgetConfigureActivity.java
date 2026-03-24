@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.2026, 17:21
+ *  * Created by Vladimir Belov on 24.03.2026, 10:48
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.03.2026, 17:18
+ *  * Last modified 23.03.2026, 22:47
  *
  */
 
@@ -568,9 +568,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 //Выбор цвета
                 ColorPicker picker = new ColorPicker(this);
                 TextView captionCaptionsUpperColor = findViewById(R.id.captionCaptionsUpperColor);
-                captionCaptionsUpperColor.setOnClickListener(v -> picker.selectColor(colorCaptionUpper, eventsData.preferences_widgets_color_default, "updateSelectedColor", UPPER_ROW));
+                captionCaptionsUpperColor.setOnClickListener(v ->
+                        picker.selectColor(colorCaptionUpper, eventsData.preferences_widgets_color_default, UPPER_ROW, this::updateSelectedColor));
                 TextView captionCaptionsBottomColor = findViewById(R.id.captionCaptionsBottomColor);
-                captionCaptionsBottomColor.setOnClickListener(v -> picker.selectColor(colorCaptionBottom, eventsData.preferences_widgets_color_default, "updateSelectedColor", BOTTOM_ROW));
+                captionCaptionsBottomColor.setOnClickListener(v ->
+                        picker.selectColor(colorCaptionBottom, eventsData.preferences_widgets_color_default, BOTTOM_ROW, this::updateSelectedColor));
 
             }
 
@@ -672,7 +674,14 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             eventSources.loadEventSources(widgetType);
             updateEventSources();
             TextView listEventSources = findViewById(R.id.listEventSources);
-            listEventSources.setOnClickListener(v -> selectEventSources());
+            listEventSources.setOnClickListener(v ->
+                    eventsData.selectEventSources(eventSources, eventSourcesSelected, this,
+                            selectedSources -> {
+                                eventSourcesSelected.clear();
+                                eventSourcesSelected.addAll(selectedSources);
+                                updateEventSources();
+                            })
+            );
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1208,33 +1217,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void selectEventSources() {
-        try {
-
-            eventsData.selectEventSources(eventSources, eventSourcesSelected, this, null);
-
-        } catch (final Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    public void getSelectedSources(List<String> newSelectedSources) {
-        try {
-
-            if (newSelectedSources != null) {
-                eventSourcesSelected.clear();
-                eventSourcesSelected.addAll(newSelectedSources);
-                updateEventSources();
-            }
-
-        } catch (final Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-    }
-
     void updateCaptionsColors(@ColorInt int colorUpper, @ColorInt int colorBottom) {
         try {
 
@@ -1255,7 +1237,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         }
     }
 
-    /** @noinspection unused*/
     public void updateSelectedColor(@NonNull String colorId, int colorValue) {
         try {
 

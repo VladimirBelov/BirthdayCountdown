@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 12:34
+ *  * Created by Vladimir Belov on 24.03.2026, 10:48
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 10:44
+ *  * Last modified 23.03.2026, 22:02
  *
  */
 
@@ -1748,7 +1748,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 final ContactsEvents.EventSources eventSources = eventsData.new EventSources();
                 eventSources.loadEventSources(getString(R.string.pref_List_EventSources_key));
                 eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_list_EventSources),
-                        this, getString(R.string.pref_List_EventSources_key));
+                        this,
+                        selectedSources -> {
+                            eventsData.preferences_list_EventSources.clear();
+                            eventsData.preferences_list_EventSources.addAll(selectedSources);
+                            eventsData.savePreferences();
+                            eventsData.needUpdateEventList = true;
+                            updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                        });
                 return true;
 
             } else if (itemId == Constants.MainMenu_EventsTypes) {
@@ -2593,26 +2600,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
-    }
-
-    @SuppressWarnings("unused")
-    public void getSelectedSources(String id, List<String> newSelectedSources) {
-        try {
-
-            if (id.equals(getString(R.string.pref_List_EventSources_key))) {
-
-                eventsData.preferences_list_EventSources.clear();
-                eventsData.preferences_list_EventSources.addAll(newSelectedSources);
-                eventsData.savePreferences();
-                eventsData.needUpdateEventList = true;
-                updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
-
-            }
-
-        } catch (final Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
     }
 
     void selectEventsTypes() {

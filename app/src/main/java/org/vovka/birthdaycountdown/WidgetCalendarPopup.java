@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.2026, 11:44
+ *  * Created by Vladimir Belov on 24.03.2026, 10:48
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.03.2026, 11:41
+ *  * Last modified 23.03.2026, 21:04
  *
  */
 package org.vovka.birthdaycountdown;
@@ -22,12 +22,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
+import org.vovka.birthdaycountdown.utils.StringUtils;
 import org.vovka.birthdaycountdown.utils.UiTools;
 
 import java.io.Serializable;
@@ -39,24 +39,22 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 /**
- * `WidgetCalendarPopup` - это Activity, которое отображает всплывающее окно с подробной информацией
- * о выбранном дне из виджета календаря. Оно получает данные, связанные с этим днем,
- * включая события или другую сопутствующую информацию, и представляет их пользователю.
- * Это Activity обрабатывает:
- * Отображение информации, полученной из экземпляра {@link ContactsEvents}.
- * Предоставление действий, таких как просмотр дня в приложении календаря или обмен информацией о дне.
- * Данные передаются этому Activity через Intent extras. Ожидаемые extras:
- * {@link AppWidgetManager#EXTRA_APPWIDGET_ID}: Строка, содержащая ID вызвавшего виджета.
- * {@link Constants#EXTRA_DAY_INFO}: Строка, содержащая основную информацию для отображения.
- * {@link Constants#EXTRA_DAY_CAPTION}: Строка, содержащая подпись или заголовок для дня.
- * {@link Constants#EXTRA_VALUES}: Строка, представляющая миллисекунды для выбранного дня.
- * {@link Constants#EXTRA_LIST}: Массив, представляющая список источников для событий.
+ `WidgetCalendarPopup` - это Activity, которое отображает всплывающее окно с подробной информацией
+ о выбранном дне из виджета календаря. Оно получает данные, связанные с этим днем,
+ включая события или другую сопутствующую информацию, и представляет их пользователю.
+ Это Activity обрабатывает:
+ Отображение информации, полученной из экземпляра {@link ContactsEvents}.
+ Предоставление действий, таких как просмотр дня в приложении календаря или обмен информацией о дне.
+ Данные передаются этому Activity через Intent extras. Ожидаемые extras:
+ {@link AppWidgetManager#EXTRA_APPWIDGET_ID}: Строка, содержащая ID вызвавшего виджета.
+ {@link Constants#EXTRA_DAY_INFO}: Строка, содержащая основную информацию для отображения.
+ {@link Constants#EXTRA_DAY_CAPTION}: Строка, содержащая подпись или заголовок для дня.
+ {@link Constants#EXTRA_VALUES}: Строка, представляющая миллисекунды для выбранного дня.
+ {@link Constants#EXTRA_LIST}: Массив, представляющая список источников для событий.
  */
 public class WidgetCalendarPopup extends Activity {
     private static final String TAG = "WidgetCalendarPopup ";
-
     ContactsEvents eventsData;
     Intent intent;
     TextView viewCaption;
@@ -77,7 +75,6 @@ public class WidgetCalendarPopup extends Activity {
 
     public WidgetCalendarPopup() {
     }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         try {
@@ -215,7 +212,6 @@ public class WidgetCalendarPopup extends Activity {
                 finish();
             }
         });
-
         //Поделиться
         buttonShare.setOnClickListener(v -> {
             if (!dayInfo.equals(getString(R.string.month_event_empty))) {
@@ -239,7 +235,6 @@ public class WidgetCalendarPopup extends Activity {
                         (view, selectedYear, selectedMonth, dayOfMonth) -> {
                             newCal.clear();
                             newCal.set(selectedYear, selectedMonth, dayOfMonth);
-
                             updateDayData(newCal);
                             showDayInfo();
                         },
@@ -273,7 +268,16 @@ public class WidgetCalendarPopup extends Activity {
                 );
                 picker.setDialogTitle(getString(R.string.widget_calendar_popup_select_color_title));
                 picker.setDialogIcon(R.drawable.ic_menu_paste);
-                picker.selectColor(colorValue, colorDefaultValue, "setDayColor", date);
+                picker.selectColor(colorValue, colorDefaultValue, date, (id, color) -> {
+                    if (StringUtils.hasContent(id)) {
+                        ToastExpander.showDebugMsg(getApplicationContext(),
+                                getString(R.string.msg_event_color_selected, Integer.toHexString(color & 0x00ffffff), id));
+                        int colorDefaultValue1 = ContextCompat.getColor(WidgetCalendarPopup.this, android.R.color.transparent);
+                        eventsData.setDayInfo(id, color != colorDefaultValue1 ? String.valueOf(color) : null);
+                        eventsData.updateWidgets(appWidgetId, null);
+                    }
+                    showDayInfo();
+                });
             }
         });
 
@@ -306,7 +310,6 @@ public class WidgetCalendarPopup extends Activity {
 
     private void updateDayData(Calendar newCal) {
         SimpleDateFormat sdf = new SimpleDateFormat(" (EEE) ", Locale.getDefault());
-
         List<String> allEventsThisDay = eventsData.getDayInfo(
                 ContactsEvents.sdf_java.format(newCal.getTime()),
                 listEventsPacks,
@@ -367,10 +370,7 @@ public class WidgetCalendarPopup extends Activity {
             executorService.shutdown();
         }
     }
-
-    /**
-     * Показывает информацию о дне
-     */
+    /** Показывает информацию о дне */
     private void showDayInfo() {
         try {
             if (dayInfo.contains(Constants.TRANSPARENT)) {
@@ -425,12 +425,10 @@ public class WidgetCalendarPopup extends Activity {
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
-
     /**
-     * Вспомогательный метод для безопасного извлечения HashMap с подавлением предупреждения
-     *
-     * @param intent Intent
-     * @return Карта
+     Вспомогательный метод для безопасного извлечения HashMap с подавлением предупреждения
+     @param intent Intent
+     @return Карта
      */
     @SuppressWarnings("unchecked")
     private static HashMap<String, Integer> getHashMapFromIntent(Intent intent) {
@@ -439,17 +437,5 @@ public class WidgetCalendarPopup extends Activity {
             return (HashMap<String, Integer>) serializable;
         }
         return null;
-    }
-
-    /** @noinspection unused*/
-    public void setDayColor(@NonNull String date, int colorValue) {
-        if (!date.isEmpty()) {
-            ToastExpander.showDebugMsg(getApplicationContext(),
-                    getString(R.string.msg_event_color_selected, Integer.toHexString(colorValue & 0x00ffffff), date));
-            int colorDefaultValue = ContextCompat.getColor(this, android.R.color.transparent);
-            eventsData.setDayInfo(date, colorValue != colorDefaultValue ? String.valueOf(colorValue) : null);
-            eventsData.updateWidgets(appWidgetId, null);
-        }
-        showDayInfo();
     }
 }

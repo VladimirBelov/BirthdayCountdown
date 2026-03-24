@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.03.2026, 02:21
+ *  * Created by Vladimir Belov on 24.03.2026, 10:48
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 22:32
+ *  * Last modified 23.03.2026, 22:40
  *
  */
 
@@ -507,26 +507,14 @@ public class QuizActivity extends Activity {
             eventSources.loadEventSources(eventConsumer);
 
             eventsData.selectEventSources(eventSources, new ArrayList<>(eventsData.preferences_quiz_sources),
-                    new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeMain), eventConsumer);
-
-        } catch (final Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    public void getSelectedSources(String id, List<String> newSelectedSources) {
-        try {
-
-            if (id.equals(getString(R.string.pref_Quiz_EventSources_key))) {
-                eventsData.preferences_quiz_sources.clear();
-                eventsData.preferences_quiz_sources.addAll(newSelectedSources);
-                eventsData.savePreferences();
-                masterEventList = loadMasterEventList(); // перезагружаем с новыми фильтрами
-                refreshQuizPool();
-                showNextQuestion();
-            }
+                    new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeMain), selectedSources -> {
+                        eventsData.preferences_quiz_sources.clear();
+                        eventsData.preferences_quiz_sources.addAll(selectedSources);
+                        eventsData.savePreferences();
+                        masterEventList = loadMasterEventList(); // перезагружаем с новыми фильтрами
+                        refreshQuizPool();
+                        showNextQuestion();
+                    });
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -623,7 +611,7 @@ public class QuizActivity extends Activity {
             this.actions = new ArrayList<>();
         }
 
-        QuizQuestion(String question, String eventDetails, String action) {
+        QuizQuestion(String question, String eventDetails, @SuppressWarnings("SameParameterValue") String action) {
             this(question, eventDetails);
             this.actions.add(action);
         }

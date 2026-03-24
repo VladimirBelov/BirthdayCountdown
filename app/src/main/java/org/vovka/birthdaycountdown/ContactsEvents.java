@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.2026, 17:21
+ *  * Created by Vladimir Belov on 24.03.2026, 10:48
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.03.2026, 16:46
+ *  * Last modified 24.03.2026, 10:17
  *
  */
 
@@ -14,7 +14,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AuthenticatorDescription;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.LocaleManager;
 import android.app.NotificationChannel;
@@ -98,7 +97,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -364,7 +362,7 @@ public class ContactsEvents {
     int preferences_quiz_difficulty;
     int preferences_quiz_AutoNext;
     /** Цвета дней */
-    HashMap<String, String> preferences_days_info = new HashMap<>();
+    final HashMap<String, String> preferences_days_info = new HashMap<>();
     Set<String> preferences_quiz_questions = new HashSet<>();
     Set<String> preferences_quiz_sources = new HashSet<>();
     String preferences_first_names_female_custom;
@@ -645,7 +643,7 @@ public class ContactsEvents {
         }
     }
 
-    static class Event {
+    static class Event implements Cloneable {
         /** Наименование события */
         String caption = Constants.STRING_EMPTY;
         /** Заголовок пользовательского события */
@@ -667,6 +665,23 @@ public class ContactsEvents {
             this.distance = distance;
         }
 
+        @NonNull
+        @Override
+        public Event clone() {
+            try {
+                // Создаем поверхностную копию объекта
+                Event cloned = (Event) super.clone();
+
+                // Делаем глубокую копию для изменяемого поля Date
+                if (this.date != null) {
+                    cloned.date = (Date) this.date.clone();
+                }
+
+                return cloned;
+            } catch (CloneNotSupportedException e) {
+                throw new AssertionError();
+            }
+        }
     }
 
     static class DayType {
@@ -3199,8 +3214,9 @@ public class ContactsEvents {
             if (cursor != null) {
                 if (cursor.getCount() > 0) {
                     while (cursor.moveToNext()) {
+                        ContactsEvents.Event eventToCompose = event.clone();
                         counterTotalAddedEvents += addCalendarEventsFromCursor(cursor, cache, zoneOffset, dateRubicon, endPeriod,
-                                useEventYear, isMultiTypeSource, event, matcherNameAndTypes, matcherTypes, matcherTypeAndNames, matcherNames);
+                                useEventYear, isMultiTypeSource, eventToCompose, matcherNameAndTypes, matcherTypes, matcherTypeAndNames, matcherNames);
                     }
                 }
             }
@@ -3290,7 +3306,8 @@ public class ContactsEvents {
             final List<String> eventURLs = new ArrayList<>();
             String eventURL;
             String eventDescription = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.DESCRIPTION));
-            if (eventDescription != null) {
+            boolean setOtherIfUnknown = preferences_rules_unrecognized == Rules_Unrecognized_Type_Other;
+            if (StringUtils.hasContent(eventDescription)) {
                 eventDescription = eventDescription.replace(Constants.STRING_EOL, Constants.STRING_SPACE);
                 int indURL;
                 int indSpace;
@@ -3314,6 +3331,7 @@ public class ContactsEvents {
                 }
 
                 if (isMultiTypeSource) {
+                    //Пытаемся распознать по описанию события. Если не получится - ниже будем извлекать тип из заголовка
                     event = recognizeEventByLabel(eventDescription, Constants.Storage_Calendar, false, useEventYear);
                 }
 
@@ -3324,7 +3342,7 @@ public class ContactsEvents {
             String foundName = null;
             if (isMultiTypeSource && event.icon == R.drawable.ic_event_unknown) {
                 String foundLabel = null;
-                if (matcherNameAndTypes != null && !matcherNameAndTypes.isEmpty()) { // ..[name]..[question]..
+                if (matcherNameAndTypes != null && !matcherNameAndTypes.isEmpty()) { // ..[name]..[type]..
                     for (Matcher matcher : matcherNameAndTypes) {
                         if (matcher.reset(eventTitle).find()) {
                             foundName = matcher.group(1);
@@ -3333,7 +3351,7 @@ public class ContactsEvents {
                         }
                     }
                 }
-                if (foundName == null && matcherTypeAndNames != null && !matcherTypeAndNames.isEmpty()) { // ..[question]..[name]..
+                if (foundName == null && matcherTypeAndNames != null && !matcherTypeAndNames.isEmpty()) { // ..[type]..[name]..
                     for (Matcher matcher : matcherTypeAndNames) {
                         if (matcher.reset(eventTitle).find()) {
                             foundName = matcher.group(2);
@@ -3342,7 +3360,7 @@ public class ContactsEvents {
                         }
                     }
                 }
-                if (foundLabel == null && matcherTypes != null && !matcherTypes.isEmpty()) { // ..[question]..
+                if (foundLabel == null && matcherTypes != null && !matcherTypes.isEmpty()) { // ..[type]..
                     for (Matcher matcher : matcherTypes) {
                         if (matcher.reset(eventTitle).find()) {
                             foundLabel = matcher.group(1);
@@ -3351,9 +3369,7 @@ public class ContactsEvents {
                     }
                 }
 
-                if (foundLabel != null) {
-                    event = recognizeEventByLabel(foundLabel, Constants.Storage_Calendar, true, useEventYear);
-                }
+                event = recognizeEventByLabel(StringUtils.getNotNullString(foundLabel), Constants.Storage_Calendar, setOtherIfUnknown, useEventYear);
             }
 
             if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && event.icon == R.drawable.ic_event_unknown) return 0;
@@ -4569,7 +4585,8 @@ public class ContactsEvents {
 
             if (isMultiTypeSource) {
 
-                event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, true, true);
+                boolean setOtherIfUnknown = preferences_rules_unrecognized == Rules_Unrecognized_Type_Other;
+                event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, setOtherIfUnknown, true);
 
             } else if (eventType.equals(Constants.EventType_BirthDay)) {
 
@@ -6276,13 +6293,8 @@ public class ContactsEvents {
                     singleEventArray[Position_age_caption] = setAgeFormatting(StringUtils.getAgeString(age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20, currentLocale, resources));
 
                     if (eventType.equals(Constants.EventType_Anniversary)) {
-                        @Nullable String anCaption;
-                        try {
-                            anCaption = context.getString(resources.getIdentifier(Constants.STRING_TYPE_WEDDING + age, Constants.RES_TYPE_STRING, context.getPackageName()));
-                        } catch (Resources.NotFoundException nfe) {
-                            anCaption = null;
-                        }
-                        if (anCaption != null && !TextUtils.isEmpty(anCaption) && !eventCaption.contains(Constants.STRING_PARENTHESIS_OPEN)) {
+                        @Nullable String anCaption = getWeddingName(age);
+                        if (StringUtils.hasContent(anCaption) && !eventCaption.contains(Constants.STRING_PARENTHESIS_OPEN)) {
                             singleEventArray[Position_eventCaption] = eventCaption.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption).concat(Constants.STRING_PARENTHESIS_CLOSE);
                         }
                     }
@@ -6314,8 +6326,15 @@ public class ContactsEvents {
             if (checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])) {
                 //Избранные для календарного виджета
                 final String packHash = StringUtils.getHash(Constants.eventSourceFavoritePrefix);
+
+                String anCaption = singleEventArray[Position_eventCaption];
+                // Если это годовщина свадьбы - убираем название свадьбы. Оно будет вычислено
+                // для конкретного для в {@link WidgetCalendar}
+                if (eventType.equals(Constants.EventType_Anniversary)) {
+                    anCaption = eventCaption;
+                }
                 String eventTitle = Constants.eventTitleFavoritePrefix
-                        .concat(singleEventArray[Position_eventCaption])
+                        .concat(anCaption)
                         .concat(Constants.STRING_COLON_SPACE)
                         .concat(StringUtils.getFullName(singleEventArray, preferences_name_format));
                 if (age > 0) {
@@ -6435,6 +6454,19 @@ public class ContactsEvents {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + singleEvent);
+        }
+    }
+
+    /** Возвращает название годовщины свадьбы
+     * @param age Год годовщины
+     * @return Название свадьбы
+     */
+    @Nullable
+    String getWeddingName(int age) {
+        try {
+            return context.getString(resources.getIdentifier(Constants.STRING_TYPE_WEDDING + age, Constants.RES_TYPE_STRING, context.getPackageName()));
+        } catch (Resources.NotFoundException nfe) {
+            return null;
         }
     }
 
@@ -6905,14 +6937,9 @@ public class ContactsEvents {
                             }
 
                             if (singleEventArray[Position_eventType].equals(Constants.EventType_Anniversary)) {
-                                @Nullable String anCaption;
-                                try {
-                                    anCaption = context.getString(getResources().getIdentifier(Constants.STRING_TYPE_WEDDING + Age, Constants.RES_TYPE_STRING, context.getPackageName()));
-                                } catch (Resources.NotFoundException nfe) {
-                                    anCaption = null;
-                                }
+                                @Nullable String anCaption = getWeddingName(Age);
                                 String eventCaption = getResources().getString(R.string.event_type_anniversary);
-                                if (anCaption != null && !anCaption.isEmpty()) {
+                                if (StringUtils.hasContent(anCaption)) {
                                     singleEventArray[Position_eventCaption] = eventCaption.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption).concat(Constants.STRING_PARENTHESIS_CLOSE);
                                 } else {
                                     singleEventArray[Position_eventCaption] = eventCaption;
@@ -9309,13 +9336,8 @@ public class ContactsEvents {
             }
 
             for (int i = 1; i <= 100; i++) {
-                @Nullable String anCaption;
-                try {
-                    anCaption = context.getString(getResources().getIdentifier(Constants.STRING_TYPE_WEDDING + i, Constants.RES_TYPE_STRING, context.getPackageName()));
-                } catch (Resources.NotFoundException nfe) {
-                    anCaption = null;
-                }
-                if (anCaption != null && !anCaption.isEmpty()) {
+                @Nullable String anCaption = getWeddingName(i);
+                if (StringUtils.hasContent(anCaption)) {
                     String holiday = i + Constants.STRING_COLON_SPACE + anCaption;
                     if (i == selectedAge) {
                         selectedPosition = items.size();
@@ -11286,13 +11308,20 @@ public class ContactsEvents {
 
     }
 
+    /**
+     * Интерфейс обратного вызова для выбора источников событий
+     */
+    public interface OnEventSourcesSelectedListener {
+        void onEventSourcesSelected(@NonNull List<String> selectedSources);
+    }
+
     /** Диалог выбора источников событий
      * @param eventSources Доступные источники событий
      * @param preselectedSources Предвыбранные источники
      * @param baseContext Контекст вызова (для наследования темы и возврата результата)
-     * @param eventConsumer Id потребителя, для которого выбирали источники событий
+     * @param listener Интерфейс обратного вызова для выбора источников событий
      */
-    void selectEventSources(@NonNull EventSources eventSources, @NonNull List<String> preselectedSources, @NonNull Context baseContext, String eventConsumer) {
+    void selectEventSources(@NonNull EventSources eventSources, @NonNull List<String> preselectedSources, @NonNull Context baseContext, @Nullable OnEventSourcesSelectedListener listener) {
         //todo: переделать последний параметр на Runnable, как в selectQuizQuestions
         final List<String> eventSourcesSelected = new ArrayList<>();
         try {
@@ -11368,30 +11397,12 @@ public class ContactsEvents {
                                 eventSourcesSelected.add(eventSources.getHashes().get(checked.keyAt(i)));
                             }
                         }
-                        if (baseContext instanceof Activity) {
+
+                        if (listener != null) {
                             try {
-                                if (eventConsumer == null) {
-                                    Method method = baseContext.getClass().getMethod(Constants.GET_SELECTED_SOURCES_METHOD, List.class);
-                                    method.invoke(baseContext, eventSourcesSelected);
-                                } else {
-                                    Method method = baseContext.getClass().getMethod(Constants.GET_SELECTED_SOURCES_METHOD, String.class, List.class);
-                                    method.invoke(baseContext, eventConsumer, eventSourcesSelected);
-                                }
-                            } catch (Exception ignored) {
-                                ToastExpander.showDebugMsg(baseContext, "No method " + Constants.GET_SELECTED_SOURCES_METHOD + " found for " + baseContext.getClass().getSimpleName());
-                            }
-                        } else if (baseContext instanceof ContextThemeWrapper) {
-                            Context parentBaseContext = ((ContextThemeWrapper) baseContext).getBaseContext();
-                            try {
-                                if (eventConsumer == null) {
-                                    Method method = parentBaseContext.getClass().getMethod(Constants.GET_SELECTED_SOURCES_METHOD, List.class);
-                                    method.invoke(parentBaseContext, eventSourcesSelected);
-                                } else {
-                                    Method method = parentBaseContext.getClass().getMethod(Constants.GET_SELECTED_SOURCES_METHOD, String.class, List.class);
-                                    method.invoke(parentBaseContext, eventConsumer, eventSourcesSelected);
-                                }
-                            } catch (Exception ignored) {
-                                ToastExpander.showDebugMsg(baseContext, "No method " + Constants.GET_SELECTED_SOURCES_METHOD + " found for " + parentBaseContext.getClass().getSimpleName());
+                                listener.onEventSourcesSelected(eventSourcesSelected);
+                            } catch (Exception e) {
+                                Log.e(TAG, "Error in event sources listener", e);
                             }
                         }
 

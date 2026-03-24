@@ -1,14 +1,13 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.2026, 15:50
+ *  * Created by Vladimir Belov on 24.03.2026, 10:48
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.03.2026, 15:33
+ *  * Last modified 23.03.2026, 21:01
  *
  */
 package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -41,27 +40,22 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
- * ColorPicker - это пользовательский элемент управления, который позволяет пользователю выбрать цвет из предопределенного набора вариантов
- * или выбрать цвет с помощью RGB-слайдеров. Его можно использовать в макетах или программно.
- * <p>
- * Этот класс предоставляет визуальный интерфейс выбора цвета в приложении Android. Он предлагает
- * несколько способов выбора цвета, включая сетку предопределенных вариантов цветов и RGB-селектор.
- * <p>
- * Основные характеристики:
- * <li><b>Предопределенные варианты цветов:</b> Представляет сетку цветов для удобного выбора.</li>
- * <li><b>RGB-селектор:</b> Позволяет пользователям точно настроить выбор цвета с помощью слайдеров Красный, Зеленый, Синий и Альфа.</li>
- * <li><b>HSV-спектр:</b> Визуальный выбор цвета через цветовой круг с маркером текущей позиции.</li>
- * <li><b>Настраиваемый:</b> Может быть настроен через атрибуты XML или программно.</li>
+ ColorPicker - это пользовательский элемент управления, который позволяет пользователю выбрать цвет из предопределенного набора вариантов
+ или выбрать цвет с помощью RGB-слайдеров. Его можно использовать в макетах или программно.
+ Этот класс предоставляет визуальный интерфейс выбора цвета в приложении Android. Он предлагает
+ несколько способов выбора цвета, включая сетку предопределенных вариантов цветов и RGB-селектор.
+ Основные характеристики:
+ Предопределенные варианты цветов: Представляет сетку цветов для удобного выбора.
+ RGB-селектор: Позволяет пользователям точно настроить выбор цвета с помощью слайдеров Красный, Зеленый, Синий и Альфа.
+ HSV-спектр: Визуальный выбор цвета через цветовой круг с маркером текущей позиции.
+ Настраиваемый: Может быть настроен через атрибуты XML или программно.
  */
 class ColorPicker extends FrameLayout implements View.OnClickListener {
     private static final String TAG = "ColorPicker";
@@ -75,6 +69,11 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
     private ColorGridAdapter mAdapter;
     private final Context context;
     final ContactsEvents eventsData = ContactsEvents.getInstance();
+
+    // Интерфейс обратного вызова для передачи результата
+    public interface OnColorSelectedListener {
+        void onColorSelected(String id, int color);
+    }
 
     public ColorPicker(@NonNull Context context) {
         super(context);
@@ -170,6 +169,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         try {
+            // Вызов без слушателя, если кликнули просто по view (например, в настройках)
             selectColor(0, 0, null, null);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -177,7 +177,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    void selectColor(@ColorInt int initValue, @ColorInt int defaultValue, String methodToInvoke, String idToPass) {
+    void selectColor(@ColorInt int initValue, @ColorInt int defaultValue, String idToPass, OnColorSelectedListener listener) {
         try {
 
             View rootView = View.inflate(new ContextThemeWrapper(context, eventsData.preferences_theme.themeMain), R.layout.dialog_colors, null);
@@ -201,12 +201,12 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
             colorDialogBuilder.setNeutralButton(R.string.button_rgb, (dialog, which) -> {
                 dialog.dismiss();
-                selectRGBColor(initValue, defaultValue, methodToInvoke, idToPass);
+                selectRGBColor(initValue, defaultValue, idToPass, listener);
             });
             if (mDefaultValue != 0 && mDefaultValue != mAdapter.mSelectedColor) {
                 colorDialogBuilder.setPositiveButton(R.string.button_reset, (dialog, which) -> {
                     setColor(mDefaultValue);
-                    returnResult(methodToInvoke, idToPass, mDefaultValue);
+                    returnResult(idToPass, mDefaultValue, listener);
                 });
             }
 
@@ -220,7 +220,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     int colorInt = mAdapter.getItem(position);
                     setColor(colorInt);
                     eventsData.setRecentColor(colorInt);
-                    returnResult(methodToInvoke, idToPass, colorInt);
+                    returnResult(idToPass, colorInt, listener);
                     colorDialog.dismiss();
                 });
                 mColorGrid.setOnItemLongClickListener((parent, view, position, id) -> {
@@ -232,7 +232,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     return true;
                 });
             }
-            colorDialog.setOnCancelListener(dialog -> returnResult(methodToInvoke, null, 0));
+            colorDialog.setOnCancelListener(dialog -> returnResult(null, 0, listener));
             View mCaptionView = rootView.findViewById(R.id.caption);
             if (mCaptionView != null) {
                 mCaptionView.setVisibility(View.GONE);
@@ -247,32 +247,25 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    private void returnResult(String methodToInvoke, String idToPass, int colorInt) {
-        if (methodToInvoke != null) {
-            if (context instanceof AppCompatActivity || context instanceof Activity) {
-                try {
-                    Method method = context.getClass().getMethod(methodToInvoke, String.class, int.class);
-                    method.invoke(context, idToPass, colorInt);
-                } catch (Exception ignored) { /**/ }
-            } else if (context instanceof ContextThemeWrapper) {
-                Context parentBaseContext = ((ContextThemeWrapper) context).getBaseContext();
-                try {
-                    Method method = parentBaseContext.getClass().getMethod(methodToInvoke, String.class, int.class);
-                    method.invoke(parentBaseContext, idToPass, colorInt);
-                } catch (Exception ignored) { /**/ }
+    private void returnResult(String idToPass, int colorInt, OnColorSelectedListener listener) {
+        if (listener != null) {
+            try {
+                listener.onColorSelected(idToPass, colorInt);
+            } catch (Exception e) {
+                Log.e(TAG, "Error in color listener", e);
             }
         }
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    public void selectRGBColor(int initValue, int defaultValue, String methodToInvoke, String idToPass) {
+    public void selectRGBColor(int initValue, int defaultValue, String idToPass, OnColorSelectedListener listener) {
         try {
             TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
                     .setPositiveButton(R.string.button_ok, null)
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> {
-                        returnResult(methodToInvoke, null, 0);
+                        returnResult(null, 0, listener);
                         dialog.cancel();
                     });
 
@@ -364,7 +357,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     Color.colorToHSV(colorValue[0], currentHsv);
 
                     float hue = currentHsv[0];        // 0-360
-                    float saturation = currentHsv[1]; // 0-1
+                    float saturation = currentHsv[1]; //  0-1
                     float value = currentHsv[2];      // 0-1
 
                     float x;
@@ -542,7 +535,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                         int colorInt = Color.parseColor(colorString);
                         setColor(colorInt);
                         eventsData.setRecentColor(colorInt);
-                        returnResult(methodToInvoke, idToPass, colorInt);
+                        returnResult(idToPass, colorInt, listener);
                         dialog.cancel();
                     } catch (IllegalArgumentException e) {
                         ToastExpander.showInfoMsg(getContext(), eventsData.getResources().getString(R.string.msg_color_parse_error));
