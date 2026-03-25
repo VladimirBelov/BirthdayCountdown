@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 12:34
+ *  * Created by Vladimir Belov on 26.03.2026, 01:41
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 10:35
+ *  * Last modified 26.03.2026, 01:39
  *
  */
 
@@ -77,6 +77,7 @@ public class AboutActivity extends AppCompatActivity {
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
+            eventsData.applyLocaleWorkaround(this);
 
             this.setTheme(eventsData.preferences_theme.themeMain);
             setContentView(R.layout.activity_changelog);

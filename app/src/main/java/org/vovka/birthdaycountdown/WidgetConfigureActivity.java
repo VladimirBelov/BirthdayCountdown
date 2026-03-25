@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.03.2026, 10:48
+ *  * Created by Vladimir Belov on 26.03.2026, 01:41
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 23.03.2026, 22:47
+ *  * Last modified 26.03.2026, 01:21
  *
  */
 
@@ -13,9 +13,13 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -100,6 +104,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         try {
 
             eventsData.initLanguage(this);
+            //Без этого на Android 8 и 9 не меняет динамически язык
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                Resources applicationRes = getBaseContext().getResources();
+                Configuration applicationConf = applicationRes.getConfiguration();
+                applicationConf.setLocales(new LocaleList(new Locale(eventsData.currentLocale)));
+                applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+            }
 
             setTheme(eventsData.preferences_theme.themeMain);
 

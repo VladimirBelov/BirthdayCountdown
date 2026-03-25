@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 26.03.2026, 01:41
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.01.2026, 01:00
+ *  * Last modified 26.03.2026, 01:21
  *
  */
 
@@ -16,11 +16,15 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
@@ -49,6 +53,7 @@ import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Класс WidgetMenuActivity отвечает за отображение контекстного меню
@@ -82,6 +87,13 @@ public class WidgetMenuActivity extends Activity {
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
+            //Без этого на Android 8 и 9 не меняет динамически язык
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                Resources applicationRes = getBaseContext().getResources();
+                Configuration applicationConf = applicationRes.getConfiguration();
+                applicationConf.setLocales(new LocaleList(new Locale(eventsData.currentLocale)));
+                applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+            }
 
             appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
             String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);

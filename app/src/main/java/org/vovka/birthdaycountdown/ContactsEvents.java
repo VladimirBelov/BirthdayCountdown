@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.03.2026, 23:17
+ *  * Created by Vladimir Belov on 26.03.2026, 01:41
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.03.2026, 23:15
+ *  * Last modified 26.03.2026, 01:37
  *
  */
 
@@ -26,6 +26,7 @@ import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -1187,6 +1188,21 @@ public class ContactsEvents {
 
         currentLocale = targetLang;
         initLocaleStrings();
+    }
+
+    /** Без этого на Android 8 и 9 не меняет динамически язык
+     * @param context ContextWrapper
+     */
+    public void applyLocaleWorkaround(ContextWrapper context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            Resources applicationRes = context.getBaseContext().getResources();
+            Configuration applicationConf = applicationRes.getConfiguration();
+            String localeCode = currentLocale != null && currentLocale.isEmpty()
+                    ? currentLocale
+                    : Locale.getDefault().getLanguage();
+            applicationConf.setLocales(new LocaleList(new Locale(localeCode)));
+            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+        }
     }
 
     private void initLocaleStrings() {

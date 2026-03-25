@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 23:42
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 21:56
+ *  * Created by Vladimir Belov on 26.03.2026, 01:41
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 26.03.2026, 01:39
  *
  */
 
@@ -63,6 +63,7 @@ public class FAQActivity extends AppCompatActivity {
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
+            eventsData.applyLocaleWorkaround(this);
 
             this.setTheme(eventsData.preferences_theme.themeMain);
 

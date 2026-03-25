@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.03.2026, 10:48
+ *  * Created by Vladimir Belov on 26.03.2026, 01:41
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 23.03.2026, 22:11
+ *  * Last modified 26.03.2026, 01:39
  *
  */
 
@@ -161,6 +161,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
+            eventsData.applyLocaleWorkaround(this);
 
             this.setTheme(eventsData.preferences_theme.themeMain);
             this.getTheme().applyStyle(R.style.OptOutEdgeToEdgeEnforcement, false);

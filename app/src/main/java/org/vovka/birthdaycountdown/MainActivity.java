@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.03.2026, 10:48
+ *  * Created by Vladimir Belov on 26.03.2026, 01:41
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 23.03.2026, 22:02
+ *  * Last modified 26.03.2026, 01:37
  *
  */
 
@@ -151,8 +151,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
-
-            resources = getResources();
+            eventsData.applyLocaleWorkaround(this);
+            resources = eventsData.getResources();
             displayMetrics = resources.getDisplayMetrics();
 
             //Устанавливаем тему
@@ -174,11 +174,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
                     Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
                     layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
-                    layoutMain.setPadding(0, insets.bottom + ImageUtils.Sp2Px(getResources(), 62), 0, 0);
+                    layoutMain.setPadding(0, insets.bottom + ImageUtils.Sp2Px(resources, 62), 0, 0);
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
-                layoutMain.setPadding(0, ImageUtils.Dip2Px(getResources(), 62), 0, 0);
+                layoutMain.setPadding(0, ImageUtils.Dip2Px(resources, 62), 0, 0);
             }
             //Цвет CutoutAppearance на повёрнутом экране
             //https://stackoverflow.com/questions/58896621/how-can-i-color-the-cutout-notch-area-in-non-full-screen-landscape-mode
@@ -971,7 +971,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         editText.setText(selectedEvent[ContactsEvents.Position_eventLabel]);
                         editText.setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
                         editText.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
-                        editText.setMinimumHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics()));
+                        editText.setMinimumHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, displayMetrics));
 
                         AlertDialog.Builder builderForEventTitleDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                                 .setTitle(R.string.pref_CustomEvents_Custom_Caption_title)
@@ -2184,7 +2184,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Устанавливаем язык приложения
             eventsData.initLanguage(this);
-            resources = getResources();
+            resources = eventsData.getResources();
 
             //Устанавливаем тему и переоткрываем окно
             this.setTheme(eventsData.preferences_theme.themeMain);
@@ -2605,8 +2605,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     void selectEventsTypes() {
         try {
 
-            final List<String> eventTypesIDs = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_values)));
-            final List<String> eventTypesTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_entries)));
+            final List<String> eventTypesIDs = new ArrayList<>(Arrays.asList(resources.getStringArray(R.array.pref_List_EventTypes_values)));
+            final List<String> eventTypesTitles = new ArrayList<>(Arrays.asList(resources.getStringArray(R.array.pref_List_EventTypes_entries)));
             ArrayList<Boolean> eventTypesSelected = new ArrayList<>();
             final boolean[] isProgrammaticChange = {false};
 
@@ -3291,7 +3291,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         try {
             if (overrideConfiguration != null) {
                 int uiMode = overrideConfiguration.uiMode;
-                overrideConfiguration.setTo(getBaseContext().getResources().getConfiguration());
+                overrideConfiguration.setTo(resources.getConfiguration());
                 overrideConfiguration.uiMode = uiMode;
             }
             super.applyOverrideConfiguration(overrideConfiguration);
