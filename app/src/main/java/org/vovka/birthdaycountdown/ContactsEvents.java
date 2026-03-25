@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.03.2026, 11:05
+ *  * Created by Vladimir Belov on 25.03.2026, 23:17
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 24.03.2026, 10:59
+ *  * Last modified 25.03.2026, 23:15
  *
  */
 
@@ -3262,7 +3262,7 @@ public class ContactsEvents {
         int counterAddedEvents = 0;
         try {
 
-            final String eventTitle = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.TITLE));
+            String eventTitle = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.TITLE));
             if (!StringUtils.hasContent(eventTitle)) return 0;
 
             int importMethod_Standalone = 0; //Календарное событие без контакта
@@ -3346,6 +3346,7 @@ public class ContactsEvents {
                     for (Matcher matcher : matcherNameAndTypes) {
                         if (matcher.reset(eventTitle).find()) {
                             foundName = matcher.group(1);
+                            eventTitle = foundName;
                             foundLabel = matcher.group(2);
                             break;
                         }
@@ -3355,6 +3356,7 @@ public class ContactsEvents {
                     for (Matcher matcher : matcherTypeAndNames) {
                         if (matcher.reset(eventTitle).find()) {
                             foundName = matcher.group(2);
+                            eventTitle = foundName;
                             foundLabel = matcher.group(1);
                             break;
                         }
@@ -3364,6 +3366,7 @@ public class ContactsEvents {
                     for (Matcher matcher : matcherTypes) {
                         if (matcher.reset(eventTitle).find()) {
                             foundLabel = matcher.group(1);
+                            eventTitle = eventTitle.replace(foundLabel, Constants.STRING_EMPTY);
                             break;
                         }
                     }
