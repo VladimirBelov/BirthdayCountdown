@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 20:19
+  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 20:11
+  ~  * Last modified 26.03.2026, 14:36
   ~  */
   -->
 
@@ -12,12 +12,13 @@
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
         <item>#1.9.0</item>
-        <item>🎯 Quiz-Neugestaltung (zusätzliche Funktionen), 3 weitere Fragetypen hinzugefügt</item>
+        <item>🎯 Quiz-Neugestaltung (Extrafunktionen), 3 weitere Fragetypen hinzugefügt</item>
         <item>⚙️ Separate Auswahl aktivierter Zusatzfunktionen</item>
         <item>🌈 Farbspektrum bei Farbauswahl hinzugefügt</item>
         <item>🎨 Tagesfarbauswahl für den Kalender</item>
-        <item>Dem Listen-Widget hinzugefügt: „Kontaktfoto für das nächstgelegene Ereignis anzeigen“, „Original-Ereignisbezeichnung“, „Tab“, „Expander“, ":". Mithilfe von Tabs im Listen-Widget können Sie Daten in separate Spalten (bis zu drei) aufteilen. Standardmäßig sind die Spalten gleich breit. Wenn Sie innerhalb einer Spalte eine „Erweiterung“ hinzufügen, verdoppelt sich die Breite dieser Spalte</item>
-        <item>Ereignisse aus Dateien, die im Abschnitt „Feiertage“ angegeben sind, gelten standardmäßig als Feiertage (sofern sie nicht mit „!“ oder „?“ gekennzeichnet sind)</item>
+        <item>Dem Listen-Widget hinzugefügt: „Kontaktfoto für das nächstgelegene Ereignis anzeigen“, „Original-Ereignisbezeichnung“, „Tab“, „Expander“, „:“. Mithilfe von Tabs im Listen-Widget können Sie Daten in separate Spalten (bis zu drei) aufteilen. Standardmäßig sind die Spalten gleich breit. Wenn Sie innerhalb einer Spalte eine „Erweiterung“ hinzufügen, verdoppelt sich die Breite dieser Spalte</item>
+        <item>Aktion „Jahr aus dem Kalender ignorieren“ für Kalenderereignisse hinzugefügt (Extrafunktionen)</item>
+        <item>Standardmäßig werden Ereignisse aus Dateien, die im Abschnitt „Feiertage“ angegeben sind, im Kalender-Widget als Feiertage berücksichtigt (es sei denn, sie sind mit „!“ oder „?“ gekennzeichnet)</item>
         <item>Fehlerbehebungen in Widgets</item>
 
         <item>#1.8.9</item>

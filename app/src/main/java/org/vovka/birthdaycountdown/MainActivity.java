@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 01:41
+ *  * Created by Vladimir Belov on 26.03.2026, 15:08
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 01:37
+ *  * Last modified 26.03.2026, 14:01
  *
  */
 
@@ -94,6 +94,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -314,6 +315,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             selectedEvent_str = (String) listView.getItemAtPosition(position);
             selectedEvent = selectedEvent_str.split(Constants.STRING_EOT, -1);
             String eventSubtype = selectedEvent[ContactsEvents.Position_eventSubType];
+            final String eventKey = eventsData.getEventKey(selectedEvent);
+            final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(selectedEvent);
 
             //https://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
             //menu.setHeaderTitle(dataArray1[ContactsEvents.dataMap.get("fio")] + ":");
@@ -353,6 +356,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (eventStorage.contains(Constants.STRING_STORAGE_CALENDAR)) {
                     menu.add(Menu.NONE, Constants.ContextMenu_OpenCalendar, Menu.NONE, getString(R.string.menu_context_open_calendar_event))
                             .setIcon(android.R.drawable.ic_menu_month);
+                    if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS)) {
+                        final String eventKeyId = selectedEvent[ContactsEvents.Position_eventID]
+                                + Constants.STRING_2HASH + eventSubtype;
+                        if (eventsData.checkIsEventWithoutYear(eventKeyId)) {
+                            menu.add(Menu.NONE, Constants.ContextMenu_UnsetEventWithoutYear, Menu.NONE, getString(R.string.menu_context_unset_without_year))
+                                    .setIcon(android.R.drawable.ic_menu_revert);
+                        } else {
+                            MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_SetEventWithoutYear, Menu.NONE, getString(R.string.menu_context_set_without_year))
+                                    .setIcon(R.drawable.ic_menu_block);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_red)));
+                            }
+                        }
+                    }
                 }
 
                 if (Constants.EventType_BirthDay.equals(eventSubtype)) {
@@ -385,8 +402,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             }
 
-            final String eventKey = eventsData.getEventKey(selectedEvent);
-            final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(selectedEvent);
             MenuItem menuItem;
             if (!eventKey.isEmpty()) {
 
@@ -753,6 +768,27 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 selectEventTypeForEvent();
                 return true;
+
+            } else if (itemId == Constants.ContextMenu_SetEventWithoutYear) {
+
+                final String eventKeyId = selectedEvent[ContactsEvents.Position_eventID]
+                        + Constants.STRING_2HASH + selectedEvent[ContactsEvents.Position_eventSubType];
+                if (eventsData.setEventWithoutYear(eventKeyId)) {
+                    eventsData.needUpdateEventList = true;
+                    updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                }
+                return true;
+
+            } else if (itemId == Constants.ContextMenu_UnsetEventWithoutYear) {
+
+                final String eventKeyId = selectedEvent[ContactsEvents.Position_eventID]
+                        + Constants.STRING_2HASH + selectedEvent[ContactsEvents.Position_eventSubType];
+                if (eventsData.unsetEventWithoutYear(eventKeyId)) {
+                    eventsData.needUpdateEventList = true;
+                    updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                }
+                return true;
+
             }
 
         } catch (Exception e) {
@@ -2004,7 +2040,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         final int choice = filterValues.get(((AlertDialog) dialog).getListView().getCheckedItemPosition());
                         if (choice == Constants.pref_Events_Scope_Clear) {
 
-                            ArrayList<Boolean> filterSelected = new ArrayList<>(Arrays.asList(false, false, false));
                             ArrayList<String> filterToSelect = new ArrayList<>();
                             filterToSelect.add(getString(R.string.msg_filter_clear_hidden)
                                     + Constants.STRING_BRACKETS_OPEN
@@ -2021,6 +2056,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     + eventsData.getFavoritesEventsCount()
                                     + Constants.STRING_BRACKETS_CLOSE
                             );
+                            filterToSelect.add(getString(R.string.msg_filter_clear_withoutYear)
+                                    + Constants.STRING_BRACKETS_OPEN
+                                    + eventsData.getEventsWithoutYearCount()
+                                    + Constants.STRING_BRACKETS_CLOSE
+                            );
+                            ArrayList<Boolean> filterSelected = new ArrayList<>(Collections.nCopies(filterToSelect.size(), false));
 
                             AlertDialog.Builder clearDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                                     .setTitle(R.string.msg_filter_clear_confirmation)
@@ -2030,6 +2071,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     .setPositiveButton(R.string.button_ok, (clear_dialog, clear_which) -> {
 
                                         boolean needSave = false;
+                                        boolean needUpdate = false;
                                         if (filterSelected.get(0)) {
                                             eventsData.clearHiddenEvents();
                                             needSave = true;
@@ -2038,14 +2080,24 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                             eventsData.clearSilencedEvents();
                                             needSave = true;
                                         }
-                                            if (filterSelected.get(2)) {
-                                                eventsData.clearFavoriteEvents();
-                                                needSave = true;
-                                            }
+                                        if (filterSelected.get(2)) {
+                                            eventsData.clearFavoriteEvents();
+                                            needSave = true;
+                                        }
+                                        if (filterSelected.get(3)) {
+                                            eventsData.clearEventsWithoutYear();
+                                            needUpdate = true;
+                                        }
 
+                                        if (!needSave && !needUpdate) return;
+                                        eventsData.preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
                                         if (needSave) {
-                                            eventsData.preferences_list_events_scope = Constants.pref_Events_Scope_NotHidden;
                                             eventsData.savePreferences();
+                                        }
+                                        if (needUpdate) {
+                                            eventsData.needUpdateEventList = true;
+                                            updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                                        } else {
                                             this.invalidateOptionsMenu();
                                             filterEventsList();
                                             drawList();
@@ -2330,7 +2382,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             statsSilencedEvents = 0;
             statsXDaysEvents = 0;
             statsUnrecognizedEvents = 0;
-            //eventsData.statEventsPrevEventsFound = 0;
             dataList.clear();
 
             if (!eventsData.isEmptyEventList()) {

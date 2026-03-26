@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 20:19
+  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 20:16
+  ~  * Last modified 26.03.2026, 14:41
   ~  */
   -->
 
@@ -17,7 +17,8 @@
         <item>🌈 Dodano spektrum podczas wybierania koloru</item>
         <item>🎨 Wybór koloru dnia w kalendarzu</item>
         <item>Dodano do widżetu listy: „Pokaż zdjęcie kontaktu dla najbliższego wydarzenia”, „Oryginalny tytuł wydarzenia”, „zakładka”, „rozszerzenie”, „:”. Za pomocą zakładek w widżecie listy można podzielić dane na osobne kolumny (maksymalnie trzy). Domyślnie kolumny mają równą szerokość. Jeśli dodasz „rozszerzenie” wewnątrz kolumny, będzie ona dwa razy szersza</item>
-        <item>Domyślnie wydarzenia z plików określonych w sekcji „święta” są uznawane za święta (jeśli nie mają flag „!” lub „?”)</item>
+        <item>Dodano akcję „Ignoruj rok z kalendarza” dla wydarzeń w kalendarzu (dodatkowe funkcje)</item>
+        <item>Domyślnie wydarzenia z plików określonych w sekcji „święta” są uznawane za święta w widżecie kalendarza (chyba że mają flagi „!” lub „?”)</item>
         <item>Poprawki błędów w widżetach</item>
 
         <item>#1.8.9</item>

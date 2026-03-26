@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 17:34
+  ~  * Last modified 26.03.2026, 14:12
   ~  */
   -->
 
@@ -69,6 +69,8 @@
     <string name="menu_context_create_from_local_event">Ще одна подія…</string>
     <string name="menu_context_dial">Набрати</string>
     <string name="menu_context_prev">Попередній факт</string>
+    <string name="menu_context_set_without_year">Ігнорувати рік із календаря</string>
+    <string name="menu_context_unset_without_year">Враховувати рік із календаря</string>
     <string name="menu_ok">Добре</string>
     <string name="menu_help">Довідка</string>
     <string name="menu_help_events_calendar">Події календаря</string>
@@ -172,6 +174,7 @@
     <string name="msg_filter_clear_hidden">Список прихованих подій</string>
     <string name="msg_filter_clear_silenced">Список вимкнених подій</string>
     <string name="msg_filter_clear_favorites">Список вибраних подій</string>
+    <string name="msg_filter_clear_withoutYear">Події календаря без підрахунку років</string>
     <string name="msg_filter_clean_confirmation">Очистити всі фільтри від посилань на неіснуючі контакти або календарні події?</string>
     <string name="msg_filter_clean_silenced_result">"Очищено приглушені події для відсутніх контактів та подій календаря: "</string>
     <string name="msg_filter_clean_hidden_result">"Видалено приховані події для відсутніх контактів та події календаря: "</string>
@@ -273,7 +276,7 @@
     <string name="events_scope_xdays_dead">Лічильники днів (%1$d, збережено %2$d)</string>
     <string name="events_scope_unrecognized">Нерозпізнано (%1$d)</string>
     <string name="events_scope_favorite">Улюблений (%1$d)</string>
-    <string name="events_scope_clear">Видалити фільтри</string>
+    <string name="events_scope_clear">Видалити фільтри…</string>
     <string name="events_scope_clean">Очистіть фільтри від мертвих посилань</string>
 
     <string name="event_type_birthday">День народження</string>

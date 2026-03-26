@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 20:19
+  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 20:15
+  ~  * Last modified 26.03.2026, 14:40
   ~  */
   -->
 
@@ -19,7 +19,8 @@
     <item>"🌈 Ajout d'un spectre lors du choix d'une couleur"</item>
     <item>🎨 Choix de la couleur du jour pour le calendrier</item>
     <item>"Ajouté au widget de liste: «Afficher la photo de contact pour l’événement le plus proche», «Titre original de l’événement», «onglet», «développeur», ":". Grâce aux onglets du widget de liste, vous pouvez diviser les données en colonnes distinctes (jusqu’à trois). Par défaut, les colonnes ont la même largeur. Si vous ajoutez un «développeur» à l’intérieur d’une colonne, cette colonne sera deux fois plus large"</item>
-    <item>"Par défaut, les événements des fichiers spécifiés dans la section des jours fériés sont considérés comme des jours fériés (s'ils ne comportent pas les indicateurs «!» ou «?»)"</item>
+    <item>"Ajout de l'action «Ignorer l'année civile» pour les événements du calendrier (fonctions supplémentaires)"</item>
+    <item>"Par défaut, les événements des fichiers spécifiés dans la section «Jours fériés» sont considérés comme des jours fériés dans le widget calendrier (sauf s'ils comportent les indicateurs «!» ou «?»)"</item>
     <item>Corrections de bugs dans les widgets</item>
 
     <item>🎵 Possibilité de sélectionner un fichier externe comme sonnerie de notification</item>

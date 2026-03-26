@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 17:50
+  ~  * Last modified 26.03.2026, 14:35
   ~  */
   -->
 
@@ -69,6 +69,8 @@
     <string name="menu_context_create_from_local_event">Noch ein Ereignis…</string>
     <string name="menu_context_dial">Wählen</string>
     <string name="menu_context_prev">Vorherige Tatsache</string>
+    <string name="menu_context_set_without_year">Jahr aus dem Kalender ignorieren</string>
+    <string name="menu_context_unset_without_year">Jahr aus dem Kalender einbeziehen</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Referenz</string>
     <string name="menu_help_events_calendar">Kalenderereignisse</string>
@@ -172,6 +174,7 @@
     <string name="msg_filter_clear_hidden">Liste der ausgeblendeten Ereignisse</string>
     <string name="msg_filter_clear_silenced">Liste der stummgeschalteten Ereignisse</string>
     <string name="msg_filter_clear_favorites">Liste der Favoritenereignisse</string>
+    <string name="msg_filter_clear_withoutYear">Kalenderereignisse ohne Jahreszählung</string>
     <string name="msg_filter_clean_confirmation">Alle Filter von Verweisen auf nicht vorhandene Kontakte oder Kalenderereignisse löschen?</string>
     <string name="msg_filter_clean_silenced_result">"Stillgelegte Ereignisse für abwesende Kontakte und Kalenderereignisse gelöscht: "</string>
     <string name="msg_filter_clean_hidden_result">"Ausgeblendete Ereignisse für abwesende Kontakte und Kalenderereignisse gelöscht: "</string>
@@ -273,7 +276,7 @@
     <string name="events_scope_xdays_dead">Tageszähler (%1$d, gesichert %2$d)</string>
     <string name="events_scope_unrecognized">Nicht erkannt (%1$d)</string>
     <string name="events_scope_favorite">Favorit (%1$d)</string>
-    <string name="events_scope_clear">Filter entfernen</string>
+    <string name="events_scope_clear">Filter entfernen…</string>
     <string name="events_scope_clean">Filter von toten Links reinigen</string>
 
     <string name="event_type_birthday">Geburtstag</string>

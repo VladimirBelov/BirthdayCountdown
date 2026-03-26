@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 17:36
+  ~  * Last modified 26.03.2026, 14:12
   ~  */
   -->
 
@@ -69,6 +69,8 @@
     <string name="menu_context_create_from_local_event">Mais um evento…</string>
     <string name="menu_context_dial">Discar</string>
     <string name="menu_context_prev">Fato anterior</string>
+    <string name="menu_context_set_without_year">Ignorar o ano do calendário</string>
+    <string name="menu_context_unset_without_year">Incluir o ano do calendário</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Referência</string>
     <string name="menu_help_events_calendar">Eventos de calendário</string>
@@ -172,6 +174,7 @@
     <string name="msg_filter_clear_hidden">Lista de eventos ocultos</string>
     <string name="msg_filter_clear_silenced">Lista de eventos silenciados</string>
     <string name="msg_filter_clear_favorites">Lista de eventos favoritos</string>
+    <string name="msg_filter_clear_withoutYear">Contagem de eventos do calendário sem ano</string>
     <string name="msg_filter_clean_confirmation">Limpar todos os filtros de referências a contatos ou eventos de calendário inexistentes?</string>
     <string name="msg_filter_clean_silenced_result">"Eventos silenciados apagados para contatos ausentes e eventos de calendário: "</string>
     <string name="msg_filter_clean_hidden_result">"Eventos ocultos apagados para contatos ausentes e eventos de calendário: "</string>
@@ -273,7 +276,7 @@
     <string name="events_scope_xdays_dead">Contadores de dias (%1$d, salvos %2$d)</string>
     <string name="events_scope_unrecognized">Não reconhecido (%1$d)</string>
     <string name="events_scope_favorite">Favorito (%1$d)</string>
-    <string name="events_scope_clear">Limpar filtros</string>
+    <string name="events_scope_clear">Limpar filtros…</string>
     <string name="events_scope_clean">Limpar filtros de links inativos</string>
 
     <string name="event_type_birthday">Aniversário</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 17:41
+  ~  * Last modified 26.03.2026, 14:26
   ~  */
   -->
 
@@ -69,6 +69,8 @@
     <string name="menu_context_create_from_local_event">Un evento más…</string>
     <string name="menu_context_dial">Marcar</string>
     <string name="menu_context_prev">Hecho anterior</string>
+    <string name="menu_context_set_without_year">Ignorar el año del calendario</string>
+    <string name="menu_context_unset_without_year">Incluir el año del calendario</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Referencia</string>
     <string name="menu_help_events_calendar">Eventos del calendario</string>
@@ -172,6 +174,7 @@
     <string name="msg_filter_clear_hidden">Lista de eventos ocultos</string>
     <string name="msg_filter_clear_silenced">Lista de eventos silenciados</string>
     <string name="msg_filter_clear_favorites">Lista de eventos favoritos</string>
+    <string name="msg_filter_clear_withoutYear">Eventos del calendario sin año</string>
     <string name="msg_filter_clean_confirmation">¿Borrar todos los filtros de referencias a contactos o eventos de calendario inexistentes?</string>
     <string name="msg_filter_clean_silenced_result">"Eventos silenciados borrados para contactos ausentes y eventos del calendario: "</string>
     <string name="msg_filter_clean_hidden_result">"Eventos ocultos borrados para contactos ausentes y eventos del calendario: "</string>

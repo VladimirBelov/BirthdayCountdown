@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 01:41
+ *  * Created by Vladimir Belov on 26.03.2026, 15:08
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 01:37
+ *  * Last modified 26.03.2026, 13:40
  *
  */
 
@@ -440,6 +440,7 @@ public class ContactsEvents {
     Set<String> preferences_FactEvent_files = new HashSet<>();
     Set<String> preferences_HolidayEvent_ids = new HashSet<>();
     Set<String> preferences_FactEvent_ids = new HashSet<>();
+    final private Set<String> preferences_eventsWithoutYear = new HashSet<>();
     private int preferences_IconPackNumber;
     final List<Integer> preferences_RecentColors = new ArrayList<>();
 
@@ -1914,6 +1915,8 @@ public class ContactsEvents {
             preferences_favoriteEvents.addAll(getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Favorite_key), new HashSet<>()));
             preferences_favoriteEventsRawIds.clear();
             preferences_favoriteEventsRawIds.addAll(getPreferenceStringSet(preferences, context.getString(R.string.pref_Events_Favorite_rawIds_key), new HashSet<>()));
+            preferences_eventsWithoutYear.clear();
+            preferences_eventsWithoutYear.addAll(getPreferenceStringSet(preferences, context.getString(R.string.pref_EventsWithoutYear_key), new HashSet<>()));
 
             preferences_mergedIDs.clear();
             for (String element : getPreferenceStringSet(preferences, context.getString(R.string.pref_MergedID_key), new HashSet<>())) {
@@ -3362,8 +3365,8 @@ public class ContactsEvents {
                     for (Matcher matcher : matcherNameAndTypes) {
                         if (matcher.reset(eventTitle).find()) {
                             foundName = matcher.group(1);
-                            eventTitle = foundName;
                             foundLabel = matcher.group(2);
+                            eventTitle = foundName;
                             break;
                         }
                     }
@@ -3372,8 +3375,8 @@ public class ContactsEvents {
                     for (Matcher matcher : matcherTypeAndNames) {
                         if (matcher.reset(eventTitle).find()) {
                             foundName = matcher.group(2);
-                            eventTitle = foundName;
                             foundLabel = matcher.group(1);
+                            eventTitle = foundName;
                             break;
                         }
                     }
@@ -3413,11 +3416,15 @@ public class ContactsEvents {
 
             do {
                 eventData.clear();
+                final String eventID = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.EVENT_ID));
+                if (checkIsEventWithoutYear(eventID + Constants.STRING_2HASH + event.subType)) { //Событие без года
+                    event.useEventYear = false;
+                }
                 final String eventNewDate = Constants.EVENT_PREFIX_CALENDAR_EVENT + Constants.STRING_COLON_SPACE
                         + (event.useEventYear ? sdf_java.format(dateFirstTime.getTime()) : sdf_java_no_year.format(dateFirstTime.getTime())) + Constants.STRING_COLON_SPACE
                         + StringUtils.getHash(Constants.eventSourceCalendarPrefix + calendarId);
                 int importMethod = importMethod_Standalone;
-                final String eventID = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.EVENT_ID));
+
                 idsAllCalendarEvents.add(eventID);
 
                 eventData.put(Position_personFullName, eventTitle);
@@ -6269,6 +6276,9 @@ public class ContactsEvents {
 
             }
 
+            final String eventKey = getEventKey(singleEventArray);
+            final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
+
             if (eventDateThisTime != null) {
                 dayDiff = AppDateUtils.countDaysDiff(currentDay, eventDateThisTime);
                 //Если до события больше года - убираем его
@@ -6337,9 +6347,6 @@ public class ContactsEvents {
             singleEventArray[Position_eventDate_sorted] = getSortKey(singleEventArray);
 
             eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleEventArray));
-
-            final String eventKey = getEventKey(singleEventArray);
-            final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
 
             if (checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])) {
                 //Избранные для календарного виджета
@@ -8664,6 +8671,56 @@ public class ContactsEvents {
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
+    }
+
+    int getEventsWithoutYearCount() {return preferences_eventsWithoutYear.size();}
+
+    void clearEventsWithoutYear() {
+        preferences_eventsWithoutYear.clear();
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putStringSet(context.getString(R.string.pref_EventsWithoutYear_key), preferences_eventsWithoutYear).apply();
+    }
+
+    boolean checkIsEventWithoutYear(@NonNull String key) {
+            return !key.isEmpty() && preferences_eventsWithoutYear.contains(key);
+    }
+
+    boolean setEventWithoutYear(@NonNull String key) {
+
+        try {
+
+            if (key.isEmpty()) return false;
+            if (checkIsEventWithoutYear(key)) return false;
+
+            preferences_eventsWithoutYear.add(key);
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+            editor.putStringSet(context.getString(R.string.pref_EventsWithoutYear_key), preferences_eventsWithoutYear).apply();
+            return true;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return false;
+    }
+
+    boolean unsetEventWithoutYear(@NonNull String key) {
+
+        try {
+
+            if (key.isEmpty()) return false;
+            if (!checkIsEventWithoutYear(key)) return false;
+
+            preferences_eventsWithoutYear.remove(key);
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+            editor.putStringSet(context.getString(R.string.pref_EventsWithoutYear_key), preferences_eventsWithoutYear).apply();
+            return true;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return false;
     }
 
     private void cacheFavoriteEventsIds() {

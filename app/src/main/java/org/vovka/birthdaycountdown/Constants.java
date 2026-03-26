@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.03.2026, 10:48
+ *  * Created by Vladimir Belov on 26.03.2026, 15:08
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 24.03.2026, 01:19
+ *  * Last modified 26.03.2026, 11:56
  *
  */
 
@@ -408,6 +408,8 @@ public final class Constants {
     static final int ContextMenu_DialContact = 25;
     static final int ContextMenu_PrevFact = 26;
     static final int ContextMenu_CreateFromEventLocalEvent = 27;
+    static final int ContextMenu_SetEventWithoutYear = 28;
+    static final int ContextMenu_UnsetEventWithoutYear = 29;
 
     static final String eventSourcePhonePrefix = "phone:";
     static final String eventSourceContactPrefix = "contact:";

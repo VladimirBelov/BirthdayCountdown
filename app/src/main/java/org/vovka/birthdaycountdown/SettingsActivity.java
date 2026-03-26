@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 01:41
+ *  * Created by Vladimir Belov on 26.03.2026, 15:08
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 01:39
+ *  * Last modified 26.03.2026, 11:20
  *
  */
 
@@ -3699,6 +3699,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_DaysInfo_key),
                         getString(R.string.pref_EnabledFeatures_key),
                         getString(R.string.pref_List_Events_key),
+                        getString(R.string.pref_EventsWithoutYear_key),
                         getString(R.string.pref_Events_Hidden_key),
                         getString(R.string.pref_Events_Hidden_rawIds_key),
                         getString(R.string.pref_Events_Favorite_key),

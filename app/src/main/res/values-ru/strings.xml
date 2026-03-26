@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.03.2026, 19:48
+  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.03.2026, 17:29
+  ~  * Last modified 26.03.2026, 14:07
   ~  */
   -->
 
@@ -69,6 +69,8 @@
     <string name="menu_context_create_from_local_event">Ещё одно событие…</string>
     <string name="menu_context_dial">Позвонить</string>
     <string name="menu_context_prev">Предыдущий факт</string>
+    <string name="menu_context_set_without_year">Игнорировать год из календаря</string>
+    <string name="menu_context_unset_without_year">Учитывать год из календаря</string>
     <string name="menu_ok">OK</string>
     <string name="menu_help">Справка</string>
     <string name="menu_help_events_calendar">События календаря</string>
@@ -172,6 +174,7 @@
     <string name="msg_filter_clear_hidden">Список скрытых событий</string>
     <string name="msg_filter_clear_silenced">Список событий без уведомлений</string>
     <string name="msg_filter_clear_favorites">Список избранных событий</string>
+    <string name="msg_filter_clear_withoutYear">События календаря с игнорированием года</string>
     <string name="msg_filter_clean_confirmation">Очистить все фильтры от ссылок на несуществующие контакты или календарные события?</string>
     <string name="msg_filter_clean_silenced_result">"Удалены отключенные события для отсутствующих контактов и событий календаря: "</string>
     <string name="msg_filter_clean_hidden_result">"Удалены скрытые события для отсутствующих контактов и событий календаря: "</string>
@@ -273,7 +276,7 @@
     <string name="events_scope_unrecognized">Не распознано (%1$d)</string>
     <string name="events_scope_favorite">Избранные (%1$d)</string>
     <string name="events_scope_xdays_dead">Счётчики дней (%1$d, сохранено %2$d)</string>
-    <string name="events_scope_clear">Удалить фильтры</string>
+    <string name="events_scope_clear">Удалить фильтры…</string>
     <string name="events_scope_clean">Удалить несуществующие связи в фильтрах</string>
 
     <string name="event_type_birthday">День рождения</string>
