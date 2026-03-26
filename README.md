@@ -30,7 +30,7 @@ Supported event types:
  3. Other events
  4. Custom events (name days, death anniversaries, ...)
  5. Round dates of birthdays (5k, 10k, 15k ... days) and own counters for any events (7th, 40th, 1024th day)
- 6. Calendar events (contacts birthdays, holidays, etc)
+ 6. Calendar events (contacts birthdays, holidays, etc.)
  7. Facebook events (via calendar events, see instructions in Settings->"How to" guide)
  8. Events and birthdays from local files (DarkBirthday Widget syntax, see "How to" guide for file format, file with events can be downloaded from https://4pda.to/forum/index.php?showtopic=939391 )
 

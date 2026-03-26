@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 01:41
+ *  * Created by Vladimir Belov on 26.03.2026, 21:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 01:39
+ *  * Last modified 26.03.2026, 21:29
  *
  */
 
@@ -965,7 +965,7 @@ public class LocalEventActivity extends AppCompatActivity {
         }
     }
 
-    private void buttonRemoveOnClick(final View view) {
+    private void buttonRemoveOnClick(final View ignoredView) {
         ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog);
         try {
 
@@ -1009,7 +1009,7 @@ public class LocalEventActivity extends AppCompatActivity {
         }
     }
 
-    private void buttonSaveOnClick(final View view) {
+    private void buttonSaveOnClick(final View ignoredView) {
         ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
         try {
 
@@ -1118,7 +1118,7 @@ public class LocalEventActivity extends AppCompatActivity {
         finish();
     }
 
-    private void buttonSwitchToEdit(final View view) {
+    private void buttonSwitchToEdit(final View ignoredView) {
         try {
             Intent intent = getIntent();
             intent.setAction(Intent.ACTION_EDIT);

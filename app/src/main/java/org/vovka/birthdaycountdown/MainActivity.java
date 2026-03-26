@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 15:08
+ *  * Created by Vladimir Belov on 26.03.2026, 21:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 14:01
+ *  * Last modified 26.03.2026, 21:38
  *
  */
 
@@ -201,9 +201,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 );
                 swipeRefresh.setOnRefreshListener(this); //Set the listener to be notified when a refresh is triggered via the swipe gesture
             }
-
-            //Обновляем меню https://stackoverflow.com/questions/14867458/android-refresh-options-menu-without-calling-invalidateoptionsmenu
-            this.invalidateOptionsMenu();
 
             //About
             findViewById(R.id.toolbar).setOnClickListener(v -> {
@@ -2341,6 +2338,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 eventsData.updateWidgets(0, null);
 
             }
+            this.invalidateOptionsMenu();
             eventsData.updateShortcuts();
 
         } catch (Exception e) {

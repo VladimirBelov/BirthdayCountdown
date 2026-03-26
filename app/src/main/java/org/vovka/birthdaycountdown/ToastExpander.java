@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2026, 13:24
+ *  * Created by Vladimir Belov on 26.03.2026, 21:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.03.2026, 12:55
+ *  * Last modified 26.03.2026, 21:09
  *
  */
 
@@ -39,7 +39,7 @@ import java.util.Set;
  */
 public class ToastExpander {
 
-    public static final String TAG = "ToastExpander";
+    //public static final String TAG = "ToastExpander";
     private static final ToastExpander ourInstance = new ToastExpander();
     @Nullable
     FluentSnackbar mFluentSnackbar;

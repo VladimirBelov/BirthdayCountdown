@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 01:41
+ *  * Created by Vladimir Belov on 26.03.2026, 21:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 01:39
+ *  * Last modified 26.03.2026, 21:29
  *
  */
 
@@ -593,7 +593,7 @@ public class QuizActivity extends Activity {
     }
 
     interface PoolAwareGenerator extends QuestionGenerator {
-        void onPoolRefresh(PoolType poolType, List<String> newPool);
+        void onPoolRefresh(List<String> newPool);
     }
 
     static class QuizQuestion {
@@ -701,7 +701,7 @@ public class QuizActivity extends Activity {
                 if (gen instanceof PoolAwareGenerator) {
                     PoolType poolType = gen.getRequiredPoolType();
                     List<String> pool = getPoolForType(poolType);
-                    ((PoolAwareGenerator) gen).onPoolRefresh(poolType, pool);
+                    ((PoolAwareGenerator) gen).onPoolRefresh(pool);
                 }
             }
         }
@@ -821,11 +821,9 @@ public class QuizActivity extends Activity {
          */
         private abstract class BaseQuestionGenerator implements PoolAwareGenerator {
             protected List<String> currentPool = new ArrayList<>();
-            protected PoolType currentPoolType;
 
             @Override
-            public void onPoolRefresh(PoolType poolType, List<String> newPool) {
-                this.currentPoolType = poolType;
+            public void onPoolRefresh(List<String> newPool) {
                 this.currentPool = new ArrayList<>(newPool); // копия для безопасности
             }
 
