@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 15:08
+ *  * Created by Vladimir Belov on 26.03.2026, 20:58
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 13:40
+ *  * Last modified 26.03.2026, 20:57
  *
  */
 
@@ -1141,7 +1141,7 @@ public class ContactsEvents {
     void setContext(@NonNull Context con) {
         context = con.getApplicationContext();
         contentResolver = context.getContentResolver();
-        setDisplayMetrics(con.getResources().getDisplayMetrics());
+        displayMetrics = con.getResources().getDisplayMetrics();
         displayMetrics_density = displayMetrics.density;
     }
 
@@ -3366,8 +3366,10 @@ public class ContactsEvents {
                         if (matcher.reset(eventTitle).find()) {
                             foundName = matcher.group(1);
                             foundLabel = matcher.group(2);
-                            eventTitle = foundName;
-                            break;
+                            if (StringUtils.hasContent(foundName) && StringUtils.hasContent(foundLabel)) {
+                                eventTitle = foundName;
+                                break;
+                            }
                         }
                     }
                 }
@@ -3376,8 +3378,10 @@ public class ContactsEvents {
                         if (matcher.reset(eventTitle).find()) {
                             foundName = matcher.group(2);
                             foundLabel = matcher.group(1);
-                            eventTitle = foundName;
-                            break;
+                            if (StringUtils.hasContent(foundName) && StringUtils.hasContent(foundLabel)) {
+                                eventTitle = foundName;
+                                break;
+                            }
                         }
                     }
                 }
@@ -3385,8 +3389,10 @@ public class ContactsEvents {
                     for (Matcher matcher : matcherTypes) {
                         if (matcher.reset(eventTitle).find()) {
                             foundLabel = matcher.group(1);
-                            eventTitle = eventTitle.replace(foundLabel, Constants.STRING_EMPTY);
-                            break;
+                            if (StringUtils.hasContent(foundLabel)) {
+                                eventTitle = eventTitle.replace(foundLabel, Constants.STRING_EMPTY);
+                                break;
+                            }
                         }
                     }
                 }
@@ -10418,8 +10424,6 @@ public class ContactsEvents {
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
-
-    private synchronized static void setDisplayMetrics(DisplayMetrics ds) {displayMetrics = ds;}
 
     /** Получение массива типов событий для даты
      * @param day Дата в формате yyyy-MM-dd
