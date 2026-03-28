@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
+  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.03.2026, 14:31
+  ~  * Last modified 28.03.2026, 13:39
   ~  */
   -->
 
@@ -12,10 +12,10 @@
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
         <item>#1.9.0</item>
-        <item>🎯 Quiz Reinvention (extra features), 3 more question types added</item>
+        <item>🎯 Quiz Reinvention (extra features), 6 questions types</item>
+        <item>🎨 Color selection for specific calendar day</item>
         <item>⚙️ Separate selection of enabled extra features</item>
         <item>🌈 Added spectrum when selecting a color</item>
-        <item>🎨 Day color selection for the calendar</item>
         <item>Added to the list widget: \"Show contact photo for the nearest event\", \"Original event title\", \"tab\", \"expander\", \":\". Using \"tabs\" in the list widget, you can divide data into separate columns (up to three). By default, the columns are equal in width. If you add an \"expander\" inside a column, that column will be twice as wide</item>
         <item>Added \"Ignore calendar year\" action for calendar events (extra features)</item>
         <item>By default, events from files specified in the holidays section are considered holidays in the calendar widget (unless they have the \"!\" or \"?\" flags).</item>

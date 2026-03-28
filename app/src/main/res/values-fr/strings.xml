@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
+  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.03.2026, 14:39
+  ~  * Last modified 28.03.2026, 18:33
   ~  */
   -->
 
@@ -68,7 +68,8 @@
     <string name="menu_context_edit_local_event">"Modifier l'événement"</string>
     <string name="menu_context_create_from_local_event">Encore un événement…</string>
     <string name="menu_context_dial">Composer</string>
-    <string name="menu_context_prev">Fait précédent</string>
+    <string name="menu_context_prev_fact">Fait précédent</string>
+    <string name="menu_context_next_fact">Fait suivant</string>
     <string name="menu_context_set_without_year">"Ignorer l'année civile"</string>
     <string name="menu_context_unset_without_year">"Utiliser l'année civile"</string>
     <string name="menu_ok">OK</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 01:41
+ *  * Created by Vladimir Belov on 28.03.2026, 18:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 01:39
+ *  * Last modified 28.03.2026, 13:38
  *
  */
 
@@ -91,11 +91,11 @@ public class FactsPopupActivity extends Activity {
             buttonShare.getBackground().setAlpha(50);
             buttonShare.setVisibility(View.VISIBLE);
 
-            TextView buttonAction = findViewById(R.id.button3);
-            buttonAction.setText(R.string.facts_popup_action_next_fact);
-            UiTools.addClickEffect(buttonAction);
-            buttonAction.getBackground().setAlpha(50);
-            buttonAction.setVisibility(View.VISIBLE);
+            TextView buttonNext = findViewById(R.id.button3);
+            buttonNext.setText(R.string.facts_popup_action_next_fact);
+            UiTools.addClickEffect(buttonNext);
+            buttonNext.getBackground().setAlpha(50);
+            buttonNext.setVisibility(View.VISIBLE);
 
             TextView buttonPrev = findViewById(R.id.button1);
             buttonPrev.setText(R.string.popup_action_prev);
@@ -105,7 +105,7 @@ public class FactsPopupActivity extends Activity {
                 buttonPrev.setVisibility(View.VISIBLE);
             }
 
-            buttonAction.setOnClickListener(view -> {
+            buttonNext.setOnClickListener(view -> {
                 List<String> factsNext = eventsData.getNextRandomFacts(1, eventSources);
                 if (!factsNext.isEmpty()) {
                     listPrevFacts.add(txtInfo.getText().toString());

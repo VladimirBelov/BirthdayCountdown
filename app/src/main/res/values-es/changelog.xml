@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
+  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.03.2026, 14:36
+  ~  * Last modified 28.03.2026, 13:43
   ~  */
   -->
 
@@ -12,10 +12,10 @@
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
         <item>#1.9.0</item>
-        <item>🎯 Reinvención del cuestionario (funciones adicionales), se agregaron 3 tipos de preguntas más</item>
+        <item>🎯 Reinvención del cuestionario (funciones adicionales), 6 tipos de preguntas</item>
+        <item>🎨 Selección de color para un día específico del calendario</item>
         <item>⚙️ Selección independiente de las funciones adicionales habilitadas</item>
         <item>🌈 Se agregó un espectro al elegir un color</item>
-        <item>🎨 Elige un color de día para el calendario</item>
         <item>Se agregaron al widget de lista: \"Mostrar foto de contacto para el evento más cercano\", \"Título original del evento\", \"pestaña\", \"expandir\", \":\". Al usar pestañas en el widget de lista, puede dividir los datos en columnas separadas (hasta tres). Por defecto, las columnas tienen el mismo ancho. Si agrega un \"expandir\" dentro de una columna, esa columna tendrá el doble de ancho</item>
         <item>Se agregó la acción \"Ignorar el año del calendario\" para los eventos del calendario (funciones adicionales)</item>
         <item>Por defecto, los eventos de los archivos especificados en la sección de días festivos se consideran días festivos en el widget del calendario (a menos que tengan los indicadores \"!\" o \"?\")</item>

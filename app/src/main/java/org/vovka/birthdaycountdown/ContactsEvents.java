@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 20:58
+ *  * Created by Vladimir Belov on 28.03.2026, 18:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 20:57
+ *  * Last modified 28.03.2026, 13:38
  *
  */
 
@@ -10880,6 +10880,10 @@ public class ContactsEvents {
         }
     }
 
+    /** Заполняет глобальный список фактов {@link ContactsEvents#eventListFacts}
+     * @param setCounters Увеличивать счётчики
+     * @return True - ошибок заполнения не было
+     */
     @SuppressLint("DiscouragedApi")
     protected boolean getFactsEvents(boolean setCounters) {
         try {

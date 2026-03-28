@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
+  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.03.2026, 14:42
+  ~  * Last modified 28.03.2026, 13:41
   ~  */
   -->
 
@@ -11,10 +11,10 @@
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
         <item>#1.9.0</item>
-        <item>🎯 Reinvenção do Quiz (recursos extras), 3 novos tipos de perguntas adicionados</item>
+        <item>🎯 Reinvenção do Quiz (recursos extras), 6 tipos de perguntas</item>
+        <item>🎨 Seleção de cores para um dia específico do calendário</item>
         <item>⚙️ Seleção separada de recursos extras ativados</item>
         <item>🌈 Adicionado espectro ao selecionar uma cor</item>
-        <item>🎨 Seleção de cor do dia para o calendário</item>
         <item>Adicionado ao widget de lista: \"Mostrar foto de contato do evento mais próximo\", \"Título original do evento\", \"aba\", \"expansor\", \":\". Usando abas no widget de lista, você pode dividir os dados em colunas separadas (até três). Por padrão, as colunas têm a mesma largura. Se você adicionar um \"expansor\" dentro de uma coluna, essa coluna terá o dobro da largura</item>
         <item>Adicionada a ação \"Ignorar o ano do calendário\" para eventos do calendário (recursos extras)</item>
         <item>Por padrão, os eventos dos arquivos especificados na seção de feriados são considerados feriados no widget de calendário (a menos que tenham os indicadores \"!\" ou \"?\")</item>

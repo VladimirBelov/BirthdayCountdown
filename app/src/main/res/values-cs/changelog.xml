@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
+  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.03.2026, 14:36
+  ~  * Last modified 28.03.2026, 13:42
   ~  */
   -->
 
@@ -12,10 +12,10 @@
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
         <item>#1.9.0</item>
-        <item>🎯 Přepracování kvízů (další funkce), přidány 3 další typy otázek</item>
+        <item>🎯 Přepracovaný kvíz (další funkce), 6 typů otázek</item>
+        <item>🎨 Výběr barev pro konkrétní den v kalendáři</item>
         <item>⚙️ Samostatný výběr povolených dalších funkcí</item>
         <item>🌈 Přidané spektrum při výběru barvy</item>
-        <item>🎨 Vyberte barvu dne pro kalendář</item>
         <item>Do widgetu seznamu přidáno: „Zobrazit fotografii kontaktu pro nejbližší událost“, „Původní název události“, „záložka“, „rozbalovací prvek“, „:“. Pomocí „záložek“ ve widgetu seznamu můžete rozdělit data do samostatných sloupců (až do tří). Ve výchozím nastavení mají sloupce stejnou šířku. Pokud do sloupce přidáte „rozbalovací prvek“, bude tento sloupec dvakrát tak široký</item>
         <item>Přidána akce „Ignorovat rok z kalendáře“ pro události kalendáře (další funkce)</item>
         <item>Ve výchozím nastavení jsou události ze souborů uvedených v sekci svátků považovány za svátky v widgetu kalendáře (pokud nemají příznaky „!“ nebo „?“)</item>
