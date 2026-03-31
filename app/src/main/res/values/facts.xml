@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.03.2026, 15:08
+  ~  * Created by Vladimir Belov on 31.03.2026, 10:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.03.2026, 15:07
+  ~  * Last modified 30.03.2026, 13:59
   ~  */
   -->
 
@@ -327,7 +327,8 @@
 Не по мычанию узнают силу быка, а по работе (Расул Гамзатов)
 Чем меньше остаётся жить, тем чаще память обступает нас (Расул Гамзатов)
 Горечь низкого качества остаётся надолго после того, как сладость низкой цены забыта (Томас Лехон)
-У каждой аварии есть свои имя, фамилия и должность (Лазарь Каганович)"</item>
+У каждой аварии есть свои имя, фамилия и должность (Лазарь Каганович)
+Большинство людей переоценивают, что они сделают за год. И недооценивают, что сделают за десять лет (Бодо Шефер)"</item>
     </string-array>
 
     <string-array name="facts2" translatable="false" tools:ignore="UnusedResources">
@@ -671,7 +672,8 @@ When a measure becomes a target, it ceases to be a good measure (Goodhart's law)
 Most millionaires are frugal. They live well below their means (Thomas J. Stanley, William D. Danko)
 Wealth is what you accumulate, not what you spend (Thomas J. Stanley, William D. Danko)
 The fear will never go away as long as you continue to grow. The only way to get rid of the fear of doing something is to go out and do it (Susan Jeffers)
-The bitterness of poor quality remains long after the sweetness of low price is forgotten (Thomas B. Lehon)"</item>
+The bitterness of poor quality remains long after the sweetness of low price is forgotten (Thomas B. Lehon)
+People usually overestimate what they can achieve in a year and underestimate what they can achieve in ten years (Bodo Schäfer)"</item>
     </string-array>
 
     <string-array name="facts4" translatable="false" tools:ignore="UnusedResources">
@@ -781,7 +783,8 @@ Wir denken selten an das, was wir haben, aber immer an das, was uns fehlt (Arthu
 Wohin Du auch gehst, geh mit deinem ganzen Herzen (Konfuzius)
 Zuerst ignorieren sie dich, dann lachen sie über dich, dann bekämpfen sie dich und dann gewinnst du (Mahatma Gandhi)
 Zwei Dinge sind unendlich, das Universum und die menschliche Dummheit, aber bei dem Universum bin ich mir noch nicht ganz sicher (Albert Einstein)
-Ändere die Welt: sie braucht es (Bertolt Brecht)"</item>
+Ändere die Welt: sie braucht es (Bertolt Brecht)
+Menschen überschätzen gewöhnlich, was sie in einem Jahr erreichen können, und unterschätzen, was sie in zehn Jahren erreichen können (Bodo Schäfer)"</item>
     </string-array>
 
     <string-array name="facts5" translatable="false" tools:ignore="UnusedResources">

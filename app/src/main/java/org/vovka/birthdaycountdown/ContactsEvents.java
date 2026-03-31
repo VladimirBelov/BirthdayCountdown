@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.03.2026, 18:43
+ *  * Created by Vladimir Belov on 31.03.2026, 10:37
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.03.2026, 13:38
+ *  * Last modified 31.03.2026, 10:15
  *
  */
 
@@ -1128,7 +1128,7 @@ public class ContactsEvents {
         eventSubTypesIds.add(Constants.Type_Custom5);
     }
 
-    /** Устанавливает язык для текущего контекста
+    /** Считывает текущие настройки приложения и устанавливает язык для текущего контекста
      * @param context Контекст
      */
     void initLanguage(@NonNull Context context) {

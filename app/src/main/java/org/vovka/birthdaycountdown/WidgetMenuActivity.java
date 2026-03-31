@@ -1,11 +1,12 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.03.2026, 18:43
+ *  * Created by Vladimir Belov on 31.03.2026, 10:37
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.03.2026, 18:25
+ *  * Last modified 31.03.2026, 10:28
  *
  */
 package org.vovka.birthdaycountdown;
+
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -15,15 +16,11 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.LocaleList;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
@@ -39,19 +36,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
+
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 /**
  Класс WidgetMenuActivity отвечает за отображение контекстного меню
@@ -87,12 +86,7 @@ public class WidgetMenuActivity extends Activity {
         try {
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                Resources applicationRes = getBaseContext().getResources();
-                Configuration applicationConf = applicationRes.getConfiguration();
-                applicationConf.setLocales(new LocaleList(new Locale(eventsData.currentLocale)));
-                applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-            }
+            eventsData.applyLocaleWorkaround(this);
 
             appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
             String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);
@@ -229,6 +223,9 @@ public class WidgetMenuActivity extends Activity {
                 // ✅ Режим фактов
                 isFactMode = true;
                 recentFactsLocal = new ArrayList<>(eventsData.getRecentFacts());
+                if (eventsData.eventListFacts.isEmpty()) {
+                    eventsData.getFactsEvents(false);
+                }
 
                 menuItems.add(getString(R.string.menu_context_share_fact));
                 menuIcons.add(getDrawable(android.R.drawable.ic_menu_share));
@@ -426,7 +423,7 @@ public class WidgetMenuActivity extends Activity {
                         eventText = recentFactsLocal.get(indCurrentFact2 + 1);
                     } else {
                         List<String> factsNext = eventsData.getNextRandomFacts(1, eventSources);
-                        if (factsNext.isEmpty()) return;
+                        if (factsNext.isEmpty()) return; //todo: выдавать сообщение
 
                         String newFactText = getFactText(factsNext.get(0));
                         if (!recentFactsLocal.contains(newFactText)) {
