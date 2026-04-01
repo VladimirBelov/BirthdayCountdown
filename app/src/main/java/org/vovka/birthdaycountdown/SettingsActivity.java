@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 15:08
+ *  * Created by Vladimir Belov on 01.04.2026, 22:06
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 11:20
+ *  * Last modified 01.04.2026, 21:42
  *
  */
 
@@ -644,7 +644,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     R.array.pref_CustomEvents_Rules_Unrecognized_entries, R.array.pref_CustomEvents_Rules_Unrecognized_values);
 
             //Правила распознавания имён
-            String storedValue = preferences.getString(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key), getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_default)).replace(Constants.STRING_BAR, Constants.STRING_EOL);
+            String storedValue = preferences.getString(getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key), getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_default));
+            if (!StringUtils.hasContent(storedValue)) {
+                storedValue = getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_default);
+            }
+            storedValue = storedValue.replace(Constants.STRING_BAR, Constants.STRING_EOL);
             updateSummary(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key,
                     storedValue, getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_summary), 0, 0);
 

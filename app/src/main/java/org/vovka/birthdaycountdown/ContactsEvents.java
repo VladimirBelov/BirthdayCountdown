@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2026, 10:37
+ *  * Created by Vladimir Belov on 01.04.2026, 22:06
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 31.03.2026, 10:15
+ *  * Last modified 01.04.2026, 21:25
  *
  */
 
@@ -3460,7 +3460,7 @@ public class ContactsEvents {
                     int pEnd = foundName.indexOf(Constants.STRING_PARENTHESIS_CLOSE);
                     if (pStart > -1 && pEnd > pStart) {
                         contactTitle = foundName.substring(pStart + 1, pEnd);
-                        foundName = foundName.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY);
+                        foundName = foundName.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
                     }
 
                     String personFullNameNormalized;
@@ -3481,7 +3481,7 @@ public class ContactsEvents {
                     namedFromEvent = true;
 
                     contactID = getContactID(personFullNameNormalized, personFullNameAltNormalized);
-                    if (!TextUtils.isEmpty(contactID)) {
+                    if (TextUtils.isEmpty(contactTitle) && !TextUtils.isEmpty(contactID)) {
                         contactTitle = StringUtils.getNotNullString(map_contacts_titles.get(contactID));
                     }
                 }
@@ -3495,7 +3495,7 @@ public class ContactsEvents {
                     Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
                     if (eventIndex != null && eventIndex <= eventListUpdated.size() && !isPassedEvent) {
 
-                        addNewDateToExistingEvent(eventIndex, eventID, eventSource, eventNewDate, eventURLs, contactID, eventDescription);
+                        addNewDateToExistingEvent(eventIndex, eventID, eventSource, eventNewDate, eventURLs, contactID, contactTitle, eventDescription);
                         importMethod = importMethod_AdditionalDateToContactEvent;
                         counterAddedEvents++;
 
@@ -3586,8 +3586,9 @@ public class ContactsEvents {
                                 if (!TextUtils.isEmpty(contactID)) {
                                     map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
                                 }
-                            } else {
-                                map_eventsBySubtypeAndPersonID_offset.put(eventID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
+                            //todo: если будет eventID такой же как и какой-то contactID, то будет конфликт и события объединятся
+                            //} else {
+                            //    map_eventsBySubtypeAndPersonID_offset.put(eventID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
                             }
                         }
                     } else {
@@ -3623,8 +3624,11 @@ public class ContactsEvents {
      * @param eventURLs        Web-ссылки для события
      * @param contactID        ID контакта
      * @param eventDescription Описание события
+     * @param contactTitle     Должность контакта
      */
-    private void addNewDateToExistingEvent(@NonNull Integer eventIndex, String eventID, String eventSource, @NonNull String eventNewDate, List<String> eventURLs, String contactID, String eventDescription) {
+    private void addNewDateToExistingEvent(@NonNull Integer eventIndex, String eventID, String eventSource,
+                                           @NonNull String eventNewDate, List<String> eventURLs, String contactID,
+                                           String contactTitle, String eventDescription) {
         List<String> singleRowList = Arrays.asList(eventListUpdated.get(eventIndex).split(Constants.STRING_EOT, -1));
         final String eventDates = singleRowList.get(Position_dates);
 
@@ -3657,7 +3661,7 @@ public class ContactsEvents {
             map_events_weblinks.put(contactID, sb.toString());
         }
 
-        if (!TextUtils.isEmpty(eventDescription)) {
+        if (StringUtils.hasContent(eventDescription)) {
             String eventDescription_stored = StringUtils.getNotNullString(singleRowList.get(Position_eventDescription)).trim();
             if (eventDescription_stored.isEmpty()) {
                 singleRowList.set(Position_eventDescription, eventDescription);
@@ -3666,6 +3670,13 @@ public class ContactsEvents {
                 final String eventDescription_new = eventDescription_stored.concat(Constants.STRING_SPACE).concat(eventDescription);
                 singleRowList.set(Position_eventDescription, eventDescription_new);
                 map_notes.put(contactID, eventDescription_new);
+            }
+        }
+
+        if (StringUtils.hasContent(contactTitle)) {
+            String contactTitle_stored = StringUtils.getNotNullString(singleRowList.get(Position_title)).trim();
+            if (contactTitle_stored.isEmpty()) {
+                singleRowList.set(Position_title, contactTitle);
             }
         }
 

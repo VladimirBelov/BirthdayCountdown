@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
+  ~  * Created by Vladimir Belov on 01.04.2026, 22:06
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.03.2026, 12:45
+  ~  * Last modified 01.04.2026, 21:36
   ~  */
   -->
 
@@ -1792,7 +1792,7 @@ Long click on item to select color"</string>
     <string name="pref_CustomEvents_MultiType_LocalFiles_key" translatable="false">CustomEvents_MultiType_LocalFiles</string>
     <string name="pref_CustomEvents_Rules_key" translatable="false">CustomEvents_Rules</string>
     <string name="pref_CustomEvents_Birthday_Calendars_Rules_key" translatable="false">CustomEvents_Birthday_Calendars_Rules</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_Rules_default" translatable="false">"[name]"</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_Rules_default" translatable="false">"[name]|[name]'s [type]|[name] — [type]"</string>
     <string name="pref_CustomEvents_Rules_Calendars_NameFormat_key" translatable="false">CustomEvents_Rules_Calendars_NameFormat</string>
     <string name="pref_CustomEvents_Rules_LocalFiles_NameFormat_key" translatable="false">CustomEvents_Rules_LocalFiles_NameFormat</string>
 
