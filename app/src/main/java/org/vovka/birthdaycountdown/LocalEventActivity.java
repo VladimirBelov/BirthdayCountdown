@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 21:39
+ *  * Created by Vladimir Belov on 08.04.2026, 21:48
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 21:29
+ *  * Last modified 03.04.2026, 22:17
  *
  */
 
@@ -1132,7 +1132,7 @@ public class LocalEventActivity extends AppCompatActivity {
     private static void prepareEventData(LocalEventActivity activity) {
         try {
 
-            String eventTitle = activity.editName.getText().toString();
+            String eventTitle = activity.editName.getText().toString().trim();
             int indexType = eventTypesValues.indexOf((String) activity.spinnerEventTypes.getSelectedItem());
             Integer subType = eventSubTypesIds.get(indexType);
             boolean isNotContactEvent = subType.equals(Constants.Type_HolidayEvent) || subType.equals(Constants.Type_Other);
