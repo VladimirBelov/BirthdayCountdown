@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.03.2026, 09:26
+ *  * Created by Vladimir Belov on 11.04.2026, 19:58
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 27.03.2026, 09:25
+ *  * Last modified 11.04.2026, 14:23
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -17,7 +17,7 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
-def appVersionName = "1.9.0"
+def appVersionName = "1.9.1"
 
 android {
 

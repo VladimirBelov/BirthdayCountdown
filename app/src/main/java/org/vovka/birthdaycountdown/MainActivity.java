@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 21:39
+ *  * Created by Vladimir Belov on 11.04.2026, 19:58
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 21:38
+ *  * Last modified 11.04.2026, 19:57
  *
  */
 
@@ -27,6 +27,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -80,6 +81,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.widget.TextViewCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
@@ -574,35 +576,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.ContextMenu_EventInfo) {
 
-                StringBuilder eventInfo = new StringBuilder();
-                int eventRows = selectedEvent.length;
-                for (int i = 0; i < eventRows; i++) {
-                    eventInfo.append(i).append(Constants.STRING_COLON_SPACE).append(selectedEvent[i]).append(Constants.STRING_EOL);
-                }
-
-                String eventSubType = selectedEvent[ContactsEvents.Position_eventSubType];
-                int roundingFactor;
-                if (eventSubType.equals(Constants.EventType_Calendar) || eventSubType.equals(Constants.EventType_File)) {
-                    roundingFactor = 1;
-                } else {
-                    roundingFactor = eventsData.preferences_list_photostyle;
-                }
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                        .setTitle(StringUtils.getFullName(selectedEvent, eventsData.preferences_name_format))
-                        .setIcon(new BitmapDrawable(resources, ContactsEvents.getInstance().getEventPhoto(selectedEvent_str, true, false, false, roundingFactor)))
-                        .setMessage(eventInfo.toString())
-                        .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.dismiss());
-
-                AlertDialog alertToShow = builder.create();
-                alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0)));
-                alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-                alertToShow.show();
-
-                TextView textView = alertToShow.findViewById(android.R.id.message);
-                if (textView != null) textView.setTextSize(14);
-
+                showEventDetails();
                 return true;
 
             } else if (itemId == Constants.ContextMenu_AddToFavorites) {
@@ -793,6 +767,79 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return false;
+    }
+
+    private void showEventDetails() {
+        try {
+
+            StringBuilder eventInfo = new StringBuilder();
+            int eventRows = selectedEvent.length;
+            for (int i = 0; i < eventRows; i++) {
+                eventInfo.append(i).append(Constants.STRING_COLON_SPACE).append(selectedEvent[i]).append(Constants.STRING_EOL);
+            }
+
+            String eventSubType = selectedEvent[ContactsEvents.Position_eventSubType];
+            int roundingFactor;
+            if (eventSubType.equals(Constants.EventType_Calendar) || eventSubType.equals(Constants.EventType_File)) {
+                roundingFactor = 1;
+            } else {
+                roundingFactor = eventsData.preferences_list_photostyle;
+            }
+
+            TextView customTitle = new TextView(this);
+            customTitle.setText(StringUtils.getFullName(selectedEvent, eventsData.preferences_name_format));
+            customTitle.setTextIsSelectable(true);
+            customTitle.setSingleLine(false);
+            customTitle.setEllipsize(null);
+            customTitle.setMaxLines(2);
+
+            TypedValue tv = new TypedValue();
+            this.getTheme().resolveAttribute(android.R.attr.textAppearanceLarge, tv, true);
+            TextViewCompat.setTextAppearance(customTitle, tv.resourceId);
+
+            int iconSizePx = (int) (48 * getResources().getDisplayMetrics().density);
+            Drawable icon = new BitmapDrawable(resources, ContactsEvents.getInstance().getEventPhoto(selectedEvent_str, true, false, false, roundingFactor));
+            icon.setBounds(0, 0, iconSizePx, iconSizePx);
+            customTitle.setCompoundDrawablesRelative(icon, null, null, null);
+            customTitle.setCompoundDrawablePadding((int) (16 * getResources().getDisplayMetrics().density));
+
+            int paddingPx = (int) (24 * getResources().getDisplayMetrics().density);
+            customTitle.setPadding(paddingPx, paddingPx, paddingPx, 0);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .setCustomTitle(customTitle)
+                    .setMessage(eventInfo.toString())
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.dismiss());
+            AlertDialog alertToShow = builder.create();
+
+            Window window = alertToShow.getWindow();
+            Context themeContext = new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog);
+            int textColor = resolveThemeColor(themeContext, android.R.attr.textColor);
+            if (window != null) {
+                int dialogBgColor = resolveThemeColor(themeContext, android.R.attr.background);
+                if (dialogBgColor != 0) {
+                    window.setBackgroundDrawable(new ColorDrawable(dialogBgColor));
+                }
+            }
+
+            alertToShow.setOnShowListener(arg0 -> {
+
+                customTitle.setTextColor(textColor);
+                TextView messageView = alertToShow.findViewById(android.R.id.message);
+                if (messageView != null) {
+                    messageView.setTextColor(textColor);
+                    messageView.setTextIsSelectable(true);
+                }
+
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogTextColor, 0));
+            });
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     private void shareEventAsImage(ListView listView) {
@@ -3348,6 +3395,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    // 🛠 Вспомогательный метод для резолва цветов
+    private int resolveThemeColor(Context context, int attrId) {
+        TypedValue tv = new TypedValue();
+        if (context.getTheme().resolveAttribute(attrId, tv, true)) {
+            return (tv.type == TypedValue.TYPE_REFERENCE)
+                    ? ContextCompat.getColor(context, tv.resourceId)
+                    : tv.data;
+        }
+        return 0;
     }
 
 }
