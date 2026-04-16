@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Created by Vladimir Belov on 17.04.2026, 01:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.04.2026, 23:04
+ *  * Last modified 17.04.2026, 01:34
  *
  */
 
@@ -11,6 +11,7 @@ package org.vovka.birthdaycountdown;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ContentUris;
 import android.content.Context;
@@ -894,14 +895,24 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 final String[] mimeTypes = {Constants.MIME_IMAGE_JPEG, Constants.MIME_IMAGE_PNG};
                 intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes); //https://stackoverflow.com/questions/54478638/effect-of-intent-settype-on-androids-intent-chooser
                 intent.putExtra(Intent.EXTRA_STREAM, bitmapShareUri);
-                Intent chooser = Intent.createChooser(intent, "");
-                //https://stackoverflow.com/questions/57689792/permission-denial-while-sharing-file-with-fileprovider
-                List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
+
+                // ClipData для preview в chooser'е
+                intent.setClipData(ClipData.newRawUri("", bitmapShareUri));
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                // Грант права приложениям-получателям
+                List<ResolveInfo> resInfoList = getPackageManager()
+                        .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+
                 for (ResolveInfo resolveInfo : resInfoList) {
                     String packageName = resolveInfo.activityInfo.packageName;
-                    this.grantUriPermission(packageName, bitmapShareUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    grantUriPermission(packageName, bitmapShareUri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                                    Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
                 }
                 try {
+                    Intent chooser = Intent.createChooser(intent, Constants.STRING_EMPTY);
                     startActivity(chooser);
                 } catch (ActivityNotFoundException e) { /**/ }
             }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.02.2026, 18:28
+  ~  * Created by Vladimir Belov on 17.04.2026, 01:44
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.02.2026, 18:19
+  ~  * Last modified 17.04.2026, 00:56
   ~  */
   -->
 
@@ -20,9 +20,74 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/> <!-- для доступа к точным будильникам -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> <!-- для Android 13+ нужно для отправки уведомлений -->
 
-    <queries> <!-- для Intent.createChooser() https://developer.android.com/about/versions/11/privacy/package-visibility -->
+    <queries> <!-- https://developer.android.com/about/versions/11/privacy/package-visibility -->
+        <!-- 🔔 Выбор мелодии (системный пикер) -->
         <intent>
-            <action android:name="android.intent.action.MAIN"/>
+            <action android:name="android.intent.action.RINGTONE_PICKER" />
+        </intent>
+        <!-- 📅 Просмотр события в календаре -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="vnd.android.cursor.item/event" />
+        </intent>
+        <!-- 👤 Просмотр контакта -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="vnd.android.cursor.item/person" />
+        </intent>
+        <!-- 🌐 Открытие ссылок в браузере -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <!-- 🖼️ Выбор изображения (галерея / пикер) -->
+        <intent>
+            <action android:name="android.intent.action.PICK" />
+            <data android:mimeType="image/*" />
+        </intent>
+        <!-- 📁 SAF: Выбор файлов -->
+        <!-- 1. Любой файл -->
+        <intent>
+            <action android:name="android.intent.action.OPEN_DOCUMENT" />
+            <category android:name="android.intent.category.OPENABLE" />
+            <data android:mimeType="*/*" />
+        </intent>
+        <!-- 2. Аудио -->
+        <intent>
+            <action android:name="android.intent.action.OPEN_DOCUMENT" />
+            <category android:name="android.intent.category.OPENABLE" />
+            <data android:mimeType="audio/*" />
+        </intent>
+        <!-- 3. Текст -->
+        <intent>
+            <action android:name="android.intent.action.OPEN_DOCUMENT" />
+            <category android:name="android.intent.category.OPENABLE" />
+            <data android:mimeType="text/*" />
+        </intent>
+        <!-- 4. Изображения -->
+        <intent>
+            <action android:name="android.intent.action.OPEN_DOCUMENT" />
+            <category android:name="android.intent.category.OPENABLE" />
+            <data android:mimeType="image/*" />
+        </intent>
+        <!-- 📤 Шаринг текста (все кейсы с ClipDescription.MIMETYPE_TEXT_PLAIN) -->
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="text/plain" />
+        </intent>
+        <!-- 🖼️ Шаринг изображений (кейсы с bitmapShareUri, Constants.MIME_IMAGE_ALL) -->
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="image/*" />
+        </intent>
+        <!-- ⚙️ Открытие настроек приложения (для запроса разрешений) -->
+        <intent>
+            <action android:name="android.settings.APPLICATION_DETAILS_SETTINGS" />
+            <data android:scheme="package" />
         </intent>
     </queries>
 
