@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.03.2026, 10:37
+ *  * Created by Vladimir Belov on 17.04.2026, 00:06
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 31.03.2026, 10:28
+ *  * Last modified 17.04.2026, 00:04
  *
  */
 package org.vovka.birthdaycountdown;
@@ -66,7 +66,7 @@ public class WidgetMenuActivity extends Activity {
     final ArrayList<Integer> menuActions = new ArrayList<>();
     String eventText = null;
     String[] singleEventArray = null;
-    Set<String> eventSources = new HashSet<>();
+    final Set<String> eventSources = new HashSet<>();
     ContactsEvents eventsData;
     private TypedArray ta = null;
     private ArrayList<String> menuItems;
@@ -77,6 +77,7 @@ public class WidgetMenuActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         if (intent == null || intent.getAction() == null || !intent.getAction().equals(Constants.ACTION_MENU)) {

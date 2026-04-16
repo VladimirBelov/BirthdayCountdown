@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.04.2026, 22:06
+ *  * Created by Vladimir Belov on 17.04.2026, 00:06
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.04.2026, 21:42
+ *  * Last modified 16.04.2026, 23:42
  *
  */
 
@@ -155,9 +155,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
         try {
-
-            super.onCreate(savedInstanceState);
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
@@ -302,6 +301,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             updateTitles();
             updateVisibility();
             if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) setSummaryUpdate();
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState);
+        } catch (android.os.BadParcelableException e) {
+            Log.e(TAG, "Failed to restore preference dialog state", e);
+
+            // Очищаем проблемный Bundle, чтобы не пытаться восстановить его снова
+            if (savedInstanceState != null) {
+                savedInstanceState.clear();
+            }
+            // Диалог предпочтений просто не восстановится — пользователь откроет его заново
+        } catch (Exception e) {
+            // Любые другие ошибки — логируем и пробрасываем, чтобы не маскировать реальные баги
+            Log.e(TAG, "Unexpected error in onRestoreInstanceState", e);
+            throw e;
         }
     }
 
@@ -757,33 +775,38 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     private void setSummaryForNotificationsRingtone() {
-        String currentRingtone = getString(R.string.pref_Notifications_Ringtone_choice_silent) ;
-        if (!eventsData.preferences_notifications_ringtone.isEmpty()) {
-            Uri ringtoneUri = Uri.parse(eventsData.preferences_notifications_ringtone);
-            if (isFileProviderUri(ringtoneUri)) {
-                currentRingtone = getDisplayNameFromUri(ringtoneUri);
-            } else {
-                Ringtone ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
-                if (ringtone != null) {
-                    currentRingtone = ringtone.getTitle(this);
-                }
-            }
-        }
+        String currentRingtone = eventsData.preferences_notifications_ringtone.isEmpty()
+                ? getString(R.string.pref_Notifications_Ringtone_choice_silent)
+                : getRingtoneDisplayTitle(Uri.parse(eventsData.preferences_notifications_ringtone));
         updateSummary(R.string.pref_Notifications_Ringtone_key, currentRingtone, getString(R.string.pref_Notifications_Ringtone_summary), 0, 0);
 
-        currentRingtone = getString(R.string.pref_Notifications_Ringtone_choice_silent) ;
-        if (!eventsData.preferences_notifications2_ringtone.isEmpty()) {
-            Uri ringtoneUri = Uri.parse(eventsData.preferences_notifications2_ringtone);
-            if (isFileProviderUri(ringtoneUri)) {
-                currentRingtone = getDisplayNameFromUri(ringtoneUri);
-            } else {
-                Ringtone ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
-                if (ringtone != null) {
-                    currentRingtone = ringtone.getTitle(this);
-                }
-            }
-        }
+        currentRingtone = eventsData.preferences_notifications2_ringtone.isEmpty()
+                ? getString(R.string.pref_Notifications_Ringtone_choice_silent)
+                : getRingtoneDisplayTitle(Uri.parse(eventsData.preferences_notifications2_ringtone));
         updateSummary(R.string.pref_Notifications2_Ringtone_key, currentRingtone, getString(R.string.pref_Notifications_Ringtone_summary), 0, 0);
+    }
+
+    private String getRingtoneDisplayTitle(Uri ringtoneUri) {
+        if (ringtoneUri == null) return getString(R.string.pref_Notifications_Ringtone_choice_silent);
+
+        // 1. FileProvider URI — обрабатываем отдельно
+        if (isFileProviderUri(ringtoneUri)) {
+            return getDisplayNameFromUri(ringtoneUri);
+        }
+
+        // 2. Системный рингтон через RingtoneManager
+        Ringtone ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
+        if (ringtone == null) return getFallbackRingtoneName(ringtoneUri);
+
+        try {
+            String title = ringtone.getTitle(this);
+            if (title != null && !title.isEmpty()) return title;
+        } catch (Exception e) {
+            Log.w(TAG, "getTitle() failed for " + ringtoneUri, e);
+        }
+
+        // 3. Фолбэк
+        return getFallbackRingtoneName(ringtoneUri);
     }
 
     private void setSummaryForAccounts() {
@@ -2667,23 +2690,61 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         runningQueue = queueNumber;
                         if (which == 0) {
 
-                            // Системные мелодии
-                            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-                            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALL);
-                            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, false);
-                            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
-                            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
-                            if (!TextUtils.isEmpty(prefRingtone)) intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(prefRingtone));
-                            startActivityForResult(intent, Constants.RESULT_PICK_RINGTONE);
+                            try {
+                                // Системные мелодии
+                                Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+                                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALL);
+                                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, false);
+                                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
+                                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
+                                if (!TextUtils.isEmpty(prefRingtone)) {
+                                    try {
+                                        Uri ringtoneUri = Uri.parse(prefRingtone);
+                                        // Проверяем, не content:// ли это от чужого приложения
+                                        if ("content".equals(ringtoneUri.getScheme())) {
+                                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                        }
+                                        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, ringtoneUri);
+                                    } catch (Exception e) {
+                                        Log.w(TAG, "Invalid ringtone URI: " + prefRingtone, e);
+                                    }
+                                }
+                                // Проверка на разрешённый запуск
+                                if (intent.resolveActivity(getPackageManager()) != null) {
+                                    startActivityForResult(intent, Constants.RESULT_PICK_RINGTONE);
+                                } else {
+                                    Log.w(TAG, "No activity found for ringtone picker");
+                                }
+                            } catch (ActivityNotFoundException | SecurityException e) {
+                                Log.e(TAG,
+                                        "Ringtone picker failed on " + Build.MANUFACTURER + " " + Build.MODEL +
+                                                " | Android " + Build.VERSION.RELEASE + " (SDK " + Build.VERSION.SDK_INT + ")",
+                                        e);
+                            }
 
                         } else if (which == 1) {
 
-                            // Свой файл
-                            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                            intent.addCategory(Intent.CATEGORY_OPENABLE);
-                            intent.setType("audio/*");
-                            intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"audio/mpeg", "audio/ogg", "audio/aac"});
-                            startActivityForResult(intent, Constants.RESULT_PICK_CUSTOM_RINGTONE);
+                            try {
+                                // Свой файл
+                                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                                intent.setType("audio/*");
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                    intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{
+                                            "audio/mpeg", "audio/ogg", "audio/aac", "audio/wav"
+                                    });
+                                }
+                                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                // Проверяем, есть ли обработчик
+                                if (intent.resolveActivity(getPackageManager()) != null) {
+                                    startActivityForResult(intent, Constants.RESULT_PICK_CUSTOM_RINGTONE);
+                                } else {
+                                    Log.w(TAG, "No document picker available");
+                                    ToastExpander.showInfoMsg(this, getString(R.string.msg_no_file_picker));
+                                }
+                            } catch (ActivityNotFoundException | SecurityException e) {
+                                Log.e("SettingsActivity", "Failed to launch document picker", e);
+                            }
 
                         } else if (which == 2) {
 
@@ -2794,6 +2855,45 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         return displayName != null ? displayName : "sound";
     }
 
+    /**
+     * Возвращает человекочитаемое имя рингтона, если getTitle() недоступен
+     */
+    private String getFallbackRingtoneName(Uri uri) {
+        if (uri == null) return getString(R.string.msg_unknown);
+
+        // 1. Попробуем получить имя из query-параметров (как в твоём getDisplayNameFromUri)
+        if (uri.getQueryParameter(Constants.EXTRA_TITLE) != null) {
+            return uri.getQueryParameter(Constants.EXTRA_TITLE);
+        }
+
+        // 2. Попробуем DISPLAY_NAME через ContentResolver (безопасно, не пишет в настройки)
+        if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
+            try (Cursor cursor = getContentResolver().query(uri, new String[]{OpenableColumns.DISPLAY_NAME}, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int idx = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (idx >= 0) {
+                        String name = cursor.getString(idx);
+                        if (name != null && !name.isEmpty()) return name;
+                    }
+                }
+            } catch (Exception e) {
+                // Игнорируем, идём дальше
+            }
+        }
+
+        // 3. Последняя попытка: имя из пути
+        String name = uri.getLastPathSegment();
+        if (name != null && !name.isEmpty()) {
+            // Убираем расширение для красоты
+            int dot = name.lastIndexOf('.');
+            if (dot > 0) name = name.substring(0, dot);
+            return name;
+        }
+
+        // 4. Дефолт
+        return getString(R.string.msg_unknown);
+    }
+
     /** Получение имени файла из Uri
      * @param uri Uri файла
      * @return Имя файла
@@ -2888,7 +2988,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 if (!rules.isEmpty()) {
                     final int rStartIndex = rules.indexOf(Constants.RULE_TAG_NAME);
-                    if (rStartIndex == -1) { //todo: && !rules.toLowerCase().contains(Constants.RULE_TAG_ALIAS)) {
+                    if (rStartIndex == -1) {
                         ToastExpander.showInfoMsg(this, getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags));
                         return;
                     } else if (rules.indexOf(Constants.RULE_TAG_NAME, rStartIndex + 1) > -1 && rules.indexOf(Constants.STRING_BAR, rStartIndex) == -1) {

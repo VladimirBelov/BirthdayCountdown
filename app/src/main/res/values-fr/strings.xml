@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
+  ~  * Created by Vladimir Belov on 17.04.2026, 00:06
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.03.2026, 18:33
+  ~  * Last modified 17.04.2026, 00:00
   ~  */
   -->
 
@@ -82,6 +82,7 @@
     <string name="msg_no_access_storage">Aucun accès au stockage</string>
     <string name="msg_no_events">Aucun événement trouvé</string>
     <string name="msg_no_image_picker">"Il n'existe pas d'application pour choisir des photos"</string>
+    <string name="msg_no_file_picker">"Il n'existe aucune application pour choisir des fichiers"</string>
     <string name="msg_no_files_selected">" - pas sélectionné -"</string>
     <string name="msg_file_open_error">"Erreur d'ouverture du fichier: "</string>
     <string name="msg_file_access_write_error">"Impossible d'accéder à la modification du fichier. Réinitialisez le fichier dans les paramètres de l'application"</string>

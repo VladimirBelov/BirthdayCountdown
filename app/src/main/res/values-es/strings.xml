@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
+  ~  * Created by Vladimir Belov on 17.04.2026, 00:06
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.03.2026, 18:32
+  ~  * Last modified 16.04.2026, 23:58
   ~  */
   -->
 
@@ -82,6 +82,7 @@
     <string name="msg_no_access_storage">Sin acceso al almacenamiento</string>
     <string name="msg_no_events">No se encontraron eventos</string>
     <string name="msg_no_image_picker">No hay ninguna aplicación para elegir fotos</string>
+    <string name="msg_no_file_picker">No hay ninguna aplicación para seleccionar archivos</string>
     <string name="msg_no_files_selected">"  - no seleccionado -"</string>
     <string name="msg_file_open_error">"Error al abrir el archivo: "</string>
     <string name="msg_file_access_write_error">No se puede obtener acceso de escritura al archivo. Intente volver a seleccionar el archivo en la preferencia de la aplicación</string>

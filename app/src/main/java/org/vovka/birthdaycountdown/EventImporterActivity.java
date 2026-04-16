@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.03.2026, 02:21
+ *  * Created by Vladimir Belov on 17.04.2026, 00:06
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 21:44
+ *  * Last modified 16.04.2026, 23:01
  *
  */
 
@@ -81,9 +81,9 @@ public class EventImporterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        try {
 
-            super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
+        try {
 
             eventsData.initLanguage(this);
 

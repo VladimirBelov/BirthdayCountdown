@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.03.2026, 10:48
+ *  * Created by Vladimir Belov on 17.04.2026, 00:06
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 23.03.2026, 21:01
+ *  * Last modified 16.04.2026, 23:22
  *
  */
 package org.vovka.birthdaycountdown;
@@ -113,7 +113,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             }
 
             if (ta.hasValue(R.styleable.ColorPreference_title)) {
-                int id = getResources().getIdentifier("title", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
+                int id = getResources().getIdentifier(Constants.EXTRA_TITLE, Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
                 if (id > 0) {
                     TextView view = findViewById(id);
                     if (view != null)

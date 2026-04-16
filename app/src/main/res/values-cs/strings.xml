@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
+  ~  * Created by Vladimir Belov on 17.04.2026, 00:06
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.03.2026, 18:31
+  ~  * Last modified 16.04.2026, 23:57
   ~  */
   -->
 
@@ -82,6 +82,7 @@
     <string name="msg_no_access_storage">Žádný přístup k úložišti</string>
     <string name="msg_no_events">Události nenalezeny</string>
     <string name="msg_no_image_picker">Neexistuje žádná aplikace pro výběr fotografií</string>
+    <string name="msg_no_file_picker">Neexistuje žádná aplikace pro výběr souborů</string>
     <string name="msg_no_files_selected">" - nevybráno -"</string>
     <string name="msg_file_open_error">"Chyba při otevírání souboru: "</string>
     <string name="msg_file_access_write_error">"Nelze získat přístup k zápisu do souboru. Zkuste znovu vybrat soubor v předvolbách aplikace"</string>

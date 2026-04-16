@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.03.2026, 18:43
+ *  * Created by Vladimir Belov on 17.04.2026, 00:06
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.03.2026, 13:38
+ *  * Last modified 16.04.2026, 23:01
  *
  */
 
@@ -41,8 +41,8 @@ public class FactsPopupActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
         try {
-            super.onCreate(savedInstanceState);
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 01:41
+ *  * Created by Vladimir Belov on 17.04.2026, 00:06
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 01:21
+ *  * Last modified 16.04.2026, 23:04
  *
  */
 
@@ -103,7 +103,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         TypedArray ta = null;
-
         try {
 
             thisActivity = this;

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.04.2026, 19:58
+ *  * Created by Vladimir Belov on 17.04.2026, 00:06
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 11.04.2026, 19:57
+ *  * Last modified 16.04.2026, 23:04
  *
  */
 
@@ -166,7 +166,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             eventsData.currentTheme = eventsData.preferences_theme.themeMain;
             ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
-            super.onCreate(savedInstanceState);
+            try {
+                super.onCreate(savedInstanceState);
+            } catch (Exception e) {
+                // Если super.onCreate() упал — не маскируем, а логируем и пробрасываем
+                Log.e(TAG, "super.onCreate() failed", e);
+                throw e;
+            }
+
             filterNames = savedInstanceState == null ? Constants.STRING_EMPTY : savedInstanceState.getString(Constants.EXTRA_FILTER, Constants.STRING_EMPTY);
 
             setContentView(R.layout.activity_main);

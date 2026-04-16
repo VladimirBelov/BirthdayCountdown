@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.12.2025, 16:27
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 22.12.2025, 15:12
+ *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 16.04.2026, 23:04
  *
  */
 
@@ -37,8 +37,9 @@ public class ShareFromNotifyActivity extends Activity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        try {
+
         super.onCreate(savedInstanceState);
+        try {
 
             Bundle extras = getIntent().getExtras();
             String notificationData = Constants.STRING_EMPTY;

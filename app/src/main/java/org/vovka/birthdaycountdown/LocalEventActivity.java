@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.04.2026, 21:48
+ *  * Created by Vladimir Belov on 17.04.2026, 00:06
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 03.04.2026, 22:17
+ *  * Last modified 16.04.2026, 23:01
  *
  */
 
@@ -368,9 +368,9 @@ public class LocalEventActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        try {
 
-            super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
+        try {
 
             eventsData.initLanguage(this);
             eventsData.applyLocaleWorkaround(this);

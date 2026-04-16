@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
+  ~  * Created by Vladimir Belov on 17.04.2026, 00:06
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.03.2026, 18:29
+  ~  * Last modified 16.04.2026, 23:59
   ~  */
   -->
 
@@ -82,6 +82,7 @@
     <string name="msg_no_access_storage">Kein Zugriff auf den Speicher</string>
     <string name="msg_no_events">Keine Ereignissе gefunden</string>
     <string name="msg_no_image_picker">Es gibt keine App zum Auswählen von Fotos</string>
+    <string name="msg_no_file_picker">Es gibt keine App zum Auswählen von Dateien</string>
     <string name="msg_no_files_selected">"  - nicht ausgewählt -"</string>
     <string name="msg_file_open_error">"Fehler beim Öffnen der Datei: "</string>
     <string name="msg_file_access_write_error">Schreibzugriff auf Datei nicht möglich. Versuchen Sie, die Datei in den Anwendungseinstellungen erneut auszuwählen.</string>

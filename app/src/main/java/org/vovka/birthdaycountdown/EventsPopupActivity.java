@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 01:41
+ *  * Created by Vladimir Belov on 17.04.2026, 00:06
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 01:39
+ *  * Last modified 16.04.2026, 23:01
  *
  */
 
@@ -32,8 +32,8 @@ public class EventsPopupActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
         try {
-            super.onCreate(savedInstanceState);
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
