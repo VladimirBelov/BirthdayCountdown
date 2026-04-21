@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Created by Vladimir Belov on 22.04.2026, 00:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.04.2026, 23:04
+ *  * Last modified 21.04.2026, 23:26
  *
  */
 
@@ -54,6 +54,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -893,7 +894,7 @@ public class QuizActivity extends Activity {
 
                     Date BDay = null;
                     try {
-                        BDay = sdf_DDMMYYYY.parse(eventInfo[ContactsEvents.Position_eventDateNextTime]);
+                        BDay = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(eventInfo[ContactsEvents.Position_eventDateNextTime]);
                     } catch (ParseException ignored) { /**/ }
                     if (BDay == null) return null;
 
@@ -962,7 +963,7 @@ public class QuizActivity extends Activity {
 
                     Date BDay = null;
                     try {
-                        BDay = sdf_DDMMYYYY.parse(eventInfo[ContactsEvents.Position_eventDateFirstTime]);
+                        BDay = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(eventInfo[ContactsEvents.Position_eventDateFirstTime]);
                     } catch (ParseException ignored) { /**/ }
                     if (BDay == null) return null;
 
@@ -1029,8 +1030,8 @@ public class QuizActivity extends Activity {
                     Date birthDate = null;
                     Date eventDate = null;
                     try {
-                        birthDate = sdf_DDMMYYYY.parse(eventInfo[ContactsEvents.Position_eventDateFirstTime]);
-                        eventDate = sdf_DDMMYYYY.parse(eventInfo[ContactsEvents.Position_eventDateNextTime]);
+                        birthDate = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(eventInfo[ContactsEvents.Position_eventDateFirstTime]);
+                        eventDate = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(eventInfo[ContactsEvents.Position_eventDateNextTime]);
                     } catch (ParseException ignored) { /**/ }
                     if (birthDate == null || eventDate == null) return null;
 
@@ -1279,7 +1280,7 @@ public class QuizActivity extends Activity {
                                 eventDateFirstTime.substring(0, eventDateFirstTime.lastIndexOf(bcPostfix)).trim() :
                                 eventDateFirstTime;
 
-                        Date eventDate = sdf_DDMMYYYY.parse(dateForParse);
+                        Date eventDate = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(dateForParse);
                         if (eventDate == null) return null;
 
                         Calendar cal = AppDateUtils.getCalendarFromDate(eventDate);
@@ -1381,7 +1382,7 @@ public class QuizActivity extends Activity {
                     // Получаем дату праздника
                     Date holidayDate;
                     try {
-                        holidayDate = sdf_DDMMYYYY.parse(eventInfo[ContactsEvents.Position_eventDateNextTime]);
+                        holidayDate = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(eventInfo[ContactsEvents.Position_eventDateNextTime]);
                     } catch (ParseException ignored) {
                         return null;
                     }

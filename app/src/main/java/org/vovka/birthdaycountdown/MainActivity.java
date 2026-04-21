@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 01:44
+ *  * Created by Vladimir Belov on 22.04.2026, 00:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 17.04.2026, 01:34
+ *  * Last modified 21.04.2026, 23:38
  *
  */
 
@@ -102,6 +102,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -1252,7 +1253,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         ArrayList<ContactsEvents.Event> events = null;
                         try {
-                            Date eventDate = ContactsEvents.sdf_DDMMYYYY.parse(selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
+                            Date eventDate = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).parse(selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
                             if (eventDate != null) {
                                 Calendar dateEnd = AppDateUtils.getWithoutTime(Calendar.getInstance());
                                 dateEnd.add(Calendar.YEAR, 15);
@@ -1281,7 +1282,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 StringBuilder sb = new StringBuilder();
                                 for (ContactsEvents.Event e: events) {
                                     if (sb.length() > 0) sb.append(Constants.STRING_EOL);
-                                    sb.append(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(e.date), ContactsEvents.FormatDate.WithYear));
+                                    sb.append(eventsData.getDateFormatted(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get())
+                                            .format(e.date), ContactsEvents.FormatDate.WithYear));
                                     sb.append(Constants.STRING_COLON_SPACE);
                                     sb.append(e.distance);
                                 }
@@ -1767,10 +1769,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         searchView.setQueryHint(getString(R.string.msg_hint_search));
                     }
                     searchView.setMaxWidth(Integer.MAX_VALUE);
-
-                    //https://stackoverflow.com/questions/17845980/how-to-implement-voice-search-to-searchview
-                    //SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-                    //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
                 }
             }
 
@@ -2169,10 +2167,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             AlertDialog clearDialog = clearDialogBuilder.create();
 
                             clearDialog.setOnShowListener(arg0 -> {
-                                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                                clearDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                clearDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                ta.recycle();
+                                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                                    clearDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                    clearDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                }
                             });
 
                             clearDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -2199,10 +2197,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             AlertDialog confirm_dialog = confirm.create();
 
                             confirm_dialog.setOnShowListener(arg0 -> {
-                                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                                confirm_dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                confirm_dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                                ta.recycle();
+                                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                                    confirm_dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                    confirm_dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                                }
                             });
 
                             confirm_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

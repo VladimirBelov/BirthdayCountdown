@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Created by Vladimir Belov on 22.04.2026, 00:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.04.2026, 23:01
+ *  * Last modified 21.04.2026, 23:14
  *
  */
 
@@ -69,6 +69,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -483,7 +484,7 @@ public class LocalEventActivity extends AppCompatActivity {
                         Date dateEventFirstTime;
 
                         try {
-                            dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY_G.parse(eventDateString);
+                            dateEventFirstTime = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY_G.get()).parse(eventDateString);
                             if (dateEventFirstTime != null) {
                                 day = dateEventFirstTime.getDate();
                                 month = dateEventFirstTime.getMonth();
@@ -492,7 +493,7 @@ public class LocalEventActivity extends AppCompatActivity {
                             }
                         } catch (ParseException peg) {
                             try {
-                                dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString);
+                                dateEventFirstTime = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).parse(eventDateString);
                                 if (dateEventFirstTime != null) {
                                     day = dateEventFirstTime.getDate();
                                     month = dateEventFirstTime.getMonth();
@@ -500,7 +501,7 @@ public class LocalEventActivity extends AppCompatActivity {
                                 }
                             } catch (ParseException pe) {
                                 try {
-                                    dateEventFirstTime = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString
+                                    dateEventFirstTime = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).parse(eventDateString
                                             .concat(Constants.STRING_PERIOD).concat(String.valueOf(cal.get(Calendar.YEAR))));
                                     if (dateEventFirstTime != null) {
                                         day = dateEventFirstTime.getDate();
@@ -889,14 +890,14 @@ public class LocalEventActivity extends AppCompatActivity {
                 String name = DayOfWeekCalculator.getShortDayName(dow, Locale.getDefault());
 
                 dateFormated = eventsData.getDateFormatted(
-                        ContactsEvents.sdf_DDMMYYYY.format(date), ContactsEvents.FormatDate.WithYear)
+                        Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(date), ContactsEvents.FormatDate.WithYear)
                         + (eventIsBC ? eventsData.getResources().getString(R.string.msg_after_year_bc) : Constants.STRING_EMPTY)
                         + Constants.STRING_PARENTHESIS_OPEN
                         + name.toLowerCase()
                         + Constants.STRING_PARENTHESIS_CLOSE;
             } else {
                 dateFormated = eventsData.getDateFormatted(
-                        ContactsEvents.sdf_DDMM.format(date), ContactsEvents.FormatDate.WithoutYear);
+                        Objects.requireNonNull(ContactsEvents.sdf_DDMM.get()).format(date), ContactsEvents.FormatDate.WithoutYear);
             }
 
             editDate.setText("📆 ".concat(dateFormated));
@@ -952,10 +953,10 @@ public class LocalEventActivity extends AppCompatActivity {
                     .setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
             androidx.appcompat.app.AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(dialog -> {
-                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                ta.recycle();
+                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                }
             });
             alertToShow.show();
 
@@ -996,10 +997,10 @@ public class LocalEventActivity extends AppCompatActivity {
                     .setNegativeButton(R.string.button_no, (dialog, which) -> dialog.dismiss());
             androidx.appcompat.app.AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(dialog -> {
-                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                ta.recycle();
+                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                }
             });
             alertToShow.show();
 
@@ -1057,11 +1058,11 @@ public class LocalEventActivity extends AppCompatActivity {
                     .setNeutralButton(R.string.button_cancel, (dialog, which) -> dialog.dismiss());
             androidx.appcompat.app.AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(dialog -> {
-                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                ta.recycle();
+                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                    alertToShow.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                }
             });
             alertToShow.show();
 
@@ -1152,9 +1153,9 @@ public class LocalEventActivity extends AppCompatActivity {
 
             String eventDateString;
             if (eventUseYear) {
-                eventDateString = ContactsEvents.sdf_DDMMYYYY.format(new Date(eventYear - 1900, eventMonth, eventDay));
+                eventDateString = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(new Date(eventYear - 1900, eventMonth, eventDay));
             } else {
-                eventDateString = ContactsEvents.sdf_DDMM.format(new Date(eventYear - 1900, eventMonth, eventDay));
+                eventDateString = Objects.requireNonNull(ContactsEvents.sdf_DDMM.get()).format(new Date(eventYear - 1900, eventMonth, eventDay));
             }
             eventData.put(ContactsEvents.Position_eventDateFirstTime,
                     eventDateString.concat(eventIsBC ? Constants.STRING_SPACE.concat(Constants.STRING_BC) : Constants.STRING_EMPTY));

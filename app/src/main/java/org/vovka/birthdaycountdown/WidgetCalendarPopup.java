@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.03.2026, 10:48
+ *  * Created by Vladimir Belov on 22.04.2026, 00:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 23.03.2026, 21:04
+ *  * Last modified 21.04.2026, 23:14
  *
  */
 package org.vovka.birthdaycountdown;
@@ -37,6 +37,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 /**
@@ -251,7 +252,7 @@ public class WidgetCalendarPopup extends Activity {
                 long millis = Long.parseLong(dayMills);
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(millis);
-                String date = ContactsEvents.sdf_java.format(cal.getTime());
+                String date = Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime());
 
                 int colorDefaultValue = ContextCompat.getColor(this, android.R.color.transparent);
                 int colorValue = colorDefaultValue;
@@ -311,7 +312,7 @@ public class WidgetCalendarPopup extends Activity {
     private void updateDayData(Calendar newCal) {
         SimpleDateFormat sdf = new SimpleDateFormat(" (EEE) ", Locale.getDefault());
         List<String> allEventsThisDay = eventsData.getDayInfo(
-                ContactsEvents.sdf_java.format(newCal.getTime()),
+                Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(newCal.getTime()),
                 listEventsPacks,
                 eventsColorsInMonth
         );
@@ -320,7 +321,7 @@ public class WidgetCalendarPopup extends Activity {
                 : TextUtils.join(Constants.HTML_BR, allEventsThisDay);
         dayCaption = getString(R.string.month_event_popup_prefix)
                 .concat(eventsData.getDateFormatted(
-                        ContactsEvents.sdf_DDMMYYYY.format(newCal.getTime()),
+                        Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(newCal.getTime()),
                         ContactsEvents.FormatDate.WithYear))
                 .concat(sdf.format(newCal.getTime()));
         dayMills = Long.toString(newCal.getTimeInMillis());
@@ -374,10 +375,10 @@ public class WidgetCalendarPopup extends Activity {
     private void showDayInfo() {
         try {
             if (dayInfo.contains(Constants.TRANSPARENT)) {
-                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                dayInfo = dayInfo.replace(Constants.TRANSPARENT,
-                        Integer.toHexString(ta.getColor(R.styleable.Theme_backgroundColor, 0) & 0x00ffffff));
-                ta.recycle();
+                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                    dayInfo = dayInfo.replace(Constants.TRANSPARENT,
+                            Integer.toHexString(ta.getColor(R.styleable.Theme_backgroundColor, 0) & 0x00ffffff));
+                }
             }
             viewInfo.setText(HtmlCompat.fromHtml(dayInfo, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
@@ -395,7 +396,7 @@ public class WidgetCalendarPopup extends Activity {
                 Calendar newCal = Calendar.getInstance();
                 newCal.setTimeInMillis(millis);
 
-                String date = ContactsEvents.sdf_java.format(newCal.getTime());
+                String date = Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(newCal.getTime());
                 String storedColorValue = eventsData.getDayInfo(date);
 
                 int colorDefaultValue = ContextCompat.getColor(this, android.R.color.transparent);

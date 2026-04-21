@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.03.2026, 22:05
+ *  * Created by Vladimir Belov on 22.04.2026, 00:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.03.2026, 11:18
+ *  * Last modified 21.04.2026, 23:14
  *
  */
 
@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -215,7 +216,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                                 Constants.DATE_MMMM_D : Constants.DATE_D_MMMM, Locale.forLanguageTag(eventsData.currentLocale));
                         Date eventDate = null;
                         try {
-                            eventDate = ContactsEvents.sdf_DDMM.parse(eventDateFirstTime.substring(0, 5));
+                            eventDate = Objects.requireNonNull(ContactsEvents.sdf_DDMM.get()).parse(eventDateFirstTime.substring(0, 5));
                         } catch (ParseException ignored) { /**/ }
                         if (eventDate != null) {
                             if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
@@ -487,7 +488,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                         String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                         Date eventDate = null;
                         try {
-                            eventDate = ContactsEvents.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
+                            eventDate = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
                         } catch (Exception e) { /**/ }
 
                         if (eventDate != null) {

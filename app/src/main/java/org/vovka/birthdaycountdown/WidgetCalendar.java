@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 24.03.2026, 10:48
+ *  * Created by Vladimir Belov on 22.04.2026, 00:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 24.03.2026, 10:41
+ *  * Last modified 21.04.2026, 23:09
  *
  */
 
@@ -45,6 +45,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -580,7 +581,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 }
 
                 if (BuildConfig.DEBUG) {
-                    Log.i(TAG + ".Period", ContactsEvents.sdf_DDMMYYYY.format(calFirstDay.getTime()) + " : " + ContactsEvents.sdf_DDMMYYYY.format(calLastDay.getTime()));
+                    Log.i(TAG + ".Period", Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(calFirstDay.getTime()) + " : " + Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(calLastDay.getTime()));
                 }
 
                 //Заполнение типов дней из календарей по периоду
@@ -854,7 +855,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify_Days);
 
             //Цвет дня
-            String dateToCompose = ContactsEvents.sdf_java.format(cal.getTime());
+            String dateToCompose = Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime());
             List<ContactsEvents.DayType> dayTypes = eventsData.getDayTypes(dateToCompose, prefOtherEvents);
 
             boolean isColoredByEvent = false;
@@ -972,7 +973,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             if (action == Constants.onClick_Popup) {
-                List<String> dayInfo = eventsData.getDayInfo(ContactsEvents.sdf_java.format(cal.getTime()), prefOtherEvents, eventsColorsInMonth);
+                List<String> dayInfo = eventsData.getDayInfo(Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime()), prefOtherEvents, eventsColorsInMonth);
                 if (!dayInfo.isEmpty()) {
                     //Подставляем в годовщину свадьбы её название
                     final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(context.getString(R.string.event_type_anniversary));
@@ -1001,7 +1002,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                     intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                     intent.putExtra(Constants.EXTRA_DAY_CAPTION,  context.getString(R.string.month_event_popup_prefix)
-                            .concat(eventsData.getDateFormatted(ContactsEvents.sdf_DDMMYYYY.format(cal.getTime()), ContactsEvents.FormatDate.WithYear))
+                            .concat(eventsData.getDateFormatted(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime()), ContactsEvents.FormatDate.WithYear))
                             .concat(sdf.format(cal.getTime())));
                     intent.putExtra(Constants.EXTRA_DAY_INFO, TextUtils.join(Constants.HTML_BR, dayInfo));
                     intent.putExtra(Constants.EXTRA_VALUES, Long.toString(cal.getTimeInMillis()));

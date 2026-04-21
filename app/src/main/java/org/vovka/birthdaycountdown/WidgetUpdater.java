@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.03.2026, 16:17
+ *  * Created by Vladimir Belov on 22.04.2026, 00:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.03.2026, 14:35
+ *  * Last modified 21.04.2026, 23:39
  *
  */
 
@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -412,7 +413,7 @@ class WidgetUpdater {
             if (isVisibleEvent && daysCount > 0) {
                 Date eventDate = null;
                 try {
-                    eventDate = ContactsEvents.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
+                    eventDate = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
                 } catch (Exception e) { /**/ }
 
                 if (eventDate != null) {
@@ -767,14 +768,14 @@ class WidgetUpdater {
 
                     Date birthDate = eventsData.birthdayDatesForIds.get(contactID);
                     if (birthDate != null) {
-                        strZodiacInfo = ContactsEvents.ZodiacHelper.getZodiacSign(ContactsEvents.sdf_DDMMYYYY.format(birthDate));
+                        strZodiacInfo = ContactsEvents.ZodiacHelper.getZodiacSign(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(birthDate));
                     }
 
                 } else if (eventsData.birthdayDatesForNames.containsKey(personFullName)) {
 
                     Date birthDate = eventsData.birthdayDatesForNames.get(personFullName);
                     if (birthDate != null) {
-                        strZodiacInfo = ContactsEvents.ZodiacHelper.getZodiacSign(ContactsEvents.sdf_DDMMYYYY.format(birthDate));
+                        strZodiacInfo = ContactsEvents.ZodiacHelper.getZodiacSign(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(birthDate));
                     }
                 }
             }

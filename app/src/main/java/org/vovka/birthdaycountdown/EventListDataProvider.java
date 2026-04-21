@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.2026, 17:21
+ *  * Created by Vladimir Belov on 22.04.2026, 00:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.03.2026, 17:18
+ *  * Last modified 21.04.2026, 23:36
  *
  */
 
@@ -36,6 +36,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -219,7 +220,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
                         String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                         Date eventDate = null;
                         try {
-                            eventDate = ContactsEvents.sdf_DDMMYYYY.parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
+                            eventDate = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).parse(singleEventArray[ContactsEvents.Position_eventDateNextTime]);
                         } catch (Exception e) { /**/ }
 
                         if (eventDate != null) {

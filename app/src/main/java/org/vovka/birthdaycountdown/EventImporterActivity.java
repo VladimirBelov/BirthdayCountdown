@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Created by Vladimir Belov on 22.04.2026, 00:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.04.2026, 23:01
+ *  * Last modified 21.04.2026, 23:14
  *
  */
 
@@ -49,6 +49,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -371,7 +372,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
                     String storedDate = StringUtils.substringAfter(line, Constants.STRING_COLON);
                     try {
-                        eventDateFirstTime = ContactsEvents.sdf_YYYYMMDD_noDiv.parse(storedDate);
+                        eventDateFirstTime = Objects.requireNonNull(ContactsEvents.sdf_YYYYMMDD_noDiv.get()).parse(storedDate);
 
                         if (useEventYear && emptyEventYear != null && storedDate.startsWith(emptyEventYear)) {
                             useEventYear = false;
@@ -397,7 +398,7 @@ public class EventImporterActivity extends AppCompatActivity {
                     eventData.put(ContactsEvents.Position_eventIcon, Integer.toString(event.icon));
                     eventData.put(ContactsEvents.Position_eventEmoji, event.emoji);
 
-                    String eventDateString = ContactsEvents.sdf_DDMMYYYY.format(eventDateFirstTime);
+                    String eventDateString = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(eventDateFirstTime);
                     if (emptyEventYear != null && eventDateString.endsWith(emptyEventYear)) {
                         eventData.put(ContactsEvents.Position_eventDateFirstTime, eventDateString.substring(0, eventDateString.indexOf(emptyEventYear) - 1));
                     } else {
@@ -522,30 +523,31 @@ public class EventImporterActivity extends AppCompatActivity {
                             statEventsSkipped.getAndIncrement();
                             return;
                         }
-                        dateEvent = ContactsEvents.sdf_DDMMYYYY.parse(eventDateString);
+                        dateEvent = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).parse(eventDateString);
                     } else {
-                        dateEvent = ContactsEvents.sdf_DDMMYYYY_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                        dateEvent = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY_G.get()).parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
                     }
                 } catch (ParseException e1) {
                     try {
                         if (isAD) {
-                            dateEvent = ContactsEvents.sdf_india.parse(eventDateString);
+                            dateEvent = Objects.requireNonNull(ContactsEvents.sdf_india.get()).parse(eventDateString);
                         } else {
-                            dateEvent = ContactsEvents.sdf_india_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                            dateEvent = Objects.requireNonNull(ContactsEvents.sdf_india_G.get()).parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
                         }
                     } catch (ParseException e2) {
                         try {
                             if (isAD) {
-                                dateEvent = ContactsEvents.sdf_uk.parse(eventDateString);
+                                //noinspection DataFlowIssue
+                                dateEvent = ContactsEvents.sdf_uk.get().parse(eventDateString);
                             } else {
-                                dateEvent = ContactsEvents.sdf_uk_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                                dateEvent = Objects.requireNonNull(ContactsEvents.sdf_uk_G.get()).parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
                             }
                         } catch (ParseException e3) {
                             try {
                                 if (isAD) {
-                                    dateEvent = ContactsEvents.sdf_java.parse(eventDateString);
+                                    dateEvent = Objects.requireNonNull(ContactsEvents.sdf_java.get()).parse(eventDateString);
                                 } else {
-                                    dateEvent = ContactsEvents.sdf_java_G.parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                                    dateEvent = Objects.requireNonNull(ContactsEvents.sdf_java_G.get()).parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
                                 }
                             } catch (ParseException e4) {
                                 //Не получилось распознать
@@ -564,16 +566,17 @@ public class EventImporterActivity extends AppCompatActivity {
                         statEventsSkipped.getAndIncrement();
                         return;
                     }
-                    dateEvent = ContactsEvents.sdf_DDMMYYYY.parse(dateNextEvent);
+                    dateEvent = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).parse(dateNextEvent);
                 } catch (ParseException e1) {
                     try {
-                        dateEvent = ContactsEvents.sdf_india.parse(dateNextEvent);
+                        dateEvent = Objects.requireNonNull(ContactsEvents.sdf_india.get()).parse(dateNextEvent);
                     } catch (ParseException e2) {
                         try {
-                            dateEvent = ContactsEvents.sdf_uk.parse(dateNextEvent);
+                            //noinspection DataFlowIssue
+                            dateEvent = ContactsEvents.sdf_uk.get().parse(dateNextEvent);
                         } catch (ParseException e3) {
                             try {
-                                dateEvent = ContactsEvents.sdf_java.parse(dateNextEvent);
+                                dateEvent = Objects.requireNonNull(ContactsEvents.sdf_java.get()).parse(dateNextEvent);
                             } catch (ParseException e4) {
                                 //Не получилось распознать
                             }
@@ -586,7 +589,7 @@ public class EventImporterActivity extends AppCompatActivity {
                 statEventsSkipped.getAndIncrement();
                 return;
             } else {
-                eventDateString = ContactsEvents.sdf_DDMMYYYY.format(dateEvent);
+                eventDateString = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(dateEvent);
             }
 
             //Собираем событие
@@ -844,9 +847,9 @@ public class EventImporterActivity extends AppCompatActivity {
             });
             AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(arg0 -> {
-                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                ta.recycle();
+                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                }
             });
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();

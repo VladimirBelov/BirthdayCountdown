@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Created by Vladimir Belov on 22.04.2026, 00:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 15:40
+ *  * Last modified 19.04.2026, 22:42
  *
  */
 
@@ -92,12 +92,7 @@ public class AppDateUtils {
      * @return Дата с нулевым временем
      */
     public static Calendar getWithoutTime(@NonNull Calendar c) {
-
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-
+        clearTime(c);
         return c;
     }
 
