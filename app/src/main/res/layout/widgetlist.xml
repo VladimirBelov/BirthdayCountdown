@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.02.2026, 00:43
+  ~  * Created by Vladimir Belov on 28.04.2026, 23:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 01.02.2026, 23:09
+  ~  * Last modified 28.04.2026, 22:03
   ~  */
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widget_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -29,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="98"
                     android:gravity="start|top"
-                    android:paddingStart="4dp"
+                    android:paddingStart="6dp"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold" />

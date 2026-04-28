@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 31.03.2026, 10:37
+  ~  * Created by Vladimir Belov on 28.04.2026, 23:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 30.03.2026, 13:59
+  ~  * Last modified 23.04.2026, 12:27
   ~  */
   -->
 
@@ -287,7 +287,7 @@
 Тишина часто говорит громче слов. Прежде чем ответить — подумай, прежде чем судить — пойми
 Перед тем как мстить, вырой две могилы (Конфуций)
 Благими делами вымощена дорога в рай. А благими намерениями (не воплощенными в дела) - вымощена дорога в ад
-Не сравнивай себя с другими — сравнивай себя сегодняшнего с собой вчерашним, и тогда увидишь свой настоящий рост
+Не сравнивай себя с другими — сравнивай себя сегодняшнего с собой вчерашним (Джордан Б. Петерсон)
 Тот, кто прощает злых, наказывает добрых (Сенека)
 День — это маленькая жизнь, и надо прожить ее так, будто ты должен умереть сейчас, а тебе неожиданно подарили еще сутки (Максим Горький)
 Не бойтесь начать всё сначала. На этот раз вы не начинаете с нуля, вы начинаете с опыта
@@ -328,7 +328,16 @@
 Чем меньше остаётся жить, тем чаще память обступает нас (Расул Гамзатов)
 Горечь низкого качества остаётся надолго после того, как сладость низкой цены забыта (Томас Лехон)
 У каждой аварии есть свои имя, фамилия и должность (Лазарь Каганович)
-Большинство людей переоценивают, что они сделают за год. И недооценивают, что сделают за десять лет (Бодо Шефер)"</item>
+Большинство людей переоценивают, что они сделают за год. И недооценивают, что сделают за десять лет (Бодо Шефер)
+Беспокойство не избавляет от завтрашних проблем. Оно только отнимает сегодняшний покой (Корея тен Бум)
+Мудрый человек говорит мало и делает много (Поучение Птаххотепа)
+Великие дела совершаются не силой, а настойчивостью (Сэмюэл Джонсон)
+Не принимай решений, когда зол, и не давай обещаний, когда счастлив (Бенджамин Франклин)
+Что началось гневом, оканчивается стыдом (Бенджамин Франклин)
+Из двух зол всегда выбирай то, которое не пробовал раньше (Мэй Уэст)
+Порядочный человек тот, кто делает гадости без удовольствия (Сергей Довлатов)
+Деньги — не главное в жизни. Главное — чтобы они не кончались
+Время — единственный актив, который нельзя вернуть. Трать его как самый дефицитный ресурс"</item>
     </string-array>
 
     <string-array name="facts2" translatable="false" tools:ignore="UnusedResources">
@@ -673,7 +682,11 @@ Most millionaires are frugal. They live well below their means (Thomas J. Stanle
 Wealth is what you accumulate, not what you spend (Thomas J. Stanley, William D. Danko)
 The fear will never go away as long as you continue to grow. The only way to get rid of the fear of doing something is to go out and do it (Susan Jeffers)
 The bitterness of poor quality remains long after the sweetness of low price is forgotten (Thomas B. Lehon)
-People usually overestimate what they can achieve in a year and underestimate what they can achieve in ten years (Bodo Schäfer)"</item>
+People usually overestimate what they can achieve in a year and underestimate what they can achieve in ten years (Bodo Schäfer)
+Worry does not empty tomorrow of its sorrow. It empties today of its strength (Corrie ten Boom)
+Compare yourself to who you were yesterday, not to who someone else is today (Jordan B. Peterson)
+Motivation is fickle. Discipline is reliable (Jocko Willink)
+Never make a decision when you are angry, never make a promise when you are happy (Benjamin Franklin)"</item>
     </string-array>
 
     <string-array name="facts4" translatable="false" tools:ignore="UnusedResources">

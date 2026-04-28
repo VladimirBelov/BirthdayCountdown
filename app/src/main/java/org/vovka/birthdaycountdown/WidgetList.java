@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 21:02
+ *  * Created by Vladimir Belov on 28.04.2026, 23:17
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 19:04
+ *  * Last modified 28.04.2026, 22:38
  *
  */
 
@@ -159,44 +159,54 @@ public class WidgetList extends AppWidgetProvider {
             if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Border_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Border_ID)))) {
                 views.setInt(R.id.widget_layout,Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    views.setViewPadding(R.id.widget_frame, 10, 10, 10, 10);
+                }
             } else {
                 views.setInt(R.id.widget_layout,Constants.METHOD_SET_BACKGROUND_RES, 0);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    views.setViewPadding(R.id.widget_frame, 0, 0, 0, 0);
+                }
             }
 
-            if (widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ShowNearestEventPhoto_ID))) {
-                //Фото ближайшего события
-                if (!filteredEventList.isEmpty()) {
-                    String eventInfo = filteredEventList.get(0);
-                    Bundle options = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
-                    int widgetWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-                    int roundingFactor = ImageUtils.getRoundingFactor(widgetPref);
-                    Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, false, roundingFactor);
-                    if (photo != null) {
-                        int outWidth;
-                        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-                        if (widgetWidth > 0) {
-                            float floatDensity = displayMetrics.density;
-                            outWidth = (int) ((widgetWidth * floatDensity * 1.2) / 6);
-                        } else {
-                            outWidth = (int) (displayMetrics.widthPixels * 1.2 / 7);
-                        }
+            //Фото ближайшего события
+            views.setViewVisibility(R.id.widgetPhoto, View.GONE);
+            if (widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ShowNearestEventPhoto_ID))
+                    && !filteredEventList.isEmpty()) {
+                String eventInfo = filteredEventList.get(0);
+                Bundle options = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
+                int widgetWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+                int roundingFactor = ImageUtils.getRoundingFactor(widgetPref);
+                Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, false, roundingFactor);
+                if (photo != null) {
+                    int outWidth;
+                    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+                    if (widgetWidth > 0) {
+                        float floatDensity = displayMetrics.density;
+                        outWidth = (int) ((widgetWidth * floatDensity * 1.2) / 6);
+                    } else {
+                        outWidth = (int) (displayMetrics.widthPixels * 1.2 / 7);
+                    }
 
-                        int inWidth = photo.getWidth();
-                        int inHeight = photo.getHeight();
-                        double resizeFactor = ImageUtils.getSizeForWidgetElement(widgetPref, 2, 1, 1);
-                        if (inHeight > 0 && inWidth > 0) {
-                            int outHeight = inHeight * outWidth / inWidth;
+                    int inWidth = photo.getWidth();
+                    int inHeight = photo.getHeight();
+                    double resizeFactor = ImageUtils.getSizeForWidgetElement(widgetPref, 2, 1, 1);
+                    if (inHeight > 0 && inWidth > 0) {
+                        int outHeight = inHeight * outWidth / inWidth;
 
-                            if (outHeight > 0 && outWidth > 0) {
-                                Bitmap photo_small = Bitmap.createScaledBitmap(photo, (int) (outWidth * resizeFactor), (int) (outHeight * resizeFactor), true);
-                                views.setImageViewBitmap(R.id.widgetPhoto, photo_small);
-                                views.setViewVisibility(R.id.widgetPhoto, View.VISIBLE);
+                        if (outHeight > 0 && outWidth > 0) {
+                            Bitmap photo_small = Bitmap.createScaledBitmap(photo, (int) (outWidth * resizeFactor), (int) (outHeight * resizeFactor), true);
+                            views.setImageViewBitmap(R.id.widgetPhoto, photo_small);
+                            views.setViewVisibility(R.id.widgetPhoto, View.VISIBLE);
+
+                            if (!prefWidgetCaption.isEmpty()) {
+                                int captionPadding = (int) (outWidth * resizeFactor)
+                                        + (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10f, displayMetrics);
+                                views.setViewPadding(R.id.caption, captionPadding, 0, 0, 0);
                             }
                         }
                     }
                 }
-            } else {
-                views.setViewVisibility(R.id.widgetPhoto, View.GONE);
             }
 
             //Привязываем адаптер

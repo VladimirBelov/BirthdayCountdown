@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 21:02
+ *  * Created by Vladimir Belov on 28.04.2026, 23:17
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 19:04
+ *  * Last modified 28.04.2026, 22:00
  *
  */
 
@@ -164,8 +164,14 @@ public class WidgetPhotoList extends AppWidgetProvider {
             if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Border_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Border_ID)))) {
                 views.setInt(R.id.widget_layout,Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    views.setViewPadding(R.id.widget_frame, 10, 10, 10, 10);
+                }
             } else {
                 views.setInt(R.id.widget_layout,Constants.METHOD_SET_BACKGROUND_RES, 0);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    views.setViewPadding(R.id.widget_frame, 0, 0, 0, 0);
+                }
             }
 
             ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?

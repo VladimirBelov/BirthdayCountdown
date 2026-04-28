@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 28.11.2023, 21:53
+  ~  * Created by Vladimir Belov on 28.04.2026, 23:17
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 28.04.2026, 23:11
   ~  */
   -->
 
@@ -1381,6 +1381,6 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="6sp"
-        tools:ignore="SmallSp,TextContrastCheck,TooManyViews"/>
+        tools:ignore="SmallSp,TextContrastCheck"/>
 
 </RelativeLayout>
