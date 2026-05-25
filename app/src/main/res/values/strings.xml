@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.04.2026, 00:06
+  ~  * Created by Vladimir Belov on 25.05.2026, 23:59
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 16.04.2026, 22:24
+  ~  * Last modified 24.05.2026, 00:47
   ~  */
   -->
 
@@ -452,7 +452,9 @@
     <string name="pref_CustomEvents_Holiday_Labels_title">Events labels</string>
     <string name="pref_CustomEvents_Holiday_Labels_summary">Events with these labels will be identified as holidays (by comma)</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Public holidays</string>
-    <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Show these public holidays</string>
+    <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Show these public holidays from bundled database</string>
+    <string name="pref_CustomEvents_Holiday_Other_Labels_title">Other holidays</string>
+    <string name="pref_CustomEvents_Holiday_Other_Labels_summary">Show these other holidays from bundled database</string>
 
     <string name="pref_CustomEvents_Fact_title">Facts</string>
     <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Bundled facts</string>
@@ -1843,10 +1845,12 @@ Long click on item to select color"</string>
     <string name="pref_CustomEvents_Other_LocalFiles_key" translatable="false">CustomEvents_Other_LocalFiles</string>
 
     <string name="pref_Holidays_key" translatable="false">Holidays</string>
+    <string name="pref_Other_Holidays_key" translatable="false">HolidaysOther</string>
     <string name="pref_CustomEvents_Holiday_Labels_key" translatable="false">CustomEvents_Holiday_Labels</string>
     <string name="pref_CustomEvents_Holiday_Calendars_key" translatable="false">CustomEvents_Holiday_Calendars</string>
     <string name="pref_CustomEvents_Holiday_LocalFiles_key" translatable="false">CustomEvents_Holiday_LocalFiles</string>
     <string name="pref_CustomEvents_Holiday_Public_Ids_key" translatable="false">CustomEvents_Holiday_Public</string>
+    <string name="pref_CustomEvents_Holiday_Other_Ids_key" translatable="false">CustomEvents_Holiday_Other</string>
 
     <string name="pref_Facts_key" translatable="false">Facts</string>
     <string name="pref_CustomEvents_Fact_Bundled_Ids_key" translatable="false">CustomEvents_Fact_Bundled</string>

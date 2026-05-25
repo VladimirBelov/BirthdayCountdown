@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Created by Vladimir Belov on 25.05.2026, 23:59
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.04.2026, 23:42
+ *  * Last modified 24.05.2026, 00:54
  *
  */
 
@@ -415,7 +415,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_Margin_key);
             hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_Jubilee_Algorithm_key);
             hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_SearchDepth_key);
-            hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_QuickAction_key);
             hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_TopPadding_key);
 
             hidePreference(disabledMoreWidgetsSettings, R.string.pref_Widgets_key, R.string.pref_Widgets_Days_EventSoon_key);
@@ -1654,7 +1653,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Holidays_key).equals(key)) {
 
-                selectHolidays();
+                selectHolidays(eventsData.preferences_HolidayEvent_ids, Constants.STRING_TYPE_HOLIDAY, R.string.pref_CustomEvents_Holiday_Public_Labels_title);
+                return true;
+
+            } else if (getString(R.string.pref_Other_Holidays_key).equals(key)) {
+
+                selectHolidays(eventsData.preferences_HolidayEvent_Other_ids, Constants.STRING_TYPE_OTHER_HOLIDAY, R.string.pref_CustomEvents_Holiday_Other_Labels_title);
                 return true;
 
             } else if (getString(R.string.pref_Facts_key).equals(key)) {
@@ -1842,14 +1846,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     @SuppressLint("DiscouragedApi")
-    private void selectHolidays() {
+    private void selectHolidays(@NonNull Set<String> preferences, @NonNull String packPrefix, @StringRes int dialogTitleResId) {
         try {
 
             //Справочники праздников и выходных
             final List<String> eventSourcesIds = new ArrayList<>();
             final List<String> eventSourcesTitles = new ArrayList<>();
             int eventsPackCount = 1;
-            int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            int packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
             while (packId > 0) {
                 try {
                     String[] eventsPack = getResources().getStringArray(packId);
@@ -1860,22 +1864,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 } catch (Resources.NotFoundException ignored) { /**/ }
 
                 eventsPackCount++;
-                packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+                packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
             }
 
             ArrayList<Boolean> eventSelected = new ArrayList<>();
 
-            Set<String> preferences_holidays = eventsData.preferences_HolidayEvent_ids;
             boolean[] sel = new boolean[eventSourcesIds.size()];
             int ind = 0;
             for (String eventId: eventSourcesIds) {
-                sel[ind] = preferences_holidays.contains(eventId);
+                sel[ind] = preferences.contains(eventId);
                 eventSelected.add(sel[ind]);
                 ind++;
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                    .setTitle(R.string.pref_CustomEvents_Holiday_Public_Labels_title)
+                    .setTitle(dialogTitleResId)
                     .setIcon(R.drawable.ic_event_holiday)
                     .setMultiChoiceItems(eventSourcesTitles.toArray(new CharSequence[0]), sel, (dialog, which, isChecked) -> eventSelected.set(which, isChecked))
                     .setPositiveButton(R.string.button_ok, (dialog, which) -> {
@@ -1885,7 +1888,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             if (eventSelected.get(i)) toStore.add(eventSourcesIds.get(i));
                         }
 
-                        eventsData.preferences_HolidayEvent_ids = toStore;
+                        preferences.clear();
+                        preferences.addAll(toStore);
                         eventsData.savePreferences();
                         eventsData.clearDaysTypesAndInfo();
 
@@ -3465,9 +3469,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
             AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(arg0 -> {
-                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                ta.recycle();
+                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                }
             });
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();
@@ -3798,6 +3802,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_CustomEvents_Other_Calendars_key),
                         getString(R.string.pref_CustomEvents_Holiday_Calendars_key),
                         getString(R.string.pref_CustomEvents_MultiType_Calendars_key),
+                        getString(R.string.pref_CustomEvents_Holiday_Other_Ids_key),
                         getString(R.string.pref_CustomEvents_Holiday_Public_Ids_key),
                         getString(R.string.pref_CustomEvents_Fact_Bundled_Ids_key),
                         getString(R.string.pref_DaysInfo_key),
@@ -4244,9 +4249,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             });
             AlertDialog alertToShow = builder.create();
             alertToShow.setOnShowListener(arg0 -> {
-                TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                ta.recycle();
+                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                    alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                }
             });
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();

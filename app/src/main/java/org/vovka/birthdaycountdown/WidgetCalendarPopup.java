@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.04.2026, 00:29
+ *  * Created by Vladimir Belov on 25.05.2026, 23:59
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.04.2026, 23:14
+ *  * Last modified 19.05.2026, 23:34
  *
  */
 package org.vovka.birthdaycountdown;
@@ -10,6 +10,7 @@ package org.vovka.birthdaycountdown;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.appwidget.AppWidgetManager;
+import android.content.ActivityNotFoundException;
 import android.content.ClipDescription;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -209,8 +210,10 @@ public class WidgetCalendarPopup extends Activity {
                 builder.appendPath(dayMills);
                 Intent intentCalendar = new Intent(Intent.ACTION_VIEW, builder.build());
                 intentCalendar.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intentCalendar);
-                finish();
+                try {
+                    startActivity(intentCalendar);
+                    finish();
+                } catch (ActivityNotFoundException ignored) { /**/ }
             }
         });
         //Поделиться
@@ -221,7 +224,9 @@ public class WidgetCalendarPopup extends Activity {
                 intentShare.putExtra(Intent.EXTRA_TEXT,
                         viewCaption.getText().toString().concat(Constants.STRING_EOL)
                                 .concat(viewInfo.getText().toString()));
-                startActivity(Intent.createChooser(intentShare, " "));
+                try {
+                    startActivity(Intent.createChooser(intentShare, " "));
+                } catch (ActivityNotFoundException ignored) { /**/ }
             }
         });
 
@@ -347,6 +352,8 @@ public class WidgetCalendarPopup extends Activity {
                             if (calFirstDay != null && calLastDay != null) {
                                 eventsData.fillDaysTypesFromCalendars(listEventsPacks, calFirstDay, calLastDay);
                             }
+                            //Заполнение типов дней из справочников
+                            eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
                             //Заполнение типов дней из файлов
                             eventsData.fillDaysTypesFromFiles(listEventsPacks);
                         }

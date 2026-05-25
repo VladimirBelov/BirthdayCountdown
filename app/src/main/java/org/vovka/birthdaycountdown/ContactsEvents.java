@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.04.2026, 00:29
+ *  * Created by Vladimir Belov on 25.05.2026, 23:59
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.04.2026, 00:28
+ *  * Last modified 24.05.2026, 01:13
  *
  */
 
@@ -564,6 +564,9 @@ public class ContactsEvents {
     //Общие настройки
     boolean preferences_debug_on;
     boolean preferences_info_on;
+    /**
+     * Список включённых дополнительных функций, например {@link Constants#FEATURE_QUIZ}
+     */
     Set<String> preferences_enabled_features = new HashSet<>();
     String preferences_language;
     String preferences_Icon;
@@ -650,6 +653,7 @@ public class ContactsEvents {
     Set<String> preferences_MultiType_files = new HashSet<>();
     Set<String> preferences_FactEvent_files = new HashSet<>();
     Set<String> preferences_HolidayEvent_ids = new HashSet<>();
+    Set<String> preferences_HolidayEvent_Other_ids = new HashSet<>();
     Set<String> preferences_FactEvent_ids = new HashSet<>();
     final private Set<String> preferences_eventsWithoutYear = new HashSet<>();
     private int preferences_IconPackNumber;
@@ -1994,6 +1998,7 @@ public class ContactsEvents {
             }
             preferences_HolidayEvent_files = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Holiday_LocalFiles_key), new HashSet<>());
             preferences_HolidayEvent_ids = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Holiday_Public_Ids_key), new HashSet<>());
+            preferences_HolidayEvent_Other_ids = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Holiday_Other_Ids_key), new HashSet<>());
 
             //Факты
             preferences_FactEvent_files = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Fact_LocalFiles_key), new HashSet<>());
@@ -2428,6 +2433,7 @@ public class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_Holiday_LocalFiles_key), preferences_HolidayEvent_files);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_MultiType_LocalFiles_key), preferences_MultiType_files);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_Fact_LocalFiles_key), preferences_FactEvent_files);
+            editor.putStringSet(context.getString(R.string.pref_CustomEvents_Holiday_Other_Ids_key), preferences_HolidayEvent_Other_ids);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_Holiday_Public_Ids_key), preferences_HolidayEvent_ids);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_Fact_Bundled_Ids_key), preferences_FactEvent_ids);
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Distance_key), preferences_list_magnify_distance);
@@ -2531,7 +2537,8 @@ public class ContactsEvents {
                     | getFileEvents(Constants.EventType_Other)
                     | getFileEvents(Constants.EventType_Holiday)
                     | getFileEvents(Constants.Type_MultiEvent)
-                    | getHolidayEvents()
+                    | getHolidayEvents(preferences_HolidayEvent_ids, Constants.STRING_TYPE_HOLIDAY)
+                    | getHolidayEvents(preferences_HolidayEvent_Other_ids, Constants.STRING_TYPE_OTHER_HOLIDAY)
                     | getFactsEvents(true);
 
             statFavoriteEventsCount += getFavoritesEventsCount();
@@ -4475,6 +4482,10 @@ public class ContactsEvents {
         }
     }
 
+    /** Разделить события на несколько дней на отдельные дни
+     * @param eventsArray Массив с событиями (даты начала и конца события идут через "-": 21.01.2000-23.01.2000 Название события)
+     * @return Результирующий массив событий, где каждая дата содержится в отдельном элементе массива
+     */
     private String[] splitMultidayEventsAsSeparateLine(String[] eventsArray) {
         ArrayList<String> result = new ArrayList<>();
 
@@ -4909,7 +4920,7 @@ public class ContactsEvents {
                     && eventLine.endsWith(Constants.STRING_BDP_EOL);
             int indexFileNameEnd = Math.max(0, file.indexOf(Constants.STRING_BAR));
 
-            //BirthdayPro, DarkBirthday: <Дата без пробелов>[,<пробел>флаги[тип события]] название праздника или ФИО [(должность)] [http:// или https:// ссылка]
+            //BirthdayPro, DarkBirthday: <Дата без пробелов>[,<пробел>флаги[тип события]] название праздника или ФИО [(должность)] [| описание события] [http:// или https:// ссылка]
             if (!isBirthdaysPlusEvent) {
 
                 if (indexFirstSpace == -1) return;
@@ -5034,7 +5045,7 @@ public class ContactsEvents {
                     eventURL = eventTitle.substring(urlOffset);
                 }
             }
-            if (urlOffset > -1) {
+            if (!eventURL.isEmpty()) {
                 eventURL = StringUtils.substringBefore(eventURL, Constants.STRING_SPACE);
                 eventData.put(Position_eventURL, eventURL);
                 eventTitle = eventTitle.replace(eventURL, Constants.STRING_EMPTY).trim();
@@ -5057,7 +5068,7 @@ public class ContactsEvents {
                     String eventDescription = eventTitle.substring(indStartDescription + 1);
                     if (!eventDescription.isEmpty()) {
                         eventData.put(Position_eventDescription, eventDescription.trim());
-                        eventTitle = eventTitle.replace(eventDescription, Constants.STRING_EMPTY).trim();
+                        eventTitle = eventTitle.substring(0, indStartDescription).trim();
                     }
                 }
             }
@@ -8782,8 +8793,8 @@ public class ContactsEvents {
 
         try {
 
-            return !key.isEmpty() && preferences_hiddenEvents.contains(key)
-                    || !TextUtils.isEmpty(keyWithRawId) && preferences_hiddenEventsRawIds.contains(keyWithRawId);
+            return (!key.isEmpty() && preferences_hiddenEvents.contains(key))
+                    || (!TextUtils.isEmpty(keyWithRawId) && preferences_hiddenEventsRawIds.contains(keyWithRawId));
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -9611,15 +9622,19 @@ public class ContactsEvents {
     @NonNull
     List<String> getWidgetPreference(int widgetID, String widgetType) {
 
-        final String defaultPrefString;
-        if (widgetType != null && widgetType.equals(Constants.WIDGET_TYPE_LIST)) {
-            defaultPrefString = context.getString(R.string.widget_config_defaultPref_List);
-        } else if (widgetType != null && widgetType.equals(Constants.WIDGET_TYPE_PHOTO_LIST)) {
-            defaultPrefString = context.getString(R.string.widget_config_defaultPref_PhotoList);
-        } else if (widgetType != null && widgetType.equals(Constants.WIDGET_TYPE_CALENDAR)) {
-            defaultPrefString = context.getString(R.string.widget_config_defaultPref_Calendar);
-        } else {
-            defaultPrefString = context.getString(R.string.widget_config_defaultPref);
+        String defaultPrefString = context.getString(R.string.widget_config_defaultPref);
+        if (widgetType != null) {
+            switch (widgetType) {
+                case Constants.WIDGET_TYPE_LIST:
+                    defaultPrefString = context.getString(R.string.widget_config_defaultPref_List);
+                    break;
+                case Constants.WIDGET_TYPE_PHOTO_LIST:
+                    defaultPrefString = context.getString(R.string.widget_config_defaultPref_PhotoList);
+                    break;
+                case Constants.WIDGET_TYPE_CALENDAR:
+                    defaultPrefString = context.getString(R.string.widget_config_defaultPref_Calendar);
+                    break;
+            }
         }
 
         List<String> defaultPref = Arrays.asList(defaultPrefString.split(Constants.STRING_COMMA, -1));
@@ -10957,54 +10972,77 @@ public class ContactsEvents {
     }
 
     /**
-     * Считывание событий из внутренних справочников и файлов
+     * Считывание праздников для {@link WidgetCalendar} из внутренних справочников
      *
-     * @param fileHashes Хэши источников для получения событий
+     * @param packsHashes Хэши источников для получения событий
+     * @param packPrefix Префикс массива событий в ресурсах
+     * @param eventSourcePrefix Префикс типа события для составления hash
+     * @param eventPrefix Префикс, добавляемый перед названием события из этого массива
      */
+    @SuppressWarnings("SameParameterValue")
     @SuppressLint("DiscouragedApi")
-    void fillDaysTypesFromFiles(List<String> fileHashes) {
+    void fillDaysTypesFromHolidays(@NonNull List<String> packsHashes, @NonNull String packPrefix, @NonNull String eventSourcePrefix, String eventPrefix) {
         try {
+
+            if (packsHashes.isEmpty()) return;
 
             //Справочники праздников и выходных
             int eventsPackCount = 1;
-            int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
+            int packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
             while (packId > 0) {
                 try {
 
                     String[] eventsPack = getResources().getStringArray(packId);
                     int countEvents = eventsPack.length;
                     if (countEvents > 1) {
-                        final String packHash = StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
-                        if (fileHashes == null || fileHashes.contains(packHash)) {
+                        final String packHash = StringUtils.getHash(eventSourcePrefix + eventsPack[0]);
+                        if (packsHashes.contains(packHash)) {
                             Log.i("HOLIDAY", eventsPack[0] + Constants.STRING_PARENTHESIS_OPEN + packHash + Constants.STRING_PARENTHESIS_CLOSE);
                             for (int i = 1; i < countEvents; i++) {
                                 String eventsArray = eventsPack[i];
-                                String[] days = eventsArray.split(Constants.STRING_EOL, -1);
+                                String[] events = eventsArray.split(Constants.STRING_EOL, -1);
 
-                                String eventTite = Constants.eventTitleHolidayPrefix;
-                                if (eventsPack[0].indexOf(Constants.STRING_SPACE) == 4) {
-                                    eventTite = eventsPack[0].substring(0, eventsPack[0].indexOf(Constants.STRING_SPACE) + 1);
+                                String titlePrefix = Constants.STRING_EMPTY;
+                                if (StringUtils.hasContent(eventPrefix)) {
+                                    titlePrefix = eventPrefix;
                                 }
-                                fillDaysTypesFromFile(packHash, days, eventTite, DayType.Type.Common);
+                                if (eventsPack[0].indexOf(Constants.STRING_SPACE) == 4) {
+                                    titlePrefix = eventsPack[0].substring(0, eventsPack[0].indexOf(Constants.STRING_SPACE) + 1);
+                                }
+                                fillDaysTypesFromFile(packHash, events, titlePrefix, DayType.Type.Common);
                             }
-                            preferences_DaysTypes.put(packHash, DayType.Type.Holiday);
+                            preferences_DaysTypes.put(packHash, DayType.Type.Holiday); //todo: для других праздников - продумать
                         }
                     }
 
                 } catch (Resources.NotFoundException ignored) { /**/ }
 
                 eventsPackCount++;
-                packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
+                packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
             }
 
-            //Файлы
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Считывание событий для {@link WidgetCalendar} из файлов
+     *
+     * @param fileHashes Хэши источников для получения событий
+     */
+    @SuppressLint("DiscouragedApi")
+    void fillDaysTypesFromFiles(@NonNull List<String> fileHashes) {
+        try {
+
+            if (fileHashes.isEmpty()) return;
             Set<String> fileList = preferences_HolidayEvent_files;
             if (fileList == null || fileList.isEmpty()) return;
 
             for (String file : fileList) {
-
                 final String packHash = StringUtils.getHash(Constants.eventSourceFilePrefix + file);
-                if (fileHashes == null || fileHashes.contains(packHash)) {
+                if (fileHashes.contains(packHash)) {
                     if (!preferences_DaysTypes.containsKey(packHash)) {
                         String[] fileDetails = file.split(Constants.REGEX_BAR);
                         Log.i("FILE", fileDetails[0] + Constants.STRING_PARENTHESIS_OPEN + packHash + Constants.STRING_PARENTHESIS_CLOSE);
@@ -11026,7 +11064,7 @@ public class ContactsEvents {
     }
 
     /**
-     * Добавление массива событий в общие массивы событий и типов событий
+     * Добавление массива событий в общие массивы событий и типов событий для {@link WidgetCalendar}
      *
      * @param packHash       Хэш источника (тип источника + путь до источника (файла или внутреннего ресурса))
      * @param events         Массив событий (дата + флаги события + описание события)
@@ -11092,7 +11130,7 @@ public class ContactsEvents {
                 }
                 if (dateEvent != null) {
                     final String eventTitle = titlePrefix
-                            + day.substring(indexFirstSpace + 1).trim()
+                            + StringUtils.substringBefore(day.substring(indexFirstSpace + 1).trim(), Constants.STRING_BAR)
                             + Constants.STRING_PARENTHESIS_OPEN
                             + (dateEvent.getYear() + 1900)
                             + Constants.STRING_PARENTHESIS_CLOSE;
@@ -11457,18 +11495,24 @@ public class ContactsEvents {
         }
     }
 
+    /**
+     * Добавляет в общий список праздники из внутренних справочников
+     *
+     * @param packsHashes Хэши источников для получения событий
+     * @param packPrefix  Префикс массива событий в ресурсах
+     */
     @SuppressLint("DiscouragedApi")
-    private boolean getHolidayEvents() {
+    private boolean getHolidayEvents(@NonNull Set<String> packsHashes, @NonNull String packPrefix) {
         try {
 
-            if (preferences_HolidayEvent_ids.isEmpty()) return false;
+            if (packsHashes.isEmpty()) return false;
 
             long statCurrentModuleStart = System.currentTimeMillis();
             final TreeMap<Integer, String> eventData = new TreeMap<>();
             Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
 
             int eventsPackCount = 1;
-            int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
+            int packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
             while (packId > 0) {
                 try {
 
@@ -11476,7 +11520,7 @@ public class ContactsEvents {
                     int countEvents = eventsPack.length;
                     if (countEvents > 1) {
                         final String packHash = StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
-                        if (preferences_HolidayEvent_ids.contains(packHash)) {
+                        if (packsHashes.contains(packHash)) {
 
                             String eventEmoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
                             if (eventsPack[0].indexOf(Constants.STRING_SPACE) == 4) {
@@ -11486,31 +11530,57 @@ public class ContactsEvents {
                             for (int i = 1; i < countEvents; i++) {
                                 String eventsArray = eventsPack[i];
                                 String[] days = eventsArray.split(Constants.STRING_EOL, -1);
-                                for (String eventLine : days) {
-                                    String day = eventLine.trim();
-                                    boolean isEndless = true;
+                                for (String eventString : days) {
+                                    //todo: может быть перенаправить на addFileEventFromLine()
+                                    String eventLine = eventString.trim().replace("\uFEFF", Constants.STRING_EMPTY);
 
-                                    if (day.isEmpty() || day.startsWith(Constants.STRING_HASH) || day.startsWith(Constants.STRING_DSLASH))
+                                    if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH)) {
                                         continue;
-
-                                    final int indexComma = day.indexOf(Constants.STRING_COMMA);
-                                    if (indexComma == -1) continue;
-
-                                    final int indexFirstSpace = day.indexOf(Constants.STRING_SPACE);
-                                    String flags;
-                                    String eventTitle = null;
-                                    if (indexFirstSpace > -1 && indexFirstSpace > indexComma) {
-                                        flags = day.substring(indexComma + 1, indexFirstSpace);
-                                        eventTitle = day.substring(indexFirstSpace + 1);
-                                    } else {
-                                        flags = day.substring(indexComma + 1);
                                     }
-                                    if (flags.contains(Constants.STRING_1)) {
-                                        isEndless = false;
+
+                                    //<Дата без пробелов>[,<пробел>флаги] название праздника [| описание праздника] [http:// или https:// ссылка]
+                                    int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
+                                    if (indexFirstSpace == -1) continue;
+
+                                    boolean isEndless = true;
+                                    String eventDateString;
+                                    String eventTitle;
+                                    final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
+                                    if (indexComma > -1 && indexComma < indexFirstSpace) { //Есть флаги
+
+                                        if (indexFirstSpace - indexComma == 1) { //После запятой пробел - убираем
+                                            eventLine = eventLine.substring(0, indexComma + 1) + eventLine.substring(indexFirstSpace + 1);
+                                            indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
+                                            if (indexFirstSpace == -1) {
+                                                ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventString));
+                                                continue;
+                                            }
+                                        }
+
+                                        eventDateString = eventLine.substring(0, indexComma);
+                                        String flags = eventLine.substring(indexComma + 1, indexFirstSpace);
+                                        eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
+
+                                        if (!flags.isEmpty()) {
+                                            if (flags.contains(Constants.STRING_1)) {
+                                                isEndless = false;
+                                                //flags = flags.replace(Constants.STRING_1, Constants.STRING_EMPTY);
+                                            }
+                                        }
+
+                                    } else {
+
+                                        eventDateString = eventLine.substring(0, indexFirstSpace);
+                                        eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
+
+                                    }
+
+                                    if (eventDateString.isEmpty() || eventTitle.isEmpty()) {
+                                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventString));
+                                        continue;
                                     }
 
                                     Date dateEvent = null;
-                                    String eventDateString = day.substring(0, indexComma);
 
                                     try {
                                         String dateNextFloatingEvent = computeFloatingDate(eventDateString, 0);
@@ -11548,6 +11618,33 @@ public class ContactsEvents {
                                         }
                                     }
 
+                                    //URLs
+                                    String eventURL = Constants.STRING_EMPTY;
+                                    String eventTitle_lowered = eventTitle.toLowerCase();
+                                    int urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTP);
+                                    if (urlOffset > -1) {
+                                        eventURL = eventTitle.substring(urlOffset);
+                                    } else {
+                                        urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTPS);
+                                        if (urlOffset > -1) {
+                                            eventURL = eventTitle.substring(urlOffset);
+                                        }
+                                    }
+                                    if (!eventURL.isEmpty()) {
+                                        eventURL = StringUtils.substringBefore(eventURL, Constants.STRING_SPACE);
+                                        eventData.put(Position_eventURL, eventURL);
+                                        eventTitle = eventTitle.replace(eventURL, Constants.STRING_EMPTY).trim();
+                                    }
+
+                                    //Описание события
+                                    int indStartDescription = eventTitle.indexOf(Constants.STRING_BAR);
+                                    if (indStartDescription > -1) {
+                                        String eventDescription = eventTitle.substring(indStartDescription + 1);
+                                        if (!eventDescription.isEmpty()) {
+                                            eventData.put(Position_eventDescription, eventDescription.trim());
+                                            eventTitle = eventTitle.substring(0, indStartDescription).trim();
+                                        }
+                                    }
                                     if (TextUtils.isEmpty(eventTitle)) continue;
 
                                     final String eventNewDate = Constants.EVENT_PREFIX_HOLIDAY_EVENT + Constants.STRING_COLON_SPACE
@@ -11566,7 +11663,7 @@ public class ContactsEvents {
                                     eventData.put(Position_eventEmoji, eventEmoji);
                                     eventData.put(Position_eventStorage, Constants.STRING_STORAGE_HOLIDAYS); //Где искать событие по ID
                                     eventData.put(Position_eventSource, getResources().getString(R.string.msg_source_info, eventsPack[0]));
-                                    eventData.put(Position_eventID, Constants.PREFIX_HolidayEventID + StringUtils.getHash(packHash + day));
+                                    eventData.put(Position_eventID, Constants.PREFIX_HolidayEventID + StringUtils.getHash(packHash + eventLine));
                                     eventData.put(Position_notAnnualEvent, !isEndless ? Constants.STRING_1 : Constants.STRING_EMPTY);
 
                                     fillEmptyEventData(eventData);
@@ -11585,7 +11682,7 @@ public class ContactsEvents {
                 } catch (Resources.NotFoundException ignored) { /**/ }
 
                 eventsPackCount++;
-                packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
+                packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
             }
 
             statTimeGetHolidayEvents += System.currentTimeMillis() - statCurrentModuleStart;

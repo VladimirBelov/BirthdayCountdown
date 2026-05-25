@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
+  ~  * Created by Vladimir Belov on 25.05.2026, 23:59
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.03.2026, 13:39
+  ~  * Last modified 07.05.2026, 00:17
   ~  */
   -->
 
@@ -76,7 +76,7 @@
         <item>Previous events in main list: added 5k, events with floating dates, events from calendars</item>
         <item>In the calendar widget for whole year, the January is always with year number</item>
         <item>Long press on a list item opens the file for viewing (application settings)</item>
-        <item>Added quick action to display facts (long tap on app icon)</item>
+        <item>Added app action shortcut to display facts (long tap on app icon)</item>
         <item>A \"Share\" action has been added to notifications, pop-up windows with facts and calendar events</item>
         <item>Added 🌟 favorite contact events to calendar widget</item>
         <item>Optimization for Android 15</item>
@@ -335,7 +335,7 @@
         <item>Added ability to disable notification of an individual event</item>
         <item>Added contact nicknames support</item>
         <item>Additions to event context menu: set event reminder, a list of all named weddings</item>
-        <item>Added application shortcut for notifications recall (Android 7.1+)</item>
+        <item>Added application shortcut for today notifications recall (Android 7.1+)</item>
         <item>Fixed display of dates without a year on Huawei devices</item>
         <item>Fixed display \"Surname N.P.\" for contacts with a suffix or prefix in the name</item>
         <item>Fixed widgets display on tablets with Android 5.x</item>

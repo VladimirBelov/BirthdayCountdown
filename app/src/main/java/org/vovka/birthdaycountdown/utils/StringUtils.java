@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.03.2026, 01:07
+ *  * Created by Vladimir Belov on 25.05.2026, 23:59
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 17.03.2026, 21:11
+ *  * Last modified 21.05.2026, 22:08
  *
  */
 
@@ -61,6 +61,11 @@ public class StringUtils {
         return false;
     }
 
+    /** Возвращает текст до подстроки sep. Если подстрока не найдена - исходный текст
+     * @param text Исходный текст
+     * @param sep Подстрока
+     * @return Текст до подстроки
+     */
     @NonNull
     public static String substringBefore(String text, String sep) {
         if (text == null) return Constants.STRING_EMPTY;
@@ -68,6 +73,11 @@ public class StringUtils {
         return text.contains(sep) ? text.substring(0, text.indexOf(sep)) : text;
     }
 
+    /** Возвращает текст после подстроки sep. Если подстрока не найдена - исходный текст
+     * @param text Исходный текст
+     * @param sep Подстрока
+     * @return Текст после подстроки
+     */
     @NonNull
     public static String substringAfter(String text, String sep) {
         if (text == null) return Constants.STRING_EMPTY;
@@ -75,6 +85,12 @@ public class StringUtils {
         return text.contains(sep) ? text.substring(text.indexOf(sep) + sep.length()) : text;
     }
 
+    /** Возвращает текст между подстроками
+     * @param text Исходный текст
+     * @param sep1 Подстрока 1
+     * @param sep2 Подстрока 2
+     * @return Текст между подстроками
+     */
     @NonNull
     public static String substringBetween(String text, String sep1, String sep2) {
         if (text == null) return Constants.STRING_EMPTY;

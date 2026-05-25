@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.03.2026, 18:43
+ *  * Created by Vladimir Belov on 25.05.2026, 23:59
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.03.2026, 12:45
+ *  * Last modified 24.05.2026, 00:10
  *
  */
 
@@ -120,6 +120,7 @@ public final class Constants {
     static final String STRING_ID = "id";
     static final String STRING_TYPE_WEDDING = "event_type_wedding_";
     static final String STRING_TYPE_HOLIDAY = "holidays";
+    static final String STRING_TYPE_OTHER_HOLIDAY = "other_holidays";
     static final String STRING_TYPE_FACT = "facts";
     static final String STRING_STORAGE_CONTACTS = "contacts";
     static final String STRING_STORAGE_CALENDAR = "calendar";

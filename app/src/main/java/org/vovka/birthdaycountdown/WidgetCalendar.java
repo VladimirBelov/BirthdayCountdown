@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.04.2026, 00:29
+ *  * Created by Vladimir Belov on 25.05.2026, 23:59
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.04.2026, 23:09
+ *  * Last modified 19.05.2026, 23:34
  *
  */
 
@@ -586,6 +586,8 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                 //Заполнение типов дней из календарей по периоду
                 eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay);
+                //Заполнение типов дней из справочников
+                eventsData.fillDaysTypesFromHolidays(prefOtherEvents, Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
                 //Заполнение типов дней из файлов
                 eventsData.fillDaysTypesFromFiles(prefOtherEvents);
             }
