@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.05.2026, 23:59
+ *  * Created by Vladimir Belov on 26.05.2026, 01:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 24.05.2026, 01:13
+ *  * Last modified 26.05.2026, 01:42
  *
  */
 
@@ -4407,6 +4407,10 @@ public class ContactsEvents {
     }
 
 
+    /** Добавляет в общий список события из файлов, указанных в настройках
+     * @param eventType Тип событий
+     * @return True - в настройках указаны файлы для указанного типа событий и не было ошибки перебора этих файлов
+     */
     private boolean getFileEvents(@NonNull String eventType) {
 
         long statCurrentModuleStart = System.currentTimeMillis();
@@ -4462,10 +4466,15 @@ public class ContactsEvents {
                     for (String eventString : eventsArray) {
                         addFileEventFromLine(
                                 file,
+                                eventSource,
                                 eventString,
                                 eventType,
-                                today,
-                                eventSource
+                                Constants.PREFIX_FileEventID,
+                                Constants.EVENT_PREFIX_FILE_EVENT,
+                                Constants.eventSourceFilePrefix,
+                                Constants.STRING_STORAGE_FILE,
+                                null,
+                                today
                         );
                     }
                 }
@@ -4889,15 +4898,24 @@ public class ContactsEvents {
     }
 
     /**
-     * Добавляет в общий список событие из файла
+     * Добавляет в общий список событие из строки файла
      *
-     * @param file        Путь до файла и URI
-     * @param eventString Строка с событием
-     * @param eventType   Тип событий, которым добавлять
-     * @param today       Дата сегодня
-     * @param eventSource Источник событий
+     * @param eventSource           Источник события (путь до файла + URI, ID источника)
+     * @param eventSourceCaption    Источник события (заголовок)
+     * @param eventString           Строка с событием
+     * @param eventType             Тип события, которым добавлять
+     * @param eventIdPrefix         Префикс ID
+     * @param eventSourcePrefix     Префикс источника
+     * @param eventIdHashPrefix     Префикс ID для hash
+     * @param eventStorage          Тип источника события
+     * @param eventEmoji            Эмоджи события
+     * @param today                 Дата сегодня
      */
-    private void addFileEventFromLine(String file, String eventString, @NonNull String eventType, Calendar today, String eventSource) {
+    private void addFileEventFromLine(@NonNull String eventSource, @NonNull String eventSourceCaption,
+                                      @NonNull String eventString, @NonNull String eventType,
+                                      @NonNull String eventIdPrefix, @NonNull String eventSourcePrefix,
+                                      @NonNull String eventIdHashPrefix, @NonNull String eventStorage,
+                                      String eventEmoji, @NonNull Calendar today) {
         try {
 
             String eventLine = eventString.trim().replace("\uFEFF", Constants.STRING_EMPTY);
@@ -4918,7 +4936,6 @@ public class ContactsEvents {
             int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
             boolean isBirthdaysPlusEvent = eventLine.startsWith(Constants.STRING_BDP_DIV)
                     && eventLine.endsWith(Constants.STRING_BDP_EOL);
-            int indexFileNameEnd = Math.max(0, file.indexOf(Constants.STRING_BAR));
 
             //BirthdayPro, DarkBirthday: <Дата без пробелов>[,<пробел>флаги[тип события]] название праздника или ФИО [(должность)] [| описание события] [http:// или https:// ссылка]
             if (!isBirthdaysPlusEvent) {
@@ -5005,6 +5022,9 @@ public class ContactsEvents {
             if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && (event == null || event.icon == R.drawable.ic_event_unknown)) {
                 return;
             }
+            if (event != null && eventEmoji != null) {
+                event.emoji = eventEmoji;
+            }
 
             boolean useEventYear = true;
             int indexDateNoYear = isBirthdaysPlusEvent ? eventDateString.indexOf(Constants.STRING_BDP_NO_YEAR) : eventDateString.indexOf(Constants.STRING_0000);
@@ -5018,16 +5038,16 @@ public class ContactsEvents {
             if (preferences_list_prev_events_scan_distance == 0 && result.isPassedEvent)
                 return; //Событие прошло и показ прошедших выключен
 
-            String eventID = Constants.PREFIX_FileEventID + StringUtils.getHash(file.substring(indexFileNameEnd) + eventTitle);
-            eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
+            String eventID = eventIdPrefix + StringUtils.getHash(StringUtils.substringBefore(eventSource, Constants.STRING_BAR) + eventLine);
+            eventNewDate = eventSourcePrefix + Constants.STRING_COLON_SPACE
                     + (useEventYear ? isAD ? Objects.requireNonNull(sdf_java.get()).format(result.dateEvent) : Objects.requireNonNull(sdf_java_G.get()).format(result.dateEvent) : Objects.requireNonNull(sdf_java_no_year.get()).format(result.dateEvent))
                     + Constants.STRING_COLON_SPACE
-                    + StringUtils.getHash((isMultiTypeSource ? Constants.eventSourceMultiFilePrefix : Constants.eventSourceFilePrefix) + file);
+                    + StringUtils.getHash((isMultiTypeSource ? Constants.eventSourceMultiFilePrefix : eventIdHashPrefix) + eventSource);
 
-            eventData.put(Position_eventStorage, Constants.STRING_STORAGE_FILE);
+            eventData.put(Position_eventStorage, eventStorage);
             eventData.put(Position_eventCaption, event.caption);
             eventData.put(Position_eventLabel, event.label);
-            eventData.put(Position_eventSource, eventSource);
+            eventData.put(Position_eventSource, eventSourceCaption);
             eventData.put(Position_eventType, event.type);
             eventData.put(Position_eventSubType, event.subType);
             eventData.put(Position_dates, eventNewDate);
@@ -5055,7 +5075,7 @@ public class ContactsEvents {
             //Описание события
             int indStartDescription = eventTitle.indexOf(Constants.STRING_BAR);
             if (indStartDescription > -1) {
-                int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
+                /*int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
                 if (pStartFirst > -1) {
                     if (indStartDescription < pStartFirst) { //"|" до "("
                         String eventDescription = eventTitle.substring(indStartDescription + 1, pStartFirst);
@@ -5064,13 +5084,13 @@ public class ContactsEvents {
                             eventTitle = eventTitle.replace(eventDescription.concat(Constants.STRING_BAR), Constants.STRING_EMPTY).trim();
                         }
                     }
-                } else {
+                } else {*/
                     String eventDescription = eventTitle.substring(indStartDescription + 1);
                     if (!eventDescription.isEmpty()) {
                         eventData.put(Position_eventDescription, eventDescription.trim());
                         eventTitle = eventTitle.substring(0, indStartDescription).trim();
                     }
-                }
+                //}
             }
 
             if (map_contacts_names.isEmpty()) event.needScanContacts = false;
@@ -5156,7 +5176,7 @@ public class ContactsEvents {
                 Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
                 if (eventIndex != null && eventIndex <= eventListUpdated.size()) {
 
-                    if (updateExistEvent(eventIndex, eventID, eventSource, eventNewDate, orgNameFile, titleFile, eventURL)) {
+                    if (updateExistEvent(eventIndex, eventID, eventSourceCaption, eventNewDate, orgNameFile, titleFile, eventURL)) {
                         eventData.clear();
                     }
 
@@ -11508,7 +11528,7 @@ public class ContactsEvents {
             if (packsHashes.isEmpty()) return false;
 
             long statCurrentModuleStart = System.currentTimeMillis();
-            final TreeMap<Integer, String> eventData = new TreeMap<>();
+            //final TreeMap<Integer, String> eventData = new TreeMap<>();
             Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
 
             int eventsPackCount = 1;
@@ -11531,8 +11551,21 @@ public class ContactsEvents {
                                 String eventsArray = eventsPack[i];
                                 String[] days = eventsArray.split(Constants.STRING_EOL, -1);
                                 for (String eventString : days) {
-                                    //todo: может быть перенаправить на addFileEventFromLine()
-                                    String eventLine = eventString.trim().replace("\uFEFF", Constants.STRING_EMPTY);
+
+                                    addFileEventFromLine(
+                                            eventsPack[0],
+                                            getResources().getString(R.string.msg_source_info, eventsPack[0]),
+                                            eventString,
+                                            Constants.EventType_Holiday,
+                                            Constants.PREFIX_HolidayEventID,
+                                            Constants.EVENT_PREFIX_HOLIDAY_EVENT,
+                                            Constants.eventSourceHolidayPrefix,
+                                            Constants.STRING_STORAGE_HOLIDAYS,
+                                            eventEmoji,
+                                            today
+                                    );
+
+                                    /*String eventLine = eventString.trim().replace("\uFEFF", Constants.STRING_EMPTY);
 
                                     if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH)) {
                                         continue;
@@ -11673,7 +11706,7 @@ public class ContactsEvents {
                                         eventListUpdated.add(eventRow);
                                         increaseStatForEventSourcesIds(packHash);
                                     }
-                                    eventData.clear();
+                                    eventData.clear();*/
                                 }
                             }
                         }
