@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.04.2026, 19:58
+ *  * Created by Vladimir Belov on 28.05.2026, 01:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 11.04.2026, 14:23
+ *  * Last modified 27.05.2026, 18:07
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -117,6 +117,7 @@ android {
 
             debuggable = false
             minifyEnabled = false
+            //noinspection NotShrinkingResources
             shrinkResources = false
             if (keystorePropertiesFile.exists()) {
                 signingConfig = signingConfigs.release
@@ -126,6 +127,7 @@ android {
             buildConfigField "String", "BUILD_TIME", "\"" + System.currentTimeMillis() + "\""
 
             minifyEnabled = false
+            //noinspection NotShrinkingResources
             shrinkResources = false
             debuggable = true
             jniDebuggable = true

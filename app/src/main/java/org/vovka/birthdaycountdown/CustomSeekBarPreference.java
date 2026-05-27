@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 12:34
+ *  * Created by Vladimir Belov on 28.05.2026, 01:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 12:19
+ *  * Last modified 28.05.2026, 01:03
  *
  */
 
@@ -143,6 +143,7 @@ public class CustomSeekBarPreference extends DialogPreference {
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         if (positiveResult) { // Если пользователь нажал OK
+
             // Сохраняем значение в SharedPreferences
             // getPersistedInt/persistInt - это методы из Preference, которые работают с SharedPreferences
             if (callChangeListener(mProgress)) { // Уведомляем слушателей (если есть)
@@ -196,6 +197,17 @@ public class CustomSeekBarPreference extends DialogPreference {
      * Вспомогательный метод для обновления сводки
      */
     public void updateSummary(int newValue) {
+
+        if (!isEnabled()) {
+            setSummary(Constants.STRING_EMPTY);
+            return;
+        }
+        ContactsEvents eventsData = ContactsEvents.getInstance();
+        if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) {
+            setSummary(Constants.STRING_EMPTY);
+            return;
+        }
+
         String summary;
         int value = newValue;
         if (value < 0) value = minSummaryValue + step * mProgress;
@@ -209,19 +221,17 @@ public class CustomSeekBarPreference extends DialogPreference {
             // Если шаблона нет, устанавливаем просто числовое значение
             summary = String.valueOf(value);
         }
-        ContactsEvents eventsData = ContactsEvents.getInstance();
-        SpannableString spannable = new SpannableString(summary);
-        if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO) && isEnabled()) {
-            spannable.setSpan(new StyleSpan(Typeface.BOLD), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            Resources.Theme theme = eventsData.getResources().newTheme();
-            theme.applyStyle(eventsData.preferences_theme.themeMain, true);
-            try (TypedArray ta = theme.obtainStyledAttributes(R.styleable.Theme)) {
-                spannable.setSpan(new ForegroundColorSpan(ta.getColor(R.styleable.Theme_colorAccent, 0)),
-                        0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-        }
 
+        SpannableString spannable = new SpannableString(summary);
+        spannable.setSpan(new StyleSpan(Typeface.BOLD), 0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Resources.Theme theme = eventsData.getResources().newTheme();
+        theme.applyStyle(eventsData.preferences_theme.themeMain, true);
+        try (TypedArray ta = theme.obtainStyledAttributes(R.styleable.Theme)) {
+            spannable.setSpan(new ForegroundColorSpan(ta.getColor(R.styleable.Theme_colorAccent, 0)),
+                    0, summary.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
         setSummary(spannable);
+
     }
 
     // Метод для установки значения программно (если нужно)

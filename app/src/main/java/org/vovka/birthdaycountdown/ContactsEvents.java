@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.05.2026, 01:57
+ *  * Created by Vladimir Belov on 28.05.2026, 01:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.05.2026, 01:42
+ *  * Last modified 28.05.2026, 01:37
  *
  */
 
@@ -11759,6 +11759,19 @@ public class ContactsEvents {
         private final List<String> hashes = new ArrayList<>();
         private final List<Integer> icons = new ArrayList<>();
 
+        private class Source {
+            String packPrefix;
+            String eventIdHashPrefix;
+            Set<String> prefSelected;
+
+            public Source(@NonNull String packPrefix, @NonNull String eventIdHashPrefix, @NonNull Set<String> prefSelected) {
+                this.packPrefix = packPrefix;
+                this.eventIdHashPrefix = eventIdHashPrefix;
+                this.prefSelected = prefSelected;
+            }
+            //todo: добавить eventSourcePrefix, icon
+        }
+
         @SuppressLint("DiscouragedApi")
         void loadEventSources(String eventConsumer) {
             try {
@@ -11783,32 +11796,38 @@ public class ContactsEvents {
 
                 //Справочники праздников и выходных
 
-                int eventsPackCount = 1;
-                int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, packageName);
-                while (packId > 0) {
-                    try {
-                        String[] eventsPack = getResources().getStringArray(packId);
-                        String packHash = StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
+                final ArrayList<Source> sources = new ArrayList<>();
+                sources.add(new Source(Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, preferences_HolidayEvent_ids));
+                sources.add(new Source(Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix, preferences_HolidayEvent_Other_ids));
 
-                        if (preferences_HolidayEvent_ids.contains(packHash)) {
-                            ids.add(Constants.eventSourceHolidayPrefix + eventsPack[0]);
-                            String sourceTitle = eventsPack[0];
-                            if (statEventSourcesIds.containsKey(packHash)) {
-                                sourceTitle = sourceTitle
-                                        + Constants.STRING_BRACKETS_OPEN
-                                        + statEventSourcesIds.get(packHash)
-                                        + Constants.STRING_BRACKETS_CLOSE;
+                for (Source source: sources) {
+                    int eventsPackCount = 1;
+                    int packId = getResources().getIdentifier(source.packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, packageName);
+                    while (packId > 0) {
+                        try {
+                            String[] eventsPack = getResources().getStringArray(packId);
+                            String packHash = StringUtils.getHash(source.eventIdHashPrefix + eventsPack[0]);
+
+                            if (source.prefSelected.contains(packHash)) {
+                                ids.add(source.eventIdHashPrefix + eventsPack[0]);
+                                String sourceTitle = eventsPack[0];
+                                if (statEventSourcesIds.containsKey(packHash)) {
+                                    sourceTitle = sourceTitle
+                                            + Constants.STRING_BRACKETS_OPEN
+                                            + statEventSourcesIds.get(packHash)
+                                            + Constants.STRING_BRACKETS_CLOSE;
+                                }
+                                titles.add(sourceTitle);
+                                icons.add(R.drawable.ic_event_holiday);
+                                packages.add(packageName);
+                                hashes.add(StringUtils.getHash(source.eventIdHashPrefix + eventsPack[0]));
                             }
-                            titles.add(sourceTitle);
-                            icons.add(R.drawable.ic_event_holiday);
-                            packages.add(packageName);
-                            hashes.add(StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
-                        }
 
-                    } catch (Resources.NotFoundException ignored) { /**/ }
+                        } catch (Resources.NotFoundException ignored) { /**/ }
 
-                    eventsPackCount++;
-                    packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, packageName);
+                        eventsPackCount++;
+                        packId = getResources().getIdentifier(source.packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, packageName);
+                    }
                 }
 
                 if (eventConsumer.equals(resources.getString(R.string.pref_Notifications_EventSources_key))
@@ -11816,8 +11835,8 @@ public class ContactsEvents {
                         || eventConsumer.equals(Constants.WIDGET_TYPE_LIST)) {
 
                     //Факты
-                    eventsPackCount = 1;
-                    packId = getResources().getIdentifier(Constants.STRING_TYPE_FACT + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, packageName);
+                    int eventsPackCount = 1;
+                    int packId = getResources().getIdentifier(Constants.STRING_TYPE_FACT + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, packageName);
                     while (packId > 0) {
                         try {
                             String[] eventsPack = getResources().getStringArray(packId);
@@ -12014,13 +12033,18 @@ public class ContactsEvents {
             if (eventSources.getIds().isEmpty()) return;
 
             TypedArray ta = baseContext.getTheme().obtainStyledAttributes(R.styleable.Theme);
-            List<String> sourceChoices = new ArrayList<>();
+            final List<String> sourceChoices = new ArrayList<>();
+            boolean isAdvInfo = isFeatureEnabled(Constants.FEATURE_ADV_INFO);
 
             for (int i = 0; i < eventSources.getIds().size(); i++) {
                 String sourceId = eventSources.getIds().get(i);
                 String sourceTitle = eventSources.getTitles().get(i);
 
-                if (sourceId.startsWith(Constants.eventSourceContactPrefix)) {
+                if (!isAdvInfo) {
+
+                    sourceChoices.add(StringUtils.substringBefore(sourceTitle, Constants.STRING_BRACKETS_OPEN));
+
+                } else if (sourceId.startsWith(Constants.eventSourceContactPrefix)) {
 
                     final String accountType = StringUtils.substringBetween(sourceId, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
                     sourceChoices.add(sourceTitle
