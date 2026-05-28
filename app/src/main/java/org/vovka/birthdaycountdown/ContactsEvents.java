@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.05.2026, 01:42
+ *  * Created by Vladimir Belov on 28.05.2026, 23:08
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.05.2026, 01:37
+ *  * Last modified 28.05.2026, 23:07
  *
  */
 
@@ -5208,46 +5208,51 @@ public class ContactsEvents {
 
             if (!eventData.isEmpty()) {
                 if (!result.isPassedEvent) {
-                    statEventsCount++;
-                    statFilesEventCount++;
                     fillEmptyEventData(eventData);
-
                     String eventRow = getEventData(eventData);
-                    if (!eventListUpdated.contains(eventRow)) {
-                        if (eventListUpdated.add(eventRow)) {
-                            if (!TextUtils.isEmpty(contactID)) {
-                                map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
+
+                    if (eventListUpdated.add(eventRow)) {
+
+                        statEventsCount++;
+                        if (eventSourcePrefix.equals(Constants.EVENT_PREFIX_FILE_EVENT)) {
+                            statFilesEventCount++;
+                        }
+                        increaseStatForEventSources(eventSourcePrefix);
+                        increaseStatForEventSourcesIds(StringUtils.getHash(eventIdHashPrefix + eventSource));
+                        //increaseStatForEventTypes(resources.getString(R.string.pref_EventTypes_Facts));
+
+                        if (!TextUtils.isEmpty(contactID)) {
+                            map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
+                        }
+                        String personFullName = eventData.get(Position_personFullName);
+                        if (result.dateEventFirstTime != null) {
+                            if (event.subType.equals(Constants.EventType_BirthDay)) {
+                                birthdayDatesForNames.put(personFullName, result.dateEventFirstTime);
+                            } else if (event.subType.equals(Constants.EventType_Death)) {
+                                deathDatesForNames.put(personFullName, result.dateEventFirstTime);
                             }
-                            String personFullName = eventData.get(Position_personFullName);
-                            if (result.dateEventFirstTime != null) {
-                                if (event.subType.equals(Constants.EventType_BirthDay)) {
-                                    birthdayDatesForNames.put(personFullName, result.dateEventFirstTime);
-                                } else if (event.subType.equals(Constants.EventType_Death)) {
-                                    deathDatesForNames.put(personFullName, result.dateEventFirstTime);
-                                }
-                            }
-                            map_eventsBySubtypeAndPersonName_offset.put(personFullName + Constants.STRING_2HASH + eventData.get(Position_eventSubType), eventListUpdated.size() - 1);
+                        }
+                        map_eventsBySubtypeAndPersonName_offset.put(personFullName + Constants.STRING_2HASH + eventData.get(Position_eventSubType), eventListUpdated.size() - 1);
 
-                            //Предыдущее появление плавающего события добавляем в список предыдущих
-                            if (result.datePrevFloatingEvent != null) {
-                                Date eventDatePrev = null;
-                                try {
-                                    eventDatePrev = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(result.datePrevFloatingEvent);
-                                } catch (ParseException pe) { /**/ }
-                                if (eventDatePrev != null) {
-                                    long eventDistance = AppDateUtils.countDaysDiff(eventDatePrev, today.getTime());
+                        //Предыдущее появление плавающего события добавляем в список предыдущих
+                        if (result.datePrevFloatingEvent != null) {
+                            Date eventDatePrev = null;
+                            try {
+                                eventDatePrev = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(result.datePrevFloatingEvent);
+                            } catch (ParseException pe) { /**/ }
+                            if (eventDatePrev != null) {
+                                long eventDistance = AppDateUtils.countDaysDiff(eventDatePrev, today.getTime());
 
-                                    if (eventDistance > 0 && eventDistance <= preferences_list_prev_events_scan_distance) {
-                                        eventData.put(Position_eventDateNextTime, Objects.requireNonNull(sdf_DDMMYYYY.get()).format(eventDatePrev));
-                                        eventData.put(Position_eventDistance, Long.toString(-eventDistance));
-                                        eventData.put(Position_eventDistanceText, getEventDistanceText(-eventDistance, eventDatePrev));
+                                if (eventDistance > 0 && eventDistance <= preferences_list_prev_events_scan_distance) {
+                                    eventData.put(Position_eventDateNextTime, Objects.requireNonNull(sdf_DDMMYYYY.get()).format(eventDatePrev));
+                                    eventData.put(Position_eventDistance, Long.toString(-eventDistance));
+                                    eventData.put(Position_eventDistanceText, getEventDistanceText(-eventDistance, eventDatePrev));
 
-                                        //todo: двойная конвертация
-                                        eventData.put(Position_eventDate_sorted, getSortKey(getEventData(eventData).split(Constants.STRING_EOT, -1)));
-                                        eventRow = getEventData(eventData);
-                                        if (!eventListPrev.contains(eventRow)) {
-                                            eventListPrev.add(eventRow);
-                                        }
+                                    //todo: двойная конвертация
+                                    eventData.put(Position_eventDate_sorted, getSortKey(getEventData(eventData).split(Constants.STRING_EOT, -1)));
+                                    eventRow = getEventData(eventData);
+                                    if (!eventListPrev.contains(eventRow)) {
+                                        eventListPrev.add(eventRow);
                                     }
                                 }
                             }
@@ -11528,7 +11533,6 @@ public class ContactsEvents {
             if (packsHashes.isEmpty()) return false;
 
             long statCurrentModuleStart = System.currentTimeMillis();
-            //final TreeMap<Integer, String> eventData = new TreeMap<>();
             Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
 
             int eventsPackCount = 1;
@@ -11564,149 +11568,6 @@ public class ContactsEvents {
                                             eventEmoji,
                                             today
                                     );
-
-                                    /*String eventLine = eventString.trim().replace("\uFEFF", Constants.STRING_EMPTY);
-
-                                    if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH)) {
-                                        continue;
-                                    }
-
-                                    //<Дата без пробелов>[,<пробел>флаги] название праздника [| описание праздника] [http:// или https:// ссылка]
-                                    int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
-                                    if (indexFirstSpace == -1) continue;
-
-                                    boolean isEndless = true;
-                                    String eventDateString;
-                                    String eventTitle;
-                                    final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
-                                    if (indexComma > -1 && indexComma < indexFirstSpace) { //Есть флаги
-
-                                        if (indexFirstSpace - indexComma == 1) { //После запятой пробел - убираем
-                                            eventLine = eventLine.substring(0, indexComma + 1) + eventLine.substring(indexFirstSpace + 1);
-                                            indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
-                                            if (indexFirstSpace == -1) {
-                                                ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventString));
-                                                continue;
-                                            }
-                                        }
-
-                                        eventDateString = eventLine.substring(0, indexComma);
-                                        String flags = eventLine.substring(indexComma + 1, indexFirstSpace);
-                                        eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
-
-                                        if (!flags.isEmpty()) {
-                                            if (flags.contains(Constants.STRING_1)) {
-                                                isEndless = false;
-                                                //flags = flags.replace(Constants.STRING_1, Constants.STRING_EMPTY);
-                                            }
-                                        }
-
-                                    } else {
-
-                                        eventDateString = eventLine.substring(0, indexFirstSpace);
-                                        eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
-
-                                    }
-
-                                    if (eventDateString.isEmpty() || eventTitle.isEmpty()) {
-                                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventString));
-                                        continue;
-                                    }
-
-                                    Date dateEvent = null;
-
-                                    try {
-                                        String dateNextFloatingEvent = computeFloatingDate(eventDateString, 0);
-                                        if (!eventDateString.equals(dateNextFloatingEvent)) {
-                                            eventDateString = dateNextFloatingEvent;
-                                            isEndless = false;
-                                        } else if (eventDateString.endsWith(Constants.STRING_0000)) {
-                                            eventDateString = eventDateString.substring(0, eventDateString.indexOf(Constants.STRING_0000)) + today.get(Calendar.YEAR);
-                                        }
-                                        dateEvent = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(eventDateString);
-                                    } catch (ParseException e1) {
-                                        try {
-                                            dateEvent = Objects.requireNonNull(sdf_india.get()).parse(eventDateString);
-                                        } catch (ParseException e2) {
-                                            try {
-                                                dateEvent = Objects.requireNonNull(sdf_uk.get()).parse(eventDateString);
-                                            } catch (ParseException e3) {
-                                                try {
-                                                    dateEvent = Objects.requireNonNull(sdf_java.get()).parse(eventDateString);
-                                                } catch (ParseException e4) {
-                                                    //Не получилось распознать
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    if (dateEvent == null) continue;
-
-                                    if (today.after(AppDateUtils.getCalendarFromDate(dateEvent))) {
-                                        if (!isEndless) { //Одиночное событие и оно прошло
-                                            continue;
-                                        } else {
-                                            dateEvent = AppDateUtils.addYear(dateEvent, 1);
-                                            eventDateString = Objects.requireNonNull(sdf_DDMMYYYY.get()).format(dateEvent);
-                                        }
-                                    }
-
-                                    //URLs
-                                    String eventURL = Constants.STRING_EMPTY;
-                                    String eventTitle_lowered = eventTitle.toLowerCase();
-                                    int urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTP);
-                                    if (urlOffset > -1) {
-                                        eventURL = eventTitle.substring(urlOffset);
-                                    } else {
-                                        urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTPS);
-                                        if (urlOffset > -1) {
-                                            eventURL = eventTitle.substring(urlOffset);
-                                        }
-                                    }
-                                    if (!eventURL.isEmpty()) {
-                                        eventURL = StringUtils.substringBefore(eventURL, Constants.STRING_SPACE);
-                                        eventData.put(Position_eventURL, eventURL);
-                                        eventTitle = eventTitle.replace(eventURL, Constants.STRING_EMPTY).trim();
-                                    }
-
-                                    //Описание события
-                                    int indStartDescription = eventTitle.indexOf(Constants.STRING_BAR);
-                                    if (indStartDescription > -1) {
-                                        String eventDescription = eventTitle.substring(indStartDescription + 1);
-                                        if (!eventDescription.isEmpty()) {
-                                            eventData.put(Position_eventDescription, eventDescription.trim());
-                                            eventTitle = eventTitle.substring(0, indStartDescription).trim();
-                                        }
-                                    }
-                                    if (TextUtils.isEmpty(eventTitle)) continue;
-
-                                    final String eventNewDate = Constants.EVENT_PREFIX_HOLIDAY_EVENT + Constants.STRING_COLON_SPACE
-                                            + Objects.requireNonNull(sdf_java.get()).format(dateEvent) + Constants.STRING_COLON_SPACE
-                                            + StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
-
-                                    eventData.put(Position_personFullName, eventTitle);
-                                    eventData.put(Position_personFullNameAlt, eventTitle);
-                                    eventData.put(Position_eventCaption, getResources().getString(R.string.event_type_holiday)); //Наименование события
-                                    eventData.put(Position_eventType, Constants.EventType_Holiday); //Тип события
-                                    eventData.put(Position_eventSubType, Constants.EventType_Holiday); //Подтип события
-                                    eventData.put(Position_eventDateNextTime, eventDateString);
-                                    eventData.put(Position_eventDateFirstTime, eventDateString);
-                                    eventData.put(Position_dates, eventNewDate);
-                                    eventData.put(Position_eventIcon, Integer.toString(R.drawable.ic_event_holiday)); //todo: добавить Position_eventEmoji
-                                    eventData.put(Position_eventEmoji, eventEmoji);
-                                    eventData.put(Position_eventStorage, Constants.STRING_STORAGE_HOLIDAYS); //Где искать событие по ID
-                                    eventData.put(Position_eventSource, getResources().getString(R.string.msg_source_info, eventsPack[0]));
-                                    eventData.put(Position_eventID, Constants.PREFIX_HolidayEventID + StringUtils.getHash(packHash + eventLine));
-                                    eventData.put(Position_notAnnualEvent, !isEndless ? Constants.STRING_1 : Constants.STRING_EMPTY);
-
-                                    fillEmptyEventData(eventData);
-
-                                    final String eventRow = getEventData(eventData);
-                                    if (!eventListUpdated.contains(eventRow)) {
-                                        eventListUpdated.add(eventRow);
-                                        increaseStatForEventSourcesIds(packHash);
-                                    }
-                                    eventData.clear();*/
                                 }
                             }
                         }
@@ -11795,7 +11656,6 @@ public class ContactsEvents {
                 hashes.add(StringUtils.getHash(Constants.eventSourceLocalPrefix));
 
                 //Справочники праздников и выходных
-
                 final ArrayList<Source> sources = new ArrayList<>();
                 sources.add(new Source(Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, preferences_HolidayEvent_ids));
                 sources.add(new Source(Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix, preferences_HolidayEvent_Other_ids));
