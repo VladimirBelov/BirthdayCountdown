@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.05.2026, 23:08
+ *  * Created by Vladimir Belov on 29.05.2026, 21:47
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.05.2026, 23:07
+ *  * Last modified 29.05.2026, 20:31
  *
  */
 
@@ -11546,9 +11546,9 @@ public class ContactsEvents {
                         final String packHash = StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
                         if (packsHashes.contains(packHash)) {
 
-                            String eventEmoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
-                            if (eventsPack[0].indexOf(Constants.STRING_SPACE) == 4) {
-                                eventEmoji = eventsPack[0].substring(0, eventsPack[0].indexOf(Constants.STRING_SPACE));
+                            String eventEmoji = StringUtils.extractLeadingEmoji(eventsPack[0]);
+                            if (!StringUtils.hasContent(eventEmoji)) {
+                                eventEmoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
                             }
 
                             for (int i = 1; i < countEvents; i++) {

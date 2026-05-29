@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.05.2026, 23:59
+ *  * Created by Vladimir Belov on 29.05.2026, 21:47
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.05.2026, 22:08
+ *  * Last modified 29.05.2026, 20:51
  *
  */
 
@@ -235,5 +235,70 @@ public class StringUtils {
                 .replace(">", "&gt;")
                 .replace("\"", "&quot;")
                 .replace("'", "&#39;");
+    }
+
+    /**
+     * Проверяет, является ли code point эмодзи
+     */
+    @SuppressWarnings("ConstantValue")
+    private static boolean isEmoji(int codePoint) {
+        // Проверка по диапазонам (охватываем основные блоки эмодзи)
+        boolean inRange = (codePoint >= 0x1F000 && codePoint <= 0x1FFFF) || // Supplementary
+                (codePoint >= 0x2600 && codePoint <= 0x27BF) ||   // Misc Symbols
+                (codePoint >= 0x2B00 && codePoint <= 0x2BFF) ||   // Misc Symbols & Pictographs
+                (codePoint >= 0x2100 && codePoint <= 0x21FF) ||   // Letterlike Symbols (тут живёт ℹ️)
+                (codePoint >= 0x1F1E6 && codePoint <= 0x1F1FF);   // Flags
+
+        // Проверка по Unicode General Category (So = Symbol Other, Sk = Symbol Modifier)
+        int type = Character.getType(codePoint);
+        boolean isSymbol = (type == Character.OTHER_SYMBOL || type == Character.MODIFIER_SYMBOL);
+
+        return inRange || isSymbol;
+    }
+
+    private static boolean isRegionalIndicator(int codePoint) {
+        return codePoint >= 0x1F1E6 && codePoint <= 0x1F1FF;
+    }
+
+    /** Получает эмоджи из начала строки
+     * @param text Исходная строка
+     * @return Эмоджи
+     */
+    public static @NonNull String extractLeadingEmoji(String text) {
+        if (text == null || text.isEmpty()) return Constants.STRING_EMPTY;
+
+        // 1. Отделяем часть до первого пробела
+        int spaceIndex = text.indexOf(' ');
+        String part = (spaceIndex > 0) ? text.substring(0, spaceIndex) : text.trim();
+        if (part.isEmpty()) return Constants.STRING_EMPTY;
+
+        // 2. Читаем первый Unicode code point
+        int cp1 = part.codePointAt(0);
+
+        // Проверка на эмодзи (если не эмодзи — выход)
+        if (!isEmoji(cp1)) {
+            return Constants.STRING_EMPTY;
+        }
+
+        // 3. Считаем длину в char (1 для BMP, 2 для суррогатных пар)
+        int totalLength = Character.charCount(cp1);
+
+        // 4. Проверяем следующий символ: это может быть:
+        //    а) Variation Selector (U+FE0E или U+FE0F)
+        //    б) Второй Regional Indicator (для флагов 🇷🇺)
+        if (totalLength < part.length()) {
+            int cp2 = part.codePointAt(totalLength);
+
+            // Вариант А: Вариационный селектор (добавляем его к длине)
+            if (cp2 == 0xFE0E || cp2 == 0xFE0F) {
+                totalLength += Character.charCount(cp2);
+            }
+            // Вариант Б: Второй код флага (например, 🇷🇺 = 🇷 + 🇺)
+            else if (isRegionalIndicator(cp1) && isRegionalIndicator(cp2)) {
+                totalLength += Character.charCount(cp2);
+            }
+        }
+
+        return totalLength > 0 ? part.substring(0, totalLength) : Constants.STRING_EMPTY;
     }
 }
