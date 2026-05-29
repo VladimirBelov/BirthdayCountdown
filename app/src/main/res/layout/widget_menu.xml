@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.06.2025, 00:35
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.06.2025, 00:31
+  ~  * Created by Vladimir Belov on 30.05.2026, 01:04
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 29.05.2026, 23:29
   ~  */
   -->
 
@@ -28,14 +28,42 @@
             android:visibility="gone"
             android:background="?attr/windowTitleColor" />
 
-        <TextView
-            android:id="@+id/titleView"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:textStyle="bold"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/viewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:textStyle="bold"
+                android:background="?attr/windowTitleColor"
+                android:textColor="?attr/windowTitleTextColor" />
+
+            <TextView
+                android:id="@+id/viewDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:visibility="gone"
+                android:background="?attr/windowTitleColor"
+                android:textColor="?attr/windowTitleTextColor" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/buttonShowDescription"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|end"
             android:background="?attr/windowTitleColor"
-            android:textColor="?attr/windowTitleTextColor" />
+            android:contentDescription="@string/hint_Description"
+            android:paddingHorizontal="2dp"
+            android:src="@android:drawable/arrow_down_float"
+            android:visibility="gone" />
 
     </LinearLayout>
 

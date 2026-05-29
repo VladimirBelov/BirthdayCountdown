@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Created by Vladimir Belov on 30.05.2026, 01:04
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 17.04.2026, 00:04
+ *  * Last modified 29.05.2026, 23:24
  *
  */
 package org.vovka.birthdaycountdown;
@@ -108,7 +108,7 @@ public class WidgetMenuActivity extends Activity {
             layoutParams.width = (int) (displayMetrics.widthPixels * 0.8);
             getWindow().setAttributes(layoutParams);
 
-            TextView titleView = findViewById(R.id.titleView);
+            TextView titleView = findViewById(R.id.viewTitle);
             titleView.setText(HtmlCompat.fromHtml(eventText, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
             singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
@@ -216,6 +216,30 @@ public class WidgetMenuActivity extends Activity {
                     }
                 }
 
+                if (!TextUtils.isEmpty(singleEventArray[ContactsEvents.Position_eventDescription])) {
+                    TextView descriptionView = findViewById(R.id.viewDescription);
+                    descriptionView.setText(singleEventArray[ContactsEvents.Position_eventDescription]);
+                    ImageView buttonShowDescription = findViewById(R.id.buttonShowDescription);
+                    buttonShowDescription.setVisibility(View.VISIBLE);
+                    buttonShowDescription.setClickable(true);
+                    buttonShowDescription.setFocusable(true);
+                    titleView.setClickable(true);
+                    titleView.setFocusable(true);
+
+                    View.OnClickListener listener = v -> {
+                        if (descriptionView.getVisibility() != View.VISIBLE) {
+                            descriptionView.setVisibility(View.VISIBLE);
+                            buttonShowDescription.setImageDrawable(getDrawable(android.R.drawable.arrow_up_float));
+                        } else {
+                            descriptionView.setVisibility(View.GONE);
+                            buttonShowDescription.setImageDrawable(getDrawable(android.R.drawable.arrow_down_float));
+                        }
+                    };
+                    buttonShowDescription.setOnClickListener(listener);
+                    titleView.setOnClickListener(listener);
+                    descriptionView.setOnClickListener(listener);
+                }
+
                 menuItems.add(getString(R.string.menu_context_share));
                 menuIcons.add(getDrawable(android.R.drawable.ic_menu_share));
                 menuActions.add(Constants.ContextMenu_ShareAsText);
@@ -272,7 +296,7 @@ public class WidgetMenuActivity extends Activity {
                 eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
             }
 
-            TextView titleView = findViewById(R.id.titleView);
+            TextView titleView = findViewById(R.id.viewTitle);
 
             switch (menuActions.get(itemId)) {
                 case Constants.ContextMenu_ShareAsText:

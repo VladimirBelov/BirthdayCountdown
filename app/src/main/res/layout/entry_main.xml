@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 25.04.2023, 10:18
+  ~  * Created by Vladimir Belov on 30.05.2026, 01:04
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 29.05.2026, 23:41
   ~  */
   -->
 
@@ -108,17 +108,50 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-
-            <TextView
-                android:id="@+id/entryEventDetailsTextView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top|start"
-                android:text="@string/hint_EventDetails"
-                android:textColor="?attr/eventDetailsColor"
-                android:textSize="@dimen/event_details" />
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/entryEventDetailsTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|start"
+                        android:text="@string/hint_EventDetails"
+                        android:textColor="?attr/eventDetailsColor"
+                        android:textSize="@dimen/event_details" />
+
+                    <TextView
+                        android:id="@+id/entryDescriptionTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:textColor="?attr/eventDetailsColor"
+                        android:textSize="@dimen/event_details" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/entryButtonShowDescription"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="bottom|end"
+                    android:contentDescription="@string/hint_Description"
+                    android:paddingHorizontal="2dp"
+                    android:src="@android:drawable/arrow_down_float"
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
         </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

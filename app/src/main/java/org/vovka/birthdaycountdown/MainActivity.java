@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.04.2026, 00:29
+ *  * Created by Vladimir Belov on 30.05.2026, 01:04
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.04.2026, 23:38
+ *  * Last modified 30.05.2026, 00:50
  *
  */
 
@@ -2819,24 +2819,32 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         final TextView DayDistanceTextView;
         final TextView DateTextView;
         final TextView DetailsTextView;
+        final TextView DescriptionTextView;
         final ImageView PhotoImageView;
         final TextView CounterTextView;
         final ImageView EventIconImageView;
+        final ImageView ShowDescriptionImageView;
 
-        ViewHolder(TextView NameTextView, TextView DayDistanceTextView, TextView DateTextView, TextView DetailsTextView, ImageView PhotoImageView, TextView CounterTextView, ImageView EventIconImageView) {
+        ViewHolder(TextView NameTextView, TextView DayDistanceTextView, TextView DateTextView,
+                   TextView DetailsTextView, TextView DescriptionTextView, ImageView PhotoImageView, TextView CounterTextView,
+                   ImageView EventIconImageView, ImageView ShowDescriptionImageView) {
             this.NameTextView = NameTextView;
             this.DayDistanceTextView = DayDistanceTextView;
             this.DateTextView = DateTextView;
             this.DetailsTextView = DetailsTextView;
+            this.DescriptionTextView = DescriptionTextView;
             this.PhotoImageView = PhotoImageView;
             this.CounterTextView = CounterTextView;
             this.EventIconImageView = EventIconImageView;
+            this.ShowDescriptionImageView = ShowDescriptionImageView;
         }
     }
 
     class EventsAdapter extends ArrayAdapter<String> implements Filterable {
 
         private final List<String> listAll;
+        /** Хранилище состояний: какие события имеют раскрытое описание */
+        private final Set<String> expandedDescriptions = new HashSet<>();
         final int dimen_details;
         final int dimen_name;
         final int dimen_date;
@@ -2881,6 +2889,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 person = new Person(eventsData.getContext(), event);
 
+                String eventKey = eventsData.getEventKey(singleEventArray);
+                String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
                 String eventDistance = singleEventArray[ContactsEvents.Position_eventDistance];
                 String[] eventDistanceText = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.REGEX_BAR, -1);
                 switch (eventDistance) {
@@ -3015,12 +3025,48 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 }
 
+                final String eventDescription = singleEventArray[ContactsEvents.Position_eventDescription].trim();
+                holder.ShowDescriptionImageView.setVisibility(View.GONE);
+                holder.DescriptionTextView.setVisibility(View.GONE);
+
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Description))) {
-                    final String eventDescription = singleEventArray[ContactsEvents.Position_eventDescription].trim();
+                    //Если включено - показываем описание сразу
                     if (!eventDescription.isEmpty()) {
                         if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                         eventDetails.append(eventDescription);
                     }
+                } else if (!eventDescription.isEmpty()) {
+                    //Если выключено, но описание не пустое - показываем кнопку
+                    holder.ShowDescriptionImageView.setVisibility(View.VISIBLE);
+                    holder.ShowDescriptionImageView.setClickable(true);
+                    holder.ShowDescriptionImageView.setFocusable(true);
+                    holder.DescriptionTextView.setText(eventDescription);
+                    holder.DescriptionTextView.setClickable(true);
+                    holder.DescriptionTextView.setFocusable(true);
+
+                    // Восстановление состояния из глобального хранилища
+                    if (expandedDescriptions.contains(eventKey)) {
+                        holder.DescriptionTextView.setVisibility(View.VISIBLE);
+                        holder.ShowDescriptionImageView.setImageDrawable(getDrawable(android.R.drawable.arrow_up_float));
+                    } else {
+                        holder.DescriptionTextView.setVisibility(View.GONE);
+                        holder.ShowDescriptionImageView.setImageDrawable(getDrawable(android.R.drawable.arrow_down_float));
+                    }
+
+                    View.OnClickListener listener = v -> {
+                        // Переключаем состояние в глобальном хранилище
+                        if (expandedDescriptions.contains(eventKey)) {
+                            expandedDescriptions.remove(eventKey);
+                            holder.DescriptionTextView.setVisibility(View.GONE);
+                            holder.ShowDescriptionImageView.setImageDrawable(getDrawable(android.R.drawable.arrow_down_float));
+                        } else {
+                            expandedDescriptions.add(eventKey);
+                            holder.DescriptionTextView.setVisibility(View.VISIBLE);
+                            holder.ShowDescriptionImageView.setImageDrawable(getDrawable(android.R.drawable.arrow_up_float));
+                        }
+                    };
+                    holder.ShowDescriptionImageView.setOnClickListener(listener);
+                    holder.DescriptionTextView.setOnClickListener(listener);
                 }
 
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_DebugInfo))) {
@@ -3037,8 +3083,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 }
 
-                String eventKey = eventsData.getEventKey(singleEventArray);
-                String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
                 if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Hidden && eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
                     eventDetails.append(eventsData.setHTMLColor(getString(R.string.msg_label_hidden), Constants.HTML_COLOR_RED));
@@ -3216,17 +3260,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             TextView DayDistanceTextView = view.findViewById(R.id.entryDayDistanceTextView);
             TextView DateTextView = view.findViewById(R.id.entryDateTextView);
             TextView DetailsTextView = view.findViewById(R.id.entryEventDetailsTextView);
+            TextView DescriptionTextView = view.findViewById(R.id.entryDescriptionTextView);
             TextView CounterTextView = view.findViewById(R.id.entryDetailsCounter);
             ImageView PhotoImageView = view.findViewById(R.id.entryPhotoImageView);
             ImageView EventIconImageView = view.findViewById(R.id.entryEventIcon);
+            ImageView ShowDescriptionImageView = view.findViewById(R.id.entryButtonShowDescription);
 
             DayDistanceTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + eventsData.preferences_list_magnify_distance * 0.1)));
             NameTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + eventsData.preferences_list_magnify_name * 0.1)));
             DetailsTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + eventsData.preferences_list_magnify_details * 0.1)));
+            DescriptionTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + eventsData.preferences_list_magnify_details * 0.1)));
             DateTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_date * (1 + eventsData.preferences_list_magnify_date * 0.1)));
             CounterTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + eventsData.preferences_list_magnify_age * 0.1)));
 
-            return new ViewHolder(NameTextView, DayDistanceTextView, DateTextView, DetailsTextView, PhotoImageView, CounterTextView, EventIconImageView);
+            return new ViewHolder(NameTextView, DayDistanceTextView, DateTextView, DetailsTextView, DescriptionTextView,
+                    PhotoImageView, CounterTextView, EventIconImageView, ShowDescriptionImageView);
         }
 
         @Override
