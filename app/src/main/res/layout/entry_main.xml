@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.05.2026, 01:04
+  ~  * Created by Vladimir Belov on 01.06.2026, 02:42
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 29.05.2026, 23:41
+  ~  * Last modified 01.06.2026, 01:37
   ~  */
   -->
 
@@ -13,7 +13,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
     android:orientation="horizontal"
-    android:padding="4dp">
+    android:padding="4dp"
+    android:descendantFocusability="blocksDescendants" >
 
     <ImageView
         android:id="@+id/entryPhotoImageView"
@@ -134,7 +135,8 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone"
                         android:textColor="?attr/eventDetailsColor"
-                        android:textSize="@dimen/event_details" />
+                        android:textSize="@dimen/event_details"
+                        android:longClickable="false" />
 
                 </LinearLayout>
 
@@ -146,6 +148,7 @@
                     android:contentDescription="@string/hint_Description"
                     android:paddingHorizontal="2dp"
                     android:src="@android:drawable/arrow_down_float"
+                    android:longClickable="false"
                     android:visibility="gone" />
 
             </LinearLayout>

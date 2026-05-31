@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.05.2026, 23:59
+ *  * Created by Vladimir Belov on 01.06.2026, 02:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 24.05.2026, 00:54
+ *  * Last modified 01.06.2026, 02:08
  *
  */
 
@@ -1653,12 +1653,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (getString(R.string.pref_Holidays_key).equals(key)) {
 
-                selectHolidays(eventsData.preferences_HolidayEvent_ids, Constants.STRING_TYPE_HOLIDAY, R.string.pref_CustomEvents_Holiday_Public_Labels_title);
+                selectEmbeddedPacks(eventsData.preferences_HolidayEvent_ids, Constants.STRING_TYPE_HOLIDAY,
+                        Constants.eventSourceHolidayPrefix, R.string.pref_CustomEvents_Holiday_Public_Labels_title, R.drawable.ic_event_holiday);
                 return true;
 
             } else if (getString(R.string.pref_Other_Holidays_key).equals(key)) {
 
-                selectHolidays(eventsData.preferences_HolidayEvent_Other_ids, Constants.STRING_TYPE_OTHER_HOLIDAY, R.string.pref_CustomEvents_Holiday_Other_Labels_title);
+                selectEmbeddedPacks(eventsData.preferences_HolidayEvent_Other_ids, Constants.STRING_TYPE_OTHER_HOLIDAY,
+                        Constants.eventSourceHolidayPrefix, R.string.pref_CustomEvents_Holiday_Other_Labels_title, R.drawable.ic_event_holiday);
+                return true;
+
+            } else if (getString(R.string.pref_CustomEvents_Other_Embedded_key).equals(key)) {
+
+                selectEmbeddedPacks(eventsData.preferences_OtherEvent_ids, Constants.STRING_TYPE_OTHER_EVENT,
+                        Constants.eventSourceOtherEventPrefix, R.string.pref_CustomEvents_Other_Embedded_title, R.drawable.ic_event_other);
                 return true;
 
             } else if (getString(R.string.pref_Facts_key).equals(key)) {
@@ -1845,8 +1853,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    /** Диалог выбора встроенного массива событий в ресурсах
+     * @param preferences Настройка, куда сохранять выбор
+     * @param packPrefix Префикс массива событий в ресурсах
+     * @param eventIdHashPrefix Префикс ID для hash
+     * @param dialogTitleResId Заголовок диалога
+     * @param dialogIcon Иконка диалога
+     */
     @SuppressLint("DiscouragedApi")
-    private void selectHolidays(@NonNull Set<String> preferences, @NonNull String packPrefix, @StringRes int dialogTitleResId) {
+    private void selectEmbeddedPacks(@NonNull Set<String> preferences, @NonNull String packPrefix, @NonNull String eventIdHashPrefix, @StringRes int dialogTitleResId, @DrawableRes int dialogIcon) {
         try {
 
             //Справочники праздников и выходных
@@ -1858,7 +1873,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 try {
                     String[] eventsPack = getResources().getStringArray(packId);
 
-                    eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
+                    eventSourcesIds.add(StringUtils.getHash(eventIdHashPrefix + eventsPack[0]));
                     eventSourcesTitles.add(eventsPack[0]);
 
                 } catch (Resources.NotFoundException ignored) { /**/ }
@@ -1879,7 +1894,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setTitle(dialogTitleResId)
-                    .setIcon(R.drawable.ic_event_holiday)
+                    .setIcon(dialogIcon)
                     .setMultiChoiceItems(eventSourcesTitles.toArray(new CharSequence[0]), sel, (dialog, which, isChecked) -> eventSelected.set(which, isChecked))
                     .setPositiveButton(R.string.button_ok, (dialog, which) -> {
 
@@ -3800,6 +3815,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_CustomEvents_MultiType_LocalFiles_key),
                         getString(R.string.pref_CustomEvents_Birthday_Calendars_key),
                         getString(R.string.pref_CustomEvents_Other_Calendars_key),
+                        getString(R.string.pref_CustomEvents_Other_Embedded_key),
                         getString(R.string.pref_CustomEvents_Holiday_Calendars_key),
                         getString(R.string.pref_CustomEvents_MultiType_Calendars_key),
                         getString(R.string.pref_CustomEvents_Holiday_Other_Ids_key),

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.05.2026, 01:04
+ *  * Created by Vladimir Belov on 01.06.2026, 02:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 30.05.2026, 00:50
+ *  * Last modified 01.06.2026, 02:25
  *
  */
 
@@ -325,6 +325,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             String eventSubtype = selectedEvent[ContactsEvents.Position_eventSubType];
             final String eventKey = eventsData.getEventKey(selectedEvent);
             final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(selectedEvent);
+            boolean isContactEvent = !eventSubtype.equals(Constants.EventType_Other) &&
+                    !eventSubtype.equals(Constants.EventType_Holiday);
 
             //https://stackoverflow.com/questions/18632331/using-contextmenu-with-listview-in-android
             //menu.setHeaderTitle(dataArray1[ContactsEvents.dataMap.get("fio")] + ":");
@@ -337,8 +339,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_green)));
                 }
 
-                if (!eventSubtype.equals(String.valueOf(Constants.Type_Other)) &&
-                        !eventSubtype.equals(String.valueOf(Constants.Type_HolidayEvent))) {
+                if (isContactEvent) {
                     menuItem = menu.add(Menu.NONE, Constants.ContextMenu_CreateFromEventLocalEvent, Menu.NONE, getString(R.string.menu_context_create_from_local_event))
                             .setIcon(android.R.drawable.ic_menu_add);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -351,7 +352,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (!TextUtils.isEmpty(contactID)) {
                 menu.add(Menu.NONE, Constants.ContextMenu_EditContact, Menu.NONE, getString(R.string.menu_context_edit_contact))
                         .setIcon(android.R.drawable.ic_menu_edit);
-            } else if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS)) {
+            } else if (isContactEvent && eventsData.isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS)) {
                 MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_CreateContact, Menu.NONE, getString(R.string.menu_context_create_contact))
                         .setIcon(R.drawable.ic_menu_invite);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -3038,11 +3039,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 } else if (!eventDescription.isEmpty()) {
                     //Если выключено, но описание не пустое - показываем кнопку
                     holder.ShowDescriptionImageView.setVisibility(View.VISIBLE);
-                    holder.ShowDescriptionImageView.setClickable(true);
-                    holder.ShowDescriptionImageView.setFocusable(true);
                     holder.DescriptionTextView.setText(eventDescription);
-                    holder.DescriptionTextView.setClickable(true);
-                    holder.DescriptionTextView.setFocusable(true);
 
                     // Восстановление состояния из глобального хранилища
                     if (expandedDescriptions.contains(eventKey)) {

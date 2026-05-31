@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.05.2026, 21:47
+ *  * Created by Vladimir Belov on 01.06.2026, 02:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.05.2026, 20:31
+ *  * Last modified 01.06.2026, 02:41
  *
  */
 
@@ -411,9 +411,6 @@ public class ContactsEvents {
     private final Map<String, String> preferences_DaysInfo = new HashMap<>();
 
     //Даты
-
-    //Даты
-
     static final ThreadLocal<SimpleDateFormat> sdf_java = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -652,8 +649,12 @@ public class ContactsEvents {
     Set<String> preferences_HolidayEvent_files = new HashSet<>();
     Set<String> preferences_MultiType_files = new HashSet<>();
     Set<String> preferences_FactEvent_files = new HashSet<>();
+    /** Список id справочников встроенных государственных праздников */
     Set<String> preferences_HolidayEvent_ids = new HashSet<>();
+    /** Список id справочников встроенных других праздников */
     Set<String> preferences_HolidayEvent_Other_ids = new HashSet<>();
+    /** Список id справочников встроенных других событий */
+    Set<String> preferences_OtherEvent_ids = new HashSet<>();
     Set<String> preferences_FactEvent_ids = new HashSet<>();
     final private Set<String> preferences_eventsWithoutYear = new HashSet<>();
     private int preferences_IconPackNumber;
@@ -1552,7 +1553,7 @@ public class ContactsEvents {
             final boolean notEmptyEventUrl = !TextUtils.isEmpty(eventUrl);
             final boolean isFileOrHoliday = notEmptyEventId && (eventId.startsWith(Constants.PREFIX_FileEventID) || eventId.startsWith(Constants.PREFIX_HolidayEventID));
 
-            if (Constants.STRING_STORAGE_HOLIDAYS.equals(singleEventArray[Position_eventStorage])) {
+            if (Constants.STRING_STORAGE_EMBEDDED.equals(singleEventArray[Position_eventStorage])) {
 
                 return null;
 
@@ -1999,6 +2000,7 @@ public class ContactsEvents {
             preferences_HolidayEvent_files = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Holiday_LocalFiles_key), new HashSet<>());
             preferences_HolidayEvent_ids = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Holiday_Public_Ids_key), new HashSet<>());
             preferences_HolidayEvent_Other_ids = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Holiday_Other_Ids_key), new HashSet<>());
+            preferences_OtherEvent_ids = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Other_Embedded_key), new HashSet<>());
 
             //Факты
             preferences_FactEvent_files = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Fact_LocalFiles_key), new HashSet<>());
@@ -2429,6 +2431,7 @@ public class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_Holiday_Calendars_key), preferences_HolidayEvent_calendars);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_MultiType_Calendars_key), preferences_MultiType_calendars);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key), preferences_Birthday_files);
+            editor.putStringSet(context.getString(R.string.pref_CustomEvents_Other_Embedded_key), preferences_OtherEvent_ids);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_Other_LocalFiles_key), preferences_OtherEvent_files);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_Holiday_LocalFiles_key), preferences_HolidayEvent_files);
             editor.putStringSet(context.getString(R.string.pref_CustomEvents_MultiType_LocalFiles_key), preferences_MultiType_files);
@@ -2539,6 +2542,7 @@ public class ContactsEvents {
                     | getFileEvents(Constants.Type_MultiEvent)
                     | getHolidayEvents(preferences_HolidayEvent_ids, Constants.STRING_TYPE_HOLIDAY)
                     | getHolidayEvents(preferences_HolidayEvent_Other_ids, Constants.STRING_TYPE_OTHER_HOLIDAY)
+                    | getOtherEvents(preferences_OtherEvent_ids, Constants.STRING_TYPE_OTHER_EVENT)
                     | getFactsEvents(true);
 
             statFavoriteEventsCount += getFavoritesEventsCount();
@@ -5010,12 +5014,10 @@ public class ContactsEvents {
             } else if (eventType.equals(Constants.EventType_Other)) {
 
                 event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
-                event.subType = Constants.EventType_File;
 
             } else if (eventType.equals(Constants.EventType_Holiday)) {
 
                 event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
-                event.subType = eventType;
 
             }
 
@@ -8503,7 +8505,7 @@ public class ContactsEvents {
                         icons.add(resources.getString(R.string.event_source_file));
                     } else if (date.startsWith(Constants.EVENT_PREFIX_LOCAL_EVENT)) {
                         icons.add(resources.getString(R.string.event_source_local));
-                    } else if (date.startsWith(Constants.EVENT_PREFIX_HOLIDAY_EVENT)) {
+                    } else if (date.startsWith(Constants.EVENT_PREFIX_EMBEDDED_EVENT)) {
 
                         String icon = Constants.STRING_EMPTY;
                         try {
@@ -11562,9 +11564,80 @@ public class ContactsEvents {
                                             eventString,
                                             Constants.EventType_Holiday,
                                             Constants.PREFIX_HolidayEventID,
-                                            Constants.EVENT_PREFIX_HOLIDAY_EVENT,
+                                            Constants.EVENT_PREFIX_EMBEDDED_EVENT,
                                             Constants.eventSourceHolidayPrefix,
-                                            Constants.STRING_STORAGE_HOLIDAYS,
+                                            Constants.STRING_STORAGE_EMBEDDED,
+                                            eventEmoji,
+                                            today
+                                    );
+                                }
+                            }
+                        }
+                    }
+
+                } catch (Resources.NotFoundException ignored) { /**/ }
+
+                eventsPackCount++;
+                packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
+            }
+
+            statTimeGetHolidayEvents += System.currentTimeMillis() - statCurrentModuleStart;
+
+            return true;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return false;
+        }
+    }
+
+    /**
+     * Добавляет в общий список другие события из внутренних справочников
+     *
+     * @param packsHashes Хэши источников для получения событий
+     * @param packPrefix  Префикс массива событий в ресурсах
+     */
+    @SuppressWarnings("SameParameterValue")
+    @SuppressLint("DiscouragedApi")
+    private boolean getOtherEvents(@NonNull Set<String> packsHashes, @NonNull String packPrefix) {
+        try {
+
+            if (packsHashes.isEmpty()) return false;
+
+            long statCurrentModuleStart = System.currentTimeMillis();
+            Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
+
+            int eventsPackCount = 1;
+            int packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
+            while (packId > 0) {
+                try {
+
+                    String[] eventsPack = getResources().getStringArray(packId);
+                    int countEvents = eventsPack.length;
+                    if (countEvents > 1) {
+                        final String packHash = StringUtils.getHash(Constants.eventSourceOtherEventPrefix + eventsPack[0]);
+                        if (packsHashes.contains(packHash)) {
+
+                            String eventEmoji = StringUtils.extractLeadingEmoji(eventsPack[0]);
+                            if (!StringUtils.hasContent(eventEmoji)) {
+                                eventEmoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
+                            }
+
+                            for (int i = 1; i < countEvents; i++) {
+                                String eventsArray = eventsPack[i];
+                                String[] days = eventsArray.split(Constants.STRING_EOL, -1);
+                                for (String eventString : days) {
+
+                                    addFileEventFromLine(
+                                            eventsPack[0],
+                                            getResources().getString(R.string.msg_source_info, eventsPack[0]),
+                                            eventString,
+                                            Constants.EventType_Other,
+                                            Constants.PREFIX_OtherEventID,
+                                            Constants.EVENT_PREFIX_EMBEDDED_EVENT,
+                                            Constants.eventSourceOtherEventPrefix,
+                                            Constants.STRING_STORAGE_EMBEDDED,
                                             eventEmoji,
                                             today
                                     );
@@ -11623,14 +11696,16 @@ public class ContactsEvents {
         private class Source {
             String packPrefix;
             String eventIdHashPrefix;
+            @DrawableRes int eventIcon;
             Set<String> prefSelected;
 
-            public Source(@NonNull String packPrefix, @NonNull String eventIdHashPrefix, @NonNull Set<String> prefSelected) {
+            public Source(@NonNull String packPrefix, @NonNull String eventIdHashPrefix,
+                          @DrawableRes int eventIcon, @NonNull Set<String> prefSelected) {
                 this.packPrefix = packPrefix;
                 this.eventIdHashPrefix = eventIdHashPrefix;
+                this.eventIcon = eventIcon;
                 this.prefSelected = prefSelected;
             }
-            //todo: добавить eventSourcePrefix, icon
         }
 
         @SuppressLint("DiscouragedApi")
@@ -11655,10 +11730,14 @@ public class ContactsEvents {
                 packages.add(packageName);
                 hashes.add(StringUtils.getHash(Constants.eventSourceLocalPrefix));
 
-                //Справочники праздников и выходных
+                //Справочники праздников и выходных и других событий
                 final ArrayList<Source> sources = new ArrayList<>();
-                sources.add(new Source(Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, preferences_HolidayEvent_ids));
-                sources.add(new Source(Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix, preferences_HolidayEvent_Other_ids));
+                sources.add(new Source(Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix,
+                        R.drawable.ic_event_holiday, preferences_HolidayEvent_ids));
+                sources.add(new Source(Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix,
+                        R.drawable.ic_event_holiday, preferences_HolidayEvent_Other_ids));
+                sources.add(new Source(Constants.STRING_TYPE_OTHER_EVENT, Constants.eventSourceOtherEventPrefix,
+                        R.drawable.ic_event_other, preferences_OtherEvent_ids));
 
                 for (Source source: sources) {
                     int eventsPackCount = 1;
@@ -11678,7 +11757,7 @@ public class ContactsEvents {
                                             + Constants.STRING_BRACKETS_CLOSE;
                                 }
                                 titles.add(sourceTitle);
-                                icons.add(R.drawable.ic_event_holiday);
+                                icons.add(source.eventIcon);
                                 packages.add(packageName);
                                 hashes.add(StringUtils.getHash(source.eventIdHashPrefix + eventsPack[0]));
                             }

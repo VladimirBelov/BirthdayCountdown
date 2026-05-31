@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.05.2026, 01:04
+  ~  * Created by Vladimir Belov on 01.06.2026, 02:42
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 29.05.2026, 23:06
+  ~  * Last modified 31.05.2026, 22:36
   ~  */
   -->
 
@@ -448,6 +448,8 @@
     <string name="pref_CustomEvents_Other_title">Другие события</string>
     <string name="pref_CustomEvents_Other_Labels_title">Свои наименования</string>
     <string name="pref_CustomEvents_Other_Labels_summary">События с такими метками будут идентифицированы как другие события (через запятую)</string>
+    <string name="pref_CustomEvents_Other_Embedded_title">Предустановленные события</string>
+    <string name="pref_CustomEvents_Other_Embedded_summary">Показывать эти события из встроенной базы данных</string>
 
     <string name="pref_CustomEvents_Holiday_title">Праздники</string>
     <string name="pref_CustomEvents_Holiday_Labels_title">Свои наименования</string>

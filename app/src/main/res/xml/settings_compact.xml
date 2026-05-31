@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.05.2026, 23:59
+  ~  * Created by Vladimir Belov on 01.06.2026, 02:42
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 24.05.2026, 00:15
+  ~  * Last modified 31.05.2026, 22:14
   ~  */
   -->
 
@@ -420,6 +420,11 @@
             android:title="@string/pref_CustomEvents_Other_title"
             android:layout="@layout/settings_category_with_icon"
             android:icon="@drawable/ic_event_other">
+
+            <Preference
+                android:key="@string/pref_CustomEvents_Other_Embedded_key"
+                android:title="@string/pref_CustomEvents_Other_Embedded_title"
+                android:summary="@string/pref_CustomEvents_Other_Embedded_summary"/>
 
             <org.vovka.birthdaycountdown.CustomEditTextPreference
                 android:key="@string/pref_CustomEvents_Other_Labels_key"

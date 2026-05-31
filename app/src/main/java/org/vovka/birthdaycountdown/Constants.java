@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.05.2026, 23:59
+ *  * Created by Vladimir Belov on 01.06.2026, 02:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 24.05.2026, 00:10
+ *  * Last modified 01.06.2026, 00:51
  *
  */
 
@@ -121,11 +121,12 @@ public final class Constants {
     static final String STRING_TYPE_WEDDING = "event_type_wedding_";
     static final String STRING_TYPE_HOLIDAY = "holidays";
     static final String STRING_TYPE_OTHER_HOLIDAY = "other_holidays";
+    static final String STRING_TYPE_OTHER_EVENT = "other_events";
     static final String STRING_TYPE_FACT = "facts";
     static final String STRING_STORAGE_CONTACTS = "contacts";
     static final String STRING_STORAGE_CALENDAR = "calendar";
     static final String STRING_STORAGE_FILE = "file";
-    static final String STRING_STORAGE_HOLIDAYS = "holidays";
+    static final String STRING_STORAGE_EMBEDDED = "embedded";
     static final String STRING_STORAGE_LOCAL = "local";
     static final int Storage_Calendar = 0;
     static final int Storage_Contacts = 1;
@@ -133,10 +134,11 @@ public final class Constants {
     static final int Storage_Prefs = 3;
     static final String EVENT_PREFIX_CALENDAR_EVENT = "calendar event";
     static final String EVENT_PREFIX_FILE_EVENT = "file event";
-    static final String EVENT_PREFIX_HOLIDAY_EVENT = "holiday";
+    static final String EVENT_PREFIX_EMBEDDED_EVENT = "embedded";
     static final String EVENT_PREFIX_LOCAL_EVENT = "local";
     static final String PREFIX_FileEventID = "f";
     static final String PREFIX_HolidayEventID = "h";
+    static final String PREFIX_OtherEventID = "o";
     static final String WIDGET_TEXT_VIEW = "textView";
     static final String WIDGET_TEXT_VIEW_LAYOUT = "textViewLayout";
     static final String WIDGET_TEXT_VIEW_2_ND = "textView2nd";
@@ -419,6 +421,7 @@ public final class Constants {
     static final String eventSourceFilePrefix = "file:";
     static final String eventSourceMultiFilePrefix = "multifile:";
     static final String eventSourceHolidayPrefix = "holiday:";
+    static final String eventSourceOtherEventPrefix = "other:";
     static final String eventSourceFactPrefix = "fact:";
     static final String eventSourceFavoritePrefix = "fav:";
     static final String eventSourceLocalPrefix = "local:";
