@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Created by Vladimir Belov on 02.06.2026, 22:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.04.2026, 23:04
+ *  * Last modified 02.06.2026, 21:57
  *
  */
 
@@ -324,6 +324,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
                     || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
+                eventTypesIDs.remove(getString(R.string.pref_EventTypes_Other));
+                eventTypesValues.remove(getString(R.string.pref_List_EventTypes_Other));
                 eventTypesIDs.remove(getString(R.string.pref_EventTypes_Holiday));
                 eventTypesValues.remove(getString(R.string.pref_List_EventTypes_Holidays));
             }

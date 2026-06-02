@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.04.2026, 00:29
+ *  * Created by Vladimir Belov on 02.06.2026, 22:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.04.2026, 23:39
+ *  * Last modified 02.06.2026, 21:57
  *
  */
 
@@ -386,10 +386,9 @@ class WidgetUpdater {
             final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
 
             //Типы событий
-            if  (eventSubType.equals(Constants.EventType_Calendar) ||
-                    eventSubType.equals(Constants.EventType_File) ||
+            if  (eventSubType.equals(Constants.EventType_Other) ||
                     eventSubType.equals(Constants.EventType_Holiday)) {
-                //пропускаем события календарей, из файлов и праздники
+                //пропускаем другие события и праздники
                 useEventListPrefs = false;
             } else if (!eventsPrefList.isEmpty()) {
                 useEventListPrefs = false;
