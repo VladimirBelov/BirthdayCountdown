@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.05.2026, 01:42
+  ~  * Created by Vladimir Belov on 02.06.2026, 20:33
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 27.05.2026, 18:02
+  ~  * Last modified 01.06.2026, 13:08
   ~  */
   -->
 
@@ -338,7 +338,15 @@
 Порядочный человек тот, кто делает гадости без удовольствия (Сергей Довлатов)
 Деньги — не главное в жизни. Главное — чтобы они не кончались
 Время — единственный актив, который нельзя вернуть. Трать его как самый дефицитный ресурс
-Не навязывайтесь людям. Лучше быть в одиночестве, чем с тем, кому ты не нужен!"</item>
+Не навязывайтесь людям. Лучше быть в одиночестве, чем с тем, кому ты не нужен!
+Под давлением люди не меняются. Под давлением они показывают кто они есть на самом деле
+В беде мы узнаём не столько друзей, сколько самих себя — и чужую неблагодарность (Ларошфуко)
+Ты не знаешь, насколько человек низок, пока не упадёшь сам (Шекспир)
+Зависть — это признание чужого превосходства. Используй её как топливо, а не яд
+Твоё внимание — самый ценный ресурс. Все вокруг борются за него. Охраняй его
+Жизнь не коротка — мы её делаем таковой… Мы живём не в настоящем, а то надеемся на будущее, то цепляемся за прошлое (Сенека)
+Храбрость — это не отсутствие страха. Это действие вопреки ему
+Великие вещи требуют времени. Нетерпение — это налог на амбиции"</item>
     </string-array>
 
     <string-array name="facts2" translatable="false" tools:ignore="UnusedResources">
@@ -687,7 +695,10 @@ People usually overestimate what they can achieve in a year and underestimate wh
 Worry does not empty tomorrow of its sorrow. It empties today of its strength (Corrie ten Boom)
 Compare yourself to who you were yesterday, not to who someone else is today (Jordan B. Peterson)
 Motivation is fickle. Discipline is reliable (Jocko Willink)
-Never make a decision when you are angry, never make a promise when you are happy (Benjamin Franklin)"</item>
+Never make a decision when you are angry, never make a promise when you are happy (Benjamin Franklin)
+Pressure doesn’t build character. Pressure reveals character (Julius Erving)
+Use envy as a compass, not a cage
+Courage is resistance to fear, mastery of fear — not absence of fear (Mark Twain)"</item>
     </string-array>
 
     <string-array name="facts4" translatable="false" tools:ignore="UnusedResources">

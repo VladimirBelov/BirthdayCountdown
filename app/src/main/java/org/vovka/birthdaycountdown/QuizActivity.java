@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.04.2026, 00:29
+ *  * Created by Vladimir Belov on 02.06.2026, 20:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.04.2026, 23:26
+ *  * Last modified 02.06.2026, 14:11
  *
  */
 
@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -550,9 +551,9 @@ public class QuizActivity extends Activity {
 
         private final int codeResId;
         private final int nameResId;
-        private final int iconResId;
+        @DrawableRes private final int iconResId;
 
-        QuestionType(int codeResId, int nameResId, int iconResId) {
+        QuestionType(int codeResId, int nameResId, @DrawableRes int iconResId) {
             this.codeResId = codeResId;
             this.nameResId = nameResId;
             this.iconResId = iconResId;
