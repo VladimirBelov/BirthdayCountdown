@@ -5,27 +5,10 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
-
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
+# Сохраняем имена файлов и номера строк для красивых стектрейсов в краш-репортах
 -keepattributes SourceFile,LineNumberTable
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
-
+# Критично для AndroidX и Material Components (точка входа в приложение)
 -keep class androidx.core.app.CoreComponentFactory { *; }
 
-#section for local images
--keepclassmembers class **.R$* {
-    public static <fields>;
-}
-
--keep class **.R$*
 #end
