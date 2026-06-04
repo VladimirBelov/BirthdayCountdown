@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.04.2026, 00:29
+ *  * Created by Vladimir Belov on 04.06.2026, 11:47
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.04.2026, 23:14
+ *  * Last modified 04.06.2026, 10:15
  *
  */
 
@@ -339,7 +339,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
                 } else if (line.startsWith(Constants.iCal_EventBegin)) {
 
-                    event = eventsData.createTypedEvent(Constants.Type_Unrecognized, Constants.STRING_EMPTY, Constants.Storage_File);
+                    event = eventsData.createTypedEvent(Constants.Type_Unrecognized, Constants.STRING_EMPTY);
                     useEventYear = true;
 
                     eventData.clear();
@@ -508,7 +508,7 @@ public class EventImporterActivity extends AppCompatActivity {
             }
 
             boolean isUnrecognizedEvent = false;
-            ContactsEvents.Event event = eventsData.recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, false, useEventYear);
+            ContactsEvents.Event event = eventsData.recognizeEventByLabel(eventLabel_forSearch, false, useEventYear);
             if (event.type.equals(Constants.EventType_Unrecognized)) {
                 isUnrecognizedEvent = true;
             }

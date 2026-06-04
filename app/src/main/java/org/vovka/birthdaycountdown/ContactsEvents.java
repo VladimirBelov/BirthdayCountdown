@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.06.2026, 02:42
+ *  * Created by Vladimir Belov on 04.06.2026, 11:47
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.06.2026, 02:41
+ *  * Last modified 04.06.2026, 11:32
  *
  */
 
@@ -784,8 +784,6 @@ public class ContactsEvents {
     final HashMap<String, Integer> statEventSources = new HashMap<>();
     final HashMap<String, Integer> statEventSourcesIds = new HashMap<>();
     final HashMap<String, Integer> statEventTypes = new HashMap<>();
-    static final Map<String, Integer> zodiacSignStrings = new HashMap<>();
-    private static final Map<Integer, Integer> chineseZodiacYearStrings = new HashMap<>();
     private static final TreeMap<Integer, Date> chineseZodiacNewYearsDates = new TreeMap<>();
 
     private static DisplayMetrics displayMetrics;
@@ -805,6 +803,8 @@ public class ContactsEvents {
 
     //Зависимые от языка константы
     String[] weekDaysShort;
+    static final Map<String, Integer> zodiacSignStrings = new HashMap<>();
+    private static final Map<Integer, Integer> chineseZodiacYearStrings = new HashMap<>();
     String eventNameNY;
     String eventNameEaster;
     String eventNameCatholicEaster;
@@ -3036,19 +3036,19 @@ public class ContactsEvents {
 
                 if (isMultiTypeSource || needEventLabel) {
 
-                    event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, true, true);
+                    event = recognizeEventByLabel(eventLabel_forSearch, true, true);
 
                 } else if (eventType.equals(Constants.EventType_BirthDay)) {
 
-                    event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
+                    event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
 
                 } else if (eventType.equals(Constants.EventType_Other)) {
 
-                    event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
+                    event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY);
 
                 } else if (eventType.equals(Constants.EventType_Holiday)) {
 
-                    event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
+                    event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY);
 
                 }
 
@@ -3188,88 +3188,88 @@ public class ContactsEvents {
                 if (eventType.equals(Constants.EventType_BirthDay)
                         || (isEventLabel && preferences_birthday_labels != null && preferences_birthday_labels.reset(eventLabel.toLowerCase()).find())) {
 
-                    event = createTypedEvent(Constants.Type_BirthDay, eventLabel, Constants.Storage_Contacts);
+                    event = createTypedEvent(Constants.Type_BirthDay, eventLabel);
 
                 } else if (eventType.equals(Constants.EventType_Death)
                         || (isEventLabel && preferences_death_labels != null && preferences_death_labels.reset(eventLabel.toLowerCase()).find())) {
 
-                    event = createTypedEvent(Constants.Type_Death, eventLabel, Constants.Storage_Contacts);
+                    event = createTypedEvent(Constants.Type_Death, eventLabel);
 
                 } else if (eventType.equals(Constants.EventType_Anniversary)
                         || (isEventLabel && preferences_wedding_labels != null && preferences_wedding_labels.reset(eventLabel.toLowerCase()).find())) {
 
-                    event = createTypedEvent(Constants.Type_Anniversary, eventLabel, Constants.Storage_Contacts);
+                    event = createTypedEvent(Constants.Type_Anniversary, eventLabel);
 
                 } else if (eventType.equals(Constants.EventType_Another)
                         || (isEventLabel && preferences_another_event_labels != null && preferences_another_event_labels.reset(eventLabel.toLowerCase()).find())) {
 
-                    event = createTypedEvent(Constants.Type_Another, eventLabel, Constants.Storage_Contacts);
+                    event = createTypedEvent(Constants.Type_Another, eventLabel);
 
                 } else if (eventType.equals(Constants.EventType_Other)
                         || (isEventLabel && preferences_other_event_labels != null && preferences_other_event_labels.reset(eventLabel.toLowerCase()).find())) {
 
-                    event = createTypedEvent(Constants.Type_Other, eventLabel, Constants.Storage_Contacts);
+                    event = createTypedEvent(Constants.Type_Other, eventLabel);
 
                 } else if (eventType.equals(Constants.EventType_Holiday)
                         || (isEventLabel && preferences_holiday_event_labels != null && preferences_holiday_event_labels.reset(eventLabel.toLowerCase()).find())) {
 
-                    event = createTypedEvent(Constants.Type_HolidayEvent, eventLabel, Constants.Storage_Contacts);
+                    event = createTypedEvent(Constants.Type_HolidayEvent, eventLabel);
 
                 } else if (isEventLabel) {
 
                     if (preferences_customevent1_enabled && preferences_customevent1_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        event = createTypedEvent(Constants.Type_Custom1, eventLabel, Constants.Storage_Contacts);
+                        event = createTypedEvent(Constants.Type_Custom1, eventLabel);
                         if (!preferences_customevent1_useyear && !eventDateStr.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
                             eventDateStr = Constants.STRING_2MINUS + eventDateStr.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_customevent2_enabled && preferences_customevent2_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        event = createTypedEvent(Constants.Type_Custom2, eventLabel, Constants.Storage_Contacts);
+                        event = createTypedEvent(Constants.Type_Custom2, eventLabel);
                         if (!preferences_customevent2_useyear && !eventDateStr.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
                             eventDateStr = Constants.STRING_2MINUS + eventDateStr.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_customevent3_enabled && preferences_customevent3_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        event = createTypedEvent(Constants.Type_Custom3, eventLabel, Constants.Storage_Contacts);
+                        event = createTypedEvent(Constants.Type_Custom3, eventLabel);
                         if (!preferences_customevent3_useyear && !eventDateStr.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
                             eventDateStr = Constants.STRING_2MINUS + eventDateStr.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_customevent4_enabled && preferences_customevent4_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        event = createTypedEvent(Constants.Type_Custom4, eventLabel, Constants.Storage_Contacts);
+                        event = createTypedEvent(Constants.Type_Custom4, eventLabel);
                         if (!preferences_customevent4_useyear && !eventDateStr.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
                             eventDateStr = Constants.STRING_2MINUS + eventDateStr.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_customevent5_enabled && preferences_customevent5_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        event = createTypedEvent(Constants.Type_Custom5, eventLabel, Constants.Storage_Contacts);
+                        event = createTypedEvent(Constants.Type_Custom5, eventLabel);
                         if (!preferences_customevent5_useyear && !eventDateStr.startsWith(Constants.STRING_2MINUS)) { //Если год не нужен, а он есть в событии
                             eventDateStr = Constants.STRING_2MINUS + eventDateStr.substring(5); //Предполагается, что пользовательские события могут быть только YYYY-MM-DD
                         }
 
                     } else if (preferences_nameday_labels != null && preferences_nameday_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        event = createTypedEvent(Constants.Type_NameDay, eventLabel, Constants.Storage_Contacts);
+                        event = createTypedEvent(Constants.Type_NameDay, eventLabel);
 
                     } else if (preferences_crowning_labels != null && preferences_crowning_labels.reset(eventLabel.toLowerCase()).find()) {
 
-                        event = createTypedEvent(Constants.Type_Crowning, eventLabel, Constants.Storage_Contacts);
+                        event = createTypedEvent(Constants.Type_Crowning, eventLabel);
 
                     } else {
 
                         isUnrecognized = true;
                         if (preferences_rules_unrecognized == Rules_Unrecognized_Type_Other) {
 
-                            event = createTypedEvent(Constants.Type_Other, eventLabel, Constants.Storage_Contacts);
+                            event = createTypedEvent(Constants.Type_Other, eventLabel);
 
                         } else if (preferences_rules_unrecognized == Rules_Unrecognized_Type_Unrecognized) {
 
-                            event = createTypedEvent(Constants.Type_Unrecognized, eventLabel, Constants.Storage_Contacts);
+                            event = createTypedEvent(Constants.Type_Unrecognized, eventLabel);
 
                         } else {
                             return eventKey_current; //Пропускаем событие
@@ -3441,13 +3441,13 @@ public class ContactsEvents {
 
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
             if (eventType.equals(Constants.EventType_BirthDay)) {
-                event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_Calendar);
+                event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
                 useEventYear = preferences_birthday_calendars_useyear;
             } else if (eventType.equals(Constants.EventType_Other)) {
-                event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_Calendar);
+                event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY);
                 useEventYear = true;
             } else if (eventType.equals(Constants.EventType_Holiday)) {
-                event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_Calendar);
+                event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY);
                 useEventYear = true;
             } else if (isMultiTypeSource) {
                 useEventYear = true;
@@ -3621,7 +3621,7 @@ public class ContactsEvents {
 
                 if (isMultiTypeSource) {
                     //Пытаемся распознать по описанию события. Если не получится - ниже будем извлекать тип из заголовка
-                    event = recognizeEventByLabel(eventDescription, Constants.Storage_Calendar, false, useEventYear);
+                    event = recognizeEventByLabel(eventDescription, false, useEventYear);
                 }
 
             } else if (isMultiTypeSource) {
@@ -3667,7 +3667,7 @@ public class ContactsEvents {
                     }
                 }
 
-                event = recognizeEventByLabel(StringUtils.getNotNullString(foundLabel), Constants.Storage_Calendar, setOtherIfUnknown, useEventYear);
+                event = recognizeEventByLabel(StringUtils.getNotNullString(foundLabel), setOtherIfUnknown, useEventYear);
             }
 
             if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && event.icon == R.drawable.ic_event_unknown)
@@ -4028,7 +4028,7 @@ public class ContactsEvents {
                             try {
                                 eventSubType = Integer.parseInt(singleEventArray[Position_eventSubType]);
                             } catch (NumberFormatException ignored) { /**/ }
-                            Event event = createTypedEvent(eventSubType, Constants.STRING_EMPTY, Constants.Storage_Prefs);
+                            Event event = createTypedEvent(eventSubType, Constants.STRING_EMPTY);
                             TreeMap<Integer, String> eventData = getEventData(eventString);
 
                             final String eventTitleAlt = eventData.get(Position_personFullNameAlt);
@@ -4607,17 +4607,17 @@ public class ContactsEvents {
                 } else if (line.startsWith(Constants.iCal_EventBegin)) {
                     if (eventType.equals(Constants.EventType_BirthDay)) {
 
-                        event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
+                        event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
                         useEventYear = true;
 
                     } else if (eventType.equals(Constants.EventType_Holiday)) {
 
-                        event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
+                        event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY);
                         useEventYear = false;
 
                     } else {
 
-                        event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
+                        event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY);
                         event.subType = Constants.EventType_File;
                         useEventYear = false;
 
@@ -5005,19 +5005,19 @@ public class ContactsEvents {
             if (isMultiTypeSource) {
 
                 boolean setOtherIfUnknown = preferences_rules_unrecognized == Rules_Unrecognized_Type_Other;
-                event = recognizeEventByLabel(eventLabel_forSearch, Constants.Storage_File, setOtherIfUnknown, true);
+                event = recognizeEventByLabel(eventLabel_forSearch, setOtherIfUnknown, true);
 
             } else if (eventType.equals(Constants.EventType_BirthDay)) {
 
-                event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY, Constants.Storage_File);
+                event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
 
             } else if (eventType.equals(Constants.EventType_Other)) {
 
-                event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY, Constants.Storage_File);
+                event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY);
 
             } else if (eventType.equals(Constants.EventType_Holiday)) {
 
-                event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY, Constants.Storage_File);
+                event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY);
 
             }
 
@@ -5077,22 +5077,11 @@ public class ContactsEvents {
             //Описание события
             int indStartDescription = eventTitle.indexOf(Constants.STRING_BAR);
             if (indStartDescription > -1) {
-                /*int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
-                if (pStartFirst > -1) {
-                    if (indStartDescription < pStartFirst) { //"|" до "("
-                        String eventDescription = eventTitle.substring(indStartDescription + 1, pStartFirst);
-                        if (!eventDescription.isEmpty()) {
-                            eventData.put(Position_eventDescription, eventDescription.trim());
-                            eventTitle = eventTitle.replace(eventDescription.concat(Constants.STRING_BAR), Constants.STRING_EMPTY).trim();
-                        }
-                    }
-                } else {*/
                     String eventDescription = eventTitle.substring(indStartDescription + 1);
                     if (!eventDescription.isEmpty()) {
                         eventData.put(Position_eventDescription, eventDescription.trim());
                         eventTitle = eventTitle.substring(0, indStartDescription).trim();
                     }
-                //}
             }
 
             if (map_contacts_names.isEmpty()) event.needScanContacts = false;
@@ -5665,13 +5654,12 @@ public class ContactsEvents {
      * Определение типа события по заголовку
      *
      * @param eventLabel        Заголовок события
-     * @param eventSource       Источник события
      * @param setOtherIfUnknown Ставить тип "Другое событие", если не определили
      * @param useEventYear      Дата - с годом
      * @return Объект {@link Event} с предзаполненными атрибутами события
      */
     @NonNull
-    Event recognizeEventByLabel(@NonNull String eventLabel, int eventSource, boolean setOtherIfUnknown, boolean useEventYear) {
+    Event recognizeEventByLabel(@NonNull String eventLabel, boolean setOtherIfUnknown, boolean useEventYear) {
         //todo: Убрать useEventYear из параметров
         final boolean isEmptyLabel = eventLabel.isEmpty();
 
@@ -5680,63 +5668,63 @@ public class ContactsEvents {
             if (!isEmptyLabel) {
                 if (preferences_birthday_labels != null && preferences_birthday_labels.reset(eventLabel).find()) {
 
-                    return createTypedEvent(Constants.Type_BirthDay, eventLabel, eventSource);
+                    return createTypedEvent(Constants.Type_BirthDay, eventLabel);
 
                 } else if (preferences_other_event_labels != null && preferences_other_event_labels.reset(eventLabel).find()) {
 
-                    return createTypedEvent(Constants.Type_Other, eventLabel, eventSource);
+                    return createTypedEvent(Constants.Type_Other, eventLabel);
 
                 } else if (preferences_holiday_event_labels != null && preferences_holiday_event_labels.reset(eventLabel).find()) {
 
-                    return createTypedEvent(Constants.Type_HolidayEvent, eventLabel, eventSource);
+                    return createTypedEvent(Constants.Type_HolidayEvent, eventLabel);
 
                 } else if (preferences_death_labels != null && preferences_death_labels.reset(eventLabel).find()) {
 
-                    return createTypedEvent(Constants.Type_Death, eventLabel, eventSource);
+                    return createTypedEvent(Constants.Type_Death, eventLabel);
 
                 } else if (preferences_wedding_labels != null && preferences_wedding_labels.reset(eventLabel).find()) {
 
-                    return createTypedEvent(Constants.Type_Anniversary, eventLabel, eventSource);
+                    return createTypedEvent(Constants.Type_Anniversary, eventLabel);
 
                 } else if (preferences_another_event_labels != null && preferences_another_event_labels.reset(eventLabel).find()) {
 
-                    return createTypedEvent(Constants.Type_Another, eventLabel, eventSource);
+                    return createTypedEvent(Constants.Type_Another, eventLabel);
 
                 } else if (preferences_nameday_labels != null && preferences_nameday_labels.reset(eventLabel).find()) {
 
-                    return createTypedEvent(Constants.Type_NameDay, eventLabel, eventSource);
+                    return createTypedEvent(Constants.Type_NameDay, eventLabel);
 
                 } else if (preferences_crowning_labels != null && preferences_crowning_labels.reset(eventLabel).find()) {
 
-                    return createTypedEvent(Constants.Type_Crowning, eventLabel, eventSource);
+                    return createTypedEvent(Constants.Type_Crowning, eventLabel);
 
                 } else if (preferences_customevent1_enabled && preferences_customevent1_labels.reset(eventLabel).find()) {
 
-                    Event typedEvent = createTypedEvent(Constants.Type_Custom1, eventLabel, eventSource);
+                    Event typedEvent = createTypedEvent(Constants.Type_Custom1, eventLabel);
                     typedEvent.useEventYear = preferences_customevent1_useyear;
                     return typedEvent;
 
                 } else if (preferences_customevent2_enabled && preferences_customevent2_labels.reset(eventLabel).find()) {
 
-                    Event typedEvent = createTypedEvent(Constants.Type_Custom2, eventLabel, eventSource);
+                    Event typedEvent = createTypedEvent(Constants.Type_Custom2, eventLabel);
                     typedEvent.useEventYear = preferences_customevent2_useyear;
                     return typedEvent;
 
                 } else if (preferences_customevent3_enabled && preferences_customevent3_labels.reset(eventLabel).find()) {
 
-                    Event typedEvent = createTypedEvent(Constants.Type_Custom3, eventLabel, eventSource);
+                    Event typedEvent = createTypedEvent(Constants.Type_Custom3, eventLabel);
                     typedEvent.useEventYear = preferences_customevent3_useyear;
                     return typedEvent;
 
                 } else if (preferences_customevent4_enabled && preferences_customevent4_labels.reset(eventLabel).find()) {
 
-                    Event typedEvent = createTypedEvent(Constants.Type_Custom4, eventLabel, eventSource);
+                    Event typedEvent = createTypedEvent(Constants.Type_Custom4, eventLabel);
                     typedEvent.useEventYear = preferences_customevent4_useyear;
                     return typedEvent;
 
                 } else if (preferences_customevent5_enabled && preferences_customevent5_labels.reset(eventLabel).find()) {
 
-                    Event typedEvent = createTypedEvent(Constants.Type_Custom5, eventLabel, eventSource);
+                    Event typedEvent = createTypedEvent(Constants.Type_Custom5, eventLabel);
                     typedEvent.useEventYear = preferences_customevent5_useyear;
                     return typedEvent;
 
@@ -5745,11 +5733,11 @@ public class ContactsEvents {
 
             if (preferences_rules_unrecognized == Rules_Unrecognized_Type_Other && setOtherIfUnknown) {
 
-                return createTypedEvent(Constants.Type_Other, eventLabel, eventSource);
+                return createTypedEvent(Constants.Type_Other, eventLabel);
 
             } else if (preferences_rules_unrecognized == Rules_Unrecognized_Type_Unrecognized) {
 
-                return createTypedEvent(Constants.Type_Unrecognized, eventLabel, eventSource);
+                return createTypedEvent(Constants.Type_Unrecognized, eventLabel);
 
             }
 
@@ -5757,7 +5745,7 @@ public class ContactsEvents {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-        Event unrecognizedEvent = createTypedEvent(Constants.Type_Unrecognized, eventLabel, eventSource);
+        Event unrecognizedEvent = createTypedEvent(Constants.Type_Unrecognized, eventLabel);
         unrecognizedEvent.useEventYear = useEventYear;
         return unrecognizedEvent;
     }
@@ -5767,11 +5755,10 @@ public class ContactsEvents {
      *
      * @param eventType   Тип события
      * @param eventLabel  Заголовок пользовательского события
-     * @param eventSource Источник события (используется для установки наименования для "Другое событие")
      * @return Предзаполненное событие
      */
     @NonNull
-    Event createTypedEvent(int eventType, @NonNull String eventLabel, int eventSource) {
+    Event createTypedEvent(int eventType, @NonNull String eventLabel) {
 
         Event event = new Event();
 
@@ -5779,141 +5766,147 @@ public class ContactsEvents {
 
             event.label = eventLabel;
 
-            if (eventType == Constants.Type_BirthDay) {
+            switch (eventType) {
+                case Constants.Type_BirthDay:
 
-                event.caption = getResources().getString(R.string.event_type_birthday);
-                event.type = Constants.EventType_BirthDay;
-                event.subType = Constants.EventType_BirthDay;
-                event.icon = R.drawable.ic_event_birthday;
-                event.emoji = getResources().getString(R.string.event_type_birthday_emoji);
-                event.needScanContacts = true;
+                    event.caption = getResources().getString(R.string.event_type_birthday);
+                    event.type = Constants.EventType_BirthDay;
+                    event.subType = Constants.EventType_BirthDay;
+                    event.icon = R.drawable.ic_event_birthday;
+                    event.emoji = getResources().getString(R.string.event_type_birthday_emoji);
+                    event.needScanContacts = true;
 
-            } else if (eventType == Constants.Type_Other) {
+                    break;
+                case Constants.Type_Other:
 
-                event.caption = getResources().getString(R.string.event_type_other);
-                event.type = Constants.EventType_Other;
-                event.subType = Constants.EventType_Other;
-                event.icon = R.drawable.ic_event_other;
-                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
-                event.needScanContacts = false;
+                    event.caption = getResources().getString(R.string.event_type_other);
+                    event.type = Constants.EventType_Other;
+                    event.subType = Constants.EventType_Other;
+                    event.icon = R.drawable.ic_event_other;
+                    event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
+                    event.needScanContacts = false;
 
-            } else if (eventType == Constants.Type_HolidayEvent) {
+                    break;
+                case Constants.Type_HolidayEvent:
 
-                event.caption = getResources().getString(R.string.event_type_holiday);
-                event.type = Constants.EventType_Holiday;
-                event.subType = Constants.EventType_Holiday;
-                event.icon = R.drawable.ic_event_holiday;
-                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
-                event.needScanContacts = false;
+                    event.caption = getResources().getString(R.string.event_type_holiday);
+                    event.type = Constants.EventType_Holiday;
+                    event.subType = Constants.EventType_Holiday;
+                    event.icon = R.drawable.ic_event_holiday;
+                    event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
+                    event.needScanContacts = false;
 
-            } else if (eventType == Constants.Type_Death) {
+                    break;
+                case Constants.Type_Death:
 
-                event.caption = getResources().getString(R.string.event_type_death);
-                event.type = Constants.EventType_Custom;
-                event.subType = Constants.EventType_Death;
-                event.icon = R.drawable.ic_event_death;
-                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_death_emoji) : "\uD83D\uDCC5";
-                event.needScanContacts = true;
+                    event.caption = getResources().getString(R.string.event_type_death);
+                    event.type = Constants.EventType_Custom;
+                    event.subType = Constants.EventType_Death;
+                    event.icon = R.drawable.ic_event_death;
+                    event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_death_emoji) : "\uD83D\uDCC5";
+                    event.needScanContacts = true;
 
-            } else if (eventType == Constants.Type_Anniversary) {
+                    break;
+                case Constants.Type_Anniversary:
 
-                event.caption = getResources().getString(R.string.event_type_anniversary);
-                event.type = Constants.EventType_Anniversary;
-                event.subType = Constants.EventType_Anniversary;
-                event.icon = R.drawable.ic_event_wedding;
-                event.emoji = getResources().getString(R.string.event_type_wedding_emoji);
-                event.needScanContacts = true;
+                    event.caption = getResources().getString(R.string.event_type_anniversary);
+                    event.type = Constants.EventType_Anniversary;
+                    event.subType = Constants.EventType_Anniversary;
+                    event.icon = R.drawable.ic_event_wedding;
+                    event.emoji = getResources().getString(R.string.event_type_wedding_emoji);
+                    event.needScanContacts = true;
 
-            } else if (eventType == Constants.Type_NameDay) {
+                    break;
+                case Constants.Type_NameDay:
 
-                event.caption = getResources().getString(R.string.event_type_nameday);
-                event.type = Constants.EventType_Custom;
-                event.subType = Constants.EventType_NameDay;
-                event.icon = R.drawable.ic_event_nameday;
-                event.emoji = getResources().getString(R.string.event_type_nameday_emoji);
-                event.needScanContacts = true;
+                    event.caption = getResources().getString(R.string.event_type_nameday);
+                    event.type = Constants.EventType_Custom;
+                    event.subType = Constants.EventType_NameDay;
+                    event.icon = R.drawable.ic_event_nameday;
+                    event.emoji = getResources().getString(R.string.event_type_nameday_emoji);
+                    event.needScanContacts = true;
 
-            } else if (eventType == Constants.Type_Crowning) {
+                    break;
+                case Constants.Type_Crowning:
 
-                event.caption = getResources().getString(R.string.event_type_crowning);
-                event.type = Constants.EventType_Custom;
-                event.subType = Constants.EventType_Crowning;
-                event.icon = R.drawable.ic_event_crowning;
-                event.emoji = getResources().getString(R.string.event_type_crowning_emoji);
-                event.needScanContacts = true;
+                    event.caption = getResources().getString(R.string.event_type_crowning);
+                    event.type = Constants.EventType_Custom;
+                    event.subType = Constants.EventType_Crowning;
+                    event.icon = R.drawable.ic_event_crowning;
+                    event.emoji = getResources().getString(R.string.event_type_crowning_emoji);
+                    event.needScanContacts = true;
 
-            } else if (eventType == Constants.Type_Another) {
+                    break;
+                case Constants.Type_Another:
 
-                event.caption = getResources().getString(R.string.event_type_another);
-                event.type = Constants.EventType_Another;
-                event.icon = R.drawable.ic_event_other;
-                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
-                event.needScanContacts = true;
+                    event.caption = getResources().getString(R.string.event_type_another);
+                    event.type = Constants.EventType_Another;
+                    event.subType = Constants.EventType_Another;
+                    event.icon = R.drawable.ic_event_other;
+                    event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
+                    event.needScanContacts = true;
 
-            } else if (eventType == Constants.Type_Custom1) {
+                    break;
+                case Constants.Type_Custom1:
 
-                event.caption = preferences_customevent1_caption;
-                event.type = Constants.EventType_Custom;
-                event.subType = Constants.EventType_Custom1;
-                event.icon = R.drawable.ic_event_custom1;
-                event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_custom1_emoji) : "\uD83D\uDCC6";
-                event.needScanContacts = true;
+                    event.caption = preferences_customevent1_caption;
+                    event.type = Constants.EventType_Custom;
+                    event.subType = Constants.EventType_Custom1;
+                    event.icon = R.drawable.ic_event_custom1;
+                    event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_custom1_emoji) : "\uD83D\uDCC6";
+                    event.needScanContacts = true;
 
-            } else if (eventType == Constants.Type_Custom2) {
+                    break;
+                case Constants.Type_Custom2:
 
-                event.caption = preferences_customevent2_caption;
-                event.type = Constants.EventType_Custom;
-                event.subType = Constants.EventType_Custom2;
-                event.icon = R.drawable.ic_event_custom2;
-                event.emoji = getResources().getString(R.string.event_type_custom2_emoji);
-                event.needScanContacts = true;
+                    event.caption = preferences_customevent2_caption;
+                    event.type = Constants.EventType_Custom;
+                    event.subType = Constants.EventType_Custom2;
+                    event.icon = R.drawable.ic_event_custom2;
+                    event.emoji = getResources().getString(R.string.event_type_custom2_emoji);
+                    event.needScanContacts = true;
 
-            } else if (eventType == Constants.Type_Custom3) {
+                    break;
+                case Constants.Type_Custom3:
 
-                event.caption = preferences_customevent3_caption;
-                event.type = Constants.EventType_Custom;
-                event.subType = Constants.EventType_Custom3;
-                event.icon = R.drawable.ic_event_custom3;
-                event.emoji = getResources().getString(R.string.event_type_custom3_emoji);
-                event.needScanContacts = true;
+                    event.caption = preferences_customevent3_caption;
+                    event.type = Constants.EventType_Custom;
+                    event.subType = Constants.EventType_Custom3;
+                    event.icon = R.drawable.ic_event_custom3;
+                    event.emoji = getResources().getString(R.string.event_type_custom3_emoji);
+                    event.needScanContacts = true;
 
-            } else if (eventType == Constants.Type_Custom4) {
+                    break;
+                case Constants.Type_Custom4:
 
-                event.caption = preferences_customevent4_caption;
-                event.type = Constants.EventType_Custom;
-                event.subType = Constants.EventType_Custom4;
-                event.icon = R.drawable.ic_event_custom4;
-                event.emoji = getResources().getString(R.string.event_type_custom4_emoji);
-                event.needScanContacts = true;
+                    event.caption = preferences_customevent4_caption;
+                    event.type = Constants.EventType_Custom;
+                    event.subType = Constants.EventType_Custom4;
+                    event.icon = R.drawable.ic_event_custom4;
+                    event.emoji = getResources().getString(R.string.event_type_custom4_emoji);
+                    event.needScanContacts = true;
 
-            } else if (eventType == Constants.Type_Custom5) {
+                    break;
+                case Constants.Type_Custom5:
 
-                event.caption = preferences_customevent5_caption;
-                event.type = Constants.EventType_Custom;
-                event.subType = Constants.EventType_Custom5;
-                event.icon = R.drawable.ic_event_custom5;
-                event.emoji = getResources().getString(R.string.event_type_custom5_emoji);
-                event.needScanContacts = true;
+                    event.caption = preferences_customevent5_caption;
+                    event.type = Constants.EventType_Custom;
+                    event.subType = Constants.EventType_Custom5;
+                    event.icon = R.drawable.ic_event_custom5;
+                    event.emoji = getResources().getString(R.string.event_type_custom5_emoji);
+                    event.needScanContacts = true;
 
-            } else { //if (eventType == Constants.Type_Unrecognized) {
+                    break;
+                default:
 
-                event.caption = getResources().getString(R.string.event_type_unrecognized);
-                event.type = Constants.EventType_Unrecognized;
-                event.subType = Constants.EventType_Unrecognized;
-                event.icon = R.drawable.ic_event_unknown;
-                event.emoji = getResources().getString(R.string.event_type_unknown_emoji);
-                event.needScanContacts = false;
+                    event.caption = getResources().getString(R.string.event_type_unrecognized);
+                    event.type = Constants.EventType_Unrecognized;
+                    event.subType = Constants.EventType_Unrecognized;
+                    event.icon = R.drawable.ic_event_unknown;
+                    event.emoji = getResources().getString(R.string.event_type_unknown_emoji);
+                    event.needScanContacts = false;
 
-            }
-
-            if (event.subType.isEmpty()) {
-                if (eventSource == Constants.Storage_Calendar) {
-                    event.caption = getResources().getString(R.string.event_type_calendar);
-                    event.subType = Constants.EventType_Calendar;
-                } else if (eventSource == Constants.Storage_File) {
-                    event.caption = getResources().getString(R.string.event_type_file);
-                    event.subType = Constants.EventType_File;
-                }
+                    break;
             }
 
         } catch (Exception e) {
