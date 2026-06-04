@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Created by Vladimir Belov on 05.06.2026, 01:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.04.2026, 23:22
+ *  * Last modified 05.06.2026, 00:12
  *
  */
 package org.vovka.birthdaycountdown;
@@ -113,7 +113,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             }
 
             if (ta.hasValue(R.styleable.ColorPreference_title)) {
-                int id = getResources().getIdentifier(Constants.EXTRA_TITLE, Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
+                int id = getResources().getIdentifier(Constants.EXTRA_TITLE, Constants.RES_TYPE_ID, Constants.RES_PACKAGE_ANDROID);
                 if (id > 0) {
                     TextView view = findViewById(id);
                     if (view != null)
@@ -121,7 +121,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 }
             }
             if (ta.hasValue(R.styleable.ColorPreference_summary)) {
-                int id = getResources().getIdentifier("summary", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
+                int id = getResources().getIdentifier("summary", Constants.RES_TYPE_ID, Constants.RES_PACKAGE_ANDROID);
                 if (id > 0) {
                     TextView view = findViewById(id);
                     if (view != null)
@@ -129,7 +129,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 }
             }
 
-            int id = getResources().getIdentifier("icon", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
+            int id = getResources().getIdentifier("icon", Constants.RES_TYPE_ID, Constants.RES_PACKAGE_ANDROID);
             if (id > 0) {
                 ImageView view = findViewById(id);
                 if (view != null) {
@@ -153,7 +153,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
     public void setColor(int color) {
         mValue = color;
-        @SuppressLint("DiscouragedApi") int id = getResources().getIdentifier("icon1", Constants.STRING_ID, Constants.RES_PACKAGE_ANDROID);
+        @SuppressLint("DiscouragedApi") int id = getResources().getIdentifier("icon1", Constants.RES_TYPE_ID, Constants.RES_PACKAGE_ANDROID);
         if (id > 0) {
             View view = findViewById(id);
             if (view != null) {

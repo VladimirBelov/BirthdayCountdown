@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.06.2026, 22:02
+ *  * Created by Vladimir Belov on 05.06.2026, 01:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.06.2026, 21:57
+ *  * Last modified 05.06.2026, 00:12
  *
  */
 
@@ -116,7 +116,7 @@ class WidgetUpdater {
             //Скрываем все события
             packageName = context.getPackageName();
             for (int e = 0; e < Constants.WIDGET_EVENTS_MAX; e++) {
-                views.setViewVisibility(resources.getIdentifier(Constants.WIDGET_EVENT_INFO + e, Constants.STRING_ID, packageName), View.GONE);
+                views.setViewVisibility(resources.getIdentifier(Constants.WIDGET_EVENT_INFO + e, Constants.RES_TYPE_ID, packageName), View.GONE);
             }
 
             //Получаем настройки отображения виджета
@@ -181,7 +181,7 @@ class WidgetUpdater {
                         if (scopeLayout != null) {
                             if (scopeLayout.equals(Constants.STRING_MINUS)) { //Оставить пустоту
                                 for (int e = 0; e < Constants.WIDGET_EVENTS_MAX; e++) {
-                                    views.setViewVisibility(resources.getIdentifier(Constants.WIDGET_EVENT_INFO + e, Constants.STRING_ID, packageName), View.INVISIBLE);
+                                    views.setViewVisibility(resources.getIdentifier(Constants.WIDGET_EVENT_INFO + e, Constants.RES_TYPE_ID, packageName), View.INVISIBLE);
                                 }
                             }
                         }
@@ -440,13 +440,13 @@ class WidgetUpdater {
 
             //Надпись (верхний ряд)
 
-            int layoutCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND_LAYOUT + eventsDisplayed, Constants.STRING_ID, packageName);
+            int layoutCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND_LAYOUT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
             views.setViewVisibility(layoutCaptionUpper, View.INVISIBLE);
 
             int textCaptionUpper = 0;
 
             for (String align: aligns) {
-                textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + align + eventsDisplayed, Constants.STRING_ID, packageName);
+                textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + align + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                 views.setViewVisibility(textCaptionUpper, View.GONE);
             }
 
@@ -513,7 +513,7 @@ class WidgetUpdater {
             }
             if (!TextUtils.isEmpty(rowValue)) {
 
-                textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_CENTER + eventsDisplayed, Constants.STRING_ID, packageName);
+                textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_CENTER + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
                 //Выравнивание
                 //TextView до Android 12 не понимает setGravity через setInt, по-этому, для каждого выравнивания - свой TextView
@@ -522,9 +522,9 @@ class WidgetUpdater {
                 Integer aligning = captionsPrefMap.get(Constants.PhotoWidget_Upper_Aligning);
                 if (aligning != null) {
                     if (aligning == Constants.Align_Left) {
-                        textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_LEFT + eventsDisplayed, Constants.STRING_ID, packageName);
+                        textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_LEFT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                     } else if (aligning == Constants.Align_Right) {
-                        textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_RIGHT + eventsDisplayed, Constants.STRING_ID, packageName);
+                        textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_RIGHT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                     }
                 }
                 //Размер
@@ -561,12 +561,12 @@ class WidgetUpdater {
 
             //Надпись (нижний ряд)
 
-            int layoutCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_LAYOUT + eventsDisplayed, Constants.STRING_ID, packageName);
+            int layoutCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_LAYOUT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
             views.setViewVisibility(layoutCaptionBottom, View.INVISIBLE);
 
             int textCaptionBottom = 0;
             for (String align: aligns) {
-                textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + align + eventsDisplayed, Constants.STRING_ID, packageName);
+                textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + align + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                 views.setViewVisibility(textCaptionBottom, View.GONE);
             }
 
@@ -630,15 +630,15 @@ class WidgetUpdater {
             }
             if (!TextUtils.isEmpty(rowValue)) {
 
-                textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_CENTER + eventsDisplayed, Constants.STRING_ID, packageName);
+                textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_CENTER + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
                 //Выравнивание
                 Integer aligning = captionsPrefMap.get(Constants.PhotoWidget_Bottom_Aligning);
                 if (aligning != null) {
                     if (aligning == Constants.Align_Left) {
-                        textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_LEFT + eventsDisplayed, Constants.STRING_ID, packageName);
+                        textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_LEFT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                     } else if (aligning == Constants.Align_Right) {
-                        textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_RIGHT + eventsDisplayed, Constants.STRING_ID, packageName);
+                        textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_RIGHT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                     }
                 }
                 //Размер
@@ -690,9 +690,9 @@ class WidgetUpdater {
 
                 //https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
                 //https://stackoverflow.com/questions/7895118/android-remoteviews-how-to-set-scaletype-of-an-imageview-inside-a-widget
-                int id_widget_Photo = resources.getIdentifier(Constants.WIDGET_IMAGE_VIEW + eventsDisplayed, Constants.STRING_ID, packageName);
-                int id_widget_Photo_Centered = resources.getIdentifier(Constants.WIDGET_IMAGE_VIEW_CENTERED + eventsDisplayed, Constants.STRING_ID, packageName);
-                int id_widget_Photo_Start = resources.getIdentifier(Constants.WIDGET_IMAGE_VIEW_START + eventsDisplayed, Constants.STRING_ID, packageName);
+                int id_widget_Photo = resources.getIdentifier(Constants.WIDGET_IMAGE_VIEW + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+                int id_widget_Photo_Centered = resources.getIdentifier(Constants.WIDGET_IMAGE_VIEW_CENTERED + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+                int id_widget_Photo_Start = resources.getIdentifier(Constants.WIDGET_IMAGE_VIEW_START + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                 int id_Photo;
 
                 if (roundingFactor > 8 || photo.type == ContactsEvents.PhotoType.ICON) {
@@ -728,7 +728,7 @@ class WidgetUpdater {
             }
 
             //Иконка события
-            int id_widget_EventIcon = resources.getIdentifier(Constants.WIDGET_ICON_EVENT_TYPE + eventsDisplayed, Constants.STRING_ID, packageName);
+            int id_widget_EventIcon = resources.getIdentifier(Constants.WIDGET_ICON_EVENT_TYPE + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
             if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_EventIcon_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_EventIcon_ID))) {
@@ -752,7 +752,7 @@ class WidgetUpdater {
             //Иконка знака зодиака
             //https://emojipedia.org/microsoft/windows-10-may-2019-update/aquarius/
             String strZodiacInfo = Constants.STRING_EMPTY;
-            int id_widget_ZodiacIcon = resources.getIdentifier(Constants.WIDGET_ICON_ZODIAC + eventsDisplayed, Constants.STRING_ID, packageName);
+            int id_widget_ZodiacIcon = resources.getIdentifier(Constants.WIDGET_ICON_ZODIAC + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
             String contactID = singleEventArray[ContactsEvents.Position_contactID];
             boolean isBirthdayEvent = eventSubType.equals(Constants.EventType_BirthDay) || eventSubType.equals(Constants.EventType_5K);
@@ -788,7 +788,7 @@ class WidgetUpdater {
 
             //Иконка зодиакального года
             String strZodiacYearInfo = Constants.STRING_EMPTY;
-            int id_widget_ZodiacYearIcon = resources.getIdentifier(Constants.WIDGET_ICON_ZODIAC_YEAR + eventsDisplayed, Constants.STRING_ID, packageName);
+            int id_widget_ZodiacYearIcon = resources.getIdentifier(Constants.WIDGET_ICON_ZODIAC_YEAR + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
             if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_ZodiacYear_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ZodiacYear_ID))) {
@@ -816,7 +816,7 @@ class WidgetUpdater {
             }
 
             //Иконка фаворита
-            int id_widget_FavIcon = resources.getIdentifier(Constants.WIDGET_ICON_FAV + eventsDisplayed, Constants.STRING_ID, packageName);
+            int id_widget_FavIcon = resources.getIdentifier(Constants.WIDGET_ICON_FAV + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
             if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_FavIcon_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_FavIcon_ID))) && eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
                 views.setViewVisibility(id_widget_FavIcon, View.VISIBLE);
@@ -825,7 +825,7 @@ class WidgetUpdater {
             }
 
             //Иконка события без уведомления
-            int id_widget_SilencedIcon = resources.getIdentifier(Constants.WIDGET_ICON_SILENCED + eventsDisplayed, Constants.STRING_ID, packageName);
+            int id_widget_SilencedIcon = resources.getIdentifier(Constants.WIDGET_ICON_SILENCED + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
             if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_SilencedIcon_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_SilencedIcon_ID))) && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
                 views.setTextViewText(id_widget_SilencedIcon, "\uD83D\uDEAB"); //https://emojipedia.org/prohibited/
@@ -835,7 +835,7 @@ class WidgetUpdater {
             }
 
             //Цвета по-умолчанию
-            int id_widget_Age = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_AGE + eventsDisplayed, Constants.STRING_ID, packageName);
+            int id_widget_Age = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_AGE + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
             views.setTextColor(id_widget_Age, colorDefault);
 
@@ -846,7 +846,7 @@ class WidgetUpdater {
             //views.setInt(id_widget_Caption2nd_centered, "setShadowColor", resources.getColor(R.color.white));
 
             //Сколько осталось до события
-            int id_widget_Distance = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_DISTANCE + eventsDisplayed, Constants.STRING_ID, packageName);
+            int id_widget_Distance = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_DISTANCE + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
             String eventDistance = singleEventArray[ContactsEvents.Position_eventDistance];
             int eventDistance_Days;
             try {
@@ -907,7 +907,7 @@ class WidgetUpdater {
 
             }
 
-            int idEventPlaceholder = resources.getIdentifier(Constants.WIDGET_EVENT_INFO + eventsDisplayed, Constants.STRING_ID, packageName);
+            int idEventPlaceholder = resources.getIdentifier(Constants.WIDGET_EVENT_INFO + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
             int pref_onClick;
             Intent intentAction;
 

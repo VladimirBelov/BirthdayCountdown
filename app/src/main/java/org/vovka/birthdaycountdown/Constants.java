@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.06.2026, 23:48
+ *  * Created by Vladimir Belov on 05.06.2026, 01:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.06.2026, 23:40
+ *  * Last modified 05.06.2026, 00:12
  *
  */
 
@@ -117,7 +117,6 @@ public final class Constants {
     static final String DATE_LLLL_YYYY = "LLLL yyyy";
     static final String DATE_YYYY = "yyyy";
 
-    static final String STRING_ID = "id";
     static final String STRING_TYPE_WEDDING = "event_type_wedding_";
     static final String STRING_TYPE_HOLIDAY = "holidays";
     static final String STRING_TYPE_OTHER_HOLIDAY = "other_holidays";

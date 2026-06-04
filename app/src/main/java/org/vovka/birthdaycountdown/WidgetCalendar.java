@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.05.2026, 23:59
+ *  * Created by Vladimir Belov on 05.06.2026, 01:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.05.2026, 23:34
+ *  * Last modified 05.06.2026, 00:12
  *
  */
 
@@ -205,7 +205,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (showUpdateProgress) {
                 rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_COLOR, 0);
                 for (int row = 1; row <= maxRows; row++) {
-                    int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)), Constants.STRING_ID, context.getPackageName());
+                    int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)), Constants.RES_TYPE_ID, context.getPackageName());
                     rv.setViewVisibility(id, View.GONE);
                 }
                 rv.setViewVisibility(R.id.progressUpdate, View.VISIBLE);
@@ -514,13 +514,13 @@ public class WidgetCalendar extends AppWidgetProvider {
 
             int maxColumns = 4;
             for (int row = 1; row <= maxRows; row++) {
-                int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)), Constants.STRING_ID, context.getPackageName());
+                int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)), Constants.RES_TYPE_ID, context.getPackageName());
                 if (row <= rowsToDraw) {
                     rv.setViewVisibility(id, View.VISIBLE);
                     for (int column = 1; column <= maxColumns; column++) {
                         String idRow = Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)).concat("x").concat(String.valueOf(column));
-                        id = res.getIdentifier(idRow, Constants.STRING_ID, context.getPackageName());
-                        int idDiv = res.getIdentifier(idRow.concat("div"), Constants.STRING_ID, context.getPackageName());
+                        id = res.getIdentifier(idRow, Constants.RES_TYPE_ID, context.getPackageName());
+                        int idDiv = res.getIdentifier(idRow.concat("div"), Constants.RES_TYPE_ID, context.getPackageName());
                         if (id != 0) {
                             rv.removeAllViews(id);
                             if (column > columnsToDraw) {
@@ -802,7 +802,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 }
             }
 
-            @SuppressLint("DiscouragedApi") int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR + row + "x" + column, Constants.STRING_ID, context.getPackageName());
+            @SuppressLint("DiscouragedApi") int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR + row + "x" + column, Constants.RES_TYPE_ID, context.getPackageName());
             if (id != 0) {
                 rv.addView(id, calendarRv);
             }

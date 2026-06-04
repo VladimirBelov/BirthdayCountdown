@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.06.2026, 15:46
+  ~  * Created by Vladimir Belov on 05.06.2026, 01:26
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 03.06.2026, 15:25
+  ~  * Last modified 05.06.2026, 00:18
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools"
-    tools:keep="@array/*,@drawable-nodpi/*,@drawable/*" />
+    tools:keep="@array/*,@drawable-nodpi/*,@drawable/*,@string/*" />

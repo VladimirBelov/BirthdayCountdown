@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.04.2026, 00:29
+ *  * Created by Vladimir Belov on 05.06.2026, 01:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.04.2026, 23:14
+ *  * Last modified 05.06.2026, 01:12
  *
  */
 
@@ -452,7 +452,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             String prefScope = Constants.STRING_EMPTY;
             if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
 
-            if (!TextUtils.isEmpty(prefScope)) {
+            if (StringUtils.hasContent(prefScope)) {
                 Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(prefScope);
                 if (matchScopes.find()) {
                     final String scopeEvents = matchScopes.group(1);

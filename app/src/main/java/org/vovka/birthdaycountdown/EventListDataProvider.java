@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.05.2026, 21:47
+ *  * Created by Vladimir Belov on 05.06.2026, 01:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.05.2026, 21:05
+ *  * Last modified 05.06.2026, 01:12
  *
  */
 
@@ -148,7 +148,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             List<String> filteredEventList = eventsData.getFilteredEventList(eventsData.eventList, widgetPref);
 
             //Ограничения объёма
-            int maxEvents = 0;
+            int maxEvents = 100;
             int maxDays = 0;
             int maxFacts = 0;
             String prefScope = Constants.STRING_EMPTY;

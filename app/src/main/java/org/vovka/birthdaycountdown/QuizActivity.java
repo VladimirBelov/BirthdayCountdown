@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.06.2026, 20:33
+ *  * Created by Vladimir Belov on 05.06.2026, 01:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.06.2026, 14:11
+ *  * Last modified 05.06.2026, 00:08
  *
  */
 
@@ -1221,7 +1221,7 @@ public class QuizActivity extends Activity {
                         String resourceId = "event_type_wedding_" + year;
                         @SuppressLint("DiscouragedApi") int resId = context.getResources().getIdentifier(
                                 resourceId,
-                                "string",
+                                Constants.RES_TYPE_STRING,
                                 context.getPackageName()
                         );
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.06.2026, 22:02
+ *  * Created by Vladimir Belov on 05.06.2026, 01:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.06.2026, 21:57
+ *  * Last modified 05.06.2026, 00:12
  *
  */
 
@@ -168,7 +168,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             if (widgetId > 0 && eventsData.preferences_debug_on) {
                 toolbar.setTitle(getString(R.string.window_widget_settings)
                         .concat(Constants.STRING_PARENTHESIS_OPEN)
-                        .concat(Constants.STRING_ID)
+                        .concat(Constants.RES_TYPE_ID)
                         .concat(Constants.STRING_COLON_SPACE)
                         .concat(String.valueOf(widgetId))
                         .concat(Constants.STRING_PARENTHESIS_CLOSE)
