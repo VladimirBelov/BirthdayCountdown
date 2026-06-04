@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.06.2026, 12:19
+ *  * Created by Vladimir Belov on 04.06.2026, 23:48
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.06.2026, 12:16
+ *  * Last modified 04.06.2026, 23:40
  *
  */
 
@@ -805,9 +805,6 @@ public class ContactsEvents {
     String[] weekDaysShort;
     static final Map<String, Integer> zodiacSignStrings = new HashMap<>();
     private static final Map<Integer, Integer> chineseZodiacYearStrings = new HashMap<>();
-    String eventNameNY;
-    String eventNameEaster;
-    String eventNameCatholicEaster;
 
     private final ExecutorService widgetUpdateExecutor = Executors.newSingleThreadExecutor();
     private Future<?> pendingUpdateTask = null; // Для отслеживания текущей задачи
@@ -1454,9 +1451,6 @@ public class ContactsEvents {
     private void initLocaleStrings() {
 
         weekDaysShort = resources.getStringArray(R.array.weekDaysShort);
-        eventNameNY = resources.getString(R.string.Event_NY).toLowerCase();
-        eventNameEaster = resources.getString(R.string.Event_Easter).toLowerCase();
-        eventNameCatholicEaster = resources.getString(R.string.Event_CatholicEaster).toLowerCase();
 
         zodiacSignStrings.clear();
         zodiacSignStrings.put("♐", R.string.zodiac_sign_sagittarius);
@@ -5412,6 +5406,74 @@ public class ContactsEvents {
         }
     }
 
+    static class EventAliases {
+
+        public static final String CANONICAL_EASTER = "EASTER";
+        public static final String CANONICAL_CATHOLIC_EASTER = "CATHOLIC_EASTER";
+        public static final String CANONICAL_NY = "NY";
+
+        private static final Map<String, Set<String>> aliasesMap = new HashMap<>();
+
+        static {
+            aliasesMap.put(CANONICAL_EASTER, new HashSet<>(Arrays.asList(
+                    "easter", "ostern", "pascua", "páscoa", "pâques", "velikonoce",
+                    "wielkanoc", "великдень", "вялікдзень", "пасха"
+            )));
+
+            aliasesMap.put(CANONICAL_CATHOLIC_EASTER, new HashSet<>(Arrays.asList(
+                    "c_easter", "c_pâques", "catholic_easter", "catholique_pâques", "k_ostern",
+                    "k_velikonoce", "katholisches_ostern", "katolické_velikonoce", "pascua_c",
+                    "pascua_católica", "páscoa_c", "páscoa_católica", "wielkanoc", "к_великдень",
+                    "к_вялікдзень", "к_пасха", "католицький_великдень"
+            )));
+
+            aliasesMap.put(CANONICAL_NY, new HashSet<>(Arrays.asList(
+                    "новый_год", "new_year", "jour_de_l'an", "an", "na", "nj", "ny", "nie", "нг", "нр"
+            )));
+
+        }
+
+        /**
+         * Проверяет, начинается ли строка с одного из алиасов для заданного канонического события.
+         */
+        public static boolean startsWithAlias(String inputString, String canonicalName) {
+            if (inputString == null || inputString.isEmpty()) return false;
+
+            Set<String> aliases = aliasesMap.get(canonicalName);
+            if (aliases == null) return false;
+
+            // Подготовка строки для поиска
+            String properInput = inputString.toLowerCase().replace(Constants.STRING_SPACE, Constants.STRING_UNDERSCORE);
+
+            for (String alias : aliases) {
+                if (properInput.startsWith(alias)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /** Возвращает подошедший алиас для заданного канонического события
+         * @param inputString Строка, начинающаяся с алиаса события
+         * @param canonicalName Наименование типа события
+         * @return Подошедший алиас события
+         */
+        // Метод, если нужно получить именно совпавший алиас (например, чтобы знать его длину и откусить его от строки)
+        @NonNull public static String getMatchedAlias(String inputString, String canonicalName) {
+            if (inputString == null || inputString.isEmpty()) return Constants.STRING_EMPTY;
+            Set<String> aliases = aliasesMap.get(canonicalName);
+            if (aliases == null) return Constants.STRING_EMPTY;
+
+            String properInput = inputString.toLowerCase().replace(Constants.STRING_SPACE, Constants.STRING_UNDERSCORE);
+            for (String alias : aliases) {
+                if (properInput.startsWith(alias)) {
+                    return alias; // Возвращаем оригинальный алиас из сета
+                }
+            }
+            return Constants.STRING_EMPTY;
+        }
+    }
+
     /**
      * Возвращает следующую дату плавающего события
      *
@@ -5436,13 +5498,14 @@ public class ContactsEvents {
 
             //Именные события
             if (eventDateComponents.length == 2) {
-                if (eventDayString.startsWith(eventNameEaster)) {
+                if (EventAliases.startsWithAlias(eventDayString, EventAliases.CANONICAL_EASTER)) {
 
                     //Православная Пасха
 
                     //Определяем смещение в днях
                     int daysShift = 0;
-                    String strAfterEventName = eventDayString.substring(eventNameEaster.length());
+                    final String strAfterEventName = eventDayString.substring(EventAliases.getMatchedAlias(eventDayString,
+                            EventAliases.CANONICAL_EASTER).length());
                     if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
                         try {
                             daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
@@ -5467,13 +5530,14 @@ public class ContactsEvents {
                         }
                     }
 
-                } else if (eventDayString.startsWith(eventNameCatholicEaster)) {
+                } else if (EventAliases.startsWithAlias(eventDayString, EventAliases.CANONICAL_CATHOLIC_EASTER)) {
 
                     //Католическая Пасха
 
                     //Определяем смещение в днях
                     int daysShift = 0;
-                    String strAfterEventName = eventDayString.substring(eventNameCatholicEaster.length());
+                    final String strAfterEventName = eventDayString.substring(EventAliases.getMatchedAlias(eventDayString,
+                            EventAliases.CANONICAL_CATHOLIC_EASTER).length());
                     if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
                         try {
                             daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
@@ -5498,13 +5562,13 @@ public class ContactsEvents {
                         }
                     }
 
-                } else if (eventDayString.startsWith(eventNameNY)) {
+                } else if (EventAliases.startsWithAlias(eventDayString, EventAliases.CANONICAL_NY)) {
 
                     //XX день от начала года
 
                     //Определяем смещение в днях
                     int daysShift = 0;
-                    String strAfterEventName = eventDayString.substring(eventNameNY.length());
+                    final String strAfterEventName = eventDayString.substring(EventAliases.getMatchedAlias(eventDayString, EventAliases.CANONICAL_NY).length());
                     if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
                         try {
                             daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
@@ -11687,10 +11751,11 @@ public class ContactsEvents {
         private final List<Integer> icons = new ArrayList<>();
 
         private class Source {
-            String packPrefix;
-            String eventIdHashPrefix;
-            @DrawableRes int eventIcon;
-            Set<String> prefSelected;
+            final String packPrefix;
+            final String eventIdHashPrefix;
+            @DrawableRes
+            final int eventIcon;
+            final Set<String> prefSelected;
 
             public Source(@NonNull String packPrefix, @NonNull String eventIdHashPrefix,
                           @DrawableRes int eventIcon, @NonNull Set<String> prefSelected) {

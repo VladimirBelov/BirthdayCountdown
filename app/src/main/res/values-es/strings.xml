@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.04.2026, 00:06
+  ~  * Created by Vladimir Belov on 04.06.2026, 23:48
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 16.04.2026, 23:58
+  ~  * Last modified 04.06.2026, 23:40
   ~  */
   -->
 
@@ -1357,10 +1357,6 @@ Haga clic largo en el elemento para seleccionar el color"</string>
     <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
     <string name="xDaysCounter_Dialog_Times_EditHint">tiempo máximo de repetición de cada período</string>
     <string name="xDaysCounter_Dialog_NearestEvents">Repeticiones más cercanas:</string>
-
-    <string name="Event_Easter">Pascua</string>
-    <string name="Event_CatholicEaster">Pascua_Católica</string>
-    <string name="Event_NY">AN</string>
 
     <string name="widget_calendar_popup_month_title">Título del mes</string>
     <string name="widget_calendar_popup_previous_month">Mes anterior</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.04.2026, 00:06
+  ~  * Created by Vladimir Belov on 04.06.2026, 23:48
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 16.04.2026, 23:57
+  ~  * Last modified 04.06.2026, 23:40
   ~  */
   -->
 
@@ -1359,10 +1359,6 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
     <string name="xDaysCounter_Dialog_Times_EditHint">maximální počet opakování každého období</string>
     <string name="xDaysCounter_Dialog_NearestEvents">Nejbližší opakování:</string>
-
-    <string name="Event_Easter">Velikonoce</string>
-    <string name="Event_CatholicEaster">Katolické_velikonoce</string>
-    <string name="Event_NY">NY</string>
 
     <string name="widget_calendar_popup_month_title">Název měsíce</string>
     <string name="widget_calendar_popup_previous_month">Předchozí měsíc</string>

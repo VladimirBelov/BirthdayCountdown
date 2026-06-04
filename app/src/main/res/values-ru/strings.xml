@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.06.2026, 02:42
+  ~  * Created by Vladimir Belov on 04.06.2026, 23:48
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 31.05.2026, 22:36
+  ~  * Last modified 04.06.2026, 23:40
   ~  */
   -->
 
@@ -1360,10 +1360,6 @@
     <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
     <string name="xDaysCounter_Dialog_Times_EditHint">число повторов для каждого периода</string>
     <string name="xDaysCounter_Dialog_NearestEvents">Ближайшие повторы:</string>
-
-    <string name="Event_Easter">Пасха</string>
-    <string name="Event_CatholicEaster">К_Пасха</string>
-    <string name="Event_NY">НГ</string>
 
     <string name="widget_calendar_popup_month_title">Наименование месяца</string>
     <string name="widget_calendar_popup_previous_month">Предыдущий месяц</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.06.2025, 10:00
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 16.06.2025, 23:33
+ *  * Created by Vladimir Belov on 04.06.2026, 23:48
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 04.06.2026, 23:40
  *
  */
 
@@ -38,5 +38,5 @@ public interface ItemTouchHelperAdapter {
      * @param position The position of the item dismissed.
      */
     @SuppressWarnings("EmptyMethod")
-    void onItemDismiss(int position);
+    void onItemDismiss(@SuppressWarnings("unused") int position);
 }

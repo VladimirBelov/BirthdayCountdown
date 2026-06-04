@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.06.2026, 11:47
+  ~  * Created by Vladimir Belov on 04.06.2026, 23:48
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.06.2026, 09:46
+  ~  * Last modified 04.06.2026, 23:40
   ~  */
   -->
 
@@ -275,19 +275,19 @@
         26.12.0000 Stephanitag (zweiter Weihnachtsfeiertag)
 
         #Bewegliche Feiertage (bezogen auf Ostern)
-        Katholisches_Ostern-46.0000 Aschermittwoch
-        Katholisches_Ostern-14.0000 Erster Fastensonntag
-        Katholisches_Ostern-7.0000 Palmsonntag
-        Katholisches_Ostern-3.0000 Gründonnerstag
-        Katholisches_Ostern-2.0000 Karfreitag
-        Katholisches_Ostern-1.0000 Karsamstag
-        Katholisches_Ostern.0000 Ostersonntag (Hochfest)
-        Katholisches_Ostern+1.0000 Ostermontag
-        Katholisches_Ostern+8.0000 Weißer Sonntag
-        Katholisches_Ostern+39.0000 Christi Himmelfahrt
-        Katholisches_Ostern+49.0000 Pfingstsonntag (Hochfest)
-        Katholisches_Ostern+50.0000 Pfingstmontag
-        Katholisches_Ostern+60.0000 Fronleichnam"</item>
+        K_Ostern-46.0000 Aschermittwoch
+        K_Ostern-14.0000 Erster Fastensonntag
+        K_Ostern-7.0000 Palmsonntag
+        K_Ostern-3.0000 Gründonnerstag
+        K_Ostern-2.0000 Karfreitag
+        K_Ostern-1.0000 Karsamstag
+        K_Ostern.0000 Ostersonntag (Hochfest)
+        K_Ostern+1.0000 Ostermontag
+        K_Ostern+8.0000 Weißer Sonntag
+        K_Ostern+39.0000 Christi Himmelfahrt
+        K_Ostern+49.0000 Pfingstsonntag (Hochfest)
+        K_Ostern+50.0000 Pfingstmontag
+        K_Ostern+60.0000 Fronleichnam"</item>
     </string-array>
 
 </resources>

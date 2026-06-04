@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.06.2026, 02:42
+  ~  * Created by Vladimir Belov on 04.06.2026, 23:48
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 31.05.2026, 22:36
+  ~  * Last modified 04.06.2026, 23:40
   ~  */
   -->
 
@@ -1360,10 +1360,6 @@ Long click on item to select color"</string>
     <string name="xDaysCounter_Dialog_Times_Hint">∞</string>
     <string name="xDaysCounter_Dialog_Times_EditHint">max repeat times of every period</string>
     <string name="xDaysCounter_Dialog_NearestEvents">Nearest repeats:</string>
-
-    <string name="Event_Easter">Easter</string>
-    <string name="Event_CatholicEaster">Catholic_Easter</string>
-    <string name="Event_NY">NY</string>
 
     <string name="widget_calendar_popup_month_title">Month title</string>
     <string name="widget_calendar_popup_previous_month">Previous month</string>

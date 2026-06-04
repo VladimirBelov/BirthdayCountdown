@@ -1,15 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2025, 15:45
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.06.2025, 15:43
+ *  * Created by Vladimir Belov on 04.06.2026, 23:48
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 04.06.2026, 23:40
  *
  */
 
 package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Handler;
@@ -47,12 +46,6 @@ final class FluentSnackbar {
     private final View mView;
 
     private final org.vovka.birthdaycountdown.SnackbarHandler mSnackbarHandler;
-
-    public static FluentSnackbar create(Activity activity) {
-        ThreadHelper.verifyMainThread();
-
-        return new FluentSnackbar(activity.findViewById(android.R.id.content));
-    }
 
     public static FluentSnackbar create(View view) {
         ThreadHelper.verifyMainThread();
