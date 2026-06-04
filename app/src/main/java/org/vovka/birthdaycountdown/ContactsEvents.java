@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.06.2026, 11:47
+ *  * Created by Vladimir Belov on 04.06.2026, 12:19
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.06.2026, 11:32
+ *  * Last modified 04.06.2026, 12:16
  *
  */
 
@@ -1896,7 +1896,7 @@ public class ContactsEvents {
             //https://stackoverflow.com/questions/19829892/java-regular-expressions-performance-and-alternative
 
             //День рождения
-            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Birthday_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Birthday_UseInternal_default)));
+            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Birthday_UseInternal_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_Birthday_UseInternal_default)));
             customLabels = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Birthday_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
             if (!useInternal && TextUtils.isEmpty(customLabels)) {
                 preferences_birthday_labels = null;
@@ -1910,11 +1910,11 @@ public class ContactsEvents {
                 }
             }
 
-            preferences_birthday_calendars_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_default)));
+            preferences_birthday_calendars_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_default)));
             preferences_Birthday_files = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Birthday_LocalFiles_key), new HashSet<>());
 
             //Свадьба
-            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Anniversary_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Anniversary_UseInternal_default)));
+            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Anniversary_UseInternal_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_Anniversary_UseInternal_default)));
             customLabels = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Anniversary_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
             if (!useInternal && customLabels.isEmpty()) {
                 preferences_wedding_labels = null;
@@ -1929,7 +1929,7 @@ public class ContactsEvents {
             }
 
             //Именины
-            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_NameDay_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_NameDay_UseInternal_default)));
+            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_NameDay_UseInternal_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_NameDay_UseInternal_default)));
             customLabels = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_NameDay_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
             if (!useInternal && customLabels.isEmpty()) {
                 preferences_nameday_labels = null;
@@ -1944,7 +1944,7 @@ public class ContactsEvents {
             }
 
             //Венчание
-            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Crowning_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Crowning_UseInternal_default)));
+            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Crowning_UseInternal_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_Crowning_UseInternal_default)));
             customLabels = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Crowning_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
             if (!useInternal && customLabels.isEmpty()) {
                 preferences_crowning_labels = null;
@@ -1959,7 +1959,7 @@ public class ContactsEvents {
             }
 
             //Годовщина смерти
-            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Death_UseInternal_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_Death_UseInternal_default)));
+            useInternal = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Death_UseInternal_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_Death_UseInternal_default)));
             customLabels = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Death_Labels_key), Constants.STRING_EMPTY).replaceAll(Constants.REGEX_COMMAS, Constants.STRING_COMMA);
             if (!useInternal && customLabels.isEmpty()) {
                 preferences_death_labels = null;
@@ -2023,7 +2023,7 @@ public class ContactsEvents {
                     } catch (Exception e) { /**/ }
                 }
             }
-            preferences_customevent1_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom1_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
+            preferences_customevent1_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom1_UseYear_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
 
             //2
             preferences_customevent2_caption = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Custom2_Caption_key), Constants.STRING_EMPTY).trim();
@@ -2038,7 +2038,7 @@ public class ContactsEvents {
                     } catch (Exception e) { /**/ }
                 }
             }
-            preferences_customevent2_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom2_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
+            preferences_customevent2_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom2_UseYear_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
 
             //3
             preferences_customevent3_caption = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Custom3_Caption_key), Constants.STRING_EMPTY).trim();
@@ -2053,7 +2053,7 @@ public class ContactsEvents {
                     } catch (Exception e) { /**/ }
                 }
             }
-            preferences_customevent3_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom3_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
+            preferences_customevent3_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom3_UseYear_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
 
             //4
             preferences_customevent4_caption = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Custom4_Caption_key), Constants.STRING_EMPTY).trim();
@@ -2068,7 +2068,7 @@ public class ContactsEvents {
                     } catch (Exception e) { /**/ }
                 }
             }
-            preferences_customevent4_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom4_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
+            preferences_customevent4_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom4_UseYear_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
 
             //5
             preferences_customevent5_caption = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Custom5_Caption_key), Constants.STRING_EMPTY).trim();
@@ -2083,7 +2083,7 @@ public class ContactsEvents {
                     } catch (Exception e) { /**/ }
                 }
             }
-            preferences_customevent5_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom5_UseYear_key), Boolean.getBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
+            preferences_customevent5_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom5_UseYear_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
 
             preferences_local_events_photo_size = getPreferenceInt(preferences, context.getString(R.string.pref_LocalEvents_PhotoSize_key), resources.getInteger(R.integer.pref_LocalEvents_PhotoSize_default));
 
