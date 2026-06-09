@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.06.2026, 23:48
+ *  * Created by Vladimir Belov on 10.06.2026, 02:20
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.06.2026, 22:15
+ *  * Last modified 10.06.2026, 00:03
  *
  */
 
@@ -14,7 +14,7 @@ buildscript {
     }
     dependencies {
         //https://developer.android.com/build/releases/gradle-plugin
-        classpath 'com.android.tools.build:gradle:9.3.0-alpha10'
+        classpath 'com.android.tools.build:gradle:9.3.0-alpha11'
     }
 }
 

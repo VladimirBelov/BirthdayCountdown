@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.04.2026, 00:29
+ *  * Created by Vladimir Belov on 10.06.2026, 02:20
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.04.2026, 22:42
+ *  * Last modified 09.06.2026, 23:20
  *
  */
 
@@ -21,6 +21,8 @@ import androidx.annotation.Nullable;
 import org.vovka.birthdaycountdown.Constants;
 import org.vovka.birthdaycountdown.ContactsEvents;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -321,5 +323,20 @@ public class AppDateUtils {
             if (cursor != null && !cursor.isClosed()) cursor.close();
             Log.e(TAG, e.getMessage(), e);
         }
+    }
+
+    /**
+     * Пытается распарсить дату, перебирая форматы по очереди.
+     * @return Распарсенная дата или null, если ни один формат не подошел
+     */
+    public static Date parseDateWithFormats(String dateStr, SimpleDateFormat... formats) {
+        for (SimpleDateFormat format : formats) {
+            try {
+                return format.parse(dateStr);
+            } catch (ParseException ignored) {
+                // Пробуем следующий формат
+            }
+        }
+        return null;
     }
 }

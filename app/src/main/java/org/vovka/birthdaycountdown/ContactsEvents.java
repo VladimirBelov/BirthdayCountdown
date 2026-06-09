@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.06.2026, 21:51
+ *  * Created by Vladimir Belov on 10.06.2026, 02:20
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.06.2026, 21:40
+ *  * Last modified 10.06.2026, 02:13
  *
  */
 
@@ -415,109 +415,145 @@ public class ContactsEvents {
     static final ThreadLocal<SimpleDateFormat> sdf_java = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_JAVA, Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_JAVA, Locale.US);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     static final ThreadLocal<SimpleDateFormat> sdf_java_G = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_JAVA_G, Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_JAVA_G, Locale.US);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     static final ThreadLocal<SimpleDateFormat> sdf_java_no_year = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_JAVA_NO_YEAR, Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_JAVA_NO_YEAR, Locale.US);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     final ThreadLocal<SimpleDateFormat> sdf_DDMMY = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_DD_MM_Y, Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_DD_MM_Y, Locale.US);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     static final ThreadLocal<SimpleDateFormat> sdf_DDMMYYYY = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, Locale.US);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     static final ThreadLocal<SimpleDateFormat> sdf_DDMMYYYY_G = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_DD_MM_YYYY_G, Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY_G, Locale.US);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     final ThreadLocal<SimpleDateFormat> sdf_DDMMYYYYHHMM = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, Locale.US);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     static final ThreadLocal<SimpleDateFormat> sdf_DDMM = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_DD_MM, Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_DD_MM, Locale.US);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     static final ThreadLocal<SimpleDateFormat> sdf_MMMMDYYYY = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_MMMM_D_YYYY, Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_MMMM_D_YYYY, Locale.US);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     static final ThreadLocal<SimpleDateFormat> sdf_ru = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_RUS, new Locale(Constants.LANG_RU));
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_RUS, new Locale(Constants.LANG_RU));
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     static final ThreadLocal<SimpleDateFormat> sdf_uk = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_UK, Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_UK, Locale.US);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     static final ThreadLocal<SimpleDateFormat> sdf_uk_G = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_UK_G, Locale.UK);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_UK_G, Locale.UK);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     final ThreadLocal<SimpleDateFormat> sdf_uk_no_year = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_UK_NO_YEAR, Locale.UK);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_UK_NO_YEAR, Locale.UK);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     static final ThreadLocal<SimpleDateFormat> sdf_india = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_IND, Locale.UK);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_IND, Locale.UK);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     static final ThreadLocal<SimpleDateFormat> sdf_india_G = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_IND_G, Locale.UK);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_IND_G, Locale.UK);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     final ThreadLocal<SimpleDateFormat> sdf_india_no_year = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_IND_NO_YEAR, Locale.UK);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_IND_NO_YEAR, Locale.UK);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     static final ThreadLocal<SimpleDateFormat> sdf_YYYYMMDD_noDiv = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_NO_DIV, Locale.UK);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_NO_DIV, Locale.UK);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
     static final ThreadLocal<SimpleDateFormat> sdf_YYYY = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(Constants.DATE_YYYY, Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_YYYY, Locale.US);
+            sdf.setLenient(false);
+            return sdf;
         }
     };
 
@@ -528,7 +564,9 @@ public class ContactsEvents {
         @Override
         protected SimpleDateFormat initialValue() {
             // Дефолтное значение, будет перезаписано в initLocaleStrings()
-            return new SimpleDateFormat(Constants.DATE_MMMM_D, Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_MMMM_D, Locale.getDefault());
+            sdf.setLenient(false);
+            return sdf;
         }
     };
 
@@ -539,7 +577,9 @@ public class ContactsEvents {
         @Override
         protected SimpleDateFormat initialValue() {
             // Дефолтное значение, будет перезаписано в initLocaleStrings()
-            return new SimpleDateFormat(Constants.DATE_D_MMMM, Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_D_MMMM, Locale.getDefault());
+            sdf.setLenient(false);
+            return sdf;
         }
     };
 
@@ -4798,7 +4838,7 @@ public class ContactsEvents {
 
     /**
      * Добавляет в общий список события из vCard файла
-     * (поддерживаются только дни рождения)
+     * (поддерживаются дни рождения, версии 2.1 и 3.0)
      *
      * @param file        Путь до файла и URI
      * @param fileLines   Массив строк из файла
@@ -4806,9 +4846,8 @@ public class ContactsEvents {
      * @param eventSource Источник событий
      */
     private void addVCardEvents(@NonNull String file, @NonNull String[] fileLines,
-                               @NonNull Calendar today, @NonNull String eventSource) {
+                                @NonNull Calendar today, @NonNull String eventSource) {
         try {
-
             final int nowYear = today.get(Calendar.YEAR);
             final TreeMap<Integer, String> eventData = new TreeMap<>();
             final StringBuilder eventLines = new StringBuilder();
@@ -4816,139 +4855,25 @@ public class ContactsEvents {
 
             Event event = null;
             Date eventDateFirstTime = null;
-            //String eventTitle = null;
-            //String eventDescription = Constants.STRING_EMPTY;
             String url = Constants.STRING_EMPTY;
             String lastName = Constants.STRING_EMPTY;
             String firstName = Constants.STRING_EMPTY;
             String middleName = Constants.STRING_EMPTY;
-            String fullName = Constants.STRING_EMPTY; // И.О.Ф.
+            String fullName = Constants.STRING_EMPTY;
+            String organization = Constants.STRING_EMPTY;
+            String title = Constants.STRING_EMPTY;
             boolean useEventYear = true;
-            final StringBuilder storage = new StringBuilder(); // Накопитель для значений на несколько строк
-            boolean isMultiLineValue = false;
-            int storageDest = 0; // 1 - N, 2 - FN
 
-            for (String line : fileLines) {
+            // 1. Предварительно распрямляем многострочные значения (vCard 2.1 и 3.0)
+            List<String> unfoldedLines = StringUtils.unfoldVCardLines(fileLines);
 
-                if (isMultiLineValue && line.startsWith(Constants.STRING_EQ)) {
-
-                    if (line.endsWith(Constants.STRING_EQ)) { // Продолжение на следующей строке
-                        storage.append(line.substring(0, line.length() - 1));
-                    } else {
-                        switch (storageDest) {
-                            case 1:
-                                storage.append(line);
-                                String valueDecoded = StringUtils.decodeQuotedPrintable(storage.toString(), StandardCharsets.UTF_8);
-                                List<String> nameParts = StringUtils.splitWithEscape(valueDecoded, Constants.STRING_SEMICOLON);
-                                if (nameParts.size() > 2) {
-                                    lastName = StringUtils.cleanValue(nameParts.get(0));
-                                    firstName = StringUtils.cleanValue(nameParts.get(1));
-                                    middleName = StringUtils.cleanValue(nameParts.get(2));
-                                }
-                                eventLines.append(Constants.vCard_Name).append(valueDecoded).append(Constants.STRING_EOL);
-                                break;
-
-                            case 2:
-                                storage.append(line);
-                                fullName = StringUtils.cleanValue(StringUtils.decodeQuotedPrintable(storage.toString(), StandardCharsets.UTF_8));
-                                eventLines.append(Constants.vCard_FormattedName).append(fullName).append(Constants.STRING_EOL);
-                                break;
-
-                            default:
-                        }
-                    }
-
-                } else if (line.startsWith(Constants.vCard_EventBegin)) {
-
+            for (String line : unfoldedLines) {
+                if (line.startsWith(Constants.vCard_EventBegin)) {
                     event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
-
-                } else if (line.startsWith(Constants.vCard_Birthday)) {
-
-                    String storedDate = StringUtils.substringAfter(line, Constants.STRING_COLON);
-                    if (!storedDate.startsWith(Constants.STRING_MINUS)) { // С годом
-                        try {
-                            eventDateFirstTime = Objects.requireNonNull(sdf_YYYYMMDD_noDiv.get()).parse(storedDate);
-                            useEventYear = true;
-                        } catch (ParseException e) {
-                            try {
-                                eventDateFirstTime = Objects.requireNonNull(sdf_java.get()).parse(storedDate);
-                                useEventYear = true;
-                            } catch (ParseException ignored) {
-                                //Не получилось распознать
-                            }
-                        }
-                    } else { // Без года
-                        try {
-                            eventDateFirstTime = Objects.requireNonNull(sdf_YYYYMMDD_noDiv.get()).parse(nowYear + storedDate.substring(1));
-                            useEventYear = false;
-                        } catch (ParseException e) {
-                            try {
-                                eventDateFirstTime = Objects.requireNonNull(sdf_java.get()).parse(nowYear + storedDate.substring(1));
-                                useEventYear = false;
-                            } catch (ParseException ignored) {
-                                //Не получилось распознать
-                            }
-                        }
-                    }
-                    eventLines.append(line).append(Constants.STRING_EOL);
-
-                } else if (line.startsWith(Constants.vCard_Name)) { // VCARD VERSION:3.0
-
-                    List<String> nameParts = StringUtils.splitWithEscape(StringUtils.substringAfter(line, Constants.vCard_Name), Constants.STRING_SEMICOLON);
-                    if (nameParts.size() > 2) {
-                        lastName = StringUtils.cleanValue(nameParts.get(0));
-                        firstName = StringUtils.cleanValue(nameParts.get(1));
-                        middleName = StringUtils.cleanValue(nameParts.get(2));
-                    }
-                    eventLines.append(line).append(Constants.STRING_EOL);
-
-                } else if (line.startsWith(Constants.vCard_Name_QP)) { // VCARD VERSION:2.1
-
-                    final String value = StringUtils.substringAfter(line, Constants.vCard_Name_QP);
-                    if (!value.endsWith(Constants.STRING_EQ)) { // Всё уместилось в одну строку
-
-                        String valueDecoded = StringUtils.decodeQuotedPrintable(value, StandardCharsets.UTF_8);
-                        List<String> nameParts = StringUtils.splitWithEscape(valueDecoded, Constants.STRING_SEMICOLON);
-                        if (nameParts.size() > 2) {
-                            lastName = StringUtils.cleanValue(nameParts.get(0));
-                            firstName = StringUtils.cleanValue(nameParts.get(1));
-                            middleName = StringUtils.cleanValue(nameParts.get(2));
-                        }
-                        eventLines.append(Constants.vCard_Name).append(valueDecoded).append(Constants.STRING_EOL);
-
-                    } else {
-                        isMultiLineValue = true;
-                        storageDest = 1;
-                        storage.setLength(0);
-                        storage.append(value.substring(0, value.length() - 1));
-                    }
-
-                } else if (line.startsWith(Constants.vCard_FormattedName) && lastName.isEmpty() && firstName.isEmpty()) { // VCARD VERSION:3.0
-
-                    fullName = StringUtils.cleanValue(StringUtils.substringAfter(line, Constants.vCard_FormattedName));
-                    eventLines.append(line).append(Constants.STRING_EOL);
-
-                } else if (line.startsWith(Constants.vCard_FormattedName_QP) && lastName.isEmpty() && firstName.isEmpty()) { // VCARD VERSION:2.1
-
-                    final String value = StringUtils.substringAfter(line, Constants.vCard_FormattedName_QP);
-                    if (!value.endsWith(Constants.STRING_EQ)) { // Всё уместилось в одну строку
-
-                        fullName = StringUtils.cleanValue(StringUtils.decodeQuotedPrintable(value, StandardCharsets.UTF_8));
-                        eventLines.append(Constants.vCard_FormattedName).append(fullName).append(Constants.STRING_EOL);
-
-                    } else {
-                        isMultiLineValue = true;
-                        storageDest = 2;
-                        storage.setLength(0);
-                        storage.append(value.substring(0, value.length() - 1));
-                    }
-
-                } else if (line.startsWith(Constants.vCard_URL)) {
-
-                    url = StringUtils.substringAfter(line, Constants.vCard_URL);
 
                 } else if (line.startsWith(Constants.vCard_EventEnd) && event != null) {
 
+                    // Проверяем, что есть дата и хотя бы какое-то имя
                     if (eventDateFirstTime != null && (!firstName.isEmpty() || !lastName.isEmpty() || !fullName.isEmpty())) {
 
                         String eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
@@ -4957,12 +4882,11 @@ public class ContactsEvents {
                                 + Constants.STRING_COLON_SPACE
                                 + StringUtils.getHash(Constants.eventSourceFilePrefix + file);
 
-                        //eventDescription = eventDescription.replace(eventURL, Constants.STRING_EMPTY);
-
                         String personFullName;
                         String personFullNameAlt;
                         String contactID = null;
 
+                        // Формируем полное имя
                         if (!firstName.isEmpty()) {
                             if (!middleName.isEmpty()) {
                                 personFullName = firstName + Constants.STRING_SPACE + middleName;
@@ -4972,18 +4896,18 @@ public class ContactsEvents {
                             if (!lastName.isEmpty()) {
                                 personFullName += Constants.STRING_SPACE + lastName;
                             }
-                        } else if (!lastName.isEmpty()) { // Есть только фамилия
+                        } else if (!lastName.isEmpty()) {
                             personFullName = lastName;
-                        } else { // Есть только форматированное имя
+                        } else {
                             personFullName = fullName;
                         }
                         personFullNameAlt = Person.getAltName(personFullName, FormatName.NameFirst);
 
                         String eventID = Constants.PREFIX_FileEventID + StringUtils.getHash(filePath + personFullNameAlt);
 
+                        // Заполняем базовые данные события
                         eventData.put(Position_personFullName, personFullName);
                         eventData.put(Position_personFullNameAlt, personFullNameAlt);
-                        //eventData.put(Position_eventDescription, eventDescription.replace(Constants.REGEX_BS, Constants.STRING_EMPTY));
                         eventData.put(Position_eventStorage, Constants.STRING_STORAGE_FILE);
                         eventData.put(Position_eventCaption, event.caption);
                         eventData.put(Position_eventLabel, event.label);
@@ -4996,8 +4920,15 @@ public class ContactsEvents {
                         eventData.put(Position_eventURL, url);
                         eventData.put(Position_eventID, eventID);
 
-                        if (event.needScanContacts) {
+                        // Добавляем ORG и TITLE из файла, если они есть
+                        if (!TextUtils.isEmpty(organization)) {
+                            eventData.put(Position_organization, organization);
+                        }
+                        if (!TextUtils.isEmpty(title)) {
+                            eventData.put(Position_title, title);
+                        }
 
+                        if (event.needScanContacts) {
                             contactID = getContactID(
                                     StringUtils.normalizeString(personFullName),
                                     StringUtils.normalizeString(personFullNameAlt)
@@ -5011,17 +4942,12 @@ public class ContactsEvents {
                                 eventData.put(Position_contactID, contactID);
                                 eventData.put(Position_rawContactID, StringUtils.getNotNullString(map_contacts_ids.get(contactID)));
 
-                                //Ищем событие контакта в списке событий и добавляем в него
                                 Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
                                 if (eventIndex != null && eventIndex <= eventListUpdated.size()) {
-
                                     if (updateExistEvent(eventIndex, eventID, eventSource, eventNewDate, null, null, url)) {
                                         eventData.clear();
                                     }
-
-                                } else { //Такого события ещё не было
-
-                                    //Добавляем данные контакта
+                                } else {
                                     final Long contactIDLong = StringUtils.parseToLong(contactID);
                                     HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
                                             ContactsContract.Contacts.PHOTO_URI,
@@ -5038,10 +4964,14 @@ public class ContactsEvents {
                                     contactDataMap.clear();
 
                                     eventData.put(Position_nickname, StringUtils.getNotNullString(map_contacts_aliases.get(contactID)));
-                                    if (TextUtils.isEmpty(eventData.get(Position_organization)))
+
+                                    // Если в vCard не было ORG/TITLE, берем из системных контактов
+                                    if (TextUtils.isEmpty(eventData.get(Position_organization))) {
                                         eventData.put(Position_organization, StringUtils.getNotNullString(map_organizations.get(contactID)));
-                                    if (TextUtils.isEmpty(eventData.get(Position_title)))
+                                    }
+                                    if (TextUtils.isEmpty(eventData.get(Position_title))) {
                                         eventData.put(Position_title, StringUtils.getNotNullString(map_contacts_titles.get(contactID)));
+                                    }
                                 }
                             }
                         }
@@ -5060,25 +4990,88 @@ public class ContactsEvents {
                                 }
                             }
                         }
-
                     }
 
+                    // Сброс переменных для следующего контакта
                     eventData.clear();
                     eventDateFirstTime = null;
-                    //eventTitle = null;
-                    //eventDescription = Constants.STRING_EMPTY;
                     url = Constants.STRING_EMPTY;
                     lastName = Constants.STRING_EMPTY;
                     firstName = Constants.STRING_EMPTY;
                     middleName = Constants.STRING_EMPTY;
                     fullName = Constants.STRING_EMPTY;
+                    organization = Constants.STRING_EMPTY;
+                    title = Constants.STRING_EMPTY;
                     event = null;
-                    isMultiLineValue = false;
                     eventLines.setLength(0);
 
+                } else if (event != null) { // Парсим теги только если мы внутри блока VCARD
+
+                    // 1. Имя (N)
+                    String nValue = StringUtils.getTagValue(line, Constants.vCard_Name);
+                    if (nValue != null) {
+                        if (StringUtils.isQuotedPrintable(line)) nValue = StringUtils.decodeQuotedPrintable(nValue, StandardCharsets.UTF_8);
+                        List<String> nameParts = StringUtils.splitWithEscape(nValue, Constants.STRING_SEMICOLON);
+                        if (nameParts.size() > 2) {
+                            lastName = StringUtils.cleanValue(nameParts.get(0));
+                            firstName = StringUtils.cleanValue(nameParts.get(1));
+                            middleName = StringUtils.cleanValue(nameParts.get(2));
+                        }
+                        eventLines.append(Constants.vCard_Name).append(Constants.STRING_COLON).append(nValue).append(Constants.STRING_EOL);
+                    }
+
+                    // 2. Форматированное имя (FN)
+                    String fnValue = StringUtils.getTagValue(line, Constants.vCard_FormattedName);
+                    if (fnValue != null && lastName.isEmpty() && firstName.isEmpty()) {
+                        if (StringUtils.isQuotedPrintable(line)) fnValue = StringUtils.decodeQuotedPrintable(fnValue, StandardCharsets.UTF_8);
+                        fullName = StringUtils.cleanValue(fnValue);
+                        eventLines.append(Constants.vCard_FormattedName).append(Constants.STRING_COLON).append(fullName).append(Constants.STRING_EOL);
+                    }
+
+                    // 3. Дата рождения (BDAY)
+                    String bdayValue = StringUtils.getTagValue(line, Constants.vCard_Birthday);
+                    if (bdayValue != null) {
+                        boolean hasYear = !bdayValue.startsWith(Constants.STRING_MINUS);
+                        String dateToParse = hasYear ? bdayValue : nowYear + bdayValue.substring(1);
+
+                        eventDateFirstTime = AppDateUtils.parseDateWithFormats(dateToParse,
+                                Objects.requireNonNull(sdf_YYYYMMDD_noDiv.get()),
+                                Objects.requireNonNull(sdf_java.get())
+                        );
+
+                        if (eventDateFirstTime != null) {
+                            useEventYear = hasYear;
+                            eventLines.append(line).append(Constants.STRING_EOL);
+                        }
+                    }
+
+                    // 4. Организация (ORG)
+                    String orgValue = StringUtils.getTagValue(line, Constants.vCard_Org);
+                    if (orgValue != null) {
+                        if (StringUtils.isQuotedPrintable(line)) orgValue = StringUtils.decodeQuotedPrintable(orgValue, StandardCharsets.UTF_8);
+                        // В vCard ORG может содержать несколько частей через ';'. Первая - название компании.
+                        List<String> orgParts = StringUtils.splitWithEscape(orgValue, Constants.STRING_SEMICOLON);
+                        if (!orgParts.isEmpty()) {
+                            organization = StringUtils.cleanValue(orgParts.get(0));
+                        }
+                        eventLines.append(Constants.vCard_Org).append(Constants.STRING_COLON).append(orgValue).append(Constants.STRING_EOL);
+                    }
+
+                    // 5. Должность (TITLE)
+                    String titleValue = StringUtils.getTagValue(line, Constants.vCard_Title);
+                    if (titleValue != null) {
+                        if (StringUtils.isQuotedPrintable(line)) titleValue = StringUtils.decodeQuotedPrintable(titleValue, StandardCharsets.UTF_8);
+                        title = StringUtils.cleanValue(titleValue);
+                        eventLines.append(Constants.vCard_Title).append(Constants.STRING_COLON).append(titleValue).append(Constants.STRING_EOL);
+                    }
+
+                    // 6. URL
+                    String urlValue = StringUtils.getTagValue(line, Constants.vCard_URL);
+                    if (urlValue != null) {
+                        url = urlValue;
+                    }
                 }
             }
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -6917,7 +6910,6 @@ public class ContactsEvents {
                     Date storedDate_Date = null;
                     boolean storedDate_isYear = false;
 
-                    //Если есть год пробуем сначала yyyy-MM-dd, потом dd MM yyyy, потом известные локали
                     if (storedDate.startsWith(Constants.STRING_2MINUS) || //Нет года, формат --MM-dd
                             storedDate.startsWith(Constants.STRING_0000_MINUS) || //Нет года, формат 0000-MM-dd
                             (storedDate.startsWith("1604-") && (accountType.contains(Constants.account_exchange) || accountType.contains(Constants.account_google))) || //Нет года, формат 1604-MM-dd - com.google.android.gm.exchange https://stackoverflow.com/questions/14023390/nsdate-return-1604-for-year-value
@@ -6940,49 +6932,38 @@ public class ContactsEvents {
                     } else { //Обычный формат yyyy-MM-dd
 
                         storedDate_isYear = true;
+
+                        // 1. Сначала пытаемся распарсить формат с указанием эры (до нашей эры)
                         try {
                             storedDate_Date = Objects.requireNonNull(sdf_java_G.get()).parse(storedDate);
-                            isAD = false;
-                        } catch (ParseException e0) {
-                            try {
-                                storedDate_Date = Objects.requireNonNull(sdf_java.get()).parse(storedDate);
-                            } catch (ParseException e) {
-                                try {
-                                    storedDate_Date = Objects.requireNonNull(sdf_ru.get()).parse(storedDate);
-                                } catch (ParseException e3) {
-                                    try {
-                                        storedDate_Date = Objects.requireNonNull(sdf_uk.get()).parse(storedDate);
-                                    } catch (ParseException e4) {
-                                        try {
-                                            storedDate_Date = Objects.requireNonNull(sdf_india.get()).parse(storedDate);
-                                        } catch (ParseException e5) {
-                                            try {
-                                                storedDate_Date = Objects.requireNonNull(sdf_YYYYMMDD_noDiv.get()).parse(storedDate);
-                                            } catch (ParseException e6) {
-                                                try {
-                                                    storedDate_Date = Objects.requireNonNull(sdf_MMMMDYYYY.get()).parse(storedDate);
-                                                } catch (ParseException e7) {
-                                                    try {
-                                                        storedDate_Date = Objects.requireNonNull(sdf_uk_no_year.get()).parse(storedDate);
-                                                        storedDate_isYear = false;
-                                                    } catch (ParseException e8) {
-                                                        try {
-                                                            storedDate_Date = Objects.requireNonNull(sdf_india_no_year.get()).parse(storedDate);
-                                                            storedDate_isYear = false;
-                                                        } catch (ParseException e9) {
-                                                            try {
-                                                                storedDate_Date = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(storedDate);
-                                                            } catch (ParseException e10) {
-                                                                //Не получилось распознать
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            isAD = false; // Если парсер съел строку с эрой, значит это BC (до нашей эры)
+                        } catch (ParseException ignored) {
+                            // Эры в строке нет или формат не подошел, идем дальше
+                        }
+
+                        // 2. Если дата с эрой не распарсилась, пробуем остальные стандартные форматы С годом
+                        if (storedDate_Date == null) {
+                            SimpleDateFormat[] formatsWithYear = {
+                                    sdf_java.get(),
+                                    sdf_ru.get(),
+                                    sdf_uk.get(),
+                                    sdf_india.get(),
+                                    sdf_YYYYMMDD_noDiv.get(),
+                                    sdf_MMMMDYYYY.get(),
+                                    sdf_DDMMYYYY.get()
+                            };
+                            storedDate_Date = AppDateUtils.parseDateWithFormats(storedDate, formatsWithYear);
+                        }
+
+                        // 3. Если ни один формат с годом не подошел, пробуем форматы БЕЗ года
+                        if (storedDate_Date == null) {
+                            storedDate_isYear = false; // Помечаем, что год не определен
+                            SimpleDateFormat[] formatsNoYear = {
+                                    sdf_uk_no_year.get(),
+                                    sdf_india_no_year.get()
+                                    // Добавьте сюда остальные ваши форматы без года, если они есть
+                            };
+                            storedDate_Date = AppDateUtils.parseDateWithFormats(storedDate, formatsNoYear);
                         }
                     }
 
@@ -7021,7 +7002,18 @@ public class ContactsEvents {
                                 if (dayDiff_tmp < 0)
                                     eventDateThisTime = AppDateUtils.addYear(eventDateThisTime, 1);
                             }
-                        } catch (ParseException e) { /**/ }
+                        } catch (ParseException e) {
+                            if (cal.get(Calendar.MONTH) == Calendar.FEBRUARY && cal.get(Calendar.DAY_OF_MONTH) == 29) {
+                                try {
+                                    eventDateThisTime = Objects.requireNonNull(sdf_java.get()).parse(nowYear + "-03-01");
+                                    if (eventDateThisTime != null) {
+                                        long dayDiff_tmp = AppDateUtils.countDaysDiff(currentDay, eventDateThisTime);
+                                        if (dayDiff_tmp < 0)
+                                            eventDateThisTime = AppDateUtils.addYear(eventDateThisTime, 1);
+                                    }
+                                } catch (ParseException ignored) { /**/ }
+                            }
+                        }
                     }
 
                 }

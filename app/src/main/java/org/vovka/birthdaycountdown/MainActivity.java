@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.06.2026, 21:51
+ *  * Created by Vladimir Belov on 10.06.2026, 02:20
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.06.2026, 19:23
+ *  * Last modified 10.06.2026, 00:31
  *
  */
 
@@ -93,7 +93,6 @@ import org.vovka.birthdaycountdown.utils.StringUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -101,7 +100,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -958,12 +956,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 } else if (eventsData.birthdayDatesForIds.containsKey(contactID)) {
                     Date birthDate = eventsData.birthdayDatesForIds.get(contactID);
-                    Locale locale_en = new Locale(Constants.LANG_EN);
-                    SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
                     Date eventDate = null;
                     if (eventSubType.equals(Constants.EventType_Death)) { //Если это годовщина смерти
                         try {
-                            eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
+                            eventDate = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).parse(selectedEvent[ContactsEvents.Position_eventDateFirstTime]);
                         } catch (ParseException ignored) { /**/ }
                         if (eventDate != null && birthDate != null) {
                             if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
@@ -971,7 +967,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
                     } else { //Другие события
                         try {
-                            eventDate = sdfYear.parse(selectedEvent[ContactsEvents.Position_eventDateNextTime]);
+                            eventDate = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).parse(selectedEvent[ContactsEvents.Position_eventDateNextTime]);
                         } catch (ParseException ignored) { /**/ }
                         if (eventDate != null && birthDate != null) {
                             Date today = AppDateUtils.getWithoutTime(Calendar.getInstance()).getTime();

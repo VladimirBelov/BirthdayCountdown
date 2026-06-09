@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2026, 01:26
+ *  * Created by Vladimir Belov on 10.06.2026, 02:20
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.06.2026, 01:12
+ *  * Last modified 10.06.2026, 00:31
  *
  */
 
@@ -212,14 +212,15 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 if (showOriginalDate || showOriginalYear) {
                     String eventDateFirstTime = singleEventArray[ContactsEvents.Position_eventDateFirstTime];
                     if (showOriginalDate) {
-                        final SimpleDateFormat sdfOut = new SimpleDateFormat(eventsData.preferences_date_format == 3 || eventsData.preferences_date_format == 5 ?
-                                Constants.DATE_MMMM_D : Constants.DATE_D_MMMM, Locale.forLanguageTag(eventsData.currentLocale));
                         Date eventDate = null;
                         try {
                             eventDate = Objects.requireNonNull(ContactsEvents.sdf_DDMM.get()).parse(eventDateFirstTime.substring(0, 5));
                         } catch (ParseException ignored) { /**/ }
                         if (eventDate != null) {
                             if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
+                            final SimpleDateFormat sdfOut = new SimpleDateFormat(eventsData.preferences_date_format == 3 || eventsData.preferences_date_format == 5 ?
+                                    Constants.DATE_MMMM_D : Constants.DATE_D_MMMM, Locale.forLanguageTag(eventsData.currentLocale));
+                            sdfOut.setLenient(false);
                             sbDetails.append(sdfOut.format(eventDate));
                         } else {
                             showOriginalDate = false;

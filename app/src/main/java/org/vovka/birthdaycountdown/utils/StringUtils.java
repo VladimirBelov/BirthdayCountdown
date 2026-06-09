@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.06.2026, 21:51
+ *  * Created by Vladimir Belov on 10.06.2026, 02:20
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.06.2026, 21:18
+ *  * Last modified 10.06.2026, 01:09
  *
  */
 
@@ -346,6 +346,13 @@ public class StringUtils {
     }
 
     /**
+     * Проверяет, закодировано ли значение тега в Quoted-Printable.
+     */
+    public static boolean isQuotedPrintable(String line) {
+        return line.contains("=QUOTED-PRINTABLE");
+    }
+
+    /**
      * Декодирует строку из формата Quoted-Printable.
      *
      * @param input Строка из vCard (например: "=D0=98=D0=B2=D0=B0=D0=BD")
@@ -355,6 +362,9 @@ public class StringUtils {
     public static String decodeQuotedPrintable(String input, Charset charset) {
         if (input == null || input.isEmpty()) {
             return Constants.STRING_EMPTY;
+        }
+        if (!input.contains(Constants.STRING_EQ)) {
+            return input;
         }
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -386,5 +396,64 @@ public class StringUtils {
 
         // Декодируем собранный массив байтов в нужную кодировку
         return new String(out.toByteArray(), charset);
+    }
+
+    /**
+     * Распрямляет многострочные значения в массиве строк vCard.
+     * Поддерживает vCard 2.1 (перенос через '=') и vCard 3.0 (перенос через пробел/таб).
+     */
+    public static List<String> unfoldVCardLines(String[] fileLines) {
+        List<String> unfolded = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        boolean inMultiLine = false;
+
+        for (String line : fileLines) {
+            if (inMultiLine) {
+                sb.append(line);
+                if (line.endsWith("=")) {
+                    sb.setLength(sb.length() - 1); // Убираем '=' с конца, строка продолжается
+                } else {
+                    unfolded.add(sb.toString());
+                    sb.setLength(0);
+                    inMultiLine = false;
+                }
+            } else {
+                // vCard 3.0: перенос строки, начинающейся с пробела или табуляции
+                if (!unfolded.isEmpty() && (line.startsWith(Constants.STRING_SPACE) || line.startsWith("\t"))) {
+                    String lastLine = unfolded.remove(unfolded.size() - 1);
+                    unfolded.add(lastLine + line.substring(1));
+                }
+                // vCard 2.1 (QP): перенос строки, заканчивающейся на '='
+                else if (line.endsWith(Constants.STRING_EQ)) {
+                    sb.append(line.substring(0, line.length() - 1));
+                    inMultiLine = true;
+                }
+                else {
+                    unfolded.add(line);
+                }
+            }
+        }
+        if (inMultiLine) {
+            unfolded.add(sb.toString()); // На случай обрыва файла
+        }
+        return unfolded;
+    }
+
+    /**
+     * Извлекает значение тега из строки vCard.
+     * Поддерживает форматы "TAG:value" и "TAG;PARAMS:value".
+     * Возвращает null, если строка не начинается с указанного тега.
+     */
+    public static String getTagValue(String line, String tag) {
+        if (line.startsWith(tag + Constants.STRING_COLON)) {
+            return line.substring(tag.length() + 1);
+        }
+        if (line.startsWith(tag + Constants.STRING_SEMICOLON)) {
+            int colonIndex = line.indexOf(Constants.STRING_COLON);
+            if (colonIndex != -1) {
+                return line.substring(colonIndex + 1);
+            }
+        }
+        return null;
     }
 }
