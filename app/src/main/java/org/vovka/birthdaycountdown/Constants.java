@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2026, 01:26
+ *  * Created by Vladimir Belov on 09.06.2026, 21:51
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.06.2026, 00:12
+ *  * Last modified 09.06.2026, 21:35
  *
  */
 
@@ -56,12 +56,14 @@ public final class Constants {
     public static final String STRING_COLON = ":";
     public static final String STRING_COLON_SPACE = ": ";
     public static final String STRING_COMMA = ",";
+    public static final char STRING_SEMICOLON = ';';
     public static final String STRING_COMMA_SPACE = ", ";
     public static final String STRING_EMPTY = "";
     public static final String STRING_EOL = "\n";
     static final String STRING_TAB = "\t";
     static final String STRING_EOL_RN = "\\r?\\n";
     public static final String STRING_EOT = "\u0004";
+    static final String STRING_EQ_Q = "=?";
     static final String STRING_EQ = "=?";
     static final String STRING_MINUS1 = "-1";
     static final String STRING_NULL = "null";
@@ -508,6 +510,19 @@ public final class Constants {
     public static final String iCal_Description = "DESCRIPTION:";
     public static final String iCal_Date = "DTSTART";
     public static final String iCal_Url = "URL:";
+
+    public static final String vCard_EventBegin = "BEGIN:VCARD";
+    public static final String vCard_EventEnd = "END:VCARD";
+    public static final String vCard_Title = "TITLE:";
+    public static final String vCard_Title_QP = "TITLE;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:";
+    public static final String vCard_Org = "ORG:";
+    public static final String vCard_Org_QP = "ORG;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:";
+    public static final String vCard_Name = "N:";
+    public static final String vCard_Name_QP = "N;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:";
+    public static final String vCard_FormattedName = "FN:";
+    public static final String vCard_FormattedName_QP = "FN;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:";
+    public static final String vCard_Birthday = "BDAY:";
+    public static final String vCard_URL = "URL:";
 
     /** Включить викторину */
     public static final String FEATURE_QUIZ = "enable_quiz";

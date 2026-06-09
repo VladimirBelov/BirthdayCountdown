@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 09.06.2026, 21:51
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.01.2026, 12:36
+ *  * Last modified 09.06.2026, 17:30
  *
  */
 
@@ -78,8 +78,13 @@ class Person {
         }
     }
 
+    /** Переворачивает имя Ф.И.О <-> И.О.Ф.
+     * @param fullName Исходное имя
+     * @param nameFormat Порядок составных частей имени в исходнике
+     * @return Перевёрнутое имя
+     */
     @NonNull
-    static String getAltName(@NonNull String fullName, ContactsEvents.FormatName nameFormat, @NonNull Context context) {
+    static String getAltName(@NonNull String fullName, ContactsEvents.FormatName nameFormat) {
 
         try{
 
@@ -92,31 +97,19 @@ class Person {
                 if (nameFormat == ContactsEvents.FormatName.NameFirst) {
                     return fullName.substring(spaceLast + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceLast);
                 } else {
-                    //if (spaceFirst != spaceLast) { //Имя из 3+ слов
-                        return fullName.substring(spaceFirst + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceFirst);
-                    /*} else { //Имя из двух слов
-                        final ContactsEvents contactsEvents = ContactsEvents.getInstance();
-                        final String normalizedFirstName = ContactsEvents.normalizeString(fullName.substring(0, spaceFirst));
-                        if (contactsEvents.preferences_first_names_male.reset(normalizedFirstName).find()
-                                ||contactsEvents.preferences_first_names_female.reset(normalizedFirstName).find()) {
-                            return fullName;
-                        } else {
-                            return fullNameAlt;
-                        }
-                    }*/
+                    return fullName.substring(spaceFirst + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceFirst);
                 }
 
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
     }
 
     @NonNull
-    static String getShortName(@NonNull String fullName, int formatName, @NonNull Context context) {
+    static String getShortName(@NonNull String fullName, int formatName) {
 
         try{
 
@@ -138,7 +131,6 @@ class Person {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
     }

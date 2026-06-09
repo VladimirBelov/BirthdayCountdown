@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.05.2026, 21:47
+ *  * Created by Vladimir Belov on 09.06.2026, 21:51
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.05.2026, 20:51
+ *  * Last modified 09.06.2026, 21:18
  *
  */
 
@@ -19,8 +19,12 @@ import org.vovka.birthdaycountdown.Constants;
 import org.vovka.birthdaycountdown.ContactsEvents;
 import org.vovka.birthdaycountdown.R;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -300,5 +304,87 @@ public class StringUtils {
         }
 
         return totalLength > 0 ? part.substring(0, totalLength) : Constants.STRING_EMPTY;
+    }
+
+    /**
+     * Безопасно разбивает строку по разделителю, игнорируя экранированные символы (\;)
+     */
+    public static List<String> splitWithEscape(String str, char delimiter) {
+        List<String> parts = new ArrayList<>();
+        StringBuilder currentPart = new StringBuilder();
+        boolean isEscaped = false;
+
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+
+            if (isEscaped) {
+                currentPart.append(c);
+                isEscaped = false;
+            } else if (c == '\\') {
+                isEscaped = true; // Следующий символ экранирован
+                currentPart.append(c); // Сохраняем слэш, уберем его позже
+            } else if (c == delimiter) {
+                parts.add(currentPart.toString());
+                currentPart.setLength(0); // Очищаем буфер для следующей части
+            } else {
+                currentPart.append(c);
+            }
+        }
+        parts.add(currentPart.toString()); // Добавляем последнюю часть
+        return parts;
+    }
+
+    /**
+     * Очищает строку от экранирующих слэшей (\; -> ; и \\ -> \)
+     */
+    public static String cleanValue(String val) {
+        if (val == null) return Constants.STRING_EMPTY;
+        return val.replace("\\;", ";")
+                .replace("\\,", ",")
+                .replace("\\\\", "\\")
+                .trim();
+    }
+
+    /**
+     * Декодирует строку из формата Quoted-Printable.
+     *
+     * @param input Строка из vCard (например: "=D0=98=D0=B2=D0=B0=D0=BD")
+     * @param charset Кодировка текста (для Android/Google контактов обычно UTF-8)
+     * @return Нормальный читаемый текст
+     */
+    public static String decodeQuotedPrintable(String input, Charset charset) {
+        if (input == null || input.isEmpty()) {
+            return Constants.STRING_EMPTY;
+        }
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+
+            if (c == '=') {
+                // Проверяем, что после '=' есть еще как минимум два символа для шестнадцатеричного байта
+                if (i + 2 < input.length()) {
+                    String hex = input.substring(i + 1, i + 3);
+                    try {
+                        // Конвертируем "D0" в байт
+                        int b = Integer.parseInt(hex, 16);
+                        out.write(b);
+                        i += 2; // Пропускаем обработанные hex-символы
+                    } catch (NumberFormatException e) {
+                        // Если это был не hex (ошибка формата), записываем как обычный символ
+                        out.write(c);
+                    }
+                } else {
+                    out.write(c);
+                }
+            } else {
+                // Обычные ASCII символы пишем как есть
+                out.write(c);
+            }
+        }
+
+        // Декодируем собранный массив байтов в нужную кодировку
+        return new String(out.toByteArray(), charset);
     }
 }

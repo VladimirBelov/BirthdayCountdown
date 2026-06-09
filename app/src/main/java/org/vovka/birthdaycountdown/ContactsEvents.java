@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.06.2026, 23:48
+ *  * Created by Vladimir Belov on 09.06.2026, 21:51
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.06.2026, 23:40
+ *  * Last modified 09.06.2026, 21:40
  *
  */
 
@@ -99,6 +99,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -2589,7 +2590,7 @@ public class ContactsEvents {
             Cursor contactData = contentResolver.query(
                     ContactsContract.Data.CONTENT_URI,
                     projectionOrgTitle,
-                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ,
+                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
                     new String[]{ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE},
                     null
             );
@@ -2620,7 +2621,7 @@ public class ContactsEvents {
             contactData = contentResolver.query(
                     ContactsContract.Data.CONTENT_URI,
                     projectionNick,
-                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ,
+                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
                     new String[]{ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE},
                     null
             );
@@ -2648,7 +2649,7 @@ public class ContactsEvents {
             contactData = contentResolver.query(
                     ContactsContract.Data.CONTENT_URI,
                     projectionURL,
-                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ,
+                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
                     new String[]{ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE},
                     null
             );
@@ -2681,7 +2682,7 @@ public class ContactsEvents {
             contactData = contentResolver.query(
                     ContactsContract.Data.CONTENT_URI,
                     projectionNotes,
-                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ,
+                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
                     new String[]{ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE},
                     null
             );
@@ -2737,7 +2738,7 @@ public class ContactsEvents {
 
                             //ИФ
                             if (!TextUtils.isEmpty(personNameNormalized)) {
-                                final String personNameShortNormalized = Person.getShortName(personNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context);
+                                final String personNameShortNormalized = Person.getShortName(personNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast);
                                 if (!map_contacts_names.containsKey(personNameShortNormalized)) {
                                     map_contacts_names.put(personNameShortNormalized, personID);
                                 }
@@ -2755,7 +2756,7 @@ public class ContactsEvents {
 
                             //ФИ
                             if (!TextUtils.isEmpty(personNameAltNormalized)) {
-                                final String personNameAltShortNormalized = Person.getShortName(personNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context);
+                                final String personNameAltShortNormalized = Person.getShortName(personNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond);
                                 if (!map_contacts_names.containsKey(personNameAltShortNormalized)) {
                                     map_contacts_names.put(personNameAltShortNormalized, personID);
                                 }
@@ -2787,7 +2788,7 @@ public class ContactsEvents {
             Cursor cursor = contentResolver.query(
                     ContactsContract.Data.CONTENT_URI,
                     projectionContactsEvents,
-                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ,
+                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
                     new String[]{ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE},
                     ContactsContract.Data.DISPLAY_NAME + Constants.SQL_SORT_ASC_CONT
                             + ContactsContract.CommonDataKinds.Event.TYPE + Constants.SQL_SORT_ASC_CONT
@@ -2951,6 +2952,8 @@ public class ContactsEvents {
 
             if (fileContent.startsWith(Constants.iCal_CalendarBegin)) {
                 return fileContent.split(Constants.iCal_EventBegin, -1).length - 1;
+            } else if (fileContent.startsWith(Constants.vCard_EventBegin)) {
+                return fileContent.split(Constants.vCard_Birthday, -1).length - 1;
             }
 
             for (String eventRow : eventsArray) {
@@ -3732,12 +3735,12 @@ public class ContactsEvents {
                     String personFullNameAltNormalized;
                     if (preferences_rules_calendars_name_format == FormatName.NameFirst) {
                         personFullNameNormalized = StringUtils.normalizeString(foundName);
-                        String personFullNameAlt = Person.getAltName(foundName, FormatName.NameFirst, context);
+                        String personFullNameAlt = Person.getAltName(foundName, FormatName.NameFirst);
                         personFullNameAltNormalized = StringUtils.normalizeString(personFullNameAlt);
                         eventData.put(Position_personFullName, foundName);
                         eventData.put(Position_personFullNameAlt, personFullNameAlt);
                     } else {
-                        String personFullNameAlt = Person.getAltName(foundName, FormatName.LastnameFirst, context);
+                        String personFullNameAlt = Person.getAltName(foundName, FormatName.LastnameFirst);
                         personFullNameNormalized = StringUtils.normalizeString(personFullNameAlt);
                         personFullNameAltNormalized = StringUtils.normalizeString(foundName);
                         eventData.put(Position_personFullName, personFullNameAlt);
@@ -4448,7 +4451,7 @@ public class ContactsEvents {
                     continue;
                 }
 
-                String fileName = fileDetails[0].lastIndexOf(Constants.STRING_SLASH) > -1 ? fileDetails[0].substring(fileDetails[0].lastIndexOf(Constants.STRING_SLASH) + 1) : fileDetails[0];
+                final String fileName = fileDetails[0].lastIndexOf(Constants.STRING_SLASH) > -1 ? fileDetails[0].substring(fileDetails[0].lastIndexOf(Constants.STRING_SLASH) + 1) : fileDetails[0];
                 final String eventSource = !fileName.isEmpty() ? getResources().getString(R.string.msg_file_info, fileName) : getResources().getString(R.string.event_type_file);
 
                 if (eventsArray[0].startsWith(Constants.iCal_CalendarBegin)) {
@@ -4456,6 +4459,13 @@ public class ContactsEvents {
                             file,
                             eventsArray,
                             eventType,
+                            today,
+                            eventSource
+                    );
+                } else if (eventsArray[0].startsWith(Constants.vCard_EventBegin)) {
+                    addVCardEvents(
+                            file,
+                            eventsArray,
                             today,
                             eventSource
                     );
@@ -4576,7 +4586,7 @@ public class ContactsEvents {
                                @NonNull Calendar today, @NonNull String eventSource) {
         try {
 
-            TreeMap<Integer, String> eventData = new TreeMap<>();
+            final TreeMap<Integer, String> eventData = new TreeMap<>();
             @Nullable Event event = null;
             @Nullable Date eventDateFirstTime = null;
             @Nullable Date eventDateThisTime = null;
@@ -4587,9 +4597,9 @@ public class ContactsEvents {
             boolean useEventYear = true;
             final int nowYear = today.get(Calendar.YEAR);
             StringBuilder eventLines = new StringBuilder();
+            final String filePath = StringUtils.substringBefore(file, Constants.STRING_BAR);
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
             String emptyEventYear = null;
-            int indexFileNameEnd = Math.max(0, file.indexOf(Constants.STRING_BAR));
 
             for (String line : fileLines) {
 
@@ -4612,7 +4622,6 @@ public class ContactsEvents {
                     } else {
 
                         event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY);
-                        event.subType = Constants.EventType_File;
                         useEventYear = false;
 
                     }
@@ -4628,6 +4637,7 @@ public class ContactsEvents {
 
                 } else if (line.startsWith(Constants.STRING_SPACE)) {
 
+                    //todo: это может быть продолжение не только описания, но и Summary
                     eventDescription = eventDescription.concat(StringUtils.substringAfter(line, Constants.STRING_SPACE));
 
                 } else if (line.startsWith(Constants.iCal_Url)) {
@@ -4660,7 +4670,7 @@ public class ContactsEvents {
                 } else if (line.startsWith(Constants.iCal_EventEnd) && event != null) {
 
                     if (eventDateFirstTime == null || eventDateThisTime == null || eventTitle == null) {
-                        ToastExpander.showDebugMsg(context, eventLines.toString());
+                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventLines.toString()));
                     } else {
 
                         eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
@@ -4674,11 +4684,11 @@ public class ContactsEvents {
                         String personFullNameNormalized = null;
                         String personFullNameAltNormalized = null;
                         String contactID = null;
-                        String eventID = Constants.PREFIX_FileEventID + StringUtils.getHash(file.substring(indexFileNameEnd) + eventTitle);
+                        String eventID = Constants.PREFIX_FileEventID + StringUtils.getHash(filePath + eventTitle);
 
                         eventData.put(Position_personFullName, eventTitle);
                         if (eventType.equals(Constants.EventType_BirthDay)) {
-                            personFullNameAlt = Person.getAltName(eventTitle, FormatName.NameFirst, context);
+                            personFullNameAlt = Person.getAltName(eventTitle, FormatName.NameFirst);
                             eventData.put(Position_personFullNameAlt, personFullNameAlt);
                         }
 
@@ -4773,10 +4783,300 @@ public class ContactsEvents {
                     eventTitle = null;
                     eventDescription = Constants.STRING_EMPTY;
                     eventURL = Constants.STRING_EMPTY;
+                    event = null;
                     eventLines.setLength(0);
 
                 }
 
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Добавляет в общий список события из vCard файла
+     * (поддерживаются только дни рождения)
+     *
+     * @param file        Путь до файла и URI
+     * @param fileLines   Массив строк из файла
+     * @param today       Дата сегодня
+     * @param eventSource Источник событий
+     */
+    private void addVCardEvents(@NonNull String file, @NonNull String[] fileLines,
+                               @NonNull Calendar today, @NonNull String eventSource) {
+        try {
+
+            final int nowYear = today.get(Calendar.YEAR);
+            final TreeMap<Integer, String> eventData = new TreeMap<>();
+            final StringBuilder eventLines = new StringBuilder();
+            final String filePath = StringUtils.substringBefore(file, Constants.STRING_BAR);
+
+            Event event = null;
+            Date eventDateFirstTime = null;
+            //String eventTitle = null;
+            //String eventDescription = Constants.STRING_EMPTY;
+            String url = Constants.STRING_EMPTY;
+            String lastName = Constants.STRING_EMPTY;
+            String firstName = Constants.STRING_EMPTY;
+            String middleName = Constants.STRING_EMPTY;
+            String fullName = Constants.STRING_EMPTY; // И.О.Ф.
+            boolean useEventYear = true;
+            final StringBuilder storage = new StringBuilder(); // Накопитель для значений на несколько строк
+            boolean isMultiLineValue = false;
+            int storageDest = 0; // 1 - N, 2 - FN
+
+            for (String line : fileLines) {
+
+                if (isMultiLineValue && line.startsWith(Constants.STRING_EQ)) {
+
+                    if (line.endsWith(Constants.STRING_EQ)) { // Продолжение на следующей строке
+                        storage.append(line.substring(0, line.length() - 1));
+                    } else {
+                        switch (storageDest) {
+                            case 1:
+                                storage.append(line);
+                                String valueDecoded = StringUtils.decodeQuotedPrintable(storage.toString(), StandardCharsets.UTF_8);
+                                List<String> nameParts = StringUtils.splitWithEscape(valueDecoded, Constants.STRING_SEMICOLON);
+                                if (nameParts.size() > 2) {
+                                    lastName = StringUtils.cleanValue(nameParts.get(0));
+                                    firstName = StringUtils.cleanValue(nameParts.get(1));
+                                    middleName = StringUtils.cleanValue(nameParts.get(2));
+                                }
+                                eventLines.append(Constants.vCard_Name).append(valueDecoded).append(Constants.STRING_EOL);
+                                break;
+
+                            case 2:
+                                storage.append(line);
+                                fullName = StringUtils.cleanValue(StringUtils.decodeQuotedPrintable(storage.toString(), StandardCharsets.UTF_8));
+                                eventLines.append(Constants.vCard_FormattedName).append(fullName).append(Constants.STRING_EOL);
+                                break;
+
+                            default:
+                        }
+                    }
+
+                } else if (line.startsWith(Constants.vCard_EventBegin)) {
+
+                    event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
+
+                } else if (line.startsWith(Constants.vCard_Birthday)) {
+
+                    String storedDate = StringUtils.substringAfter(line, Constants.STRING_COLON);
+                    if (!storedDate.startsWith(Constants.STRING_MINUS)) { // С годом
+                        try {
+                            eventDateFirstTime = Objects.requireNonNull(sdf_YYYYMMDD_noDiv.get()).parse(storedDate);
+                            useEventYear = true;
+                        } catch (ParseException e) {
+                            try {
+                                eventDateFirstTime = Objects.requireNonNull(sdf_java.get()).parse(storedDate);
+                                useEventYear = true;
+                            } catch (ParseException ignored) {
+                                //Не получилось распознать
+                            }
+                        }
+                    } else { // Без года
+                        try {
+                            eventDateFirstTime = Objects.requireNonNull(sdf_YYYYMMDD_noDiv.get()).parse(nowYear + storedDate.substring(1));
+                            useEventYear = false;
+                        } catch (ParseException e) {
+                            try {
+                                eventDateFirstTime = Objects.requireNonNull(sdf_java.get()).parse(nowYear + storedDate.substring(1));
+                                useEventYear = false;
+                            } catch (ParseException ignored) {
+                                //Не получилось распознать
+                            }
+                        }
+                    }
+                    eventLines.append(line).append(Constants.STRING_EOL);
+
+                } else if (line.startsWith(Constants.vCard_Name)) { // VCARD VERSION:3.0
+
+                    List<String> nameParts = StringUtils.splitWithEscape(StringUtils.substringAfter(line, Constants.vCard_Name), Constants.STRING_SEMICOLON);
+                    if (nameParts.size() > 2) {
+                        lastName = StringUtils.cleanValue(nameParts.get(0));
+                        firstName = StringUtils.cleanValue(nameParts.get(1));
+                        middleName = StringUtils.cleanValue(nameParts.get(2));
+                    }
+                    eventLines.append(line).append(Constants.STRING_EOL);
+
+                } else if (line.startsWith(Constants.vCard_Name_QP)) { // VCARD VERSION:2.1
+
+                    final String value = StringUtils.substringAfter(line, Constants.vCard_Name_QP);
+                    if (!value.endsWith(Constants.STRING_EQ)) { // Всё уместилось в одну строку
+
+                        String valueDecoded = StringUtils.decodeQuotedPrintable(value, StandardCharsets.UTF_8);
+                        List<String> nameParts = StringUtils.splitWithEscape(valueDecoded, Constants.STRING_SEMICOLON);
+                        if (nameParts.size() > 2) {
+                            lastName = StringUtils.cleanValue(nameParts.get(0));
+                            firstName = StringUtils.cleanValue(nameParts.get(1));
+                            middleName = StringUtils.cleanValue(nameParts.get(2));
+                        }
+                        eventLines.append(Constants.vCard_Name).append(valueDecoded).append(Constants.STRING_EOL);
+
+                    } else {
+                        isMultiLineValue = true;
+                        storageDest = 1;
+                        storage.setLength(0);
+                        storage.append(value.substring(0, value.length() - 1));
+                    }
+
+                } else if (line.startsWith(Constants.vCard_FormattedName) && lastName.isEmpty() && firstName.isEmpty()) { // VCARD VERSION:3.0
+
+                    fullName = StringUtils.cleanValue(StringUtils.substringAfter(line, Constants.vCard_FormattedName));
+                    eventLines.append(line).append(Constants.STRING_EOL);
+
+                } else if (line.startsWith(Constants.vCard_FormattedName_QP) && lastName.isEmpty() && firstName.isEmpty()) { // VCARD VERSION:2.1
+
+                    final String value = StringUtils.substringAfter(line, Constants.vCard_FormattedName_QP);
+                    if (!value.endsWith(Constants.STRING_EQ)) { // Всё уместилось в одну строку
+
+                        fullName = StringUtils.cleanValue(StringUtils.decodeQuotedPrintable(value, StandardCharsets.UTF_8));
+                        eventLines.append(Constants.vCard_FormattedName).append(fullName).append(Constants.STRING_EOL);
+
+                    } else {
+                        isMultiLineValue = true;
+                        storageDest = 2;
+                        storage.setLength(0);
+                        storage.append(value.substring(0, value.length() - 1));
+                    }
+
+                } else if (line.startsWith(Constants.vCard_URL)) {
+
+                    url = StringUtils.substringAfter(line, Constants.vCard_URL);
+
+                } else if (line.startsWith(Constants.vCard_EventEnd) && event != null) {
+
+                    if (eventDateFirstTime != null && (!firstName.isEmpty() || !lastName.isEmpty() || !fullName.isEmpty())) {
+
+                        String eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
+                                + (useEventYear ? Objects.requireNonNull(sdf_java.get()).format(eventDateFirstTime)
+                                : Objects.requireNonNull(sdf_java_no_year.get()).format(eventDateFirstTime))
+                                + Constants.STRING_COLON_SPACE
+                                + StringUtils.getHash(Constants.eventSourceFilePrefix + file);
+
+                        //eventDescription = eventDescription.replace(eventURL, Constants.STRING_EMPTY);
+
+                        String personFullName;
+                        String personFullNameAlt;
+                        String contactID = null;
+
+                        if (!firstName.isEmpty()) {
+                            if (!middleName.isEmpty()) {
+                                personFullName = firstName + Constants.STRING_SPACE + middleName;
+                            } else {
+                                personFullName = firstName;
+                            }
+                            if (!lastName.isEmpty()) {
+                                personFullName += Constants.STRING_SPACE + lastName;
+                            }
+                        } else if (!lastName.isEmpty()) { // Есть только фамилия
+                            personFullName = lastName;
+                        } else { // Есть только форматированное имя
+                            personFullName = fullName;
+                        }
+                        personFullNameAlt = Person.getAltName(personFullName, FormatName.NameFirst);
+
+                        String eventID = Constants.PREFIX_FileEventID + StringUtils.getHash(filePath + personFullNameAlt);
+
+                        eventData.put(Position_personFullName, personFullName);
+                        eventData.put(Position_personFullNameAlt, personFullNameAlt);
+                        //eventData.put(Position_eventDescription, eventDescription.replace(Constants.REGEX_BS, Constants.STRING_EMPTY));
+                        eventData.put(Position_eventStorage, Constants.STRING_STORAGE_FILE);
+                        eventData.put(Position_eventCaption, event.caption);
+                        eventData.put(Position_eventLabel, event.label);
+                        eventData.put(Position_eventSource, eventSource);
+                        eventData.put(Position_eventType, event.type);
+                        eventData.put(Position_eventSubType, event.subType);
+                        eventData.put(Position_dates, eventNewDate);
+                        eventData.put(Position_eventIcon, Integer.toString(event.icon));
+                        eventData.put(Position_eventEmoji, event.emoji);
+                        eventData.put(Position_eventURL, url);
+                        eventData.put(Position_eventID, eventID);
+
+                        if (event.needScanContacts) {
+
+                            contactID = getContactID(
+                                    StringUtils.normalizeString(personFullName),
+                                    StringUtils.normalizeString(personFullNameAlt)
+                            );
+
+                            if (contactID == null) {
+                                contactID = getMergedID(eventID);
+                            }
+
+                            if (!TextUtils.isEmpty(contactID)) {
+                                eventData.put(Position_contactID, contactID);
+                                eventData.put(Position_rawContactID, StringUtils.getNotNullString(map_contacts_ids.get(contactID)));
+
+                                //Ищем событие контакта в списке событий и добавляем в него
+                                Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
+                                if (eventIndex != null && eventIndex <= eventListUpdated.size()) {
+
+                                    if (updateExistEvent(eventIndex, eventID, eventSource, eventNewDate, null, null, url)) {
+                                        eventData.clear();
+                                    }
+
+                                } else { //Такого события ещё не было
+
+                                    //Добавляем данные контакта
+                                    final Long contactIDLong = StringUtils.parseToLong(contactID);
+                                    HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
+                                            ContactsContract.Contacts.PHOTO_URI,
+                                            ContactsContract.Contacts.STARRED
+                                    });
+
+                                    eventData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
+                                    if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
+                                        if (Constants.STRING_1.equals(StringUtils.getNotNullString(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
+                                            eventData.put(Position_starred, Constants.STRING_1);
+                                            statFavoriteEventsCount++;
+                                        }
+                                    }
+                                    contactDataMap.clear();
+
+                                    eventData.put(Position_nickname, StringUtils.getNotNullString(map_contacts_aliases.get(contactID)));
+                                    if (TextUtils.isEmpty(eventData.get(Position_organization)))
+                                        eventData.put(Position_organization, StringUtils.getNotNullString(map_organizations.get(contactID)));
+                                    if (TextUtils.isEmpty(eventData.get(Position_title)))
+                                        eventData.put(Position_title, StringUtils.getNotNullString(map_contacts_titles.get(contactID)));
+                                }
+                            }
+                        }
+
+                        if (!eventData.isEmpty()) {
+                            statEventsCount++;
+                            statFilesEventCount++;
+
+                            fillEmptyEventData(eventData);
+
+                            String eventRow = getEventData(eventData);
+                            if (!eventListUpdated.contains(eventRow)) {
+                                eventListUpdated.add(eventRow);
+                                if (!TextUtils.isEmpty(contactID)) {
+                                    map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
+                                }
+                            }
+                        }
+
+                    }
+
+                    eventData.clear();
+                    eventDateFirstTime = null;
+                    //eventTitle = null;
+                    //eventDescription = Constants.STRING_EMPTY;
+                    url = Constants.STRING_EMPTY;
+                    lastName = Constants.STRING_EMPTY;
+                    firstName = Constants.STRING_EMPTY;
+                    middleName = Constants.STRING_EMPTY;
+                    fullName = Constants.STRING_EMPTY;
+                    event = null;
+                    isMultiLineValue = false;
+                    eventLines.setLength(0);
+
+                }
             }
 
         } catch (Exception e) {
@@ -4886,10 +5186,10 @@ public class ContactsEvents {
                 contactID = map_contacts_names.get(personFullNameAltNormalized);
             }
             if (TextUtils.isEmpty(contactID)) {
-                contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast, context));
+                contactID = map_contacts_names.get(Person.getShortName(personFullNameNormalized, Constants.pref_List_NameFormat_FirstSecondLast));
             }
             if (TextUtils.isEmpty(contactID) && personFullNameAltNormalized != null && !personFullNameNormalized.equals(personFullNameAltNormalized)) {
-                contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond, context));
+                contactID = map_contacts_names.get(Person.getShortName(personFullNameAltNormalized, Constants.pref_List_NameFormat_LastFirstSecond));
             }
         }
         return contactID;
@@ -4898,7 +5198,7 @@ public class ContactsEvents {
     /**
      * Добавляет в общий список событие из строки файла
      *
-     * @param eventSource           Источник события (путь до файла + URI, ID источника)
+     * @param eventSource           Источник события (путь до файла + "|" + URI, или ID источника, если событие из внутреннего ресурса)
      * @param eventSourceCaption    Источник события (заголовок)
      * @param eventString           Строка с событием
      * @param eventType             Тип события, которым добавлять
@@ -5115,12 +5415,12 @@ public class ContactsEvents {
                 String personFullNameAltNormalized;
                 if (preferences_rules_files_name_format == FormatName.NameFirst) {
                     personFullNameNormalized = StringUtils.normalizeString(eventTitle);
-                    String personFullNameAlt = Person.getAltName(eventTitle, FormatName.NameFirst, context);
+                    String personFullNameAlt = Person.getAltName(eventTitle, FormatName.NameFirst);
                     personFullNameAltNormalized = StringUtils.normalizeString(personFullNameAlt);
                     eventData.put(Position_personFullName, eventTitle);
                     eventData.put(Position_personFullNameAlt, personFullNameAlt);
                 } else {
-                    String personFullNameAlt = Person.getAltName(eventTitle, FormatName.LastnameFirst, context);
+                    String personFullNameAlt = Person.getAltName(eventTitle, FormatName.LastnameFirst);
                     personFullNameNormalized = StringUtils.normalizeString(personFullNameAlt);
                     personFullNameAltNormalized = StringUtils.normalizeString(eventTitle);
                     eventData.put(Position_personFullName, personFullNameAlt);
@@ -6468,7 +6768,7 @@ public class ContactsEvents {
             Cursor dataCursor = contentResolver.query(
                     dataUri,
                     columnNamesToFind.toArray(new String[0]),
-                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ,
+                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
                     new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE},
                     null
             );

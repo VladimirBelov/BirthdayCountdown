@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.04.2026, 00:29
+ *  * Created by Vladimir Belov on 09.06.2026, 21:51
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.04.2026, 23:14
+ *  * Last modified 09.06.2026, 17:30
  *
  */
 
@@ -1143,11 +1143,11 @@ public class LocalEventActivity extends AppCompatActivity {
                 eventData.put(ContactsEvents.Position_personFullNameAlt, Constants.STRING_EMPTY);
             } else if (eventsData.preferences_name_format == ContactsEvents.FormatName.LastnameFirst) {
                 eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
-                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, activity);
+                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst);
                 eventData.put(ContactsEvents.Position_personFullName, personFullNameAlt);
             } else {
                 eventData.put(ContactsEvents.Position_personFullName, eventTitle);
-                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst, activity);
+                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst);
                 eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
             }
 

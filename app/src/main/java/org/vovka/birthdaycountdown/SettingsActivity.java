@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.06.2026, 02:42
+ *  * Created by Vladimir Belov on 09.06.2026, 21:51
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.06.2026, 02:08
+ *  * Last modified 09.06.2026, 13:07
  *
  */
 
@@ -3119,6 +3119,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                         intent.addCategory(Intent.CATEGORY_OPENABLE);
                         intent.setType("*/*");
+                        String[] mimeTypes;
+                        if (eventType.equals(Constants.EventType_BirthDay)) {
+                            mimeTypes = new String[]{
+                                    "text/plain",
+                                    "text/calendar",
+                                    "text/vcard",
+                                    "text/x-vcard"
+                            };
+                        } else {
+                            mimeTypes = new String[]{
+                                    "text/plain",
+                                    "text/calendar"
+                            };
+                        }
+                        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
                         try {
                             startActivityForResult(intent, Constants.RESULT_PICK_FILE);
@@ -4469,22 +4484,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 if (requestCode == Constants.RESULT_PICK_FILE) {
                     Uri uri = resultData.getData();
                     if (uri != null) {
-                        final String fileContent = eventsData.readFileToString(uri.toString(), null);
-                        if (!fileContent.isEmpty()) {
-                            String filename = DeviceTools.getPath(this, uri);
-                            if (!filename.isEmpty()) {
-                                try {
-                                    this.grantUriPermission(this.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION | android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                                    this.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                                    filesList.add(filename.concat(Constants.STRING_BAR).concat(uri.toString()));
-                                    selectFiles(this.eventTypeForSelect);
-                                } catch (Exception e) {
-                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_file_access_read_error, uri.getPath()));
+                        new Thread(() -> {
+                            //todo: сделать так во всех вызовах readFileToString
+                            final String fileContent = eventsData.readFileToString(uri.toString(), null);
+                            runOnUiThread(() -> {
+                                if (!fileContent.isEmpty()) {
+                                    String filename = DeviceTools.getPath(this, uri);
+                                    if (!filename.isEmpty()) {
+                                        try {
+                                            this.grantUriPermission(this.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION | android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                                            this.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                            filesList.add(filename.concat(Constants.STRING_BAR).concat(uri.toString()));
+                                            selectFiles(this.eventTypeForSelect);
+                                        } catch (Exception e) {
+                                            ToastExpander.showDebugMsg(this, getString(R.string.msg_file_access_read_error, uri.getPath()));
+                                        }
+                                    }
+                                } else {
+                                    ToastExpander.showInfoMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
                                 }
-                            }
-                        } else {
-                            ToastExpander.showInfoMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
-                        }
+                            });
+                        }).start();
                     }
 
                 } else if (requestCode == Constants.RESULT_PICK_RINGTONE) {

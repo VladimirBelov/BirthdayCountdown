@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.06.2026, 02:42
+ *  * Created by Vladimir Belov on 09.06.2026, 21:51
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.06.2026, 02:25
+ *  * Last modified 09.06.2026, 19:23
  *
  */
 
@@ -3114,7 +3114,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     holder.PhotoImageView.setImageBitmap(eventsData.getEventPhoto(event, true, false, true, roundingFactor));
                     holder.PhotoImageView.setVisibility(View.VISIBLE);
                 } else {
-                    holder.PhotoImageView.setImageBitmap(null);
+                    holder.PhotoImageView.setImageDrawable(null);
                     holder.PhotoImageView.setVisibility(View.GONE);
                 }
 

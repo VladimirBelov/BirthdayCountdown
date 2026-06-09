@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.06.2026, 11:47
+ *  * Created by Vladimir Belov on 09.06.2026, 21:51
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.06.2026, 10:15
+ *  * Last modified 09.06.2026, 17:30
  *
  */
 
@@ -670,11 +670,11 @@ public class EventImporterActivity extends AppCompatActivity {
                 eventData.put(ContactsEvents.Position_personFullNameAlt, Constants.STRING_EMPTY);
             } else if (eventsData.preferences_rules_files_name_format == ContactsEvents.FormatName.LastnameFirst) {
                 eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
-                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, this);
+                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst);
                 eventData.put(ContactsEvents.Position_personFullName, personFullNameAlt);
             } else {
                 eventData.put(ContactsEvents.Position_personFullName, eventTitle);
-                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst, this);
+                String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst);
                 eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
             }
 
@@ -795,11 +795,11 @@ public class EventImporterActivity extends AppCompatActivity {
 
                                 if (eventsData.preferences_rules_files_name_format == ContactsEvents.FormatName.LastnameFirst) {
                                     eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
-                                    String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst, this);
+                                    String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst);
                                     eventData.put(ContactsEvents.Position_personFullName, personFullNameAlt);
                                 } else {
                                     eventData.put(ContactsEvents.Position_personFullName, eventTitle);
-                                    String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst, this);
+                                    String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.NameFirst);
                                     eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
                                 }
                             }
