@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.03.2026, 21:02
+ *  * Created by Vladimir Belov on 10.06.2026, 11:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.03.2026, 18:58
+ *  * Last modified 10.06.2026, 11:02
  *
  */
 
@@ -69,6 +69,7 @@ public class Widget5x1 extends AppWidgetProvider {
 
         try {
 
+            eventsData.setToday();
             eventsData.initLanguage(context);
 
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);

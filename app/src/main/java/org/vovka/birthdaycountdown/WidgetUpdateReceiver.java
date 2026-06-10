@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 10.06.2026, 11:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 22:47
+ *  * Last modified 10.06.2026, 11:02
  *
  */
 
@@ -32,6 +32,7 @@ public class WidgetUpdateReceiver extends BroadcastReceiver {
             StringBuilder log = new StringBuilder();
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
+            eventsData.setToday();
             eventsData.initLanguage(context);
 
             eventsData.getEvents();

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 02:20
+ *  * Created by Vladimir Belov on 10.06.2026, 11:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 00:31
+ *  * Last modified 10.06.2026, 11:02
  *
  */
 
@@ -34,7 +34,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -480,8 +479,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
             if (maxEvents == 0 && maxDays == 0) {
                 eventListView.addAll(filteredEventList);
             } else {
-                Calendar now = Calendar.getInstance();
-                Date currentDay = new Date(now.getTimeInMillis());
+                Date currentDay = eventsData.getToday().getTime();
                 for (int i = 0, filteredEventListSize = filteredEventList.size(); i < filteredEventListSize; i++) {
                     if (maxEvents > 0 && i >= maxEvents) break;
                     String event = filteredEventList.get(i);

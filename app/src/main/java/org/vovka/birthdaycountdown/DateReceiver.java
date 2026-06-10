@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.03.2026, 21:42
+ *  * Created by Vladimir Belov on 10.06.2026, 11:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.03.2026, 19:31
+ *  * Last modified 10.06.2026, 11:02
  *
  */
 
@@ -51,6 +51,7 @@ public class DateReceiver extends BroadcastReceiver {
 
                 StringBuilder log = new StringBuilder();
 
+                eventsData.setToday();
                 eventsData.initLanguage(context);
 
                 //Переинициализируем уведомления

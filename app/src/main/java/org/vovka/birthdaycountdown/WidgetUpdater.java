@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2026, 01:26
+ *  * Created by Vladimir Belov on 10.06.2026, 11:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.06.2026, 00:12
+ *  * Last modified 10.06.2026, 11:02
  *
  */
 
@@ -39,7 +39,6 @@ import org.vovka.birthdaycountdown.utils.StringUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -357,7 +356,7 @@ class WidgetUpdater {
             }
 
             if (eventsData.preferences_debug_on) {
-                views.setTextViewText(R.id.info, (width > 70 ? context.getString(R.string.widget_msg_updated) : Constants.STRING_EMPTY) + new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, resources.getConfiguration().locale).format(new Date(Calendar.getInstance().getTimeInMillis())));
+                views.setTextViewText(R.id.info, (width > 70 ? context.getString(R.string.widget_msg_updated) : Constants.STRING_EMPTY) + new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, resources.getConfiguration().locale).format(eventsData.getToday().getTime()));
                 views.setViewVisibility(R.id.info, View.VISIBLE);
             } else {
                 views.setTextViewText(R.id.info, Constants.STRING_EMPTY);
@@ -416,8 +415,7 @@ class WidgetUpdater {
                 } catch (Exception e) { /**/ }
 
                 if (eventDate != null) {
-                    Calendar now = Calendar.getInstance();
-                    Date currentDay = new Date(now.getTimeInMillis());
+                    Date currentDay = eventsData.getToday().getTime();
                     long countDays = AppDateUtils.countDaysDiff(currentDay, eventDate);
                     if (countDays + 1 > daysCount) isVisibleEvent = false;
                 }

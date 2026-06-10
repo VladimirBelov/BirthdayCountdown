@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.06.2026, 21:51
+ *  * Created by Vladimir Belov on 10.06.2026, 11:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.06.2026, 17:30
+ *  * Last modified 10.06.2026, 11:08
  *
  */
 
@@ -154,7 +154,6 @@ public class LocalEventActivity extends AppCompatActivity {
             try {
 
                 AtomicInteger yearBeforeHide = new AtomicInteger(0);
-                final Calendar today = Calendar.getInstance();
 
                 Bundle bundle = getArguments();
                 if (bundle.containsKey(Constants.EXTRA_DAY)) {
@@ -164,9 +163,9 @@ public class LocalEventActivity extends AppCompatActivity {
                     useYear.set(bundle.getBoolean(Constants.EXTRA_USE_YEAR));
                     isBC.set(bundle.getBoolean(Constants.EXTRA_IS_BC));
                 } else {
-                    selectedYear.set(today.get(Calendar.YEAR));
-                    selectedMonth.set(today.get(Calendar.MONTH));
-                    selectedDay.set(today.get(Calendar.DAY_OF_MONTH));
+                    selectedYear.set(eventsData.getToday().get(Calendar.YEAR));
+                    selectedMonth.set(eventsData.getToday().get(Calendar.MONTH));
+                    selectedDay.set(eventsData.getToday().get(Calendar.DAY_OF_MONTH));
                     useYear.set(true);
                 }
 
@@ -206,7 +205,7 @@ public class LocalEventActivity extends AppCompatActivity {
                     } else {
                         spinnerYear.setVisibility(View.GONE);
                         checkUseYear.setChecked(false);
-                        yearBeforeHide.set(today.get(Calendar.YEAR));
+                        yearBeforeHide.set(eventsData.getToday().get(Calendar.YEAR));
                         checkIsBC.setVisibility(View.GONE);
                     }
                 }
@@ -214,14 +213,14 @@ public class LocalEventActivity extends AppCompatActivity {
 
                 checkUseYear.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
-                        datePicker.updateDate(yearBeforeHide.get() != 0 ? yearBeforeHide.get() : today.get(Calendar.YEAR), datePicker.getMonth(), datePicker.getDayOfMonth());
+                        datePicker.updateDate(yearBeforeHide.get() != 0 ? yearBeforeHide.get() : eventsData.getToday().get(Calendar.YEAR), datePicker.getMonth(), datePicker.getDayOfMonth());
                         useYear.set(true);
                         spinnerYear.setVisibility(View.VISIBLE);
                         checkIsBC.setVisibility(View.VISIBLE);
                     } else {
                         yearBeforeHide.set(datePicker.getYear());
                         useYear.set(false);
-                        datePicker.updateDate(today.get(Calendar.YEAR), datePicker.getMonth(), datePicker.getDayOfMonth());
+                        datePicker.updateDate(eventsData.getToday().get(Calendar.YEAR), datePicker.getMonth(), datePicker.getDayOfMonth());
                         spinnerYear.setVisibility(View.GONE);
                         isBC.set(false);
                         checkIsBC.setVisibility(View.GONE);
@@ -1191,7 +1190,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
                 if (eventUseYear) {
                     final Date eventDate = new Date(eventYear - 1900, eventMonth, eventDay);
-                    final Date today = AppDateUtils.getWithoutTime(Calendar.getInstance()).getTime();
+                    final Date today = eventsData.getToday().getTime();
                     int age = -1;
                     if (eventDate.before(today)) {
                         age = AppDateUtils.countYearsDiff(eventDate, today);

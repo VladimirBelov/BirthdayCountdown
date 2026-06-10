@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2026, 01:26
+ *  * Created by Vladimir Belov on 10.06.2026, 11:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.06.2026, 00:12
+ *  * Last modified 10.06.2026, 11:02
  *
  */
 
@@ -190,6 +190,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             }
 
+            eventsData.setToday();
             eventsData.initLanguage(context);
             this.context = eventsData.getContext();
             this.res = eventsData.getResources();
@@ -301,8 +302,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             try {
                 if (widgetPref.size() > 1) prefMonthsShift = Integer.parseInt(widgetPref.get(1));
                 if (prefMonthsShift == Integer.parseInt(res.getString(R.string.widget_config_month_shift_january_id))) {
-                    Calendar cal = Calendar.getInstance();
-                    prefMonthsShift = - cal.get(Calendar.MONTH);
+                    prefMonthsShift = - eventsData.getToday().get(Calendar.MONTH);
                 }
             } catch (Exception e) {/**/}
 

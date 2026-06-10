@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 02:20
+ *  * Created by Vladimir Belov on 10.06.2026, 11:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 00:31
+ *  * Last modified 10.06.2026, 11:02
  *
  */
 
@@ -1261,7 +1261,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     }
                                 } catch (NumberFormatException e) { /**/ }
                                 events = ContactsEvents.getInstance().getNextRepeatsForEvent(
-                                        AppDateUtils.getWithoutTime(Calendar.getInstance()),
+                                        eventsData.getToday(),
                                         dateEnd,
                                         AppDateUtils.getCalendarFromDate(eventDate),
                                         valuePeriods,

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.06.2026, 21:51
+ *  * Created by Vladimir Belov on 10.06.2026, 11:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.06.2026, 13:07
+ *  * Last modified 10.06.2026, 11:02
  *
  */
 
@@ -3529,7 +3529,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                 intent.putExtra(Intent.EXTRA_TITLE,
                         getText(R.string.app_name)
-                                + new SimpleDateFormat(Constants.DATE_YY_MM_DD_HH_MM, Locale.US).format(Calendar.getInstance().getTime())
+                                + new SimpleDateFormat(Constants.DATE_YY_MM_DD_HH_MM, Locale.US).format(eventsData.getToday().getTime())
                                 + ".txt");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
                 try {
@@ -3547,7 +3547,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     final String prefix = "# ";
                     String sb = prefix + getText(R.string.app_name) + Constants.STRING_EOL
                             + prefix + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE + Constants.STRING_EOL
-                            + prefix + eventsData.getDateTimePreferable(Calendar.getInstance().getTime()) + Constants.STRING_EOL
+                            + prefix + eventsData.getDateTimePreferable(eventsData.getToday().getTime()) + Constants.STRING_EOL
                             + Constants.STRING_EOL;
                     int countExported = 0;
 
@@ -3991,7 +3991,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                 intent.putExtra(Intent.EXTRA_TITLE,
                         getString(R.string.msg_title_local_events)
-                                + new SimpleDateFormat(Constants.DATE_YY_MM_DD_HH_MM, Locale.US).format(Calendar.getInstance().getTime())
+                                + new SimpleDateFormat(Constants.DATE_YY_MM_DD_HH_MM, Locale.US).format(eventsData.getToday().getTime())
                                 + ".txt");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
                 try {
@@ -4009,7 +4009,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     final String prefix = "# ";
                     String sb = prefix + getText(R.string.app_name) + Constants.STRING_EOL
                             + prefix + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE + Constants.STRING_EOL
-                            + prefix + eventsData.getDateTimePreferable(Calendar.getInstance().getTime()) + Constants.STRING_EOL
+                            + prefix + eventsData.getDateTimePreferable(eventsData.getToday().getTime()) + Constants.STRING_EOL
                             + Constants.STRING_EOL;
                     int countExported = 0;
 

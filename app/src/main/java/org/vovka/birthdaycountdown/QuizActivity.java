@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2026, 01:26
+ *  * Created by Vladimir Belov on 10.06.2026, 11:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.06.2026, 00:08
+ *  * Last modified 10.06.2026, 11:02
  *
  */
 
@@ -1036,9 +1036,9 @@ public class QuizActivity extends Activity {
                     } catch (ParseException ignored) { /**/ }
                     if (birthDate == null || eventDate == null) return null;
 
-                    Date today = AppDateUtils.getWithoutTime(Calendar.getInstance()).getTime();
+                    Date today = eventsData.getToday().getTime();
                     boolean isDead = eventsData.deathDatesForIds.containsKey(eventInfo[ContactsEvents.Position_contactID]);
-                    boolean isBirthdayPassed = AppDateUtils.getCalendarFromDate(eventDate).get(Calendar.YEAR) != Calendar.getInstance().get(Calendar.YEAR)
+                    boolean isBirthdayPassed = AppDateUtils.getCalendarFromDate(eventDate).get(Calendar.YEAR) != eventsData.getToday().get(Calendar.YEAR)
                             || eventDate.equals(today);
 
                     int correctAge;
@@ -1303,7 +1303,7 @@ public class QuizActivity extends Activity {
                     int answerCount = eventsData.preferences_quiz_difficulty;
 
                     // Получаем текущий год и ограничиваем диапазон
-                    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+                    int currentYear = eventsData.getToday().get(Calendar.YEAR);
                     int maxRange = Math.min(correctYear + 10, currentYear);
 
                     List<Integer> answerYears = generateUniqueAnswers(

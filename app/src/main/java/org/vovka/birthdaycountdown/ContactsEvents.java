@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 02:20
+ *  * Created by Vladimir Belov on 10.06.2026, 11:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 02:13
+ *  * Last modified 10.06.2026, 11:02
  *
  */
 
@@ -345,6 +345,7 @@ public class ContactsEvents {
     private static final String TAG = "ContactsEvents";
     private static final ContactsEvents ourInstance = new ContactsEvents();
     boolean flagIsUpdating = false;
+    private Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
 
     //Константы
     final Set<String> prefs_EventTypes_Default = new HashSet<String>() {{
@@ -412,6 +413,12 @@ public class ContactsEvents {
     private final Map<String, String> preferences_DaysInfo = new HashMap<>();
 
     //Даты
+    public void setToday() {
+        today = AppDateUtils.getWithoutTime(new GregorianCalendar());
+    }
+    public Calendar getToday() {
+        return today;
+    }
     static final ThreadLocal<SimpleDateFormat> sdf_java = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -2987,7 +2994,6 @@ public class ContactsEvents {
             String[] eventsArray = fileContent.split(Constants.STRING_EOL, -1);
             if (eventsArray[0].isEmpty()) return count;
             @Nullable Event event = null;
-            Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
 
             if (fileContent.startsWith(Constants.iCal_CalendarBegin)) {
@@ -3145,7 +3151,7 @@ public class ContactsEvents {
 
                 } else { //Без года
 
-                    String dateNextEvent = eventDateString.substring(0, indexDateNoYear) + today.get(Calendar.YEAR);
+                    String dateNextEvent = eventDateString.substring(0, indexDateNoYear) + getToday().get(Calendar.YEAR);
                     try {
                         if (!isBirthdaysPlusEvent) {
                             String dateNextFloatingEvent = computeFloatingDate(dateNextEvent, 0);
@@ -3162,7 +3168,7 @@ public class ContactsEvents {
                                 dateEvent = Objects.requireNonNull(sdf_uk.get()).parse(dateNextEvent);
                             } catch (ParseException e3) {
                                 try {
-                                    dateNextEvent = eventDateString.replace(Constants.STRING_BDP_NO_YEAR, Integer.toString(today.get(Calendar.YEAR)));
+                                    dateNextEvent = eventDateString.replace(Constants.STRING_BDP_NO_YEAR, Integer.toString(getToday().get(Calendar.YEAR)));
                                     dateEvent = Objects.requireNonNull(sdf_java.get()).parse(dateNextEvent);
                                 } catch (ParseException e4) {
                                     //Не получилось распознать
@@ -3170,7 +3176,7 @@ public class ContactsEvents {
                             }
                         }
                     }
-                    if (dateEvent != null && today.after(AppDateUtils.getCalendarFromDate(dateEvent)))
+                    if (dateEvent != null && getToday().after(AppDateUtils.getCalendarFromDate(dateEvent)))
                         dateEvent = AppDateUtils.addYear(dateEvent, 1);
                 }
 
@@ -4017,8 +4023,7 @@ public class ContactsEvents {
 
             SharedPreferences preferences = context.getSharedPreferences(Constants.LocalEventsFilename, Context.MODE_PRIVATE);
             Map<String, ?> prefs = preferences.getAll();
-            Calendar c = AppDateUtils.getWithoutTime(Calendar.getInstance());
-            String nowYearString = Constants.STRING_PERIOD.concat(String.valueOf(c.get(Calendar.YEAR)));
+            String nowYearString = Constants.STRING_PERIOD.concat(String.valueOf(getToday().get(Calendar.YEAR)));
 
             for (String eventId : prefs.keySet()) {
                 if (prefs.get(eventId) instanceof String) {
@@ -4479,9 +4484,6 @@ public class ContactsEvents {
             }
             if (fileList == null || fileList.isEmpty()) return false;
 
-            //todo: переделать на java.Time https://www.devwithimagination.com/2018/03/13/performance-of-the-java-8-date-apis/
-            Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
-
             for (String file : fileList) {
 
                 String[] fileDetails = file.split(Constants.REGEX_BAR);
@@ -4499,14 +4501,14 @@ public class ContactsEvents {
                             file,
                             eventsArray,
                             eventType,
-                            today,
+                            getToday(),
                             eventSource
                     );
                 } else if (eventsArray[0].startsWith(Constants.vCard_EventBegin)) {
                     addVCardEvents(
                             file,
                             eventsArray,
-                            today,
+                            getToday(),
                             eventSource
                     );
                 } else {
@@ -4522,7 +4524,7 @@ public class ContactsEvents {
                                 Constants.eventSourceFilePrefix,
                                 Constants.STRING_STORAGE_FILE,
                                 null,
-                                today
+                                getToday()
                         );
                     }
                 }
@@ -6403,7 +6405,7 @@ public class ContactsEvents {
                             eventPhoto = localEvent.get(Position_photo);
                             localEvent.clear();
                         }
-                    } else { //Само фото (редактирование локального события)
+                    } else { //Само фото (BASE64)
                         eventPhoto = eventPhotoData;
                     }
                     if (eventPhoto != null && !eventPhoto.isEmpty()) {
@@ -6837,13 +6839,12 @@ public class ContactsEvents {
             if (isEmptyEventList()) return;
 
             List<String> magicList = new ArrayList<>(); //Для 5k событий
-            Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
-            Date currentDay = today.getTime();
+            Date currentDay = getToday().getTime();
 
             //setLocale();
 
             for (int i = 0; i < eventList.size(); i++) {
-                computeDateForEvent(i, magicList, today, currentDay);
+                computeDateForEvent(i, magicList, getToday(), currentDay);
             }
 
             //Удаляем пустые
@@ -7636,8 +7637,7 @@ public class ContactsEvents {
                     break;
             }
 
-            Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
-            Date currentDay = today.getTime();
+            Date currentDay = getToday().getTime();
 
             List<String> listPrevEventsPreparatory = new ArrayList<>();
             List<String> listPrevEventsDates = new ArrayList<>();
@@ -8164,7 +8164,7 @@ public class ContactsEvents {
                 cal.set(Calendar.SECOND, 0);
                 cal.set(Calendar.MILLISECOND, 0);
 
-                if (cal.before(Calendar.getInstance())) {
+                if (cal.before(getToday())) {
                     cal.add(Calendar.DATE, 1);
                 }
 
@@ -8265,8 +8265,7 @@ public class ContactsEvents {
             Set<String> notifications_days = new HashSet<>(prefDays); //За сколько дней уведомлять
             if (notifications_days.isEmpty()) return;
 
-            Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
-            Date currentDay = today.getTime();
+            Date currentDay = getToday().getTime();
 
             List<NotifyEvent> listNotify = new ArrayList<>();
             for (String event : eventList) {
@@ -8956,7 +8955,7 @@ public class ContactsEvents {
             scheduleExactAlarm(alarmManager, triggerTime, pendingIntent);
 
             //handler.post(() -> Toast.makeText(context, context.getNotNullString(isSnoozed ? R.string.msg_snoozed_until : R.string.msg_notify_time, sdf_DDMMYYYYHHMM.get().format(triggerTime)), Toast.LENGTH_LONG).show());
-            Objects.requireNonNull(sdf_DDMMYYYYHHMM.get()).setTimeZone(Calendar.getInstance().getTimeZone());
+            Objects.requireNonNull(sdf_DDMMYYYYHHMM.get()).setTimeZone(getToday().getTimeZone());
             ToastExpander.showInfoMsg(context, context.getString(isSnoozed ? R.string.msg_snoozed_until : R.string.msg_notify_time, Objects.requireNonNull(sdf_DDMMYYYYHHMM.get()).format(triggerTime)));
 
         } catch (Exception e) {
@@ -11452,7 +11451,6 @@ public class ContactsEvents {
 
             if (preferences_DaysTypes.containsKey(packHash)) return;
 
-            Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
             for (String eventLine : events) {
                 String day = eventLine.trim();
 
@@ -11486,7 +11484,7 @@ public class ContactsEvents {
                         eventDateString = dateNextFloatingEvent;
                         isFloating = true;
                     } else if (eventDateString.contains(Constants.STRING_0000)) {
-                        eventDateString = eventDateString.replace(Constants.STRING_0000, String.valueOf(today.get(Calendar.YEAR)));
+                        eventDateString = eventDateString.replace(Constants.STRING_0000, String.valueOf(getToday().get(Calendar.YEAR)));
                     }
                     dateEvent = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(eventDateString);
                 } catch (Exception e1) {
@@ -11884,7 +11882,6 @@ public class ContactsEvents {
             if (packsHashes.isEmpty()) return false;
 
             long statCurrentModuleStart = System.currentTimeMillis();
-            Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
 
             int eventsPackCount = 1;
             int packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
@@ -11917,7 +11914,7 @@ public class ContactsEvents {
                                             Constants.eventSourceHolidayPrefix,
                                             Constants.STRING_STORAGE_EMBEDDED,
                                             eventEmoji,
-                                            today
+                                            getToday()
                                     );
                                 }
                             }
@@ -11955,7 +11952,6 @@ public class ContactsEvents {
             if (packsHashes.isEmpty()) return false;
 
             long statCurrentModuleStart = System.currentTimeMillis();
-            Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
 
             int eventsPackCount = 1;
             int packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
@@ -11988,7 +11984,7 @@ public class ContactsEvents {
                                             Constants.eventSourceOtherEventPrefix,
                                             Constants.STRING_STORAGE_EMBEDDED,
                                             eventEmoji,
-                                            today
+                                            getToday()
                                     );
                                 }
                             }

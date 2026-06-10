@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2026, 01:26
+ *  * Created by Vladimir Belov on 10.06.2026, 11:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.06.2026, 01:12
+ *  * Last modified 10.06.2026, 11:02
  *
  */
 
@@ -32,7 +32,6 @@ import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -208,8 +207,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
             if (maxEvents == 0 && maxDays == 0) {
                 eventListView.addAll(filteredEventList);
             } else {
-                Calendar now = Calendar.getInstance();
-                Date currentDay = new Date(now.getTimeInMillis());
+                Date currentDay = eventsData.getToday().getTime();
                 for (int i = 0, filteredEventListSize = filteredEventList.size(); i < filteredEventListSize; i++) {
                     if (maxEvents > 0 && i >= maxEvents) break;
                     String event = filteredEventList.get(i);

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.06.2026, 21:51
+ *  * Created by Vladimir Belov on 10.06.2026, 11:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.06.2026, 17:30
+ *  * Last modified 10.06.2026, 11:02
  *
  */
 
@@ -36,7 +36,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
-import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.StringUtils;
 import org.vovka.birthdaycountdown.utils.UiTools;
@@ -47,7 +46,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -278,9 +276,8 @@ public class EventImporterActivity extends AppCompatActivity {
 
             } else {
 
-                Calendar today = AppDateUtils.getWithoutTime(new GregorianCalendar());
                 for (String eventString : fileLines) {
-                    getSingleLineEvent(eventString, eventsList, today, statEventsSkipped, statEventsDoubles, statEventsUnRecognized);
+                    getSingleLineEvent(eventString, eventsList, eventsData.getToday(), statEventsSkipped, statEventsDoubles, statEventsUnRecognized);
                 }
 
             }
