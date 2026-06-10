@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 02:20
+ *  * Created by Vladimir Belov on 10.06.2026, 18:30
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.06.2026, 23:20
+ *  * Last modified 10.06.2026, 18:23
  *
  */
 
@@ -495,6 +495,8 @@ public final class Constants {
     static final String MIME_IMAGE_ALL = "image/*";
     static final String MIME_IMAGE_JPEG = "image/jpeg";
     static final String MIME_IMAGE_PNG = "image/png";
+    static final String MIME_IMAGE_WEBP = "image/webp";
+    static final String MIME_IMAGE_GIF = "image/gif";
 
     public static final String SQL_SORT_ASC = " ASC";
     public static final String SQL_SORT_ASC_CONT = " ASC, ";

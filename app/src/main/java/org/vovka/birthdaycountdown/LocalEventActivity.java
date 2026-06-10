@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 11:12
+ *  * Created by Vladimir Belov on 10.06.2026, 18:30
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 11:08
+ *  * Last modified 10.06.2026, 18:23
  *
  */
 
@@ -740,7 +740,28 @@ public class LocalEventActivity extends AppCompatActivity {
             if (intent.resolveActivity(getPackageManager()) != null) {
                 photoPickerLauncher.launch(intent);
             } else {
-                Toast.makeText(this, getString(R.string.msg_no_image_picker), Toast.LENGTH_SHORT).show();
+                // Fallback: Если нет приложения для ACTION_PICK, запускаем системный выбор файла
+                Intent openDocIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                openDocIntent.addCategory(Intent.CATEGORY_OPENABLE);
+                openDocIntent.setType(Constants.MIME_IMAGE_ALL);
+
+                // Фильтрация по конкретным MIME-типам (расширениям) для системного проводника
+                openDocIntent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{
+                        Constants.MIME_IMAGE_JPEG,
+                        Constants.MIME_IMAGE_PNG,
+                        Constants.MIME_IMAGE_WEBP,
+                        Constants.MIME_IMAGE_GIF
+                });
+
+                // Разрешаем приложению читать выбранный URI
+                openDocIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                try {
+                    startActivityForResult(openDocIntent, Constants.RESULT_PICK_FILE);
+                } catch (android.content.ActivityNotFoundException e) {
+                    // Если вдруг и системный проводник не найден (крайне редкий случай)
+                    Toast.makeText(this, getString(R.string.msg_no_image_picker), Toast.LENGTH_SHORT).show();
+                }
             }
 
         } catch (Exception e) {
