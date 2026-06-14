@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Created by Vladimir Belov on 14.06.2026, 23:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.04.2026, 23:04
+ *  * Last modified 11.06.2026, 09:58
  *
  */
 
@@ -33,7 +33,7 @@ public final class NotifyActivity extends Activity {
             eventsData.initLanguage(this);
 
             boolean isNeedNotify = !eventsData.preferences_notifications_days.isEmpty();
-            boolean isNeedNotify2 = !eventsData.preferences_notifications2_days.isEmpty();
+            boolean isNeedNotify2 = eventsData.isFeatureEnabled(Constants.FEATURE_NOTIFY_Q2) && !eventsData.preferences_notifications2_days.isEmpty();
 
             if (isNeedNotify || isNeedNotify2) {
                 if (eventsData.getEvents()) {
