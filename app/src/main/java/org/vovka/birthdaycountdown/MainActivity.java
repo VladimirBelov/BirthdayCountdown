@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 11:12
+ *  * Created by Vladimir Belov on 15.06.2026, 02:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 11:02
+ *  * Last modified 15.06.2026, 00:00
  *
  */
 
@@ -34,7 +34,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
@@ -223,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 try {
 
                     eventsData.needUpdateEventList = true;
-                    updateList(false, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                    updateList(false);
 
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
@@ -754,7 +753,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         + Constants.STRING_2HASH + selectedEvent[ContactsEvents.Position_eventSubType];
                 if (eventsData.setEventWithoutYear(eventKeyId)) {
                     eventsData.needUpdateEventList = true;
-                    updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                    updateList(true);
                 }
                 return true;
 
@@ -764,7 +763,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         + Constants.STRING_2HASH + selectedEvent[ContactsEvents.Position_eventSubType];
                 if (eventsData.unsetEventWithoutYear(eventKeyId)) {
                     eventsData.needUpdateEventList = true;
-                    updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                    updateList(true);
                 }
                 return true;
 
@@ -1092,7 +1091,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             if (result[0] != null) {
                                 ToastExpander.showInfoMsg(MainActivity.this, result[0]);
                                 eventsData.getPreferences();
-                                updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                                updateList(true);
                             }
                         });
 
@@ -1111,7 +1110,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (result[0] != null && !result[0].isEmpty()) {
                     ToastExpander.showInfoMsg(MainActivity.this, result[0]);
                     eventsData.getPreferences();
-                    updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                    updateList(true);
                 }
             });
 
@@ -1307,7 +1306,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         result = eventsData.setXDaysEvent(eventKey, valueRepeats + Constants.STRING_BAR + valueTimes);
                     }
                     dialog.dismiss();
-                    if (result) updateList(true, true);
+                    if (result) updateList(true);
                 });
                 buttonPositive.setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
 
@@ -1320,7 +1319,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     buttonNeutral.setOnClickListener(v -> {
                         boolean result = eventsData.setXDaysEvent(eventKey, null);
                         dialog.dismiss();
-                        if (result) updateList(true, true);
+                        if (result) updateList(true);
                     });
                     buttonNeutral.setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                 }
@@ -1808,7 +1807,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     swipeRefresh.postDelayed(() -> {
                         eventsData.needUpdateEventList = true;
                         eventsData.clearDaysTypesAndInfo();
-                        updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                        updateList(true);
                         eventsData.updateWidgets(0, null);
                     }, 300);
                 }
@@ -1847,7 +1846,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             eventsData.preferences_list_EventSources.addAll(selectedSources);
                             eventsData.savePreferences();
                             eventsData.needUpdateEventList = true;
-                            updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                            updateList(true);
                         });
                 return true;
 
@@ -2153,7 +2152,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                         }
                                         if (needUpdate) {
                                             eventsData.needUpdateEventList = true;
-                                            updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                                            updateList(true);
                                         } else {
                                             this.invalidateOptionsMenu();
                                             filterEventsList();
@@ -2251,7 +2250,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     contactID,
                                     eventsData.map_contacts_ids.get(contactID))) {
                                 eventsData.needUpdateEventList = true;
-                                updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                                updateList(true);
                             }
                         }
                     }
@@ -2259,7 +2258,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 } else if (requestCode == Constants.RESULT_EDIT_EVENT) {
 
                     eventsData.needUpdateEventList = true;
-                    updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                    updateList(true);
 
                 } else {
 
@@ -2383,7 +2382,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (eventsData.needUpdateEventList || this.dataList.isEmpty() != eventsData.isEmptyEventList()
                     || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
 
-                updateList(true, !eventsData.isUIOpen || eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                updateList(true);
 
                 if (!scrolledToToday && eventsData.statEventsPrevEventsFound > 0 &&
                         eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_NotHidden
@@ -2417,7 +2416,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR) {
 
                 registerForContextMenu(listView);
-                updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                updateList(true);
 
             } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS) {
 
@@ -2627,54 +2626,37 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     }
 
-    synchronized void updateList(boolean disableSwipeRefresh, boolean useBackgroundThread) {
+    private void updateUIAfterEventsLoad(boolean disableSwipeRefresh) {
+        filterEventsList();
+        drawList();
+
+        swipeRefresh.setRefreshing(false);
+        if (disableSwipeRefresh) swipeRefresh.setEnabled(true);
+
+        invalidateOptionsMenu();
+
+        if (eventsData.isEmptyEventList()) {
+            showZeroEventsHints();
+        }
+    }
+
+    synchronized void updateList(boolean disableSwipeRefresh) {
         try {
             if (disableSwipeRefresh) {
-                swipeRefresh.setEnabled(false); // setEnable(false) need to be before setRefreshing
+                swipeRefresh.setEnabled(false);
                 swipeRefresh.setRefreshing(true);
             }
 
-            if (useBackgroundThread) {
-                executor.execute(() -> {
-                    //Background work
-                    if (eventsData.needUpdateEventList || eventsData.isEmptyEventList()) {
-                        eventsData.getEvents();
+            boolean needLoad = eventsData.needUpdateEventList || eventsData.isEmptyEventList();
+
+            if (needLoad) {
+                eventsData.getEventsAsync(success -> {
+                    if (!isFinishing() && !isDestroyed()) {
+                        updateUIAfterEventsLoad(disableSwipeRefresh);
                     }
-
-                    final Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(() -> {
-
-                        //UI Thread
-                        filterEventsList();
-                        drawList();
-
-                        swipeRefresh.setRefreshing(false);
-                        if (disableSwipeRefresh) swipeRefresh.setEnabled(true);
-
-                        this.invalidateOptionsMenu();
-
-                        if (eventsData.isEmptyEventList()) {
-                            showZeroEventsHints();
-                        }
-
-                    });
                 });
-
             } else {
-                if (eventsData.needUpdateEventList || eventsData.isEmptyEventList()) {
-                    eventsData.getEvents();
-                }
-                filterEventsList();
-                drawList();
-
-                swipeRefresh.setRefreshing(false);
-                if (disableSwipeRefresh) swipeRefresh.setEnabled(true);
-
-                this.invalidateOptionsMenu();
-
-                if (eventsData.isEmptyEventList()) {
-                    showZeroEventsHints();
-                }
+                updateUIAfterEventsLoad(disableSwipeRefresh);
             }
 
         } catch (Exception e) {
@@ -2682,7 +2664,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-
     }
 
     private void showZeroEventsHints() {
@@ -2753,7 +2734,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         eventsData.preferences_list_event_types = toStore;
                         eventsData.savePreferences();
                         eventsData.needUpdateEventList = true;
-                        updateList(true, eventsData.statTimeComputeDates >= Constants.TIME_SPEED_LOAD_OVERTIME);
+                        updateList(true);
 
                         dialog.cancel();
                     })

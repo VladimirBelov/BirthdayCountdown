@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 11:12
+ *  * Created by Vladimir Belov on 15.06.2026, 02:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 11:02
+ *  * Last modified 15.06.2026, 01:45
  *
  */
 
@@ -594,12 +594,11 @@ public class EventImporterActivity extends AppCompatActivity {
 
             //URLs
             String eventURL = Constants.STRING_EMPTY;
-            String eventTitle_lowered = eventTitle.toLowerCase();
-            int urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTP);
+            int urlOffset = StringUtils.indexOfIgnoreCase(eventTitle, Constants.STRING_HTTP);
             if (urlOffset > -1) {
                 eventURL = eventTitle.substring(urlOffset);
             } else {
-                urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTPS);
+                urlOffset = StringUtils.indexOfIgnoreCase(eventTitle, Constants.STRING_HTTPS);
                 if (urlOffset > -1) {
                     eventURL = eventTitle.substring(urlOffset);
                 }

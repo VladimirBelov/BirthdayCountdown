@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 02:20
+ *  * Created by Vladimir Belov on 15.06.2026, 02:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 01:09
+ *  * Last modified 15.06.2026, 02:27
  *
  */
 
@@ -399,47 +399,6 @@ public class StringUtils {
     }
 
     /**
-     * Распрямляет многострочные значения в массиве строк vCard.
-     * Поддерживает vCard 2.1 (перенос через '=') и vCard 3.0 (перенос через пробел/таб).
-     */
-    public static List<String> unfoldVCardLines(String[] fileLines) {
-        List<String> unfolded = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        boolean inMultiLine = false;
-
-        for (String line : fileLines) {
-            if (inMultiLine) {
-                sb.append(line);
-                if (line.endsWith("=")) {
-                    sb.setLength(sb.length() - 1); // Убираем '=' с конца, строка продолжается
-                } else {
-                    unfolded.add(sb.toString());
-                    sb.setLength(0);
-                    inMultiLine = false;
-                }
-            } else {
-                // vCard 3.0: перенос строки, начинающейся с пробела или табуляции
-                if (!unfolded.isEmpty() && (line.startsWith(Constants.STRING_SPACE) || line.startsWith("\t"))) {
-                    String lastLine = unfolded.remove(unfolded.size() - 1);
-                    unfolded.add(lastLine + line.substring(1));
-                }
-                // vCard 2.1 (QP): перенос строки, заканчивающейся на '='
-                else if (line.endsWith(Constants.STRING_EQ)) {
-                    sb.append(line.substring(0, line.length() - 1));
-                    inMultiLine = true;
-                }
-                else {
-                    unfolded.add(line);
-                }
-            }
-        }
-        if (inMultiLine) {
-            unfolded.add(sb.toString()); // На случай обрыва файла
-        }
-        return unfolded;
-    }
-
-    /**
      * Извлекает значение тега из строки vCard.
      * Поддерживает форматы "TAG:value" и "TAG;PARAMS:value".
      * Возвращает null, если строка не начинается с указанного тега.
@@ -455,5 +414,20 @@ public class StringUtils {
             }
         }
         return null;
+    }
+
+    /**
+     * Регистронезависимый поиск подстроки.
+     */
+    public static int indexOfIgnoreCase(String str, String searchStr) {
+        if (str == null || searchStr == null) return -1;
+        int len = searchStr.length();
+        int max = str.length() - len;
+        for (int i = 0; i <= max; i++) {
+            if (str.regionMatches(true, i, searchStr, 0, len)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

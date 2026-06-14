@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 11:12
+ *  * Created by Vladimir Belov on 15.06.2026, 02:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 11:02
+ *  * Last modified 15.06.2026, 02:24
  *
  */
 
@@ -49,7 +49,9 @@ import android.graphics.drawable.InsetDrawable;
 import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.os.LocaleList;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.provider.CalendarContract;
@@ -132,6 +134,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -854,8 +857,23 @@ public class ContactsEvents {
     static final Map<String, Integer> zodiacSignStrings = new HashMap<>();
     private static final Map<Integer, Integer> chineseZodiacYearStrings = new HashMap<>();
 
+    //Оптимизация обработки
     private final ExecutorService widgetUpdateExecutor = Executors.newSingleThreadExecutor();
     private Future<?> pendingUpdateTask = null; // Для отслеживания текущей задачи
+
+    public interface EventsLoadCallback {
+        void onEventsLoaded(boolean success);
+    }
+
+    private static final ExecutorService eventsExecutor =
+            Executors.newSingleThreadExecutor(r -> {
+                Thread t = new Thread(r, "EventsLoader");
+                t.setPriority(Thread.NORM_PRIORITY);
+                t.setDaemon(true);
+                return t;
+            });
+
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     private ContactsEvents() {
     }
@@ -2600,11 +2618,29 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         } finally {
             flagIsUpdating = false;
         }
+    }
+
+    private final AtomicBoolean pendingRefresh = new AtomicBoolean(false);
+
+    public void getEventsAsync(@Nullable EventsLoadCallback callback) {
+        if (pendingRefresh.getAndSet(true)) {
+            // уже стоит в очереди — просто добавим колбэк в список, если нужно
+            return;
+        }
+        eventsExecutor.execute(() -> {
+            try {
+                boolean result = getEvents();
+                if (callback != null) {
+                    mainHandler.post(() -> callback.onEventsLoaded(result));
+                }
+            } finally {
+                pendingRefresh.set(false);
+            }
+        });
     }
 
     private boolean getContactsEvents() {
@@ -3645,7 +3681,7 @@ public class ContactsEvents {
                 int indSpace;
 
                 for (String prefix : new String[]{Constants.STRING_HTTPS, Constants.STRING_HTTP}) {
-                    indURL = eventDescription.toLowerCase().indexOf(prefix);
+                    indURL = StringUtils.indexOfIgnoreCase(eventDescription, prefix);
                     while (indURL > -1) {
                         indSpace = eventDescription.indexOf(Constants.STRING_SPACE, indURL);
 
@@ -4484,48 +4520,54 @@ public class ContactsEvents {
             }
             if (fileList == null || fileList.isEmpty()) return false;
 
+
+            // Кэшируем массив форматов
+            final SimpleDateFormat[] dateFormats = {
+                    Objects.requireNonNull(sdf_DDMMYYYY.get()),
+                    Objects.requireNonNull(sdf_india.get()),
+                    Objects.requireNonNull(sdf_uk.get()),
+                    Objects.requireNonNull(sdf_java.get())
+            };
+
             for (String file : fileList) {
 
                 String[] fileDetails = file.split(Constants.REGEX_BAR);
-                String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
-                if (eventsArray[0].isEmpty()) {
-                    ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
-                    continue;
-                }
-
-                final String fileName = fileDetails[0].lastIndexOf(Constants.STRING_SLASH) > -1 ? fileDetails[0].substring(fileDetails[0].lastIndexOf(Constants.STRING_SLASH) + 1) : fileDetails[0];
+                final String fileName = fileDetails[0].lastIndexOf(Constants.STRING_SLASH) > -1 ?
+                        fileDetails[0].substring(fileDetails[0].lastIndexOf(Constants.STRING_SLASH) + 1) : fileDetails[0];
                 final String eventSource = !fileName.isEmpty() ? getResources().getString(R.string.msg_file_info, fileName) : getResources().getString(R.string.event_type_file);
 
-                if (eventsArray[0].startsWith(Constants.iCal_CalendarBegin)) {
-                    addICalEvents(
-                            file,
-                            eventsArray,
-                            eventType,
-                            getToday(),
-                            eventSource
-                    );
-                } else if (eventsArray[0].startsWith(Constants.vCard_EventBegin)) {
-                    addVCardEvents(
-                            file,
-                            eventsArray,
-                            getToday(),
-                            eventSource
-                    );
+                if (fileName.toLowerCase().endsWith(".vcf") || fileName.toLowerCase().endsWith(".vcard")) {
+
+                    streamVCardEvents(file, getToday(), eventSource);
+
                 } else {
-                    eventsArray = splitMultidayEventsAsSeparateLine(eventsArray);
-                    for (String eventString : eventsArray) {
-                        addFileEventFromLine(
-                                file,
-                                eventSource,
-                                eventString,
-                                eventType,
-                                Constants.PREFIX_FileEventID,
-                                Constants.EVENT_PREFIX_FILE_EVENT,
-                                Constants.eventSourceFilePrefix,
-                                Constants.STRING_STORAGE_FILE,
-                                null,
-                                getToday()
-                        );
+
+                    String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
+                    if (eventsArray[0].isEmpty()) {
+                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
+                        continue;
+                    }
+
+                    if (eventsArray[0].startsWith(Constants.iCal_CalendarBegin)) {
+
+                        streamICalEvents(file, eventType, getToday(), eventSource);
+
+                    } else {
+                        List<String> expandedEvents = splitMultidayEventsAsSeparateLine(eventsArray, dateFormats);
+                        for (String eventString : expandedEvents) {
+                            addFileEventFromLine(
+                                    file,
+                                    eventSource,
+                                    eventString,
+                                    eventType,
+                                    Constants.PREFIX_FileEventID,
+                                    Constants.EVENT_PREFIX_FILE_EVENT,
+                                    Constants.eventSourceFilePrefix,
+                                    Constants.STRING_STORAGE_FILE,
+                                    null,
+                                    getToday()
+                            );
+                        }
                     }
                 }
             }
@@ -4543,10 +4585,11 @@ public class ContactsEvents {
 
     /** Разделить события на несколько дней на отдельные дни
      * @param eventsArray Массив с событиями (даты начала и конца события идут через "-": 21.01.2000-23.01.2000 Название события)
-     * @return Результирующий массив событий, где каждая дата содержится в отдельном элементе массива
      */
-    private String[] splitMultidayEventsAsSeparateLine(String[] eventsArray) {
-        ArrayList<String> result = new ArrayList<>();
+    private List<String> splitMultidayEventsAsSeparateLine(String[] eventsArray, SimpleDateFormat[] dateFormats) {
+        List<String> result = new ArrayList<>(eventsArray.length);
+        Calendar calStart = Calendar.getInstance();
+        Calendar calEnd = Calendar.getInstance();
 
         for (String line : eventsArray) {
             int indexMinus = line.indexOf(Constants.STRING_MINUS);
@@ -4554,8 +4597,10 @@ public class ContactsEvents {
                 result.add(line);
                 continue;
             }
+
             int indexSpace = line.indexOf(Constants.STRING_SPACE);
             int indexComma = line.indexOf(Constants.STRING_COMMA);
+
             if (indexSpace == -1 && indexComma == -1) {
                 result.add(line);
                 continue;
@@ -4566,167 +4611,189 @@ public class ContactsEvents {
                     : (indexSpace != -1 ? indexSpace : indexComma);
 
             String dates = line.substring(0, indexEndDate);
-            indexMinus = dates.indexOf(Constants.STRING_MINUS);
-            if (indexMinus == -1) {
+            int rangeMinus = dates.indexOf(Constants.STRING_MINUS);
+            if (rangeMinus == -1) {
                 result.add(line);
                 continue;
             }
-            String strDateStart = dates.substring(0, indexMinus);
-            String strDateEnd = dates.substring(indexMinus + 1);
-            Date dateStart = null;
-            Date dateEnd = null;
 
-            try {
-                dateStart = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(strDateStart);
-                dateEnd = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(strDateEnd);
-            } catch (ParseException e1) {
-                try {
-                    dateStart = Objects.requireNonNull(sdf_india.get()).parse(strDateStart);
-                    dateEnd = Objects.requireNonNull(sdf_india.get()).parse(strDateEnd);
-                } catch (ParseException e2) {
-                    try {
-                        dateStart = Objects.requireNonNull(sdf_uk.get()).parse(strDateStart);
-                        dateEnd = Objects.requireNonNull(sdf_uk.get()).parse(strDateEnd);
-                    } catch (ParseException e3) {
-                        try {
-                            dateStart = Objects.requireNonNull(sdf_java.get()).parse(strDateStart);
-                            dateEnd = Objects.requireNonNull(sdf_java.get()).parse(strDateEnd);
-                        } catch (ParseException ignored) {
-                            //Не получилось распознать
-                        }
-                    }
-                }
-            }
-            if ((dateStart == null || dateEnd == null) || dateStart.after(dateEnd)) {
+            String strDateStart = dates.substring(0, rangeMinus);
+            String strDateEnd = dates.substring(rangeMinus + 1);
+
+            Date dateStart = AppDateUtils.parseDateWithFormats(strDateStart, dateFormats);
+            Date dateEnd = AppDateUtils.parseDateWithFormats(strDateEnd, dateFormats);
+
+            if (dateStart == null || dateEnd == null || dateStart.after(dateEnd)) {
                 result.add(line);
                 continue;
             }
+
+            calStart.setTime(dateStart);
+            calEnd.setTime(dateEnd);
 
             String eventBody = line.substring(indexEndDate);
-            Calendar calStart = AppDateUtils.getCalendarFromDate(dateStart);
-            Calendar calEnd = AppDateUtils.getCalendarFromDate(dateEnd);
+            StringBuilder sb = new StringBuilder(64);
 
-            while (calStart.before(calEnd)) {
-                result.add(Objects.requireNonNull(sdf_DDMMYYYY.get()).format(calStart.getTime()) + eventBody);
+            while (!calStart.after(calEnd)) {
+                sb.setLength(0);
+                sb.append(Objects.requireNonNull(sdf_DDMMYYYY.get()).format(calStart.getTime()));
+                sb.append(eventBody);
+                result.add(sb.toString());
                 calStart.add(Calendar.DAY_OF_YEAR, 1);
             }
         }
-
-        return result.toArray(new String[0]);
+        return result;
     }
 
     /**
-     * Добавляет в общий список события из iCal файла
+     * Потоковое чтение iCal (.ics) файла без загрузки всего файла в память.
      *
      * @param file        Путь до файла и URI
-     * @param fileLines   Массив строк из файла
      * @param eventType   Тип событий, которым добавлять
      * @param today       Дата сегодня
      * @param eventSource Источник событий
      */
-    private void addICalEvents(@NonNull String file, @NonNull String[] fileLines, @NonNull String eventType,
-                               @NonNull Calendar today, @NonNull String eventSource) {
+    private void streamICalEvents(@NonNull String file, @NonNull String eventType,
+                                  @NonNull Calendar today, @NonNull String eventSource) {
         try {
+            String[] fileDetails = file.split(Constants.REGEX_BAR);
+            Uri uri = Uri.parse(fileDetails.length > 1 ? fileDetails[1] : fileDetails[0]);
 
+            if (context.getContentResolver() == null) {
+                ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
+                return;
+            }
+
+            boolean isVkExport = false;
+
+            try (InputStream inputStream = context.getContentResolver().openInputStream(uri);
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
+                String line;
+                StringBuilder currentEventBlock = new StringBuilder();
+                boolean inEvent = false;
+
+                while ((line = reader.readLine()) != null) {
+                    // Проверяем экспорт VK на уровне всего файла
+                    if (line.startsWith(Constants.iCal_PROD_ID_VK)) {
+                        isVkExport = true;
+                    }
+
+                    String trimmedLine = line.trim();
+                    if (trimmedLine.isEmpty()) continue;
+
+                    if (trimmedLine.equalsIgnoreCase(Constants.iCal_EventBegin)) {
+                        inEvent = true;
+                        currentEventBlock.setLength(0);
+                        currentEventBlock.append(line).append("\n");
+                    } else if (inEvent) {
+                        currentEventBlock.append(line).append("\n");
+
+                        if (trimmedLine.equalsIgnoreCase(Constants.iCal_EventEnd)) {
+                            inEvent = false;
+                            processSingleICalEvent(currentEventBlock.toString(), file, eventType, today, eventSource, isVkExport);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error streaming iCal: " + file, e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Обработка блока одного события iCal
+     */
+    private void processSingleICalEvent(@NonNull String eventBlock, @NonNull String file,
+                                        @NonNull String eventType, @NonNull Calendar today,
+                                        @NonNull String eventSource, boolean isVkExport) {
+        try {
+            final int nowYear = today.get(Calendar.YEAR);
             final TreeMap<Integer, String> eventData = new TreeMap<>();
-            @Nullable Event event = null;
-            @Nullable Date eventDateFirstTime = null;
-            @Nullable Date eventDateThisTime = null;
-            @Nullable String eventNewDate;
-            @Nullable String eventTitle = null;
-            String eventDescription = Constants.STRING_EMPTY;
+
+            Event event = null;
+            Date eventDateFirstTime = null;
+            Date eventDateThisTime = null;
+            String eventTitle = null;
+            StringBuilder eventDescription = new StringBuilder();
             String eventURL = Constants.STRING_EMPTY;
             boolean useEventYear = true;
-            final int nowYear = today.get(Calendar.YEAR);
-            StringBuilder eventLines = new StringBuilder();
-            final String filePath = StringUtils.substringBefore(file, Constants.STRING_BAR);
-            boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
-            String emptyEventYear = null;
+            String currentProp = ""; // Для отслеживания текущего свойства (чтобы корректно обрабатывать переносы строк)
 
-            for (String line : fileLines) {
+            String[] lines = eventBlock.split("\n", -1);
 
-                if (emptyEventYear == null && line.startsWith(Constants.iCal_PROD_ID_VK)) {
+            for (String line : lines) {
+                String trimmed = line.trim();
+                if (trimmed.isEmpty()) continue;
 
-                    //Если год рождения скрыт, VkFriendExporter ставит год = 2000
-                    emptyEventYear = "2000";
+                // Обработка многострочных значений (folded lines в iCal начинаются с пробела или табуляции)
+                if (line.startsWith(" ") || line.startsWith("\t")) {
+                    if (currentProp.equals("DESCRIPTION") || currentProp.equals("SUMMARY")) {
+                        eventDescription.append(StringUtils.substringAfter(line, " "));
+                    }
+                    continue;
+                }
 
-                } else if (line.startsWith(Constants.iCal_EventBegin)) {
+                if (trimmed.equalsIgnoreCase(Constants.iCal_EventBegin)) {
                     if (eventType.equals(Constants.EventType_BirthDay)) {
-
                         event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
                         useEventYear = true;
-
                     } else if (eventType.equals(Constants.EventType_Holiday)) {
-
                         event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY);
                         useEventYear = false;
-
                     } else {
-
                         event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY);
                         useEventYear = false;
-
                     }
                 } else if (line.startsWith(Constants.iCal_Summary)) {
-
                     eventTitle = StringUtils.substringAfter(line, Constants.iCal_Summary);
-                    eventLines.append(line).append(Constants.STRING_EOL);
-
+                    currentProp = "SUMMARY";
                 } else if (line.startsWith(Constants.iCal_Description)) {
-
-                    eventDescription = StringUtils.substringAfter(line, Constants.iCal_Description);
-                    eventLines.append(line).append(Constants.STRING_EOL);
-
-                } else if (line.startsWith(Constants.STRING_SPACE)) {
-
-                    //todo: это может быть продолжение не только описания, но и Summary
-                    eventDescription = eventDescription.concat(StringUtils.substringAfter(line, Constants.STRING_SPACE));
-
+                    eventDescription = new StringBuilder(StringUtils.substringAfter(line, Constants.iCal_Description));
+                    currentProp = "DESCRIPTION";
                 } else if (line.startsWith(Constants.iCal_Url)) {
-
                     eventURL = StringUtils.substringAfter(line, Constants.iCal_Url);
-                    eventLines.append(line).append(Constants.STRING_EOL);
-
+                    currentProp = "URL";
                 } else if (line.startsWith(Constants.iCal_Date)) {
-
                     String storedDate = StringUtils.substringAfter(line, Constants.STRING_COLON);
                     try {
                         eventDateFirstTime = Objects.requireNonNull(sdf_YYYYMMDD_noDiv.get()).parse(storedDate);
-
                         try {
                             eventDateThisTime = Objects.requireNonNull(sdf_YYYYMMDD_noDiv.get()).parse(nowYear + storedDate.substring(4));
                         } catch (ParseException e) {
-                            //Не получилось распознать
+                            // Не получилось распознать
                         }
                         if (eventDateThisTime != null) {
-                            if (today.getTime().after(eventDateThisTime))
+                            if (today.getTime().after(eventDateThisTime)) {
                                 eventDateThisTime = AppDateUtils.addYear(eventDateThisTime, 1);
+                            }
                         }
-
-                        if (useEventYear && emptyEventYear != null && storedDate.startsWith(emptyEventYear)) {
+                        if (useEventYear && isVkExport && storedDate.startsWith("2000")) {
                             useEventYear = false;
                         }
-                    } catch (ParseException ignored) { /**/ }
-                    eventLines.append(line).append(Constants.STRING_EOL);
-
-                } else if (line.startsWith(Constants.iCal_EventEnd) && event != null) {
+                    } catch (ParseException ignored) {
+                        /**/
+                    }
+                    currentProp = "DTSTART";
+                } else if (trimmed.equalsIgnoreCase(Constants.iCal_EventEnd) && event != null) {
 
                     if (eventDateFirstTime == null || eventDateThisTime == null || eventTitle == null) {
-                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventLines.toString()));
+                        ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventBlock));
                     } else {
-
-                        eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
-                                + (useEventYear ? Objects.requireNonNull(sdf_java.get()).format(eventDateFirstTime) : Objects.requireNonNull(sdf_java_no_year.get()).format(eventDateFirstTime))
+                        String eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
+                                + (useEventYear ? Objects.requireNonNull(sdf_java.get()).format(eventDateFirstTime)
+                                : Objects.requireNonNull(sdf_java_no_year.get()).format(eventDateFirstTime))
                                 + Constants.STRING_COLON_SPACE
-                                + StringUtils.getHash((isMultiTypeSource ? Constants.eventSourceMultiFilePrefix : Constants.eventSourceFilePrefix) + file);
+                                + StringUtils.getHash((eventType.equals(Constants.Type_MultiEvent) ? Constants.eventSourceMultiFilePrefix : Constants.eventSourceFilePrefix) + file);
 
-                        eventDescription = eventDescription.replace(eventURL, Constants.STRING_EMPTY);
+                        eventDescription = new StringBuilder(eventDescription.toString().replace(eventURL, Constants.STRING_EMPTY));
 
                         String personFullNameAlt = null;
                         String personFullNameNormalized = null;
                         String personFullNameAltNormalized = null;
                         String contactID = null;
-                        String eventID = Constants.PREFIX_FileEventID + StringUtils.getHash(filePath + eventTitle);
+                        String eventID = Constants.PREFIX_FileEventID + StringUtils.getHash(StringUtils.substringBefore(file, Constants.STRING_BAR) + eventTitle);
 
                         eventData.put(Position_personFullName, eventTitle);
                         if (eventType.equals(Constants.EventType_BirthDay)) {
@@ -4739,7 +4806,7 @@ public class ContactsEvents {
                             personFullNameAltNormalized = StringUtils.normalizeString(personFullNameAlt);
                         }
 
-                        eventData.put(Position_eventDescription, eventDescription.replace(Constants.REGEX_BS, Constants.STRING_EMPTY));
+                        eventData.put(Position_eventDescription, eventDescription.toString().replace(Constants.REGEX_BS, Constants.STRING_EMPTY));
                         eventData.put(Position_eventStorage, Constants.STRING_STORAGE_FILE);
                         eventData.put(Position_eventCaption, event.caption);
                         eventData.put(Position_eventLabel, event.label);
@@ -4751,6 +4818,7 @@ public class ContactsEvents {
                         eventData.put(Position_eventEmoji, event.emoji);
                         eventData.put(Position_eventURL, eventURL);
                         eventData.put(Position_eventID, eventID);
+
                         if (useEventYear) {
                             eventData.put(Position_eventDateFirstTime, Objects.requireNonNull(sdf_DDMMYYYY.get()).format(eventDateFirstTime));
                             eventData.put(Position_eventDateNextTime, Objects.requireNonNull(sdf_DDMMYYYY.get()).format(eventDateThisTime));
@@ -4758,7 +4826,6 @@ public class ContactsEvents {
 
                         if (event.needScanContacts) {
                             contactID = getContactID(personFullNameNormalized, personFullNameAltNormalized);
-
                             if (contactID == null) {
                                 contactID = getMergedID(eventID);
                             }
@@ -4767,186 +4834,9 @@ public class ContactsEvents {
                                 eventData.put(Position_contactID, contactID);
                                 eventData.put(Position_rawContactID, StringUtils.getNotNullString(map_contacts_ids.get(contactID)));
 
-                                //Ищем событие контакта в списке событий и добавляем в него
                                 Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
                                 if (eventIndex != null && eventIndex <= eventListUpdated.size()) {
-
                                     if (updateExistEvent(eventIndex, eventID, eventSource, eventNewDate, null, null, eventURL)) {
-                                        eventData.clear();
-                                    }
-
-                                } else { //Такого события ещё не было
-
-                                    //Добавляем данные контакта
-                                    final Long contactIDLong = StringUtils.parseToLong(contactID);
-                                    HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
-                                            ContactsContract.Contacts.PHOTO_URI,
-                                            ContactsContract.Contacts.STARRED
-                                    });
-
-                                    eventData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
-                                    if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
-                                        if (Constants.STRING_1.equals(StringUtils.getNotNullString(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
-                                            eventData.put(Position_starred, Constants.STRING_1);
-                                            statFavoriteEventsCount++;
-                                        }
-                                    }
-                                    contactDataMap.clear();
-
-                                    eventData.put(Position_nickname, StringUtils.getNotNullString(map_contacts_aliases.get(contactID)));
-                                    if (TextUtils.isEmpty(eventData.get(Position_organization)))
-                                        eventData.put(Position_organization, StringUtils.getNotNullString(map_organizations.get(contactID)));
-                                    if (TextUtils.isEmpty(eventData.get(Position_title)))
-                                        eventData.put(Position_title, StringUtils.getNotNullString(map_contacts_titles.get(contactID)));
-                                }
-                            }
-                        }
-
-                        if (!eventData.isEmpty()) {
-                            statEventsCount++;
-                            statFilesEventCount++;
-
-                            fillEmptyEventData(eventData);
-
-                            String eventRow = getEventData(eventData);
-                            if (!eventListUpdated.contains(eventRow)) {
-                                eventListUpdated.add(eventRow);
-                                if (!TextUtils.isEmpty(contactID)) {
-                                    map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
-                                }
-                            }
-                        }
-
-                    }
-
-                    eventData.clear();
-                    eventDateFirstTime = null;
-                    eventDateThisTime = null;
-                    eventTitle = null;
-                    eventDescription = Constants.STRING_EMPTY;
-                    eventURL = Constants.STRING_EMPTY;
-                    event = null;
-                    eventLines.setLength(0);
-
-                }
-
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-    }
-
-    /**
-     * Добавляет в общий список события из vCard файла
-     * (поддерживаются дни рождения, версии 2.1 и 3.0)
-     *
-     * @param file        Путь до файла и URI
-     * @param fileLines   Массив строк из файла
-     * @param today       Дата сегодня
-     * @param eventSource Источник событий
-     */
-    private void addVCardEvents(@NonNull String file, @NonNull String[] fileLines,
-                                @NonNull Calendar today, @NonNull String eventSource) {
-        try {
-            final int nowYear = today.get(Calendar.YEAR);
-            final TreeMap<Integer, String> eventData = new TreeMap<>();
-            final StringBuilder eventLines = new StringBuilder();
-            final String filePath = StringUtils.substringBefore(file, Constants.STRING_BAR);
-
-            Event event = null;
-            Date eventDateFirstTime = null;
-            String url = Constants.STRING_EMPTY;
-            String lastName = Constants.STRING_EMPTY;
-            String firstName = Constants.STRING_EMPTY;
-            String middleName = Constants.STRING_EMPTY;
-            String fullName = Constants.STRING_EMPTY;
-            String organization = Constants.STRING_EMPTY;
-            String title = Constants.STRING_EMPTY;
-            boolean useEventYear = true;
-
-            // 1. Предварительно распрямляем многострочные значения (vCard 2.1 и 3.0)
-            List<String> unfoldedLines = StringUtils.unfoldVCardLines(fileLines);
-
-            for (String line : unfoldedLines) {
-                if (line.startsWith(Constants.vCard_EventBegin)) {
-                    event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
-
-                } else if (line.startsWith(Constants.vCard_EventEnd) && event != null) {
-
-                    // Проверяем, что есть дата и хотя бы какое-то имя
-                    if (eventDateFirstTime != null && (!firstName.isEmpty() || !lastName.isEmpty() || !fullName.isEmpty())) {
-
-                        String eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
-                                + (useEventYear ? Objects.requireNonNull(sdf_java.get()).format(eventDateFirstTime)
-                                : Objects.requireNonNull(sdf_java_no_year.get()).format(eventDateFirstTime))
-                                + Constants.STRING_COLON_SPACE
-                                + StringUtils.getHash(Constants.eventSourceFilePrefix + file);
-
-                        String personFullName;
-                        String personFullNameAlt;
-                        String contactID = null;
-
-                        // Формируем полное имя
-                        if (!firstName.isEmpty()) {
-                            if (!middleName.isEmpty()) {
-                                personFullName = firstName + Constants.STRING_SPACE + middleName;
-                            } else {
-                                personFullName = firstName;
-                            }
-                            if (!lastName.isEmpty()) {
-                                personFullName += Constants.STRING_SPACE + lastName;
-                            }
-                        } else if (!lastName.isEmpty()) {
-                            personFullName = lastName;
-                        } else {
-                            personFullName = fullName;
-                        }
-                        personFullNameAlt = Person.getAltName(personFullName, FormatName.NameFirst);
-
-                        String eventID = Constants.PREFIX_FileEventID + StringUtils.getHash(filePath + personFullNameAlt);
-
-                        // Заполняем базовые данные события
-                        eventData.put(Position_personFullName, personFullName);
-                        eventData.put(Position_personFullNameAlt, personFullNameAlt);
-                        eventData.put(Position_eventStorage, Constants.STRING_STORAGE_FILE);
-                        eventData.put(Position_eventCaption, event.caption);
-                        eventData.put(Position_eventLabel, event.label);
-                        eventData.put(Position_eventSource, eventSource);
-                        eventData.put(Position_eventType, event.type);
-                        eventData.put(Position_eventSubType, event.subType);
-                        eventData.put(Position_dates, eventNewDate);
-                        eventData.put(Position_eventIcon, Integer.toString(event.icon));
-                        eventData.put(Position_eventEmoji, event.emoji);
-                        eventData.put(Position_eventURL, url);
-                        eventData.put(Position_eventID, eventID);
-
-                        // Добавляем ORG и TITLE из файла, если они есть
-                        if (!TextUtils.isEmpty(organization)) {
-                            eventData.put(Position_organization, organization);
-                        }
-                        if (!TextUtils.isEmpty(title)) {
-                            eventData.put(Position_title, title);
-                        }
-
-                        if (event.needScanContacts) {
-                            contactID = getContactID(
-                                    StringUtils.normalizeString(personFullName),
-                                    StringUtils.normalizeString(personFullNameAlt)
-                            );
-
-                            if (contactID == null) {
-                                contactID = getMergedID(eventID);
-                            }
-
-                            if (!TextUtils.isEmpty(contactID)) {
-                                eventData.put(Position_contactID, contactID);
-                                eventData.put(Position_rawContactID, StringUtils.getNotNullString(map_contacts_ids.get(contactID)));
-
-                                Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
-                                if (eventIndex != null && eventIndex <= eventListUpdated.size()) {
-                                    if (updateExistEvent(eventIndex, eventID, eventSource, eventNewDate, null, null, url)) {
                                         eventData.clear();
                                     }
                                 } else {
@@ -4966,8 +4856,6 @@ public class ContactsEvents {
                                     contactDataMap.clear();
 
                                     eventData.put(Position_nickname, StringUtils.getNotNullString(map_contacts_aliases.get(contactID)));
-
-                                    // Если в vCard не было ORG/TITLE, берем из системных контактов
                                     if (TextUtils.isEmpty(eventData.get(Position_organization))) {
                                         eventData.put(Position_organization, StringUtils.getNotNullString(map_organizations.get(contactID)));
                                     }
@@ -4981,9 +4869,204 @@ public class ContactsEvents {
                         if (!eventData.isEmpty()) {
                             statEventsCount++;
                             statFilesEventCount++;
-
                             fillEmptyEventData(eventData);
+                            String eventRow = getEventData(eventData);
+                            if (!eventListUpdated.contains(eventRow)) {
+                                eventListUpdated.add(eventRow);
+                                if (!TextUtils.isEmpty(contactID)) {
+                                    map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
+                                }
+                            }
+                        }
+                    }
 
+                    // Сброс переменных для следующего события
+                    eventData.clear();
+                    eventDateFirstTime = null;
+                    eventDateThisTime = null;
+                    eventTitle = null;
+                    eventDescription.setLength(0);
+                    eventURL = Constants.STRING_EMPTY;
+                    event = null;
+                    currentProp = "";
+                } else {
+                    currentProp = ""; // Сброс, если это неизвестное свойство
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error processing single iCal event: " + file, e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Потоковое чтение vCard файла без загрузки всего файла в память.
+     * (поддерживаются дни рождения, версии 2.1 и 3.0)
+     *
+     * @param file        Путь до файла и URI
+     * @param today       Дата сегодня
+     * @param eventSource Источник событий
+     */
+    private void streamVCardEvents(@NonNull String file, @NonNull Calendar today, @NonNull String eventSource) {
+        try {
+            String[] fileDetails = file.split(Constants.REGEX_BAR);
+            Uri uri = Uri.parse(fileDetails.length > 1 ? fileDetails[1] : fileDetails[0]);
+
+            if (context.getContentResolver() == null) {
+                ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
+                return;
+            }
+
+            // Читаем файл построчно через BufferedReader
+            try (InputStream inputStream = context.getContentResolver().openInputStream(uri);
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
+                String line;
+                StringBuilder currentVCard = new StringBuilder();
+                boolean inVCard = false;
+
+                while ((line = reader.readLine()) != null) {
+                    line = line.trim();
+                    if (line.isEmpty()) continue;
+
+                    // Обработка многострочных значений vCard (начинаются с пробела или табуляции)
+                    if ((line.startsWith(" ") || line.startsWith("\t")) && inVCard && currentVCard.length() > 0) {
+                        currentVCard.deleteCharAt(currentVCard.length() - 1); // убираем \n
+                        currentVCard.append(line.substring(1)); // добавляем продолжение строки
+                        continue;
+                    }
+
+                    if (line.equalsIgnoreCase(Constants.vCard_EventBegin)) {
+                        inVCard = true;
+                        currentVCard.setLength(0);
+                        currentVCard.append(line).append("\n");
+                    } else if (inVCard) {
+                        currentVCard.append(line).append("\n");
+
+                        if (line.equalsIgnoreCase(Constants.vCard_EventEnd)) {
+                            inVCard = false;
+                            // Обрабатываем только один маленький контакт, а не весь файл
+                            processSingleVCardString(currentVCard.toString(), today, eventSource, file);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error streaming vCard: " + file, e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Обработка строки одного контакта vCard
+     */
+    private void processSingleVCardString(@NonNull String vCardString, @NonNull Calendar today,
+                                          @NonNull String eventSource, @NonNull String file) {
+        try {
+            final int nowYear = today.get(Calendar.YEAR);
+            final TreeMap<Integer, String> eventData = new TreeMap<>();
+
+            Event event = null;
+            Date eventDateFirstTime = null;
+            String url = Constants.STRING_EMPTY;
+            String lastName = Constants.STRING_EMPTY;
+            String firstName = Constants.STRING_EMPTY;
+            String middleName = Constants.STRING_EMPTY;
+            String fullName = Constants.STRING_EMPTY;
+            String organization = Constants.STRING_EMPTY;
+            String title = Constants.STRING_EMPTY;
+            boolean useEventYear = true;
+
+            String[] lines = vCardString.split("\n", -1);
+
+            for (String line : lines) {
+                if (line.startsWith(Constants.vCard_EventBegin)) { // "BEGIN:VCARD"
+                    event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
+                } else if (line.startsWith(Constants.vCard_EventEnd) && event != null) { // "END:VCARD"
+
+                    if (eventDateFirstTime != null && (!firstName.isEmpty() || !lastName.isEmpty() || !fullName.isEmpty())) {
+                        String eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
+                                + (useEventYear ? Objects.requireNonNull(sdf_java.get()).format(eventDateFirstTime)
+                                : Objects.requireNonNull(sdf_java_no_year.get()).format(eventDateFirstTime))
+                                + Constants.STRING_COLON_SPACE
+                                + StringUtils.getHash(Constants.eventSourceFilePrefix + file);
+
+                        String personFullName;
+                        String personFullNameAlt;
+                        String contactID = null;
+
+                        if (!firstName.isEmpty()) {
+                            if (!middleName.isEmpty()) {
+                                personFullName = firstName + Constants.STRING_SPACE + middleName;
+                            } else {
+                                personFullName = firstName;
+                            }
+                            if (!lastName.isEmpty()) {
+                                personFullName += Constants.STRING_SPACE + lastName;
+                            }
+                        } else if (!lastName.isEmpty()) {
+                            personFullName = lastName;
+                        } else {
+                            personFullName = fullName;
+                        }
+                        personFullNameAlt = Person.getAltName(personFullName, FormatName.NameFirst);
+
+                        String eventID = Constants.PREFIX_FileEventID + StringUtils.getHash(StringUtils.substringBefore(file, Constants.STRING_BAR) + personFullNameAlt);
+
+                        eventData.put(Position_personFullName, personFullName);
+                        eventData.put(Position_personFullNameAlt, personFullNameAlt);
+                        eventData.put(Position_eventStorage, Constants.STRING_STORAGE_FILE);
+                        eventData.put(Position_eventCaption, event.caption);
+                        eventData.put(Position_eventLabel, event.label);
+                        eventData.put(Position_eventSource, eventSource);
+                        eventData.put(Position_eventType, event.type);
+                        eventData.put(Position_eventSubType, event.subType);
+                        eventData.put(Position_dates, eventNewDate);
+                        eventData.put(Position_eventIcon, Integer.toString(event.icon));
+                        eventData.put(Position_eventEmoji, event.emoji);
+                        eventData.put(Position_eventURL, url);
+                        eventData.put(Position_eventID, eventID);
+
+                        if (!TextUtils.isEmpty(organization)) eventData.put(Position_organization, organization);
+                        if (!TextUtils.isEmpty(title)) eventData.put(Position_title, title);
+
+                        if (event.needScanContacts) {
+                            contactID = getContactID(StringUtils.normalizeString(personFullName), StringUtils.normalizeString(personFullNameAlt));
+                            if (contactID == null) contactID = getMergedID(eventID);
+
+                            if (!TextUtils.isEmpty(contactID)) {
+                                eventData.put(Position_contactID, contactID);
+                                eventData.put(Position_rawContactID, StringUtils.getNotNullString(map_contacts_ids.get(contactID)));
+
+                                Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
+                                if (eventIndex != null && eventIndex <= eventListUpdated.size()) {
+                                    if (updateExistEvent(eventIndex, eventID, eventSource, eventNewDate, null, null, url)) {
+                                        eventData.clear();
+                                    }
+                                } else {
+                                    final Long contactIDLong = StringUtils.parseToLong(contactID);
+                                    HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
+                                            ContactsContract.Contacts.PHOTO_URI, ContactsContract.Contacts.STARRED
+                                    });
+                                    eventData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
+                                    if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED) && Constants.STRING_1.equals(StringUtils.getNotNullString(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
+                                        eventData.put(Position_starred, Constants.STRING_1);
+                                        statFavoriteEventsCount++;
+                                    }
+                                    contactDataMap.clear();
+                                    eventData.put(Position_nickname, StringUtils.getNotNullString(map_contacts_aliases.get(contactID)));
+                                    if (TextUtils.isEmpty(eventData.get(Position_organization)))
+                                        eventData.put(Position_organization, StringUtils.getNotNullString(map_organizations.get(contactID)));
+                                    if (TextUtils.isEmpty(eventData.get(Position_title)))
+                                        eventData.put(Position_title, StringUtils.getNotNullString(map_contacts_titles.get(contactID)));
+                                }
+                            }
+                        }
+
+                        if (!eventData.isEmpty()) {
+                            statEventsCount++;
+                            statFilesEventCount++;
+                            fillEmptyEventData(eventData);
                             String eventRow = getEventData(eventData);
                             if (!eventListUpdated.contains(eventRow)) {
                                 eventListUpdated.add(eventRow);
@@ -5005,11 +5088,10 @@ public class ContactsEvents {
                     organization = Constants.STRING_EMPTY;
                     title = Constants.STRING_EMPTY;
                     event = null;
-                    eventLines.setLength(0);
 
-                } else if (event != null) { // Парсим теги только если мы внутри блока VCARD
+                } else if (event != null) {
 
-                    // 1. Имя (N)
+                    // Парсинг полей текущего контакта
                     String nValue = StringUtils.getTagValue(line, Constants.vCard_Name);
                     if (nValue != null) {
                         if (StringUtils.isQuotedPrintable(line)) nValue = StringUtils.decodeQuotedPrintable(nValue, StandardCharsets.UTF_8);
@@ -5019,63 +5101,45 @@ public class ContactsEvents {
                             firstName = StringUtils.cleanValue(nameParts.get(1));
                             middleName = StringUtils.cleanValue(nameParts.get(2));
                         }
-                        eventLines.append(Constants.vCard_Name).append(Constants.STRING_COLON).append(nValue).append(Constants.STRING_EOL);
                     }
 
-                    // 2. Форматированное имя (FN)
                     String fnValue = StringUtils.getTagValue(line, Constants.vCard_FormattedName);
                     if (fnValue != null && lastName.isEmpty() && firstName.isEmpty()) {
                         if (StringUtils.isQuotedPrintable(line)) fnValue = StringUtils.decodeQuotedPrintable(fnValue, StandardCharsets.UTF_8);
                         fullName = StringUtils.cleanValue(fnValue);
-                        eventLines.append(Constants.vCard_FormattedName).append(Constants.STRING_COLON).append(fullName).append(Constants.STRING_EOL);
                     }
 
-                    // 3. Дата рождения (BDAY)
                     String bdayValue = StringUtils.getTagValue(line, Constants.vCard_Birthday);
                     if (bdayValue != null) {
                         boolean hasYear = !bdayValue.startsWith(Constants.STRING_MINUS);
                         String dateToParse = hasYear ? bdayValue : nowYear + bdayValue.substring(1);
-
                         eventDateFirstTime = AppDateUtils.parseDateWithFormats(dateToParse,
                                 Objects.requireNonNull(sdf_YYYYMMDD_noDiv.get()),
-                                Objects.requireNonNull(sdf_java.get())
-                        );
-
+                                Objects.requireNonNull(sdf_java.get()));
                         if (eventDateFirstTime != null) {
                             useEventYear = hasYear;
-                            eventLines.append(line).append(Constants.STRING_EOL);
                         }
                     }
 
-                    // 4. Организация (ORG)
                     String orgValue = StringUtils.getTagValue(line, Constants.vCard_Org);
                     if (orgValue != null) {
                         if (StringUtils.isQuotedPrintable(line)) orgValue = StringUtils.decodeQuotedPrintable(orgValue, StandardCharsets.UTF_8);
-                        // В vCard ORG может содержать несколько частей через ';'. Первая - название компании.
                         List<String> orgParts = StringUtils.splitWithEscape(orgValue, Constants.STRING_SEMICOLON);
-                        if (!orgParts.isEmpty()) {
-                            organization = StringUtils.cleanValue(orgParts.get(0));
-                        }
-                        eventLines.append(Constants.vCard_Org).append(Constants.STRING_COLON).append(orgValue).append(Constants.STRING_EOL);
+                        if (!orgParts.isEmpty()) organization = StringUtils.cleanValue(orgParts.get(0));
                     }
 
-                    // 5. Должность (TITLE)
                     String titleValue = StringUtils.getTagValue(line, Constants.vCard_Title);
                     if (titleValue != null) {
                         if (StringUtils.isQuotedPrintable(line)) titleValue = StringUtils.decodeQuotedPrintable(titleValue, StandardCharsets.UTF_8);
                         title = StringUtils.cleanValue(titleValue);
-                        eventLines.append(Constants.vCard_Title).append(Constants.STRING_COLON).append(titleValue).append(Constants.STRING_EOL);
                     }
 
-                    // 6. URL
                     String urlValue = StringUtils.getTagValue(line, Constants.vCard_URL);
-                    if (urlValue != null) {
-                        url = urlValue;
-                    }
+                    if (urlValue != null) url = urlValue;
                 }
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Log.e(TAG, "Error processing single vCard", e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
@@ -5210,10 +5274,11 @@ public class ContactsEvents {
                                       @NonNull String eventIdHashPrefix, @NonNull String eventStorage,
                                       String eventEmoji, @NonNull Calendar today) {
         try {
+            String eventLine = eventString.startsWith("\uFEFF") ? eventString.substring(1).trim() : eventString.trim();
 
-            String eventLine = eventString.trim().replace("\uFEFF", Constants.STRING_EMPTY);
-            if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH))
+            if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH)) {
                 return;
+            }
 
             TreeMap<Integer, String> eventData = new TreeMap<>();
             String eventLabel_forSearch = Constants.STRING_EMPTY;
@@ -5226,19 +5291,17 @@ public class ContactsEvents {
             boolean isAD = true;
             @Nullable Event event = null;
             boolean isMultiTypeSource = eventType.equals(Constants.Type_MultiEvent);
+
             int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
-            boolean isBirthdaysPlusEvent = eventLine.startsWith(Constants.STRING_BDP_DIV)
-                    && eventLine.endsWith(Constants.STRING_BDP_EOL);
+            boolean isBirthdaysPlusEvent = eventLine.startsWith(Constants.STRING_BDP_DIV) && eventLine.endsWith(Constants.STRING_BDP_EOL);
 
-            //BirthdayPro, DarkBirthday: <Дата без пробелов>[,<пробел>флаги[тип события]] название праздника или ФИО [(должность)] [| описание события] [http:// или https:// ссылка]
             if (!isBirthdaysPlusEvent) {
-
                 if (indexFirstSpace == -1) return;
 
                 final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
-                if (indexComma > -1 && indexComma < indexFirstSpace) { //Есть флаги
+                if (indexComma > -1 && indexComma < indexFirstSpace) { // Есть флаги
 
-                    if (indexFirstSpace - indexComma == 1) { //После запятой пробел - убираем
+                    if (indexFirstSpace - indexComma == 1) { // После запятой пробел - убираем
                         eventLine = eventLine.substring(0, indexComma + 1) + eventLine.substring(indexFirstSpace + 1);
                         indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
                         if (indexFirstSpace == -1) {
@@ -5266,14 +5329,11 @@ public class ContactsEvents {
                     }
 
                 } else {
-
                     eventDateString = eventLine.substring(0, indexFirstSpace);
                     eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
-
                 }
 
-            } else { //Birthdays Plus: ❙ДДДД-ММ-ДД❙ИОФ❙тип (Birthday, Anniversary, Custom)❙наименование события или null❚
-
+            } else { // Birthdays Plus
                 final String[] eventBDPdetails = eventLine.split(Constants.STRING_BDP_DIV, -1);
                 if (eventBDPdetails.length == 5) {
                     eventDateString = eventBDPdetails[1];
@@ -5292,22 +5352,14 @@ public class ContactsEvents {
             }
 
             if (isMultiTypeSource) {
-
                 boolean setOtherIfUnknown = preferences_rules_unrecognized == Rules_Unrecognized_Type_Other;
                 event = recognizeEventByLabel(eventLabel_forSearch, setOtherIfUnknown, true);
-
             } else if (eventType.equals(Constants.EventType_BirthDay)) {
-
                 event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
-
             } else if (eventType.equals(Constants.EventType_Other)) {
-
                 event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY);
-
             } else if (eventType.equals(Constants.EventType_Holiday)) {
-
                 event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY);
-
             }
 
             if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && (event == null || event.icon == R.drawable.ic_event_unknown)) {
@@ -5326,8 +5378,9 @@ public class ContactsEvents {
                 ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, eventString));
                 return;
             }
-            if (preferences_list_prev_events_scan_distance == 0 && result.isPassedEvent)
-                return; //Событие прошло и показ прошедших выключен
+            if (preferences_list_prev_events_scan_distance == 0 && result.isPassedEvent) {
+                return; // Событие прошло и показ прошедших выключен
+            }
 
             String eventID = eventIdPrefix + StringUtils.getHash(StringUtils.substringBefore(eventSource, Constants.STRING_BAR) + eventLine);
             eventNewDate = eventSourcePrefix + Constants.STRING_COLON_SPACE
@@ -5345,53 +5398,46 @@ public class ContactsEvents {
             eventData.put(Position_eventIcon, Integer.toString(event.icon));
             eventData.put(Position_eventEmoji, event.emoji);
 
-            //URLs
-            String eventTitle_lowered = eventTitle.toLowerCase();
-            int urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTP);
+            int urlOffset = StringUtils.indexOfIgnoreCase(eventTitle, Constants.STRING_HTTP);
+            if (urlOffset == -1) {
+                urlOffset = StringUtils.indexOfIgnoreCase(eventTitle, Constants.STRING_HTTPS);
+            }
+
             if (urlOffset > -1) {
                 eventURL = eventTitle.substring(urlOffset);
-            } else {
-                urlOffset = eventTitle_lowered.indexOf(Constants.STRING_HTTPS);
-                if (urlOffset > -1) {
-                    eventURL = eventTitle.substring(urlOffset);
-                }
-            }
-            if (!eventURL.isEmpty()) {
                 eventURL = StringUtils.substringBefore(eventURL, Constants.STRING_SPACE);
                 eventData.put(Position_eventURL, eventURL);
-                eventTitle = eventTitle.replace(eventURL, Constants.STRING_EMPTY).trim();
+                eventTitle = eventTitle.substring(0, urlOffset).trim(); // Обрезаем оригинальную строку
                 if (!result.isPassedEvent) statContactsURLCount++;
             }
 
-            //Описание события
+            // Описание события
             int indStartDescription = eventTitle.indexOf(Constants.STRING_BAR);
             if (indStartDescription > -1) {
-                    String eventDescription = eventTitle.substring(indStartDescription + 1);
-                    if (!eventDescription.isEmpty()) {
-                        eventData.put(Position_eventDescription, eventDescription.trim());
-                        eventTitle = eventTitle.substring(0, indStartDescription).trim();
-                    }
+                String eventDescription = eventTitle.substring(indStartDescription + 1);
+                if (!eventDescription.isEmpty()) {
+                    eventData.put(Position_eventDescription, eventDescription.trim());
+                    eventTitle = eventTitle.substring(0, indStartDescription).trim();
+                }
             }
 
             if (map_contacts_names.isEmpty()) event.needScanContacts = false;
 
-            if (event.needScanContacts) { //Нужно искать в контактах
-
-                //всё, что внутри скобок в имени - в должность и организацию
+            if (event.needScanContacts) {
                 int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
                 int pStartLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_START);
                 int pEndFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_CLOSE);
                 int pEndLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
                 String contactTitle = null;
 
-                if (pStartFirst > -1 && pEndFirst > pStartFirst) { //хотя бы пара скобок
-                    if (pStartFirst == pStartLast && pEndFirst == pEndLast) { //одна пара скобок
+                if (pStartFirst > -1 && pEndFirst > pStartFirst) {
+                    if (pStartFirst == pStartLast && pEndFirst == pEndLast) {
                         contactTitle = eventTitle.substring(pStartFirst + 1, pEndFirst);
                         eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
-                    } else if (pStartLast < pEndFirst && pStartLast < pEndLast) { //скобки внутри скобок
+                    } else if (pStartLast < pEndFirst && pStartLast < pEndLast) {
                         contactTitle = eventTitle.substring(pStartFirst + 1, pEndLast);
                         eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
-                    } else if (pEndFirst < pStartLast) { //пара скобок за другой парой
+                    } else if (pEndFirst < pStartLast) {
                         contactTitle = eventTitle.substring(pStartLast + 1, pEndLast);
                         eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
                     }
@@ -5427,7 +5473,7 @@ public class ContactsEvents {
                     contactID = getMergedID(eventID);
                 }
 
-            } else { //Просто событие
+            } else {
                 eventData.put(Position_personFullName, eventTitle);
                 eventData.put(Position_personFullNameAlt, eventTitle);
             }
@@ -5435,7 +5481,6 @@ public class ContactsEvents {
             eventData.put(Position_notAnnualEvent, !result.isEndless ? Constants.STRING_1 : Constants.STRING_EMPTY);
             eventData.put(Position_eventID, eventID);
 
-            //Проверка по организации, что нашли именно требуемый контакт
             String orgNameFile = Constants.STRING_EMPTY;
             String titleFile = Constants.STRING_EMPTY;
             if (!TextUtils.isEmpty(contactID)) {
@@ -5443,26 +5488,21 @@ public class ContactsEvents {
                 titleFile = StringUtils.getNotNullString(eventData.get(Position_title)).trim();
                 String orgNameContact = StringUtils.getNotNullString(map_organizations.get(contactID)).trim().toLowerCase();
 
-                //Организации не совпадают
-                if (!orgNameContact.isEmpty() && !orgNameFile.isEmpty() && !orgNameContact.contains(orgNameFile.toLowerCase()))
+                if (!orgNameContact.isEmpty() && !orgNameFile.isEmpty() && !orgNameContact.contains(orgNameFile.toLowerCase())) {
                     contactID = null;
+                }
             }
 
             if (!TextUtils.isEmpty(contactID)) {
                 eventData.put(Position_contactID, contactID);
                 eventData.put(Position_rawContactID, StringUtils.getNotNullString(map_contacts_ids.get(contactID)));
 
-                //Ищем событие контакта в списке событий и добавляем в него
                 Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
                 if (eventIndex != null && eventIndex <= eventListUpdated.size()) {
-
                     if (updateExistEvent(eventIndex, eventID, eventSourceCaption, eventNewDate, orgNameFile, titleFile, eventURL)) {
                         eventData.clear();
                     }
-
-                } else { //Такого события ещё не было
-
-                    //Добавляем данные контакта
+                } else {
                     final Long contactIDLong = StringUtils.parseToLong(contactID);
                     HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
                             ContactsContract.Contacts.PHOTO_URI,
@@ -5479,10 +5519,12 @@ public class ContactsEvents {
                     contactDataMap.clear();
 
                     eventData.put(Position_nickname, StringUtils.getNotNullString(map_contacts_aliases.get(contactID)));
-                    if (TextUtils.isEmpty(eventData.get(Position_organization)))
+                    if (TextUtils.isEmpty(eventData.get(Position_organization))) {
                         eventData.put(Position_organization, StringUtils.getNotNullString(map_organizations.get(contactID)));
-                    if (TextUtils.isEmpty(eventData.get(Position_title)))
+                    }
+                    if (TextUtils.isEmpty(eventData.get(Position_title))) {
                         eventData.put(Position_title, StringUtils.getNotNullString(map_contacts_titles.get(contactID)));
+                    }
                 }
             }
 
@@ -5492,14 +5534,12 @@ public class ContactsEvents {
                     String eventRow = getEventData(eventData);
 
                     if (eventListUpdated.add(eventRow)) {
-
                         statEventsCount++;
                         if (eventSourcePrefix.equals(Constants.EVENT_PREFIX_FILE_EVENT)) {
                             statFilesEventCount++;
                         }
                         increaseStatForEventSources(eventSourcePrefix);
                         increaseStatForEventSourcesIds(StringUtils.getHash(eventIdHashPrefix + eventSource));
-                        //increaseStatForEventTypes(resources.getString(R.string.pref_EventTypes_Facts));
 
                         if (!TextUtils.isEmpty(contactID)) {
                             map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
@@ -5514,7 +5554,6 @@ public class ContactsEvents {
                         }
                         map_eventsBySubtypeAndPersonName_offset.put(personFullName + Constants.STRING_2HASH + eventData.get(Position_eventSubType), eventListUpdated.size() - 1);
 
-                        //Предыдущее появление плавающего события добавляем в список предыдущих
                         if (result.datePrevFloatingEvent != null) {
                             Date eventDatePrev = null;
                             try {
@@ -5522,13 +5561,10 @@ public class ContactsEvents {
                             } catch (ParseException pe) { /**/ }
                             if (eventDatePrev != null) {
                                 long eventDistance = AppDateUtils.countDaysDiff(eventDatePrev, today.getTime());
-
                                 if (eventDistance > 0 && eventDistance <= preferences_list_prev_events_scan_distance) {
                                     eventData.put(Position_eventDateNextTime, Objects.requireNonNull(sdf_DDMMYYYY.get()).format(eventDatePrev));
                                     eventData.put(Position_eventDistance, Long.toString(-eventDistance));
                                     eventData.put(Position_eventDistanceText, getEventDistanceText(-eventDistance, eventDatePrev));
-
-                                    //todo: двойная конвертация
                                     eventData.put(Position_eventDate_sorted, getSortKey(getEventData(eventData).split(Constants.STRING_EOT, -1)));
                                     eventRow = getEventData(eventData);
                                     if (!eventListPrev.contains(eventRow)) {
@@ -5540,13 +5576,11 @@ public class ContactsEvents {
                     }
                 } else {
                     long eventDistance = AppDateUtils.countDaysDiff(result.dateEvent, today.getTime());
-
                     if (eventDistance <= preferences_list_prev_events_scan_distance) {
                         fillEmptyEventData(eventData);
                         eventData.put(Position_eventDateNextTime, Objects.requireNonNull(sdf_DDMMYYYY.get()).format(result.dateEvent));
                         eventData.put(Position_eventDistance, Long.toString(-eventDistance));
                         eventData.put(Position_eventDistanceText, getEventDistanceText(-eventDistance, result.dateEvent));
-                        //todo: двойная конвертация
                         eventData.put(Position_eventDate_sorted, getSortKey(getEventData(eventData).split(Constants.STRING_EOT, -1)));
                         final String eventRow = getEventData(eventData);
                         if (!eventListPrev.contains(eventRow)) {
@@ -11883,6 +11917,14 @@ public class ContactsEvents {
 
             long statCurrentModuleStart = System.currentTimeMillis();
 
+            // Кэшируем массив форматов
+            final SimpleDateFormat[] dateFormats = {
+                    Objects.requireNonNull(sdf_DDMMYYYY.get()),
+                    Objects.requireNonNull(sdf_india.get()),
+                    Objects.requireNonNull(sdf_uk.get()),
+                    Objects.requireNonNull(sdf_java.get())
+            };
+
             int eventsPackCount = 1;
             int packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
             while (packId > 0) {
@@ -11902,8 +11944,8 @@ public class ContactsEvents {
                             for (int i = 1; i < countEvents; i++) {
                                 String eventsArray = eventsPack[i];
                                 String[] days = eventsArray.split(Constants.STRING_EOL, -1);
-                                for (String eventString : days) {
-
+                                List<String> expandedEvents = splitMultidayEventsAsSeparateLine(days, dateFormats);
+                                for (String eventString : expandedEvents) {
                                     addFileEventFromLine(
                                             eventsPack[0],
                                             getResources().getString(R.string.msg_source_info, eventsPack[0]),
@@ -11953,6 +11995,14 @@ public class ContactsEvents {
 
             long statCurrentModuleStart = System.currentTimeMillis();
 
+            // Кэшируем массив форматов
+            final SimpleDateFormat[] dateFormats = {
+                    Objects.requireNonNull(sdf_DDMMYYYY.get()),
+                    Objects.requireNonNull(sdf_india.get()),
+                    Objects.requireNonNull(sdf_uk.get()),
+                    Objects.requireNonNull(sdf_java.get())
+            };
+
             int eventsPackCount = 1;
             int packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
             while (packId > 0) {
@@ -11972,8 +12022,8 @@ public class ContactsEvents {
                             for (int i = 1; i < countEvents; i++) {
                                 String eventsArray = eventsPack[i];
                                 String[] days = eventsArray.split(Constants.STRING_EOL, -1);
-                                for (String eventString : days) {
-
+                                List<String> expandedEvents = splitMultidayEventsAsSeparateLine(days, dateFormats);
+                                for (String eventString : expandedEvents) {
                                     addFileEventFromLine(
                                             eventsPack[0],
                                             getResources().getString(R.string.msg_source_info, eventsPack[0]),
@@ -12639,6 +12689,9 @@ public class ContactsEvents {
                 widgetUpdateExecutor.shutdownNow();
                 Thread.currentThread().interrupt();
             }
+        }
+        if (eventsExecutor != null) {
+            eventsExecutor.shutdown();
         }
     }
 
