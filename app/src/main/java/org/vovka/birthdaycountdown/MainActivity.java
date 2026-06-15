@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.06.2026, 02:29
+ *  * Created by Vladimir Belov on 16.06.2026, 02:22
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.06.2026, 00:00
+ *  * Last modified 15.06.2026, 23:32
  *
  */
 
@@ -782,7 +782,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             StringBuilder eventInfo = new StringBuilder();
             int eventRows = selectedEvent.length;
             for (int i = 0; i < eventRows; i++) {
-                eventInfo.append(i).append(Constants.STRING_COLON_SPACE).append(selectedEvent[i]).append(Constants.STRING_EOL);
+                String row = selectedEvent[i];
+                if (i == ContactsEvents.Position_photo && !TextUtils.isEmpty(row)) {
+                    eventInfo.append(i).append(Constants.STRING_COLON_SPACE).append(getString(R.string.event_photo_details, row.length())).append(Constants.STRING_EOL);
+                } else {
+                    eventInfo.append(i).append(Constants.STRING_COLON_SPACE).append(row).append(Constants.STRING_EOL);
+                }
             }
 
             String eventSubType = selectedEvent[ContactsEvents.Position_eventSubType];

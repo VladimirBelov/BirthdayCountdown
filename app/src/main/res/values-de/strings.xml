@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.06.2026, 02:22
+  ~  * Created by Vladimir Belov on 16.06.2026, 02:22
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.06.2026, 02:22
+  ~  * Last modified 15.06.2026, 23:17
   ~  */
   -->
 
@@ -411,8 +411,8 @@
     <string name="pref_CustomEvents_Birthday_Labels_summary">Ereignisse mit diesen Bezeichnungen werden als "Geburtstag" erkannt (durch Komma getrennt)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Geburtstagsereignisse aus ausgewählten Kalendern anzeigen</string>
       <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Verwenden Sie das Jahr</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Verwenden Sie das Jahr vom Kalenderereignis, um die Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Geburtstagsereignisse aus ausgewählten Dateien anzeigen (Formate: DarkBirthday, iCalendar, vCard, BirthdayPro). Drücken Sie lange auf ein Listenelement, um eine Datei anzuzeigen</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_summary">Verwenden Sie das Jahr vom Kalenderereignis, um die Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_summary">Geburtstagsereignisse aus ausgewählten Dateien anzeigen (Formate: DarkBirthday, iCalendar, vCard, BirthdayPro). Drücken Sie lange auf ein Listenelement, um eine Datei anzuzeigen</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Hochzeitstage</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Standardbezeichnung</string>

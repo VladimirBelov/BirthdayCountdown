@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.06.2026, 02:29
+ *  * Created by Vladimir Belov on 16.06.2026, 02:22
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.06.2026, 02:24
+ *  * Last modified 16.06.2026, 02:19
  *
  */
 
@@ -99,6 +99,7 @@ import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -4901,7 +4902,7 @@ public class ContactsEvents {
 
     /**
      * Потоковое чтение vCard файла без загрузки всего файла в память.
-     * (поддерживаются дни рождения, версии 2.1 и 3.0)
+     * (поддерживаются дни рождения, версии 2.1 и 3.0, включая Quoted-Printable фолдинг)
      *
      * @param file        Путь до файла и URI
      * @param today       Дата сегодня
@@ -4917,35 +4918,71 @@ public class ContactsEvents {
                 return;
             }
 
-            // Читаем файл построчно через BufferedReader
             try (InputStream inputStream = context.getContentResolver().openInputStream(uri);
                  BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
                 String line;
                 StringBuilder currentVCard = new StringBuilder();
                 boolean inVCard = false;
+                boolean previousLineEndedWithEquals = false;
 
                 while ((line = reader.readLine()) != null) {
-                    line = line.trim();
-                    if (line.isEmpty()) continue;
-
-                    // Обработка многострочных значений vCard (начинаются с пробела или табуляции)
-                    if ((line.startsWith(" ") || line.startsWith("\t")) && inVCard && currentVCard.length() > 0) {
-                        currentVCard.deleteCharAt(currentVCard.length() - 1); // убираем \n
-                        currentVCard.append(line.substring(1)); // добавляем продолжение строки
+                    if (line.isEmpty()) {
+                        previousLineEndedWithEquals = false;
                         continue;
                     }
 
-                    if (line.equalsIgnoreCase(Constants.vCard_EventBegin)) {
+                    boolean isContinuation = false;
+
+                    if (inVCard && currentVCard.length() > 0) {
+                        if (previousLineEndedWithEquals) {
+                            if (line.equals(" =")) {
+                                // На текущей строке только "=", который оторвался от "=" с предыдущей строки
+                                currentVCard.deleteCharAt(currentVCard.length() - 1); // удаляем '\n'
+                                currentVCard.append("=").append("\n");
+                                previousLineEndedWithEquals = false;
+                                continue;
+                            } else {
+                                // Удаляем ДВА символа: '=' и '\n'
+                                currentVCard.delete(currentVCard.length() - 2, currentVCard.length());
+                                currentVCard.append(line).append("\n");  // ← добавили \n
+                                isContinuation = true;
+                            }
+                        } else if (line.endsWith("==")) {
+                            // Конец Base64
+                            currentVCard.deleteCharAt(currentVCard.length() - 1); // удаляем '\n'
+                            currentVCard.append(line.trim()).append("\n");  // ← добавили \n
+                            continue;
+                        } else if (line.charAt(0) == ' ' || line.charAt(0) == '\t') {
+                            currentVCard.deleteCharAt(currentVCard.length() - 1); // удаляем '\n'
+                            currentVCard.append(line.substring(1)).append("\n");  // ← добавили \n
+                            isContinuation = true;
+                        }
+                    }
+
+                    if (isContinuation) {
+                        previousLineEndedWithEquals = line.endsWith("=");
+                        continue;
+                    }
+
+                    String trimmedLine = line.trim();
+                    if (trimmedLine.isEmpty()) {
+                        previousLineEndedWithEquals = false;
+                        continue;
+                    }
+
+                    if (trimmedLine.equalsIgnoreCase("BEGIN:VCARD")) {
                         inVCard = true;
                         currentVCard.setLength(0);
-                        currentVCard.append(line).append("\n");
+                        currentVCard.append(trimmedLine).append("\n");
+                        previousLineEndedWithEquals = false;
                     } else if (inVCard) {
-                        currentVCard.append(line).append("\n");
+                        currentVCard.append(trimmedLine).append("\n");
+                        previousLineEndedWithEquals = trimmedLine.endsWith("=");
 
-                        if (line.equalsIgnoreCase(Constants.vCard_EventEnd)) {
+                        if (trimmedLine.equalsIgnoreCase("END:VCARD")) {
                             inVCard = false;
-                            // Обрабатываем только один маленький контакт, а не весь файл
+                            previousLineEndedWithEquals = false;
                             processSingleVCardString(currentVCard.toString(), today, eventSource, file);
                         }
                     }
@@ -4975,6 +5012,7 @@ public class ContactsEvents {
             String fullName = Constants.STRING_EMPTY;
             String organization = Constants.STRING_EMPTY;
             String title = Constants.STRING_EMPTY;
+            String photo = Constants.STRING_EMPTY;
             boolean useEventYear = true;
 
             String[] lines = vCardString.split("\n", -1);
@@ -5063,6 +5101,10 @@ public class ContactsEvents {
                             }
                         }
 
+                        if (!TextUtils.isEmpty(photo)) {
+                            eventData.put(ContactsEvents.Position_photo, photo);
+                        }
+
                         if (!eventData.isEmpty()) {
                             statEventsCount++;
                             statFilesEventCount++;
@@ -5087,6 +5129,7 @@ public class ContactsEvents {
                     fullName = Constants.STRING_EMPTY;
                     organization = Constants.STRING_EMPTY;
                     title = Constants.STRING_EMPTY;
+                    photo = Constants.STRING_EMPTY;
                     event = null;
 
                 } else if (event != null) {
@@ -5136,6 +5179,51 @@ public class ContactsEvents {
 
                     String urlValue = StringUtils.getTagValue(line, Constants.vCard_URL);
                     if (urlValue != null) url = urlValue;
+
+                    String photoValue = StringUtils.getTagValue(line, Constants.vCard_Photo);
+                    if (!TextUtils.isEmpty(photoValue)) {
+                        // vCard иногда добавляет префикс "BASE64,", очищаем его на всякий случай
+                        String cleanBase64 = photoValue.replace("BASE64,", "").replace("base64,", "").trim();
+
+                        try {
+                            // 1. Декодируем Base64 в байты
+                            byte[] imageBytes = android.util.Base64.decode(cleanBase64, android.util.Base64.DEFAULT);
+
+                            // 2. Декодируем байты в Bitmap
+                            Bitmap originalBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+                            if (originalBitmap != null) {
+                                // 3. Вычисляем целевой размер
+                                int step = context.getResources().getInteger(R.integer.pref_LocalEvents_PhotoSize_step);
+                                int maxSize = step + step * preferences_local_events_photo_size;
+
+                                // 4. Уменьшаем изображение с помощью вашего метода
+                                Bitmap scaledBitmap = ImageUtils.scaleDownBitmap(originalBitmap, maxSize);
+
+                                // 5. Сжимаем обратно в байты (JPEG 80% - оптимальный баланс качества и размера для списков/виджетов)
+                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+                                byte[] scaledBytes = byteArrayOutputStream.toByteArray();
+
+                                // 6. Кодируем уменьшенное изображение обратно в Base64
+                                photo = android.util.Base64.encodeToString(scaledBytes, android.util.Base64.DEFAULT);
+
+                                // 7. ВАЖНО: Освобождаем память, чтобы не было OOM при парсинге больших файлов
+                                if (originalBitmap != scaledBitmap) {
+                                    originalBitmap.recycle();
+                                }
+                                scaledBitmap.recycle();
+                            } else {
+                                // Если декодирование не удалось (например, это не картинка), сохраняем исходное значение
+                                photo = photoValue;
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error processing vCard photo (" + (lastName + " " + firstName + " " + middleName).trim()
+                                    + ", size: " + photoValue.length() + "): " + e.getMessage());
+                            // При ошибке сохраняем исходную строку, чтобы не потерять данные полностью
+                            photo = photoValue;
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
@@ -8198,7 +8286,7 @@ public class ContactsEvents {
                 cal.set(Calendar.SECOND, 0);
                 cal.set(Calendar.MILLISECOND, 0);
 
-                if (cal.before(getToday())) {
+                if (cal.before(Calendar.getInstance())) {
                     cal.add(Calendar.DATE, 1);
                 }
 

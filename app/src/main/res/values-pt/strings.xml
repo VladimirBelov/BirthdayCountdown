@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.06.2026, 23:48
+  ~  * Created by Vladimir Belov on 16.06.2026, 02:22
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.06.2026, 23:40
+  ~  * Last modified 15.06.2026, 23:17
   ~  */
   -->
 
@@ -411,8 +411,8 @@
     <string name="pref_CustomEvents_Birthday_Labels_summary">Eventos com esses rótulos serão identificados como aniversários (por vírgula)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Mostrar eventos de aniversário dos calendários escolhidos</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Usar data com ano</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Use a data completa do calendário para o evento (não apenas dia e mês)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Mostrar eventos de aniversário dos arquivos escolhidos. Pressione e segure um item da lista para visualizar um arquivo</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_summary">Use a data completa do calendário para o evento (não apenas dia e mês)</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_summary">Mostrar eventos de aniversário dos arquivos escolhidos. Pressione e segure um item da lista para visualizar um arquivo</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Aniversários de casamento</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Use rótulos padrão</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 11:12
+ *  * Created by Vladimir Belov on 16.06.2026, 02:22
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 11:02
+ *  * Last modified 15.06.2026, 23:17
  *
  */
 
@@ -901,27 +901,32 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             StringBuilder valueBuilder = new StringBuilder();
             int prefKey = 0;
+            @StringRes int summaryKey = 0;
             Set<String> files = null;
 
             switch (eventType) {
                 case Constants.Type_MultiEvent:
                     prefKey = R.string.pref_CustomEvents_MultiType_LocalFiles_key;
+                    summaryKey = R.string.pref_CustomEvents_LocalFiles_summary;
                     files = eventsData.preferences_MultiType_files;
                     break;
                 case Constants.EventType_BirthDay:
                     prefKey = R.string.pref_CustomEvents_Birthday_LocalFiles_key;
+                    summaryKey = R.string.pref_CustomEvents_Birthday_LocalFiles_summary;
                     files = eventsData.preferences_Birthday_files;
                     break;
                 case Constants.EventType_Other:
                     prefKey = R.string.pref_CustomEvents_Other_LocalFiles_key;
+                    summaryKey = R.string.pref_CustomEvents_LocalFiles_summary;
                     files = eventsData.preferences_OtherEvent_files;
                     break;
                 case Constants.EventType_Holiday:
                     prefKey = R.string.pref_CustomEvents_Holiday_LocalFiles_key;
+                    summaryKey = R.string.pref_CustomEvents_LocalFiles_summary;
                     files = eventsData.preferences_HolidayEvent_files;
                     break;
             }
-            if (prefKey != 0 && files != null) {
+            if (prefKey != 0 && summaryKey != 0 && files != null) {
                 if (files.isEmpty()) {
                     valueBuilder.append(getString(R.string.msg_no_files_selected).trim());
                 } else {
@@ -932,7 +937,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         valueBuilder.append(indexFilename > -1 ? filePath.substring(indexFilename + 1) : filePath);
                     }
                 }
-                updateSummary(prefKey, valueBuilder.toString(), getString(R.string.pref_CustomEvents_LocalFiles_summary), 0, 0);
+                updateSummary(prefKey, valueBuilder.toString(), getString(summaryKey), 0, 0);
             }
 
         } catch (Exception e) {

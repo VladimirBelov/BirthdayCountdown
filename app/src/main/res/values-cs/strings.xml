@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.06.2026, 23:48
+  ~  * Created by Vladimir Belov on 16.06.2026, 02:22
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.06.2026, 23:40
+  ~  * Last modified 15.06.2026, 23:17
   ~  */
   -->
 
@@ -411,8 +411,8 @@
     <string name="pref_CustomEvents_Birthday_Labels_summary">Události s těmito štítky budou označeny jako narozeniny (čárkou)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Zobrazit narozeninové události z vybraných kalendářů</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Použít datum s rokem</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Použít pro událost celé datum události kalendáře (nejen den a měsíc)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Zobrazit narozeninové události z vybraných souborů. Dlouhým stisknutím položky seznamu zobrazíte soubor</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_summary">Použít pro událost celé datum události kalendáře (nejen den a měsíc)</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_summary">Zobrazit narozeninové události z vybraných souborů. Dlouhým stisknutím položky seznamu zobrazíte soubor</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Výročí</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Použít standardní štítky</string>

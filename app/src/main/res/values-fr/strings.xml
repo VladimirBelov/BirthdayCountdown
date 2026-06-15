@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.06.2026, 23:48
+  ~  * Created by Vladimir Belov on 16.06.2026, 02:22
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.06.2026, 23:40
+  ~  * Last modified 15.06.2026, 23:17
   ~  */
   -->
 
@@ -411,8 +411,8 @@
     <string name="pref_CustomEvents_Birthday_Labels_summary">Les événements avec ces étiquettes seront identifiés comme des anniversaires (par virgule)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_summary">"Afficher les anniversaires à partir des calendriers sélectionnés"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">"Utiliser la date avec l'année"</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">"Utiliser la date complète de l'événement du calendrier pour l'événement (pas seulement le jour et le mois)"</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">"Afficher les événements d'anniversaire à partir des fichiers choisis. Appuyez longuement sur un élément de la liste pour afficher un fichier"</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_summary">"Utiliser la date complète de l'événement du calendrier pour l'événement (pas seulement le jour et le mois)"</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_summary">"Afficher les événements d'anniversaire à partir des fichiers choisis. Appuyez longuement sur un élément de la liste pour afficher un fichier"</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Anniversaires de mariage</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Utiliser des étiquettes standards</string>

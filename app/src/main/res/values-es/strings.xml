@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.06.2026, 23:48
+  ~  * Created by Vladimir Belov on 16.06.2026, 02:22
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.06.2026, 23:40
+  ~  * Last modified 15.06.2026, 23:17
   ~  */
   -->
 
@@ -411,8 +411,8 @@
     <string name="pref_CustomEvents_Birthday_Labels_summary">Eventos con estas etiquetas se identificarán como cumpleaños (separados por coma)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Mostrar eventos de cumpleaños de los calendarios elegidos</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Año de uso</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_description">Utilice el año del evento del calendario para calcular aniversarios (no solo el día y el mes)</string>
-    <string name="pref_CustomEvents_Birthday_LocalFiles_description">Mostrar eventos de cumpleaños de los archivos elegidos. Mantenga presionado un elemento de la lista para ver un archivo</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_summary">Utilice el año del evento del calendario para calcular aniversarios (no solo el día y el mes)</string>
+    <string name="pref_CustomEvents_Birthday_LocalFiles_summary">Mostrar eventos de cumpleaños de los archivos elegidos. Mantenga presionado un elemento de la lista para ver un archivo</string>
 
     <string name="pref_CustomEvents_Anniversary_title">Aniversarios de boda</string>
     <string name="pref_CustomEvents_Anniversary_UseInternal_title">Nombres estándar</string>

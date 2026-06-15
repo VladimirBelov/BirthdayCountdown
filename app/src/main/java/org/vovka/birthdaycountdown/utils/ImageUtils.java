@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.2026, 15:50
+ *  * Created by Vladimir Belov on 16.06.2026, 02:22
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.03.2026, 14:33
+ *  * Last modified 15.06.2026, 22:54
  *
  */
 
@@ -135,7 +135,7 @@ public class ImageUtils {
     }
 
     // Функция уменьшения размера изображения
-    static Bitmap scaleDownBitmap(Bitmap bitmap, int maxPixels) {
+    public static Bitmap scaleDownBitmap(Bitmap bitmap, int maxPixels) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         float ratio = Math.min((float) maxPixels / width, (float) maxPixels / height);

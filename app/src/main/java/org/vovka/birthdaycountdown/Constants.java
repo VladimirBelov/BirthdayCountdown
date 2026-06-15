@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 18:30
+ *  * Created by Vladimir Belov on 16.06.2026, 02:22
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 18:23
+ *  * Last modified 16.06.2026, 01:17
  *
  */
 
@@ -521,6 +521,7 @@ public final class Constants {
     public static final String vCard_FormattedName = "FN";
     public static final String vCard_Birthday = "BDAY";
     public static final String vCard_URL = "URL";
+    public static final String vCard_Photo = "PHOTO";
 
     /** Включить викторину */
     public static final String FEATURE_QUIZ = "enable_quiz";
