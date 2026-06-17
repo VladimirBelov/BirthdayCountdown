@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 16.06.2026, 02:22
+ *  * Created by Vladimir Belov on 18.06.2026, 01:09
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.06.2026, 23:17
+ *  * Last modified 18.06.2026, 00:56
  *
  */
 
@@ -292,7 +292,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             eventsData.getPreferences();
 
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
-                eventsData.getEvents();
+                eventsData.getEventsAsync(null);
             }
 
             if (prefEnabledFeatures != null) {
@@ -3125,7 +3125,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         intent.addCategory(Intent.CATEGORY_OPENABLE);
                         intent.setType("*/*");
                         String[] mimeTypes;
-                        if (eventType.equals(Constants.EventType_BirthDay)) {
+                        if (eventType.equals(Constants.EventType_BirthDay) || eventType.equals(Constants.Type_MultiEvent)) {
                             mimeTypes = new String[]{
                                     "text/plain",
                                     "text/calendar",

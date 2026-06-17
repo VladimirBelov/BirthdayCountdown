@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.06.2026, 02:29
+ *  * Created by Vladimir Belov on 18.06.2026, 01:09
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 14.06.2026, 23:52
+ *  * Last modified 18.06.2026, 00:26
  *
  */
 
@@ -43,7 +43,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             boolean isNeedNotify2 = eventsData.isFeatureEnabled(Constants.FEATURE_NOTIFY_Q2) && !eventsData.preferences_notifications2_days.isEmpty();
 
             if (isNeedNotify || isNeedNotify2) {
-                eventsData.getEventsAsync(success -> {
+                if (eventsData.getEvents()) {
 
                     long today = System.currentTimeMillis();
 
@@ -82,7 +82,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                             log.append(eventsData.getResources().getString(R.string.msg_skipped_notification, 2));
                         }
                     }
-                });
+                }
             }
 
             //Переинициализируем обновления виджетов

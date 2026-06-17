@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 16.06.2026, 02:22
+ *  * Created by Vladimir Belov on 18.06.2026, 01:09
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.06.2026, 23:32
+ *  * Last modified 18.06.2026, 00:44
  *
  */
 
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         eventsData.preferences_list_color_eventtoday,
                         eventsData.preferences_list_color_eventsoon
                 );
-                swipeRefresh.setOnRefreshListener(this); //Set the listener to be notified when a refresh is triggered via the swipe gesture
+                swipeRefresh.setOnRefreshListener(this);
             }
 
             //About
@@ -219,6 +219,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             });
 
             swipeRefreshListener = () -> {
+                if (eventsData.flagIsUpdating) {
+                    swipeRefresh.post(() -> swipeRefresh.setRefreshing(true));
+                    return;
+                }
                 try {
 
                     eventsData.needUpdateEventList = true;
@@ -1470,20 +1474,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 case 0: //при первом запуске показывать welcome screen
 
-                    if (DeviceTools.checkNoContactsAccess(eventsData.getContext())) {
-                        //https://developer.android.com/training/permissions/requesting.html#java
-                        swipeRefresh.setEnabled(false);
-                        swipeRefresh.setRefreshing(false);
-                        setHint(eventsData.setHTMLColor(getString(R.string.msg_no_access_contacts).toLowerCase(), Constants.HTML_COLOR_RED));
-                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-                    }
-
                     builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
                     builder.setTitle(getString(R.string.msg_welcome_title));
                     builder.setIcon(android.R.drawable.ic_menu_info_details);
                     builder.setCancelable(false);
                     builder.setMessage(getString(R.string.msg_welcome_text));
-                    builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
+                    builder.setPositiveButton(R.string.button_ok, (dialog, which) -> {
+                        dialog.cancel();
+                        if (DeviceTools.checkNoContactsAccess(eventsData.getContext())) {
+                            //https://developer.android.com/training/permissions/requesting.html#java
+                            swipeRefresh.setEnabled(false);
+                            swipeRefresh.setRefreshing(false);
+                            setHint(eventsData.setHTMLColor(getString(R.string.msg_no_access_contacts).toLowerCase(), Constants.HTML_COLOR_RED));
+                            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                        }
+                    });
                     builder.setNeutralButton(R.string.button_open_app_settings, (dialog, which) -> {
                         try {
                             startActivity(new Intent(this, SettingsActivity.class));
@@ -2387,7 +2392,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (eventsData.needUpdateEventList || this.dataList.isEmpty() != eventsData.isEmptyEventList()
                     || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
 
-                updateList(true);
+                    updateList(true);
 
                 if (!scrolledToToday && eventsData.statEventsPrevEventsFound > 0 &&
                         eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_NotHidden
@@ -2631,12 +2636,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     }
 
-    private void updateUIAfterEventsLoad(boolean disableSwipeRefresh) {
+    private void updateUIAfterEventsLoad() {
         filterEventsList();
         drawList();
 
         swipeRefresh.setRefreshing(false);
-        if (disableSwipeRefresh) swipeRefresh.setEnabled(true);
 
         invalidateOptionsMenu();
 
@@ -2645,27 +2649,38 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    synchronized void updateList(boolean disableSwipeRefresh) {
+    synchronized void updateList(boolean setRefreshing) {
         try {
-            if (disableSwipeRefresh) {
-                swipeRefresh.setEnabled(false);
-                swipeRefresh.setRefreshing(true);
+            boolean coldStart = false;
+            if (setRefreshing) {
+                if (swipeRefresh.isLaidOut()) {
+                    swipeRefresh.setRefreshing(true);
+                } else {
+                    coldStart = true;
+                }
             }
 
             boolean needLoad = eventsData.needUpdateEventList || eventsData.isEmptyEventList();
 
             if (needLoad) {
-                eventsData.getEventsAsync(success -> {
+                if (coldStart) {
+                    eventsData.getEvents();
                     if (!isFinishing() && !isDestroyed()) {
-                        updateUIAfterEventsLoad(disableSwipeRefresh);
+                        updateUIAfterEventsLoad();
                     }
-                });
+                } else {
+                    eventsData.getEventsAsync(success -> {
+                        if (!isFinishing() && !isDestroyed()) {
+                            updateUIAfterEventsLoad();
+                        }
+                    });
+                }
             } else {
-                updateUIAfterEventsLoad(disableSwipeRefresh);
+                updateUIAfterEventsLoad();
             }
 
         } catch (Exception e) {
-            swipeRefresh.setRefreshing(false);
+            if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }

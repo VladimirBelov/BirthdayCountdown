@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 16.06.2026, 02:22
+ *  * Created by Vladimir Belov on 18.06.2026, 01:09
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.06.2026, 22:54
+ *  * Last modified 18.06.2026, 01:09
  *
  */
 
@@ -306,5 +306,23 @@ public class ImageUtils {
 
         // Собираем обратно в int
         return (alpha << 24) | (red << 16) | (green << 8) | blue;
+    }
+
+    /**
+     * Вычисление inSampleSize для BitmapFactory
+     */
+    public static int calculateInSampleSize(int imageWidth, int imageHeight, int reqWidth, int reqHeight) {
+        int inSampleSize = 1;
+
+        if (imageHeight > reqHeight || imageWidth > reqWidth) {
+            final int halfHeight = imageHeight / 2;
+            final int halfWidth = imageWidth / 2;
+
+            while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.06.2026, 20:33
+  ~  * Created by Vladimir Belov on 18.06.2026, 01:09
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 01.06.2026, 13:08
+  ~  * Last modified 16.06.2026, 23:43
   ~  */
   -->
 
@@ -346,7 +346,12 @@
 Твоё внимание — самый ценный ресурс. Все вокруг борются за него. Охраняй его
 Жизнь не коротка — мы её делаем таковой… Мы живём не в настоящем, а то надеемся на будущее, то цепляемся за прошлое (Сенека)
 Храбрость — это не отсутствие страха. Это действие вопреки ему
-Великие вещи требуют времени. Нетерпение — это налог на амбиции"</item>
+Великие вещи требуют времени. Нетерпение — это налог на амбиции
+Победа любит подготовку. Удача — просто имя, которое дают подготовленным людям
+Трудно искать чёрную кошку в чёрной комнате. Особенно, если её там нет
+Тот, кто избегает искушения, сильнее того, кто его побеждает (Сенека)
+Никто не запомнит насколько ты был занят. Все запомнят что ты построил
+Не говори что нет времени. У тебя столько же часов в сутках, сколько было у Да Винчи"</item>
     </string-array>
 
     <string-array name="facts2" translatable="false" tools:ignore="UnusedResources">
@@ -698,7 +703,9 @@ Motivation is fickle. Discipline is reliable (Jocko Willink)
 Never make a decision when you are angry, never make a promise when you are happy (Benjamin Franklin)
 Pressure doesn’t build character. Pressure reveals character (Julius Erving)
 Use envy as a compass, not a cage
-Courage is resistance to fear, mastery of fear — not absence of fear (Mark Twain)"</item>
+Courage is resistance to fear, mastery of fear — not absence of fear (Mark Twain)
+Luck is what happens when preparation meets opportunity (Seneca)
+It’s like looking for a black cat in a dark room — especially when there’s no cat"</item>
     </string-array>
 
     <string-array name="facts4" translatable="false" tools:ignore="UnusedResources">

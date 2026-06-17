@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 16.06.2026, 02:22
+ *  * Created by Vladimir Belov on 18.06.2026, 01:09
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.06.2026, 02:19
+ *  * Last modified 18.06.2026, 01:09
  *
  */
 
@@ -4918,6 +4918,8 @@ public class ContactsEvents {
                 return;
             }
 
+            ByteArrayOutputStream reusableBaos = new ByteArrayOutputStream(8192);
+
             try (InputStream inputStream = context.getContentResolver().openInputStream(uri);
                  BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
@@ -4983,7 +4985,7 @@ public class ContactsEvents {
                         if (trimmedLine.equalsIgnoreCase("END:VCARD")) {
                             inVCard = false;
                             previousLineEndedWithEquals = false;
-                            processSingleVCardString(currentVCard.toString(), today, eventSource, file);
+                            processSingleVCardString(currentVCard.toString(), today, eventSource, file, reusableBaos);
                         }
                     }
                 }
@@ -4998,7 +5000,8 @@ public class ContactsEvents {
      * Обработка строки одного контакта vCard
      */
     private void processSingleVCardString(@NonNull String vCardString, @NonNull Calendar today,
-                                          @NonNull String eventSource, @NonNull String file) {
+                                          @NonNull String eventSource, @NonNull String file,
+                                          @NonNull ByteArrayOutputStream reusableBaos) {
         try {
             final int nowYear = today.get(Calendar.YEAR);
             final TreeMap<Integer, String> eventData = new TreeMap<>();
@@ -5182,45 +5185,51 @@ public class ContactsEvents {
 
                     String photoValue = StringUtils.getTagValue(line, Constants.vCard_Photo);
                     if (!TextUtils.isEmpty(photoValue)) {
-                        // vCard иногда добавляет префикс "BASE64,", очищаем его на всякий случай
-                        String cleanBase64 = photoValue.replace("BASE64,", "").replace("base64,", "").trim();
+
+                        String cleanBase64 = photoValue;
+                        int base64Index = photoValue.indexOf("BASE64,");
+                        if (base64Index == -1) base64Index = photoValue.indexOf("base64,");
+                        if (base64Index != -1) {
+                            cleanBase64 = photoValue.substring(base64Index + 7);
+                        }
 
                         try {
-                            // 1. Декодируем Base64 в байты
                             byte[] imageBytes = android.util.Base64.decode(cleanBase64, android.util.Base64.DEFAULT);
 
-                            // 2. Декодируем байты в Bitmap
-                            Bitmap originalBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                            // Читаем только размеры (не аллоцируем память под пиксели!)
+                            BitmapFactory.Options boundsOptions = new BitmapFactory.Options();
+                            boundsOptions.inJustDecodeBounds = true;
+                            BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, boundsOptions);
 
-                            if (originalBitmap != null) {
-                                // 3. Вычисляем целевой размер
+                            if (boundsOptions.outWidth == -1 || boundsOptions.outHeight == -1) {
+                                photo = photoValue;
+                            } else {
+                                // Вычисляем целевой размер
                                 int step = context.getResources().getInteger(R.integer.pref_LocalEvents_PhotoSize_step);
                                 int maxSize = step + step * preferences_local_events_photo_size;
 
-                                // 4. Уменьшаем изображение с помощью вашего метода
-                                Bitmap scaledBitmap = ImageUtils.scaleDownBitmap(originalBitmap, maxSize);
+                                // Вычисляем inSampleSize ===
+                                int sampleSize = ImageUtils.calculateInSampleSize(boundsOptions.outWidth, boundsOptions.outHeight, maxSize, maxSize);
 
-                                // 5. Сжимаем обратно в байты (JPEG 80% - оптимальный баланс качества и размера для списков/виджетов)
-                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                                scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-                                byte[] scaledBytes = byteArrayOutputStream.toByteArray();
+                                // Декодируем СРАЗУ уменьшенное изображение
+                                BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
+                                decodeOptions.inSampleSize = sampleSize;
+                                Bitmap scaledBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, decodeOptions);
 
-                                // 6. Кодируем уменьшенное изображение обратно в Base64
-                                photo = android.util.Base64.encodeToString(scaledBytes, android.util.Base64.DEFAULT);
+                                if (scaledBitmap != null) {
+                                    // Переиспользуем ByteArrayOutputStream (очищаем вместо создания нового)
+                                    reusableBaos.reset();
+                                    scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, reusableBaos);
+                                    byte[] scaledBytes = reusableBaos.toByteArray();
 
-                                // 7. ВАЖНО: Освобождаем память, чтобы не было OOM при парсинге больших файлов
-                                if (originalBitmap != scaledBitmap) {
-                                    originalBitmap.recycle();
+                                    photo = android.util.Base64.encodeToString(scaledBytes, android.util.Base64.DEFAULT);
+                                    scaledBitmap.recycle();
+                                } else {
+                                    photo = photoValue;
                                 }
-                                scaledBitmap.recycle();
-                            } else {
-                                // Если декодирование не удалось (например, это не картинка), сохраняем исходное значение
-                                photo = photoValue;
                             }
                         } catch (Exception e) {
-                            Log.e(TAG, "Error processing vCard photo (" + (lastName + " " + firstName + " " + middleName).trim()
-                                    + ", size: " + photoValue.length() + "): " + e.getMessage());
-                            // При ошибке сохраняем исходную строку, чтобы не потерять данные полностью
+                            Log.e(TAG, "Error processing vCard photo: " + e.getMessage());
                             photo = photoValue;
                         }
                     }
