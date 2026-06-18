@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 21:39
+ *  * Created by Vladimir Belov on 18.06.2026, 20:20
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 21:09
+ *  * Last modified 18.06.2026, 19:41
  *
  */
 
@@ -10,7 +10,6 @@ package org.vovka.birthdaycountdown;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -65,10 +64,8 @@ public class ToastExpander {
                         @ColorInt int colorBack = 0;
                         @ColorInt int colorAction = 0;
                         try {
-                            TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
-                            colorBack = ta.getColor(R.styleable.Theme_colorPrimary, 0);
-                            colorAction = ta.getColor(R.styleable.Theme_windowTitleColor, 0);
-                            ta.recycle();
+                            colorBack = eventsData.getThemeBackColor();
+                            colorAction = eventsData.getThemeWindowTitleColor();
                         } catch (Resources.NotFoundException ignored) { /**/ }
 
                         mFluentSnackbar
@@ -76,7 +73,7 @@ public class ToastExpander {
                                 .maxLines(8)
                                 .backgroundColor(colorBack)
                                 .important()
-                                .actionText(context.getText(R.string.button_off).toString())
+                                .actionText(eventsData.getResources().getString(R.string.button_off))
                                 .actionTextColor(colorAction)
                                 .action(v -> {
                                     if (type == msgTypeDebug) {

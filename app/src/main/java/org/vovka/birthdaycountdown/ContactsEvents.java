@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2026, 01:09
+ *  * Created by Vladimir Belov on 18.06.2026, 20:20
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.06.2026, 01:09
+ *  * Last modified 18.06.2026, 20:17
  *
  */
 
@@ -2458,6 +2458,22 @@ public class ContactsEvents {
     }
 
     /**
+     * Возвращает цвет заголовка окна текущей темы
+     *
+     * @return Цвет
+     */
+    @ColorInt
+    int getThemeWindowTitleColor() {
+        if (context == null) return 0;
+        Resources.Theme theme = context.getResources().newTheme();
+        theme.applyStyle(preferences_theme.themeMain, true);
+        try (TypedArray ta = theme.obtainStyledAttributes(R.styleable.Theme)) {
+            int resId = ta.getResourceId(R.styleable.Theme_windowTitleColor, 0);
+            return ResourcesCompat.getColor(getResources(), resId, theme);
+        }
+    }
+
+    /**
      * Сохранение настроек в SharedPreferences
      */
     @SuppressLint("ApplySharedPref")
@@ -4379,6 +4395,33 @@ public class ContactsEvents {
         return eventData;
     }
 
+    /** Возвращает данные события в виде строки (разделитель: \n)
+     * @param event Массив с данными события
+     * @return Строка
+     */
+    @NonNull
+    String getEventDataAsString(@NonNull String[] event) {
+        StringBuilder eventInfo = new StringBuilder();
+        try {
+            int eventRows = event.length;
+            for (int i = 0; i < eventRows; i++) {
+                String row = event[i];
+                if (i == ContactsEvents.Position_photo && !TextUtils.isEmpty(row)) {
+                    eventInfo.append(i)
+                            .append(Constants.STRING_COLON_SPACE)
+                            .append(getResources().getString(R.string.event_photo_details, row.length()))
+                            .append(Constants.STRING_EOL);
+                } else {
+                    eventInfo.append(i).append(Constants.STRING_COLON_SPACE).append(row).append(Constants.STRING_EOL);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return eventInfo.toString();
+    }
+
     void initNotifications() {
         //https://stackoverflow.com/questions/51343550/how-to-give-notifications-on-android-on-specific-time-in-android-oreo/51645875#51645875
 
@@ -4973,7 +5016,7 @@ public class ContactsEvents {
                         continue;
                     }
 
-                    if (trimmedLine.equalsIgnoreCase("BEGIN:VCARD")) {
+                    if (trimmedLine.equalsIgnoreCase(Constants.vCard_EventBegin)) {
                         inVCard = true;
                         currentVCard.setLength(0);
                         currentVCard.append(trimmedLine).append("\n");
@@ -4982,7 +5025,7 @@ public class ContactsEvents {
                         currentVCard.append(trimmedLine).append("\n");
                         previousLineEndedWithEquals = trimmedLine.endsWith("=");
 
-                        if (trimmedLine.equalsIgnoreCase("END:VCARD")) {
+                        if (trimmedLine.equalsIgnoreCase(Constants.vCard_EventEnd)) {
                             inVCard = false;
                             previousLineEndedWithEquals = false;
                             processSingleVCardString(currentVCard.toString(), today, eventSource, file, reusableBaos);
@@ -5021,9 +5064,9 @@ public class ContactsEvents {
             String[] lines = vCardString.split("\n", -1);
 
             for (String line : lines) {
-                if (line.startsWith(Constants.vCard_EventBegin)) { // "BEGIN:VCARD"
+                if (line.startsWith(Constants.vCard_EventBegin)) { // Constants.vCard_EventBegin
                     event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
-                } else if (line.startsWith(Constants.vCard_EventEnd) && event != null) { // "END:VCARD"
+                } else if (line.startsWith(Constants.vCard_EventEnd) && event != null) { // Constants.vCard_EventEnd
 
                     if (eventDateFirstTime != null && (!firstName.isEmpty() || !lastName.isEmpty() || !fullName.isEmpty())) {
                         String eventNewDate = Constants.EVENT_PREFIX_FILE_EVENT + Constants.STRING_COLON_SPACE
@@ -5164,6 +5207,8 @@ public class ContactsEvents {
                                 Objects.requireNonNull(sdf_java.get()));
                         if (eventDateFirstTime != null) {
                             useEventYear = hasYear;
+                        } else {
+                            ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_date_parse_error) + line);
                         }
                     }
 
@@ -7212,10 +7257,22 @@ public class ContactsEvents {
 
             if (dayDiff == -1) {
 
-                StringBuilder sb = new StringBuilder();
-                sb.append(resources.getString(R.string.msg_date_parse_error)).append(singleEventArray[Position_dates]).append(Constants.STRING_COMMA_SPACE).append(singleEventArray[Position_personFullName]);
+                Log.i(TAG, resources.getString(R.string.msg_date_parse_error) + getEventDataAsString(singleEventArray));
 
-                Log.i(TAG, sb.toString());
+                StringBuilder sb = new StringBuilder();
+                String dates;
+                if (TextUtils.isEmpty(singleEventArray[Position_eventDateNextTime])) {
+                    dates = singleEventArray[Position_dates];
+                } else {
+                    dates = singleEventArray[Position_eventDateNextTime];
+                }
+                sb.append(resources.getString(R.string.msg_date_parse_error))
+                        .append(singleEventArray[Position_eventSource])
+                        .append(Constants.STRING_COMMA_SPACE)
+                        .append(dates)
+                        .append(Constants.STRING_COMMA_SPACE)
+                        .append(singleEventArray[Position_personFullName]
+                        );
                 ToastExpander.showInfoMsg(context, sb.toString());
 
                 eventList.set(eventIndex, Constants.STRING_EMPTY);

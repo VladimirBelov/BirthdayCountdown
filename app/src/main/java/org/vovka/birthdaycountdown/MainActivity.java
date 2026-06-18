@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2026, 01:09
+ *  * Created by Vladimir Belov on 18.06.2026, 20:20
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.06.2026, 00:44
+ *  * Last modified 18.06.2026, 20:17
  *
  */
 
@@ -783,18 +783,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void showEventDetails() {
         try {
 
-            StringBuilder eventInfo = new StringBuilder();
-            int eventRows = selectedEvent.length;
-            for (int i = 0; i < eventRows; i++) {
-                String row = selectedEvent[i];
-                if (i == ContactsEvents.Position_photo && !TextUtils.isEmpty(row)) {
-                    eventInfo.append(i).append(Constants.STRING_COLON_SPACE).append(getString(R.string.event_photo_details, row.length())).append(Constants.STRING_EOL);
-                } else {
-                    eventInfo.append(i).append(Constants.STRING_COLON_SPACE).append(row).append(Constants.STRING_EOL);
-                }
-            }
-
-            String eventSubType = selectedEvent[ContactsEvents.Position_eventSubType];
+            final String eventInfo = eventsData.getEventDataAsString(selectedEvent);
+            final String eventSubType = selectedEvent[ContactsEvents.Position_eventSubType];
             int roundingFactor;
             if (eventSubType.equals(Constants.EventType_Calendar) || eventSubType.equals(Constants.EventType_File)) {
                 roundingFactor = 1;
@@ -824,7 +814,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                     .setCustomTitle(customTitle)
-                    .setMessage(eventInfo.toString())
+                    .setMessage(eventInfo)
                     .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.dismiss());
             AlertDialog alertToShow = builder.create();
 
