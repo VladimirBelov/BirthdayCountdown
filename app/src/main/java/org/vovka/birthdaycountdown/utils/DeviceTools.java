@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.01.2026, 21:25
+ *  * Created by Vladimir Belov on 20.06.2026, 00:32
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 18:01
+ *  * Last modified 19.06.2026, 20:09
  *
  */
 
@@ -84,6 +84,11 @@ public class DeviceTools {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM;
     }
 
+    /** Возвращает полный путь до файла
+     * @param context Контекст
+     * @param uri URI файла
+     * @return Путь до файла
+     */
     @NonNull
     public static String getPath(Context context, Uri uri) {
     //https://stackoverflow.com/questions/13209494/how-to-get-the-full-file-path-from-uri

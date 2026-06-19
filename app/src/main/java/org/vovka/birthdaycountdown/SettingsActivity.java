@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2026, 01:09
+ *  * Created by Vladimir Belov on 20.06.2026, 00:32
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.06.2026, 00:56
+ *  * Last modified 19.06.2026, 20:54
  *
  */
 
@@ -907,7 +907,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             switch (eventType) {
                 case Constants.Type_MultiEvent:
                     prefKey = R.string.pref_CustomEvents_MultiType_LocalFiles_key;
-                    summaryKey = R.string.pref_CustomEvents_LocalFiles_summary;
+                    summaryKey = R.string.pref_CustomEvents_MultiType_LocalFiles_summary;
                     files = eventsData.preferences_MultiType_files;
                     break;
                 case Constants.EventType_BirthDay:
@@ -1648,9 +1648,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.setType("text/*");
-                intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"text/plain", "text/calendar"});
-
+                intent.setType("*/*");
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{
+                        "text/plain",
+                        "text/calendar",
+                        "text/vcard",
+                        "text/x-vcard"});
                 try {
                     startActivityForResult(intent, Constants.RESULT_PICK_FILE_FOR_IMPORT_EVENTS);
                 } catch (ActivityNotFoundException e) { /**/ }

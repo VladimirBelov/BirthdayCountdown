@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 16.06.2026, 02:22
+  ~  * Created by Vladimir Belov on 20.06.2026, 00:32
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.06.2026, 23:17
+  ~  * Last modified 19.06.2026, 20:51
   ~  */
   -->
 
@@ -239,6 +239,7 @@
     <string name="hint_Color">Значэнне ў ARGB</string>
     <string name="hint_Prev">Папярэдні супадзенне</string>
     <string name="hint_Next">Наступнае супадзенне</string>
+    <string name="hint_Description">Разгарнуць апісанне падзеі</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Так</string>
@@ -447,12 +448,16 @@
     <string name="pref_CustomEvents_Other_title">Іншыя падзеі</string>
     <string name="pref_CustomEvents_Other_Labels_title">Свае назвы</string>
     <string name="pref_CustomEvents_Other_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікаваны як іншыя падзеі (праз коску)</string>
+    <string name="pref_CustomEvents_Other_Embedded_title">Убудаваныя падзеі</string>
+    <string name="pref_CustomEvents_Other_Embedded_summary">Паказаць гэтыя іншыя падзеі з унутранай базы дадзеных</string>
 
     <string name="pref_CustomEvents_Holiday_title">Святы</string>
     <string name="pref_CustomEvents_Holiday_Labels_title">Свае назвы</string>
     <string name="pref_CustomEvents_Holiday_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікавацца як святы (па косцы)</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Дзяржаўныя святы</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Паказаць гэтыя дзяржаўныя святы</string>
+    <string name="pref_CustomEvents_Holiday_Other_Labels_title">Іншыя святы</string>
+    <string name="pref_CustomEvents_Holiday_Other_Labels_summary">Паказаць гэтыя іншыя святы з унутранай базы дадзеных</string>
 
     <string name="pref_CustomEvents_Fact_title">Факты</string>
     <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Згрупаваныя факты</string>
@@ -463,6 +468,8 @@
     <string name="pref_CustomEvents_Calendars_summary">Паказваць падзеі з абраных календароў</string>
     <string name="pref_CustomEvents_LocalFiles_title">Файлы</string>
     <string name="pref_CustomEvents_LocalFiles_summary">Паказваць падзеі з абраных файлаў. Доўгі націск на элеменце спісу для прагляду файла</string>
+
+    <string name="pref_CustomEvents_MultiType_LocalFiles_summary">Паказваць падзеі з абраных файлаў (фарматы: DarkBirthday, iCalendar, vCard, BirthdayPro). Доўгі націск на элеменце спісу для прагляду файла</string>
 
     <string name="pref_CustomEvents_Custom_title">Карыстальніцкая падзея</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Загаловак падзеі</string>
@@ -1215,7 +1222,7 @@
     <string name="pref_Tools_LocalEvents_Restore_title">Імпарт мясцовых падзей</string>
     <string name="pref_Tools_LocalEvents_Restore_result">Імпартаваныя падзеі: %1$d, прапушчаныя: %2$d, памылкі: %3$d</string>
     <string name="pref_Tools_Events_Import_title">Імпартаваць падзеі файла</string>
-    <string name="pref_Tools_Events_Import_summary">Выбраць файл для аналізу і імпарту падзей (TXT, ICS)…</string>
+    <string name="pref_Tools_Events_Import_summary">Выбраць файл для аналізу і імпарту падзей (TXT, ICS, VCF)…</string>
     <string name="pref_Tools_Events_Import_Dialog_title">Імпарт падзей</string>
     <string name="pref_Tools_Events_Import_Unrecognized_title">Тып для нераспазнаных падзей:</string>
     <string name="pref_Tools_Events_Import_Unrecognized_type">- не выбрана -</string>

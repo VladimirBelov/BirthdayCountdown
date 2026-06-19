@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 16.06.2026, 02:22
+  ~  * Created by Vladimir Belov on 20.06.2026, 00:32
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.06.2026, 23:17
+  ~  * Last modified 19.06.2026, 20:51
   ~  */
   -->
 
@@ -239,6 +239,7 @@
     <string name="hint_Color">valor ARGB</string>
     <string name="hint_Prev">Partido anterior</string>
     <string name="hint_Next">Próximo partido</string>
+    <string name="hint_Description">Expandir la descripción del evento</string>
 
     <string name="button_ok">Okay</string>
     <string name="button_yes">Sí</string>
@@ -447,12 +448,16 @@
     <string name="pref_CustomEvents_Other_title">Otros eventos</string>
     <string name="pref_CustomEvents_Other_Labels_title">Etiquetas de eventos</string>
     <string name="pref_CustomEvents_Other_Labels_summary">Eventos con estas etiquetas se identificarán como otros eventos (separados por coma)</string>
+    <string name="pref_CustomEvents_Other_Embedded_title">Eventos integrados</string>
+    <string name="pref_CustomEvents_Other_Embedded_summary">Mostrar estos otros eventos de la base de datos interna</string>
 
     <string name="pref_CustomEvents_Holiday_title">Vacaciones</string>
     <string name="pref_CustomEvents_Holiday_Labels_title">Nombres personalizados</string>
     <string name="pref_CustomEvents_Holiday_Labels_summary">Los eventos con dichas etiquetas se identificarán como días festivos (separados por comas)</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Vacaciones</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Mostrar estos días festivos</string>
+    <string name="pref_CustomEvents_Holiday_Other_Labels_title">Otros días festivos</string>
+    <string name="pref_CustomEvents_Holiday_Other_Labels_summary">Mostrar estos otros días festivos de la base de datos interna</string>
 
     <string name="pref_CustomEvents_Fact_title">Hechos</string>
     <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Hechos agrupados</string>
@@ -471,6 +476,8 @@
     <string name="pref_CustomEvents_Calendars_summary">Ver eventos de calendarios seleccionados</string>
     <string name="pref_CustomEvents_LocalFiles_title">Archivos locales</string>
     <string name="pref_CustomEvents_LocalFiles_summary">Mostrar eventos de archivos elegidos. Mantenga presionado un elemento de la lista para ver un archivo</string>
+
+    <string name="pref_CustomEvents_MultiType_LocalFiles_summary">Mostrar eventos de archivos elegidos (formatos: DarkBirthday, iCalendar, vCard, BirthdayPro). Mantenga presionado un elemento de la lista para ver un archivo</string>
 
     <string-array name="pref_Theme_entries">
         <item>Marrón</item>
@@ -1216,7 +1223,7 @@ Haga clic largo en el elemento para seleccionar el color"</string>
     <string name="pref_Tools_LocalEvents_Restore_title">Importar eventos locales</string>
     <string name="pref_Tools_LocalEvents_Restore_result">Eventos importados: %1$d, omitidos: %2$d, errores: %3$d</string>
     <string name="pref_Tools_Events_Import_title">Importar eventos de archivo</string>
-    <string name="pref_Tools_Events_Import_summary">Seleccionar archivo para analizar e importar eventos (TXT, ICS)…</string>
+    <string name="pref_Tools_Events_Import_summary">Seleccionar archivo para analizar e importar eventos (TXT, ICS, VCF)…</string>
     <string name="pref_Tools_Events_Import_Dialog_title">Importación de eventos</string>
     <string name="pref_Tools_Events_Import_Unrecognized_title">Tipo de eventos no reconocidos:</string>
     <string name="pref_Tools_Events_Import_Unrecognized_type">- no seleccionado -</string>

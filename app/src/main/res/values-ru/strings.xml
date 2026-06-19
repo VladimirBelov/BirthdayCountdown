@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 16.06.2026, 02:22
+  ~  * Created by Vladimir Belov on 20.06.2026, 00:32
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.06.2026, 23:17
+  ~  * Last modified 19.06.2026, 20:50
   ~  */
   -->
 
@@ -476,6 +476,8 @@
     <string name="pref_CustomEvents_Calendars_summary">Показывать события из выбранных календарей</string>
     <string name="pref_CustomEvents_LocalFiles_title">Файлы</string>
     <string name="pref_CustomEvents_LocalFiles_summary">Показывать события из выбранных файлов (форматы: DarkBirthday, iCalendar, BirthdayPro). Долгое нажатие на элементе списка для просмотра файла</string>
+
+    <string name="pref_CustomEvents_MultiType_LocalFiles_summary">Показывать события из выбранных файлов (форматы: DarkBirthday, iCalendar, vCard, BirthdayPro). Долгое нажатие на элементе списка для просмотра файла</string>
 
     <string-array name="pref_Theme_entries">
         <item>Коричневая</item>
@@ -1221,7 +1223,7 @@
     <string name="pref_Tools_LocalEvents_Restore_title">Восстановить локальные события</string>
     <string name="pref_Tools_LocalEvents_Restore_result">Импортировано событий: %1$d, пропущено: %2$d, ошибок: %3$d</string>
     <string name="pref_Tools_Events_Import_title">Импортировать события из файла</string>
-    <string name="pref_Tools_Events_Import_summary">Выберите файл для анализа и импорта событий (TXT, ICS)…</string>
+    <string name="pref_Tools_Events_Import_summary">Выберите файл для анализа и импорта событий (TXT, ICS, VCF)…</string>
     <string name="pref_Tools_Events_Import_Dialog_title">Импорт событий</string>
     <string name="pref_Tools_Events_Import_Unrecognized_title">Тип для нераспознанных событий:</string>
     <string name="pref_Tools_Events_Import_Unrecognized_type">- не выбран -</string>

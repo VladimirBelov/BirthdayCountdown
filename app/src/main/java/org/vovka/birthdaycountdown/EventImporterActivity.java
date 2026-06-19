@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.06.2026, 02:29
+ *  * Created by Vladimir Belov on 20.06.2026, 00:32
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.06.2026, 01:45
+ *  * Last modified 20.06.2026, 00:17
  *
  */
 
@@ -10,8 +10,12 @@ package org.vovka.birthdaycountdown;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,10 +40,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
+import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
 import org.vovka.birthdaycountdown.utils.UiTools;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -140,7 +151,8 @@ public class EventImporterActivity extends AppCompatActivity {
                         events.add(new EventItem(
                                 eventData.get(ContactsEvents.Position_eventIcon),
                                 eventData.get(ContactsEvents.Position_personFullName), //todo: вывод Position_personFullNameAlt
-                                details)
+                                details,
+                                eventData.get(ContactsEvents.Position_photo))
                         );
                         if (!hasUnrecognizedEvents && StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
                                 .equals(Constants.EventType_Unrecognized)) {
@@ -258,28 +270,37 @@ public class EventImporterActivity extends AppCompatActivity {
 
         try {
 
-            details.add(getString(R.string.pref_Tools_Events_Import_result_Filename, DeviceTools.getPath(this, uri)));
+            final String fileName = DeviceTools.getPath(this, uri);
+            details.add(getString(R.string.pref_Tools_Events_Import_result_Filename, fileName));
             String fileContent = Constants.STRING_EMPTY;
 
-            if (uri != null) fileContent = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL);
+            if (fileName.toLowerCase().endsWith(".vcf") || fileName.toLowerCase().endsWith(".vcard")) {
 
-            if (fileContent.isEmpty()) {
-                details.add(getString(R.string.pref_Tools_Events_Import_result_noAccess));
-                return eventsList;
-            }
-
-            String[] fileLines =  fileContent.split(Constants.STRING_EOL, -1);
-
-            if (fileContent.startsWith(Constants.iCal_CalendarBegin)) {
-
-                getMultilineEvents(fileLines, eventsList, statEventsSkipped, statEventsDoubles, statEventsUnRecognized);
+                streamVCardEvents(uri, eventsList, statEventsDoubles);
 
             } else {
 
-                for (String eventString : fileLines) {
-                    getSingleLineEvent(eventString, eventsList, eventsData.getToday(), statEventsSkipped, statEventsDoubles, statEventsUnRecognized);
+                if (uri != null)
+                    fileContent = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL);
+
+                if (fileContent.isEmpty()) {
+                    details.add(getString(R.string.pref_Tools_Events_Import_result_noAccess));
+                    return eventsList;
                 }
 
+                String[] fileLines = fileContent.split(Constants.STRING_EOL, -1);
+
+                if (fileContent.startsWith(Constants.iCal_CalendarBegin)) {
+
+                    getICalEvents(fileLines, eventsList, statEventsSkipped, statEventsDoubles, statEventsUnRecognized);
+
+                } else {
+
+                    for (String eventString : fileLines) {
+                        getSingleLineEvent(eventString, eventsList, eventsData.getToday(), statEventsSkipped, statEventsDoubles, statEventsUnRecognized);
+                    }
+
+                }
             }
 
         } catch (Exception e) {
@@ -307,14 +328,14 @@ public class EventImporterActivity extends AppCompatActivity {
         return eventsList;
     }
 
-    /** Добавляет в список события icalendar
+    /** Добавляет в список события iCalendar
      * @param fileLines Строки с данными событий
      * @param eventsList Список событий
      * @param statEventsSkipped Счётчик пропущенных строк
      * @param statEventsDoubles Счётчик дублирований с существующими локальными событиями
      * @param statEventsUnRecognized Счётчик событий с нераспознанным или неуказанным типом
      */
-    private void getMultilineEvents(String[] fileLines, List<String> eventsList, AtomicInteger statEventsSkipped, AtomicInteger statEventsDoubles, AtomicInteger statEventsUnRecognized) {
+    private void getICalEvents(String[] fileLines, List<String> eventsList, AtomicInteger statEventsSkipped, AtomicInteger statEventsDoubles, AtomicInteger statEventsUnRecognized) {
         try {
 
             TreeMap<Integer, String> eventData = new TreeMap<>();
@@ -324,7 +345,7 @@ public class EventImporterActivity extends AppCompatActivity {
             String eventDescription = Constants.STRING_EMPTY;
             String eventURL = Constants.STRING_EMPTY;
             boolean useEventYear = true;
-            StringBuilder eventLines = new StringBuilder();
+            StringBuilder eventLines = new StringBuilder(); //todo: удалить
             String emptyEventYear = null;
 
             for (String line: fileLines) {
@@ -414,7 +435,7 @@ public class EventImporterActivity extends AppCompatActivity {
                     if (similarEventIds != null) {
                         statEventsDoubles.getAndIncrement();
                     } else {
-                            statEventsUnRecognized.getAndIncrement();
+                        statEventsUnRecognized.getAndIncrement();
                         eventsList.add(eventDataAsString);
                     }
 
@@ -720,6 +741,301 @@ public class EventImporterActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Потоковое чтение vCard файла без загрузки всего файла в память.
+     * (поддерживаются дни рождения, версии 2.1 и 3.0, включая Quoted-Printable фолдинг)
+     *
+     * @param uri        URI фала
+     */
+    private void streamVCardEvents(@NonNull Uri uri, List<String> eventsList,
+                                   AtomicInteger statEventsDoubles) {
+        try {
+
+            if (this.getContentResolver() == null) {
+                return;
+            }
+
+            ByteArrayOutputStream reusableBaos = new ByteArrayOutputStream(8192);
+
+            try (InputStream inputStream = this.getContentResolver().openInputStream(uri);
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
+                String line;
+                StringBuilder currentVCard = new StringBuilder();
+                boolean inVCard = false;
+                boolean previousLineEndedWithEquals = false;
+
+                while ((line = reader.readLine()) != null) {
+                    if (line.isEmpty()) {
+                        previousLineEndedWithEquals = false;
+                        continue;
+                    }
+
+                    boolean isContinuation = false;
+
+                    if (inVCard && currentVCard.length() > 0) {
+                        if (previousLineEndedWithEquals) {
+                            if (line.equals(" =")) {
+                                // На текущей строке только "=", который оторвался от "=" с предыдущей строки
+                                currentVCard.deleteCharAt(currentVCard.length() - 1); // удаляем '\n'
+                                currentVCard.append("=").append("\n");
+                                previousLineEndedWithEquals = false;
+                                continue;
+                            } else {
+                                // Удаляем ДВА символа: '=' и '\n'
+                                currentVCard.delete(currentVCard.length() - 2, currentVCard.length());
+                                currentVCard.append(line).append("\n");  // ← добавили \n
+                                isContinuation = true;
+                            }
+                        } else if (line.endsWith("==")) {
+                            // Конец Base64
+                            currentVCard.deleteCharAt(currentVCard.length() - 1); // удаляем '\n'
+                            currentVCard.append(line.trim()).append("\n");  // ← добавили \n
+                            continue;
+                        } else if (line.charAt(0) == ' ' || line.charAt(0) == '\t') {
+                            currentVCard.deleteCharAt(currentVCard.length() - 1); // удаляем '\n'
+                            currentVCard.append(line.substring(1)).append("\n");  // ← добавили \n
+                            isContinuation = true;
+                        }
+                    }
+
+                    if (isContinuation) {
+                        previousLineEndedWithEquals = line.endsWith("=");
+                        continue;
+                    }
+
+                    String trimmedLine = line.trim();
+                    if (trimmedLine.isEmpty()) {
+                        previousLineEndedWithEquals = false;
+                        continue;
+                    }
+
+                    if (trimmedLine.equalsIgnoreCase(Constants.vCard_EventBegin)) {
+                        inVCard = true;
+                        currentVCard.setLength(0);
+                        currentVCard.append(trimmedLine).append("\n");
+                        previousLineEndedWithEquals = false;
+                    } else if (inVCard) {
+                        currentVCard.append(trimmedLine).append("\n");
+                        previousLineEndedWithEquals = trimmedLine.endsWith("=");
+
+                        if (trimmedLine.equalsIgnoreCase(Constants.vCard_EventEnd)) {
+                            inVCard = false;
+                            previousLineEndedWithEquals = false;
+                            processSingleVCardString(currentVCard.toString(), eventsList,
+                                    reusableBaos, statEventsDoubles);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error streaming vCard: " + uri, e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Обработка строки одного контакта vCard
+     */
+    private void processSingleVCardString(@NonNull String vCardString, List<String> eventsList,
+                                          @NonNull ByteArrayOutputStream reusableBaos,
+                                          AtomicInteger statEventsDoubles) {
+        try {
+            final TreeMap<Integer, String> eventData = new TreeMap<>();
+
+            ContactsEvents.Event event = null;
+            Date eventDateFirstTime = null;
+            String url = Constants.STRING_EMPTY;
+            String lastName = Constants.STRING_EMPTY;
+            String firstName = Constants.STRING_EMPTY;
+            String middleName = Constants.STRING_EMPTY;
+            String fullName = Constants.STRING_EMPTY;
+            String organization = Constants.STRING_EMPTY;
+            String title = Constants.STRING_EMPTY;
+            String photo = Constants.STRING_EMPTY;
+            boolean useEventYear = true;
+
+            String[] lines = vCardString.split("\n", -1);
+
+            for (String line : lines) {
+                if (line.startsWith(Constants.vCard_EventBegin)) {
+
+                    event = eventsData.createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
+
+                } else if (line.startsWith(Constants.vCard_EventEnd) && event != null) {
+
+                    if (eventDateFirstTime == null || // Контакт без событий
+                            (firstName.isEmpty() && lastName.isEmpty() && fullName.isEmpty())) { //Имя не определено
+                        return;
+                    }
+
+                    String eventDateString;
+                    if (useEventYear) {
+                        eventDateString = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(eventDateFirstTime);
+                    } else {
+                        eventDateString = Objects.requireNonNull(ContactsEvents.sdf_DDMM.get()).format(eventDateFirstTime);
+                    }
+                    eventData.put(ContactsEvents.Position_eventDateFirstTime, eventDateString);
+
+                    String personFullName;
+                    String personFullNameAlt;
+
+                    if (!firstName.isEmpty()) {
+                        if (!middleName.isEmpty()) {
+                            personFullName = firstName + Constants.STRING_SPACE + middleName;
+                        } else {
+                            personFullName = firstName;
+                        }
+                        if (!lastName.isEmpty()) {
+                            personFullName += Constants.STRING_SPACE + lastName;
+                        }
+                    } else if (!lastName.isEmpty()) {
+                        personFullName = lastName;
+                    } else {
+                        personFullName = fullName;
+                    }
+                    personFullNameAlt = Person.getAltName(personFullName, ContactsEvents.FormatName.NameFirst);
+
+                    eventData.put(ContactsEvents.Position_personFullName, personFullName);
+                    eventData.put(ContactsEvents.Position_personFullNameAlt, personFullNameAlt);
+                    eventData.put(ContactsEvents.Position_eventCaption, event.caption);
+                    eventData.put(ContactsEvents.Position_eventType, event.type);
+                    eventData.put(ContactsEvents.Position_eventSubType, event.subType);
+                    eventData.put(ContactsEvents.Position_eventIcon, Integer.toString(event.icon));
+                    eventData.put(ContactsEvents.Position_eventEmoji, event.emoji);
+                    eventData.put(ContactsEvents.Position_eventURL, url);
+
+                    if (!TextUtils.isEmpty(organization)) eventData.put(ContactsEvents.Position_organization, organization);
+                    if (!TextUtils.isEmpty(title)) eventData.put(ContactsEvents.Position_title, title);
+
+                    if (!TextUtils.isEmpty(photo)) {
+                        eventData.put(ContactsEvents.Position_photo, photo);
+                    }
+
+                    eventsData.fillEmptyEventData(eventData);
+                    String eventDataAsString = eventsData.getEventData(eventData);
+
+                    //Проверка на существующие локальные события
+                    List<String> similarEventIds = eventsData.getSimilarLocalEventIds(eventDataAsString,
+                            EnumSet.of(
+                                    ContactsEvents.getSimilarFields.PERSON_FULL_NAME
+                            ));
+
+                    if (similarEventIds != null) {
+                        statEventsDoubles.getAndIncrement();
+                    } else {
+                        eventsList.add(eventDataAsString);
+                    }
+                    eventData.clear();
+
+                } else if (event != null) {
+
+                    // Парсинг полей текущего контакта
+                    String nValue = StringUtils.getTagValue(line, Constants.vCard_Name);
+                    if (nValue != null) {
+                        if (StringUtils.isQuotedPrintable(line)) nValue = StringUtils.decodeQuotedPrintable(nValue, StandardCharsets.UTF_8);
+                        List<String> nameParts = StringUtils.splitWithEscape(nValue, Constants.STRING_SEMICOLON);
+                        if (nameParts.size() > 2) {
+                            lastName = StringUtils.cleanValue(nameParts.get(0));
+                            firstName = StringUtils.cleanValue(nameParts.get(1));
+                            middleName = StringUtils.cleanValue(nameParts.get(2));
+                        }
+                    }
+
+                    String fnValue = StringUtils.getTagValue(line, Constants.vCard_FormattedName);
+                    if (fnValue != null && lastName.isEmpty() && firstName.isEmpty()) {
+                        if (StringUtils.isQuotedPrintable(line)) fnValue = StringUtils.decodeQuotedPrintable(fnValue, StandardCharsets.UTF_8);
+                        fullName = StringUtils.cleanValue(fnValue);
+                    }
+
+                    String bdayValue = StringUtils.getTagValue(line, Constants.vCard_Birthday);
+                    if (bdayValue != null) {
+                        boolean hasYear = !bdayValue.startsWith(Constants.STRING_MINUS);
+                        String dateToParse = hasYear ? bdayValue : eventsData.getToday().get(Calendar.YEAR) + bdayValue.substring(1);
+                        eventDateFirstTime = AppDateUtils.parseDateWithFormats(dateToParse,
+                                Objects.requireNonNull(ContactsEvents.sdf_YYYYMMDD_noDiv.get()),
+                                Objects.requireNonNull(ContactsEvents.sdf_java.get()));
+                        if (eventDateFirstTime != null) {
+                            useEventYear = hasYear;
+                        } else {
+                            ToastExpander.showInfoMsg(this, getString(R.string.msg_date_parse_error) + line);
+                        }
+                    }
+
+                    String orgValue = StringUtils.getTagValue(line, Constants.vCard_Org);
+                    if (orgValue != null) {
+                        if (StringUtils.isQuotedPrintable(line)) orgValue = StringUtils.decodeQuotedPrintable(orgValue, StandardCharsets.UTF_8);
+                        List<String> orgParts = StringUtils.splitWithEscape(orgValue, Constants.STRING_SEMICOLON);
+                        if (!orgParts.isEmpty()) organization = StringUtils.cleanValue(orgParts.get(0));
+                    }
+
+                    String titleValue = StringUtils.getTagValue(line, Constants.vCard_Title);
+                    if (titleValue != null) {
+                        if (StringUtils.isQuotedPrintable(line)) titleValue = StringUtils.decodeQuotedPrintable(titleValue, StandardCharsets.UTF_8);
+                        title = StringUtils.cleanValue(titleValue);
+                    }
+
+                    String urlValue = StringUtils.getTagValue(line, Constants.vCard_URL);
+                    if (urlValue != null) url = urlValue;
+
+                    String photoValue = StringUtils.getTagValue(line, Constants.vCard_Photo);
+                    if (!TextUtils.isEmpty(photoValue)) {
+
+                        String cleanBase64 = photoValue;
+                        int base64Index = photoValue.indexOf("BASE64,");
+                        if (base64Index == -1) base64Index = photoValue.indexOf("base64,");
+                        if (base64Index != -1) {
+                            cleanBase64 = photoValue.substring(base64Index + 7);
+                        }
+
+                        try {
+                            byte[] imageBytes = android.util.Base64.decode(cleanBase64, android.util.Base64.DEFAULT);
+
+                            // Читаем только размеры (не аллоцируем память под пиксели!)
+                            BitmapFactory.Options boundsOptions = new BitmapFactory.Options();
+                            boundsOptions.inJustDecodeBounds = true;
+                            BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, boundsOptions);
+
+                            if (boundsOptions.outWidth == -1 || boundsOptions.outHeight == -1) {
+                                photo = photoValue;
+                            } else {
+                                // Вычисляем целевой размер
+                                int step = this.getResources().getInteger(R.integer.pref_LocalEvents_PhotoSize_step);
+                                int maxSize = step + step * eventsData.preferences_local_events_photo_size;
+
+                                // Вычисляем inSampleSize ===
+                                int sampleSize = ImageUtils.calculateInSampleSize(boundsOptions.outWidth, boundsOptions.outHeight, maxSize, maxSize);
+
+                                // Декодируем СРАЗУ уменьшенное изображение
+                                BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
+                                decodeOptions.inSampleSize = sampleSize;
+                                Bitmap scaledBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, decodeOptions);
+
+                                if (scaledBitmap != null) {
+                                    // Переиспользуем ByteArrayOutputStream (очищаем вместо создания нового)
+                                    reusableBaos.reset();
+                                    scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, reusableBaos);
+                                    byte[] scaledBytes = reusableBaos.toByteArray();
+
+                                    photo = android.util.Base64.encodeToString(scaledBytes, android.util.Base64.DEFAULT);
+                                    scaledBitmap.recycle();
+                                } else {
+                                    photo = photoValue;
+                                }
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error processing vCard photo: " + e.getMessage());
+                            photo = photoValue;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error processing single vCard", e);
+            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
     void doImport() {
         try {
 
@@ -757,7 +1073,9 @@ public class EventImporterActivity extends AppCompatActivity {
                         eventData.put(ContactsEvents.Position_eventSubType, String.valueOf(eventSubTypesIds.get(selectedEventTypeIndex)));
 
                         //Если выбран тип событий контакта, ещё раз пробуем распарсить Организацию, Должность и Имя
-                        if (ContactsEvents.isContactEventType(eventTypeInt)) {
+                        if (ContactsEvents.isContactEventType(eventTypeInt)
+                                && TextUtils.isEmpty(eventData.get(ContactsEvents.Position_organization))
+                                && TextUtils.isEmpty(eventData.get(ContactsEvents.Position_title))) {
                             String eventTitle = eventData.get(ContactsEvents.Position_personFullName);
                             if (eventTitle != null) {
                                 //всё, что внутри скобок в имени - в должность и организацию
@@ -865,20 +1183,27 @@ public class EventImporterActivity extends AppCompatActivity {
         private int iconResId;
         private final String title;
         private final String subtitle;
+        private final String photoData;
 
-        public EventItem(String iconResIdString, String title, String subtitle) {
+        public EventItem(String icon, String title, String subtitle, String photoData) {
             try {
-                this.iconResId = Integer.parseInt(iconResIdString);
+                this.iconResId = Integer.parseInt(icon);
             } catch (NumberFormatException pe) {
                 this.iconResId = R.drawable.ic_event_unknown;
             }
             this.title = title;
             this.subtitle = subtitle;
+            this.photoData = photoData;
         }
 
         public int getIconResId() { return iconResId; }
         public String getTitle() { return title; }
         public String getSubtitle() { return subtitle; }
+        public String getPhotoData() { return photoData; }
+        public Bitmap getPhoto() {
+            byte[] decodedBytes = Base64.decode(photoData, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        }
     }
 
     public interface OnSelectionChangedListener {
@@ -928,7 +1253,11 @@ public class EventImporterActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
             EventItem item = eventList.get(position);
-            holder.icon.setImageResource(item.getIconResId());
+            if (TextUtils.isEmpty(item.getPhotoData())) {
+                holder.icon.setImageResource(item.getIconResId());
+            } else {
+                holder.icon.setImageBitmap(item.getPhoto());
+            }
             holder.title.setText(item.getTitle());
             holder.subtitle.setText(item.getSubtitle());
             holder.checkbox.setChecked(selectedItems[position]);

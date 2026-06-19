@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 16.06.2026, 02:22
+  ~  * Created by Vladimir Belov on 20.06.2026, 00:32
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.06.2026, 23:17
+  ~  * Last modified 19.06.2026, 20:51
   ~  */
   -->
 
@@ -239,6 +239,7 @@
     <string name="hint_Color">Hodnota ARGB</string>
     <string name="hint_Prev">Předchozí shoda</string>
     <string name="hint_Next">Další shoda</string>
+    <string name="hint_Description">Rozbalit popis události</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Ano</string>
@@ -447,12 +448,16 @@
     <string name="pref_CustomEvents_Other_title">Další události</string>
     <string name="pref_CustomEvents_Other_Labels_title">Štítky událostí</string>
     <string name="pref_CustomEvents_Other_Labels_summary">Události s těmito štítky budou označeny jako jiné události (čárkou)</string>
+    <string name="pref_CustomEvents_Other_Embedded_title">Vložené události</string>
+    <string name="pref_CustomEvents_Other_Embedded_summary">Zobrazit tyto další události z interní databáze</string>
 
     <string name="pref_CustomEvents_Holiday_title">Svátky</string>
     <string name="pref_CustomEvents_Holiday_Labels_title">Štítky událostí</string>
     <string name="pref_CustomEvents_Holiday_Labels_summary">Události s těmito štítky budou označeny jako svátky (čárkou)</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Svátky</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Zobrazit tyto státní svátky</string>
+    <string name="pref_CustomEvents_Holiday_Other_Labels_title">Další svátky</string>
+    <string name="pref_CustomEvents_Holiday_Other_Labels_summary">Zobrazit tyto další svátky z interní databáze</string>
 
     <string name="pref_CustomEvents_Fact_title">Fakta</string>
     <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Sbalená fakta</string>
@@ -471,6 +476,8 @@
     <string name="pref_CustomEvents_Calendars_summary">Zobrazit události z vybraných kalendářů</string>
     <string name="pref_CustomEvents_LocalFiles_title">Místní soubory</string>
     <string name="pref_CustomEvents_LocalFiles_summary">Zobrazit události z vybraných souborů. Dlouhým stisknutím položky seznamu zobrazíte soubor</string>
+
+    <string name="pref_CustomEvents_MultiType_LocalFiles_summary">Zobrazit události z vybraných souborů (formáty: DarkBirthday, iCalendar, vCard, BirthdayPro). Dlouhým stisknutím položky seznamu zobrazíte soubor</string>
 
     <string-array name="pref_Theme_entries">
         <item>Hnědá</item>
@@ -1216,7 +1223,7 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     <string name="pref_Tools_LocalEvents_Restore_title">Importovat místní události</string>
     <string name="pref_Tools_LocalEvents_Restore_result">Importované události: %1$d, vynechané: %2$d, chyby: %3$d</string>
     <string name="pref_Tools_Events_Import_title">Události importu souborů</string>
-    <string name="pref_Tools_Events_Import_summary">Vyberte soubor pro analýzu a import událostí (TXT, ICS)…</string>
+    <string name="pref_Tools_Events_Import_summary">Vyberte soubor pro analýzu a import událostí (TXT, ICS, VCF)…</string>
     <string name="pref_Tools_Events_Import_Dialog_title">Import událostí</string>
     <string name="pref_Tools_Events_Import_Unrecognized_title">Typ pro nerozpoznané události:</string>
     <string name="pref_Tools_Events_Import_Unrecognized_type">- nevybráno -</string>

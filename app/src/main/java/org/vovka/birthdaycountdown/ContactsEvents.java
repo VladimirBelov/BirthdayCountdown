@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.06.2026, 13:19
+ *  * Created by Vladimir Belov on 20.06.2026, 00:32
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.06.2026, 13:05
+ *  * Last modified 20.06.2026, 00:22
  *
  */
 
@@ -4406,7 +4406,7 @@ public class ContactsEvents {
             int eventRows = event.length;
             for (int i = 0; i < eventRows; i++) {
                 String row = event[i];
-                if (i == ContactsEvents.Position_photo && !TextUtils.isEmpty(row)) {
+                if (i == ContactsEvents.Position_photo && !TextUtils.isEmpty(row) & !row.startsWith(Constants.STRING_BRACKETS_START)) {
                     eventInfo.append(i)
                             .append(Constants.STRING_COLON_SPACE)
                             .append(getResources().getString(R.string.event_photo_details, row.length()))
@@ -5299,9 +5299,8 @@ public class ContactsEvents {
      * @param orgName      Организация
      * @param title        Должность
      * @param eventURL     URL для события
-     * @return true - данные были обновлены
      */
-    private boolean updateExistEvent(@NonNull Integer eventIndex, String eventID, String eventSource, @NonNull String eventNewDate, String orgName, String title, String eventURL) {
+    private void updateExistEvent(@NonNull Integer eventIndex, String eventID, String eventSource, @NonNull String eventNewDate, String orgName, String title, String eventURL) {
         try {
 
             List<String> singleRowList = Arrays.asList(eventListUpdated.get(eventIndex).split(Constants.STRING_EOT, -1));
@@ -5363,14 +5362,12 @@ public class ContactsEvents {
                     dataRow.append(entry);
                 }
                 eventListUpdated.set(eventIndex, dataRow.toString());
-                return true;
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-        return false;
     }
 
     /**

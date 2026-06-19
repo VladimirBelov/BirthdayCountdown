@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 16.06.2026, 02:22
+  ~  * Created by Vladimir Belov on 20.06.2026, 00:32
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.06.2026, 23:17
+  ~  * Last modified 19.06.2026, 20:51
   ~  */
   -->
 
@@ -239,6 +239,7 @@
     <string name="hint_Color">Значення ARGB</string>
     <string name="hint_Prev">Попередній збіг</string>
     <string name="hint_Next">Наступний збіг</string>
+    <string name="hint_Description">Розгорнути опис події</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Так</string>
@@ -447,12 +448,16 @@
     <string name="pref_CustomEvents_Other_title">Iнші події</string>
     <string name="pref_CustomEvents_Other_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_Other_Labels_summary">Події з такими мітками будуть ідентифіковані як інші події (через кому)</string>
+    <string name="pref_CustomEvents_Other_Embedded_title">Вбудовані події</string>
+    <string name="pref_CustomEvents_Other_Embedded_summary">Показати ці інші події з внутрішньої бази даних</string>
 
     <string name="pref_CustomEvents_Holiday_title">Свята</string>
     <string name="pref_CustomEvents_Holiday_Labels_title">Власнi найменування</string>
     <string name="pref_CustomEvents_Holiday_Labels_summary">Події з такими мітками будуть ідентифіковані як свята (через кому)</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_title">Державні свята</string>
     <string name="pref_CustomEvents_Holiday_Public_Labels_summary">Показати ці державні свята</string>
+    <string name="pref_CustomEvents_Holiday_Other_Labels_title">Інші свята</string>
+    <string name="pref_CustomEvents_Holiday_Other_Labels_summary">Показати ці інші свята з внутрішньої бази даних</string>
 
     <string name="pref_CustomEvents_Fact_title">Факти</string>
     <string name="pref_CustomEvents_Fact_Bundled_Labels_title">Збірні факти</string>
@@ -471,6 +476,8 @@
     <string name="pref_CustomEvents_Calendars_summary">Показати події з обраних календарів</string>
     <string name="pref_CustomEvents_LocalFiles_title">Локальні файли</string>
     <string name="pref_CustomEvents_LocalFiles_summary">Показувати події з вибраних файлів. Довге натискання на елементі списку для перегляду файлу</string>
+
+    <string name="pref_CustomEvents_MultiType_LocalFiles_summary">Показувати події з вибраних файлів (формати: DarkBirthday, iCalendar, vCard, BirthdayPro). Довге натискання на елементі списку для перегляду файлу</string>
 
     <string-array name="pref_Theme_entries">
         <item>Коричнева</item>
@@ -1216,7 +1223,7 @@
     <string name="pref_Tools_LocalEvents_Restore_title">Імпорт місцевих подій</string>
     <string name="pref_Tools_LocalEvents_Restore_result">Імпортовано подій: %1$d, пропущено: %2$d, помилок: %3$d</string>
     <string name="pref_Tools_Events_Import_title">Імпорт подій файлу</string>
-    <string name="pref_Tools_Events_Import_summary">Виберіть файл для аналізу та імпорту подій (TXT, ICS)…</string>
+    <string name="pref_Tools_Events_Import_summary">Виберіть файл для аналізу та імпорту подій (TXT, ICS, VCF)…</string>
     <string name="pref_Tools_Events_Import_Dialog_title">Імпорт подій</string>
     <string name="pref_Tools_Events_Import_Unrecognized_title">Тип для нерозпізнаних подій:</string>
     <string name="pref_Tools_Events_Import_Unrecognized_type">- не вибрано -</string>
