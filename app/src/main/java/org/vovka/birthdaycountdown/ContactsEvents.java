@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2026, 20:20
+ *  * Created by Vladimir Belov on 19.06.2026, 13:19
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.06.2026, 20:17
+ *  * Last modified 19.06.2026, 13:05
  *
  */
 
@@ -4879,33 +4879,34 @@ public class ContactsEvents {
                                 eventData.put(Position_rawContactID, StringUtils.getNotNullString(map_contacts_ids.get(contactID)));
 
                                 Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
-                                if (eventIndex != null && eventIndex <= eventListUpdated.size()) {
-                                    if (updateExistEvent(eventIndex, eventID, eventSource, eventNewDate, null, null, eventURL)) {
-                                        eventData.clear();
-                                    }
-                                } else {
-                                    final Long contactIDLong = StringUtils.parseToLong(contactID);
-                                    HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
-                                            ContactsContract.Contacts.PHOTO_URI,
-                                            ContactsContract.Contacts.STARRED
-                                    });
+                                if (eventIndex != null && eventIndex <= eventListUpdated.size()) { // У контакта уже есть событие такого типа
+                                    updateExistEvent(eventIndex, eventID, eventSource, eventNewDate, null, null, eventURL);
+                                    eventData.clear();
+                                    continue;
+                                }
 
-                                    eventData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
-                                    if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
-                                        if (Constants.STRING_1.equals(StringUtils.getNotNullString(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
-                                            eventData.put(Position_starred, Constants.STRING_1);
-                                            statFavoriteEventsCount++;
-                                        }
-                                    }
-                                    contactDataMap.clear();
+                                // Новое событие для этого контакта
+                                final Long contactIDLong = StringUtils.parseToLong(contactID);
+                                HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
+                                        ContactsContract.Contacts.PHOTO_URI,
+                                        ContactsContract.Contacts.STARRED
+                                });
 
-                                    eventData.put(Position_nickname, StringUtils.getNotNullString(map_contacts_aliases.get(contactID)));
-                                    if (TextUtils.isEmpty(eventData.get(Position_organization))) {
-                                        eventData.put(Position_organization, StringUtils.getNotNullString(map_organizations.get(contactID)));
+                                eventData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
+                                if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
+                                    if (Constants.STRING_1.equals(StringUtils.getNotNullString(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
+                                        eventData.put(Position_starred, Constants.STRING_1);
+                                        statFavoriteEventsCount++;
                                     }
-                                    if (TextUtils.isEmpty(eventData.get(Position_title))) {
-                                        eventData.put(Position_title, StringUtils.getNotNullString(map_contacts_titles.get(contactID)));
-                                    }
+                                }
+                                contactDataMap.clear();
+
+                                eventData.put(Position_nickname, StringUtils.getNotNullString(map_contacts_aliases.get(contactID)));
+                                if (TextUtils.isEmpty(eventData.get(Position_organization))) {
+                                    eventData.put(Position_organization, StringUtils.getNotNullString(map_organizations.get(contactID)));
+                                }
+                                if (TextUtils.isEmpty(eventData.get(Position_title))) {
+                                    eventData.put(Position_title, StringUtils.getNotNullString(map_contacts_titles.get(contactID)));
                                 }
                             }
                         }
@@ -5123,27 +5124,28 @@ public class ContactsEvents {
                                 eventData.put(Position_rawContactID, StringUtils.getNotNullString(map_contacts_ids.get(contactID)));
 
                                 Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
-                                if (eventIndex != null && eventIndex <= eventListUpdated.size()) {
-                                    if (updateExistEvent(eventIndex, eventID, eventSource, eventNewDate, null, null, url)) {
-                                        eventData.clear();
-                                    }
-                                } else {
-                                    final Long contactIDLong = StringUtils.parseToLong(contactID);
-                                    HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
-                                            ContactsContract.Contacts.PHOTO_URI, ContactsContract.Contacts.STARRED
-                                    });
-                                    eventData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
-                                    if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED) && Constants.STRING_1.equals(StringUtils.getNotNullString(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
-                                        eventData.put(Position_starred, Constants.STRING_1);
-                                        statFavoriteEventsCount++;
-                                    }
-                                    contactDataMap.clear();
-                                    eventData.put(Position_nickname, StringUtils.getNotNullString(map_contacts_aliases.get(contactID)));
-                                    if (TextUtils.isEmpty(eventData.get(Position_organization)))
-                                        eventData.put(Position_organization, StringUtils.getNotNullString(map_organizations.get(contactID)));
-                                    if (TextUtils.isEmpty(eventData.get(Position_title)))
-                                        eventData.put(Position_title, StringUtils.getNotNullString(map_contacts_titles.get(contactID)));
+                                if (eventIndex != null && eventIndex <= eventListUpdated.size()) { // У контакта уже есть событие такого типа
+                                    updateExistEvent(eventIndex, eventID, eventSource, eventNewDate, null, null, url);
+                                    eventData.clear();
+                                    continue;
                                 }
+
+                                // Новое событие для этого контакта
+                                final Long contactIDLong = StringUtils.parseToLong(contactID);
+                                HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
+                                        ContactsContract.Contacts.PHOTO_URI, ContactsContract.Contacts.STARRED
+                                });
+                                eventData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
+                                if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED) && Constants.STRING_1.equals(StringUtils.getNotNullString(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
+                                    eventData.put(Position_starred, Constants.STRING_1);
+                                    statFavoriteEventsCount++;
+                                }
+                                contactDataMap.clear();
+                                eventData.put(Position_nickname, StringUtils.getNotNullString(map_contacts_aliases.get(contactID)));
+                                if (TextUtils.isEmpty(eventData.get(Position_organization)))
+                                    eventData.put(Position_organization, StringUtils.getNotNullString(map_organizations.get(contactID)));
+                                if (TextUtils.isEmpty(eventData.get(Position_title)))
+                                    eventData.put(Position_title, StringUtils.getNotNullString(map_contacts_titles.get(contactID)));
                             }
                         }
 
@@ -5640,98 +5642,100 @@ public class ContactsEvents {
                 eventData.put(Position_rawContactID, StringUtils.getNotNullString(map_contacts_ids.get(contactID)));
 
                 Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(contactID + Constants.STRING_2HASH + event.subType);
-                if (eventIndex != null && eventIndex <= eventListUpdated.size()) {
-                    if (updateExistEvent(eventIndex, eventID, eventSourceCaption, eventNewDate, orgNameFile, titleFile, eventURL)) {
-                        eventData.clear();
-                    }
-                } else {
-                    final Long contactIDLong = StringUtils.parseToLong(contactID);
-                    HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
-                            ContactsContract.Contacts.PHOTO_URI,
-                            ContactsContract.Contacts.STARRED
-                    });
+                if (eventIndex != null && eventIndex <= eventListUpdated.size()) { // У контакта уже есть событие такого типа
+                    updateExistEvent(eventIndex, eventID, eventSourceCaption, eventNewDate, orgNameFile, titleFile, eventURL);
+                    eventData.clear();
+                    return;
+                }
 
-                    eventData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
-                    if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
-                        if (Constants.STRING_1.equals(StringUtils.getNotNullString(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
-                            eventData.put(Position_starred, Constants.STRING_1);
-                            if (!result.isPassedEvent) statFavoriteEventsCount++;
-                        }
-                    }
-                    contactDataMap.clear();
+                // Новое событие для этого контакта
+                final Long contactIDLong = StringUtils.parseToLong(contactID);
+                HashMap<String, String> contactDataMap = getContactDataMulti(contactIDLong, new String[]{
+                        ContactsContract.Contacts.PHOTO_URI,
+                        ContactsContract.Contacts.STARRED
+                });
 
-                    eventData.put(Position_nickname, StringUtils.getNotNullString(map_contacts_aliases.get(contactID)));
-                    if (TextUtils.isEmpty(eventData.get(Position_organization))) {
-                        eventData.put(Position_organization, StringUtils.getNotNullString(map_organizations.get(contactID)));
+                eventData.put(Position_photo_uri, contactDataMap.get(ContactsContract.Contacts.PHOTO_URI));
+                if (contactDataMap.containsKey(ContactsContract.Contacts.STARRED)) {
+                    if (Constants.STRING_1.equals(StringUtils.getNotNullString(contactDataMap.get(ContactsContract.Contacts.STARRED)))) {
+                        eventData.put(Position_starred, Constants.STRING_1);
+                        if (!result.isPassedEvent) statFavoriteEventsCount++;
                     }
-                    if (TextUtils.isEmpty(eventData.get(Position_title))) {
-                        eventData.put(Position_title, StringUtils.getNotNullString(map_contacts_titles.get(contactID)));
-                    }
+                }
+                contactDataMap.clear();
+
+                eventData.put(Position_nickname, StringUtils.getNotNullString(map_contacts_aliases.get(contactID)));
+                if (TextUtils.isEmpty(eventData.get(Position_organization))) {
+                    eventData.put(Position_organization, StringUtils.getNotNullString(map_organizations.get(contactID)));
+                }
+                if (TextUtils.isEmpty(eventData.get(Position_title))) {
+                    eventData.put(Position_title, StringUtils.getNotNullString(map_contacts_titles.get(contactID)));
                 }
             }
 
-            if (!eventData.isEmpty()) {
-                if (!result.isPassedEvent) {
-                    fillEmptyEventData(eventData);
-                    String eventRow = getEventData(eventData);
+            if (eventData.isEmpty()) return;
 
-                    if (eventListUpdated.add(eventRow)) {
-                        statEventsCount++;
-                        if (eventSourcePrefix.equals(Constants.EVENT_PREFIX_FILE_EVENT)) {
-                            statFilesEventCount++;
-                        }
-                        increaseStatForEventSources(eventSourcePrefix);
-                        increaseStatForEventSourcesIds(StringUtils.getHash(eventIdHashPrefix + eventSource));
+            if (!result.isPassedEvent) {
+                fillEmptyEventData(eventData);
+                String eventRow = getEventData(eventData);
 
-                        if (!TextUtils.isEmpty(contactID)) {
-                            map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
-                        }
-                        String personFullName = eventData.get(Position_personFullName);
-                        if (result.dateEventFirstTime != null) {
-                            if (event.subType.equals(Constants.EventType_BirthDay)) {
-                                birthdayDatesForNames.put(personFullName, result.dateEventFirstTime);
-                            } else if (event.subType.equals(Constants.EventType_Death)) {
-                                deathDatesForNames.put(personFullName, result.dateEventFirstTime);
-                            }
-                        }
-                        map_eventsBySubtypeAndPersonName_offset.put(personFullName + Constants.STRING_2HASH + eventData.get(Position_eventSubType), eventListUpdated.size() - 1);
+                if (eventListUpdated.add(eventRow)) {
+                    statEventsCount++;
+                    if (eventSourcePrefix.equals(Constants.EVENT_PREFIX_FILE_EVENT)) {
+                        statFilesEventCount++;
+                    }
+                    increaseStatForEventSources(eventSourcePrefix);
+                    increaseStatForEventSourcesIds(StringUtils.getHash(eventIdHashPrefix + eventSource));
 
-                        if (result.datePrevFloatingEvent != null) {
-                            Date eventDatePrev = null;
-                            try {
-                                eventDatePrev = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(result.datePrevFloatingEvent);
-                            } catch (ParseException pe) { /**/ }
-                            if (eventDatePrev != null) {
-                                long eventDistance = AppDateUtils.countDaysDiff(eventDatePrev, today.getTime());
-                                if (eventDistance > 0 && eventDistance <= preferences_list_prev_events_scan_distance) {
-                                    eventData.put(Position_eventDateNextTime, Objects.requireNonNull(sdf_DDMMYYYY.get()).format(eventDatePrev));
-                                    eventData.put(Position_eventDistance, Long.toString(-eventDistance));
-                                    eventData.put(Position_eventDistanceText, getEventDistanceText(-eventDistance, eventDatePrev));
-                                    eventData.put(Position_eventDate_sorted, getSortKey(getEventData(eventData).split(Constants.STRING_EOT, -1)));
-                                    eventRow = getEventData(eventData);
-                                    if (!eventListPrev.contains(eventRow)) {
-                                        eventListPrev.add(eventRow);
-                                    }
+                    if (!TextUtils.isEmpty(contactID)) {
+                        map_eventsBySubtypeAndPersonID_offset.put(contactID + Constants.STRING_2HASH + event.subType, eventListUpdated.size() - 1);
+                    }
+                    String personFullName = eventData.get(Position_personFullName);
+                    if (result.dateEventFirstTime != null) {
+                        if (event.subType.equals(Constants.EventType_BirthDay)) {
+                            birthdayDatesForNames.put(personFullName, result.dateEventFirstTime);
+                        } else if (event.subType.equals(Constants.EventType_Death)) {
+                            deathDatesForNames.put(personFullName, result.dateEventFirstTime);
+                        }
+                    }
+                    map_eventsBySubtypeAndPersonName_offset.put(personFullName + Constants.STRING_2HASH + eventData.get(Position_eventSubType), eventListUpdated.size() - 1);
+
+                    if (result.datePrevFloatingEvent != null) {
+                        Date eventDatePrev = null;
+                        try {
+                            eventDatePrev = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(result.datePrevFloatingEvent);
+                        } catch (ParseException pe) { /**/ }
+                        if (eventDatePrev != null) {
+                            long eventDistance = AppDateUtils.countDaysDiff(eventDatePrev, today.getTime());
+                            if (eventDistance > 0 && eventDistance <= preferences_list_prev_events_scan_distance) {
+                                eventData.put(Position_eventDateNextTime, Objects.requireNonNull(sdf_DDMMYYYY.get()).format(eventDatePrev));
+                                eventData.put(Position_eventDistance, Long.toString(-eventDistance));
+                                eventData.put(Position_eventDistanceText, getEventDistanceText(-eventDistance, eventDatePrev));
+                                eventData.put(Position_eventDate_sorted, getSortKey(getEventData(eventData).split(Constants.STRING_EOT, -1)));
+                                eventRow = getEventData(eventData);
+                                if (!eventListPrev.contains(eventRow)) {
+                                    eventListPrev.add(eventRow);
                                 }
                             }
                         }
                     }
-                } else {
-                    long eventDistance = AppDateUtils.countDaysDiff(result.dateEvent, today.getTime());
-                    if (eventDistance <= preferences_list_prev_events_scan_distance) {
-                        fillEmptyEventData(eventData);
-                        eventData.put(Position_eventDateNextTime, Objects.requireNonNull(sdf_DDMMYYYY.get()).format(result.dateEvent));
-                        eventData.put(Position_eventDistance, Long.toString(-eventDistance));
-                        eventData.put(Position_eventDistanceText, getEventDistanceText(-eventDistance, result.dateEvent));
-                        eventData.put(Position_eventDate_sorted, getSortKey(getEventData(eventData).split(Constants.STRING_EOT, -1)));
-                        final String eventRow = getEventData(eventData);
-                        if (!eventListPrev.contains(eventRow)) {
-                            eventListPrev.add(eventRow);
-                        }
+                }
+            } else {
+                long eventDistance = AppDateUtils.countDaysDiff(result.dateEvent, today.getTime());
+                if (eventDistance <= preferences_list_prev_events_scan_distance) {
+                    fillEmptyEventData(eventData);
+                    eventData.put(Position_eventDateNextTime, Objects.requireNonNull(sdf_DDMMYYYY.get()).format(result.dateEvent));
+                    eventData.put(Position_eventDistance, Long.toString(-eventDistance));
+                    eventData.put(Position_eventDistanceText, getEventDistanceText(-eventDistance, result.dateEvent));
+                    eventData.put(Position_eventDate_sorted, getSortKey(getEventData(eventData).split(Constants.STRING_EOT, -1)));
+                    final String eventRow = getEventData(eventData);
+                    if (!eventListPrev.contains(eventRow)) {
+                        eventListPrev.add(eventRow);
                     }
                 }
-                eventData.clear();
             }
+            eventData.clear();
+
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
