@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.05.2026, 01:04
+ *  * Created by Vladimir Belov on 20.06.2026, 19:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.05.2026, 23:24
+ *  * Last modified 20.06.2026, 11:11
  *
  */
 package org.vovka.birthdaycountdown;
@@ -87,7 +87,6 @@ public class WidgetMenuActivity extends Activity {
         try {
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
-            eventsData.applyLocaleWorkaround(this);
 
             appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
             String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);

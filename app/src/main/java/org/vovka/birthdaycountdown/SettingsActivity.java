@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 00:32
+ *  * Created by Vladimir Belov on 20.06.2026, 19:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.06.2026, 20:54
+ *  * Last modified 20.06.2026, 11:41
  *
  */
 
@@ -151,6 +151,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     boolean skipSharedPreferenceChangedEvent = false;
     private Insets statusBarInsets;
     private CustomTextPreference prefEnabledFeatures;
+    private String localeAtCreate = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -160,7 +161,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
-            eventsData.applyLocaleWorkaround(this);
+            localeAtCreate = eventsData.currentLocale;
 
             this.setTheme(eventsData.preferences_theme.themeMain);
             this.getTheme().applyStyle(R.style.OptOutEdgeToEdgeEnforcement, false);
@@ -289,7 +290,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
             ContactsEvents eventsData = ContactsEvents.getInstance();
-            eventsData.getPreferences();
+            eventsData.initLanguage(this);
+
+            if (!localeAtCreate.equals(eventsData.currentLocale)) {
+                recreate();
+                return;
+            }
 
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 eventsData.getEventsAsync(null);
@@ -2010,75 +2016,77 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 finish();
                 startActivity(intent);
 
-            } else if (getString(R.string.pref_Help_Debug_On_key).equals(key)) {
+            } else {
+                if (getString(R.string.pref_Help_Debug_On_key).equals(key)) {
 
-                if (!eventsData.preferences_debug_on) {
-                    updateVisibility();
-                } else {
-                    Intent intent = getIntent();
-                    finish();
-                    startActivity(intent);
-                }
-
-            } else if (getString(R.string.pref_Theme_key).equals(key)) {
-
-                this.setTheme(eventsData.preferences_theme.themeMain);
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
-                //todo: созданные программно настройки не подхватывают стиль
-
-            } else if (getString(R.string.pref_CustomEvents_Custom1_Caption_key).equals(key) ||
-                    getString(R.string.pref_CustomEvents_Custom2_Caption_key).equals(key) ||
-                    getString(R.string.pref_CustomEvents_Custom3_Caption_key).equals(key) ||
-                    getString(R.string.pref_CustomEvents_Custom4_Caption_key).equals(key) ||
-                    getString(R.string.pref_CustomEvents_Custom5_Caption_key).equals(key)) {
-
-                updateTitles();
-                updateVisibility();
-
-            } else if (getString(R.string.pref_Notifications_Days_key).equals(key) || getString(R.string.pref_Notifications2_Days_key).equals(key)) {
-
-                if (!eventsData.preferences_notifications_days.isEmpty() || !eventsData.preferences_notifications2_days.isEmpty()) {
-                    //Уведомления выключены
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !NotificationManagerCompat.from(this).areNotificationsEnabled()) {
-
-                        //https://stackoverflow.com/questions/32366649/any-way-to-link-to-the-android-notification-settings-for-my-app
-                        Intent intent = new Intent();
-                        intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                        //for Android 5-7
-                        intent.putExtra(Constants.APP_PACKAGE, getPackageName());
-                        intent.putExtra(Constants.APP_UID, getApplicationInfo().uid);
-
-                        // for Android 8 and above
-                        intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
-
-                        try {
-                            startActivity(intent);
-                        } catch (ActivityNotFoundException e) { /**/ }
+                    if (!eventsData.preferences_debug_on) {
+                        updateVisibility();
+                    } else {
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
                     }
-                    //Нет доступа на отправку уведомлений
-                    checkAndRequestNotificationAccess(eventsData);
-                }
 
-                if (eventsData.preferences_menustyle_compact) {
-                    updateVisibility();
-                } else {
-                    //todo: даже если просто поменялся список дней, то всё равно происходит полное переоткрытие настроек, что неудобно
+                } else if (getString(R.string.pref_Theme_key).equals(key)) {
+
+                    this.setTheme(eventsData.preferences_theme.themeMain);
                     Intent intent = getIntent();
                     finish();
                     startActivity(intent);
+                    //todo: созданные программно настройки не подхватывают стиль
+
+                } else if (getString(R.string.pref_CustomEvents_Custom1_Caption_key).equals(key) ||
+                        getString(R.string.pref_CustomEvents_Custom2_Caption_key).equals(key) ||
+                        getString(R.string.pref_CustomEvents_Custom3_Caption_key).equals(key) ||
+                        getString(R.string.pref_CustomEvents_Custom4_Caption_key).equals(key) ||
+                        getString(R.string.pref_CustomEvents_Custom5_Caption_key).equals(key)) {
+
+                    updateTitles();
+                    updateVisibility();
+
+                } else if (getString(R.string.pref_Notifications_Days_key).equals(key) || getString(R.string.pref_Notifications2_Days_key).equals(key)) {
+
+                    if (!eventsData.preferences_notifications_days.isEmpty() || !eventsData.preferences_notifications2_days.isEmpty()) {
+                        //Уведомления выключены
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+
+                            //https://stackoverflow.com/questions/32366649/any-way-to-link-to-the-android-notification-settings-for-my-app
+                            Intent intent = new Intent();
+                            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            //for Android 5-7
+                            intent.putExtra(Constants.APP_PACKAGE, getPackageName());
+                            intent.putExtra(Constants.APP_UID, getApplicationInfo().uid);
+
+                            // for Android 8 and above
+                            intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
+
+                            try {
+                                startActivity(intent);
+                            } catch (ActivityNotFoundException e) { /**/ }
+                        }
+                        //Нет доступа на отправку уведомлений
+                        checkAndRequestNotificationAccess(eventsData);
+                    }
+
+                    if (eventsData.preferences_menustyle_compact) {
+                        updateVisibility();
+                    } else {
+                        //todo: даже если просто поменялся список дней, то всё равно происходит полное переоткрытие настроек, что неудобно
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+
+                } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)
+                        || getString(R.string.pref_CustomEvents_MultiType_Calendars_key).equals(key)
+                        || getString(R.string.pref_Notifications_Events_key).equals(key)
+                        || getString(R.string.pref_Notifications2_Events_key).equals(key)) {
+
+                    updateVisibility();
+
                 }
-
-            } else if (getString(R.string.pref_CustomEvents_Birthday_Calendars_key).equals(key)
-                    || getString(R.string.pref_CustomEvents_MultiType_Calendars_key).equals(key)
-                    || getString(R.string.pref_Notifications_Events_key).equals(key)
-                    || getString(R.string.pref_Notifications2_Events_key).equals(key)) {
-
-                updateVisibility();
-
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

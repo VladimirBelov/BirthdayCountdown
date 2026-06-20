@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Created by Vladimir Belov on 20.06.2026, 19:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.04.2026, 23:01
+ *  * Last modified 20.06.2026, 11:11
  *
  */
 
@@ -37,7 +37,6 @@ public class EventsPopupActivity extends Activity {
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
-            eventsData.applyLocaleWorkaround(this);
 
             this.setTheme(eventsData.preferences_theme.themeDialog);
 

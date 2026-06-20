@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 18:30
+ *  * Created by Vladimir Belov on 20.06.2026, 19:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 18:23
+ *  * Last modified 20.06.2026, 11:11
  *
  */
 
@@ -373,7 +373,6 @@ public class LocalEventActivity extends AppCompatActivity {
         try {
 
             eventsData.initLanguage(this);
-            eventsData.applyLocaleWorkaround(this);
 
             setTheme(eventsData.preferences_theme.themeMain);
             this.getTheme().applyStyle(R.style.FloatingActivity, true);

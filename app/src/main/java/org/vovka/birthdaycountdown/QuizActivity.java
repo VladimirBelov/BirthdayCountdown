@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 11:12
+ *  * Created by Vladimir Belov on 20.06.2026, 19:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 11:02
+ *  * Last modified 20.06.2026, 11:11
  *
  */
 
@@ -90,7 +90,6 @@ public class QuizActivity extends Activity {
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
-            eventsData.applyLocaleWorkaround(this);
             currentLocale = eventsData.currentLocale;
 
             this.setTheme(eventsData.preferences_theme.themeDialog);

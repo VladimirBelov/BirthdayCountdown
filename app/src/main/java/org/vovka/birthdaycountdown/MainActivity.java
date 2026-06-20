@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2026, 20:20
+ *  * Created by Vladimir Belov on 20.06.2026, 19:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.06.2026, 20:17
+ *  * Last modified 20.06.2026, 11:37
  *
  */
 
@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private TypedArray ta = null;
     private DisplayMetrics displayMetrics;
     boolean scrolledToToday = false;
+    private String localeAtCreate = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
-            eventsData.applyLocaleWorkaround(this);
+            localeAtCreate = eventsData.currentLocale;
             resources = eventsData.getResources();
             displayMetrics = resources.getDisplayMetrics();
 
@@ -2292,6 +2293,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             //Устанавливаем язык приложения
             eventsData.initLanguage(this);
+            if (!localeAtCreate.equals(eventsData.currentLocale)) {
+                recreate();
+                return;
+            }
             resources = eventsData.getResources();
 
             //Устанавливаем тему и переоткрываем окно
@@ -2862,7 +2867,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (convertedView == null) {
                     //https://stackoverflow.com/questions/10641144/difference-between-getcontext-getapplicationcontext-getbasecontext-and
-                        convertedView = LayoutInflater.from(getBaseContext()).inflate(R.layout.entry_main, parent, false);
+                    convertedView = LayoutInflater.from(getContext()).inflate(R.layout.entry_main, parent, false);
                         holder = createViewHolderFrom(convertedView);
                         convertedView.setTag(holder);
                 } else {

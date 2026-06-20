@@ -1,13 +1,12 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 00:32
+ *  * Created by Vladimir Belov on 20.06.2026, 19:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 00:22
+ *  * Last modified 20.06.2026, 18:38
  *
  */
 
 package org.vovka.birthdaycountdown;
-
 
 import android.Manifest;
 import android.accounts.Account;
@@ -15,7 +14,6 @@ import android.accounts.AccountManager;
 import android.accounts.AuthenticatorDescription;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.LocaleManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -26,7 +24,6 @@ import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -81,6 +78,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -90,6 +88,7 @@ import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.IconCompat;
+import androidx.core.os.LocaleListCompat;
 import androidx.core.text.HtmlCompat;
 
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
@@ -423,6 +422,8 @@ public class ContactsEvents {
     public Calendar getToday() {
         return today;
     }
+
+    /** Дата формата "yyyy-MM-dd" */
     static final ThreadLocal<SimpleDateFormat> sdf_java = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -455,6 +456,7 @@ public class ContactsEvents {
             return sdf;
         }
     };
+    /** Дата формата "dd.MM.yyyy" */
     static final ThreadLocal<SimpleDateFormat> sdf_DDMMYYYY = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -479,6 +481,7 @@ public class ContactsEvents {
             return sdf;
         }
     };
+    /** Дата формата "dd.MM" */
     static final ThreadLocal<SimpleDateFormat> sdf_DDMM = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -503,6 +506,9 @@ public class ContactsEvents {
             return sdf;
         }
     };
+    /**
+     * Дата формата "dd/MM/yyyy"
+     */
     static final ThreadLocal<SimpleDateFormat> sdf_uk = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -527,6 +533,9 @@ public class ContactsEvents {
             return sdf;
         }
     };
+    /**
+     * Дата формата "MM/dd/yyyy"
+     */
     static final ThreadLocal<SimpleDateFormat> sdf_india = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -1459,60 +1468,43 @@ public class ContactsEvents {
 
         boolean isAutoMode = preferences_language.equals(context.getString(R.string.pref_Language_default));
         Locale targetLocale = isAutoMode ? Locale.getDefault() : new Locale(preferences_language);
-
         String targetLang = targetLocale.getLanguage();
         if (targetLang.isEmpty()) targetLang = "en";
 
-        // Для Android 14+ — используем LocaleManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            LocaleManager lm = context.getSystemService(LocaleManager.class);
-            if (!isAutoMode) {
-                lm.setApplicationLocales(new LocaleList(targetLocale));
-            } else {
-                // Сбрасываем application locales → возвращаемся к системному языку
-                lm.setApplicationLocales(new LocaleList());
-            }
-            // На Android 14+ не трогаем Resources — система сама управляет
-        }
+        // 1. Обновляем Locale по умолчанию
+        Locale.setDefault(targetLocale);
 
-        // === Для ВСЕХ версий: обновляем наш resources ===
+        // 2. Обновляем внутренние ресурсы (для eventsData.getResources())
         Configuration config = new Configuration();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             config.setLocales(new LocaleList(targetLocale));
         } else {
             config.locale = targetLocale;
         }
-        Locale.setDefault(targetLocale);
-
-        // Обновляем наш внутренний resources
         Context localizedContext = context.createConfigurationContext(config);
         resources = localizedContext.getResources();
 
-        // === ДОПОЛНИТЕЛЬНО: для Android < 14 — обновляем конфигурацию контекста ===
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            Resources res = context.getResources();
-            // updateConfiguration устарел, но необходим для Android < 14
-            res.updateConfiguration(config, res.getDisplayMetrics());
+        // 3. Синхронизируем AppCompatDelegate (он управляет UI Activity)
+        LocaleListCompat currentLocales = AppCompatDelegate.getApplicationLocales();
+        boolean needUpdate;
+        if (isAutoMode) {
+            needUpdate = !currentLocales.isEmpty();
+        } else {
+            Locale firstLocale = currentLocales.isEmpty() ? null : currentLocales.get(0);
+            needUpdate = currentLocales.isEmpty()
+                    || firstLocale == null
+                    || !firstLocale.getLanguage().equals(targetLang);
+        }
+
+        if (needUpdate) {
+            if (isAutoMode) {
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.getEmptyLocaleList());
+            } else {
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(targetLocale));
+            }
         }
 
         currentLocale = targetLang;
-    }
-
-    /**
-     * Без этого на Android 8 и 9 не меняет динамически язык
-     *
-     * @param context ContextWrapper
-     */
-    public void applyLocaleWorkaround(ContextWrapper context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            Resources applicationRes = context.getBaseContext().getResources();
-            Configuration applicationConf = applicationRes.getConfiguration();
-            String localeCode = currentLocale != null && currentLocale.isEmpty()
-                    ? currentLocale
-                    : Locale.getDefault().getLanguage();
-            applicationConf.setLocales(new LocaleList(new Locale(localeCode)));
-            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-        }
     }
 
     private void initLocaleStrings() {
@@ -1698,7 +1690,7 @@ public class ContactsEvents {
 
     @NonNull
     Resources getResources() {
-        return context.getResources();
+        return resources;
     }
 
     /**
@@ -4628,12 +4620,15 @@ public class ContactsEvents {
     }
 
     /** Разделить события на несколько дней на отдельные дни
-     * @param eventsArray Массив с событиями (даты начала и конца события идут через "-": 21.01.2000-23.01.2000 Название события)
+     * @param eventsArray Массив с событиями (даты начала и конца события идут через "-")
+     * 01.06.2025-06.06.2025 Событие 1
+     * 01.06.0000-06.06.0000,! Праздник на несколько дней
      */
     private List<String> splitMultidayEventsAsSeparateLine(String[] eventsArray, SimpleDateFormat[] dateFormats) {
         List<String> result = new ArrayList<>(eventsArray.length);
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
+        final String year = String.valueOf(getToday().get(Calendar.YEAR));
 
         for (String line : eventsArray) {
             int indexMinus = line.indexOf(Constants.STRING_MINUS);
@@ -4663,6 +4658,11 @@ public class ContactsEvents {
 
             String strDateStart = dates.substring(0, rangeMinus);
             String strDateEnd = dates.substring(rangeMinus + 1);
+            int indexNoYear = strDateStart.indexOf(Constants.STRING_0000);
+            if (indexNoYear != -1) {
+                strDateStart = strDateStart.replace(Constants.STRING_0000, year);
+                strDateEnd = strDateEnd.replace(Constants.STRING_0000, year);
+            }
 
             Date dateStart = AppDateUtils.parseDateWithFormats(strDateStart, dateFormats);
             Date dateEnd = AppDateUtils.parseDateWithFormats(strDateEnd, dateFormats);
@@ -4680,7 +4680,13 @@ public class ContactsEvents {
 
             while (!calStart.after(calEnd)) {
                 sb.setLength(0);
-                sb.append(Objects.requireNonNull(sdf_DDMMYYYY.get()).format(calStart.getTime()));
+                if (indexNoYear == -1) {
+                    sb.append(Objects.requireNonNull(sdf_DDMMYYYY.get()).format(calStart.getTime()));
+                } else {
+                    sb.append(Objects.requireNonNull(sdf_DDMM.get()).format(calStart.getTime()));
+                    sb.append(Constants.STRING_PERIOD);
+                    sb.append(Constants.STRING_0000);
+                }
                 sb.append(eventBody);
                 result.add(sb.toString());
                 calStart.add(Calendar.DAY_OF_YEAR, 1);

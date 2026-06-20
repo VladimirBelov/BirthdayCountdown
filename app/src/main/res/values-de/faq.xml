@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.05.2026, 01:57
+  ~  * Created by Vladimir Belov on 20.06.2026, 19:57
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.05.2026, 01:52
+  ~  * Last modified 20.06.2026, 19:54
   ~  */
   -->
 
@@ -104,8 +104,9 @@
                 <li>Wenn nach dem Namen mehrere Klammerpaare stehen, wird - wenn die Klammerpaare aufeinander folgen - der Inhalt innerhalb des letzten Paares in die Berufsbezeichnung des Kontakts verschoben. Wenn ein Klammerpaar innerhalb des anderen steht, wird der Inhalt in den äußeren Klammern in den Berufsbezeichnung der Kontakte verschoben
                 <li>Wenn die Datei nur Ereignisse eines bestimmten Typs auflistet (<img src="ic_event_birthday.webp" style="vertical-align:middle"> Geburtstag, <img src="ic_event_other.webp" width= 5 % style="vertical-align:middle"> Sonstiges Ereignis), müssen solche Dateien im Einstellungsbereich entsprechend ihrem Typ angegeben werden
                 <li>Dateien mit unterschiedlichen Arten von Ereignissen sind im Abschnitt <img src="btn_zoom_page_press.webp" style="vertical-align:middle"> Ereignisquellen angegeben. Der Ereignistyp wird durch das Flag bestimmt (unten ist das Format und Beispiele)
-                <li>für alle Ereignistypen außer <img src="ic_event_other.webp" style="vertical-align:middle"> Anderes Ereignis, sucht nach einem Kontakt im Adressbuch, um es mit doppelten Ereignissen zusammenzuführen oder Web hinzuzufügen Verknüpfungen
+                <li>für alle Ereignistypen außer <img src="ic_event_other.webp" style="vertical-align:middle"> Anderes Ereignis und <img src="ic_event_holiday.webp" style="vertical-align:middle"> Feiertag, sucht nach einem Kontakt im Adressbuch, um es mit doppelten Ereignissen zusammenzuführen oder Web hinzuzufügen Verknüpfungen
                 <li>Wenn zusätzliche Funktionen aktiviert sind, können Sie festlegen, wie mit Ereignissen umgegangen werden soll, deren Typ nicht bestimmt werden konnte: Einstellungen -> Ereignisse einrichten -> Importeinstellungen (standardmäßig: Als Breite <img src="ic_event_other.webp" style="vertical-align:middle"> Anderes Ereignis)
+                <li>Wenn ein Ereignis mehrere Tage dauert, können Sie den Zeitraum durch Bindestriche (-) angeben.
                 <li>Um Ereignisse aus Geburtstagen zu verwenden, müssen sie in eine Datei exportiert werden: Synchronisierung -> Auf SD-Karte speichern
                 </ul>]]></item>
 
@@ -133,6 +134,8 @@
                 <br>3DI-10.08.0000 Noch 10 Tage bis zum dritten Dienstag im August
                 <br>YSA.06.0000 vorletzter Samstag im Juni
                 <br>NJ+255.0000 Programmierertag (256. Tag des Jahres)
+                <br>01.06.2025–06.06.2025 Mehrtägige Ereignis
+                <br>01.01.0000–02.01.0000,! Neujahr
                 <br>Ostern.0000 Orthodoxes Ostern
                 <br>Ostern+49.0000 Orthodoxe Dreifaltigkeit
                 <br>Katholisches_Ostern.0000 Katholisches Ostern

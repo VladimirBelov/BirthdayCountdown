@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.05.2026, 01:57
+  ~  * Created by Vladimir Belov on 20.06.2026, 19:57
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.05.2026, 01:52
+  ~  * Last modified 20.06.2026, 19:52
   ~  */
   -->
 
@@ -107,8 +107,9 @@
         <li>if there are several pairs of brackets after the name, then if the pairs of brackets follow each other - the content inside the last pair will be moved to contacts job title, if one pair is inside the other - the content inside the outer brackets will be moved to contacts job title
         <li>if the file only lists events of a certain type (<img src="ic_event_birthday.webp" style="vertical-align:middle"> Birthday, <img src="ic_event_other.webp" width=5 % style="vertical-align:middle"> Other event), such files must be specified in the settings section corresponding to their type
          <li>files with different types of events are specified in the section <img src="btn_zoom_page_press.webp" style="vertical-align:middle"> Event Sources. The event type is determined by the flag (below is the format and examples)
-         <li>for all event types except <img src="ic_event_other.webp" style="vertical-align:middle"> Other event, searches for a contact in the address book to merge with duplicate events or add web links
+         <li>for all event types except <img src="ic_event_other.webp" style="vertical-align:middle"> Other event and <img src="ic_event_holiday.webp" style="vertical-align:middle"> Holiday, app searches for a contact in the address book to merge with duplicate events or add web links
          <li>If extra features are on it is possible to setup how to deal with events whose type could not be determined: Settings-> Events setup-> Import settings  (by default: Set as <img src="ic_event_other.webp" style=" vertical-align:middle"> Other event)
+         <li>If an event lasts for several days, you can specify the period separated by "-"
          <li>To use events from Birthdays, they must be exported to a file: Synchronization-> Save to SD card
         </ul>]]></item>
 
@@ -116,11 +117,14 @@
         <item><![CDATA[<b></b># COMMENT<br>&lt;<b>DATE</b>&gt;[,FLAGS] &lt;<b>NAME or EVENT TITLE</b>&gt;  [([ORGANIZATION,] TITLE)] [| DESCRIPTION] [WEB LINK]<br><br>]]></item>
         <item><![CDATA[<img src="ic_event_other.webp" style="vertical-align:middle"> Other event. Format (in square brackets - optional parameters):<br><br># COMMENT<br>&lt;<b>DATE</b>&gt;[,FLAGS] &lt;<b>EVENT TITLE</b>&gt; [WEB LINK]
         <br><br>Examples:
-        <br>01.01.2000 John Doe (Enigma, Boss) https://enigma.com/
+        <br>01.01.2000 John Doe (Enigma, Boss) | Event description https://enigma.com/
         <br>02.01.2000 Richard Roe (Enigma,)
         <br>03.01.0000 Friedman v. Ferguson (neighbour)
         <br>01.01.2022,1 Beginning of 2022
-        <br>15.3.44,BC Yu.Caesar was killed<br>02.03.1819,Birthday Nemo (captain,)
+        <br>15.3.44,BC Yu.Caesar was killed
+        <br>02.03.1819,Birthday Nemo (captain,)
+        <br>01.06.2025-06.06.2025 Multi-day event
+        <br>01.01.0000-02.01.0000,! New Year
         <br>]]></item>
         <item><![CDATA[FLAGS:<br>1 - single event, which must be shown only once (year is required)<br>BC - Before the Common Era date (year is required!)<br>Event_label - for files containing events of different types, the event type is determined by this label. If there is a space in the label, then it must be replaced with an underscore \"_\"<br>]]></item>
 

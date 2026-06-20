@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2026, 01:26
+ *  * Created by Vladimir Belov on 20.06.2026, 19:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.06.2026, 00:12
+ *  * Last modified 20.06.2026, 11:53
  *
  */
 
@@ -14,7 +14,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -22,9 +21,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -65,7 +62,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Этот класс предоставляет активность конфигурации для виджета "Календарь".
@@ -77,7 +73,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
     private static final String TAG = "CalendarConfigActivity";
     private int widgetId = 0;
-    private ContactsEvents eventsData;
+    private final ContactsEvents eventsData = ContactsEvents.getInstance();
     List<String> widgetPref;
     private final List<String> eventSourcesIds = new ArrayList<>();
     private final List<String> eventSourcesTitles = new ArrayList<>();
@@ -86,6 +82,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     private AppCompatActivity thisActivity;
     private int customMonthShift = 0;
     private boolean isNewPinnedWidget;
+    private String localeAtCreate = "";
 
     CheckBox checkFontMagnifyManual;
     SeekBar seekFontMagnify;
@@ -106,15 +103,8 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
         try {
 
             thisActivity = this;
-            eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
-            //Без этого на Android 8 и 9 не меняет динамически язык
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                Resources applicationRes = getBaseContext().getResources();
-                Configuration applicationConf = applicationRes.getConfiguration();
-                applicationConf.setLocales(new LocaleList(new Locale(eventsData.currentLocale)));
-                applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
-            }
+            localeAtCreate = eventsData.currentLocale;
 
             this.setTheme(eventsData.preferences_theme.themeMain);
             setContentView(R.layout.widget_calendar_config);
@@ -660,6 +650,15 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     public void buttonCancelOnClick(final View view) {
         setResult(Activity.RESULT_CANCELED);
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        eventsData.initLanguage(this);
+        if (!localeAtCreate.equals(eventsData.currentLocale)) {
+            recreate();
+        }
     }
 
     @Override

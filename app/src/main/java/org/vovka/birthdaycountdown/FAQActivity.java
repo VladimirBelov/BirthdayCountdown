@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Created by Vladimir Belov on 20.06.2026, 19:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.04.2026, 23:01
+ *  * Last modified 20.06.2026, 11:49
  *
  */
 
@@ -47,10 +47,12 @@ import org.vovka.birthdaycountdown.utils.ImageUtils;
 public class FAQActivity extends AppCompatActivity {
 
     private static final String TAG = "FAQActivity";
+    ContactsEvents eventsData;
     private LinearLayout searchBox;
     private EditText searchText;
     private WebView webView;
     private boolean webViewLoaded = false;
+    private String localeAtCreate = "";
 
     @SuppressLint({"PrivateResource", "SetJavaScriptEnabled"})
     public void onCreate(Bundle savedInstanceState) {
@@ -59,9 +61,9 @@ public class FAQActivity extends AppCompatActivity {
         TypedArray ta = null;
         try {
 
-            ContactsEvents eventsData = ContactsEvents.getInstance();
+            eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
-            eventsData.applyLocaleWorkaround(this);
+            localeAtCreate = eventsData.currentLocale;
 
             this.setTheme(eventsData.preferences_theme.themeMain);
 
@@ -211,6 +213,15 @@ public class FAQActivity extends AppCompatActivity {
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             if (ta != null) ta.recycle();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        eventsData.initLanguage(this);
+        if (!localeAtCreate.equals(eventsData.currentLocale)) {
+            recreate();
         }
     }
 

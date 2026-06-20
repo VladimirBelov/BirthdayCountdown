@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Created by Vladimir Belov on 20.06.2026, 19:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.04.2026, 23:01
+ *  * Last modified 20.06.2026, 11:47
  *
  */
 
@@ -66,6 +66,7 @@ public class AboutActivity extends AppCompatActivity {
     ContactsEvents eventsData;
     int counterClicks = 0;
     private Toast mToast = null;
+    private String localeAtCreate = "";
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -75,7 +76,7 @@ public class AboutActivity extends AppCompatActivity {
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
-            eventsData.applyLocaleWorkaround(this);
+            localeAtCreate = eventsData.currentLocale;
 
             this.setTheme(eventsData.preferences_theme.themeMain);
             setContentView(R.layout.activity_changelog);
@@ -396,6 +397,15 @@ public class AboutActivity extends AppCompatActivity {
             ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             if (ta != null) ta.recycle();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        eventsData.initLanguage(this);
+        if (!localeAtCreate.equals(eventsData.currentLocale)) {
+            recreate();
         }
     }
 
