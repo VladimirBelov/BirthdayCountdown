@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 19:57
+ *  * Created by Vladimir Belov on 20.06.2026, 22:04
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 11:47
+ *  * Last modified 20.06.2026, 21:47
  *
  */
 
@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -146,7 +147,7 @@ public class AboutActivity extends AppCompatActivity {
                     buildDateStr
                     ).concat(eventsData.getInstallerInfo(R.string.changelog_installer)), HtmlCompat.FROM_HTML_MODE_LEGACY)); //
             txtInfo.setMovementMethod(LinkMovementMethod.getInstance());
-            txtInfo.setClickable(true);
+            txtInfo.setOnClickListener(v -> setDebug());
 
             StringBuilder sb = new StringBuilder();
             int color = ta.getColor(R.styleable.Theme_eventDateColor, 0); // почему-то #RRGGBB с webView не работает вообще - пустой экран
@@ -355,19 +356,19 @@ public class AboutActivity extends AppCompatActivity {
             switch (installerInfo) {
                 case Constants.STORE_NAME_HUAWEI:
                     contentDescription = getString(R.string.hint_Rate_OtherAppStore, installerInfo);
-                    storeDrawable = getDrawable(R.drawable.ic_huawei_appgallery);
+                    storeDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_huawei_appgallery);
                     storeLink = Constants.STORE_LINK_HUAWEI;
                     installedFrom = 1;
                     break;
                 case Constants.STORE_NAME_RUSTORE:
                     contentDescription = getString(R.string.hint_Rate_OtherAppStore, installerInfo);
-                    storeDrawable = getDrawable(R.drawable.ic_rustore);
+                    storeDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_rustore);
                     storeLink = Constants.STORE_LINK_RUSTORE;
                     installedFrom = 2;
                     break;
                 case Constants.STORE_NAME_SAMSUNG:
                     contentDescription = getString(R.string.hint_Rate_OtherAppStore, installerInfo);
-                    storeDrawable = getDrawable(R.drawable.ic_samsung);
+                    storeDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_samsung);
                     storeLink = Constants.STORE_LINK_SAMSUNG;
                     installedFrom = 3;
                     break;
@@ -409,7 +410,7 @@ public class AboutActivity extends AppCompatActivity {
         }
     }
 
-    public void setDebug(View view) {
+    public void setDebug() {
 
         try {
 

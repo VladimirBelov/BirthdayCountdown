@@ -1,8 +1,8 @@
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2025, 12:13
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 12.07.2025, 09:21
+  ~  * Created by Vladimir Belov on 20.06.2026, 22:04
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 20.06.2026, 22:03
   ~  */
   -->
 
@@ -21,6 +21,7 @@
         android:layout_gravity="top">
 
         <ImageView
+            android:id="@+id/buttonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -31,7 +32,6 @@
             android:contentDescription="@string/crop_image_back"
             android:focusable="true"
             android:gravity="center"
-            android:onClick="onClickBack"
             android:padding="10dp"
             android:src="@drawable/abc_ic_ab_back" />
 
@@ -62,7 +62,6 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:onClick="onClickSave"
             android:padding="10dp"
             android:ellipsize="marquee"
             android:singleLine="true"
@@ -97,7 +96,6 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:onClick="onClickRotate"
             android:padding="10dp"
             android:ellipsize="marquee"
             android:singleLine="true"
@@ -117,7 +115,6 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:onClick="onClickReset"
             android:padding="10dp"
             android:ellipsize="marquee"
             android:singleLine="true"
@@ -137,7 +134,6 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:onClick="onClickCrop"
             android:padding="10dp"
             android:ellipsize="marquee"
             android:singleLine="true"

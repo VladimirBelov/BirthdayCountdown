@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.12.2025, 20:59
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 26.12.2025, 20:24
+  ~  * Created by Vladimir Belov on 20.06.2026, 22:04
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 20.06.2026, 21:47
   ~  */
   -->
 
@@ -77,7 +77,6 @@
 					android:layout_height="wrap_content"
 					android:contentDescription="@string/hint_VersionNumberDetails"
 					android:importantForAccessibility="no"
-					android:onClick="setDebug"
 					android:paddingStart="40dp"
 					android:textColor="?android:attr/textColorSecondary"
 					tools:ignore="TouchTargetSizeCheck" />

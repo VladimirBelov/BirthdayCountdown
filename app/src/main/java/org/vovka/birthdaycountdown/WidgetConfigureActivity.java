@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 19:57
+ *  * Created by Vladimir Belov on 20.06.2026, 22:04
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 11:53
+ *  * Last modified 20.06.2026, 21:47
  *
  */
 
@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -164,6 +165,15 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                         .concat(String.valueOf(widgetId))
                         .concat(Constants.STRING_PARENTHESIS_CLOSE)
                 );
+            }
+
+            Button buttonCancel = findViewById(R.id.button_cancel);
+            if (buttonCancel != null) {
+                buttonCancel.setOnClickListener(v -> buttonCancelOnClick());
+            }
+            Button buttonOk = findViewById(R.id.button_ok);
+            if (buttonOk != null) {
+                buttonOk.setOnClickListener(v -> buttonOkOnClick());
             }
 
             //Стартовый номер
@@ -955,7 +965,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         }
     }
 
-    public void buttonOkOnClick(final View view) {
+    public void buttonOkOnClick() {
         try {
 
             //todo: вынести в global
@@ -1147,7 +1157,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         }
     }
 
-    public void buttonCancelOnClick(final View view) {
+    public void buttonCancelOnClick() {
         setResult(Activity.RESULT_CANCELED);
         finish();
     }

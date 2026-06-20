@@ -1,15 +1,14 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.06.2026, 23:48
+ *  * Created by Vladimir Belov on 20.06.2026, 22:04
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.06.2026, 23:40
+ *  * Last modified 20.06.2026, 21:29
  *
  */
 
 package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
@@ -17,8 +16,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
-import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -70,7 +67,6 @@ final class FluentSnackbar {
 
     void showSnackbar(Builder builder) {
         @SuppressLint("ShowToast") final Snackbar snackbar = Snackbar.make(mView, builder.getText(), builder.getDuration());
-        snackbar.addCallback(builder.mSnackbarCallbackListener);
         View view = snackbar.getView();
         view.setBackgroundColor(builder.getBackgroundColor());
         view.setPadding(0, 0, 0, 0);
@@ -84,8 +80,6 @@ final class FluentSnackbar {
 
             if (builder.hasActionTextColor()) {
                 snackbar.setActionTextColor(builder.getActionTextColor());
-            } else if (builder.hasActionTextColors()) {
-                snackbar.setActionTextColor(builder.getActionColors());
             }
         }
 
@@ -103,10 +97,6 @@ final class FluentSnackbar {
         new Handler().postDelayed(snackbar::show, 100); // the delay does the trick
     }
 
-    public Builder create(@StringRes int text) {
-        return create(mView.getContext().getString(text));
-    }
-
     public Builder create(String text) {
         return new Builder(text);
     }
@@ -115,17 +105,15 @@ final class FluentSnackbar {
         private final CharSequence mText;
         private int mMaxLines;
         @ColorInt
-        private int mTextColor;
+        private final int mTextColor;
         @ColorInt
         private int mBackgroundColor;
         private boolean mIsImportant;
-        private int mDuration;
+        private final int mDuration;
         private CharSequence mActionText;
         private View.OnClickListener mActionListener;
-        private Snackbar.Callback mSnackbarCallbackListener;
         @ColorInt
         private int mActionTextColor;
-        private ColorStateList mActionColors;
         private boolean mHasActionTextColor;
         private int mType;
 
@@ -145,21 +133,6 @@ final class FluentSnackbar {
             return this;
         }
 
-        public Builder textColorRes(@ColorRes int color) {
-            mTextColor = ContextCompat.getColor(mView.getContext(), color);
-            return this;
-        }
-
-        public Builder textColor(@ColorInt int color) {
-            mTextColor = color;
-            return this;
-        }
-
-        public Builder backgroundColorRes(@ColorRes int color) {
-            mBackgroundColor = ContextCompat.getColor(mView.getContext(), color);
-            return this;
-        }
-
         public Builder backgroundColor(@ColorInt int color) {
             mBackgroundColor = color;
             return this;
@@ -174,23 +147,8 @@ final class FluentSnackbar {
             return this;
         }
 
-        public Builder duration(int duration) {
-            mDuration = duration;
-            return this;
-        }
-
         public Builder action(View.OnClickListener listener) {
             mActionListener = listener;
-            return this;
-        }
-
-        public Builder setSnackbarCallbackListener(Snackbar.Callback snackbarCallbackListener) {
-            this.mSnackbarCallbackListener = snackbarCallbackListener;
-            return this;
-        }
-
-        public Builder actionTextRes(@StringRes int text) {
-            mActionText = mView.getContext().getString(text);
             return this;
         }
 
@@ -199,18 +157,9 @@ final class FluentSnackbar {
             return this;
         }
 
-        public Builder actionTextColorRes(@ColorRes int color) {
-            return actionTextColor(ContextCompat.getColor(mView.getContext(), color));
-        }
-
         public Builder actionTextColor(@ColorInt int color) {
             mActionTextColor = color;
             mHasActionTextColor = true;
-            return this;
-        }
-
-        public Builder actionTextColors(ColorStateList actionColors) {
-            mActionColors = actionColors;
             return this;
         }
 
@@ -258,10 +207,6 @@ final class FluentSnackbar {
             return mActionListener;
         }
 
-        ColorStateList getActionColors() {
-            return mActionColors;
-        }
-
         boolean hasAction() {
             return mActionListener != null;
         }
@@ -270,10 +215,6 @@ final class FluentSnackbar {
 
         boolean hasActionTextColor() {
             return mHasActionTextColor;
-        }
-
-        boolean hasActionTextColors() {
-            return mActionColors != null;
         }
 
         public int getType() { return mType; }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2025, 15:45
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 18.06.2025, 14:10
+ *  * Created by Vladimir Belov on 20.06.2026, 22:04
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 20.06.2026, 20:14
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -23,43 +23,52 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.appcompat.content.res.AppCompatResources;
+
 import org.vovka.birthdaycountdown.R;
 import org.vovka.birthdaycountdown.imagecropper.CropImageActivity.CropParam;
 import org.vovka.birthdaycountdown.imagecropper.TouchEventDetector.TouchEventListener;
 
 class CropImageView extends View implements TouchEventListener {
-
     private static final float CROP_WINDOW_PAINTER_WIDTH = 3.0f;
     private static final float OUTSIDE_WINDOW_PAINTER_WIDTH = 1.0f;
     private static final float DRAG_ICONS_RADIUS = 30.0f;
-
     private Paint mCropPainter;
     private Paint mOutsidePainter;
-
     private Bitmap mOriginBitmap;
     private RotateBitmap mCropBitmap;
     private final Matrix mMatrix = new Matrix();
-
     private CropParam mCropParam;
     private CropWindow mCropWindow;
     private boolean mIsCropParamChanged = true;
-
     private float mScaleRate = (float) 1.0;
     private final TouchEventDetector mTouchEventDetector = new TouchEventDetector();
-
-    private final Drawable[] mDragDrawables = {getResources().getDrawable(R.drawable.ic_crop_drag_x),
-            getResources().getDrawable(R.drawable.ic_crop_drag_y),
-            getResources().getDrawable(R.drawable.ic_crop_drag_x),
-            getResources().getDrawable(R.drawable.ic_crop_drag_y)};
+    private Drawable[] mDragDrawables;
 
     public CropImageView(Context context) {
         super(context);
-        createPainter();
+        init(context);
     }
 
     public CropImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context);
+    }
+
+    public CropImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
+    }
+
+    private void init(Context context) {
         createPainter();
+
+        mDragDrawables = new Drawable[] {
+                AppCompatResources.getDrawable(context, R.drawable.ic_crop_drag_x),
+                AppCompatResources.getDrawable(context, R.drawable.ic_crop_drag_y),
+                AppCompatResources.getDrawable(context, R.drawable.ic_crop_drag_x),
+                AppCompatResources.getDrawable(context, R.drawable.ic_crop_drag_y)
+        };
     }
 
     public void destroy() {

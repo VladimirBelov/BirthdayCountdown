@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 06.12.2025, 00:19
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 05.12.2025, 23:50
+  ~  * Created by Vladimir Belov on 20.06.2026, 22:04
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 20.06.2026, 20:01
   ~  */
   -->
 
@@ -38,7 +38,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_menu_search"
                 android:contentDescription="@string/menu_search"
-                android:tint="?attr/windowTitleColor" />
+                app:tint="?attr/windowTitleColor" />
 
         </androidx.appcompat.widget.Toolbar>
 

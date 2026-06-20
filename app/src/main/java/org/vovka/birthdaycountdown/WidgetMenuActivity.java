@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 19:57
+ *  * Created by Vladimir Belov on 20.06.2026, 22:04
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 11:11
+ *  * Last modified 20.06.2026, 21:29
  *
  */
 package org.vovka.birthdaycountdown;
@@ -40,6 +40,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
@@ -132,7 +133,7 @@ public class WidgetMenuActivity extends Activity {
 
                 if (eventStorage.contains(Constants.EVENT_PREFIX_LOCAL_EVENT)) {
                     menuItems.add(getString(R.string.menu_context_edit_local_event));
-                    Drawable actionDrawable = getDrawable(android.R.drawable.ic_menu_edit);
+                    Drawable actionDrawable = AppCompatResources.getDrawable(this, android.R.drawable.ic_menu_edit);
                     if (actionDrawable != null) {
                         actionDrawable.setTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_green)));
                     }
@@ -142,37 +143,37 @@ public class WidgetMenuActivity extends Activity {
 
                 if (!TextUtils.isEmpty(singleEventArray[ContactsEvents.Position_contactID])) {
                     menuItems.add(getString(R.string.menu_context_open_contact));
-                    menuIcons.add(getDrawable(R.drawable.ic_menu_friendslist));
+                    menuIcons.add(AppCompatResources.getDrawable(this, R.drawable.ic_menu_friendslist));
                     menuActions.add(Constants.ContextMenu_OpenContact);
 
                     String phone = eventsData.getContactPhone(Long.parseLong(singleEventArray[ContactsEvents.Position_contactID]));
                     if (!phone.isEmpty()) {
                         menuItems.add(getString(R.string.menu_context_dial));
-                        menuIcons.add(getDrawable(android.R.drawable.ic_menu_call));
+                        menuIcons.add(AppCompatResources.getDrawable(this, android.R.drawable.ic_menu_call));
                         menuActions.add(Constants.ContextMenu_DialContact);
                     }
                 }
 
                 if (!singleEventArray[ContactsEvents.Position_eventID].isEmpty() && eventStorage.contains(Constants.STRING_STORAGE_CALENDAR)) {
                     menuItems.add(getString(R.string.menu_context_open_calendar_event));
-                    menuIcons.add(getDrawable(android.R.drawable.ic_menu_month));
+                    menuIcons.add(AppCompatResources.getDrawable(this, android.R.drawable.ic_menu_month));
                     menuActions.add(Constants.ContextMenu_OpenCalendar);
                 }
 
                 if (!singleEventArray[ContactsEvents.Position_eventURL].isEmpty()) {
                     menuItems.add(getString(R.string.menu_context_open_url));
-                    menuIcons.add(getDrawable(android.R.drawable.ic_menu_directions));
+                    menuIcons.add(AppCompatResources.getDrawable(this, android.R.drawable.ic_menu_directions));
                     menuActions.add(Constants.ContextMenu_OpenURL);
                 }
 
                 if (!Constants.STRING_1.equals(singleEventArray[ContactsEvents.Position_starred])) {
                     if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
                         menuItems.add(getString(R.string.menu_context_favorites_remove));
-                        menuIcons.add(getDrawable(R.drawable.ic_menu_unstar));
+                        menuIcons.add(AppCompatResources.getDrawable(this, R.drawable.ic_menu_unstar));
                         menuActions.add(Constants.ContextMenu_RemoveFromFavorites);
                     } else {
                         menuItems.add(getString(R.string.menu_context_favorites_add));
-                        Drawable actionDrawable = getDrawable(R.drawable.ic_menu_star);
+                        Drawable actionDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_menu_star);
                         if (actionDrawable != null) {
                             actionDrawable.setTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_yellow)));
                         }
@@ -183,7 +184,7 @@ public class WidgetMenuActivity extends Activity {
 
                 if (eventsData.getHiddenEventsCount() == 0 || !eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
                     menuItems.add(getString(R.string.menu_context_hide_event));
-                    Drawable actionDrawable = getDrawable(R.drawable.ic_menu_block);
+                    Drawable actionDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_menu_block);
                     if (actionDrawable != null) {
                         actionDrawable.setTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_red)));
                     }
@@ -194,7 +195,7 @@ public class WidgetMenuActivity extends Activity {
                 if (eventsData.getSilencedEventsCount() == 0 ||
                         (!eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId) && !eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId))) {
                     menuItems.add(getString(R.string.menu_context_silent_event));
-                    Drawable actionDrawable = getDrawable(R.drawable.ic_menu_end_conversation);
+                    Drawable actionDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_menu_end_conversation);
                     if (actionDrawable != null) {
                         actionDrawable.setTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_red)));
                     }
@@ -202,7 +203,7 @@ public class WidgetMenuActivity extends Activity {
                     menuActions.add(Constants.ContextMenu_SilentEvent);
                 } else if (eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
                     menuItems.add(getString(R.string.menu_context_unsilent_event));
-                    menuIcons.add(getDrawable(android.R.drawable.ic_menu_revert));
+                    menuIcons.add(AppCompatResources.getDrawable(this, android.R.drawable.ic_menu_revert));
                     menuActions.add(Constants.ContextMenu_UnsilentEvent);
                 }
 
@@ -228,10 +229,10 @@ public class WidgetMenuActivity extends Activity {
                     View.OnClickListener listener = v -> {
                         if (descriptionView.getVisibility() != View.VISIBLE) {
                             descriptionView.setVisibility(View.VISIBLE);
-                            buttonShowDescription.setImageDrawable(getDrawable(android.R.drawable.arrow_up_float));
+                            buttonShowDescription.setImageDrawable(AppCompatResources.getDrawable(this, android.R.drawable.arrow_up_float));
                         } else {
                             descriptionView.setVisibility(View.GONE);
-                            buttonShowDescription.setImageDrawable(getDrawable(android.R.drawable.arrow_down_float));
+                            buttonShowDescription.setImageDrawable(AppCompatResources.getDrawable(this, android.R.drawable.arrow_down_float));
                         }
                     };
                     buttonShowDescription.setOnClickListener(listener);
@@ -240,7 +241,7 @@ public class WidgetMenuActivity extends Activity {
                 }
 
                 menuItems.add(getString(R.string.menu_context_share));
-                menuIcons.add(getDrawable(android.R.drawable.ic_menu_share));
+                menuIcons.add(AppCompatResources.getDrawable(this, android.R.drawable.ic_menu_share));
                 menuActions.add(Constants.ContextMenu_ShareAsText);
 
             } else {
@@ -252,17 +253,17 @@ public class WidgetMenuActivity extends Activity {
                 }
 
                 menuItems.add(getString(R.string.menu_context_share_fact));
-                menuIcons.add(getDrawable(android.R.drawable.ic_menu_share));
+                menuIcons.add(AppCompatResources.getDrawable(this, android.R.drawable.ic_menu_share));
                 menuActions.add(Constants.ContextMenu_ShareAsText);
 
                 if (!recentFactsLocal.isEmpty()) {
                     menuItems.add(getString(R.string.menu_context_prev_fact));
-                    menuIcons.add(getDrawable(R.drawable.ic_menu_back));
+                    menuIcons.add(AppCompatResources.getDrawable(this, R.drawable.ic_menu_back));
                     menuActions.add(Constants.ContextMenu_PrevFact);
                 }
 
                 menuItems.add(getString(R.string.menu_context_next_fact));
-                menuIcons.add(getDrawable(R.drawable.ic_menu_forward));
+                menuIcons.add(AppCompatResources.getDrawable(this, R.drawable.ic_menu_forward));
                 menuActions.add(Constants.ContextMenu_NextFact);
             }
 
@@ -500,7 +501,7 @@ public class WidgetMenuActivity extends Activity {
     @SuppressWarnings("SameParameterValue")
     private void addMenuItem(String text, int iconResId, int actionConst, int position) {
         menuItems.add(position, text);
-        menuIcons.add(position, getDrawable(iconResId));
+        menuIcons.add(position, AppCompatResources.getDrawable(this, iconResId));
         menuActions.add(position, actionConst);
         if (adapter != null) {
             adapter.notifyDataSetChanged();

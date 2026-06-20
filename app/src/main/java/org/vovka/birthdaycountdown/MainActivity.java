@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 19:57
+ *  * Created by Vladimir Belov on 20.06.2026, 22:04
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 11:37
+ *  * Last modified 20.06.2026, 20:17
  *
  */
 
@@ -69,6 +69,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.PopupMenu;
@@ -3036,10 +3037,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     // Восстановление состояния из глобального хранилища
                     if (expandedDescriptions.contains(eventKey)) {
                         holder.DescriptionTextView.setVisibility(View.VISIBLE);
-                        holder.ShowDescriptionImageView.setImageDrawable(getDrawable(android.R.drawable.arrow_up_float));
+                        holder.ShowDescriptionImageView.setImageDrawable(
+                                AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_up_float));
                     } else {
                         holder.DescriptionTextView.setVisibility(View.GONE);
-                        holder.ShowDescriptionImageView.setImageDrawable(getDrawable(android.R.drawable.arrow_down_float));
+                        holder.ShowDescriptionImageView.setImageDrawable(
+                                AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_down_float));
                     }
 
                     View.OnClickListener listener = v -> {
@@ -3047,11 +3050,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         if (expandedDescriptions.contains(eventKey)) {
                             expandedDescriptions.remove(eventKey);
                             holder.DescriptionTextView.setVisibility(View.GONE);
-                            holder.ShowDescriptionImageView.setImageDrawable(getDrawable(android.R.drawable.arrow_down_float));
+                            holder.ShowDescriptionImageView.setImageDrawable(
+                                    AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_down_float));
                         } else {
                             expandedDescriptions.add(eventKey);
                             holder.DescriptionTextView.setVisibility(View.VISIBLE);
-                            holder.ShowDescriptionImageView.setImageDrawable(getDrawable(android.R.drawable.arrow_up_float));
+                            holder.ShowDescriptionImageView.setImageDrawable(
+                                    AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_up_float));
                         }
                     };
                     holder.ShowDescriptionImageView.setOnClickListener(listener);

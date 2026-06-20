@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 20:42
+ *  * Created by Vladimir Belov on 20.06.2026, 22:04
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 20.06.2026, 21:55
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -108,17 +109,33 @@ public class CropImageActivity extends Activity {
             mCropImageView.initialize(mBitmap, getCropParam(intent));
 
             TextView buttonSave = findViewById(R.id.buttonSave);
-            UiTools.addClickEffect(buttonSave);
-            buttonSave.getBackground().setAlpha(125);
+            if (buttonSave != null) {
+                UiTools.addClickEffect(buttonSave);
+                buttonSave.getBackground().setAlpha(125);
+                buttonSave.setOnClickListener(v -> onClickSave());
+            }
             TextView buttonRotate = findViewById(R.id.buttonRotate);
-            UiTools.addClickEffect(buttonRotate);
-            buttonRotate.getBackground().setAlpha(125);
+            if (buttonRotate != null) {
+                UiTools.addClickEffect(buttonRotate);
+                buttonRotate.getBackground().setAlpha(125);
+                buttonRotate.setOnClickListener(v -> onClickRotate());
+            }
             TextView buttonReset = findViewById(R.id.buttonReset);
-            UiTools.addClickEffect(buttonReset);
-            buttonReset.getBackground().setAlpha(125);
+            if (buttonReset != null) {
+                UiTools.addClickEffect(buttonReset);
+                buttonReset.getBackground().setAlpha(125);
+                buttonReset.setOnClickListener(v -> onClickReset());
+            }
             TextView buttonCrop = findViewById(R.id.buttonCrop);
-            UiTools.addClickEffect(buttonCrop);
-            buttonCrop.getBackground().setAlpha(125);
+            if (buttonCrop != null) {
+                UiTools.addClickEffect(buttonCrop);
+                buttonCrop.getBackground().setAlpha(125);
+                buttonCrop.setOnClickListener(v -> onClickCrop());
+            }
+            ImageView buttonBack = findViewById(R.id.buttonBack);
+            if (buttonBack != null) {
+                buttonBack.setOnClickListener(v -> onClickBack());
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -151,25 +168,25 @@ public class CropImageActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void onClickBack(View v) {
+    public void onClickBack() {
         setResult(RESULT_CANCELED);
         finish();
     }
 
-    public void onClickSave(View v) {
+    public void onClickSave() {
         new SaveImageTask(this).execute(mCropImageView.getCropBitmap());
     }
 
-    public void onClickRotate(View v) {
+    public void onClickRotate() {
         mCropImageView.rotate();
         mCropImageView.invalidate();
     }
 
-    public void onClickReset(View v) {
+    public void onClickReset() {
         mCropImageView.reset();
     }
 
-    public void onClickCrop(View v) {
+    public void onClickCrop() {
         mCropImageView.crop();
     }
 
