@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 11:12
+ *  * Created by Vladimir Belov on 28.06.2026, 02:07
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 11:02
+ *  * Last modified 28.06.2026, 02:02
  *
  */
 
@@ -331,9 +331,10 @@ public class WidgetCalendar extends AppWidgetProvider {
              } catch (Exception e) {/**/}
             enabledHeader = prefElements.contains(res.getString(R.string.widget_config_elements_month));
             enabledWeeks = prefElements.contains(res.getString(R.string.widget_config_elements_weeks));
-            boolean enabledMargins = prefElements.contains(res.getString(R.string.widget_config_elements_margins));
+            final boolean enabledMargins = prefElements.contains(res.getString(R.string.widget_config_elements_margins));
             highlightDayOfWeek = prefElements.contains(res.getString(R.string.widget_config_elements_highlight_weekday));
             enabledFillDays = prefElements.contains(res.getString(R.string.widget_config_elements_fill_days)); //Дни до и после месяца
+            final boolean drawBorder = prefElements.contains(res.getString(R.string.widget_config_elements_border));
 
             //Источники событий и цвета по умолчанию
             List<String> prefEvents = new ArrayList<>();
@@ -511,6 +512,17 @@ public class WidgetCalendar extends AppWidgetProvider {
             todayWeekday = cal.get(Calendar.DAY_OF_WEEK);
 
             rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_COLOR, colorWidgetBackground);
+
+            //Бордюр
+            if (drawBorder) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg_system);
+                } else {
+                    rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg);
+                }
+            } else {
+                rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, 0);
+            }
 
             int maxColumns = 4;
             for (int row = 1; row <= maxRows; row++) {

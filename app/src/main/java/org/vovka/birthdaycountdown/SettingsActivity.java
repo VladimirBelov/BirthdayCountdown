@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 19:57
+ *  * Created by Vladimir Belov on 28.06.2026, 02:07
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 11:41
+ *  * Last modified 28.06.2026, 00:21
  *
  */
 
@@ -128,6 +128,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.SortedSet;
@@ -3545,7 +3546,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                 intent.putExtra(Intent.EXTRA_TITLE,
                         getText(R.string.app_name)
-                                + new SimpleDateFormat(Constants.DATE_YY_MM_DD_HH_MM, Locale.US).format(eventsData.getToday().getTime())
+                                + Objects.requireNonNull(eventsData.sdf_DDMMYYYYHHMM.get()).format(Calendar.getInstance().getTime())
                                 + ".txt");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
                 try {
@@ -3563,7 +3564,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     final String prefix = "# ";
                     String sb = prefix + getText(R.string.app_name) + Constants.STRING_EOL
                             + prefix + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE + Constants.STRING_EOL
-                            + prefix + eventsData.getDateTimePreferable(eventsData.getToday().getTime()) + Constants.STRING_EOL
+                            + prefix + eventsData.getDateTimePreferable(Calendar.getInstance().getTime()) + Constants.STRING_EOL
                             + Constants.STRING_EOL;
                     int countExported = 0;
 

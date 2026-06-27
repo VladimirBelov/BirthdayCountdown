@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.06.2026, 00:32
+  ~  * Created by Vladimir Belov on 28.06.2026, 02:07
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 19.06.2026, 20:51
+  ~  * Last modified 28.06.2026, 02:02
   ~  */
   -->
 
@@ -1016,6 +1016,7 @@ Haga clic largo en el elemento para seleccionar el color"</string>
         <item>Etiquetas de días laborables</item>
         <item>Días antes y después del mes</item>
         <item>Márgenes laterales externos</item>
+        <item>@string/pref_EventInfo_Border</item>
         <item>Resaltar el día de la semana</item>
     </string-array>
 
