@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 11:12
+ *  * Created by Vladimir Belov on 28.06.2026, 02:07
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 11:02
+ *  * Last modified 28.06.2026, 00:15
  *
  */
 
@@ -31,11 +31,11 @@ import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
+import java.util.Objects;
 
 /**
  * WidgetPhotoList - это AppWidgetProvider, который отображает прокручиваемый список событий,
@@ -102,7 +102,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
             if (eventsData.preferences_debug_on) {
                 views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated)
-                        + new SimpleDateFormat(Constants.DATETIME_DD_MM_YYYY_HH_MM, Locale.forLanguageTag(eventsData.currentLocale)).format(eventsData.getToday().getTime())
+                        + Objects.requireNonNull(eventsData.sdf_DDMMYYYYHHMM.get()).format(Calendar.getInstance().getTime())
                         + Constants.STRING_EOL + context.getString(R.string.widget_msg_events) + eventsToShow + Constants.STRING_SLASH + eventsData.eventList.size());
             } else {
                 views.setTextViewText(R.id.info, Constants.STRING_EMPTY);
