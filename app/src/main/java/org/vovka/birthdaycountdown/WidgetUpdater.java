@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.06.2026, 02:07
+ *  * Created by Vladimir Belov on 28.06.2026, 20:55
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.06.2026, 01:26
+ *  * Last modified 28.06.2026, 20:21
  *
  */
 
@@ -351,8 +351,10 @@ class WidgetUpdater {
             //Если события есть - рисуем бордюр, иначе - прозрачность
             if (eventsDisplayed > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Border_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Border_ID)))) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    views.setInt(R.id.appwidget_main, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg_system);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
+                    views.setInt(R.id.appwidget_main, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg_36);
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    views.setInt(R.id.appwidget_main, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg_31);
                 } else {
                     views.setInt(R.id.appwidget_main, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg);
                 }

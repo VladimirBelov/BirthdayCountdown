@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.06.2026, 17:50
+ *  * Created by Vladimir Belov on 28.06.2026, 20:55
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.06.2026, 15:23
+ *  * Last modified 28.06.2026, 20:22
  *
  */
 
@@ -512,8 +512,10 @@ public class WidgetCalendar extends AppWidgetProvider {
 
             //Бордюр
             if (drawBorder) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg_system);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
+                    rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg_36);
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg_31);
                 } else {
                     rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg);
                 }
