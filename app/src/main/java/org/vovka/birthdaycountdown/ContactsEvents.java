@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 19:57
+ *  * Created by Vladimir Belov on 28.06.2026, 23:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 18:38
+ *  * Last modified 28.06.2026, 21:02
  *
  */
 
@@ -6562,7 +6562,7 @@ public class ContactsEvents {
      * @param suggestSquared   Делать фото квадратным
      * @param addFavoritesSign Добавить значок избранного контакта
      * @param roundingFactor   Параметры скругления углов
-     * @return EventPhoto (bitmap + question)
+     * @return EventPhoto (bitmap + image type)
      */
     @NonNull
     EventPhoto getEventPhotoInternal(@NonNull String event, boolean showPhotos, boolean suggestSquared, boolean addFavoritesSign, int roundingFactor) {
