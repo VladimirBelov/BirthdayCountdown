@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.06.2026, 02:07
+ *  * Created by Vladimir Belov on 28.06.2026, 17:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.06.2026, 02:02
+ *  * Last modified 28.06.2026, 15:23
  *
  */
 
@@ -207,7 +207,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_COLOR, 0);
                 for (int row = 1; row <= maxRows; row++) {
                     int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)), Constants.RES_TYPE_ID, context.getPackageName());
-                    rv.setViewVisibility(id, View.GONE);
+                    if (id != 0) rv.setViewVisibility(id, View.GONE);
                 }
                 rv.setViewVisibility(R.id.progressUpdate, View.VISIBLE);
                 appWidgetManager.partiallyUpdateAppWidget(appWidgetId, rv);
@@ -483,11 +483,10 @@ public class WidgetCalendar extends AppWidgetProvider {
                 }
             } catch (Exception e) {/**/}
 
-            int sidePadding = enabledMargins ? (int) (4 * fontMagnify_Common) : 0 ;
-
-            Calendar cal = Calendar.getInstance();
+            Locale locale = Locale.forLanguageTag(eventsData.currentLocale);
+            Calendar cal = Calendar.getInstance(locale);
             cal.setMinimalDaysInFirstWeek(1);
-            DateFormatSymbols dfs = DateFormatSymbols.getInstance();
+            DateFormatSymbols dfs = DateFormatSymbols.getInstance(locale);
             if (cal.getFirstDayOfWeek() == Calendar.SUNDAY) {
                 weekdays = dfs.getShortWeekdays();
                 weekdaysFromSunday = true;
@@ -511,8 +510,6 @@ public class WidgetCalendar extends AppWidgetProvider {
             todayMonth = cal.get(Calendar.MONTH);
             todayWeekday = cal.get(Calendar.DAY_OF_WEEK);
 
-            rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_COLOR, colorWidgetBackground);
-
             //Бордюр
             if (drawBorder) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -523,12 +520,16 @@ public class WidgetCalendar extends AppWidgetProvider {
             } else {
                 rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, 0);
             }
+            //Фон
+            rv.setInt(R.id.calendarBack, Constants.METHOD_SET_BACKGROUND_COLOR, colorWidgetBackground);
 
-            int maxColumns = 4;
+            final int sidePadding = enabledMargins ? (int) (4 * fontMagnify_Common) : 0 ;
+            final int maxColumns = 4;
             for (int row = 1; row <= maxRows; row++) {
                 int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)), Constants.RES_TYPE_ID, context.getPackageName());
                 if (row <= rowsToDraw) {
-                    rv.setViewVisibility(id, View.VISIBLE);
+                    if (id != 0) rv.setViewVisibility(id, View.VISIBLE);
+
                     for (int column = 1; column <= maxColumns; column++) {
                         String idRow = Constants.RES_TYPE_CALENDAR.concat(String.valueOf(row)).concat("x").concat(String.valueOf(column));
                         id = res.getIdentifier(idRow, Constants.RES_TYPE_ID, context.getPackageName());
@@ -537,23 +538,27 @@ public class WidgetCalendar extends AppWidgetProvider {
                             rv.removeAllViews(id);
                             if (column > columnsToDraw) {
                                 rv.setViewVisibility(id, View.GONE);
-                                rv.setViewVisibility(idDiv, View.GONE);
+                                if (idDiv != 0) rv.setViewVisibility(idDiv, View.GONE);
                             } else {
                                 rv.setViewVisibility(id, View.VISIBLE);
-                                rv.setViewVisibility(idDiv, View.VISIBLE);
+                                if (idDiv != 0) rv.setViewVisibility(idDiv, View.VISIBLE);
+                                boolean paddingSet = false;
                                 if (column == 1) { //Отступ слева
                                     rv.setViewPadding(id, ImageUtils.Dip2Px(res, sidePadding), 0, 0, ImageUtils.Dip2Px(res, 4));
-                                } else if (column == columnsToDraw) { //Отступ справа
+                                    paddingSet = true;
+                                }
+                                if (column == columnsToDraw) { //Отступ справа
                                     rv.setViewPadding(id, 0, 0, ImageUtils.Dip2Px(res, sidePadding), ImageUtils.Dip2Px(res, 4));
-                                } else {
+                                    paddingSet = true;
+                                }
+                                if (!paddingSet) {
                                     rv.setViewPadding(id, 0, 0, 0, ImageUtils.Dip2Px(res, 4));
                                 }
-
                             }
                         }
                     }
                 } else {
-                    rv.setViewVisibility(id, View.GONE);
+                    if (id != 0) rv.setViewVisibility(id, View.GONE);
                 }
             }
 
@@ -610,7 +615,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 for (int column = 1; column <= columnsToDraw; column++) {
 
                     if (column * row > 1) {
-                        cal = Calendar.getInstance();
+                        cal = Calendar.getInstance(locale);
                         cal.setMinimalDaysInFirstWeek(1);
                         cal.add(Calendar.MONTH, ((row - 1) * columnsToDraw) + column - 1);
                     }
@@ -815,9 +820,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             @SuppressLint("DiscouragedApi") int id = res.getIdentifier(Constants.RES_TYPE_CALENDAR + row + "x" + column, Constants.RES_TYPE_ID, context.getPackageName());
-            if (id != 0) {
-                rv.addView(id, calendarRv);
-            }
+            if (id != 0) rv.addView(id, calendarRv);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
