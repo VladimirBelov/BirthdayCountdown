@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 02:20
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.06.2026, 23:20
+ *  * Last modified 29.06.2026, 23:17
  *
  */
 
@@ -10,9 +10,13 @@ package org.vovka.birthdaycountdown.utils;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.CalendarContract;
+import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -20,13 +24,26 @@ import androidx.annotation.Nullable;
 
 import org.vovka.birthdaycountdown.Constants;
 import org.vovka.birthdaycountdown.ContactsEvents;
+import org.vovka.birthdaycountdown.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 public class AppDateUtils {
     static final String TAG = "DateUtils";
@@ -118,6 +135,11 @@ public class AppDateUtils {
                 cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
     }
 
+    /** Возвращает количество дней между датами
+     * @param dateFrom Начальная дата
+     * @param dateTo Конечная дата
+     * @return Количество дней
+     */
     public static long countDaysDiff(@NonNull Date dateFrom, @NonNull Date dateTo) {
         //https://stackoverflow.com/questions/1555262/calculating-the-difference-between-two-java-date-instances/43681941#43681941
 
@@ -338,5 +360,795 @@ public class AppDateUtils {
             }
         }
         return null;
+    }
+
+    /** Возвращает количество дней между датами в виде форматированного текста
+     * @param dateFrom   Начальная дата
+     * @param dateTo     Конечная дата
+     * @param components 1 - only DMY, 2 - only days count, 3 - "DMY (days count)"
+     * @param res Ресурсы контекста
+     * @param locale Локаль
+     * @return Строка с количеством дней между датами
+     */
+    public static String countDaysDiffText(@NonNull Date dateFrom, @NonNull Date dateTo, int components, @NonNull Resources res, @NonNull String locale) {
+
+        try {
+
+            StringBuilder eventDistance = new StringBuilder();
+            long daysDiff;
+            boolean diffOnlyDays = true;
+
+            //если включить desugaring https://www.youtube.com/watch?v=heCvGfOGH0s, то размер приложения +200К
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                //https://stackoverflow.com/questions/4710206/calculate-age-in-years-months-days-hours-minutes-and-seconds
+                LocalDate dateStart = dateFrom.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate dateEnd = dateTo.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                if (dateEnd.isBefore(dateStart)) return Constants.STRING_EMPTY;
+
+                daysDiff = ChronoUnit.DAYS.between(dateStart, dateEnd);
+
+                if (components == 1 || components == 3) {
+
+                    Period p = Period.between(dateStart, dateEnd);
+
+                    if (p.getYears() > 0) {
+                        eventDistance.append(StringUtils.getAgeString(p.getYears(), R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20, locale, res)).append(Constants.STRING_SPACE);
+                        diffOnlyDays = false;
+                    }
+                    if (p.getMonths() > 0) {
+                        eventDistance.append(StringUtils.getAgeString(p.getMonths(), R.string.msg_after_month_prefix_1, R.string.msg_after_month_prefix_1_, R.string.msg_after_month_prefix_2_3_4, R.string.msg_after_month_prefix_5_20, locale, res)).append(Constants.STRING_SPACE);
+                        diffOnlyDays = false;
+                    }
+                    if (p.getDays() > 0) {
+                        eventDistance.append(StringUtils.getAgeString(p.getDays(), R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20, locale, res)).append(Constants.STRING_SPACE);
+                    }
+                }
+
+            } else {
+
+                Calendar calendarDateFrom;
+                Calendar calendarDateTo;
+
+                if (dateTo.before(dateFrom)) return Constants.STRING_EMPTY;
+
+                calendarDateFrom = getWithoutTime(getCalendarFromDate(dateFrom));
+                calendarDateTo = getWithoutTime(getCalendarFromDate(dateTo));
+
+                int yearFrom = calendarDateFrom.get(Calendar.YEAR);
+                int yearTo = calendarDateTo.get(Calendar.YEAR);
+                int daysFromNYFrom = calendarDateFrom.get(Calendar.DAY_OF_YEAR);
+                int daysFromNYTo = calendarDateTo.get(Calendar.DAY_OF_YEAR);
+
+                if (yearFrom == yearTo) {
+                    daysDiff = daysFromNYTo - daysFromNYFrom;
+                } else {
+                    int resD = daysFromNYTo + ((yearTo - yearFrom) * 365) - daysFromNYFrom;
+                    daysDiff = resD + countLeapYearsBetween(yearFrom, yearTo);
+                }
+
+                if (components == 1 || components == 3) {
+
+                    long delta = yearTo - yearFrom - (daysFromNYTo < daysFromNYFrom ? 1 : 0);
+                    if (delta > 0) {
+                        eventDistance.append(StringUtils.getAgeString(delta, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20, locale, res)).append(Constants.STRING_SPACE);
+                        diffOnlyDays = false;
+                    }
+                    final int dayOfMonthTo = calendarDateTo.get(Calendar.DAY_OF_MONTH);
+                    final int dayOfMonthFrom = calendarDateFrom.get(Calendar.DAY_OF_MONTH);
+                    if (daysFromNYFrom > daysFromNYTo) {
+                        delta = 12 - calendarDateFrom.get(Calendar.MONTH) + calendarDateTo.get(Calendar.MONTH) - (dayOfMonthFrom > dayOfMonthTo ? 1 : 0);
+                    } else {
+                        delta = calendarDateTo.get(Calendar.MONTH) - calendarDateFrom.get(Calendar.MONTH);
+                    }
+                    if (delta > 0) {
+                        eventDistance.append(StringUtils.getAgeString(delta, R.string.msg_after_month_prefix_1, R.string.msg_after_month_prefix_1_, R.string.msg_after_month_prefix_2_3_4, R.string.msg_after_month_prefix_5_20, locale, res)).append(Constants.STRING_SPACE);
+                        diffOnlyDays = false;
+                    }
+
+                    if (dayOfMonthTo >= dayOfMonthFrom) {
+                        delta = dayOfMonthTo - dayOfMonthFrom;
+                    } else {
+                        Calendar calendarMonthFrom = Calendar.getInstance();
+                        calendarMonthFrom.set(Calendar.YEAR, yearFrom);
+                        calendarMonthFrom.set(Calendar.MONTH, calendarDateFrom.get(Calendar.MONTH) - 1);
+                        int numDays = calendarMonthFrom.getActualMaximum(Calendar.DATE);
+                        delta = numDays - dayOfMonthFrom + dayOfMonthTo - 1;
+                    }
+                    if (delta > 0) {
+                        eventDistance.append(StringUtils.getAgeString(delta, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20, locale, res)).append(Constants.STRING_SPACE);
+                    }
+                }
+            }
+
+            //(X days)
+            if (!diffOnlyDays || components == 2) {
+                if (components == 3) {
+                    eventDistance.append(Constants.STRING_PARENTHESIS_START);
+                }
+                if (components == 2 || components == 3) {
+                    eventDistance.append(StringUtils.getAgeString(daysDiff, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20, locale, res));
+                }
+                if (components == 3) {
+                    eventDistance.append(Constants.STRING_PARENTHESIS_CLOSE);
+                }
+            }
+
+            return eventDistance.toString();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            return Constants.STRING_EMPTY;
+        }
+    }
+
+    /** Возвращает количество предыдущих дней для сканирования событий
+     * @param params Параметры отображения событий до "сегодня" (в виде XdYe, за X дней, не больше Y событий)
+     * @return Количество дней
+     */
+    public static int getPreviousDaysScanDays(@NonNull String params) {
+        int result = 0;
+        try {
+
+            switch (params) {
+                case "":
+                    break;
+                case "1d":
+                    result = 1;
+                    break;
+                case "2d":
+                    result = 2;
+                    break;
+                case "3d":
+                case "3d1e":
+                case "3d2e":
+                    result = 3;
+                    break;
+                default:
+                    result = Constants.PREV_EVENTS_MAX_DAYS;
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        return result;
+    }
+
+    /** Возвращает отформатированную дату
+     * @param dateIn     Дата строкой DDMMYYY
+     * @param dateFormat Формат даты (с годом или без)
+     * @param preferencesDateFormat Формат отображения даты в приложении
+     * @param context Контекст
+     * @param res Ресурсы контекста
+     * @param lang Язык
+     * @return Отформатированная дата, согласно указанному формату и настройки формата даты
+     */
+    @NonNull
+    public static String getDateFormatted(String dateIn, ContactsEvents.FormatDate dateFormat, int preferencesDateFormat,
+                                          @NonNull Context context, @NonNull Resources res, String lang) {
+
+        String resultString = Constants.STRING_EMPTY;
+        if (TextUtils.isEmpty(dateIn)) return resultString;
+        if (preferencesDateFormat == 2 && dateFormat == ContactsEvents.FormatDate.WithYear)
+            return dateIn; // DD.MM.YYYY
+
+        String postfixBC = res.getString(R.string.msg_after_year_bc);
+        if (!dateIn.endsWith(postfixBC)) postfixBC = Constants.STRING_EMPTY;
+
+        try {
+
+            final Locale locale = Locale.forLanguageTag(lang);
+            //todo: переместить в поля класса + initLocaleStrings()
+            SimpleDateFormat sdfInY = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale);
+            SimpleDateFormat sdfIn = new SimpleDateFormat(Constants.DATE_DD_MM, locale);
+            SimpleDateFormat sdfOut = null;
+            Date eventDate = null;
+            boolean isYearPresent = false;
+
+            switch (preferencesDateFormat) {
+
+                case 2: // DD.MM.YYYY
+
+                    sdfOut = new SimpleDateFormat(Constants.DATE_DD_MM, locale);
+                    try {
+                        eventDate = sdfInY.parse(dateIn);
+                    } catch (Exception e) {
+                        try {
+                            eventDate = sdfIn.parse(dateIn);
+                        } catch (Exception e2) { /**/ }
+                    }
+                    if (eventDate != null)
+                        resultString = sdfOut.format(eventDate).concat(postfixBC);
+                    break;
+
+                case 3: // MM.DD.YYYY
+
+                    try {
+                        eventDate = sdfInY.parse(dateIn);
+                        isYearPresent = true;
+                    } catch (Exception e) {
+                        try {
+                            eventDate = sdfIn.parse(dateIn);
+                        } catch (Exception e2) { /**/ }
+                    }
+                    if (eventDate != null) {
+                        if (dateFormat == ContactsEvents.FormatDate.WithYear && isYearPresent) {
+                            sdfOut = new SimpleDateFormat(Constants.DATE_MM_DD_YYYY, locale);
+                        } else if (!isYearPresent || dateFormat == ContactsEvents.FormatDate.WithoutYear) {
+                            sdfOut = new SimpleDateFormat(Constants.DATE_MM_DD, locale);
+                        }
+                        if (sdfOut != null)
+                            resultString = sdfOut.format(eventDate).concat(postfixBC);
+                    }
+                    break;
+
+                case 4: // DD/MM/YYYY
+
+                    try {
+                        eventDate = sdfInY.parse(dateIn);
+                        isYearPresent = true;
+                    } catch (Exception e) {
+                        try {
+                            eventDate = sdfIn.parse(dateIn);
+                        } catch (Exception e2) { /**/ }
+                    }
+                    if (eventDate != null) {
+                        if (dateFormat == ContactsEvents.FormatDate.WithYear && isYearPresent) {
+                            sdfOut = new SimpleDateFormat(Constants.DATE_UK, locale);
+                        } else if (!isYearPresent || dateFormat == ContactsEvents.FormatDate.WithoutYear) {
+                            sdfOut = new SimpleDateFormat(Constants.DATE_UK_NO_YEAR, locale);
+                        }
+                        if (sdfOut != null)
+                            resultString = sdfOut.format(eventDate).concat(postfixBC);
+                    }
+                    break;
+
+                case 5: // MM/DD/YYYY
+
+                    try {
+                        eventDate = sdfInY.parse(dateIn);
+                        isYearPresent = true;
+                    } catch (Exception e) {
+                        try {
+                            eventDate = sdfIn.parse(dateIn);
+                        } catch (Exception e2) { /**/ }
+                    }
+                    if (eventDate != null) {
+                        if (dateFormat == ContactsEvents.FormatDate.WithYear && isYearPresent) {
+                            sdfOut = new SimpleDateFormat(Constants.DATE_IND, locale);
+                        } else if (!isYearPresent || dateFormat == ContactsEvents.FormatDate.WithoutYear) {
+                            sdfOut = new SimpleDateFormat(Constants.DATE_IND_NO_YEAR, locale);
+                        }
+                        if (sdfOut != null)
+                            resultString = sdfOut.format(eventDate).concat(postfixBC);
+                    }
+                    break;
+
+                case 6: // DD MMM YYYY
+
+                    try {
+                        eventDate = sdfInY.parse(dateIn);
+                        isYearPresent = true;
+                    } catch (Exception e) {
+                        try {
+                            eventDate = sdfIn.parse(dateIn);
+                        } catch (Exception e2) { /**/ }
+                    }
+                    if (eventDate != null) {
+                        if (dateFormat == ContactsEvents.FormatDate.WithYear && isYearPresent) {
+                            sdfOut = new SimpleDateFormat(Constants.DATE_DD_MMM_YYYY, locale);
+                        } else if (!isYearPresent || dateFormat == ContactsEvents.FormatDate.WithoutYear) {
+                            sdfOut = new SimpleDateFormat(Constants.DATE_DD_MMM, locale);
+                        }
+                        if (sdfOut != null)
+                            resultString = sdfOut.format(eventDate).concat(postfixBC);
+                    }
+                    break;
+
+                case 7: // D MMMM YYYY
+
+                    try {
+                        eventDate = sdfInY.parse(dateIn);
+                        isYearPresent = true;
+                    } catch (Exception e) {
+                        try {
+                            eventDate = sdfIn.parse(dateIn);
+                        } catch (Exception e2) { /**/ }
+                    }
+                    if (eventDate != null) {
+                        if (dateFormat == ContactsEvents.FormatDate.WithYear && isYearPresent) {
+                            sdfOut = new SimpleDateFormat(Constants.DATE_D_MMMM_YYYY, locale);
+                        } else if (!isYearPresent || dateFormat == ContactsEvents.FormatDate.WithoutYear) {
+                            sdfOut = new SimpleDateFormat(Constants.DATE_D_MMMM, locale);
+                        }
+                        if (sdfOut != null)
+                            resultString = sdfOut.format(eventDate).concat(postfixBC);
+                    }
+                    break;
+
+                default:
+
+                    //https://stackoverflow.com/questions/3790918/format-date-without-year
+                    try {
+                        eventDate = sdfInY.parse(dateIn);
+                        isYearPresent = true;
+                    } catch (Exception e) {
+                        try {
+                            eventDate = sdfIn.parse(dateIn);
+                        } catch (Exception e2) { /**/ }
+                    }
+                    if (eventDate != null) {
+                        if (dateFormat == ContactsEvents.FormatDate.WithYear && isYearPresent) {
+                            resultString = DateUtils.formatDateTime(context, eventDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_NUMERIC_DATE);
+                        } else { //if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
+                            resultString = DateUtils.formatDateTime(context, eventDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_NUMERIC_DATE);
+                        }
+                    }
+            }
+
+        } catch (Exception e) { /**/ }
+
+        return TextUtils.isEmpty(resultString) ? resultString : resultString.concat(postfixBC);
+    }
+
+    /** Возвращает отформатированную дату и время
+     * @param dateIn     Дата строкой DDMMYYY
+     * @param preferencesDateFormat Формат отображения даты в приложении
+     * @param context Контекст
+     * @param lang Язык
+     * @return Отформатированная дата, согласно указанному формату и настройки формата даты
+     */
+    @NonNull
+    public static String getDateTimePreferable(@NonNull Date dateIn, int preferencesDateFormat, Context context, String lang) {
+
+        String resultString = Constants.STRING_EMPTY;
+
+        try {
+
+            final Locale locale = Locale.forLanguageTag(lang);
+            SimpleDateFormat sdfOut;
+            final String timeFormat = " HH:mm";
+
+            switch (preferencesDateFormat) {
+
+                case 2: // DD.MM.YYYY
+
+                    sdfOut = new SimpleDateFormat(Constants.DATE_DD_MM + timeFormat, locale);
+                    resultString = sdfOut.format(dateIn);
+                    break;
+
+                case 3: // MM.DD.YYYY
+
+                    sdfOut = new SimpleDateFormat(Constants.DATE_MM_DD_YYYY + timeFormat, locale);
+                    resultString = sdfOut.format(dateIn);
+                    break;
+
+                case 4: // DD/MM/YYYY
+
+                    sdfOut = new SimpleDateFormat(Constants.DATE_UK + timeFormat, locale);
+                    resultString = sdfOut.format(dateIn);
+                    break;
+
+                case 5: // MM/DD/YYYY
+
+                    sdfOut = new SimpleDateFormat(Constants.DATE_IND + timeFormat, locale);
+                    resultString = sdfOut.format(dateIn);
+                    break;
+
+                case 6: // DD MMM YYYY
+
+                    sdfOut = new SimpleDateFormat(Constants.DATE_DD_MMM_YYYY + timeFormat, locale);
+                    resultString = sdfOut.format(dateIn);
+                    break;
+
+                case 7: // D MMMM YYYY
+
+                    sdfOut = new SimpleDateFormat(Constants.DATE_D_MMMM_YYYY + timeFormat, locale);
+                    resultString = sdfOut.format(dateIn);
+                    break;
+
+                default:
+
+                    resultString = DateUtils.formatDateTime(context, dateIn.getTime(),
+                            DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_NUMERIC_DATE);
+
+            }
+
+        } catch (Exception e) { /**/ }
+
+        return resultString;
+    }
+
+    /**
+     * Возвращает следующую дату плавающего события
+     *
+     * @param eventDateString Изначальная дата в формате DD.MM.YYYY
+     * @param yearShift       Сколько лет прибавить или отнять
+     * @param weekDaysShort Массив коротких имён дней недели
+     * @return Дата в формате DD.MM.YYYY
+     */
+    @NonNull
+    public static String computeFloatingDate(String eventDateString, int yearShift, String[] weekDaysShort) {
+
+        try {
+
+            String[] eventDateComponents = eventDateString.split(Constants.REGEX_PERIOD, -1);
+            final String eventDayString = eventDateComponents[0].toLowerCase();
+            Calendar dateRubicon = Calendar.getInstance(); //От какой даты считаем "сегодня"
+            if (yearShift != 0) {
+                dateRubicon.add(Calendar.YEAR, yearShift);
+            }
+            Calendar cal;
+            int eventMonth;
+            int eventYear = dateRubicon.get(Calendar.YEAR);
+
+            //Именные события
+            if (eventDateComponents.length == 2) {
+                if (EventAliases.startsWithAlias(eventDayString, EventAliases.CANONICAL_EASTER)) {
+
+                    //Православная Пасха
+
+                    //Определяем смещение в днях
+                    int daysShift = 0;
+                    final String strAfterEventName = eventDayString.substring(EventAliases.getMatchedAlias(eventDayString,
+                            EventAliases.CANONICAL_EASTER).length());
+                    if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
+                        try {
+                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
+                        } catch (NumberFormatException ignored) { /**/ }
+                    } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
+                        try {
+                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
+                        } catch (NumberFormatException ignored) { /**/ }
+                    }
+
+                    cal = getEasterDateFor(eventYear, true);
+                    if (cal != null) {
+                        cal.add(Calendar.DAY_OF_YEAR, daysShift);
+                        if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
+                            cal = getEasterDateFor(eventYear + 1, true);
+                            if (cal != null) {
+                                cal.add(Calendar.DAY_OF_YEAR, daysShift);
+                                return Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime());
+                            }
+                        } else {
+                            return Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime());
+                        }
+                    }
+
+                } else if (EventAliases.startsWithAlias(eventDayString, EventAliases.CANONICAL_CATHOLIC_EASTER)) {
+
+                    //Католическая Пасха
+
+                    //Определяем смещение в днях
+                    int daysShift = 0;
+                    final String strAfterEventName = eventDayString.substring(EventAliases.getMatchedAlias(eventDayString,
+                            EventAliases.CANONICAL_CATHOLIC_EASTER).length());
+                    if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
+                        try {
+                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
+                        } catch (NumberFormatException ignored) { /**/ }
+                    } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
+                        try {
+                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
+                        } catch (NumberFormatException ignored) { /**/ }
+                    }
+
+                    cal = getEasterDateFor(eventYear, false);
+                    if (cal != null) {
+                        cal.add(Calendar.DAY_OF_YEAR, daysShift);
+                        if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
+                            cal = getEasterDateFor(eventYear + 1, false);
+                            if (cal != null) {
+                                cal.add(Calendar.DAY_OF_YEAR, daysShift);
+                                return Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime());
+                            }
+                        } else {
+                            return Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime());
+                        }
+                    }
+
+                } else if (EventAliases.startsWithAlias(eventDayString, EventAliases.CANONICAL_NY)) {
+
+                    //XX день от начала года
+
+                    //Определяем смещение в днях
+                    int daysShift = 0;
+                    final String strAfterEventName = eventDayString.substring(EventAliases.getMatchedAlias(eventDayString, EventAliases.CANONICAL_NY).length());
+                    if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
+                        try {
+                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
+                        } catch (NumberFormatException ignored) { /**/ }
+                    } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
+                        try {
+                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
+                        } catch (NumberFormatException ignored) { /**/ }
+                    }
+
+                    cal = (Calendar) dateRubicon.clone();
+                    cal.set(eventYear, Calendar.JANUARY, 1);
+                    cal.add(Calendar.DAY_OF_YEAR, daysShift);
+
+                    if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
+                        cal.set(eventYear + 1, Calendar.JANUARY, 1);
+                        cal.add(Calendar.DAY_OF_YEAR, daysShift);
+                    }
+
+                    return Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime());
+                }
+            }
+
+            //NWW[+-OFFSET].ММ.ГГГГ
+            if (eventDateComponents.length < 3) return eventDateString;
+
+            try {
+                eventMonth = Integer.parseInt(eventDateComponents[1]);
+                if (eventMonth < 1 || eventMonth > 12) {
+                    return eventDateString;
+                }
+            } catch (NumberFormatException ignored) {
+                return eventDateString;
+            }
+
+            //Определяем день недели
+            int weekDayToGet = 0;
+            int indexWeekDay = -1;
+            int countWeekdays = weekDaysShort.length;
+            for (int i = 1; i <= countWeekdays; i++) {
+                String weekDayName = weekDaysShort[i - 1].toLowerCase();
+                if (eventDayString.contains(weekDayName)) {
+                    weekDayToGet = i - 1;
+                    if (weekDayToGet == 0) weekDayToGet = 7;
+                    indexWeekDay = eventDayString.indexOf(weekDayName);
+                    break;
+                }
+            }
+            if (weekDayToGet == 0) {
+                //Обычная ДД.ММ.ГГГГ дата
+                return eventDateString;
+            }
+
+            //Определяем смещение в днях
+            int daysShift = 0;
+            String strAfterWeekName = eventDayString.substring(indexWeekDay + 2);
+            if (strAfterWeekName.startsWith(Constants.STRING_PLUS)) {
+                try {
+                    daysShift = Integer.parseInt(strAfterWeekName.substring(strAfterWeekName.indexOf(Constants.STRING_PLUS) + 1));
+                } catch (NumberFormatException ignored) { /**/ }
+            } else if (strAfterWeekName.startsWith(Constants.STRING_MINUS)) {
+                try {
+                    daysShift = -Integer.parseInt(strAfterWeekName.substring(strAfterWeekName.indexOf(Constants.STRING_MINUS) + 1));
+                } catch (NumberFormatException ignored) { /**/ }
+            }
+
+            String weekDayNumberString = eventDayString.substring(0, indexWeekDay);
+
+            if (weekDayNumberString.equalsIgnoreCase(Constants.STRING_Z)) { //Последняя неделя
+
+                cal = (Calendar) dateRubicon.clone();
+                cal.set(eventYear, eventMonth, 1);
+                int weekDayStartOfNextMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
+                if (weekDayStartOfNextMonth == 0) weekDayStartOfNextMonth = 7;
+                int daysToSub = weekDayStartOfNextMonth > weekDayToGet ? weekDayStartOfNextMonth - weekDayToGet : 7 - (weekDayToGet - weekDayStartOfNextMonth);
+                cal.add(Calendar.DAY_OF_MONTH, -daysToSub + daysShift);
+
+                if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
+                    cal.set(eventYear + 1, eventMonth, 1);
+                    weekDayStartOfNextMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
+                    if (weekDayStartOfNextMonth == 0) weekDayStartOfNextMonth = 7;
+                    daysToSub = weekDayStartOfNextMonth > weekDayToGet ? weekDayStartOfNextMonth - weekDayToGet : 7 - (weekDayToGet - weekDayStartOfNextMonth);
+                    cal.add(Calendar.DAY_OF_MONTH, -daysToSub + daysShift);
+                }
+
+            } else if (weekDayNumberString.equalsIgnoreCase(Constants.STRING_Y)) { //Предпоследняя неделя
+
+                cal = (Calendar) dateRubicon.clone();
+                cal.set(eventYear, eventMonth, 1);
+                int weekDayStartOfNextMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
+                if (weekDayStartOfNextMonth == 0) weekDayStartOfNextMonth = 7;
+                int daysToSub = weekDayStartOfNextMonth > weekDayToGet ? 7 + weekDayStartOfNextMonth - weekDayToGet : 14 - (weekDayToGet - weekDayStartOfNextMonth);
+                cal.add(Calendar.DAY_OF_MONTH, -daysToSub + daysShift);
+
+                if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
+                    cal.set(eventYear + 1, eventMonth, 1);
+                    weekDayStartOfNextMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
+                    if (weekDayStartOfNextMonth == 0) weekDayStartOfNextMonth = 7;
+                    daysToSub = weekDayStartOfNextMonth > weekDayToGet ? 7 + weekDayStartOfNextMonth - weekDayToGet : 14 - (weekDayToGet - weekDayStartOfNextMonth);
+                    cal.add(Calendar.DAY_OF_MONTH, -daysToSub + daysShift);
+                }
+
+            } else {
+
+                int weekNumberToGet;
+                try {
+                    weekNumberToGet = Integer.parseInt(weekDayNumberString); //Номер недели 1..5
+                    if (weekNumberToGet < 1 || weekNumberToGet > 5) {
+                        return eventDateString;
+                    }
+                } catch (NumberFormatException ignored) {
+                    return eventDateString;
+                }
+                cal = (Calendar) dateRubicon.clone();
+                cal.set(eventYear, eventMonth - 1, 1);
+                int weekDayStartOfMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
+                if (weekDayStartOfMonth == 0) weekDayStartOfMonth = 7;
+                int daysToAdd = weekDayStartOfMonth <= weekDayToGet ? weekDayToGet - weekDayStartOfMonth + 7 * (weekNumberToGet - 1) : 7 - (weekDayStartOfMonth - weekDayToGet) + 7 * (weekNumberToGet - 1);
+                cal.add(Calendar.DAY_OF_MONTH, daysToAdd);
+                if (weekNumberToGet == 5 && (cal.get(Calendar.MONTH)) != eventMonth - 1)
+                    cal.add(Calendar.DAY_OF_MONTH, -7);
+                cal.add(Calendar.DAY_OF_MONTH, daysShift);
+
+                if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
+                    cal.set(eventYear + 1, eventMonth - 1, 1);
+                    weekDayStartOfMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
+                    if (weekDayStartOfMonth == 0) weekDayStartOfMonth = 7;
+                    daysToAdd = weekDayStartOfMonth <= weekDayToGet ? weekDayToGet - weekDayStartOfMonth + 7 * (weekNumberToGet - 1) : 7 - (weekDayStartOfMonth - weekDayToGet) + 7 * (weekNumberToGet - 1);
+                    cal.add(Calendar.DAY_OF_MONTH, daysToAdd);
+                    if (weekNumberToGet == 5 && (cal.get(Calendar.MONTH)) != eventMonth - 1)
+                        cal.add(Calendar.DAY_OF_MONTH, -7);
+                    cal.add(Calendar.DAY_OF_MONTH, daysShift);
+                }
+
+            }
+
+            return Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime());
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            return eventDateString;
+        }
+    }
+
+    /** Разделить события на несколько дней на отдельные дни
+     * @param eventsArray Массив с событиями (даты начала и конца события идут через "-")
+     * 01.06.2025-06.06.2025 Событие 1
+     * 01.06.0000-06.06.0000,! Праздник на несколько дней
+     * @param dateFormats Массив форматов дат
+     * @param today Сегодня
+     */
+    public static List<String> splitMultidayEventsAsSeparateLine(String[] eventsArray, SimpleDateFormat[] dateFormats, Calendar today) {
+        try {
+        List<String> result = new ArrayList<>(eventsArray.length);
+        Calendar calStart = Calendar.getInstance();
+        Calendar calEnd = Calendar.getInstance();
+        final String year = String.valueOf(today.get(Calendar.YEAR));
+
+        for (String line : eventsArray) {
+            int indexMinus = line.indexOf(Constants.STRING_MINUS);
+            if (indexMinus == -1) {
+                result.add(line);
+                continue;
+            }
+
+            int indexSpace = line.indexOf(Constants.STRING_SPACE);
+            int indexComma = line.indexOf(Constants.STRING_COMMA);
+
+            if (indexSpace == -1 && indexComma == -1) {
+                result.add(line);
+                continue;
+            }
+
+            int indexEndDate = (indexSpace != -1 && indexComma != -1)
+                    ? Math.min(indexSpace, indexComma)
+                    : (indexSpace != -1 ? indexSpace : indexComma);
+
+            String dates = line.substring(0, indexEndDate);
+            int rangeMinus = dates.indexOf(Constants.STRING_MINUS);
+            if (rangeMinus == -1) {
+                result.add(line);
+                continue;
+            }
+
+            String strDateStart = dates.substring(0, rangeMinus);
+            String strDateEnd = dates.substring(rangeMinus + 1);
+            int indexNoYear = strDateStart.indexOf(Constants.STRING_0000);
+            if (indexNoYear != -1) {
+                strDateStart = strDateStart.replace(Constants.STRING_0000, year);
+                strDateEnd = strDateEnd.replace(Constants.STRING_0000, year);
+            }
+
+            Date dateStart = parseDateWithFormats(strDateStart, dateFormats);
+            Date dateEnd = parseDateWithFormats(strDateEnd, dateFormats);
+
+            if (dateStart == null || dateEnd == null || dateStart.after(dateEnd)) {
+                result.add(line);
+                continue;
+            }
+
+            calStart.setTime(dateStart);
+            calEnd.setTime(dateEnd);
+
+            String eventBody = line.substring(indexEndDate);
+            StringBuilder sb = new StringBuilder(64);
+
+            while (!calStart.after(calEnd)) {
+                sb.setLength(0);
+                if (indexNoYear == -1) {
+                    sb.append(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(calStart.getTime()));
+                } else {
+                    sb.append(Objects.requireNonNull(ContactsEvents.sdf_DDMM.get()).format(calStart.getTime()));
+                    sb.append(Constants.STRING_PERIOD);
+                    sb.append(Constants.STRING_0000);
+                }
+                sb.append(eventBody);
+                result.add(sb.toString());
+                calStart.add(Calendar.DAY_OF_YEAR, 1);
+            }
+        }
+        return result;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            return Arrays.asList(eventsArray);
+        }
+    }
+
+    static class EventAliases {
+
+        public static final String CANONICAL_EASTER = "EASTER";
+        public static final String CANONICAL_CATHOLIC_EASTER = "CATHOLIC_EASTER";
+        public static final String CANONICAL_NY = "NY";
+
+        private static final Map<String, Set<String>> aliasesMap = new HashMap<>();
+
+        static {
+            aliasesMap.put(CANONICAL_EASTER, new HashSet<>(Arrays.asList(
+                    "easter", "ostern", "pascua", "páscoa", "pâques", "velikonoce",
+                    "wielkanoc", "великдень", "вялікдзень", "пасха"
+            )));
+
+            aliasesMap.put(CANONICAL_CATHOLIC_EASTER, new HashSet<>(Arrays.asList(
+                    "c_easter", "c_pâques", "catholic_easter", "catholique_pâques", "k_ostern",
+                    "k_velikonoce", "katholisches_ostern", "katolické_velikonoce", "pascua_c",
+                    "pascua_católica", "páscoa_c", "páscoa_católica", "wielkanoc", "к_великдень",
+                    "к_вялікдзень", "к_пасха", "католицький_великдень"
+            )));
+
+            aliasesMap.put(CANONICAL_NY, new HashSet<>(Arrays.asList(
+                    "новый_год", "new_year", "jour_de_l'an", "an", "na", "nj", "ny", "nie", "нг", "нр"
+            )));
+
+        }
+
+        /**
+         * Проверяет, начинается ли строка с одного из алиасов для заданного канонического события.
+         */
+        public static boolean startsWithAlias(String inputString, String canonicalName) {
+            if (inputString == null || inputString.isEmpty()) return false;
+
+            Set<String> aliases = aliasesMap.get(canonicalName);
+            if (aliases == null) return false;
+
+            // Подготовка строки для поиска
+            String properInput = inputString.toLowerCase().replace(Constants.STRING_SPACE, Constants.STRING_UNDERSCORE);
+
+            for (String alias : aliases) {
+                if (properInput.startsWith(alias)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /** Возвращает подошедший алиас для заданного канонического события
+         * @param inputString Строка, начинающаяся с алиаса события
+         * @param canonicalName Наименование типа события
+         * @return Подошедший алиас события
+         */
+        // Метод, если нужно получить именно совпавший алиас (например, чтобы знать его длину и откусить его от строки)
+        @NonNull public static String getMatchedAlias(String inputString, String canonicalName) {
+            if (inputString == null || inputString.isEmpty()) return Constants.STRING_EMPTY;
+            Set<String> aliases = aliasesMap.get(canonicalName);
+            if (aliases == null) return Constants.STRING_EMPTY;
+
+            String properInput = inputString.toLowerCase().replace(Constants.STRING_SPACE, Constants.STRING_UNDERSCORE);
+            for (String alias : aliases) {
+                if (properInput.startsWith(alias)) {
+                    return alias; // Возвращаем оригинальный алиас из сета
+                }
+            }
+            return Constants.STRING_EMPTY;
+        }
     }
 }

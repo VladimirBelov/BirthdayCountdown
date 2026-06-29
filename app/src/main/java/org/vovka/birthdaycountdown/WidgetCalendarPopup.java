@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.06.2026, 14:56
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 14:11
+ *  * Last modified 29.06.2026, 23:51
  *
  */
 package org.vovka.birthdaycountdown;
@@ -28,6 +28,7 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
 import org.vovka.birthdaycountdown.utils.UiTools;
 
@@ -197,7 +198,7 @@ public class WidgetCalendarPopup extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -336,7 +337,7 @@ public class WidgetCalendarPopup extends Activity {
                     String strYear = event.substring(indParOpen + Constants.STRING_PARENTHESIS_OPEN.length(), indParClose);
                     try {
                         int year = Integer.parseInt(strYear);
-                        String anCaption = eventsData.getWeddingName(newCal.get(Calendar.YEAR) - year);
+                        String anCaption = StringUtils.getWeddingName(newCal.get(Calendar.YEAR) - year, eventsData.getContext(), eventsData.getResources());
                         if (StringUtils.hasContent(anCaption)) {
                             allEventsThisDay.set(i, event.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption)
                                     .concat(Constants.STRING_PARENTHESIS_CLOSE));
@@ -350,9 +351,10 @@ public class WidgetCalendarPopup extends Activity {
                 ? getString(R.string.month_event_empty)
                 : TextUtils.join(Constants.HTML_BR, allEventsThisDay);
         dayCaption = getString(R.string.month_event_popup_prefix)
-                .concat(eventsData.getDateFormatted(
+                .concat(AppDateUtils.getDateFormatted(
                         Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(newCal.getTime()),
-                        ContactsEvents.FormatDate.WithYear))
+                        ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
+                        eventsData.getResources(), eventsData.currentLocale))
                 .concat(sdf.format(newCal.getTime()));
         dayMills = Long.toString(newCal.getTimeInMillis());
     }
@@ -392,7 +394,7 @@ public class WidgetCalendarPopup extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -455,7 +457,7 @@ public class WidgetCalendarPopup extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
     /**

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 11:12
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 11:02
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -231,7 +231,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -363,7 +363,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
         return views;
@@ -478,7 +478,9 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDate_Original_ID))) {
 
-                    final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithoutYear);
+                    final String eventDay = AppDateUtils.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime],
+                            ContactsEvents.FormatDate.WithoutYear, eventsData.preferences_date_format, eventsData.getContext(),
+                            eventsData.getResources(), eventsData.currentLocale);
                     if (StringUtils.hasContent(eventDay)) {
                         if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
                         eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
@@ -486,7 +488,9 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDate_Original_WithYear_ID))) {
 
-                    final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
+                    final String eventDay = AppDateUtils.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime],
+                            ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
+                            eventsData.getResources(), eventsData.currentLocale);
                     if (StringUtils.hasContent(eventDay)) {
                         if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
                         eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
@@ -494,7 +498,9 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDate_ID))) {
 
-                    final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime], ContactsEvents.FormatDate.WithoutYear);
+                    final String eventDay = AppDateUtils.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime],
+                            ContactsEvents.FormatDate.WithoutYear, eventsData.preferences_date_format, eventsData.getContext(),
+                            eventsData.getResources(), eventsData.currentLocale);
                     if (StringUtils.hasContent(eventDay)) {
                         if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
                         eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
@@ -502,7 +508,9 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDate_WithYear_ID))) {
 
-                    final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime], ContactsEvents.FormatDate.WithYear);
+                    final String eventDay = AppDateUtils.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateNextTime],
+                            ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
+                            eventsData.getResources(), eventsData.currentLocale);
                     if (StringUtils.hasContent(eventDay)) {
                         if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
                         eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
@@ -670,7 +678,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         detailsList.add(eventDetails.toString());
         return detailsList;

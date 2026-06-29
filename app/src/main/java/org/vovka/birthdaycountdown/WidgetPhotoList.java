@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.06.2026, 02:07
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.06.2026, 00:15
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -186,7 +186,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
             eventsData.statActiveWidgets++;
@@ -222,7 +222,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.06.2026, 21:51
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.06.2026, 17:30
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -23,17 +23,17 @@ import org.vovka.birthdaycountdown.utils.StringUtils;
  * вычисления сокращенного представления имени и определения пола на основе
  * паттернов имени.
  */
-class Person {
+public class Person {
 
     private static final String TAG = "Person";
     private String LastName;
     private String FirstName = Constants.STRING_EMPTY;
     private String SecondName = Constants.STRING_EMPTY;
-    int Age = -1;
+    public int Age = -1;
     String FIO_str;
     private Context context;
 
-    Person(@NonNull Context context, @NonNull String[] eventArray) {
+    public Person(@NonNull Context context, @NonNull String[] eventArray) {
 
         try {
 
@@ -74,7 +74,7 @@ class Person {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -158,12 +158,12 @@ class Person {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
     }
 
-    int getGender() { //Определение пола по фамилии, имени, отчеству
+    public int getGender() { //Определение пола по фамилии, имени, отчеству
         // 1 - мужской, 2 - женский, 0 - не определяли, -1 - не определён
         //https://github.com/vadimiztveri/sex_by_russian_name/blob/master/src/sex_by_russian_name.js
         //https://stackoverflow.com/questions/19829892/java-regular-expressions-performance-and-alternative
@@ -211,7 +211,7 @@ class Person {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return -1;
         }
 

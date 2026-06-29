@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 11:12
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 11:02
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -345,7 +345,9 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
                 }
             }
 
-            final String eventDay = eventsData.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime], ContactsEvents.FormatDate.WithYear);
+            final String eventDay = AppDateUtils.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime],
+                    ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
+                    eventsData.getResources(), eventsData.currentLocale);
             String eventText = singleEventArray[ContactsEvents.Position_eventEmoji] +
                     Constants.STRING_SPACE +
                     Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + eventDay + Constants.HTML_COLOR_END +
@@ -363,7 +365,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
         return views;
@@ -502,7 +504,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }

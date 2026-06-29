@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2026, 01:09
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.06.2026, 00:26
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -12,6 +12,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 /**
  * Класс AlarmReceiver является BroadcastReceiver, который обрабатывает события будильника,
@@ -95,7 +97,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 }

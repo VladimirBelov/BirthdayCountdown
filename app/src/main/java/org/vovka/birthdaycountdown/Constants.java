@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2026, 01:09
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.06.2026, 01:05
+ *  * Last modified 29.06.2026, 23:51
  *
  */
 
@@ -25,18 +25,18 @@ public final class Constants {
     static final String REGEX_EVENTS_SCOPE_PLUS = "(\\d+?)[e](\\d+?)[d]([\\+\\-])";
     static final String REGEX_EVENTS_SCOPE_RAND = "(\\d+?)[e](\\d+?)[d](\\d+?)[r]";
     static final String REGEX_CALENDAR_LAYOUT = "(\\d+?)[r](\\d+?)[c]";
-    static final String REGEX_PERIOD = "\\.";
+    public static final String REGEX_PERIOD = "\\.";
     static final String REGEX_BS = "\\";
-    static final String REGEX_BAR = "\\|";
+    public static final String REGEX_BAR = "\\|";
     static final String STRING_00 = "00";
-    static final String STRING_000 = "000";
-    static final String STRING_0000 = "0000";
+    public static final String STRING_000 = "000";
+    public static final String STRING_0000 = "0000";
     static final String STRING_0000_MINUS = "0000-";
     public static final String STRING_HASH = "#";
     public static final String STRING_2HASH = "##";
     static final String STRING_2MINUS = "--";
-    static final String STRING_MINUS = "-";
-    static final String STRING_PLUS = "+";
+    public static final String STRING_MINUS = "-";
+    public static final String STRING_PLUS = "+";
     static final String STRING_2TILDA = "~~";
     public static final String STRING_0 = "0";
     public static final String STRING_1 = "1";
@@ -69,23 +69,23 @@ public final class Constants {
     static final String STRING_NULL = "null";
     public static final String STRING_PARENTHESIS_CLOSE = ")";
     public static final String STRING_PARENTHESIS_OPEN = " (";
-    static final String STRING_PARENTHESIS_START = "(";
+    public static final String STRING_PARENTHESIS_START = "(";
     static final String STRING_BRACKETS_OPEN = " [";
-    static final String STRING_BRACKETS_START = "[";
+    public static final String STRING_BRACKETS_START = "[";
     static final String STRING_BRACKETS_CLOSE = "]";
     public static final String STRING_PERIOD = ".";
     public static final String STRING_SLASH = "/";
-    static final String STRING_DSLASH = "//";
+    public static final String STRING_DSLASH = "//";
     public static final String STRING_SPACE = " ";
     static final String STRING_BC = "BC";
-    static final String STRING_UNDERSCORE = "_";
+    public static final String STRING_UNDERSCORE = "_";
     static final String STRING_BDP_DIV = "❙"; //Birthdays Plus: |ДДДД-ММ-ДД|ИОФ|тип (Birthday, Anniversary, Custom)|наименование события или null|
     static final String STRING_BDP_EOL = "❚";
     static final String STRING_BDP_NO_YEAR = "1900";
     static final String STRING_BDP_CUSTOM = "Custom";
 
-    static final String STRING_Z = "Z";
-    static final String STRING_Y = "Y";
+    public static final String STRING_Z = "Z";
+    public static final String STRING_Y = "Y";
 
     static final String LANG_EN = "en";
     static final String LANG_RU = "ru";
@@ -93,24 +93,24 @@ public final class Constants {
     //https://en.wikipedia.org/wiki/Date_format_by_country
     static final String DATETIME_DD_MM_YYYY_HH_MM = "dd.MM.yyyy HH:mm";
     static final String DATE_DD_MM_Y = "dd.MM.y";
-    static final String DATE_DD_MM_YYYY = "dd.MM.yyyy";
+    public static final String DATE_DD_MM_YYYY = "dd.MM.yyyy";
     static final String DATE_DD_MM_YYYY_G = "dd.MM.yyyy G";
-    static final String DATE_MM_DD_YYYY = "MM.dd.yyyy";
-    static final String DATE_MM_DD = "MM.dd";
-    static final String DATE_DD_MM = "dd.MM";
-    static final String DATE_DD_MMM_YYYY = "dd MMM yyyy";
-    static final String DATE_DD_MMM = "dd MMM";
-    static final String DATE_D_MMMM_YYYY = "d MMMM yyyy";
+    public static final String DATE_MM_DD_YYYY = "MM.dd.yyyy";
+    public static final String DATE_MM_DD = "MM.dd";
+    public static final String DATE_DD_MM = "dd.MM";
+    public static final String DATE_DD_MMM_YYYY = "dd MMM yyyy";
+    public static final String DATE_DD_MMM = "dd MMM";
+    public static final String DATE_D_MMMM_YYYY = "d MMMM yyyy";
     static final String DATE_MMMM_D_YYYY = "MMMM d, yyyy";
     static final String DATE_MMMM_D = "MMMM d";
-    static final String DATE_D_MMMM = "d MMMM";
+    public static final String DATE_D_MMMM = "d MMMM";
     static final String DATE_RUS = "dd MMMMM yyyy г.";
-    static final String DATE_UK = "dd/MM/yyyy";
+    public static final String DATE_UK = "dd/MM/yyyy";
     static final String DATE_UK_G = "dd/MM/yyyy G";
-    static final String DATE_UK_NO_YEAR = "dd/MM";
-    static final String DATE_IND = "MM/dd/yyyy";
+    public static final String DATE_UK_NO_YEAR = "dd/MM";
+    public static final String DATE_IND = "MM/dd/yyyy";
     static final String DATE_IND_G = "MM/dd/yyyy G";
-    static final String DATE_IND_NO_YEAR = "MM/dd";
+    public static final String DATE_IND_NO_YEAR = "MM/dd";
     static final String DATE_JAVA = "yyyy-MM-dd";
     static final String DATE_JAVA_G = "yyyy-MM-dd G";
     static final String DATE_JAVA_NO_YEAR = "--MM-dd";
@@ -119,7 +119,7 @@ public final class Constants {
     static final String DATE_LLLL_YYYY = "LLLL yyyy";
     static final String DATE_YYYY = "yyyy";
 
-    static final String STRING_TYPE_WEDDING = "event_type_wedding_";
+    public static final String STRING_TYPE_WEDDING = "event_type_wedding_";
     static final String STRING_TYPE_HOLIDAY = "holidays";
     static final String STRING_TYPE_OTHER_HOLIDAY = "other_holidays";
     static final String STRING_TYPE_OTHER_EVENT = "other_events";
@@ -176,24 +176,24 @@ public final class Constants {
     static final String Type_MultiEvent = "30";
 
     //Типы событий (ID)
-    static final String EventType_BirthDay = "3"; //ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY
-    static final String EventType_Anniversary = "1"; //ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY
-    static final String EventType_Other = "23";
+    public static final String EventType_BirthDay = "3"; //ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY
+    public static final String EventType_Anniversary = "1"; //ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY
+    public static final String EventType_Other = "23";
     static final String EventType_Custom = "0"; //ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM
-    static final String EventType_5K = "11";
-    static final String EventType_Death = "12";
-    static final String EventType_NameDay = "13";
-    static final String EventType_Crowning = "14";
-    static final String EventType_Custom1 = "15";
-    static final String EventType_Custom2 = "16";
-    static final String EventType_Custom3 = "17";
-    static final String EventType_Custom4 = "18";
-    static final String EventType_Custom5 = "19";
-    static final String EventType_Another = "2"; //ContactsContract.CommonDataKinds.Event.TYPE_OTHER
-    static final String EventType_Holiday = "4";
+    public static final String EventType_5K = "11";
+    public static final String EventType_Death = "12";
+    public static final String EventType_NameDay = "13";
+    public static final String EventType_Crowning = "14";
+    public static final String EventType_Custom1 = "15";
+    public static final String EventType_Custom2 = "16";
+    public static final String EventType_Custom3 = "17";
+    public static final String EventType_Custom4 = "18";
+    public static final String EventType_Custom5 = "19";
+    public static final String EventType_Another = "2"; //ContactsContract.CommonDataKinds.Event.TYPE_OTHER
+    public static final String EventType_Holiday = "4";
     static final String EventType_Calendar = "20";
     static final String EventType_File = "21";
-    static final String EventType_Xdays = "22";
+    public static final String EventType_Xdays = "22";
     static final String EventType_Fact = "24";
     static final String EventType_Unrecognized = "99";
 
@@ -279,17 +279,17 @@ public final class Constants {
     static final String EXTRA_URL = "url";
 
     static final int HTML_COLOR_DEFAULT = 0;
-    static final int HTML_COLOR_RED = 1;
-    static final int HTML_COLOR_YELLOW = 2;
-    static final int HTML_COLOR_BROWN = 3;
-    static final int HTML_COLOR_GREEN = 4;
+    public static final int HTML_COLOR_RED = 1;
+    public static final int HTML_COLOR_YELLOW = 2;
+    public static final int HTML_COLOR_BROWN = 3;
+    public static final int HTML_COLOR_GREEN = 4;
 
     static final String HTML_BOLD_START = "<b>";
     static final String HTML_BOLD_END = "</b>";
     static final String HTML_BR = "<br>";
-    static final String HTML_COLOR_START = "<font color=\"#";
-    static final String HTML_COLOR_MIDDLE = "\">";
-    static final String HTML_COLOR_END = "</font>";
+    public static final String HTML_COLOR_START = "<font color=\"#";
+    public static final String HTML_COLOR_MIDDLE = "\">";
+    public static final String HTML_COLOR_END = "</font>";
     static final String FONT_COLOR_RED = "<font color=red>";
     static final String FONT_COLOR_DOT_START = "<bold><font color=#";
     static final String FONT_COLOR_DOT_END = ">●</font></bold> ";
@@ -332,7 +332,7 @@ public final class Constants {
     static final int TIME_FORCE_UPDATE = 30000;
     static final int TIME_WIDGET_UPDATE_COOLDOWN = 5000;
     static final int TIME_NOTIFY_COOLDOWN = 30000;
-    static final int PREV_EVENTS_MAX_DAYS = 14;
+    public static final int PREV_EVENTS_MAX_DAYS = 14;
     static final int RECENT_FACTS_MAX = 10;
     static final String account_google = "com.google";
     static final String account_exchange = "com.google.android.gm.exchange";
@@ -360,7 +360,7 @@ public final class Constants {
     static final String STRING_HTTP = "http://";
     static final String STRING_HTTPS = "https://";
     static final String RES_PACKAGE_ANDROID = "android";
-    static final String RES_TYPE_STRING = "string";
+    public static final String RES_TYPE_STRING = "string";
     static final String RES_TYPE_ID = "id";
     static final String RES_TYPE_STRING_ARRAY = "array";
     static final String RES_TYPE_CALENDAR = "calendar";

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.04.2026, 00:06
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.04.2026, 23:04
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 /**
  * ShareFromNotifyActivity - это Activity, которое обрабатывает передачу текста, полученного из уведомления.
@@ -63,7 +65,7 @@ public class ShareFromNotifyActivity extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 }

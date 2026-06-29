@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.06.2026, 11:12
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.06.2026, 11:02
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -12,6 +12,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 /**
  * Класс DateReceiver является BroadcastReceiver, который отслеживает системные изменения даты и времени.
@@ -80,7 +82,7 @@ public class DateReceiver extends BroadcastReceiver {
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
 
         }

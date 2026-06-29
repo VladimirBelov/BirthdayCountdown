@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 00:32
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 00:17
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -238,7 +238,7 @@ public class EventImporterActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -281,7 +281,7 @@ public class EventImporterActivity extends AppCompatActivity {
             } else {
 
                 if (uri != null)
-                    fileContent = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL);
+                    fileContent = StringUtils.readFileToString(uri.toString(), Constants.STRING_EOL, eventsData.getContext(), eventsData.getResources());
 
                 if (fileContent.isEmpty()) {
                     details.add(getString(R.string.pref_Tools_Events_Import_result_noAccess));
@@ -305,7 +305,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             details.add(getString(R.string.pref_Tools_Events_Import_result_Error, e.getMessage()));
         } finally {
             if (!eventsList.isEmpty()) {
@@ -445,7 +445,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -535,7 +535,7 @@ public class EventImporterActivity extends AppCompatActivity {
             if (indexDateNoYear == -1) { //С годом
                 try {
                     if (isAD) {
-                        String dateNextFloatingEvent = eventsData.computeFloatingDate(eventDateString, 0);
+                        String dateNextFloatingEvent = AppDateUtils.computeFloatingDate(eventDateString, 0, eventsData.weekDaysShort);
                         if (!eventDateString.equals(dateNextFloatingEvent)) {
                             //Пока не поддерживается
                             statEventsSkipped.getAndIncrement();
@@ -578,7 +578,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
                 String dateNextEvent = eventDateString.replace(Constants.STRING_0000, String.valueOf(today.get(Calendar.YEAR)));
                 try {
-                    String dateNextFloatingEvent = eventsData.computeFloatingDate(dateNextEvent, 0);
+                    String dateNextFloatingEvent = AppDateUtils.computeFloatingDate(dateNextEvent, 0, eventsData.weekDaysShort);
                     if (!dateNextEvent.equals(dateNextFloatingEvent)) {
                         //Пока не поддерживается
                         statEventsSkipped.getAndIncrement();
@@ -737,7 +737,7 @@ public class EventImporterActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -830,7 +830,7 @@ public class EventImporterActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             Log.e(TAG, "Error streaming vCard: " + uri, e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1032,7 +1032,7 @@ public class EventImporterActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             Log.e(TAG, "Error processing single vCard", e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1170,7 +1170,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

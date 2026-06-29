@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.06.2026, 01:26
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.06.2026, 00:12
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 package org.vovka.birthdaycountdown;
@@ -43,6 +43,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
 
 import org.vovka.birthdaycountdown.utils.ImageUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,7 +146,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             ta.recycle();
         }
@@ -173,7 +174,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             selectColor(0, 0, null, null);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -243,7 +244,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -562,7 +563,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -646,7 +647,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -680,7 +681,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
             } catch (final Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
         }
 

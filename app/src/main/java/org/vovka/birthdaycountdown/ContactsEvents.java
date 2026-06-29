@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.06.2026, 23:02
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.06.2026, 21:02
+ *  * Last modified 30.06.2026, 00:10
  *
  */
 
@@ -36,8 +36,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -56,7 +54,6 @@ import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
 import android.text.style.StyleSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -99,18 +96,12 @@ import org.vovka.birthdaycountdown.utils.StringUtils;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -271,7 +262,7 @@ public class ContactsEvents {
     /**
      * Данные фото контакта или события
      */
-    static final int Position_photo = 32;
+    public static final int Position_photo = 32;
     /**
      * Размерность массива с данными события (для проверки целостности)
      */
@@ -457,7 +448,7 @@ public class ContactsEvents {
         }
     };
     /** Дата формата "dd.MM.yyyy" */
-    static final ThreadLocal<SimpleDateFormat> sdf_DDMMYYYY = new ThreadLocal<SimpleDateFormat>() {
+    public static final ThreadLocal<SimpleDateFormat> sdf_DDMMYYYY = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
             SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, Locale.US);
@@ -482,7 +473,7 @@ public class ContactsEvents {
         }
     };
     /** Дата формата "dd.MM" */
-    static final ThreadLocal<SimpleDateFormat> sdf_DDMM = new ThreadLocal<SimpleDateFormat>() {
+    public static final ThreadLocal<SimpleDateFormat> sdf_DDMM = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
             SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_DD_MM, Locale.US);
@@ -893,7 +884,7 @@ public class ContactsEvents {
         return ourInstance;
     }
 
-    enum FormatDate {
+    public enum FormatDate {
         WithYear, WithoutYear
     }
 
@@ -1168,7 +1159,7 @@ public class ContactsEvents {
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
 
             return view;
@@ -1670,20 +1661,6 @@ public class ContactsEvents {
 
     }
 
-    /**
-     * Get the method name for a depth in call stack.
-     *
-     * @param depth depth in the call stack (0 means current method, 1 means call method, ...)
-     * @return method name
-     */
-    public static String getMethodName(final int depth) {
-        StackTraceElement[] ste = null;
-        try {
-            ste = Thread.currentThread().getStackTrace();
-        } catch (SecurityException se) { /**/ }
-        return depth >= 0 && ste != null ? ste[depth].getClassName() + "->" + ste[depth].getMethodName() : Constants.STRING_EMPTY;
-    }
-
     Context getContext() {
         return context;
     }
@@ -1691,126 +1668,6 @@ public class ContactsEvents {
     @NonNull
     Resources getResources() {
         return resources;
-    }
-
-    /**
-     * @param dateFrom   date from
-     * @param dateTo     date to
-     * @param components 1 - only DMY, 2 - only days count, 3 - "DMY (days count)"
-     * @return distance between two days in locale text format
-     */
-    String countDaysDiffText(@NonNull Date dateFrom, @NonNull Date dateTo, int components) {
-
-        try {
-
-            StringBuilder eventDistance = new StringBuilder();
-            long daysDiff;
-            boolean diffOnlyDays = true;
-
-            //если включить desugaring https://www.youtube.com/watch?v=heCvGfOGH0s, то размер приложения +200К
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-                //https://stackoverflow.com/questions/4710206/calculate-age-in-years-months-days-hours-minutes-and-seconds
-                LocalDate dateStart = dateFrom.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                LocalDate dateEnd = dateTo.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-                if (dateEnd.isBefore(dateStart)) return Constants.STRING_EMPTY;
-
-                daysDiff = ChronoUnit.DAYS.between(dateStart, dateEnd);
-
-                if (components == 1 || components == 3) {
-
-                    Period p = Period.between(dateStart, dateEnd);
-
-                    if (p.getYears() > 0) {
-                        eventDistance.append(StringUtils.getAgeString(p.getYears(), R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20, currentLocale, resources)).append(Constants.STRING_SPACE);
-                        diffOnlyDays = false;
-                    }
-                    if (p.getMonths() > 0) {
-                        eventDistance.append(StringUtils.getAgeString(p.getMonths(), R.string.msg_after_month_prefix_1, R.string.msg_after_month_prefix_1_, R.string.msg_after_month_prefix_2_3_4, R.string.msg_after_month_prefix_5_20, currentLocale, resources)).append(Constants.STRING_SPACE);
-                        diffOnlyDays = false;
-                    }
-                    if (p.getDays() > 0) {
-                        eventDistance.append(StringUtils.getAgeString(p.getDays(), R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20, currentLocale, resources)).append(Constants.STRING_SPACE);
-                    }
-                }
-
-            } else {
-
-                Calendar calendarDateFrom;
-                Calendar calendarDateTo;
-
-                if (dateTo.before(dateFrom)) return Constants.STRING_EMPTY;
-
-                calendarDateFrom = AppDateUtils.getWithoutTime(AppDateUtils.getCalendarFromDate(dateFrom));
-                calendarDateTo = AppDateUtils.getWithoutTime(AppDateUtils.getCalendarFromDate(dateTo));
-
-                int yearFrom = calendarDateFrom.get(Calendar.YEAR);
-                int yearTo = calendarDateTo.get(Calendar.YEAR);
-                int daysFromNYFrom = calendarDateFrom.get(Calendar.DAY_OF_YEAR);
-                int daysFromNYTo = calendarDateTo.get(Calendar.DAY_OF_YEAR);
-
-                if (yearFrom == yearTo) {
-                    daysDiff = daysFromNYTo - daysFromNYFrom;
-                } else {
-                    int resD = daysFromNYTo + ((yearTo - yearFrom) * 365) - daysFromNYFrom;
-                    daysDiff = resD + AppDateUtils.countLeapYearsBetween(yearFrom, yearTo);
-                }
-
-                if (components == 1 || components == 3) {
-
-                    long delta = yearTo - yearFrom - (daysFromNYTo < daysFromNYFrom ? 1 : 0);
-                    if (delta > 0) {
-                        eventDistance.append(StringUtils.getAgeString(delta, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20, currentLocale, resources)).append(Constants.STRING_SPACE);
-                        diffOnlyDays = false;
-                    }
-                    final int dayOfMonthTo = calendarDateTo.get(Calendar.DAY_OF_MONTH);
-                    final int dayOfMonthFrom = calendarDateFrom.get(Calendar.DAY_OF_MONTH);
-                    if (daysFromNYFrom > daysFromNYTo) {
-                        delta = 12 - calendarDateFrom.get(Calendar.MONTH) + calendarDateTo.get(Calendar.MONTH) - (dayOfMonthFrom > dayOfMonthTo ? 1 : 0);
-                    } else {
-                        delta = calendarDateTo.get(Calendar.MONTH) - calendarDateFrom.get(Calendar.MONTH);
-                    }
-                    if (delta > 0) {
-                        eventDistance.append(StringUtils.getAgeString(delta, R.string.msg_after_month_prefix_1, R.string.msg_after_month_prefix_1_, R.string.msg_after_month_prefix_2_3_4, R.string.msg_after_month_prefix_5_20, currentLocale, resources)).append(Constants.STRING_SPACE);
-                        diffOnlyDays = false;
-                    }
-
-                    if (dayOfMonthTo >= dayOfMonthFrom) {
-                        delta = dayOfMonthTo - dayOfMonthFrom;
-                    } else {
-                        Calendar calendarMonthFrom = Calendar.getInstance();
-                        calendarMonthFrom.set(Calendar.YEAR, yearFrom);
-                        calendarMonthFrom.set(Calendar.MONTH, calendarDateFrom.get(Calendar.MONTH) - 1);
-                        int numDays = calendarMonthFrom.getActualMaximum(Calendar.DATE);
-                        delta = numDays - dayOfMonthFrom + dayOfMonthTo - 1;
-                    }
-                    if (delta > 0) {
-                        eventDistance.append(StringUtils.getAgeString(delta, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20, currentLocale, resources)).append(Constants.STRING_SPACE);
-                    }
-                }
-            }
-
-            //(X days)
-            if (!diffOnlyDays || components == 2) {
-                if (components == 3) {
-                    eventDistance.append(Constants.STRING_PARENTHESIS_START);
-                }
-                if (components == 2 || components == 3) {
-                    eventDistance.append(StringUtils.getAgeString(daysDiff, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20, currentLocale, resources));
-                }
-                if (components == 3) {
-                    eventDistance.append(Constants.STRING_PARENTHESIS_CLOSE);
-                }
-            }
-
-            return eventDistance.toString();
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return Constants.STRING_EMPTY;
-        }
     }
 
     void getPreferences_Language(@NonNull Context context) {
@@ -1837,7 +1694,7 @@ public class ContactsEvents {
             preferences_enabled_features = getPreferenceStringSet(preferences, getResources().getString(R.string.pref_EnabledFeatures_key), new HashSet<>());
             preferences_Icon = getPreferenceString(preferences, context.getString(R.string.pref_Icon_key), context.getString(R.string.pref_Icon_default));
             preferences_IconPackNumber = getPreferenceInt(preferences, context.getString(R.string.pref_IconPack_key), 0);
-            initIconPack();
+            ImageUtils.initIconPack(preferences_IconPackNumber, preferences_IconPackImages_M, preferences_IconPackImages_F);
             preferences_menustyle_compact = getPreferenceBoolean(preferences, context.getString(R.string.pref_MenuStyle_key), getResources().getBoolean(R.bool.pref_MenuStyle_default));
             preferences_days_info.clear();
             preferences_days_info.putAll(getPreferenceStringSetAsMap(preferences, getResources().getString(R.string.pref_DaysInfo_key), Constants.STRING_EOT));
@@ -1846,7 +1703,7 @@ public class ContactsEvents {
             preferences_list_event_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_Events_key), prefs_EventTypes_Default);
             preferences_list_event_info = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventInfo_key), pref_List_Event_Info_Default);
             preferences_list_prev_events = getPreferenceString(preferences, context.getString(R.string.pref_List_PrevEvents_key), context.getString(R.string.pref_List_PrevEvents_default));
-            preferences_list_prev_events_scan_distance = getPreviousDaysScanDays(preferences_list_prev_events);
+            preferences_list_prev_events_scan_distance = AppDateUtils.getPreviousDaysScanDays(preferences_list_prev_events);
             preferences_list_style = getPreferenceInt(preferences, context.getString(R.string.pref_List_Style_key), context.getString(R.string.pref_List_Style_default));
             preferences_list_photostyle = getPreferenceInt(preferences, context.getString(R.string.pref_List_PhotoStyle_key), context.getString(R.string.pref_List_PhotoStyle_default));
             preferences_list_filling = getPreferenceInt(preferences, context.getString(R.string.pref_List_Filling_key), context.getString(R.string.pref_List_Filling_default));
@@ -2284,7 +2141,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -2309,7 +2166,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return result;
     }
@@ -2401,7 +2258,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2539,7 +2396,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2899,7 +2756,7 @@ public class ContactsEvents {
                         countErrors++;
                         if (countErrors < 3) {
                             StringBuilder sb = new StringBuilder();
-                            sb.append(getMethodName(3)).append(Constants.STRING_COLON_SPACE).append(e).append(Constants.STRING_EOL);
+                            sb.append(StringUtils.getMethodName(3)).append(Constants.STRING_COLON_SPACE).append(e).append(Constants.STRING_EOL);
                             for (String name : cursor.getColumnNames()) {
                                 String data = cursor.getString(cache.getColumnIndex(cursor, name));
                                 if (data != null && !data.equals(Constants.STRING_0))
@@ -2929,13 +2786,13 @@ public class ContactsEvents {
             statTimeGetContactEvents = System.currentTimeMillis() - statCurrentModuleStart;
 
             if (countErrors > 1)
-                ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + resources.getString(R.string.msg_errors_total) + countErrors);
+                ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + resources.getString(R.string.msg_errors_total) + countErrors);
 
             return true;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -2975,7 +2832,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return count;
     }
@@ -3025,7 +2882,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return count;
     }
@@ -3035,7 +2892,7 @@ public class ContactsEvents {
         int count = 0;
         try {
 
-            String fileContent = readFileToString(file, Constants.STRING_EOL);
+            String fileContent = StringUtils.readFileToString(file, Constants.STRING_EOL, context, resources);
             String[] eventsArray = fileContent.split(Constants.STRING_EOL, -1);
             if (eventsArray[0].isEmpty()) return count;
             @Nullable Event event = null;
@@ -3150,7 +3007,7 @@ public class ContactsEvents {
                         if (isAD) {
 
                             if (!isBirthdaysPlusEvent) {
-                                String dateNextFloatingEvent = computeFloatingDate(eventDateString, 0);
+                                String dateNextFloatingEvent = AppDateUtils.computeFloatingDate(eventDateString, 0, weekDaysShort);
                                 if (!eventDateString.equals(dateNextFloatingEvent)) {
                                     Date eventDateFirstTime = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(dateNextFloatingEvent); //Пытаемся определить год первоначального события
                                     if (eventDateFirstTime != null) {
@@ -3199,7 +3056,7 @@ public class ContactsEvents {
                     String dateNextEvent = eventDateString.substring(0, indexDateNoYear) + getToday().get(Calendar.YEAR);
                     try {
                         if (!isBirthdaysPlusEvent) {
-                            String dateNextFloatingEvent = computeFloatingDate(dateNextEvent, 0);
+                            String dateNextFloatingEvent = AppDateUtils.computeFloatingDate(dateNextEvent, 0, weekDaysShort);
                             if (!dateNextEvent.equals(dateNextFloatingEvent)) {
                                 dateNextEvent = dateNextFloatingEvent;
                             }
@@ -3232,7 +3089,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return count;
     }
@@ -3467,7 +3324,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + resources.getString(R.string.msg_errors_details, accountKey, eventType, eventDateStr));
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + resources.getString(R.string.msg_errors_details, accountKey, eventType, eventDateStr));
         }
         return eventKey_current;
 
@@ -3606,7 +3463,7 @@ public class ContactsEvents {
             return false;
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         } finally {
             if (cursor != null) cursor.close();
@@ -3967,7 +3824,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return counterAddedEvents;
     }
@@ -4165,7 +4022,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -4186,7 +4043,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4217,7 +4074,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4235,7 +4092,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return null;
         }
     }
@@ -4330,7 +4187,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
         return result.isEmpty() ? null : result;
@@ -4364,7 +4221,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return dataRow.toString();
     }
@@ -4382,36 +4239,9 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return eventData;
-    }
-
-    /** Возвращает данные события в виде строки (разделитель: \n)
-     * @param event Массив с данными события
-     * @return Строка
-     */
-    @NonNull
-    String getEventDataAsString(@NonNull String[] event) {
-        StringBuilder eventInfo = new StringBuilder();
-        try {
-            int eventRows = event.length;
-            for (int i = 0; i < eventRows; i++) {
-                String row = event[i];
-                if (i == ContactsEvents.Position_photo && !TextUtils.isEmpty(row) & !row.startsWith(Constants.STRING_BRACKETS_START)) {
-                    eventInfo.append(i)
-                            .append(Constants.STRING_COLON_SPACE)
-                            .append(getResources().getString(R.string.event_photo_details, row.length()))
-                            .append(Constants.STRING_EOL);
-                } else {
-                    eventInfo.append(i).append(Constants.STRING_COLON_SPACE).append(row).append(Constants.STRING_EOL);
-                }
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-        return eventInfo.toString();
     }
 
     void initNotifications() {
@@ -4440,7 +4270,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4520,7 +4350,7 @@ public class ContactsEvents {
             ToastExpander.showInfoMsg(context, context.getText(R.string.msg_file_access_write_error).toString());
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4578,7 +4408,7 @@ public class ContactsEvents {
 
                 } else {
 
-                    String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
+                    String[] eventsArray = StringUtils.readFileToString(file, Constants.STRING_EOL, context, resources).split(Constants.STRING_EOL, -1);
                     if (eventsArray[0].isEmpty()) {
                         ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
                         continue;
@@ -4589,7 +4419,7 @@ public class ContactsEvents {
                         streamICalEvents(file, eventType, getToday(), eventSource);
 
                     } else {
-                        List<String> expandedEvents = splitMultidayEventsAsSeparateLine(eventsArray, dateFormats);
+                        List<String> expandedEvents = AppDateUtils.splitMultidayEventsAsSeparateLine(eventsArray, dateFormats, getToday());
                         for (String eventString : expandedEvents) {
                             addFileEventFromLine(
                                     file,
@@ -4612,87 +4442,11 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         } finally {
             statTimeGetFileEvents += System.currentTimeMillis() - statCurrentModuleStart;
         }
-    }
-
-    /** Разделить события на несколько дней на отдельные дни
-     * @param eventsArray Массив с событиями (даты начала и конца события идут через "-")
-     * 01.06.2025-06.06.2025 Событие 1
-     * 01.06.0000-06.06.0000,! Праздник на несколько дней
-     */
-    private List<String> splitMultidayEventsAsSeparateLine(String[] eventsArray, SimpleDateFormat[] dateFormats) {
-        List<String> result = new ArrayList<>(eventsArray.length);
-        Calendar calStart = Calendar.getInstance();
-        Calendar calEnd = Calendar.getInstance();
-        final String year = String.valueOf(getToday().get(Calendar.YEAR));
-
-        for (String line : eventsArray) {
-            int indexMinus = line.indexOf(Constants.STRING_MINUS);
-            if (indexMinus == -1) {
-                result.add(line);
-                continue;
-            }
-
-            int indexSpace = line.indexOf(Constants.STRING_SPACE);
-            int indexComma = line.indexOf(Constants.STRING_COMMA);
-
-            if (indexSpace == -1 && indexComma == -1) {
-                result.add(line);
-                continue;
-            }
-
-            int indexEndDate = (indexSpace != -1 && indexComma != -1)
-                    ? Math.min(indexSpace, indexComma)
-                    : (indexSpace != -1 ? indexSpace : indexComma);
-
-            String dates = line.substring(0, indexEndDate);
-            int rangeMinus = dates.indexOf(Constants.STRING_MINUS);
-            if (rangeMinus == -1) {
-                result.add(line);
-                continue;
-            }
-
-            String strDateStart = dates.substring(0, rangeMinus);
-            String strDateEnd = dates.substring(rangeMinus + 1);
-            int indexNoYear = strDateStart.indexOf(Constants.STRING_0000);
-            if (indexNoYear != -1) {
-                strDateStart = strDateStart.replace(Constants.STRING_0000, year);
-                strDateEnd = strDateEnd.replace(Constants.STRING_0000, year);
-            }
-
-            Date dateStart = AppDateUtils.parseDateWithFormats(strDateStart, dateFormats);
-            Date dateEnd = AppDateUtils.parseDateWithFormats(strDateEnd, dateFormats);
-
-            if (dateStart == null || dateEnd == null || dateStart.after(dateEnd)) {
-                result.add(line);
-                continue;
-            }
-
-            calStart.setTime(dateStart);
-            calEnd.setTime(dateEnd);
-
-            String eventBody = line.substring(indexEndDate);
-            StringBuilder sb = new StringBuilder(64);
-
-            while (!calStart.after(calEnd)) {
-                sb.setLength(0);
-                if (indexNoYear == -1) {
-                    sb.append(Objects.requireNonNull(sdf_DDMMYYYY.get()).format(calStart.getTime()));
-                } else {
-                    sb.append(Objects.requireNonNull(sdf_DDMM.get()).format(calStart.getTime()));
-                    sb.append(Constants.STRING_PERIOD);
-                    sb.append(Constants.STRING_0000);
-                }
-                sb.append(eventBody);
-                result.add(sb.toString());
-                calStart.add(Calendar.DAY_OF_YEAR, 1);
-            }
-        }
-        return result;
     }
 
     /**
@@ -4748,7 +4502,7 @@ public class ContactsEvents {
             }
         } catch (Exception e) {
             Log.e(TAG, "Error streaming iCal: " + file, e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4946,7 +4700,7 @@ public class ContactsEvents {
             }
         } catch (Exception e) {
             Log.e(TAG, "Error processing single iCal event: " + file, e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -5042,7 +4796,7 @@ public class ContactsEvents {
             }
         } catch (Exception e) {
             Log.e(TAG, "Error streaming vCard: " + file, e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -5290,7 +5044,7 @@ public class ContactsEvents {
             }
         } catch (Exception e) {
             Log.e(TAG, "Error processing single vCard", e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -5372,7 +5126,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -5741,7 +5495,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -5772,7 +5526,7 @@ public class ContactsEvents {
             try {
                 if (isAD) {
                     if (tryComputeFloatingDate) {
-                        String dateNextFloatingEvent = computeFloatingDate(eventDateString, 0);
+                        String dateNextFloatingEvent = AppDateUtils.computeFloatingDate(eventDateString, 0, weekDaysShort);
                         if (!eventDateString.equals(dateNextFloatingEvent)) {
                             eventDateFirstTime = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(dateNextFloatingEvent); //Пытаемся определить год первоначального события
                             if (eventDateFirstTime != null && eventData != null) {
@@ -5786,7 +5540,7 @@ public class ContactsEvents {
 
                             //Дата предыдущего года
                             if (preferences_list_prev_events_scan_distance > 0) {
-                                datePrevFloatingEvent = computeFloatingDate(eventDateString, -1);
+                                datePrevFloatingEvent = AppDateUtils.computeFloatingDate(eventDateString, -1, weekDaysShort);
                             }
                             eventDateString = dateNextFloatingEvent;
                         }
@@ -5832,7 +5586,7 @@ public class ContactsEvents {
             String dateNextEvent = eventDateString.substring(0, indexDateNoYear) + today.get(Calendar.YEAR);
             try {
                 if (tryComputeFloatingDate) {
-                    String dateNextFloatingEvent = computeFloatingDate(dateNextEvent, 0);
+                    String dateNextFloatingEvent = AppDateUtils.computeFloatingDate(dateNextEvent, 0, weekDaysShort);
                     if (!dateNextEvent.equals(dateNextFloatingEvent)) {
                         if (eventData != null) {
                             eventData.put(Position_eventDateFirstTime, dateNextFloatingEvent.substring(0, dateNextFloatingEvent.lastIndexOf(Constants.STRING_PERIOD)));
@@ -5843,7 +5597,7 @@ public class ContactsEvents {
 
                         //Дата предыдущего года
                         if (preferences_list_prev_events_scan_distance > 0) {
-                            datePrevFloatingEvent = computeFloatingDate(eventDateString, -1);
+                            datePrevFloatingEvent = AppDateUtils.computeFloatingDate(eventDateString, -1, weekDaysShort);
                         }
                     }
                 }
@@ -5881,314 +5635,6 @@ public class ContactsEvents {
             this.isEndless = isEndless;
             this.isPassedEvent = isPassedEvent;
             this.datePrevFloatingEvent = datePrevFloatingEvent;
-        }
-    }
-
-    static class EventAliases {
-
-        public static final String CANONICAL_EASTER = "EASTER";
-        public static final String CANONICAL_CATHOLIC_EASTER = "CATHOLIC_EASTER";
-        public static final String CANONICAL_NY = "NY";
-
-        private static final Map<String, Set<String>> aliasesMap = new HashMap<>();
-
-        static {
-            aliasesMap.put(CANONICAL_EASTER, new HashSet<>(Arrays.asList(
-                    "easter", "ostern", "pascua", "páscoa", "pâques", "velikonoce",
-                    "wielkanoc", "великдень", "вялікдзень", "пасха"
-            )));
-
-            aliasesMap.put(CANONICAL_CATHOLIC_EASTER, new HashSet<>(Arrays.asList(
-                    "c_easter", "c_pâques", "catholic_easter", "catholique_pâques", "k_ostern",
-                    "k_velikonoce", "katholisches_ostern", "katolické_velikonoce", "pascua_c",
-                    "pascua_católica", "páscoa_c", "páscoa_católica", "wielkanoc", "к_великдень",
-                    "к_вялікдзень", "к_пасха", "католицький_великдень"
-            )));
-
-            aliasesMap.put(CANONICAL_NY, new HashSet<>(Arrays.asList(
-                    "новый_год", "new_year", "jour_de_l'an", "an", "na", "nj", "ny", "nie", "нг", "нр"
-            )));
-
-        }
-
-        /**
-         * Проверяет, начинается ли строка с одного из алиасов для заданного канонического события.
-         */
-        public static boolean startsWithAlias(String inputString, String canonicalName) {
-            if (inputString == null || inputString.isEmpty()) return false;
-
-            Set<String> aliases = aliasesMap.get(canonicalName);
-            if (aliases == null) return false;
-
-            // Подготовка строки для поиска
-            String properInput = inputString.toLowerCase().replace(Constants.STRING_SPACE, Constants.STRING_UNDERSCORE);
-
-            for (String alias : aliases) {
-                if (properInput.startsWith(alias)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /** Возвращает подошедший алиас для заданного канонического события
-         * @param inputString Строка, начинающаяся с алиаса события
-         * @param canonicalName Наименование типа события
-         * @return Подошедший алиас события
-         */
-        // Метод, если нужно получить именно совпавший алиас (например, чтобы знать его длину и откусить его от строки)
-        @NonNull public static String getMatchedAlias(String inputString, String canonicalName) {
-            if (inputString == null || inputString.isEmpty()) return Constants.STRING_EMPTY;
-            Set<String> aliases = aliasesMap.get(canonicalName);
-            if (aliases == null) return Constants.STRING_EMPTY;
-
-            String properInput = inputString.toLowerCase().replace(Constants.STRING_SPACE, Constants.STRING_UNDERSCORE);
-            for (String alias : aliases) {
-                if (properInput.startsWith(alias)) {
-                    return alias; // Возвращаем оригинальный алиас из сета
-                }
-            }
-            return Constants.STRING_EMPTY;
-        }
-    }
-
-    /**
-     * Возвращает следующую дату плавающего события
-     *
-     * @param eventDateString Изначальная дата в формате DD.MM.YYYY
-     * @param yearShift       Сколько лет прибавить или отнять
-     * @return Дата в формате DD.MM.YYYY
-     */
-    @NonNull
-    String computeFloatingDate(String eventDateString, int yearShift) {
-
-        try {
-
-            String[] eventDateComponents = eventDateString.split(Constants.REGEX_PERIOD, -1);
-            final String eventDayString = eventDateComponents[0].toLowerCase();
-            Calendar dateRubicon = Calendar.getInstance(); //От какой даты считаем "сегодня"
-            if (yearShift != 0) {
-                dateRubicon.add(Calendar.YEAR, yearShift);
-            }
-            Calendar cal;
-            int eventMonth;
-            int eventYear = dateRubicon.get(Calendar.YEAR);
-
-            //Именные события
-            if (eventDateComponents.length == 2) {
-                if (EventAliases.startsWithAlias(eventDayString, EventAliases.CANONICAL_EASTER)) {
-
-                    //Православная Пасха
-
-                    //Определяем смещение в днях
-                    int daysShift = 0;
-                    final String strAfterEventName = eventDayString.substring(EventAliases.getMatchedAlias(eventDayString,
-                            EventAliases.CANONICAL_EASTER).length());
-                    if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
-                        try {
-                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
-                        } catch (NumberFormatException ignored) { /**/ }
-                    } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
-                        try {
-                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
-                        } catch (NumberFormatException ignored) { /**/ }
-                    }
-
-                    cal = AppDateUtils.getEasterDateFor(eventYear, true);
-                    if (cal != null) {
-                        cal.add(Calendar.DAY_OF_YEAR, daysShift);
-                        if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
-                            cal = AppDateUtils.getEasterDateFor(eventYear + 1, true);
-                            if (cal != null) {
-                                cal.add(Calendar.DAY_OF_YEAR, daysShift);
-                                return Objects.requireNonNull(sdf_DDMMYYYY.get()).format(cal.getTime());
-                            }
-                        } else {
-                            return Objects.requireNonNull(sdf_DDMMYYYY.get()).format(cal.getTime());
-                        }
-                    }
-
-                } else if (EventAliases.startsWithAlias(eventDayString, EventAliases.CANONICAL_CATHOLIC_EASTER)) {
-
-                    //Католическая Пасха
-
-                    //Определяем смещение в днях
-                    int daysShift = 0;
-                    final String strAfterEventName = eventDayString.substring(EventAliases.getMatchedAlias(eventDayString,
-                            EventAliases.CANONICAL_CATHOLIC_EASTER).length());
-                    if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
-                        try {
-                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
-                        } catch (NumberFormatException ignored) { /**/ }
-                    } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
-                        try {
-                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
-                        } catch (NumberFormatException ignored) { /**/ }
-                    }
-
-                    cal = AppDateUtils.getEasterDateFor(eventYear, false);
-                    if (cal != null) {
-                        cal.add(Calendar.DAY_OF_YEAR, daysShift);
-                        if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
-                            cal = AppDateUtils.getEasterDateFor(eventYear + 1, false);
-                            if (cal != null) {
-                                cal.add(Calendar.DAY_OF_YEAR, daysShift);
-                                return Objects.requireNonNull(sdf_DDMMYYYY.get()).format(cal.getTime());
-                            }
-                        } else {
-                            return Objects.requireNonNull(sdf_DDMMYYYY.get()).format(cal.getTime());
-                        }
-                    }
-
-                } else if (EventAliases.startsWithAlias(eventDayString, EventAliases.CANONICAL_NY)) {
-
-                    //XX день от начала года
-
-                    //Определяем смещение в днях
-                    int daysShift = 0;
-                    final String strAfterEventName = eventDayString.substring(EventAliases.getMatchedAlias(eventDayString, EventAliases.CANONICAL_NY).length());
-                    if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
-                        try {
-                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
-                        } catch (NumberFormatException ignored) { /**/ }
-                    } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
-                        try {
-                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
-                        } catch (NumberFormatException ignored) { /**/ }
-                    }
-
-                    cal = (Calendar) dateRubicon.clone();
-                    cal.set(eventYear, Calendar.JANUARY, 1);
-                    cal.add(Calendar.DAY_OF_YEAR, daysShift);
-
-                    if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
-                        cal.set(eventYear + 1, Calendar.JANUARY, 1);
-                        cal.add(Calendar.DAY_OF_YEAR, daysShift);
-                    }
-
-                    return Objects.requireNonNull(sdf_DDMMYYYY.get()).format(cal.getTime());
-                }
-            }
-
-            //NWW[+-OFFSET].ММ.ГГГГ
-            if (eventDateComponents.length < 3) return eventDateString;
-
-            try {
-                eventMonth = Integer.parseInt(eventDateComponents[1]);
-                if (eventMonth < 1 || eventMonth > 12) {
-                    return eventDateString;
-                }
-            } catch (NumberFormatException ignored) {
-                return eventDateString;
-            }
-
-            //Определяем день недели
-            int weekDayToGet = 0;
-            int indexWeekDay = -1;
-            int countWeekdays = weekDaysShort.length;
-            for (int i = 1; i <= countWeekdays; i++) {
-                String weekDayName = weekDaysShort[i - 1].toLowerCase();
-                if (eventDayString.contains(weekDayName)) {
-                    weekDayToGet = i - 1;
-                    if (weekDayToGet == 0) weekDayToGet = 7;
-                    indexWeekDay = eventDayString.indexOf(weekDayName);
-                    break;
-                }
-            }
-            if (weekDayToGet == 0) {
-                //Обычная ДД.ММ.ГГГГ дата
-                return eventDateString;
-            }
-
-            //Определяем смещение в днях
-            int daysShift = 0;
-            String strAfterWeekName = eventDayString.substring(indexWeekDay + 2);
-            if (strAfterWeekName.startsWith(Constants.STRING_PLUS)) {
-                try {
-                    daysShift = Integer.parseInt(strAfterWeekName.substring(strAfterWeekName.indexOf(Constants.STRING_PLUS) + 1));
-                } catch (NumberFormatException ignored) { /**/ }
-            } else if (strAfterWeekName.startsWith(Constants.STRING_MINUS)) {
-                try {
-                    daysShift = -Integer.parseInt(strAfterWeekName.substring(strAfterWeekName.indexOf(Constants.STRING_MINUS) + 1));
-                } catch (NumberFormatException ignored) { /**/ }
-            }
-
-            String weekDayNumberString = eventDayString.substring(0, indexWeekDay);
-
-            if (weekDayNumberString.equalsIgnoreCase(Constants.STRING_Z)) { //Последняя неделя
-
-                cal = (Calendar) dateRubicon.clone();
-                cal.set(eventYear, eventMonth, 1);
-                int weekDayStartOfNextMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
-                if (weekDayStartOfNextMonth == 0) weekDayStartOfNextMonth = 7;
-                int daysToSub = weekDayStartOfNextMonth > weekDayToGet ? weekDayStartOfNextMonth - weekDayToGet : 7 - (weekDayToGet - weekDayStartOfNextMonth);
-                cal.add(Calendar.DAY_OF_MONTH, -daysToSub + daysShift);
-
-                if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
-                    cal.set(eventYear + 1, eventMonth, 1);
-                    weekDayStartOfNextMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
-                    if (weekDayStartOfNextMonth == 0) weekDayStartOfNextMonth = 7;
-                    daysToSub = weekDayStartOfNextMonth > weekDayToGet ? weekDayStartOfNextMonth - weekDayToGet : 7 - (weekDayToGet - weekDayStartOfNextMonth);
-                    cal.add(Calendar.DAY_OF_MONTH, -daysToSub + daysShift);
-                }
-
-            } else if (weekDayNumberString.equalsIgnoreCase(Constants.STRING_Y)) { //Предпоследняя неделя
-
-                cal = (Calendar) dateRubicon.clone();
-                cal.set(eventYear, eventMonth, 1);
-                int weekDayStartOfNextMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
-                if (weekDayStartOfNextMonth == 0) weekDayStartOfNextMonth = 7;
-                int daysToSub = weekDayStartOfNextMonth > weekDayToGet ? 7 + weekDayStartOfNextMonth - weekDayToGet : 14 - (weekDayToGet - weekDayStartOfNextMonth);
-                cal.add(Calendar.DAY_OF_MONTH, -daysToSub + daysShift);
-
-                if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
-                    cal.set(eventYear + 1, eventMonth, 1);
-                    weekDayStartOfNextMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
-                    if (weekDayStartOfNextMonth == 0) weekDayStartOfNextMonth = 7;
-                    daysToSub = weekDayStartOfNextMonth > weekDayToGet ? 7 + weekDayStartOfNextMonth - weekDayToGet : 14 - (weekDayToGet - weekDayStartOfNextMonth);
-                    cal.add(Calendar.DAY_OF_MONTH, -daysToSub + daysShift);
-                }
-
-            } else {
-
-                int weekNumberToGet;
-                try {
-                    weekNumberToGet = Integer.parseInt(weekDayNumberString); //Номер недели 1..5
-                    if (weekNumberToGet < 1 || weekNumberToGet > 5) {
-                        return eventDateString;
-                    }
-                } catch (NumberFormatException ignored) {
-                    return eventDateString;
-                }
-                cal = (Calendar) dateRubicon.clone();
-                cal.set(eventYear, eventMonth - 1, 1);
-                int weekDayStartOfMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
-                if (weekDayStartOfMonth == 0) weekDayStartOfMonth = 7;
-                int daysToAdd = weekDayStartOfMonth <= weekDayToGet ? weekDayToGet - weekDayStartOfMonth + 7 * (weekNumberToGet - 1) : 7 - (weekDayStartOfMonth - weekDayToGet) + 7 * (weekNumberToGet - 1);
-                cal.add(Calendar.DAY_OF_MONTH, daysToAdd);
-                if (weekNumberToGet == 5 && (cal.get(Calendar.MONTH)) != eventMonth - 1)
-                    cal.add(Calendar.DAY_OF_MONTH, -7);
-                cal.add(Calendar.DAY_OF_MONTH, daysShift);
-
-                if (cal.before(dateRubicon)) { //В этом году уже прошло, берём следующий год
-                    cal.set(eventYear + 1, eventMonth - 1, 1);
-                    weekDayStartOfMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
-                    if (weekDayStartOfMonth == 0) weekDayStartOfMonth = 7;
-                    daysToAdd = weekDayStartOfMonth <= weekDayToGet ? weekDayToGet - weekDayStartOfMonth + 7 * (weekNumberToGet - 1) : 7 - (weekDayStartOfMonth - weekDayToGet) + 7 * (weekNumberToGet - 1);
-                    cal.add(Calendar.DAY_OF_MONTH, daysToAdd);
-                    if (weekNumberToGet == 5 && (cal.get(Calendar.MONTH)) != eventMonth - 1)
-                        cal.add(Calendar.DAY_OF_MONTH, -7);
-                    cal.add(Calendar.DAY_OF_MONTH, daysShift);
-                }
-
-            }
-
-            return Objects.requireNonNull(sdf_DDMMYYYY.get()).format(cal.getTime());
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return eventDateString;
         }
     }
 
@@ -6285,7 +5731,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         Event unrecognizedEvent = createTypedEvent(Constants.Type_Unrecognized, eventLabel);
         unrecognizedEvent.useEventYear = useEventYear;
@@ -6453,7 +5899,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return event;
     }
@@ -6478,55 +5924,7 @@ public class ContactsEvents {
                 eventType == Constants.Type_Custom5;
     }
 
-    @NonNull
-    String readFileToString(@NonNull String file, String delimiter) {
-
-        StringBuilder sb = new StringBuilder();
-
-        try {
-
-            String[] fileDetails = file.split(Constants.REGEX_BAR);
-            Uri uri = null;
-            if (contentResolver == null) contentResolver = context.getContentResolver();
-            try {
-                if (fileDetails.length < 2) {
-                    uri = Uri.parse(fileDetails[0]);
-                } else {
-                    uri = Uri.parse(fileDetails[1]);
-                }
-            } catch (NullPointerException ignored) { /**/ }
-            if (uri != null) {
-                try {
-                    contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    InputStream inputStream = contentResolver.openInputStream(uri);
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                    String line = reader.readLine();
-                    while (line != null) {
-                        if (!line.startsWith(Constants.STRING_HASH) || !line.startsWith(Constants.STRING_DSLASH)) {
-                            sb.append(line);
-                            if (delimiter != null) sb.append(delimiter);
-                        }
-                        line = reader.readLine();
-                    }
-                    if (inputStream != null) inputStream.close();
-                } catch (SecurityException se) {
-                    ToastExpander.showDebugMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0] + Constants.STRING_COMMA_SPACE +
-                            se.getMessage());
-                } catch (Exception e) {
-                    ToastExpander.showDebugMsg(context, resources.getString(R.string.msg_file_access_read_error, fileDetails[0]) + Constants.STRING_COMMA_SPACE +
-                            e.getMessage());
-                }
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-        return sb.toString();
-    }
-
-    enum PhotoType {
+    public enum PhotoType {
         CONTACT_PHOTO, EVENT_PHOTO, SILHUETE, ICON
     }
 
@@ -6537,6 +5935,18 @@ public class ContactsEvents {
         public EventPhoto(Bitmap bitmap, PhotoType type) {
             this.bitmap = bitmap;
             this.type = type;
+        }
+    }
+
+    private static class BitmapLoadResult {
+        final Bitmap bitmap;
+        final PhotoType type;
+        final boolean addMourningTape;
+
+        BitmapLoadResult(Bitmap bitmap, PhotoType type, boolean addMourningTape) {
+            this.bitmap = bitmap;
+            this.type = type;
+            this.addMourningTape = addMourningTape;
         }
     }
 
@@ -6554,9 +5964,7 @@ public class ContactsEvents {
         return getEventPhotoInternal(event, showPhotos, suggestSquared, addFavoritesSign, roundingFactor).bitmap;
     }
 
-    /**
-     * Возвращает фото для события
-     *
+    /** Возвращает фото для события
      * @param event            Данные о событии
      * @param showPhotos       Показывать фото (иначе - пиктограммы)
      * @param suggestSquared   Делать фото квадратным
@@ -6566,211 +5974,26 @@ public class ContactsEvents {
      */
     @NonNull
     EventPhoto getEventPhotoInternal(@NonNull String event, boolean showPhotos, boolean suggestSquared, boolean addFavoritesSign, int roundingFactor) {
-
-        boolean makeSquared = suggestSquared;
-        boolean addMourningTape = false;
-        Bitmap bm = null;
-        PhotoType type = null;
-
         try {
-
             String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
-            String eventType = singleEventArray[Position_eventType];
-            String eventSubType = singleEventArray[Position_eventSubType];
 
-            String eventPhotoData = singleEventArray[Position_photo];
-            String eventPhoto = null;
-            if (!TextUtils.isEmpty(eventPhotoData) && showPhotos) {
-                try {
-                    if (eventPhotoData.startsWith(Constants.STRING_BRACKETS_START)) { //Описание фото
-                        TreeMap<Integer, String> localEvent = getLocalEvent(singleEventArray[Position_eventID]);
-                        if (localEvent != null) {
-                            eventPhoto = localEvent.get(Position_photo);
-                            localEvent.clear();
-                        }
-                    } else { //Само фото (BASE64)
-                        eventPhoto = eventPhotoData;
-                    }
-                    if (eventPhoto != null && !eventPhoto.isEmpty()) {
-                        byte[] decodedBytes = Base64.decode(eventPhoto, Base64.DEFAULT);
-                        bm = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                    }
-                    if (bm != null) type = PhotoType.EVENT_PHOTO;
-                } catch (Exception ignored) { /**/ }
-            }
+            // Загружаем bitmap
+            BitmapLoadResult loadResult = loadEventBitmap(singleEventArray, showPhotos);
 
-            if (bm == null) {
-                if (eventType.equals(Constants.EventType_Unrecognized)) {
+            // Early return, если bitmap не получен
+            if (loadResult.bitmap == null) return new EventPhoto(null, null);
 
-                    bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_unknown);
-                    type = PhotoType.ICON;
+            Bitmap bm = loadResult.bitmap;
+            PhotoType type = loadResult.type;
+            boolean addMourningTape = loadResult.addMourningTape;
+            boolean makeSquared = suggestSquared;
 
-                } else if ((
-                        eventSubType.equals(Constants.EventType_Calendar)
-                                || eventSubType.equals(Constants.EventType_File)
-                                || eventSubType.equals(Constants.EventType_Other)
-                ) && TextUtils.isEmpty(singleEventArray[Position_photo_uri])) {
-
-                    bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_other);
-                    type = PhotoType.ICON;
-
-                } else if (eventSubType.equals(Constants.EventType_Holiday)) {
-
-                    bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_holiday);
-                    type = PhotoType.ICON;
-
-                    //todo: https://stackoverflow.com/questions/77168650/draw-emoji-to-image-in-android
-                    //https://stackoverflow.com/questions/41212092/drawing-emojis-on-android-canvas-using-unicode-values
-                    //https://stackoverflow.com/questions/47807621/draw-emoji-on-bitmap-with-drawtextonpath
-
-                } else {
-
-                    @NonNull String contactID = StringUtils.getNotNullString(singleEventArray[Position_contactID]);
-                    String personFullName = singleEventArray[Position_personFullName];
-
-                    addMourningTape = (preferences_sad_photo == 1 && eventSubType.equals(Constants.EventType_Death)) ||
-                            (preferences_sad_photo == 2 && (deathDatesForIds.containsKey(contactID) || deathDatesForNames.containsKey(personFullName)));
-
-                    if (showPhotos && !TextUtils.isEmpty(singleEventArray[Position_photo_uri]) && !singleEventArray[Position_photo_uri].equalsIgnoreCase(Constants.STRING_NULL)) {
-                        //https://stackoverflow.com/questions/3870638/how-to-use-setimageuri-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-                        if (contentResolver == null) contentResolver = context.getContentResolver();
-                        Uri contactUri;
-                        if (!contactID.isEmpty()) {
-                            contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactID);
-                        } else {
-                            contactUri = Uri.parse(singleEventArray[Position_photo_uri].replace("/photo", ""));
-                        }
-                        InputStream photo_stream = null;
-                        try {
-                            photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(contentResolver, contactUri, true);
-                        } catch (SecurityException ignored) { /**/ }
-                        if (photo_stream != null) {
-                            BufferedInputStream buf = new BufferedInputStream(photo_stream);
-                            bm = BitmapFactory.decodeStream(buf);
-                            buf.close();
-                            photo_stream.close();
-                            if (bm != null) type = PhotoType.CONTACT_PHOTO;
-                        }
-                    }
-
-                    if (bm == null) {
-                        //Если событие - не день рождения, пытаемся достать возраст из дня рождения
-                        Date birthDate = null;
-                        Date BDay = null;
-                        boolean setNoAge = false;
-
-                        if (!eventSubType.equals(Constants.EventType_BirthDay)) {
-                            if (!contactID.isEmpty() && birthdayDatesForIds.containsKey(contactID)) {
-                                birthDate = birthdayDatesForIds.get(contactID);
-                            } else if (birthdayDatesForNames.containsKey(personFullName)) {
-                                birthDate = birthdayDatesForNames.get(personFullName);
-                            } else {
-                                setNoAge = true;
-                            }
-                        }
-                        try {
-                            BDay = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(singleEventArray[Position_eventDateNextTime]);
-                        } catch (ParseException ignored) { /**/ }
-                        if (birthDate != null && BDay != null) {
-
-                            List<String> singleRowList = Arrays.asList(singleEventArray);
-                            final int countYearsDiff = AppDateUtils.countYearsDiff(birthDate, BDay);
-                            if (countYearsDiff > 0) {
-                                singleRowList.set(Position_age, String.valueOf(countYearsDiff));
-                            } else {
-                                //Если день рождения без года - мы об этом никак не узнаем
-                                singleRowList.set(Position_age, Constants.STRING_MINUS1);
-                            }
-                            singleEventArray = singleRowList.toArray(new String[0]);
-
-                        } else if (eventSubType.equals(Constants.EventType_Death) && setNoAge) {
-
-                            //Если у персоны с годовщиной смерти нет дня рождения
-                            List<String> singleRowList = Arrays.asList(singleEventArray);
-                            singleRowList.set(Position_age, Constants.STRING_MINUS1);
-                            singleEventArray = singleRowList.toArray(new String[0]);
-
-                        }
-
-                        int resIconPack_event = -1;
-                        try {
-                            resIconPack_event = Integer.parseInt(this.resources.getString(R.string.pref_IconPack_event));
-                        } catch (NumberFormatException ignored) { /**/ }
-                        if (preferences_IconPackNumber == resIconPack_event) { //Иконка типа события
-                            bm = BitmapFactory.decodeResource(getResources(), getEventIcon(eventType, eventSubType));
-                            if (bm != null) type = PhotoType.ICON;
-                        }
-                        if (bm == null) { //Случайное фото в соответствии с возрастом и полом
-
-                            Person person = new Person(context, singleEventArray);
-                            int gender = person.getGender();
-
-                            //По-умолчанию
-                            Integer idPhoto = R.drawable.ic_pack00_m1;
-                            if (gender == 2 && preferences_IconPackImages_F.get(0) != null) {
-                                idPhoto = preferences_IconPackImages_F.get(0);
-                            } else if (preferences_IconPackImages_M.get(0) != null) {
-                                idPhoto = preferences_IconPackImages_M.get(0);
-                            }
-
-                            //Если определён возраст
-                            boolean foundInPeriod = false;
-                            int beforeAge = 0;
-                            if (person.Age >= 0) {
-                                if (gender == 2) {
-                                    for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_F.entrySet()) {
-                                        beforeAge = entry.getKey();
-                                        if (beforeAge > 0 && person.Age <= beforeAge) {
-                                            idPhoto = preferences_IconPackImages_F.get(beforeAge);
-                                            foundInPeriod = true;
-                                            break;
-                                        }
-                                    }
-                                    if (!foundInPeriod) {
-                                        idPhoto = preferences_IconPackImages_F.get(beforeAge);
-                                    }
-                                } else {
-                                    for (Map.Entry<Integer, Integer> entry : preferences_IconPackImages_M.entrySet()) {
-                                        beforeAge = entry.getKey();
-                                        if (beforeAge > 0 && person.Age <= beforeAge) {
-                                            idPhoto = preferences_IconPackImages_M.get(beforeAge);
-                                            foundInPeriod = true;
-                                            break;
-                                        }
-                                    }
-                                    if (!foundInPeriod) {
-                                        idPhoto = preferences_IconPackImages_M.get(beforeAge);
-                                    }
-                                }
-                            }
-                            if (idPhoto == null) return new EventPhoto(null, null);
-                            bm = ImageUtils.getBitmap(context, idPhoto);
-                            if (bm == null) {
-                                return new EventPhoto(null, null);
-                            } else {
-                                type = PhotoType.SILHUETE;
-                            }
-
-                            int bmWidth = bm.getWidth();
-                            int bmHeight = bm.getHeight();
-                            if (bmHeight > bmWidth) {
-                                //noinspection SuspiciousNameCombination
-                                bm = Bitmap.createBitmap(bm, 0, (bmHeight - bmWidth) / 2, bmWidth, bmWidth);
-                            } else {
-                                //noinspection SuspiciousNameCombination
-                                bm = Bitmap.createBitmap(bm, (bmWidth - bmHeight) / 2, 0, bmHeight, bmHeight);
-                            }
-                        }
-                    }
-                }
-            }
-            if (bm == null) return new EventPhoto(null, null);
-
+            // Определяем радиус скругления
             int roundingRadiusX = 0;
             int roundingRadiusY = 0;
-
             int bmWidth = bm.getWidth();
             int bmHeight = bm.getHeight();
+
             if (roundingFactor > 1) {
                 final String roundingFactorStr = String.valueOf(roundingFactor);
                 if (roundingFactorStr.equals(resources.getString(R.string.pref_List_PhotoStyle_Rounded1))) {
@@ -6789,8 +6012,8 @@ public class ContactsEvents {
                 }
             }
 
+            // Делаем квадратным, если нужно
             if (makeSquared) {
-
                 if (bmHeight > bmWidth) {
                     //noinspection SuspiciousNameCombination
                     bm = Bitmap.createBitmap(bm, 0, (bmHeight - bmWidth) / 2, bmWidth, bmWidth);
@@ -6798,119 +6021,154 @@ public class ContactsEvents {
                     //noinspection SuspiciousNameCombination
                     bm = Bitmap.createBitmap(bm, (bmWidth - bmHeight) / 2, 0, bmHeight, bmHeight);
                 }
-
                 bmWidth = bm.getWidth();
                 bmHeight = bm.getHeight();
             }
 
-            if (addMourningTape && bm.getConfig() != null) {
-                //Если контакт умер, добавлять чёрную ленточку
-                //https://stackoverflow.com/questions/3089991/how-to-draw-a-shape-or-bitmap-into-another-bitmap-java-android
-                Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig());
-                Canvas canvas = new Canvas(bmOverlay);
-                canvas.drawBitmap(bm, new Matrix(), null);
-
-                Paint paintFill = new Paint(Paint.ANTI_ALIAS_FLAG);
-                paintFill.setStyle(Paint.Style.FILL);
-                paintFill.setColor(Color.BLACK);
-                float widthCorrection = (float) bmWidth / 12;
-                paintFill.setStrokeWidth(widthCorrection * 2);
-                canvas.drawLine((float) (bmWidth * 1.25), (float) bmHeight / 2, (float) bmWidth / 2, (float) (bmHeight * 1.25), paintFill);
-
-                Paint paintStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
-                paintStroke.setStyle(Paint.Style.STROKE);
-                paintStroke.setColor(Color.WHITE);
-                paintStroke.setStrokeWidth(3);
-                canvas.drawLine((float) (bmWidth * 1.25 - widthCorrection * 1.4), (float) bmHeight / 2, (float) ((double) bmWidth / 2 - widthCorrection * 1.4), (float) (bmHeight * 1.25), paintStroke);
-                canvas.drawLine((float) (bmWidth * 1.25 + widthCorrection * 1.4), (float) bmHeight / 2, (float) ((double) bmWidth / 2 + widthCorrection * 1.4), (float) (bmHeight * 1.25), paintStroke);
-
-                bm.recycle();
-                bm = bmOverlay;
+            // Добавляем траурную ленточку
+            if (addMourningTape) {
+                bm = ImageUtils.applyMourningTape(bm, bmWidth, bmHeight);
             }
 
-            //Добавление иконки избранного
-            final String eventKey = getEventKey(singleEventArray);
-            final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
-            if (addFavoritesSign && preferences_list_event_info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon))
-                    && checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])
-                    && bm.getConfig() != null) {
-                Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig());
-                Canvas canvas = new Canvas(bmOverlay);
-                canvas.drawBitmap(bm, new Matrix(), null);
-                bm.recycle();
-                Bitmap bmStar = BitmapFactory.decodeResource(getResources(), R.drawable.fav_star);
-                final Bitmap bmStarScaled = Bitmap.createScaledBitmap(bmStar, bmOverlay.getWidth() / 4 - (bmOverlay.getWidth() - bmOverlay.getHeight()) / 4, bmOverlay.getHeight() / 4, true);
-
-                if (roundingFactor < 3) { //Не круг - рисуем в левом нижнем углу
-
-                    canvas.drawBitmap(bmStarScaled, 2 + (float) ((bmOverlay.getWidth() - bmOverlay.getHeight()) / 4), (float) (bmOverlay.getHeight() * 3 / 4) - 2, null);
-
-                } else if (roundingFactor < 9) { //Закругление - рисуем в левом нижнем углу правее
-
-                    canvas.drawBitmap(bmStarScaled, 10 + (float) ((bmOverlay.getWidth() - bmOverlay.getHeight()) / 8), (float) (bmOverlay.getHeight() * 3 / 4) - 2, null);
-
-                } else { //Круг - рисуем внизу по центру
-
-                    canvas.drawBitmap(bmStarScaled, (float) (bmOverlay.getWidth() * 3 / 4) / 2, (float) (bmOverlay.getHeight() * 3 / 4) - 2, null);
-
-                }
-                bmStar.recycle();
-                bmStarScaled.recycle();
-                bm = bmOverlay;
-
+            // Добавляем иконку избранного
+            if (addFavoritesSign
+                    && preferences_list_event_info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon))
+                    && checkIsFavoriteEvent(getEventKey(singleEventArray), getEventKeyWithRawId(singleEventArray), singleEventArray[Position_starred])) {
+                bm = ImageUtils.applyFavoriteStar(bm, roundingFactor, bmWidth, bmHeight, getResources());
             }
 
             return new EventPhoto(ImageUtils.toRoundCorner(bm, roundingRadiusX, roundingRadiusY), type);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return new EventPhoto(null, null);
         }
     }
 
-    /**
-     * Возвращает иконку события по типу и подтипу
-     *
-     * @param eventType    Тип события
-     * @param eventSubType Подтип события
-     * @return Ссылка на ресурс иконки события
+    /** Загружает bitmap для события из различных источников
+     * @param singleEventArray Данные события
+     * @param showPhotos       Показывать фото (иначе - пиктограммы)
+     * @return Результат загрузки bitmap
      */
-    private static int getEventIcon(@NonNull String eventType, @NonNull String eventSubType) {
-        switch (eventSubType) {
-            case Constants.EventType_BirthDay:
-                return R.drawable.ic_event_birthday;
-            case Constants.EventType_Anniversary:
-                return R.drawable.ic_event_wedding;
-            case Constants.EventType_NameDay:
-                return R.drawable.ic_event_nameday;
-            case Constants.EventType_Crowning:
-                return R.drawable.ic_event_crowning;
-            case Constants.EventType_Death:
-                return R.drawable.ic_event_death;
-            case Constants.EventType_Holiday:
-                return R.drawable.ic_event_holiday;
-            case Constants.EventType_Custom1:
-                return R.drawable.ic_event_custom1;
-            case Constants.EventType_Custom2:
-                return R.drawable.ic_event_custom2;
-            case Constants.EventType_Custom3:
-                return R.drawable.ic_event_custom3;
-            case Constants.EventType_Custom4:
-                return R.drawable.ic_event_custom4;
-            case Constants.EventType_Custom5:
-                return R.drawable.ic_event_custom5;
-            case Constants.EventType_5K:
-                return R.drawable.ic_event_medal;
-            case Constants.EventType_Xdays:
-                return R.drawable.ic_event_xdays;
-            case Constants.EventType_Another:
-                return R.drawable.ic_event_other;
+    @NonNull
+    private BitmapLoadResult loadEventBitmap(@NonNull String[] singleEventArray, boolean showPhotos) {
+        String eventType = singleEventArray[Position_eventType];
+        String eventSubType = singleEventArray[Position_eventSubType];
+
+        // 1. Пытаемся получить фото из данных события (BASE64 или localEvent)
+        String eventPhotoData = singleEventArray[Position_photo];
+        if (!TextUtils.isEmpty(eventPhotoData) && showPhotos) {
+            try {
+                String eventPhoto = null;
+                if (eventPhotoData.startsWith(Constants.STRING_BRACKETS_START)) {
+                    TreeMap<Integer, String> localEvent = getLocalEvent(singleEventArray[Position_eventID]);
+                    if (localEvent != null) {
+                        eventPhoto = localEvent.get(Position_photo);
+                        localEvent.clear();
+                    }
+                } else {
+                    eventPhoto = eventPhotoData;
+                }
+                if (eventPhoto != null && !eventPhoto.isEmpty()) {
+                    byte[] decodedBytes = Base64.decode(eventPhoto, Base64.DEFAULT);
+                    Bitmap bm = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                    if (bm != null) return new BitmapLoadResult(bm, PhotoType.EVENT_PHOTO, false);
+                }
+            } catch (Exception ignored) { /**/ }
         }
-        if (eventType.equals(Constants.EventType_Other)) {
-            return R.drawable.ic_event_other;
+
+        // 2. Пытаемся получить из других источников
+        if (eventType.equals(Constants.EventType_Unrecognized)) {
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_unknown);
+            return new BitmapLoadResult(bm, PhotoType.ICON, false);
         }
-        return R.drawable.ic_event_unknown;
+
+        if ((eventSubType.equals(Constants.EventType_Calendar)
+                || eventSubType.equals(Constants.EventType_File)
+                || eventSubType.equals(Constants.EventType_Other))
+                && TextUtils.isEmpty(singleEventArray[Position_photo_uri])) {
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_other);
+            return new BitmapLoadResult(bm, PhotoType.ICON, false);
+        }
+
+        if (eventSubType.equals(Constants.EventType_Holiday)) {
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_holiday);
+            return new BitmapLoadResult(bm, PhotoType.ICON, false);
+        }
+
+        // 3. Пытаемся получить фото контакта
+        @NonNull String contactID = StringUtils.getNotNullString(singleEventArray[Position_contactID]);
+        String personFullName = singleEventArray[Position_personFullName];
+
+        boolean addMourningTape = (preferences_sad_photo == 1 && eventSubType.equals(Constants.EventType_Death)) ||
+                (preferences_sad_photo == 2 && (deathDatesForIds.containsKey(contactID) || deathDatesForNames.containsKey(personFullName)));
+
+        if (showPhotos && !TextUtils.isEmpty(singleEventArray[Position_photo_uri])
+                && !singleEventArray[Position_photo_uri].equalsIgnoreCase(Constants.STRING_NULL)) {
+            if (contentResolver == null) contentResolver = context.getContentResolver();
+            Uri contactUri;
+            if (!contactID.isEmpty()) {
+                contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactID);
+            } else {
+                contactUri = Uri.parse(singleEventArray[Position_photo_uri].replace("/photo", ""));
+            }
+            try {
+                InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(contentResolver, contactUri, true);
+                if (photo_stream != null) {
+                    BufferedInputStream buf = new BufferedInputStream(photo_stream);
+                    Bitmap bm = BitmapFactory.decodeStream(buf);
+                    buf.close();
+                    photo_stream.close();
+                    if (bm != null) return new BitmapLoadResult(bm, PhotoType.CONTACT_PHOTO, addMourningTape);
+                }
+            } catch (SecurityException | IOException ignored) { /**/ }
+        }
+
+        // 4. Пытаемся определить возраст для силуэта
+        if (!eventSubType.equals(Constants.EventType_BirthDay)) {
+            Date birthDate = null;
+            Date BDay = null;
+            boolean setNoAge = false;
+
+            if (!contactID.isEmpty() && birthdayDatesForIds.containsKey(contactID)) {
+                birthDate = birthdayDatesForIds.get(contactID);
+            } else if (birthdayDatesForNames.containsKey(personFullName)) {
+                birthDate = birthdayDatesForNames.get(personFullName);
+            } else {
+                setNoAge = true;
+            }
+
+            try {
+                BDay = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(singleEventArray[Position_eventDateNextTime]);
+            } catch (ParseException ignored) { /**/ }
+
+            if (birthDate != null && BDay != null) {
+                List<String> singleRowList = new ArrayList<>(Arrays.asList(singleEventArray));
+                final int countYearsDiff = AppDateUtils.countYearsDiff(birthDate, BDay);
+                singleRowList.set(Position_age, countYearsDiff > 0 ? String.valueOf(countYearsDiff) : Constants.STRING_MINUS1);
+                singleEventArray = singleRowList.toArray(new String[0]);
+            } else if (eventSubType.equals(Constants.EventType_Death) && setNoAge) {
+                List<String> singleRowList = new ArrayList<>(Arrays.asList(singleEventArray));
+                singleRowList.set(Position_age, Constants.STRING_MINUS1);
+                singleEventArray = singleRowList.toArray(new String[0]);
+            }
+        }
+
+        // 5. Пытаемся получить иконку типа события
+        int resIconPack_event = -1;
+        try {
+            resIconPack_event = Integer.parseInt(this.resources.getString(R.string.pref_IconPack_event));
+        } catch (NumberFormatException ignored) { /**/ }
+
+        if (preferences_IconPackNumber == resIconPack_event) {
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), ImageUtils.getEventIcon(eventType, eventSubType));
+            if (bm != null) return new BitmapLoadResult(bm, PhotoType.ICON, addMourningTape);
+        }
+
+        // 6. Получаем силуэт по возрасту и полу
+        Bitmap bm = ImageUtils.getSilhouetteBitmap(singleEventArray, context, preferences_IconPackImages_M, preferences_IconPackImages_F);
+        return new BitmapLoadResult(bm, bm != null ? PhotoType.SILHUETE : null, addMourningTape);
     }
 
     @NonNull
@@ -6969,7 +6227,7 @@ public class ContactsEvents {
             throw se;
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
         return resultMap;
@@ -7006,7 +6264,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
 
@@ -7043,7 +6301,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
 
             //Сортируем
@@ -7264,7 +6522,7 @@ public class ContactsEvents {
 
             if (dayDiff == -1) {
 
-                Log.i(TAG, resources.getString(R.string.msg_date_parse_error) + getEventDataAsString(singleEventArray));
+                Log.i(TAG, resources.getString(R.string.msg_date_parse_error) + StringUtils.getEventDataAsString(singleEventArray, getResources()));
 
                 StringBuilder sb = new StringBuilder();
                 String dates;
@@ -7293,23 +6551,23 @@ public class ContactsEvents {
             if (isYear) {
                 if (age > 0) { //Возраст больше 1 года
                     singleEventArray[Position_age] = Integer.toString(age);
-                    singleEventArray[Position_age_caption] = setAgeFormatting(StringUtils.getAgeString(age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20, currentLocale, resources));
+                    singleEventArray[Position_age_caption] = StringUtils.getAgeFormated(StringUtils.getAgeString(age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20, currentLocale, resources), preferences_list_age_format, resources);
 
                     if (eventType.equals(Constants.EventType_Anniversary)) {
-                        @Nullable String anCaption = getWeddingName(age);
+                        @Nullable String anCaption = StringUtils.getWeddingName(age, context, resources);
                         if (StringUtils.hasContent(anCaption) && !eventCaption.contains(Constants.STRING_PARENTHESIS_OPEN)) {
                             singleEventArray[Position_eventCaption] = eventCaption.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption).concat(Constants.STRING_PARENTHESIS_CLOSE);
                         }
                     }
                 } else if (eventDateFirstTime != null && AppDateUtils.countDaysDiff(eventDateFirstTime, eventDateThisTime) > 0) { //Возраст до года
                     //todo: если это календарное событие на несколько дней, то 1 день, это, по факту, 2й день события. додумать
-                    singleEventArray[Position_age_caption] = setAgeFormatting(countDaysDiffText(eventDateFirstTime, eventDateThisTime, 1));
+                    singleEventArray[Position_age_caption] = StringUtils.getAgeFormated(AppDateUtils.countDaysDiffText(eventDateFirstTime, eventDateThisTime, 1, resources, currentLocale), preferences_list_age_format, resources);
                 } else {
                     singleEventArray[Position_age] = Constants.STRING_MINUS1;
                     singleEventArray[Position_age_caption] = Constants.STRING_EMPTY;
                 }
                 if (eventDateFirstTime != null) {
-                    singleEventArray[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType, countDaysDiffText(eventDateFirstTime, currentDay, 3), currentDay);
+                    singleEventArray[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType, AppDateUtils.countDaysDiffText(eventDateFirstTime, currentDay, 3, resources, currentLocale), currentDay);
                 }
             }
 
@@ -7390,12 +6648,12 @@ public class ContactsEvents {
                         singleEventArray5K[Position_eventDateNextTime] = Objects.requireNonNull(sdf_DDMMYYYY.get()).format(cal5K.getTime());
                         singleEventArray5K[Position_eventDateFirstTime] = Objects.requireNonNull(sdf_DDMMYYYY.get()).format(eventDateFirstTime);
                         singleEventArray5K[Position_age] = Integer.toString(age);
-                        singleEventArray5K[Position_age_caption] = setAgeFormatting(StringUtils.getAgeString(5 * k * 1000, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20, currentLocale, resources));
+                        singleEventArray5K[Position_age_caption] = StringUtils.getAgeFormated(StringUtils.getAgeString(5 * k * 1000, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20, currentLocale, resources), preferences_list_age_format, resources);
                         singleEventArray5K[Position_eventDistance] = Integer.toString(magicDayDistance);
                         singleEventArray5K[Position_eventDistanceText] = getEventDistanceText(magicDayDistance, cal5K.getTime());
                         singleEventArray5K[Position_eventIcon] = Integer.toString(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
                         singleEventArray5K[Position_eventEmoji] = resources.getString(R.string.event_type_5k_emoji);
-                        singleEventArray5K[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType, countDaysDiffText(eventDateFirstTime, currentDay, 3), currentDay); //Возраст текущий
+                        singleEventArray5K[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType, AppDateUtils.countDaysDiffText(eventDateFirstTime, currentDay, 3, resources, currentLocale), currentDay); //Возраст текущий
                         singleEventArray5K[Position_eventDate_sorted] = getSortKey(singleEventArray5K);
 
                         if (isInsideYear) {
@@ -7435,7 +6693,7 @@ public class ContactsEvents {
                             long xDaysDistance = AppDateUtils.countDaysDiff(currentDay, event.date);
 
                             singleEventArrayXdays[Position_eventDateNextTime] = Objects.requireNonNull(sdf_DDMMYYYY.get()).format(event.date);
-                            singleEventArrayXdays[Position_age_caption] = setAgeFormatting(event.distance);
+                            singleEventArrayXdays[Position_age_caption] = StringUtils.getAgeFormated(event.distance, preferences_list_age_format, resources);
                             singleEventArrayXdays[Position_eventDistance] = Long.toString(xDaysDistance);
                             singleEventArrayXdays[Position_eventDistanceText] = getEventDistanceText(xDaysDistance, event.date);
                             singleEventArrayXdays[Position_eventEmoji] = resources.getString(R.string.event_type_xdays_emoji);
@@ -7453,23 +6711,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + singleEvent);
-        }
-    }
-
-    /**
-     * Возвращает название годовщины свадьбы
-     *
-     * @param age Год годовщины
-     * @return Название свадьбы
-     */
-    @SuppressLint("DiscouragedApi")
-    @Nullable
-    String getWeddingName(int age) {
-        try {
-            return context.getString(resources.getIdentifier(Constants.STRING_TYPE_WEDDING + age, Constants.RES_TYPE_STRING, context.getPackageName()));
-        } catch (Resources.NotFoundException nfe) {
-            return null;
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + singleEvent);
         }
     }
 
@@ -7554,7 +6796,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + Arrays.toString(singleEventArray));
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + Arrays.toString(singleEventArray));
             return Constants.STRING_EMPTY;
         }
     }
@@ -7592,7 +6834,7 @@ public class ContactsEvents {
                                 Date birthDate = birthdayDatesForIds.get(contactID);
                                 Date deathDate = deathDatesForIds.get(contactID);
                                 if (birthDate != null && deathDate != null) {
-                                    final String wasAge = countDaysDiffText(birthDate, deathDate, 3);
+                                    final String wasAge = AppDateUtils.countDaysDiffText(birthDate, deathDate, 3, resources, currentLocale);
                                     singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_was).concat(wasAge));
                                     eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
                                 }
@@ -7610,7 +6852,7 @@ public class ContactsEvents {
                                 Date birthDate = birthdayDatesForNames.get(personFullName);
                                 Date deathDate = deathDatesForNames.get(personFullName);
                                 if (birthDate != null && deathDate != null) {
-                                    final String wasAge = countDaysDiffText(birthDate, deathDate, 3);
+                                    final String wasAge = AppDateUtils.countDaysDiffText(birthDate, deathDate, 3, resources, currentLocale);
                                     singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_was).concat(wasAge));
                                     eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
                                 }
@@ -7628,7 +6870,7 @@ public class ContactsEvents {
                     if (eventSubType.equals(Constants.EventType_Death)) { //Если это годовщина смерти
                         Date eventDate = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(singleEventArray[Position_eventDateFirstTime]);
                         if (eventDate != null) {
-                            agePrefix = resources.getString(R.string.msg_age_was).concat(countDaysDiffText(birthDate, eventDate, 3));
+                            agePrefix = resources.getString(R.string.msg_age_was).concat(AppDateUtils.countDaysDiffText(birthDate, eventDate, 3, resources, currentLocale));
                         }
                         //Необходимо обновить текущий возраст в дне рождении
                         final String key = contactID + Constants.STRING_2HASH + Constants.EventType_BirthDay;
@@ -7636,7 +6878,7 @@ public class ContactsEvents {
                             Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(key);
                             if (eventIndex != null && eventIndex <= eventList.size()) {
                                 List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
-                                singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_could_be_now).concat(countDaysDiffText(birthDate, today, 3)));
+                                singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_could_be_now).concat(AppDateUtils.countDaysDiffText(birthDate, today, 3, resources, currentLocale)));
                                 eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
                             }
                         }
@@ -7650,7 +6892,7 @@ public class ContactsEvents {
                             } else {
                                 agePrefix = resources.getString(R.string.msg_age_will_be);
                             }
-                            agePrefix = agePrefix.concat(countDaysDiffText(birthDate, eventDate, 3));
+                            agePrefix = agePrefix.concat(AppDateUtils.countDaysDiffText(birthDate, eventDate, 3, resources, currentLocale));
                         }
                     }
                 }
@@ -7660,7 +6902,7 @@ public class ContactsEvents {
                     if (eventSubType.equals(Constants.EventType_Death)) { //Если это годовщина смерти
                         Date eventDate = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(singleEventArray[Position_eventDateFirstTime]);
                         if (eventDate != null) {
-                            agePrefix = resources.getString(R.string.msg_age_was).concat(countDaysDiffText(birthDate, eventDate, 3));
+                            agePrefix = resources.getString(R.string.msg_age_was).concat(AppDateUtils.countDaysDiffText(birthDate, eventDate, 3, resources, currentLocale));
                         }
                         //Необходимо обновить текущий возраст в дне рождении
                         final String key = personFullName + Constants.STRING_2HASH + Constants.EventType_BirthDay;
@@ -7668,7 +6910,7 @@ public class ContactsEvents {
                             Integer eventIndex = map_eventsBySubtypeAndPersonName_offset.get(key);
                             if (eventIndex != null && eventIndex <= eventList.size()) {
                                 List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
-                                singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_could_be_now).concat(countDaysDiffText(birthDate, today, 3)));
+                                singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_could_be_now).concat(AppDateUtils.countDaysDiffText(birthDate, today, 3, resources, currentLocale)));
                                 eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
                             }
                         }
@@ -7682,7 +6924,7 @@ public class ContactsEvents {
                             } else {
                                 agePrefix = resources.getString(R.string.msg_age_will_be);
                             }
-                            agePrefix = agePrefix.concat(countDaysDiffText(birthDate, eventDate, 3));
+                            agePrefix = agePrefix.concat(AppDateUtils.countDaysDiffText(birthDate, eventDate, 3, resources, currentLocale));
                         }
                     }
                 }
@@ -7697,7 +6939,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + TextUtils.join(Constants.STRING_EOT, singleEventArray));
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + TextUtils.join(Constants.STRING_EOT, singleEventArray));
         }
         return agePrefix;
     }
@@ -7786,7 +7028,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + dayDiff + Constants.STRING_EOL + eventDate);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e + Constants.STRING_EOL + dayDiff + Constants.STRING_EOL + eventDate);
         }
         return eventDistance.toString();
     }
@@ -7958,11 +7200,11 @@ public class ContactsEvents {
                             Age--;
                             if (!singleEventArray[Position_eventSubType].equals(Constants.EventType_5K)) {
                                 singleEventArray[Position_age] = Integer.toString(Age);
-                                singleEventArray[Position_age_caption] = setAgeFormatting(StringUtils.getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20, currentLocale, resources));
+                                singleEventArray[Position_age_caption] = StringUtils.getAgeFormated(StringUtils.getAgeString(Age, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20, currentLocale, resources), preferences_list_age_format, resources);
                             }
 
                             if (singleEventArray[Position_eventType].equals(Constants.EventType_Anniversary)) {
-                                @Nullable String anCaption = getWeddingName(Age);
+                                @Nullable String anCaption = StringUtils.getWeddingName(Age, context, resources);
                                 String eventCaption = getResources().getString(R.string.event_type_anniversary);
                                 if (StringUtils.hasContent(anCaption)) {
                                     singleEventArray[Position_eventCaption] = eventCaption.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption).concat(Constants.STRING_PARENTHESIS_CLOSE);
@@ -7984,36 +7226,7 @@ public class ContactsEvents {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-        return result;
-    }
-
-    int getPreviousDaysScanDays(@NonNull String params) {
-        int result = 0;
-        try {
-
-            switch (params) {
-                case "":
-                    break;
-                case "1d":
-                    result = 1;
-                    break;
-                case "2d":
-                    result = 2;
-                    break;
-                case "3d":
-                case "3d1e":
-                case "3d2e":
-                    result = 3;
-                    break;
-                default:
-                    result = Constants.PREV_EVENTS_MAX_DAYS;
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return result;
     }
@@ -8048,7 +7261,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return result;
     }
@@ -8146,7 +7359,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             if (log != null && statActiveWidgets > 0)
                 log.append(context.getString(R.string.msg_sent_widgets_update_request)).append(Constants.STRING_EOL);
@@ -8215,7 +7428,7 @@ public class ContactsEvents {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -8252,7 +7465,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -8330,7 +7543,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -8377,7 +7590,7 @@ public class ContactsEvents {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             if (preferences_debug_on) {
-                ToastExpander.showDebugMsg(context, getMethodName(3) + ": " + e);
+                ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
             }
         }
     }
@@ -8528,7 +7741,7 @@ public class ContactsEvents {
                 String textSmall = null;
                 int countEvents = 0;
                 if (!listFacts.isEmpty()) {
-                    String factsDetails = composeFactsAsString(listFacts);
+                    String factsDetails = StringUtils.getFactsAsString(listFacts, resources);
                     textBig.append(factsDetails);
                     eventsList.addAll(Arrays.asList(factsDetails.split(Constants.STRING_EOL)));
                 }
@@ -8848,7 +8061,7 @@ public class ContactsEvents {
                 //Только факты
                 if (prefType != 4 && !listFacts.isEmpty()) {
                     int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
-                    final String factsDetails = composeFactsAsString(listFacts);
+                    final String factsDetails = StringUtils.getFactsAsString(listFacts, resources);
                     ArrayList<String> eventsList = new ArrayList<>(Arrays.asList(factsDetails.split(Constants.STRING_EOL)));
 
                     //Запуск диалога со списком событий
@@ -8884,7 +8097,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -8918,7 +8131,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return listSelectedFacts;
     }
@@ -9001,34 +8214,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-        return eventDetails.toString();
-    }
-
-    /**
-     * Возвращает список фактов как единую строку с иконками и переводом строк
-     *
-     * @param listFacts Список фактов
-     * @return Единая строка с фактами
-     */
-    @NonNull
-    private String composeFactsAsString(@NonNull List<String> listFacts) {
-        StringBuilder eventDetails = new StringBuilder();
-        try {
-
-            for (String fact : listFacts) {
-                if (eventDetails.length() > 0) {
-                    eventDetails.append(Constants.STRING_EOL);
-                }
-                eventDetails.append(resources.getString(R.string.event_type_fact_emoji));
-                eventDetails.append(Constants.STRING_SPACE);
-                eventDetails.append(fact);
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return eventDetails.toString();
     }
@@ -9072,7 +8258,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return TextUtils.join(Constants.STRING_EMPTY, new HashSet<>(icons));
     }
@@ -9155,7 +8341,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -9330,7 +8516,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -9350,7 +8536,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -9368,7 +8554,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -9399,7 +8585,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return false;
     }
@@ -9435,7 +8621,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
 
@@ -9452,7 +8638,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -9470,7 +8656,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -9501,7 +8687,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return false;
     }
@@ -9537,7 +8723,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
 
@@ -9559,7 +8745,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -9597,7 +8783,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return false;
     }
@@ -9663,7 +8849,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
 
@@ -9684,7 +8870,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -9717,7 +8903,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return false;
     }
@@ -9736,7 +8922,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return false;
     }
@@ -9763,7 +8949,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -9794,7 +8980,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return null;
     }
@@ -9864,7 +9050,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -9877,7 +9063,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return 0;
         }
     }
@@ -9902,7 +9088,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return result;
         }
     }
@@ -9945,7 +9131,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -9987,7 +9173,7 @@ public class ContactsEvents {
                             if (date.compareTo(endDate) <= 0) { //Inside period
                                 if (!selectedDates.contains(date.getTimeInMillis())) {
                                     repeated++;
-                                    result.add(new Event(date.getTime(), countDaysDiffText(eventDate.getTime(), date.getTime(), 2)));
+                                    result.add(new Event(date.getTime(), AppDateUtils.countDaysDiffText(eventDate.getTime(), date.getTime(), 2, resources, currentLocale)));
                                     selectedDates.add(date.getTimeInMillis());
                                     if (repeated >= toRepeat) isContinue = false;
                                 }
@@ -10002,7 +9188,7 @@ public class ContactsEvents {
                         date.add(Calendar.DAY_OF_YEAR, days);
                         if (date.compareTo(startDate) >= 0 && date.compareTo(endDate) <= 0) { //Inside period
                             if (!selectedDates.contains(date.getTimeInMillis())) {
-                                result.add(new Event(date.getTime(), countDaysDiffText(eventDate.getTime(), date.getTime(), 2)));
+                                result.add(new Event(date.getTime(), AppDateUtils.countDaysDiffText(eventDate.getTime(), date.getTime(), 2, resources, currentLocale)));
                                 selectedDates.add(date.getTimeInMillis());
                             }
                         }
@@ -10020,7 +9206,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return result;
     }
@@ -10073,7 +9259,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -10122,7 +9308,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -10168,7 +9354,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -10184,7 +9370,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -10238,7 +9424,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return defaultPref;
         }
 
@@ -10260,7 +9446,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -10375,7 +9561,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return defaultIcon;
         }
     }
@@ -10435,7 +9621,7 @@ public class ContactsEvents {
             }
 
             for (int i = 1; i <= 100; i++) {
-                @Nullable String anCaption = getWeddingName(i);
+                @Nullable String anCaption = StringUtils.getWeddingName(i, context, resources);
                 if (StringUtils.hasContent(anCaption)) {
                     String holiday = i + Constants.STRING_COLON_SPACE + anCaption;
                     if (i == selectedAge) {
@@ -10478,273 +9664,8 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
-    }
-
-    String setHTMLColor(String msg, int color) {
-        try {
-
-            int colorId;
-            switch (color) {
-                case Constants.HTML_COLOR_RED:
-                    colorId = R.color.dark_red;
-                    break;
-                case Constants.HTML_COLOR_YELLOW:
-                    colorId = R.color.yellow;
-                    break;
-                case Constants.HTML_COLOR_BROWN:
-                    colorId = R.color.brown;
-                    break;
-                case Constants.HTML_COLOR_GREEN:
-                    colorId = R.color.green;
-                    break;
-                default:
-                    return msg;
-            }
-            return Constants.HTML_COLOR_START + Integer.toHexString(ContextCompat.getColor(context, colorId) & 0x00ffffff)
-                    + Constants.HTML_COLOR_MIDDLE + msg + Constants.HTML_COLOR_END;
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-        return msg;
-    }
-
-    /**
-     * Возвращает отформатированную дату
-     *
-     * @param dateIn     Дата строкой DDMMYYY
-     * @param dateFormat Формат даты (с годом или без)
-     * @return Отформатированная дата, согласно указанному формату и настройки формата даты
-     */
-    @NonNull
-    String getDateFormatted(String dateIn, FormatDate dateFormat) {
-
-        String resultString = Constants.STRING_EMPTY;
-        if (TextUtils.isEmpty(dateIn)) return resultString;
-        if (preferences_date_format == 2 && dateFormat == FormatDate.WithYear)
-            return dateIn; // DD.MM.YYYY
-
-        String postfixBC = getResources().getString(R.string.msg_after_year_bc);
-        if (!dateIn.endsWith(postfixBC)) postfixBC = Constants.STRING_EMPTY;
-
-        try {
-
-            final Locale locale = Locale.forLanguageTag(currentLocale);
-            //todo: переметить в поля класса + initLocaleStrings()
-            SimpleDateFormat sdfInY = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale);
-            SimpleDateFormat sdfIn = new SimpleDateFormat(Constants.DATE_DD_MM, locale);
-            SimpleDateFormat sdfOut = null;
-            Date eventDate = null;
-            boolean isYearPresent = false;
-
-            switch (preferences_date_format) {
-
-                case 2: // DD.MM.YYYY
-
-                    sdfOut = new SimpleDateFormat(Constants.DATE_DD_MM, locale);
-                    try {
-                        eventDate = sdfInY.parse(dateIn);
-                    } catch (Exception e) {
-                        try {
-                            eventDate = sdfIn.parse(dateIn);
-                        } catch (Exception e2) { /**/ }
-                    }
-                    if (eventDate != null)
-                        resultString = sdfOut.format(eventDate).concat(postfixBC);
-                    break;
-
-                case 3: // MM.DD.YYYY
-
-                    try {
-                        eventDate = sdfInY.parse(dateIn);
-                        isYearPresent = true;
-                    } catch (Exception e) {
-                        try {
-                            eventDate = sdfIn.parse(dateIn);
-                        } catch (Exception e2) { /**/ }
-                    }
-                    if (eventDate != null) {
-                        if (dateFormat == FormatDate.WithYear && isYearPresent) {
-                            sdfOut = new SimpleDateFormat(Constants.DATE_MM_DD_YYYY, locale);
-                        } else if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
-                            sdfOut = new SimpleDateFormat(Constants.DATE_MM_DD, locale);
-                        }
-                        if (sdfOut != null)
-                            resultString = sdfOut.format(eventDate).concat(postfixBC);
-                    }
-                    break;
-
-                case 4: // DD/MM/YYYY
-
-                    try {
-                        eventDate = sdfInY.parse(dateIn);
-                        isYearPresent = true;
-                    } catch (Exception e) {
-                        try {
-                            eventDate = sdfIn.parse(dateIn);
-                        } catch (Exception e2) { /**/ }
-                    }
-                    if (eventDate != null) {
-                        if (dateFormat == FormatDate.WithYear && isYearPresent) {
-                            sdfOut = new SimpleDateFormat(Constants.DATE_UK, locale);
-                        } else if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
-                            sdfOut = new SimpleDateFormat(Constants.DATE_UK_NO_YEAR, locale);
-                        }
-                        if (sdfOut != null)
-                            resultString = sdfOut.format(eventDate).concat(postfixBC);
-                    }
-                    break;
-
-                case 5: // MM/DD/YYYY
-
-                    try {
-                        eventDate = sdfInY.parse(dateIn);
-                        isYearPresent = true;
-                    } catch (Exception e) {
-                        try {
-                            eventDate = sdfIn.parse(dateIn);
-                        } catch (Exception e2) { /**/ }
-                    }
-                    if (eventDate != null) {
-                        if (dateFormat == FormatDate.WithYear && isYearPresent) {
-                            sdfOut = new SimpleDateFormat(Constants.DATE_IND, locale);
-                        } else if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
-                            sdfOut = new SimpleDateFormat(Constants.DATE_IND_NO_YEAR, locale);
-                        }
-                        if (sdfOut != null)
-                            resultString = sdfOut.format(eventDate).concat(postfixBC);
-                    }
-                    break;
-
-                case 6: // DD MMM YYYY
-
-                    try {
-                        eventDate = sdfInY.parse(dateIn);
-                        isYearPresent = true;
-                    } catch (Exception e) {
-                        try {
-                            eventDate = sdfIn.parse(dateIn);
-                        } catch (Exception e2) { /**/ }
-                    }
-                    if (eventDate != null) {
-                        if (dateFormat == FormatDate.WithYear && isYearPresent) {
-                            sdfOut = new SimpleDateFormat(Constants.DATE_DD_MMM_YYYY, locale);
-                        } else if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
-                            sdfOut = new SimpleDateFormat(Constants.DATE_DD_MMM, locale);
-                        }
-                        if (sdfOut != null)
-                            resultString = sdfOut.format(eventDate).concat(postfixBC);
-                    }
-                    break;
-
-                case 7: // D MMMM YYYY
-
-                    try {
-                        eventDate = sdfInY.parse(dateIn);
-                        isYearPresent = true;
-                    } catch (Exception e) {
-                        try {
-                            eventDate = sdfIn.parse(dateIn);
-                        } catch (Exception e2) { /**/ }
-                    }
-                    if (eventDate != null) {
-                        if (dateFormat == FormatDate.WithYear && isYearPresent) {
-                            sdfOut = new SimpleDateFormat(Constants.DATE_D_MMMM_YYYY, locale);
-                        } else if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
-                            sdfOut = new SimpleDateFormat(Constants.DATE_D_MMMM, locale);
-                        }
-                        if (sdfOut != null)
-                            resultString = sdfOut.format(eventDate).concat(postfixBC);
-                    }
-                    break;
-
-                default:
-
-                    //https://stackoverflow.com/questions/3790918/format-date-without-year
-                    try {
-                        eventDate = sdfInY.parse(dateIn);
-                        isYearPresent = true;
-                    } catch (Exception e) {
-                        try {
-                            eventDate = sdfIn.parse(dateIn);
-                        } catch (Exception e2) { /**/ }
-                    }
-                    if (eventDate != null) {
-                        if (dateFormat == FormatDate.WithYear && isYearPresent) {
-                            resultString = DateUtils.formatDateTime(context, eventDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_NUMERIC_DATE);
-                        } else { //if (!isYearPresent || dateFormat == FormatDate.WithoutYear) {
-                            resultString = DateUtils.formatDateTime(context, eventDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_NUMERIC_DATE);
-                        }
-                    }
-            }
-
-        } catch (Exception e) { /**/ }
-
-        return TextUtils.isEmpty(resultString) ? resultString : resultString.concat(postfixBC);
-
-    }
-
-    @NonNull
-    String getDateTimePreferable(@NonNull Date dateIn) {
-
-        String resultString = Constants.STRING_EMPTY;
-
-        try {
-
-            final Locale locale = Locale.forLanguageTag(currentLocale);
-            SimpleDateFormat sdfOut;
-            final String timeFormat = " HH:mm";
-
-            switch (preferences_date_format) {
-
-                case 2: // DD.MM.YYYY
-
-                    sdfOut = new SimpleDateFormat(Constants.DATE_DD_MM + timeFormat, locale);
-                    resultString = sdfOut.format(dateIn);
-                    break;
-
-                case 3: // MM.DD.YYYY
-
-                    sdfOut = new SimpleDateFormat(Constants.DATE_MM_DD_YYYY + timeFormat, locale);
-                    resultString = sdfOut.format(dateIn);
-                    break;
-
-                case 4: // DD/MM/YYYY
-
-                    sdfOut = new SimpleDateFormat(Constants.DATE_UK + timeFormat, locale);
-                    resultString = sdfOut.format(dateIn);
-                    break;
-
-                case 5: // MM/DD/YYYY
-
-                    sdfOut = new SimpleDateFormat(Constants.DATE_IND + timeFormat, locale);
-                    resultString = sdfOut.format(dateIn);
-                    break;
-
-                case 6: // DD MMM YYYY
-
-                    sdfOut = new SimpleDateFormat(Constants.DATE_DD_MMM_YYYY + timeFormat, locale);
-                    resultString = sdfOut.format(dateIn);
-                    break;
-
-                case 7: // D MMMM YYYY
-
-                    sdfOut = new SimpleDateFormat(Constants.DATE_D_MMMM_YYYY + timeFormat, locale);
-                    resultString = sdfOut.format(dateIn);
-                    break;
-
-                default:
-
-                    resultString = DateUtils.formatDateTime(context, dateIn.getTime(), DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_NUMERIC_DATE);
-
-            }
-
-        } catch (Exception e) { /**/ }
-
-        return resultString;
     }
 
     synchronized List<String> getFilteredEventList(List<String> eventList, List<String> widgetPref) {
@@ -10802,7 +9723,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
         return resultList;
@@ -10822,112 +9743,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-        }
-    }
-
-    synchronized void initIconPack() {
-
-        try {
-
-            preferences_IconPackImages_F.clear();
-            preferences_IconPackImages_M.clear();
-
-            switch (preferences_IconPackNumber) {
-
-                case 1:
-
-                    preferences_IconPackImages_F.put(0, R.drawable.ic_pack01_f2);
-                    preferences_IconPackImages_F.put(6, R.drawable.ic_pack01_f0);
-                    preferences_IconPackImages_F.put(17, R.drawable.ic_pack01_f1);
-                    preferences_IconPackImages_F.put(25, R.drawable.ic_pack01_f2);
-                    preferences_IconPackImages_F.put(35, R.drawable.ic_pack01_f3);
-                    preferences_IconPackImages_F.put(45, R.drawable.ic_pack01_f4);
-                    preferences_IconPackImages_F.put(55, R.drawable.ic_pack01_f5);
-                    preferences_IconPackImages_F.put(150, R.drawable.ic_pack01_f6);
-
-                    preferences_IconPackImages_M.put(0, R.drawable.ic_pack01_m2);
-                    preferences_IconPackImages_M.put(6, R.drawable.ic_pack01_m0);
-                    preferences_IconPackImages_M.put(17, R.drawable.ic_pack01_m1);
-                    preferences_IconPackImages_M.put(25, R.drawable.ic_pack01_m2);
-                    preferences_IconPackImages_M.put(35, R.drawable.ic_pack01_m3);
-                    preferences_IconPackImages_M.put(45, R.drawable.ic_pack01_m4);
-                    preferences_IconPackImages_M.put(55, R.drawable.ic_pack01_m5);
-                    preferences_IconPackImages_M.put(150, R.drawable.ic_pack01_m6);
-
-                    break;
-
-                case 2:
-
-                    preferences_IconPackImages_F.put(0, R.drawable.ic_pack02_f2);
-                    preferences_IconPackImages_F.put(6, R.drawable.ic_pack02_f0);
-                    preferences_IconPackImages_F.put(17, R.drawable.ic_pack02_f1);
-                    preferences_IconPackImages_F.put(25, R.drawable.ic_pack02_f2);
-                    preferences_IconPackImages_F.put(35, R.drawable.ic_pack02_f3);
-                    preferences_IconPackImages_F.put(45, R.drawable.ic_pack02_f4);
-                    preferences_IconPackImages_F.put(55, R.drawable.ic_pack02_f5);
-                    preferences_IconPackImages_F.put(150, R.drawable.ic_pack02_f6);
-
-                    preferences_IconPackImages_M.put(0, R.drawable.ic_pack02_m2);
-                    preferences_IconPackImages_M.put(6, R.drawable.ic_pack02_m0);
-                    preferences_IconPackImages_M.put(17, R.drawable.ic_pack02_m1);
-                    preferences_IconPackImages_M.put(25, R.drawable.ic_pack02_m2);
-                    preferences_IconPackImages_M.put(35, R.drawable.ic_pack02_m3);
-                    preferences_IconPackImages_M.put(45, R.drawable.ic_pack02_m4);
-                    preferences_IconPackImages_M.put(55, R.drawable.ic_pack02_m5);
-                    preferences_IconPackImages_M.put(150, R.drawable.ic_pack02_m6);
-
-                    break;
-
-                case 3:
-
-                    preferences_IconPackImages_F.put(0, R.drawable.ic_pack03_f3);
-                    preferences_IconPackImages_F.put(6, R.drawable.ic_pack03_f0);
-                    preferences_IconPackImages_F.put(17, R.drawable.ic_pack03_f1);
-                    preferences_IconPackImages_F.put(25, R.drawable.ic_pack03_f2);
-                    preferences_IconPackImages_F.put(35, R.drawable.ic_pack03_f3);
-                    preferences_IconPackImages_F.put(45, R.drawable.ic_pack03_f4);
-                    preferences_IconPackImages_F.put(55, R.drawable.ic_pack03_f5);
-                    preferences_IconPackImages_F.put(150, R.drawable.ic_pack03_f6);
-
-                    preferences_IconPackImages_M.put(0, R.drawable.ic_pack03_m3);
-                    preferences_IconPackImages_M.put(6, R.drawable.ic_pack03_m0);
-                    preferences_IconPackImages_M.put(17, R.drawable.ic_pack03_m1);
-                    preferences_IconPackImages_M.put(25, R.drawable.ic_pack03_m2);
-                    preferences_IconPackImages_M.put(35, R.drawable.ic_pack03_m3);
-                    preferences_IconPackImages_M.put(45, R.drawable.ic_pack03_m4);
-                    preferences_IconPackImages_M.put(55, R.drawable.ic_pack03_m5);
-                    preferences_IconPackImages_M.put(150, R.drawable.ic_pack03_m6);
-
-                    break;
-
-                case 4:
-
-                    preferences_IconPackImages_F.put(0, R.drawable.ic_pack00_f1);
-
-                    preferences_IconPackImages_M.put(0, R.drawable.ic_pack00_m1);
-
-                    break;
-
-            }
-
-            if (preferences_IconPackImages_F.isEmpty()) {
-                preferences_IconPackImages_F.put(0, R.drawable.ic_pack00_f1);
-                preferences_IconPackImages_F.put(15, R.drawable.ic_pack00_f0);
-                preferences_IconPackImages_F.put(60, R.drawable.ic_pack00_f1);
-                preferences_IconPackImages_F.put(150, R.drawable.ic_pack00_f2);
-            }
-
-            if (preferences_IconPackImages_M.isEmpty()) {
-                preferences_IconPackImages_M.put(0, R.drawable.ic_pack00_m1);
-                preferences_IconPackImages_M.put(15, R.drawable.ic_pack00_m0);
-                preferences_IconPackImages_M.put(60, R.drawable.ic_pack00_m1);
-                preferences_IconPackImages_M.put(150, R.drawable.ic_pack00_m2);
-            }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -11075,7 +9891,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return Constants.STRING_EMPTY;
         }
 
@@ -11102,7 +9918,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -11199,7 +10015,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -11213,44 +10029,6 @@ public class ContactsEvents {
         localesWithFullDocumentation.add(resources.getString(R.string.pref_Language_es));
 
         return localesWithFullDocumentation.contains(Locale.getDefault().getLanguage());
-
-    }
-
-    @NonNull
-    String setAgeFormatting(@NonNull String strAge) {
-
-        try {
-
-            String result = strAge;
-            final String replacementXK = Constants.STRING_000 + Constants.STRING_SPACE;
-            if (preferences_list_age_format.contains(resources.getString(R.string.pref_List_AgeFormat_Convert000toK)) && result.contains(replacementXK)) {
-                result = result.replace(replacementXK, "K ");
-            } else if (preferences_list_age_format.contains(resources.getString(R.string.pref_List_AgeFormat_SeparateThousands))) {
-                int indFirstSpace = result.indexOf(Constants.STRING_SPACE);
-                int indLastSpace = result.lastIndexOf(Constants.STRING_SPACE);
-
-                if (indFirstSpace > -1 && indFirstSpace == indLastSpace) {
-                    //https://stackoverflow.com/questions/5323502/how-to-set-thousands-separator-in-java
-                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-                    DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
-                    symbols.setGroupingSeparator('\u00a0');
-                    formatter.setDecimalFormatSymbols(symbols);
-
-                    String postfix = result.substring(indLastSpace);
-                    result = formatter.format(Integer.parseInt(result.substring(0, indLastSpace))).concat(postfix);
-                }
-            }
-            if (!preferences_list_age_format.contains(resources.getString(R.string.pref_List_AgeFormat_AddPostfix))) {
-                result = result.substring(0, result.indexOf(Constants.STRING_SPACE));
-            }
-
-            return result;
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return strAge;
-        }
 
     }
 
@@ -11269,7 +10047,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -11289,7 +10067,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -11385,7 +10163,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return resultInfo;
 
@@ -11416,7 +10194,7 @@ public class ContactsEvents {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -11434,7 +10212,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -11454,7 +10232,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -11483,7 +10261,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return types;
     }
@@ -11531,7 +10309,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return dayInfo;
     }
@@ -11593,7 +10371,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -11616,7 +10394,7 @@ public class ContactsEvents {
                     if (!preferences_DaysTypes.containsKey(packHash)) {
                         String[] fileDetails = file.split(Constants.REGEX_BAR);
                         Log.i("FILE", fileDetails[0] + Constants.STRING_PARENTHESIS_OPEN + packHash + Constants.STRING_PARENTHESIS_CLOSE);
-                        String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
+                        String[] eventsArray = StringUtils.readFileToString(file, Constants.STRING_EOL, context, resources).split(Constants.STRING_EOL, -1);
                         if (eventsArray[0].isEmpty()) {
                             ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
                             continue;
@@ -11629,7 +10407,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -11674,7 +10452,7 @@ public class ContactsEvents {
 
                 boolean isFloating = false;
                 try {
-                    String dateNextFloatingEvent = computeFloatingDate(eventDateString, 0);
+                    String dateNextFloatingEvent = AppDateUtils.computeFloatingDate(eventDateString, 0, weekDaysShort);
                     if (!eventDateString.equals(dateNextFloatingEvent)) {
                         eventDateString = dateNextFloatingEvent;
                         isFloating = true;
@@ -11720,7 +10498,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -11753,7 +10531,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -11840,9 +10618,9 @@ public class ContactsEvents {
                             final FormatDate formatDate = dateStart.get(Calendar.YEAR) == dateEnd.get(Calendar.YEAR) ? FormatDate.WithoutYear : FormatDate.WithYear;
                             eventTitle = eventTitle
                                     .concat(Constants.STRING_PARENTHESIS_OPEN)
-                                    .concat(getDateFormatted(Objects.requireNonNull(sdf_DDMMYYYY.get()).format(dateStart.getTime()), formatDate))
+                                    .concat(AppDateUtils.getDateFormatted(Objects.requireNonNull(sdf_DDMMYYYY.get()).format(dateStart.getTime()), formatDate, preferences_date_format, context, getResources(), currentLocale))
                                     .concat(Constants.STRING_MINUS)
-                                    .concat(getDateFormatted(Objects.requireNonNull(sdf_DDMMYYYY.get()).format(dateEnd.getTime()), formatDate))
+                                    .concat(AppDateUtils.getDateFormatted(Objects.requireNonNull(sdf_DDMMYYYY.get()).format(dateEnd.getTime()), formatDate, preferences_date_format, context, getResources(), currentLocale))
                                     .concat(Constants.STRING_PARENTHESIS_CLOSE);
                         }
 
@@ -11874,7 +10652,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -11908,7 +10686,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -11950,7 +10728,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -12017,7 +10795,7 @@ public class ContactsEvents {
                 for (String file : preferences_FactEvent_files) {
 
                     String[] fileDetails = file.split(Constants.REGEX_BAR);
-                    String[] eventsArray = readFileToString(file, Constants.STRING_EOL).split(Constants.STRING_EOL, -1);
+                    String[] eventsArray = StringUtils.readFileToString(file, Constants.STRING_EOL, context, resources).split(Constants.STRING_EOL, -1);
                     if (eventsArray[0].isEmpty()) {
                         ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
                         continue;
@@ -12059,7 +10837,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -12105,7 +10883,7 @@ public class ContactsEvents {
                             for (int i = 1; i < countEvents; i++) {
                                 String eventsArray = eventsPack[i];
                                 String[] days = eventsArray.split(Constants.STRING_EOL, -1);
-                                List<String> expandedEvents = splitMultidayEventsAsSeparateLine(days, dateFormats);
+                                List<String> expandedEvents = AppDateUtils.splitMultidayEventsAsSeparateLine(days, dateFormats, getToday());
                                 for (String eventString : expandedEvents) {
                                     addFileEventFromLine(
                                             eventsPack[0],
@@ -12136,7 +10914,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -12183,7 +10961,7 @@ public class ContactsEvents {
                             for (int i = 1; i < countEvents; i++) {
                                 String eventsArray = eventsPack[i];
                                 String[] days = eventsArray.split(Constants.STRING_EOL, -1);
-                                List<String> expandedEvents = splitMultidayEventsAsSeparateLine(days, dateFormats);
+                                List<String> expandedEvents = AppDateUtils.splitMultidayEventsAsSeparateLine(days, dateFormats, getToday());
                                 for (String eventString : expandedEvents) {
                                     addFileEventFromLine(
                                             eventsPack[0],
@@ -12214,7 +10992,7 @@ public class ContactsEvents {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -12500,7 +11278,7 @@ public class ContactsEvents {
 
             } catch (final Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
         }
 
@@ -12660,7 +11438,7 @@ public class ContactsEvents {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(baseContext, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(baseContext, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -12752,7 +11530,7 @@ public class ContactsEvents {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -12816,7 +11594,7 @@ public class ContactsEvents {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -12834,7 +11612,7 @@ public class ContactsEvents {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return factsList;
     }

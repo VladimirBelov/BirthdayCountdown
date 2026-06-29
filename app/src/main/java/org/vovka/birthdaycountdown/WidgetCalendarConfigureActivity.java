@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.06.2026, 14:56
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 12:27
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -503,7 +503,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             updateVisibility();
             if (ta != null) ta.recycle();
@@ -653,7 +653,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             finish();
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -783,7 +783,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -825,7 +825,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -955,7 +955,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -980,7 +980,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 }

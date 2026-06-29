@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 19:57
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 11:11
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -250,7 +250,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getActivity(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getActivity(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
                 return null;
             }
         }
@@ -712,7 +712,7 @@ public class LocalEventActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -726,7 +726,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -765,7 +765,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -889,7 +889,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -908,15 +908,17 @@ public class LocalEventActivity extends AppCompatActivity {
                 int dow = DayOfWeekCalculator.getDayOfWeek(eventIsBC, eventYear, eventMonth + 1, eventDay);
                 String name = DayOfWeekCalculator.getShortDayName(dow, Locale.getDefault());
 
-                dateFormated = eventsData.getDateFormatted(
-                        Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(date), ContactsEvents.FormatDate.WithYear)
+                dateFormated = AppDateUtils.getDateFormatted(
+                        Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(date), ContactsEvents.FormatDate.WithYear,
+                        eventsData.preferences_date_format, eventsData.getContext(), eventsData.getResources(), eventsData.currentLocale)
                         + (eventIsBC ? eventsData.getResources().getString(R.string.msg_after_year_bc) : Constants.STRING_EMPTY)
                         + Constants.STRING_PARENTHESIS_OPEN
                         + name.toLowerCase()
                         + Constants.STRING_PARENTHESIS_CLOSE;
             } else {
-                dateFormated = eventsData.getDateFormatted(
-                        Objects.requireNonNull(ContactsEvents.sdf_DDMM.get()).format(date), ContactsEvents.FormatDate.WithoutYear);
+                dateFormated = AppDateUtils.getDateFormatted(
+                        Objects.requireNonNull(ContactsEvents.sdf_DDMM.get()).format(date), ContactsEvents.FormatDate.WithoutYear,
+                        eventsData.preferences_date_format, eventsData.getContext(), eventsData.getResources(), eventsData.currentLocale);
             }
 
             editDate.setText("📆 ".concat(dateFormated));
@@ -924,7 +926,7 @@ public class LocalEventActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ContextThemeWrapper context = new ContextThemeWrapper(editDate.getContext(), eventsData.preferences_theme.themeMain);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -981,7 +983,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(themedContext, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(themedContext, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1025,7 +1027,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1087,7 +1089,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1126,7 +1128,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1145,7 +1147,7 @@ public class LocalEventActivity extends AppCompatActivity {
             recreate();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1197,7 +1199,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1232,7 +1234,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(activity, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(activity, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1275,7 +1277,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(activity, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(activity, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1303,7 +1305,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

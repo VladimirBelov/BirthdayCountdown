@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.03.2026, 15:50
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.03.2026, 15:49
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -43,6 +43,7 @@ import android.widget.Toast;
 import androidx.appcompat.view.ContextThemeWrapper;
 
 import org.vovka.birthdaycountdown.utils.ImageUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -264,7 +265,7 @@ class ColorPreference extends Preference {
 
             } catch (final Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getActivity(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getActivity(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
 
             return colorDialogBuilder.create();
@@ -561,7 +562,7 @@ class ColorPreference extends Preference {
 
             } catch (final Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
         }
 
@@ -607,7 +608,7 @@ class ColorPreference extends Preference {
 
                 } catch (final Exception e) {
                     Log.e(TAG, e.getMessage(), e);
-                    ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                    ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
                 }
             }
 

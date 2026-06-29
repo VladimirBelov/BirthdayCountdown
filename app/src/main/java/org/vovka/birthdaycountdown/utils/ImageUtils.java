@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2026, 01:09
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.06.2026, 01:09
+ *  * Last modified 29.06.2026, 22:47
  *
  */
 
@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -31,11 +32,14 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.Constants;
+import org.vovka.birthdaycountdown.Person;
+import org.vovka.birthdaycountdown.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 public class ImageUtils {
     static final String TAG = "ImageUtils";
@@ -213,7 +217,7 @@ public class ImageUtils {
     /** Возвращает коэффициент масштабирования размера элементов виджета
      * @param widgetPref Настройки виджета
      * @param elementNumber Порядковый номер мультипликатора размера в настройке (они хранятся как размер1+размер2+...)
-     * @param baseSize Базовый размер, который нужно изменять. например {Constants#WIDGET_TEXT_SIZE_TINY}
+     * @param baseSize Базовый размер, который нужно изменять, например {@link Constants#WIDGET_TEXT_SIZE_TINY}
      * @param defaultMagnify Мультипликатор по-умолчанию ("Авто")
      * @return Коэффициент масштабирования
      */
@@ -324,5 +328,303 @@ public class ImageUtils {
         }
 
         return inSampleSize;
+    }
+
+    /**
+     * Добавление чёрной ленточки к фото
+     *
+     * @param bm       Исходное фото
+     * @param bmWidth  Ширина фото
+     * @param bmHeight Высота фото
+     * @return Результирующее фото
+     */
+    @NonNull
+    public static Bitmap applyMourningTape(@NonNull Bitmap bm, int bmWidth, int bmHeight) {
+        //https://stackoverflow.com/questions/3089991/how-to-draw-a-shape-or-bitmap-into-another-bitmap-java-android
+        Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig() != null ? bm.getConfig() : Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bmOverlay);
+        canvas.drawBitmap(bm, new Matrix(), null);
+
+        Paint paintFill = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintFill.setStyle(Paint.Style.FILL);
+        paintFill.setColor(Color.BLACK);
+        float widthCorrection = (float) bmWidth / 12;
+        paintFill.setStrokeWidth(widthCorrection * 2);
+        canvas.drawLine((float) (bmWidth * 1.25), (float) bmHeight / 2, (float) bmWidth / 2, (float) (bmHeight * 1.25), paintFill);
+
+        Paint paintStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintStroke.setStyle(Paint.Style.STROKE);
+        paintStroke.setColor(Color.WHITE);
+        paintStroke.setStrokeWidth(3);
+        canvas.drawLine((float) (bmWidth * 1.25 - widthCorrection * 1.4), (float) bmHeight / 2, (float) ((double) bmWidth / 2 - widthCorrection * 1.4), (float) (bmHeight * 1.25), paintStroke);
+        canvas.drawLine((float) (bmWidth * 1.25 + widthCorrection * 1.4), (float) bmHeight / 2, (float) ((double) bmWidth / 2 + widthCorrection * 1.4), (float) (bmHeight * 1.25), paintStroke);
+
+        bm.recycle();
+        bm = bmOverlay;
+        return bm;
+    }
+
+    /**
+     * Возвращает иконку события по типу и подтипу
+     *
+     * @param eventType    Тип события
+     * @param eventSubType Подтип события
+     * @return Ссылка на ресурс иконки события
+     */
+    public static int getEventIcon(@NonNull String eventType, @NonNull String eventSubType) {
+        switch (eventSubType) {
+            case Constants.EventType_BirthDay:
+                return R.drawable.ic_event_birthday;
+            case Constants.EventType_Anniversary:
+                return R.drawable.ic_event_wedding;
+            case Constants.EventType_NameDay:
+                return R.drawable.ic_event_nameday;
+            case Constants.EventType_Crowning:
+                return R.drawable.ic_event_crowning;
+            case Constants.EventType_Death:
+                return R.drawable.ic_event_death;
+            case Constants.EventType_Holiday:
+                return R.drawable.ic_event_holiday;
+            case Constants.EventType_Custom1:
+                return R.drawable.ic_event_custom1;
+            case Constants.EventType_Custom2:
+                return R.drawable.ic_event_custom2;
+            case Constants.EventType_Custom3:
+                return R.drawable.ic_event_custom3;
+            case Constants.EventType_Custom4:
+                return R.drawable.ic_event_custom4;
+            case Constants.EventType_Custom5:
+                return R.drawable.ic_event_custom5;
+            case Constants.EventType_5K:
+                return R.drawable.ic_event_medal;
+            case Constants.EventType_Xdays:
+                return R.drawable.ic_event_xdays;
+            case Constants.EventType_Another:
+                return R.drawable.ic_event_other;
+        }
+        if (eventType.equals(Constants.EventType_Other)) {
+            return R.drawable.ic_event_other;
+        }
+        return R.drawable.ic_event_unknown;
+    }
+
+    public synchronized static void initIconPack(int packNumber, Map<Integer, Integer> packMales, Map<Integer, Integer> packFemales) {
+
+        try {
+
+            packFemales.clear();
+            packMales.clear();
+
+            switch (packNumber) {
+
+                case 1:
+
+                    packFemales.put(0, R.drawable.ic_pack01_f2);
+                    packFemales.put(6, R.drawable.ic_pack01_f0);
+                    packFemales.put(17, R.drawable.ic_pack01_f1);
+                    packFemales.put(25, R.drawable.ic_pack01_f2);
+                    packFemales.put(35, R.drawable.ic_pack01_f3);
+                    packFemales.put(45, R.drawable.ic_pack01_f4);
+                    packFemales.put(55, R.drawable.ic_pack01_f5);
+                    packFemales.put(150, R.drawable.ic_pack01_f6);
+
+                    packMales.put(0, R.drawable.ic_pack01_m2);
+                    packMales.put(6, R.drawable.ic_pack01_m0);
+                    packMales.put(17, R.drawable.ic_pack01_m1);
+                    packMales.put(25, R.drawable.ic_pack01_m2);
+                    packMales.put(35, R.drawable.ic_pack01_m3);
+                    packMales.put(45, R.drawable.ic_pack01_m4);
+                    packMales.put(55, R.drawable.ic_pack01_m5);
+                    packMales.put(150, R.drawable.ic_pack01_m6);
+
+                    break;
+
+                case 2:
+
+                    packFemales.put(0, R.drawable.ic_pack02_f2);
+                    packFemales.put(6, R.drawable.ic_pack02_f0);
+                    packFemales.put(17, R.drawable.ic_pack02_f1);
+                    packFemales.put(25, R.drawable.ic_pack02_f2);
+                    packFemales.put(35, R.drawable.ic_pack02_f3);
+                    packFemales.put(45, R.drawable.ic_pack02_f4);
+                    packFemales.put(55, R.drawable.ic_pack02_f5);
+                    packFemales.put(150, R.drawable.ic_pack02_f6);
+
+                    packMales.put(0, R.drawable.ic_pack02_m2);
+                    packMales.put(6, R.drawable.ic_pack02_m0);
+                    packMales.put(17, R.drawable.ic_pack02_m1);
+                    packMales.put(25, R.drawable.ic_pack02_m2);
+                    packMales.put(35, R.drawable.ic_pack02_m3);
+                    packMales.put(45, R.drawable.ic_pack02_m4);
+                    packMales.put(55, R.drawable.ic_pack02_m5);
+                    packMales.put(150, R.drawable.ic_pack02_m6);
+
+                    break;
+
+                case 3:
+
+                    packFemales.put(0, R.drawable.ic_pack03_f3);
+                    packFemales.put(6, R.drawable.ic_pack03_f0);
+                    packFemales.put(17, R.drawable.ic_pack03_f1);
+                    packFemales.put(25, R.drawable.ic_pack03_f2);
+                    packFemales.put(35, R.drawable.ic_pack03_f3);
+                    packFemales.put(45, R.drawable.ic_pack03_f4);
+                    packFemales.put(55, R.drawable.ic_pack03_f5);
+                    packFemales.put(150, R.drawable.ic_pack03_f6);
+
+                    packMales.put(0, R.drawable.ic_pack03_m3);
+                    packMales.put(6, R.drawable.ic_pack03_m0);
+                    packMales.put(17, R.drawable.ic_pack03_m1);
+                    packMales.put(25, R.drawable.ic_pack03_m2);
+                    packMales.put(35, R.drawable.ic_pack03_m3);
+                    packMales.put(45, R.drawable.ic_pack03_m4);
+                    packMales.put(55, R.drawable.ic_pack03_m5);
+                    packMales.put(150, R.drawable.ic_pack03_m6);
+
+                    break;
+
+                case 4:
+
+                    packFemales.put(0, R.drawable.ic_pack00_f1);
+                    packMales.put(0, R.drawable.ic_pack00_m1);
+
+                    break;
+
+            }
+
+            if (packFemales.isEmpty()) {
+                packFemales.put(0, R.drawable.ic_pack00_f1);
+                packFemales.put(15, R.drawable.ic_pack00_f0);
+                packFemales.put(60, R.drawable.ic_pack00_f1);
+                packFemales.put(150, R.drawable.ic_pack00_f2);
+            }
+
+            if (packMales.isEmpty()) {
+                packMales.put(0, R.drawable.ic_pack00_m1);
+                packMales.put(15, R.drawable.ic_pack00_m0);
+                packMales.put(60, R.drawable.ic_pack00_m1);
+                packMales.put(150, R.drawable.ic_pack00_m2);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    /** Добавление иконки избранного
+     * @param bm       Исходное фото
+     * @param roundingFactor Параметры скругления углов
+     * @param bmWidth  Ширина фото
+     * @param bmHeight Высота фото
+     * @param res Ресурсы
+     * @return Результирующее фото
+     */
+    @NonNull
+    public static Bitmap applyFavoriteStar(Bitmap bm, int roundingFactor, int bmWidth, int bmHeight, @NonNull Resources res) {
+        try {
+
+            Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig() != null ? bm.getConfig() : Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bmOverlay);
+            canvas.drawBitmap(bm, new Matrix(), null);
+            bm.recycle();
+            Bitmap bmStar = BitmapFactory.decodeResource(res, R.drawable.fav_star);
+            final Bitmap bmStarScaled = Bitmap.createScaledBitmap(bmStar,
+                    bmOverlay.getWidth() / 4 - (bmOverlay.getWidth() - bmOverlay.getHeight()) / 4, bmOverlay.getHeight() / 4, true);
+
+            if (roundingFactor < 3) { //Не круг - рисуем в левом нижнем углу
+
+                canvas.drawBitmap(bmStarScaled, 2 + (float) ((bmOverlay.getWidth() - bmOverlay.getHeight()) / 4),
+                        (float) (bmOverlay.getHeight() * 3 / 4) - 2, null);
+
+            } else if (roundingFactor < 9) { //Закругление - рисуем в левом нижнем углу правее
+
+                canvas.drawBitmap(bmStarScaled, 10 + (float) ((bmOverlay.getWidth() - bmOverlay.getHeight()) / 8),
+                        (float) (bmOverlay.getHeight() * 3 / 4) - 2, null);
+
+            } else { //Круг - рисуем внизу по центру
+
+                canvas.drawBitmap(bmStarScaled, (float) (bmOverlay.getWidth() * 3 / 4) / 2, (float) (bmOverlay.getHeight() * 3 / 4) - 2, null);
+
+            }
+            bmStar.recycle();
+            bmStarScaled.recycle();
+            bm = bmOverlay;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        return bm;
+    }
+
+    /** Возвращает силуэт по возрасту и полу
+     * @param singleEventArray Данные события
+     * @param context Контекст
+     * @param packMales Массив мужских фото
+     * @param packFemales Массив женских фото
+     * @return Силуэт
+     */
+    public static Bitmap getSilhouetteBitmap(@NonNull String[] singleEventArray, @NonNull Context context,
+                                             Map<Integer, Integer> packMales, Map<Integer, Integer> packFemales) {
+        try {
+
+            Person person = new Person(context, singleEventArray);
+            int gender = person.getGender();
+
+            //По-умолчанию
+            Integer idPhoto = R.drawable.ic_pack00_m1;
+            if (gender == 2 && packFemales.get(0) != null) {
+                idPhoto = packFemales.get(0);
+            } else if (packMales.get(0) != null) {
+                idPhoto = packMales.get(0);
+            }
+
+            //Если определён возраст
+            boolean foundInPeriod = false;
+            int beforeAge = 0;
+            if (person.Age >= 0) {
+                if (gender == 2) {
+                    for (Map.Entry<Integer, Integer> entry : packFemales.entrySet()) {
+                        beforeAge = entry.getKey();
+                        if (beforeAge > 0 && person.Age <= beforeAge) {
+                            idPhoto = packFemales.get(beforeAge);
+                            foundInPeriod = true;
+                            break;
+                        }
+                    }
+                    if (!foundInPeriod) {
+                        idPhoto = packFemales.get(beforeAge);
+                    }
+                } else {
+                    for (Map.Entry<Integer, Integer> entry : packMales.entrySet()) {
+                        beforeAge = entry.getKey();
+                        if (beforeAge > 0 && person.Age <= beforeAge) {
+                            idPhoto = packMales.get(beforeAge);
+                            foundInPeriod = true;
+                            break;
+                        }
+                    }
+                    if (!foundInPeriod) {
+                        idPhoto = packMales.get(beforeAge);
+                    }
+                }
+            }
+            if (idPhoto == null) return null;
+            Bitmap bm = getBitmap(context, idPhoto);
+            if (bm == null) return null;
+
+            int bmWidth = bm.getWidth();
+            int bmHeight = bm.getHeight();
+            if (bmHeight > bmWidth) {
+                //noinspection SuspiciousNameCombination
+                return Bitmap.createBitmap(bm, 0, (bmHeight - bmWidth) / 2, bmWidth, bmWidth);
+            } else {
+                //noinspection SuspiciousNameCombination
+                return Bitmap.createBitmap(bm, (bmWidth - bmHeight) / 2, 0, bmHeight, bmHeight);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            return null;
+        }
     }
 }

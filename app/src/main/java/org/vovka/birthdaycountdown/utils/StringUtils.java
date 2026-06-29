@@ -1,27 +1,40 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.06.2026, 02:29
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.06.2026, 02:27
+ *  * Last modified 29.06.2026, 23:51
  *
  */
 
 package org.vovka.birthdaycountdown.utils;
 
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.Constants;
 import org.vovka.birthdaycountdown.ContactsEvents;
 import org.vovka.birthdaycountdown.R;
+import org.vovka.birthdaycountdown.ToastExpander;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.Normalizer;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -429,5 +442,211 @@ public class StringUtils {
             }
         }
         return -1;
+    }
+
+    /** Возвращает исходный текст, обрамлённый в цвет в формате HTML (<font color="">текст</font>)
+     * @param msg Исходный текст
+     * @param color Цвет
+     * @param context Контекст
+     * @return Результирующий текст
+     */
+    public static String getHTMLColor(String msg, int color, Context context) {
+        try {
+
+            int colorId;
+            switch (color) {
+                case Constants.HTML_COLOR_RED:
+                    colorId = R.color.dark_red;
+                    break;
+                case Constants.HTML_COLOR_YELLOW:
+                    colorId = R.color.yellow;
+                    break;
+                case Constants.HTML_COLOR_BROWN:
+                    colorId = R.color.brown;
+                    break;
+                case Constants.HTML_COLOR_GREEN:
+                    colorId = R.color.green;
+                    break;
+                default:
+                    return msg;
+            }
+            return Constants.HTML_COLOR_START + Integer.toHexString(ContextCompat.getColor(context, colorId) & 0x00ffffff)
+                    + Constants.HTML_COLOR_MIDDLE + msg + Constants.HTML_COLOR_END;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            return msg;
+        }
+    }
+
+    @NonNull
+    public static String getAgeFormated(@NonNull String strAge, @NonNull Set<String> ageFormat, @NonNull Resources res) {
+        try {
+
+            String result = strAge;
+            final String replacementXK = Constants.STRING_000 + Constants.STRING_SPACE;
+            if (ageFormat.contains(res.getString(R.string.pref_List_AgeFormat_Convert000toK)) && result.contains(replacementXK)) {
+                result = result.replace(replacementXK, "K ");
+            } else if (ageFormat.contains(res.getString(R.string.pref_List_AgeFormat_SeparateThousands))) {
+                int indFirstSpace = result.indexOf(Constants.STRING_SPACE);
+                int indLastSpace = result.lastIndexOf(Constants.STRING_SPACE);
+
+                if (indFirstSpace > -1 && indFirstSpace == indLastSpace) {
+                    //https://stackoverflow.com/questions/5323502/how-to-set-thousands-separator-in-java
+                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                    DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+                    symbols.setGroupingSeparator('\u00a0');
+                    formatter.setDecimalFormatSymbols(symbols);
+
+                    String postfix = result.substring(indLastSpace);
+                    result = formatter.format(Integer.parseInt(result.substring(0, indLastSpace))).concat(postfix);
+                }
+            }
+            if (!ageFormat.contains(res.getString(R.string.pref_List_AgeFormat_AddPostfix))) {
+                result = result.substring(0, result.indexOf(Constants.STRING_SPACE));
+            }
+            return result;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            return strAge;
+        }
+    }
+
+    /** Возвращает данные события в виде строки (разделитель: \n)
+     * @param event Массив с данными события
+     * @param res Ресурсы
+     * @return Строка
+     */
+    @NonNull
+    public static String getEventDataAsString(@NonNull String[] event, Resources res) {
+        StringBuilder eventInfo = new StringBuilder();
+        try {
+            int eventRows = event.length;
+            for (int i = 0; i < eventRows; i++) {
+                String row = event[i];
+                if (i == ContactsEvents.Position_photo && !TextUtils.isEmpty(row) & !row.startsWith(Constants.STRING_BRACKETS_START)) {
+                    eventInfo.append(i)
+                            .append(Constants.STRING_COLON_SPACE)
+                            .append(res.getString(R.string.event_photo_details, row.length()))
+                            .append(Constants.STRING_EOL);
+                } else {
+                    eventInfo.append(i).append(Constants.STRING_COLON_SPACE).append(row).append(Constants.STRING_EOL);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        return eventInfo.toString();
+    }
+
+    /** Возвращает список фактов как единую строку с иконками и переводом строк
+     * @param listFacts Список фактов
+     * @param res Ресурсы
+     * @return Единая строка с фактами
+     */
+    @NonNull
+    public static String getFactsAsString(@NonNull List<String> listFacts, Resources res) {
+        StringBuilder eventDetails = new StringBuilder();
+        try {
+
+            for (String fact : listFacts) {
+                if (eventDetails.length() > 0) {
+                    eventDetails.append(Constants.STRING_EOL);
+                }
+                eventDetails.append(res.getString(R.string.event_type_fact_emoji));
+                eventDetails.append(Constants.STRING_SPACE);
+                eventDetails.append(fact);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        return eventDetails.toString();
+    }
+
+    /** Возвращает содержимое файла в виде строки
+     * @param file Данные о файле (имя файла | URL или просто URL)
+     * @param delimiter Разделитель строк, обычно EOL
+     * @param context Контекст
+     * @param res Ресурсы
+     * @return Содержимое файла в виде строки
+     */
+    @NonNull
+    public static String readFileToString(@NonNull String file, String delimiter, Context context, Resources res) {
+
+        StringBuilder sb = new StringBuilder();
+
+        try {
+
+            String[] fileDetails = file.split(Constants.REGEX_BAR);
+            Uri uri = null;
+            ContentResolver contentResolver = context.getContentResolver();
+            try {
+                if (fileDetails.length < 2) {
+                    uri = Uri.parse(fileDetails[0]);
+                } else {
+                    uri = Uri.parse(fileDetails[1]);
+                }
+            } catch (NullPointerException ignored) { /**/ }
+            if (uri != null) {
+                try {
+                    contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    InputStream inputStream = contentResolver.openInputStream(uri);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                    String line = reader.readLine();
+                    while (line != null) {
+                        if (!line.startsWith(Constants.STRING_HASH) && !line.startsWith(Constants.STRING_DSLASH)) {
+                            sb.append(line);
+                            if (delimiter != null) sb.append(delimiter);
+                        }
+                        line = reader.readLine();
+                    }
+                    if (inputStream != null) inputStream.close();
+                } catch (SecurityException se) {
+                    ToastExpander.showDebugMsg(context, res.getString(R.string.msg_file_open_error) + fileDetails[0] + Constants.STRING_COMMA_SPACE +
+                            se.getMessage());
+                } catch (Exception e) {
+                    ToastExpander.showDebugMsg(context, res.getString(R.string.msg_file_access_read_error, fileDetails[0]) + Constants.STRING_COMMA_SPACE +
+                            e.getMessage());
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Get the method name for a depth in call stack.
+     *
+     * @param depth depth in the call stack (0 means current method, 1 means call method, ...)
+     * @return method name
+     */
+    public static String getMethodName(final int depth) {
+        StackTraceElement[] ste = null;
+        try {
+            ste = Thread.currentThread().getStackTrace();
+        } catch (SecurityException se) { /**/ }
+        return depth >= 0 && ste != null ? ste[depth].getClassName() + "->" + ste[depth].getMethodName() : Constants.STRING_EMPTY;
+    }
+
+    /** Возвращает название годовщины свадьбы
+     * @param age Год годовщины
+     * @param context Контекст
+     * @param res Ресурсы
+     * @return Название свадьбы
+     */
+    @SuppressLint("DiscouragedApi")
+    @Nullable
+    public static String getWeddingName(int age, Context context, Resources res) {
+        try {
+            return context.getString(res.getIdentifier(Constants.STRING_TYPE_WEDDING + age, Constants.RES_TYPE_STRING, context.getPackageName()));
+        } catch (Resources.NotFoundException nfe) {
+            return null;
+        }
     }
 }

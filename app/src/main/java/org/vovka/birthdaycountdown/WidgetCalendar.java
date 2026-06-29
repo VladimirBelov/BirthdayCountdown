@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.06.2026, 14:56
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 14:11
+ *  * Last modified 29.06.2026, 23:51
  *
  */
 
@@ -33,6 +33,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
 import org.intellij.lang.annotations.JdkConstants;
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
@@ -165,7 +166,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -632,7 +633,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
             eventsData.statActiveWidgets++;
@@ -823,7 +824,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -958,7 +959,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return cellRv;
     }
@@ -1007,7 +1008,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                             String strYear = event.substring(indParOpen + Constants.STRING_PARENTHESIS_OPEN.length(), indParClose);
                             try {
                                 int year = Integer.parseInt(strYear);
-                                String anCaption = eventsData.getWeddingName(cal.get(Calendar.YEAR) - year);
+                                String anCaption = StringUtils.getWeddingName(cal.get(Calendar.YEAR) - year, eventsData.getContext(), eventsData.getResources());
                                 if (StringUtils.hasContent(anCaption)) {
                                     allEventsThisDay.set(i, event.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption)
                                             .concat(Constants.STRING_PARENTHESIS_CLOSE));
@@ -1024,7 +1025,9 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 intent.putExtra(Constants.EXTRA_DAY_CAPTION,  context.getString(R.string.month_event_popup_prefix)
-                        .concat(eventsData.getDateFormatted(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime()), ContactsEvents.FormatDate.WithYear))
+                        .concat(AppDateUtils.getDateFormatted(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime()),
+                                ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
+                                eventsData.getResources(), eventsData.currentLocale))
                         .concat(sdf.format(cal.getTime())));
                 intent.putExtra(Constants.EXTRA_DAY_INFO, dayInfo);
                 intent.putExtra(Constants.EXTRA_VALUES, Long.toString(cal.getTimeInMillis()));
@@ -1049,7 +1052,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return pendingIntent;
     }

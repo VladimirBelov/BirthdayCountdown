@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.06.2026, 02:07
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.06.2026, 00:21
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -277,7 +277,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             showPreferences();
         }
 
@@ -379,7 +379,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -581,7 +581,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -734,7 +734,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -844,7 +844,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -898,7 +898,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -949,7 +949,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -981,7 +981,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1011,7 +1011,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1064,7 +1064,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1094,7 +1094,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -1114,7 +1114,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1222,7 +1222,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -1269,7 +1269,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1296,7 +1296,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return false;
     }
@@ -1344,7 +1344,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1719,7 +1719,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
         return false;
@@ -1795,7 +1795,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1864,7 +1864,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1940,7 +1940,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1955,7 +1955,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1980,7 +1980,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             super.onStop();
         }
@@ -2091,7 +2091,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -2244,7 +2244,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -2469,7 +2469,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2511,7 +2511,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
        } catch (Exception e) {
            Log.e(TAG, e.getMessage(), e);
-           ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+           ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
        }
     }
 
@@ -2541,7 +2541,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             listView.setOnItemClickListener((parent, view, position, id) -> {
                 eventsData.setPreferences_IconPackNumber(Integer.parseInt(packIds.get(position)));
                 eventsData.savePreferences();
-                eventsData.initIconPack();
+                ImageUtils.initIconPack(eventsData.getPreferences_IconPackNumber(), eventsData.preferences_IconPackImages_M, eventsData.preferences_IconPackImages_F);
                 alertToShow.dismiss();
 
                 String value = packEntries.get(packValues.indexOf(packIds.get(position)));
@@ -2559,7 +2559,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2602,7 +2602,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2705,7 +2705,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2823,7 +2823,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -3045,7 +3045,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -3189,7 +3189,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -3219,7 +3219,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -3406,7 +3406,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -3477,7 +3477,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
        } catch (Exception e) {
            Log.e(TAG, e.getMessage(), e);
-           ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+           ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
        }
     }
 
@@ -3527,7 +3527,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -3564,7 +3564,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     final String prefix = "# ";
                     String sb = prefix + getText(R.string.app_name) + Constants.STRING_EOL
                             + prefix + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE + Constants.STRING_EOL
-                            + prefix + eventsData.getDateTimePreferable(Calendar.getInstance().getTime()) + Constants.STRING_EOL
+                            + prefix + AppDateUtils.getDateTimePreferable(Calendar.getInstance().getTime(), eventsData.preferences_date_format, eventsData.getContext(), eventsData.currentLocale) + Constants.STRING_EOL
                             + Constants.STRING_EOL;
                     int countExported = 0;
 
@@ -3644,7 +3644,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -3664,7 +3664,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (stage == ImportStage.doClean) {
 
-                String[] prefsArray = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL).split(Constants.STRING_EOL);
+                String[] prefsArray = StringUtils.readFileToString(uri.toString(), Constants.STRING_EOL, eventsData.getContext(), eventsData.getResources()).split(Constants.STRING_EOL);
                 if (prefsArray[0].isEmpty()) {
                     ToastExpander.showDebugMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
                     return;
@@ -3714,7 +3714,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (stage == ImportStage.doImport && uri != null) {
 
-                String[] prefsArray = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL).split(Constants.STRING_EOL);
+                String[] prefsArray = StringUtils.readFileToString(uri.toString(), Constants.STRING_EOL, eventsData.getContext(), eventsData.getResources()).split(Constants.STRING_EOL);
                 if (prefsArray[0].isEmpty()) {
                     ToastExpander.showDebugMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
                     return;
@@ -3991,7 +3991,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             skipSharedPreferenceChangedEvent = false;
         }
@@ -4026,7 +4026,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     final String prefix = "# ";
                     String sb = prefix + getText(R.string.app_name) + Constants.STRING_EOL
                             + prefix + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE + Constants.STRING_EOL
-                            + prefix + eventsData.getDateTimePreferable(eventsData.getToday().getTime()) + Constants.STRING_EOL
+                            + prefix + AppDateUtils.getDateTimePreferable(eventsData.getToday().getTime(), eventsData.preferences_date_format, eventsData.getContext(), eventsData.currentLocale) + Constants.STRING_EOL
                             + Constants.STRING_EOL;
                     int countExported = 0;
 
@@ -4105,7 +4105,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4130,7 +4130,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (stage == ImportStage.doClean) {
 
-                String[] prefsArray = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL).split(Constants.STRING_EOL);
+                String[] prefsArray = StringUtils.readFileToString(uri.toString(), Constants.STRING_EOL, eventsData.getContext(), eventsData.getResources()).split(Constants.STRING_EOL);
                 if (prefsArray[0].isEmpty()) {
                     ToastExpander.showDebugMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
                     return;
@@ -4166,7 +4166,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (stage == ImportStage.doImport && uri != null) {
 
-                String[] eventsArray = eventsData.readFileToString(uri.toString(), Constants.STRING_EOL).split(Constants.STRING_EOL);
+                String[] eventsArray = StringUtils.readFileToString(uri.toString(), Constants.STRING_EOL, eventsData.getContext(), eventsData.getResources()).split(Constants.STRING_EOL);
                 if (eventsArray[0].isEmpty()) {
                     ToastExpander.showDebugMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
                     return;
@@ -4219,7 +4219,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             skipSharedPreferenceChangedEvent = false;
         }
@@ -4252,7 +4252,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -4308,7 +4308,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4354,7 +4354,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4409,7 +4409,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4431,7 +4431,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4459,7 +4459,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4487,7 +4487,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4503,7 +4503,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     if (uri != null) {
                         new Thread(() -> {
                             //todo: сделать так во всех вызовах readFileToString
-                            final String fileContent = eventsData.readFileToString(uri.toString(), null);
+                            final String fileContent = StringUtils.readFileToString(uri.toString(), null, eventsData.getContext(), eventsData.getResources());
                             runOnUiThread(() -> {
                                 if (!fileContent.isEmpty()) {
                                     String filename = DeviceTools.getPath(this, uri);
@@ -4636,7 +4636,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4782,7 +4782,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4835,7 +4835,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
 
             return view;
@@ -4885,7 +4885,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
 
             return view;
@@ -4918,7 +4918,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
 
             return view;

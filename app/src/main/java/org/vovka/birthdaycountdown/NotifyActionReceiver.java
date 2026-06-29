@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.01.2026, 01:04
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.01.2026, 22:47
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -17,6 +17,8 @@ import android.util.Log;
 import android.webkit.WebView;
 
 import androidx.core.app.NotificationManagerCompat;
+
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 /**
  * NotifyActionReceiver - это BroadcastReceiver, отвечающий за обработку действий,
@@ -175,7 +177,7 @@ public class NotifyActionReceiver extends BroadcastReceiver {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

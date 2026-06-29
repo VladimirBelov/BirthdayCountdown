@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 22:04
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 21:47
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -44,8 +44,10 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.util.Date;
 import java.util.Map;
@@ -138,7 +140,7 @@ public class AboutActivity extends AppCompatActivity {
             String buildDateStr = Constants.STRING_2MINUS;
             try {
                 Date buildDate = new Date(Long.parseLong(BuildConfig.BUILD_TIME));
-                buildDateStr = eventsData.getDateTimePreferable(buildDate);
+                buildDateStr = AppDateUtils.getDateTimePreferable(buildDate, eventsData.preferences_date_format, eventsData.getContext(), eventsData.currentLocale);
             } catch (NumberFormatException ignored) { /**/ }
             txtInfo.setText(HtmlCompat.fromHtml(getString(
                     R.string.changelog_version,
@@ -161,14 +163,14 @@ public class AboutActivity extends AppCompatActivity {
                     sb.append(getString(R.string.stats_speed_title));
                     try {
                         if (eventsData.statTimeGetContactEvents > 0)
-                            sb.append(getString(R.string.stats_speed_contacts, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetContactEvents)), eventsData.statTimeGetContactEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
+                            sb.append(getString(R.string.stats_speed_contacts, StringUtils.getHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetContactEvents)), eventsData.statTimeGetContactEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT, eventsData.getContext()).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
                         if (eventsData.statTimeGetCalendarEvents > 0)
-                            sb.append(getString(R.string.stats_speed_calendar, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetCalendarEvents)), eventsData.statTimeGetCalendarEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
+                            sb.append(getString(R.string.stats_speed_calendar, StringUtils.getHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetCalendarEvents)), eventsData.statTimeGetCalendarEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT, eventsData.getContext()).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
                         if (eventsData.statTimeGetFileEvents > 0)
-                            sb.append(getString(R.string.stats_speed_files, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetFileEvents)), eventsData.statTimeGetFileEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
+                            sb.append(getString(R.string.stats_speed_files, StringUtils.getHTMLColor(String.valueOf(Math.round(eventsData.statTimeGetFileEvents)), eventsData.statTimeGetFileEvents > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT, eventsData.getContext()).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
                         if (eventsData.statTimeUpdateWidgets > 0)
-                            sb.append(getString(R.string.stats_speed_widgets, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeUpdateWidgets)), eventsData.statTimeUpdateWidgets > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
-                        sb.append(getString(R.string.stats_speed_dates, eventsData.setHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
+                            sb.append(getString(R.string.stats_speed_widgets, StringUtils.getHTMLColor(String.valueOf(Math.round(eventsData.statTimeUpdateWidgets)), eventsData.statTimeUpdateWidgets > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT, eventsData.getContext()).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
+                        sb.append(getString(R.string.stats_speed_dates, StringUtils.getHTMLColor(String.valueOf(Math.round(eventsData.statTimeComputeDates)), eventsData.statTimeComputeDates > Constants.TIME_SPEED_LOAD_CRITICAL ? Constants.HTML_COLOR_RED : Constants.HTML_COLOR_DEFAULT, eventsData.getContext()).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
                     } catch (Exception e) { /**/ }
                     sb.append(Constants.HTML_UL_END);
 
@@ -197,7 +199,7 @@ public class AboutActivity extends AppCompatActivity {
                             sb.append(getString(R.string.stats_counters_widgets, eventsData.statActiveWidgets));
                         if (eventsData.statUnrecognizedEvents > 0)
                             sb.append(getString(R.string.stats_counters_unrecognized,
-                                    eventsData.setHTMLColor(String.valueOf(eventsData.statUnrecognizedEvents), Constants.HTML_COLOR_RED).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
+                                    StringUtils.getHTMLColor(String.valueOf(eventsData.statUnrecognizedEvents), Constants.HTML_COLOR_RED, eventsData.getContext()).replace(Constants.STRING_HASH, Constants.STRING_EMPTY)));
                         sb.append(Constants.HTML_UL_END);
 
                         if (!eventsData.statEventSources.isEmpty()) {
@@ -214,47 +216,47 @@ public class AboutActivity extends AppCompatActivity {
                 try {
 
                     sb.append(getString(R.string.stats_permissions_accounts, ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                            ? StringUtils.getHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN, eventsData.getContext()) : StringUtils.getHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED, eventsData.getContext())).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     sb.append(getString(R.string.stats_permissions_contacts, !DeviceTools.checkNoContactsAccess(this)
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                            ? StringUtils.getHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN, eventsData.getContext()) : StringUtils.getHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED, eventsData.getContext())).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     sb.append(getString(R.string.stats_permissions_calendar, !DeviceTools.checkNoCalendarAccess(eventsData.getContext())
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                            ? StringUtils.getHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN, eventsData.getContext()) : StringUtils.getHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED, eventsData.getContext())).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                         sb.append(getString(R.string.stats_permissions_files, !DeviceTools.checkNoStorageAccess(this)
-                                ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                                ? StringUtils.getHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN, eventsData.getContext()) : StringUtils.getHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED, eventsData.getContext())).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
                     }
 
                     sb.append(getString(R.string.stats_permissions_notifications_on, NotificationManagerCompat.from(this).areNotificationsEnabled()
-                            ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                            ? StringUtils.getHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN, eventsData.getContext()) : StringUtils.getHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED, eventsData.getContext())).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         sb.append(getString(R.string.stats_permissions_post_notifications, ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
-                                ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                                ? StringUtils.getHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN, eventsData.getContext()) : StringUtils.getHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED, eventsData.getContext())).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
                     }
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         sb.append(getString(R.string.stats_permissions_wakelock, ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED
-                                ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                                ? StringUtils.getHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN, eventsData.getContext()) : StringUtils.getHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED, eventsData.getContext())).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
                     }
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         sb.append(getString(R.string.stats_permissions_schedule_exact_alarm, DeviceTools.checkCanExactAlarm(this
                         )
-                                ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                                ? StringUtils.getHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN, eventsData.getContext()) : StringUtils.getHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED, eventsData.getContext())).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
                     } else {
                         sb.append(getString(R.string.stats_permissions_battery, !DeviceTools.checkNoBatteryOptimization(this)
-                                ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_RED) : eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_GREEN)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                                ? StringUtils.getHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_RED, eventsData.getContext()) : StringUtils.getHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_GREEN, eventsData.getContext())).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
                     }
 
                     if (DeviceTools.isXiaomi()) {
                         final DeviceTools.MIUIAutoStartState state = DeviceTools.getMIUIAutoStartState(this);
                         sb.append(getString(R.string.stats_permissions_xiaomi_autostart,
-                                state == DeviceTools.MIUIAutoStartState.ENABLED ? eventsData.setHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN) :
-                                        state == DeviceTools.MIUIAutoStartState.DISABLED  ? eventsData.setHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED) :
-                                                eventsData.setHTMLColor(getString(R.string.msg_unknown), Constants.HTML_COLOR_DEFAULT)).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
+                                state == DeviceTools.MIUIAutoStartState.ENABLED ? StringUtils.getHTMLColor(getString(R.string.msg_on), Constants.HTML_COLOR_GREEN, eventsData.getContext()) :
+                                        state == DeviceTools.MIUIAutoStartState.DISABLED  ? StringUtils.getHTMLColor(getString(R.string.msg_off), Constants.HTML_COLOR_RED, eventsData.getContext()) :
+                                                StringUtils.getHTMLColor(getString(R.string.msg_unknown), Constants.HTML_COLOR_DEFAULT, eventsData.getContext())).replace(Constants.STRING_HASH, Constants.STRING_EMPTY));
                     }
 
                     final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -395,7 +397,7 @@ public class AboutActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
             if (ta != null) ta.recycle();
         }
@@ -446,7 +448,7 @@ public class AboutActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

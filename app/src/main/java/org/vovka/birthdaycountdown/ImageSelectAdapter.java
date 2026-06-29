@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.12.2025, 20:59
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 26.12.2025, 14:35
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -24,6 +24,7 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 
 import org.vovka.birthdaycountdown.utils.ImageUtils;
+import org.vovka.birthdaycountdown.utils.StringUtils;
 
 import java.util.List;
 
@@ -137,7 +138,7 @@ class ImageSelectAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this.context, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this.context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
         return view;

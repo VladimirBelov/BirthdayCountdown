@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 22:04
+ *  * Created by Vladimir Belov on 30.06.2026, 00:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 20:17
+ *  * Last modified 29.06.2026, 23:47
  *
  */
 
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
-                    ToastExpander.showDebugMsg(MainActivity.this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                    ToastExpander.showDebugMsg(MainActivity.this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
                 } finally {
                     swipeRefresh.setRefreshing(false);
                 }
@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
-                    ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                    ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
                 }
             });
 
@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -506,7 +506,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             return true;
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return false;
         }
     }
@@ -777,7 +777,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return false;
     }
@@ -785,7 +785,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void showEventDetails() {
         try {
 
-            final String eventInfo = eventsData.getEventDataAsString(selectedEvent);
+            final String eventInfo = StringUtils.getEventDataAsString(selectedEvent, eventsData.getResources());
             final String eventSubType = selectedEvent[ContactsEvents.Position_eventSubType];
             int roundingFactor;
             if (eventSubType.equals(Constants.EventType_Calendar) || eventSubType.equals(Constants.EventType_File)) {
@@ -846,7 +846,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -883,7 +883,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 bitmapShareUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", file);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
                 return;
             }
             childView.destroyDrawingCache();
@@ -919,7 +919,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -963,7 +963,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         } catch (ParseException ignored) { /**/ }
                         if (eventDate != null && birthDate != null) {
                             if (textBig.length() > 0) textBig.append(Constants.STRING_EOL);
-                            textBig.append(getString(R.string.msg_age_was)).append(eventsData.countDaysDiffText(birthDate, eventDate, 3));
+                            textBig.append(getString(R.string.msg_age_was)).append(AppDateUtils.countDaysDiffText(birthDate, eventDate, 3, eventsData.getResources(), eventsData.currentLocale));
                         }
                     } else { //Другие события
                         try {
@@ -979,7 +979,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             } else {
                                 textBig.append(getString(R.string.msg_age_will_be));
                             }
-                            textBig.append(eventsData.countDaysDiffText(birthDate, eventDate, 3));
+                            textBig.append(AppDateUtils.countDaysDiffText(birthDate, eventDate, 3, eventsData.getResources(), eventsData.currentLocale));
                         }
                     }
                 }
@@ -992,7 +992,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1122,7 +1122,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1279,8 +1279,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 StringBuilder sb = new StringBuilder();
                                 for (ContactsEvents.Event e: events) {
                                     if (sb.length() > 0) sb.append(Constants.STRING_EOL);
-                                    sb.append(eventsData.getDateFormatted(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get())
-                                            .format(e.date), ContactsEvents.FormatDate.WithYear));
+                                    sb.append(AppDateUtils.getDateFormatted(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get())
+                                            .format(e.date), ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format,
+                                            eventsData.getContext(), eventsData.getResources(), eventsData.currentLocale));
                                     sb.append(Constants.STRING_COLON_SPACE);
                                     sb.append(e.distance);
                                 }
@@ -1335,7 +1336,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1369,7 +1370,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             alertToShow.show();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1394,7 +1395,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             alertToShow.show();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1477,7 +1478,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             //https://developer.android.com/training/permissions/requesting.html#java
                             swipeRefresh.setEnabled(false);
                             swipeRefresh.setRefreshing(false);
-                            setHint(eventsData.setHTMLColor(getString(R.string.msg_no_access_contacts).toLowerCase(), Constants.HTML_COLOR_RED));
+                            setHint(StringUtils.getHTMLColor(getString(R.string.msg_no_access_contacts).toLowerCase(), Constants.HTML_COLOR_RED, eventsData.getContext()));
                             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
                         }
                     });
@@ -1504,7 +1505,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1520,7 +1521,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1539,7 +1540,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             return -1;
         }
     }
@@ -1550,7 +1551,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             swipeRefreshListener.onRefresh();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1610,7 +1611,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -1732,7 +1733,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             menu.findItem(Constants.MainMenu_Hints).setVisible(true).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                         } catch (Exception e) {
                             Log.e(TAG, e.getMessage(), e);
-                            ToastExpander.showDebugMsg(getApplicationContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                            ToastExpander.showDebugMsg(getApplicationContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
                         }
                         return true;
                     }
@@ -1753,7 +1754,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             filterEventsList();
                         } catch (Exception e) {
                             Log.e(TAG, e.getMessage(), e);
-                            ToastExpander.showDebugMsg(getApplicationContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                            ToastExpander.showDebugMsg(getApplicationContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
                         }
                         return true;
                     }
@@ -1789,7 +1790,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -1937,7 +1938,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -2023,7 +2024,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2232,7 +2233,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2271,7 +2272,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2408,7 +2409,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2431,7 +2432,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -2533,7 +2534,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     emptyView.setMovementMethod(new ScrollingMovementMethod());
                 }
 
-                setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), Constants.HTML_COLOR_YELLOW));
+                setHint(StringUtils.getHTMLColor(getString(R.string.msg_no_events).toLowerCase(), Constants.HTML_COLOR_YELLOW, eventsData.getContext()));
 
             } else {
 
@@ -2573,7 +2574,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2608,7 +2609,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2627,7 +2628,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -2678,7 +2679,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         } catch (Exception e) {
             if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2703,7 +2704,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
 
     }
@@ -2800,7 +2801,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -2925,11 +2926,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 String eventDateNextTime = singleEventArray[ContactsEvents.Position_eventDateNextTime];
 
                 if (resources.getString(R.string.event_type_xdays_emoji).equals(eventEmoji) || resources.getString(R.string.event_type_5k_emoji).equals(eventEmoji)) {
-                    holder.DateTextView.setText(eventsData.getDateFormatted(eventDateNextTime, ContactsEvents.FormatDate.WithYear));
+                    holder.DateTextView.setText(AppDateUtils.getDateFormatted(eventDateNextTime, ContactsEvents.FormatDate.WithYear,
+                            eventsData.preferences_date_format, eventsData.getContext(), eventsData.getResources(), eventsData.currentLocale));
                 } else if (eventDateFirstTime.length() < 10) {
-                    holder.DateTextView.setText(eventsData.getDateFormatted(eventDateNextTime, ContactsEvents.FormatDate.WithoutYear));
+                    holder.DateTextView.setText(AppDateUtils.getDateFormatted(eventDateNextTime, ContactsEvents.FormatDate.WithoutYear,
+                            eventsData.preferences_date_format, eventsData.getContext(), eventsData.getResources(), eventsData.currentLocale));
                 } else {
-                    holder.DateTextView.setText(eventsData.getDateFormatted(eventDateFirstTime, ContactsEvents.FormatDate.WithYear));
+                    holder.DateTextView.setText(AppDateUtils.getDateFormatted(eventDateFirstTime, ContactsEvents.FormatDate.WithYear,
+                            eventsData.preferences_date_format, eventsData.getContext(), eventsData.getResources(), eventsData.currentLocale));
                 }
 
                 //Фамилия Имя Отчество
@@ -3079,11 +3083,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Hidden && eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    eventDetails.append(eventsData.setHTMLColor(getString(R.string.msg_label_hidden), Constants.HTML_COLOR_RED));
+                    eventDetails.append(StringUtils.getHTMLColor(getString(R.string.msg_label_hidden), Constants.HTML_COLOR_RED, eventsData.getContext()));
                 }
                 if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Silenced && eventsData.getSilencedEventsCount() > 0 && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    eventDetails.append(eventsData.setHTMLColor(getString(R.string.msg_label_silenced), Constants.HTML_COLOR_BROWN));
+                    eventDetails.append(StringUtils.getHTMLColor(getString(R.string.msg_label_silenced), Constants.HTML_COLOR_BROWN, eventsData.getContext()));
                 }
 
                 if (eventDetails.length() == 0) {
@@ -3243,7 +3247,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             }
             return convertedView;
         }
@@ -3357,7 +3361,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 } catch (Exception e) {
                     Log.e(TAG, "Filtering error", e);
-                    ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + ": " + e.getMessage());
+                    ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + ": " + e.getMessage());
                 }
                 results.values = filteredList;
                 return results;
@@ -3421,19 +3425,19 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
 
                         setHint(hintPrefix
-                                .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : eventsData.setHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW))
+                                .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : StringUtils.getHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW, eventsData.getContext()))
                                 .concat(Constants.STRING_SPACE)
                         );
 
                     } else {
-                        setHint(eventsData.setHTMLColor(getString(R.string.msg_no_events).toLowerCase(), Constants.HTML_COLOR_YELLOW).concat(Constants.STRING_SPACE));
+                        setHint(StringUtils.getHTMLColor(getString(R.string.msg_no_events).toLowerCase(), Constants.HTML_COLOR_YELLOW, eventsData.getContext()).concat(Constants.STRING_SPACE));
                     }
 
                     drawList();
 
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
-                    ToastExpander.showDebugMsg(eventsData.getContext(), ContactsEvents.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                    ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
                 }
 
             }
@@ -3451,7 +3455,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             super.applyOverrideConfiguration(overrideConfiguration);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, ContactsEvents.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
