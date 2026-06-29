@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.06.2026, 02:07
+  ~  * Created by Vladimir Belov on 29.06.2026, 14:56
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.06.2026, 02:02
+  ~  * Last modified 29.06.2026, 11:42
   ~  */
   -->
 
@@ -1028,6 +1028,7 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
 
     <string-array name="pref_widget_month_onclick_common_entries">
         <item>Aucun</item>
+        <item>Popup de la liste des événements</item>
         <item>Ouvrir le calendrier</item>
     </string-array>
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.05.2026, 23:59
+ *  * Created by Vladimir Belov on 29.06.2026, 14:56
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.05.2026, 23:34
+ *  * Last modified 29.06.2026, 14:11
  *
  */
 package org.vovka.birthdaycountdown;
@@ -321,6 +321,31 @@ public class WidgetCalendarPopup extends Activity {
                 listEventsPacks,
                 eventsColorsInMonth
         );
+        // Аналогичный блок есть в WidgetCalendar#getAction
+        if (!allEventsThisDay.isEmpty()) {
+            //Подставляем в годовщину свадьбы её название
+            final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(getString(R.string.event_type_anniversary));
+            for (int i = 0; i < allEventsThisDay.size(); i++) {
+                String event = allEventsThisDay.get(i);
+                if (!event.contains(weddingPrefix)) continue;
+
+                //Вытаскиваем год первоначального события
+                int indParOpen = event.lastIndexOf(Constants.STRING_PARENTHESIS_OPEN);
+                int indParClose = event.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                if (indParOpen > -1 && indParClose > -1) {
+                    String strYear = event.substring(indParOpen + Constants.STRING_PARENTHESIS_OPEN.length(), indParClose);
+                    try {
+                        int year = Integer.parseInt(strYear);
+                        String anCaption = eventsData.getWeddingName(newCal.get(Calendar.YEAR) - year);
+                        if (StringUtils.hasContent(anCaption)) {
+                            allEventsThisDay.set(i, event.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption)
+                                    .concat(Constants.STRING_PARENTHESIS_CLOSE));
+                        }
+                    } catch (NumberFormatException ignored) { /**/ }
+                }
+            }
+        }
+
         dayInfo = allEventsThisDay.isEmpty()
                 ? getString(R.string.month_event_empty)
                 : TextUtils.join(Constants.HTML_BR, allEventsThisDay);

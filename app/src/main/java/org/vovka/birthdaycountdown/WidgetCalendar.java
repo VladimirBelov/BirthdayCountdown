@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.06.2026, 20:55
+ *  * Created by Vladimir Belov on 29.06.2026, 14:56
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.06.2026, 20:22
+ *  * Last modified 29.06.2026, 14:11
  *
  */
 
@@ -544,18 +544,15 @@ public class WidgetCalendar extends AppWidgetProvider {
                             } else {
                                 rv.setViewVisibility(id, View.VISIBLE);
                                 if (idDiv != 0) rv.setViewVisibility(idDiv, View.VISIBLE);
-                                boolean paddingSet = false;
+                                int paddingLeft = 0;
+                                int paddingRight = 0;
                                 if (column == 1) { //Отступ слева
-                                    rv.setViewPadding(id, ImageUtils.Dip2Px(res, sidePadding), 0, 0, ImageUtils.Dip2Px(res, 4));
-                                    paddingSet = true;
+                                    paddingLeft = ImageUtils.Dip2Px(res, sidePadding);
                                 }
                                 if (column == columnsToDraw) { //Отступ справа
-                                    rv.setViewPadding(id, 0, 0, ImageUtils.Dip2Px(res, sidePadding), ImageUtils.Dip2Px(res, 4));
-                                    paddingSet = true;
+                                    paddingRight = ImageUtils.Dip2Px(res, sidePadding);
                                 }
-                                if (!paddingSet) {
-                                    rv.setViewPadding(id, 0, 0, 0, ImageUtils.Dip2Px(res, 4));
-                                }
+                                rv.setViewPadding(id, paddingLeft, 0, paddingRight, ImageUtils.Dip2Px(res, 4));
                             }
                         }
                     }
@@ -992,12 +989,15 @@ public class WidgetCalendar extends AppWidgetProvider {
             }
 
             if (action == Constants.onClick_Popup) {
-                List<String> dayInfo = eventsData.getDayInfo(Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime()), prefOtherEvents, eventsColorsInMonth);
-                if (!dayInfo.isEmpty()) {
+                String dayInfo = context.getString(R.string.month_event_empty);
+                List<String> allEventsThisDay = eventsData.getDayInfo(Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime()), prefOtherEvents, eventsColorsInMonth);
+
+                // Аналогичный блок есть в WidgetCalendarPopup#updateDayData
+                if (!allEventsThisDay.isEmpty()) {
                     //Подставляем в годовщину свадьбы её название
                     final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(context.getString(R.string.event_type_anniversary));
-                    for (int i = 0; i < dayInfo.size(); i++) {
-                        String event = dayInfo.get(i);
+                    for (int i = 0; i < allEventsThisDay.size(); i++) {
+                        String event = allEventsThisDay.get(i);
                         if (!event.contains(weddingPrefix)) continue;
 
                         //Вытаскиваем год первоначального события
@@ -1009,31 +1009,34 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 int year = Integer.parseInt(strYear);
                                 String anCaption = eventsData.getWeddingName(cal.get(Calendar.YEAR) - year);
                                 if (StringUtils.hasContent(anCaption)) {
-                                    dayInfo.set(i, event.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption)
+                                    allEventsThisDay.set(i, event.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption)
                                             .concat(Constants.STRING_PARENTHESIS_CLOSE));
                                 }
                             } catch (NumberFormatException ignored) { /**/ }
                         }
                     }
 
-                    Intent intent = new Intent(context, WidgetCalendarPopup.class);
-                    SimpleDateFormat sdf = new SimpleDateFormat(" (EEE)", Locale.getDefault());
-
-                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                    intent.putExtra(Constants.EXTRA_DAY_CAPTION,  context.getString(R.string.month_event_popup_prefix)
-                            .concat(eventsData.getDateFormatted(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime()), ContactsEvents.FormatDate.WithYear))
-                            .concat(sdf.format(cal.getTime())));
-                    intent.putExtra(Constants.EXTRA_DAY_INFO, TextUtils.join(Constants.HTML_BR, dayInfo));
-                    intent.putExtra(Constants.EXTRA_VALUES, Long.toString(cal.getTimeInMillis()));
-                    intent.putStringArrayListExtra(Constants.EXTRA_LIST, prefOtherEvents);
-                    intent.putExtra(Constants.EXTRA_MAP, eventsColorsInMonth);
-                    intent.putExtra(Constants.EXTRA_DAY1, calFirstDay);
-                    intent.putExtra(Constants.EXTRA_DAY2, calLastDay);
-
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,
-                            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    dayInfo = TextUtils.join(Constants.HTML_BR, allEventsThisDay);
                 }
+
+                Intent intent = new Intent(context, WidgetCalendarPopup.class);
+                SimpleDateFormat sdf = new SimpleDateFormat(" (EEE)", Locale.getDefault());
+
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                intent.putExtra(Constants.EXTRA_DAY_CAPTION,  context.getString(R.string.month_event_popup_prefix)
+                        .concat(eventsData.getDateFormatted(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime()), ContactsEvents.FormatDate.WithYear))
+                        .concat(sdf.format(cal.getTime())));
+                intent.putExtra(Constants.EXTRA_DAY_INFO, dayInfo);
+                intent.putExtra(Constants.EXTRA_VALUES, Long.toString(cal.getTimeInMillis()));
+                intent.putStringArrayListExtra(Constants.EXTRA_LIST, prefOtherEvents);
+                intent.putExtra(Constants.EXTRA_MAP, eventsColorsInMonth);
+                intent.putExtra(Constants.EXTRA_DAY1, calFirstDay);
+                intent.putExtra(Constants.EXTRA_DAY2, calLastDay);
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
             } else if (action == Constants.onClick_Calendar) {
                 Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
                 builder.appendPath(Constants.QUERY_PARAM_TIME);

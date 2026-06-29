@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 22:04
+ *  * Created by Vladimir Belov on 29.06.2026, 14:56
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 21:47
+ *  * Last modified 29.06.2026, 12:27
  *
  */
 
@@ -936,10 +936,10 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         }
                         picker.setDialogTitle(eventSourcesTitles.get(position));
                         picker.setDialogIcon(R.drawable.ic_menu_paste);
-                        picker.selectColor(colorValue, colorDefault, sourceId, (colorId, newColorValue) -> {
-                            if (!colorId.isEmpty()) {
-                                ToastExpander.showDebugMsg(getApplicationContext(), getString(R.string.msg_event_color_selected, Integer.toHexString(newColorValue & 0x00ffffff), colorId));
-                                eventSourcesColors.put(colorId, newColorValue);
+                        picker.selectColor(colorValue, colorDefault, sourceId, (sourceIdToSave, newColorValue) -> {
+                            if (!TextUtils.isEmpty(sourceIdToSave)) {
+                                ToastExpander.showDebugMsg(getApplicationContext(), getString(R.string.msg_event_color_selected, Integer.toHexString(newColorValue & 0x00ffffff), sourceIdToSave));
+                                eventSourcesColors.put(sourceIdToSave, newColorValue);
                             }
                             selectEventSources();
                         });
