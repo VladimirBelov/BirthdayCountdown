@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.04.2026, 01:44
+  ~  * Created by Vladimir Belov on 01.07.2026, 01:47
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 17.04.2026, 00:56
+  ~  * Last modified 01.07.2026, 01:27
   ~  */
   -->
 
@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/> <!-- для установки высокого приоритета уведомлениям викторины на младших Android https://stackoverflow.com/questions/42597698/android-how-to-allow-enable-floating-notifications-setting-as-default-for-ap -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/> <!-- для доступа к точным будильникам -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> <!-- для Android 13+ нужно для отправки уведомлений -->
+    <uses-permission android:name="android.permission.INTERNET" tools:node="remove" /> <!-- Явно удаляем разрешение INTERNET, которое добавляет ML Kit -->
 
     <queries> <!-- https://developer.android.com/about/versions/11/privacy/package-visibility -->
         <!-- 🔔 Выбор мелодии (системный пикер) -->
