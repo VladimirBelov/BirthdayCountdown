@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 30.06.2026, 10:06
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:51
+ *  * Last modified 30.06.2026, 09:16
  *
  */
 
@@ -597,7 +597,7 @@ public class StringUtils {
 
                     String line = reader.readLine();
                     while (line != null) {
-                        if (!line.startsWith(Constants.STRING_HASH) && !line.startsWith(Constants.STRING_DSLASH)) {
+                        if (hasContent(line) && !line.startsWith(Constants.STRING_HASH) && !line.startsWith(Constants.STRING_DSLASH)) {
                             sb.append(line);
                             if (delimiter != null) sb.append(delimiter);
                         }
