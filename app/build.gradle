@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.07.2026, 01:47
+ *  * Created by Vladimir Belov on 01.07.2026, 02:16
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.07.2026, 01:34
+ *  * Last modified 01.07.2026, 02:03
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -48,7 +48,7 @@ android {
         resourceConfigurations += locales
         ndk {
             //noinspection ChromeOsAbiSupport
-            abiFilters 'armeabi-v7a', 'arm64-v8a' // , 'x86' , 'x86_64'
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
     }
 
@@ -108,6 +108,9 @@ android {
             debuggable = false
             minifyEnabled = true
             shrinkResources = true
+            ndk {
+                debugSymbolLevel 'SYMBOL_TABLE'
+            }
             if (keystorePropertiesFile.exists()) {
                 signingConfig = signingConfigs.release
             }
@@ -135,6 +138,9 @@ android {
             shrinkResources = false
             debuggable = true
             jniDebuggable = true
+            ndk {
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86' , 'x86_64'
+            }
         }
     }
     compileOptions {
