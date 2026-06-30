@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 01.07.2026, 00:53
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 30.06.2026, 19:13
  *
  */
 
@@ -280,7 +280,7 @@ public class QuizActivity extends Activity {
 
         if (!TextUtils.isEmpty(q.event)) {
             imageQuestion.setImageBitmap(eventsData.getEventPhoto(q.event, true,
-                    true, true, eventsData.preferences_list_photostyle));
+                    true, true, false, eventsData.preferences_list_photostyle));
             imageQuestion.setVisibility(VISIBLE);
         }
 

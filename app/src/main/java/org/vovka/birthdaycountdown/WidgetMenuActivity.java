@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 01.07.2026, 00:53
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 30.06.2026, 19:13
  *
  */
 package org.vovka.birthdaycountdown;
@@ -209,7 +209,7 @@ public class WidgetMenuActivity extends Activity {
 
                 if (!TextUtils.isEmpty(singleEventArray[ContactsEvents.Position_photo_uri])) {
                     ImageView imagePhoto = findViewById(R.id.imagePhoto);
-                    Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, true, 0);
+                    Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, true, false, 0);
                     if (photo != null) {
                         imagePhoto.setImageBitmap(photo);
                         imagePhoto.setVisibility(View.VISIBLE);

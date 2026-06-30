@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 01.07.2026, 00:53
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 22:47
+ *  * Last modified 30.06.2026, 23:59
  *
  */
 
@@ -23,6 +23,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
@@ -31,6 +32,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.segmentation.Segmentation;
+import com.google.mlkit.vision.segmentation.SegmentationMask;
+import com.google.mlkit.vision.segmentation.Segmenter;
+import com.google.mlkit.vision.segmentation.selfie.SelfieSegmenterOptions;
+
 import org.vovka.birthdaycountdown.Constants;
 import org.vovka.birthdaycountdown.Person;
 import org.vovka.birthdaycountdown.R;
@@ -38,8 +47,10 @@ import org.vovka.birthdaycountdown.R;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class ImageUtils {
     static final String TAG = "ImageUtils";
@@ -359,9 +370,7 @@ public class ImageUtils {
         canvas.drawLine((float) (bmWidth * 1.25 - widthCorrection * 1.4), (float) bmHeight / 2, (float) ((double) bmWidth / 2 - widthCorrection * 1.4), (float) (bmHeight * 1.25), paintStroke);
         canvas.drawLine((float) (bmWidth * 1.25 + widthCorrection * 1.4), (float) bmHeight / 2, (float) ((double) bmWidth / 2 + widthCorrection * 1.4), (float) (bmHeight * 1.25), paintStroke);
 
-        bm.recycle();
-        bm = bmOverlay;
-        return bm;
+        return bmOverlay;
     }
 
     /**
@@ -523,11 +532,10 @@ public class ImageUtils {
     public static Bitmap applyFavoriteStar(Bitmap bm, int roundingFactor, int bmWidth, int bmHeight, @NonNull Resources res) {
         try {
 
-            Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig() != null ? bm.getConfig() : Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bmOverlay);
+            final Bitmap bmOverlay = Bitmap.createBitmap(bmWidth, bmHeight, bm.getConfig() != null ? bm.getConfig() : Bitmap.Config.ARGB_8888);
+            final Canvas canvas = new Canvas(bmOverlay);
             canvas.drawBitmap(bm, new Matrix(), null);
-            bm.recycle();
-            Bitmap bmStar = BitmapFactory.decodeResource(res, R.drawable.fav_star);
+            final Bitmap bmStar = BitmapFactory.decodeResource(res, R.drawable.fav_star);
             final Bitmap bmStarScaled = Bitmap.createScaledBitmap(bmStar,
                     bmOverlay.getWidth() / 4 - (bmOverlay.getWidth() - bmOverlay.getHeight()) / 4, bmOverlay.getHeight() / 4, true);
 
@@ -548,12 +556,12 @@ public class ImageUtils {
             }
             bmStar.recycle();
             bmStarScaled.recycle();
-            bm = bmOverlay;
+            return bmOverlay;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
+            return bm;
         }
-        return bm;
     }
 
     /** Возвращает силуэт по возрасту и полу
@@ -624,6 +632,136 @@ public class ImageUtils {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
+            return null;
+        }
+    }
+
+    /**
+     * Удаляет фон с фотографии используя ML Kit Selfie Segmentation
+     * @param bitmap Исходное изображение
+     * @return Изображение с прозрачным фоном или null, если не удалось удалить фон
+     */
+    @Nullable
+    public static Bitmap removeBackgroundFromBitmap(@NonNull Bitmap bitmap) {
+        // Проверяем, что не в главном потоке
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            Log.e(TAG, "removeBackgroundFromBitmap called on main thread!");
+            return null; // Возвращаем null, чтобы не кэшировать фото с фоном
+        }
+
+        try {
+            // Создаём опции для сегментатора
+            SelfieSegmenterOptions options = new SelfieSegmenterOptions.Builder()
+                    .setDetectorMode(SelfieSegmenterOptions.SINGLE_IMAGE_MODE)
+                    .enableRawSizeMask()
+                    .build();
+
+            Segmenter segmenter = Segmentation.getClient(options);
+
+            // Создаём InputImage из Bitmap
+            InputImage inputImage = InputImage.fromBitmap(bitmap, 0);
+
+            // Обрабатываем синхронно (для простоты интеграции)
+            Task<SegmentationMask> task = segmenter.process(inputImage);
+
+            // Ждём завершения (не более 10 секунд)
+            SegmentationMask mask = Tasks.await(task, 10, TimeUnit.SECONDS);
+
+            // Применяем маску к bitmap
+            Bitmap result = applySegmentationMask(bitmap, mask);
+
+            segmenter.close();
+            return result;
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error removing background: " + e.getMessage(), e);
+            // Возвращаем null при ошибке, чтобы не кэшировать фото с фоном
+            return null;
+        }
+    }
+
+    /**
+     * Применяет маску сегментации к bitmap, делая фон прозрачным
+     * @param original Оригинал
+     * @param mask Маска сегментации
+     * @return Bitmap с прозрачным фоном или оригинал, если силуэт не распознан
+     */
+    @Nullable
+    static Bitmap applySegmentationMask(@NonNull Bitmap original, @NonNull SegmentationMask mask) {
+        try {
+            int width = original.getWidth();
+            int height = original.getHeight();
+            int totalPixels = width * height;
+
+            // Получаем данные маски
+            ByteBuffer maskBuffer = mask.getBuffer();
+            int maskWidth = mask.getWidth();
+            int maskHeight = mask.getHeight();
+
+            Log.d(TAG, "Original size: " + width + "x" + height +
+                    ", Mask size: " + maskWidth + "x" + maskHeight +
+                    ", Buffer size: " + maskBuffer.capacity());
+
+            // Создаём bitmap с поддержкой прозрачности
+            Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+            int opaquePixels = 0; // Счётчик непрозрачных пикселей
+
+            // Проходим по всем пикселям
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    int pixel = original.getPixel(x, y);
+
+                    // Вычисляем индекс в маске (с масштабированием если размеры отличаются)
+                    int maskX = Math.min(x * maskWidth / width, maskWidth - 1);
+                    int maskY = Math.min(y * maskHeight / height, maskHeight - 1);
+                    int index = maskY * maskWidth + maskX;
+
+                    // Проверяем границы буфера
+                    if (index * 4 + 3 >= maskBuffer.capacity()) {
+                        Log.w(TAG, "Index out of bounds: " + index + ", capacity: " + maskBuffer.capacity());
+                        result.setPixel(x, y, pixel);
+                        opaquePixels++;
+                        continue;
+                    }
+
+                    // Читаем значение уверенности (float = 4 байта)
+                    float confidence = maskBuffer.getFloat(index * 4);
+
+                    // Получаем alpha канала оригинального пикселя
+                    int originalAlpha = Color.alpha(pixel);
+
+                    // Вычисляем новый alpha на основе уверенности маски
+                    // Порог 0.5 - если уверенность выше, считаем что это человек
+                    int newAlpha = confidence > 0.5f ? originalAlpha : 0;
+
+                    if (newAlpha > 0) opaquePixels++;
+
+                    // Устанавливаем пиксель с новым alpha
+                    result.setPixel(x, y, Color.argb(newAlpha,
+                            Color.red(pixel),
+                            Color.green(pixel),
+                            Color.blue(pixel)));
+                }
+            }
+
+            // Проверяем, не получилось ли фото слишком прозрачным
+            double opaqueRatio = (double) opaquePixels / totalPixels;
+            Log.d(TAG, "Opaque pixels: " + opaquePixels + " / " + totalPixels +
+                    " = " + String.format("%.2f%%", opaqueRatio * 100));
+
+            // Если непрозрачных пикселей меньше 10% - ML Kit не распознал человека
+            if (opaqueRatio < 0.10) {
+                Log.w(TAG, "Too few opaque pixels (" + String.format("%.2f", opaqueRatio * 100) +
+                        "%). Returning original bitmap.");
+                result.recycle();
+                return original.copy(original.getConfig() != null ? original.getConfig() : Bitmap.Config.ARGB_8888, true);
+            }
+
+            return result;
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error in applySegmentationMask: " + e.getMessage(), e);
             return null;
         }
     }

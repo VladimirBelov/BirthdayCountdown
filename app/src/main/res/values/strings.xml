@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.06.2026, 14:56
+  ~  * Created by Vladimir Belov on 01.07.2026, 00:53
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 29.06.2026, 11:42
+  ~  * Last modified 01.07.2026, 00:49
   ~  */
   -->
 
@@ -566,6 +566,7 @@
         <item>Medium rounded</item>
         <item>Strongly rounded</item>
         <item>Circle</item>
+        <item>Original (transparent)</item>
     </string-array>
 
     <string name="pref_List_AgeFormat_title">Age format</string>
@@ -915,6 +916,7 @@
         <item>Medium rounded</item>
         <item>Strongly rounded</item>
         <item>Circle</item>
+        <item>Original (transparent)</item>
     </string-array>
 
     <string name="widget_config_custom_widget_caption_label">Custom widget caption</string>
@@ -2051,6 +2053,7 @@ Long click on item to select color"</string>
     <string name="pref_List_PhotoStyle_Rounded1" translatable="false">2</string>
     <string name="pref_List_PhotoStyle_Rounded2" translatable="false">3</string>
     <string name="pref_List_PhotoStyle_Rounded3" translatable="false">4</string>
+    <string name="pref_List_PhotoStyle_Transparent" translatable="false">5</string>
     <string name="pref_List_PhotoStyle_Circle" translatable="false">9</string>
     <string-array name="pref_List_PhotoStyle_values" translatable="false">
         <item>@string/pref_List_PhotoStyle_Original</item>
@@ -2058,6 +2061,7 @@ Long click on item to select color"</string>
         <item>@string/pref_List_PhotoStyle_Rounded2</item>
         <item>@string/pref_List_PhotoStyle_Rounded3</item>
         <item>@string/pref_List_PhotoStyle_Circle</item>
+        <item>@string/pref_List_PhotoStyle_Transparent</item>
     </string-array>
 
     <string name="pref_List_AgeFormat_AddPostfix" translatable="false">1</string>

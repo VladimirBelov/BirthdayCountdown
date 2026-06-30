@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.06.2026, 14:56
+  ~  * Created by Vladimir Belov on 01.07.2026, 00:53
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 29.06.2026, 11:42
+  ~  * Last modified 01.07.2026, 00:49
   ~  */
   -->
 
@@ -566,6 +566,7 @@
         <item>Medio redondeado</item>
         <item>Fuertemente redondeado</item>
         <item>Círculo</item>
+        <item>Original (transparente)</item>
     </string-array>
 
     <string name="pref_List_AgeFormat_title">Formato de edad</string>
@@ -915,6 +916,7 @@
         <item>Medio redondeado</item>
         <item>Fuertemente redondeado</item>
         <item>Círculo</item>
+        <item>Original (transparente)</item>
     </string-array>
 
     <string name="widget_config_custom_widget_caption_label">Título del widget personalizado</string>

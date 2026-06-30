@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 01.07.2026, 00:53
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 01.07.2026, 00:27
  *
  */
 
@@ -806,7 +806,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             TextViewCompat.setTextAppearance(customTitle, tv.resourceId);
 
             int iconSizePx = (int) (48 * getResources().getDisplayMetrics().density);
-            Drawable icon = new BitmapDrawable(resources, ContactsEvents.getInstance().getEventPhoto(selectedEvent_str, true, false, false, roundingFactor));
+            Drawable icon = new BitmapDrawable(resources, ContactsEvents.getInstance().getEventPhoto(selectedEvent_str, true, false, false, false, roundingFactor));
             icon.setBounds(0, 0, iconSizePx, iconSizePx);
             customTitle.setCompoundDrawablesRelative(icon, null, null, null);
             customTitle.setCompoundDrawablePadding((int) (16 * getResources().getDisplayMetrics().density));
@@ -1803,6 +1803,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             int itemId = item.getItemId();
             if (itemId == Constants.MainMenu_Refresh) {
+                // Очищаем кеш фото
+                eventsData.clearPhotoCache();
 
                 //https://github.com/googlesamples/android-SwipeRefreshLayoutBasic/blob/master/Application/src/main/java/com/example/android/swiperefreshlayoutbasic/SwipeRefreshLayoutBasicFragment.java
                 //https://medium.com/mobile-app-development-publication/swipe-to-refresh-not-showing-why-96b76c5c93e7
@@ -3104,16 +3106,55 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //Фото
                 if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Photo))) {
                     int roundingFactor;
+                    boolean removeBackground;
                     if (eventSubType.equals(Constants.EventType_Calendar)
                             || eventSubType.equals(Constants.EventType_File)
                             || eventSubType.equals(Constants.EventType_Holiday)) {
+                        removeBackground = false;
                         roundingFactor = 1;
+                    } else if (eventsData.preferences_list_photostyle == 5) {
+                        roundingFactor = 1;
+                        removeBackground = true;
                     } else {
+                        removeBackground = false;
                         roundingFactor = eventsData.preferences_list_photostyle;
                     }
 
-                    holder.PhotoImageView.setImageBitmap(eventsData.getEventPhoto(event, true, false, true, roundingFactor));
-                    holder.PhotoImageView.setVisibility(View.VISIBLE);
+                    if (removeBackground) {
+                        // Сохраняем ключ события для проверки актуальности
+                        final String eventKeyForPhoto = event;
+                        final int currentPosition = position;
+                        final ImageView photoImageView = holder.PhotoImageView;
+
+                        // Показываем placeholder
+                        photoImageView.setImageResource(android.R.drawable.ic_menu_gallery);
+                        photoImageView.setVisibility(View.VISIBLE);
+
+                        // Асинхронная загрузка фото
+                        eventsData.executor.execute(() -> {
+                            Bitmap photoBitmap = eventsData.getEventPhoto(event, true, false, true,
+                                    removeBackground, roundingFactor);
+
+                            // Обновляем UI в главном потоке
+                            ((MainActivity) getContext()).runOnUiThread(() -> {
+                                // Проверяем, что позиция не изменилась (View не была переиспользована)
+                                try {
+                                    if (photoBitmap != null && currentPosition < listView.getCount()) {
+                                        String currentEventKey = (String) listView.getItemAtPosition(currentPosition);
+                                        if (eventKeyForPhoto.equals(currentEventKey)) {
+                                            photoImageView.setImageBitmap(photoBitmap);
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    // Список мог измениться — просто игнорируем
+                                    Log.w(TAG, "Position check failed: " + e.getMessage());
+                                }
+                            });
+                        });
+                    } else {
+                        holder.PhotoImageView.setImageBitmap(eventsData.getEventPhoto(event, true, false, true, removeBackground, roundingFactor));
+                        holder.PhotoImageView.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     holder.PhotoImageView.setImageDrawable(null);
                     holder.PhotoImageView.setVisibility(View.GONE);

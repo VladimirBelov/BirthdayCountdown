@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 19:57
+ *  * Created by Vladimir Belov on 01.07.2026, 00:53
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 10:44
+ *  * Last modified 30.06.2026, 19:10
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -165,6 +165,8 @@ dependencies {
     implementation 'androidx.fragment:fragment:1.8.9' //https://developer.android.com/jetpack/androidx/releases/fragment
     //noinspection GradleDependency 1.12 - API23+
     implementation 'androidx.activity:activity:1.11.0' //https://developer.android.com/jetpack/androidx/releases/activity
+    // ML Kit Selfie Segmentation
+    implementation 'com.google.mlkit:segmentation-selfie:16.0.0-beta6' //https://developers.google.com/ml-kit/vision/selfie-segmentation/android#java
 }
 
 java {

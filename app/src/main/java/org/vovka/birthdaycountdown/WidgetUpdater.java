@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 01.07.2026, 00:53
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 01.07.2026, 00:19
  *
  */
 
@@ -685,17 +685,20 @@ class WidgetUpdater {
 
             //Фото
             int roundingFactor = 0;
+            boolean removeBackground = false;
             if (widgetPref != null && widgetPref.size() > 6) {
                 switch (widgetPref.get(6)) {
                     case Constants.STRING_1: roundingFactor = 2; break;
                     case Constants.STRING_2: roundingFactor = 3; break;
                     case Constants.STRING_3: roundingFactor = 4; break;
                     case Constants.STRING_4: roundingFactor = 9; break;
+                    case Constants.STRING_5: removeBackground = true; break;
                 }
             }
 
-            ContactsEvents.EventPhoto photo = eventsData.getEventPhotoInternal(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Photo_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Photo_ID)), true, false, roundingFactor);
+            final boolean showPhotos = widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Photo_ID))
+                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Photo_ID));
+            ContactsEvents.EventPhoto photo = eventsData.getEventPhotoInternal(event, showPhotos, true, false, removeBackground, roundingFactor);
             if (photo.bitmap != null) {
 
                 //https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
@@ -729,7 +732,7 @@ class WidgetUpdater {
                     Bitmap photo_small = Bitmap.createScaledBitmap(photo.bitmap, dstWidth, dstHeight, true);
                     views.setImageViewBitmap(id_Photo, photo_small);
                 } else {
-                    Bitmap photo_icon = eventsData.getEventPhoto(event, false, true, false, roundingFactor);
+                    Bitmap photo_icon = eventsData.getEventPhoto(event, false, true, false, removeBackground, roundingFactor);
                     views.setImageViewBitmap(id_Photo, photo_icon);
 
                 }

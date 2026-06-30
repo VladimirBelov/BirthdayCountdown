@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 01.07.2026, 00:53
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 30.06.2026, 00:10
+ *  * Last modified 30.06.2026, 23:26
  *
  */
 
@@ -77,6 +77,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.collection.LruCache;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -860,7 +861,9 @@ public class ContactsEvents {
 
     //Оптимизация обработки
     private final ExecutorService widgetUpdateExecutor = Executors.newSingleThreadExecutor();
+    final ExecutorService executor = Executors.newFixedThreadPool(3); // 3 потока для фото
     private Future<?> pendingUpdateTask = null; // Для отслеживания текущей задачи
+    private LruCache<String, Bitmap> photoCache; // Кеш для фото
 
     public interface EventsLoadCallback {
         void onEventsLoaded(boolean success);
@@ -1710,7 +1713,12 @@ public class ContactsEvents {
             preferences_jubilee_algorithm = getPreferenceInt(preferences, context.getString(R.string.pref_List_Jubilee_Algorithm_key), context.getString(R.string.pref_List_Jubilee_Algorithm_default));
             preferences_list_margin = getPreferenceInt(preferences, context.getString(R.string.pref_List_Margin_key), context.getString(R.string.pref_List_Margin_default));
             preferences_list_top_padding = getPreferenceInt(preferences, context.getString(R.string.pref_List_TopPadding_key), 0);
+            int oldSadPhoto = preferences_sad_photo; // Запоминаем старое значение перед чтением
             preferences_sad_photo = getPreferenceInt(preferences, context.getString(R.string.pref_List_SadPhoto_key), context.getString(R.string.pref_List_SadPhoto_default));
+            // Если изменилось - очищаем кеш
+            if (oldSadPhoto != preferences_sad_photo) {
+                clearPhotoCache();
+            }
             preferences_name_format = getPreferenceInt(preferences, context.getString(R.string.pref_List_NameFormat_key), context.getString(R.string.pref_List_NameFormat_default)) == 1 ? FormatName.NameFirst : FormatName.LastnameFirst;
             preferences_date_format = getPreferenceInt(preferences, context.getString(R.string.pref_List_DateFormat_key), context.getString(R.string.pref_List_DateFormat_default));
             preferences_list_age_format = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_AgeFormat_key), pref_List_Age_Format_Default);
@@ -5957,38 +5965,109 @@ public class ContactsEvents {
      * @param showPhotos       Показывать фото (иначе - пиктограммы)
      * @param suggestSquared   Делать фото квадратным
      * @param addFavoritesSign Добавить значок избранного контакта
+     * @param removeBackground Удалять фон (для CONTACT_PHOTO и EVENT_PHOTO)
      * @param roundingFactor   Параметры скругления углов
      * @return Фото
      */
-    Bitmap getEventPhoto(@NonNull String event, boolean showPhotos, boolean suggestSquared, boolean addFavoritesSign, int roundingFactor) {
-        return getEventPhotoInternal(event, showPhotos, suggestSquared, addFavoritesSign, roundingFactor).bitmap;
+    Bitmap getEventPhoto(@NonNull String event, boolean showPhotos, boolean suggestSquared, boolean addFavoritesSign, boolean removeBackground, int roundingFactor) {
+        return getEventPhotoInternal(event, showPhotos, suggestSquared, addFavoritesSign, removeBackground, roundingFactor).bitmap;
     }
 
-    /** Возвращает фото для события
+    /**
+     * Возвращает фото для события
+     *
      * @param event            Данные о событии
      * @param showPhotos       Показывать фото (иначе - пиктограммы)
      * @param suggestSquared   Делать фото квадратным
      * @param addFavoritesSign Добавить значок избранного контакта
+     * @param removeBackground Удалять фон (для CONTACT_PHOTO и EVENT_PHOTO)
      * @param roundingFactor   Параметры скругления углов
      * @return EventPhoto (bitmap + image type)
      */
     @NonNull
-    EventPhoto getEventPhotoInternal(@NonNull String event, boolean showPhotos, boolean suggestSquared, boolean addFavoritesSign, int roundingFactor) {
+    EventPhoto getEventPhotoInternal(@NonNull String event, boolean showPhotos, boolean suggestSquared,
+                                     boolean addFavoritesSign, boolean removeBackground, int roundingFactor) {
         try {
             String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
 
-            // Загружаем bitmap
-            BitmapLoadResult loadResult = loadEventBitmap(singleEventArray, showPhotos);
+            // Ключ кеша: данные события + параметры, влияющие на "сырой" bitmap
+            String cacheKey = event.hashCode() + "_rb_" + (removeBackground ? 1 : 0) + "_sq_" + (suggestSquared ? 1 : 0);
 
-            // Early return, если bitmap не получен
-            if (loadResult.bitmap == null) return new EventPhoto(null, null);
+            Bitmap bm;
+            PhotoType type;
+            boolean addMourningTape;
 
-            Bitmap bm = loadResult.bitmap;
-            PhotoType type = loadResult.type;
-            boolean addMourningTape = loadResult.addMourningTape;
+            // Проверяем кеш
+            Bitmap cached = getCachedPhoto(cacheKey);
+            if (cached != null) {
+                // Определяем type и addMourningTape по данным события
+                String eventSubType = singleEventArray[Position_eventSubType];
+                String contactID = StringUtils.getNotNullString(singleEventArray[Position_contactID]);
+                String personFullName = singleEventArray[Position_personFullName];
+
+                if (eventSubType.equals(Constants.EventType_Calendar) ||
+                        eventSubType.equals(Constants.EventType_File) ||
+                        eventSubType.equals(Constants.EventType_Holiday) ||
+                        eventSubType.equals(Constants.EventType_Other)) {
+                    type = PhotoType.ICON;
+                } else if (!TextUtils.isEmpty(singleEventArray[Position_photo_uri]) ||
+                        !TextUtils.isEmpty(singleEventArray[Position_photo])) {
+                    type = PhotoType.CONTACT_PHOTO;
+                } else {
+                    type = PhotoType.SILHUETE;
+                }
+
+                addMourningTape = (preferences_sad_photo == 1 && eventSubType.equals(Constants.EventType_Death)) ||
+                        (preferences_sad_photo == 2 && (deathDatesForIds.containsKey(contactID) ||
+                                deathDatesForNames.containsKey(personFullName)));
+
+                // Делаем копию сразу, чтобы не повредить кеш
+                bm = cached.copy(cached.getConfig() != null ? cached.getConfig() : Bitmap.Config.ARGB_8888, true);
+
+                // На случай если bitmap был recycled (маловероятно, но защитимся)
+                if (bm == null) {
+                    photoCache.remove(cacheKey);
+                }
+            } else {
+                bm = null;
+                type = null;
+                addMourningTape = false;
+            }
+
+            // Если кеш пуст или bitmap не удалось скопировать — загружаем заново
+            if (bm == null) {
+                BitmapLoadResult loadResult = loadEventBitmap(singleEventArray, showPhotos);
+                bm = loadResult.bitmap;
+                type = loadResult.type;
+                addMourningTape = loadResult.addMourningTape;
+
+                if (bm != null) {
+                    // Удаляем фон если нужно
+                    if (removeBackground && (type == PhotoType.CONTACT_PHOTO || type == PhotoType.EVENT_PHOTO)) {
+                        Bitmap bmWithoutBg = ImageUtils.removeBackgroundFromBitmap(bm);
+
+                        if (bmWithoutBg != null) {
+                            // Успешно удалили фон - сохраняем в кеш
+                            bm = bmWithoutBg;
+                            putCachedPhoto(cacheKey, bm);
+                        } else {
+                            // Не удалось удалить фон (главный поток или ошибка) - НЕ сохраняем в кеш
+                            // bm остаётся с фоном, но в кеш не попадает
+                            Log.w(TAG, "Background removal failed, not caching photo");
+                        }
+                    } else {
+                        // Фон не удаляли - сохраняем оригинал в кеш
+                        putCachedPhoto(cacheKey, bm);
+                    }
+                    // Для дальнейшей обработки тоже нужна копия (чтобы оригинал в кеше не мутировал)
+                    bm = bm.copy(bm.getConfig() != null ? bm.getConfig() : Bitmap.Config.ARGB_8888, true);
+                }
+            }
+
+            if (bm == null) return new EventPhoto(null, type);
+
+            // Дальше — стандартная обработка (квадрат, лента, избранное, скругление)
             boolean makeSquared = suggestSquared;
-
-            // Определяем радиус скругления
             int roundingRadiusX = 0;
             int roundingRadiusY = 0;
             int bmWidth = bm.getWidth();
@@ -6033,12 +6112,12 @@ public class ContactsEvents {
             // Добавляем иконку избранного
             if (addFavoritesSign
                     && preferences_list_event_info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon))
-                    && checkIsFavoriteEvent(getEventKey(singleEventArray), getEventKeyWithRawId(singleEventArray), singleEventArray[Position_starred])) {
+                    && checkIsFavoriteEvent(getEventKey(singleEventArray), getEventKeyWithRawId(singleEventArray),
+                    singleEventArray[Position_starred])) {
                 bm = ImageUtils.applyFavoriteStar(bm, roundingFactor, bmWidth, bmHeight, getResources());
             }
 
             return new EventPhoto(ImageUtils.toRoundCorner(bm, roundingRadiusX, roundingRadiusY), type);
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -8052,7 +8131,7 @@ public class ContactsEvents {
                         } else {
                             roundingFactor = preferences_list_photostyle;
                         }
-                        builder.setLargeIcon(getEventPhoto(eventAsString, true, true, true, roundingFactor));
+                        builder.setLargeIcon(getEventPhoto(eventAsString, true, true, true, false, roundingFactor));
 
                         notificationManager.notify(notificationID, builder.build());
                     }
@@ -8403,7 +8482,7 @@ public class ContactsEvents {
             } else {
                 roundingFactor = preferences_list_photostyle;
             }
-            builder.setLargeIcon(getEventPhoto(dataNotify, true, true, true, roundingFactor));
+            builder.setLargeIcon(getEventPhoto(dataNotify, true, true, true, false, roundingFactor));
 
             Set<String> prefQuickActions = actions == null ? new HashSet<>() : new HashSet<>(Arrays.asList(actions));
             Intent intent = null;
@@ -11617,6 +11696,32 @@ public class ContactsEvents {
         return factsList;
     }
 
+    private void initPhotoCache() {
+        if (photoCache != null) return;
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 8;
+        photoCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(@NonNull String key, @NonNull Bitmap bitmap) {
+                return bitmap.getByteCount() / 1024;
+            }
+        };
+    }
+
+    public Bitmap getCachedPhoto(String key) {
+        initPhotoCache();
+        return photoCache.get(key);
+    }
+
+    public void putCachedPhoto(String key, Bitmap bitmap) {
+        initPhotoCache();
+        if (bitmap != null) photoCache.put(key, bitmap);
+    }
+
+    public void clearPhotoCache() {
+        if (photoCache != null) photoCache.evictAll();
+    }
+
     public void shutdown() {
         if (widgetUpdateExecutor != null) {
             widgetUpdateExecutor.shutdown(); // Завершает плавно
@@ -11631,6 +11736,9 @@ public class ContactsEvents {
         }
         if (eventsExecutor != null) {
             eventsExecutor.shutdown();
+        }
+        if (executor != null) {
+            executor.shutdown();
         }
     }
 

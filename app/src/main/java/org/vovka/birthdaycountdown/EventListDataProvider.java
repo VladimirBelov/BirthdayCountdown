@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 01.07.2026, 00:53
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 30.06.2026, 19:13
  *
  */
 
@@ -404,7 +404,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
 
                     //Фото
                     int roundingFactor = ImageUtils.getRoundingFactor(widgetPref);
-                    Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, false, roundingFactor);
+                    Bitmap photo = eventsData.getEventPhoto(eventInfo, true, true, false, false, roundingFactor);
                     if (photo != null) {
                         int outWidth;
                         if (widgetWidth > 0) {
