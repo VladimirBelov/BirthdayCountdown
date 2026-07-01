@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.07.2026, 00:53
+ *  * Created by Vladimir Belov on 01.07.2026, 17:28
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 30.06.2026, 23:59
+ *  * Last modified 01.07.2026, 16:43
  *
  */
 
@@ -54,6 +54,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ImageUtils {
     static final String TAG = "ImageUtils";
+    private static volatile Segmenter segmenter;
+    private static final Object segmenterLock = new Object();
     public static String toARGBString(int color) {
         // format: #AARRGGBB
         String alpha = Integer.toHexString(Color.alpha(color));
@@ -639,43 +641,34 @@ public class ImageUtils {
     /**
      * Удаляет фон с фотографии используя ML Kit Selfie Segmentation
      * @param bitmap Исходное изображение
-     * @return Изображение с прозрачным фоном или null, если не удалось удалить фон
+     * @return Изображение с прозрачным фоном или null, если не удалось
      */
     @Nullable
     public static Bitmap removeBackgroundFromBitmap(@NonNull Bitmap bitmap) {
         // Проверяем, что не в главном потоке
         if (Looper.myLooper() == Looper.getMainLooper()) {
             Log.e(TAG, "removeBackgroundFromBitmap called on main thread!");
-            return null; // Возвращаем null, чтобы не кэшировать фото с фоном
+            return null;
         }
 
         try {
-            // Создаём опции для сегментатора
-            SelfieSegmenterOptions options = new SelfieSegmenterOptions.Builder()
-                    .setDetectorMode(SelfieSegmenterOptions.SINGLE_IMAGE_MODE)
-                    .enableRawSizeMask()
-                    .build();
-
-            Segmenter segmenter = Segmentation.getClient(options);
+            // Получаем переиспользуемый сегментер (ленивая инициализация)
+            Segmenter localSegmenter = getSegmenter();
 
             // Создаём InputImage из Bitmap
             InputImage inputImage = InputImage.fromBitmap(bitmap, 0);
 
-            // Обрабатываем синхронно (для простоты интеграции)
-            Task<SegmentationMask> task = segmenter.process(inputImage);
+            // Обрабатываем
+            Task<SegmentationMask> task = localSegmenter.process(inputImage);
 
             // Ждём завершения (не более 10 секунд)
             SegmentationMask mask = Tasks.await(task, 10, TimeUnit.SECONDS);
 
             // Применяем маску к bitmap
-            Bitmap result = applySegmentationMask(bitmap, mask);
-
-            segmenter.close();
-            return result;
+            return applySegmentationMask(bitmap, mask);
 
         } catch (Exception e) {
             Log.e(TAG, "Error removing background: " + e.getMessage(), e);
-            // Возвращаем null при ошибке, чтобы не кэшировать фото с фоном
             return null;
         }
     }
@@ -733,7 +726,15 @@ public class ImageUtils {
 
                     // Вычисляем новый alpha на основе уверенности маски
                     // Порог 0.5 - если уверенность выше, считаем что это человек
-                    int newAlpha = confidence > 0.5f ? originalAlpha : 0;
+                    // int newAlpha = confidence > 0.5f ? originalAlpha : 0;
+
+                    // Плавный переход в диапазоне 0.3 - 0.7
+                    int newAlpha = 0;
+                    if (confidence > 0.7f) {
+                        newAlpha = originalAlpha;
+                    } else if (confidence > 0.3f) {
+                        newAlpha = (int) ((confidence - 0.3f) / 0.4f * originalAlpha);
+                    }
 
                     if (newAlpha > 0) opaquePixels++;
 
@@ -763,6 +764,40 @@ public class ImageUtils {
         } catch (Exception e) {
             Log.e(TAG, "Error in applySegmentationMask: " + e.getMessage(), e);
             return null;
+        }
+    }
+
+    /**
+     * Получает или создаёт экземпляр сегментера (ленивая инициализация)
+     * Потокобезопасный метод с double-checked locking
+     */
+    private static Segmenter getSegmenter() {
+        if (segmenter == null) {
+            synchronized (segmenterLock) {
+                if (segmenter == null) {
+                    SelfieSegmenterOptions options = new SelfieSegmenterOptions.Builder()
+                            .setDetectorMode(SelfieSegmenterOptions.SINGLE_IMAGE_MODE)
+                            .enableRawSizeMask()
+                            .build();
+                    segmenter = Segmentation.getClient(options);
+                    Log.d(TAG, "Segmenter initialized");
+                }
+            }
+        }
+        return segmenter;
+    }
+
+    /**
+     * Закрывает сегментер и освобождает ресурсы.
+     * Вызывать при уничтожении приложения (в ContactsEvents.shutdown())
+     */
+    public static void closeSegmenter() {
+        synchronized (segmenterLock) {
+            if (segmenter != null) {
+                segmenter.close();
+                segmenter = null;
+                Log.d(TAG, "Segmenter closed");
+            }
         }
     }
 }

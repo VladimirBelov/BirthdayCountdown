@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.07.2026, 00:53
+ *  * Created by Vladimir Belov on 01.07.2026, 17:28
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 30.06.2026, 23:26
+ *  * Last modified 01.07.2026, 13:37
  *
  */
 
@@ -11723,6 +11723,10 @@ public class ContactsEvents {
     }
 
     public void shutdown() {
+
+        // Закрываем ML Kit сегментер
+        ImageUtils.closeSegmenter();
+
         if (widgetUpdateExecutor != null) {
             widgetUpdateExecutor.shutdown(); // Завершает плавно
             try {

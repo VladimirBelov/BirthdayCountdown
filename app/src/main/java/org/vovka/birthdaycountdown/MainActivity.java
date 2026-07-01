@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.07.2026, 00:53
+ *  * Created by Vladimir Belov on 01.07.2026, 17:28
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.07.2026, 00:27
+ *  * Last modified 01.07.2026, 17:04
  *
  */
 
@@ -858,6 +858,29 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //https://stackoverflow.com/questions/19514174/convert-listview-items-into-a-single-bitmap-image
 
             View childView = adapter.getView(selectedEvent_num, null, listView);
+
+            //Если стоит обрезание фона, заново грузим оригинальное фото
+            if (eventsData.preferences_list_photostyle == 5) {
+                String eventSubType = selectedEvent[ContactsEvents.Position_eventSubType];
+                int roundingFactor;
+                if (eventSubType.equals(Constants.EventType_Calendar)
+                        || eventSubType.equals(Constants.EventType_File)
+                        || eventSubType.equals(Constants.EventType_Holiday)) {
+                    roundingFactor = 1;
+                } else {
+                    roundingFactor = eventsData.preferences_list_photostyle;
+                }
+
+                // Загружаем фото синхронно без удаления фона
+                Bitmap photoBitmap = eventsData.getEventPhoto(selectedEvent_str, true, false, true, false, roundingFactor);
+
+                // Находим ImageView и устанавливаем фото
+                ImageView photoImageView = childView.findViewById(R.id.entryPhotoImageView);
+                if (photoImageView != null && photoBitmap != null) {
+                    photoImageView.setImageBitmap(photoBitmap);
+                    photoImageView.setVisibility(View.VISIBLE);
+                }
+            }
 
             childView.measure(
                     View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.EXACTLY),

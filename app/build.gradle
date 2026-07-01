@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.07.2026, 02:16
+ *  * Created by Vladimir Belov on 01.07.2026, 17:28
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.07.2026, 02:03
+ *  * Last modified 01.07.2026, 09:09
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -73,6 +73,9 @@ android {
         }
     }
 
+    androidResources {
+        noCompress = ['tflite']
+    }
 
     //https://stackoverflow.com/questions/21405457/autoincrement-versioncode-with-gradle-extra-properties
     def versionPropsFile = rootProject.file('version.properties')
@@ -109,7 +112,7 @@ android {
             minifyEnabled = true
             shrinkResources = true
             ndk {
-                debugSymbolLevel 'SYMBOL_TABLE'
+                debugSymbolLevel = 'SYMBOL_TABLE'
             }
             if (keystorePropertiesFile.exists()) {
                 signingConfig = signingConfigs.release
