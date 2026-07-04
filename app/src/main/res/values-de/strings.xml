@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.06.2026, 14:56
+  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 29.06.2026, 11:42
+  ~  * Last modified 04.07.2026, 16:16
   ~  */
   -->
 
@@ -934,7 +934,8 @@
         <item>+2</item>
     </string-array>
 
-    <string name="widget_hint">Um die Widget-Einstellungen zu ändern, klicken Sie auf die Beschriftung des Ereignisses ganz rechts:</string>
+    <string name="adv_hint">💡 Um auf weitere Einstellungen zuzugreifen, aktivieren Sie diese unter Allgemeine Einstellungen -> Extrafunktionen. Tippen Sie auf diesen Hinweis, um die App-Einstellungen zu öffnen</string>
+    <string name="widget_hint">💡 Um die Widget-Einstellungen zu ändern, klicken Sie auf die Beschriftung des Ereignisses ganz rechts:</string>
 
     <string name="widget_config_event_info_empty">Allgemeine Einstellungen verwenden</string>
 

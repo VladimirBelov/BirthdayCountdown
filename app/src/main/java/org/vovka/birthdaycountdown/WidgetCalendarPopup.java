@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 04.07.2026, 16:31
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:51
+ *  * Last modified 02.07.2026, 23:07
  *
  */
 package org.vovka.birthdaycountdown;
@@ -275,7 +275,7 @@ public class WidgetCalendarPopup extends Activity {
                 );
                 picker.setDialogTitle(getString(R.string.widget_calendar_popup_select_color_title));
                 picker.setDialogIcon(R.drawable.ic_menu_paste);
-                picker.selectColor(colorValue, colorDefaultValue, date, (id, color) -> {
+                picker.selectColor(colorValue, colorDefaultValue, true, date, (id, color) -> {
                     if (StringUtils.hasContent(id)) {
                         ToastExpander.showDebugMsg(getApplicationContext(),
                                 getString(R.string.msg_event_color_selected, Integer.toHexString(color & 0x00ffffff), id));

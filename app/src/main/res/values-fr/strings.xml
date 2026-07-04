@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.06.2026, 14:56
+  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 29.06.2026, 11:42
+  ~  * Last modified 04.07.2026, 16:22
   ~  */
   -->
 
@@ -934,7 +934,8 @@
         <item>+2</item>
     </string-array>
 
-    <string name="widget_hint">"Pour modifier les préférences du widget, cliquez sur la légende de l'événement le plus à droite:"</string>
+    <string name="adv_hint">"💡 Pour accéder aux paramètres supplémentaires, activez-les dans Paramètres généraux -> Fonctionnalités supplémentaires. Appuyez sur cette indication pour ouvrir les paramètres de l'application"</string>
+    <string name="widget_hint">"💡 Pour modifier les préférences du widget, cliquez sur la légende de l'événement le plus à droite:"</string>
 
     <string name="widget_config_event_info_empty">Utiliser les paramètres communs</string>
 

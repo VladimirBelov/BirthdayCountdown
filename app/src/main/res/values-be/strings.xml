@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.06.2026, 14:56
+  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 29.06.2026, 11:42
+  ~  * Last modified 04.07.2026, 16:16
   ~  */
   -->
 
@@ -934,7 +934,8 @@
         <item>+2</item>
     </string-array>
 
-    <string name="widget_hint">Каб адрэдагаваць налады віджэта, націсніце на подпіс самай правай падзеі:</string>
+    <string name="adv_hint">💡 Каб атрымаць доступ да дадатковых налад, уключыце іх у Агульныя налады -> Дадатковыя функцыі. Націсніце на гэтую падказку, каб адкрыць налады праграмы</string>
+    <string name="widget_hint">💡 Каб адрэдагаваць налады віджэта, націсніце на подпіс самай правай падзеі:</string>
 
     <string name="widget_config_event_info_empty">Выкарыстаць агульныя налады</string>
 

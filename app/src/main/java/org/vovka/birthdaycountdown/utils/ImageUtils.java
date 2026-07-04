@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 04.07.2026, 16:31
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 22:47
+ *  * Last modified 02.07.2026, 22:37
  *
  */
 
@@ -23,10 +23,12 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -625,6 +627,20 @@ public class ImageUtils {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             return null;
+        }
+    }
+
+    /** Возвращает ресурс бордюра для виджетов
+     * @return Бордюр
+     */
+    @DrawableRes
+    public static int getWidgetBorder() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
+            return R.drawable.layout_bg_36;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return R.drawable.layout_bg_31;
+        } else {
+            return R.drawable.layout_bg;
         }
     }
 }

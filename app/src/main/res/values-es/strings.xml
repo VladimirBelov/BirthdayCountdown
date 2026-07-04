@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.06.2026, 14:56
+  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 29.06.2026, 11:42
+  ~  * Last modified 04.07.2026, 16:20
   ~  */
   -->
 
@@ -318,7 +318,7 @@
     <string name="widget_msg_updated">"actualizado: "</string>
     <string name="widget_msg_events">"eventos: "</string>
 
-    <string name="pref_Common_title">General</string>
+    <string name="pref_Common_title">Configuración general</string>
     <string name="pref_Common_summary">Lengua, tema de color y otras configuraciones</string>
     <string name="pref_Language_title">Lengua</string>
     <string name="pref_Language_description">Idioma de la interfaz y datos mostrados</string>
@@ -934,7 +934,8 @@
         <item>+2</item>
     </string-array>
 
-    <string name="widget_hint">Para editar la configuración del widget, haga clic en la firma del evento más a la derecha:</string>
+    <string name="adv_hint">💡 Para acceder a ajustes adicionales, actívalos en Configuración general -> Funciones extra. Toca esta sugerencia para abrir los ajustes de la aplicación</string>
+    <string name="widget_hint">💡 Para editar la configuración del widget, haga clic en la firma del evento más a la derecha:</string>
 
     <string name="widget_config_event_info_empty">Usar configuración general</string>
 

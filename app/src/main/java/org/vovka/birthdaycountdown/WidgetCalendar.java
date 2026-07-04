@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 04.07.2026, 16:31
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:51
+ *  * Last modified 02.07.2026, 22:34
  *
  */
 
@@ -512,17 +512,8 @@ public class WidgetCalendar extends AppWidgetProvider {
             todayWeekday = cal.get(Calendar.DAY_OF_WEEK);
 
             //Бордюр
-            if (drawBorder) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
-                    rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg_36);
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg_31);
-                } else {
-                    rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg);
-                }
-            } else {
-                rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, 0);
-            }
+            rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, drawBorder ? ImageUtils.getWidgetBorder() : 0);
+
             //Фон
             rv.setInt(R.id.calendarBack, Constants.METHOD_SET_BACKGROUND_COLOR, colorWidgetBackground);
 

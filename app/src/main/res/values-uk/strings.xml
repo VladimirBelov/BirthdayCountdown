@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.06.2026, 14:56
+  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 29.06.2026, 11:43
+  ~  * Last modified 04.07.2026, 16:31
   ~  */
   -->
 
@@ -318,7 +318,7 @@
     <string name="widget_msg_updated">"оновлено: "</string>
     <string name="widget_msg_events">"події: "</string>
 
-    <string name="pref_Common_title">Загальні</string>
+    <string name="pref_Common_title">Загальні налаштування</string>
     <string name="pref_Common_summary">Мова, колірна тема та інші налаштування</string>
     <string name="pref_Language_title">Мова</string>
     <string name="pref_Language_description">Мова інтерфейсу та відображених даних</string>
@@ -934,7 +934,8 @@
         <item>+2</item>
     </string-array>
 
-    <string name="widget_hint">Щоб змінити налаштування віджетів, натисніть на підпис подiї праворуч:</string>
+    <string name="adv_hint">💡 Щоб отримати доступ до додаткових налаштувань, увімкніть їх у Загальних налаштуваннях -> Додаткові функції. Натисніть цю підказку, щоб відкрити налаштування програми</string>
+    <string name="widget_hint">💡 Щоб змінити налаштування віджетів, натисніть на підпис подiї праворуч:</string>
 
     <string name="widget_config_event_info_empty">Використовувати загальні налаштування</string>
 

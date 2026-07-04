@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 04.07.2026, 16:31
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 02.07.2026, 23:07
  *
  */
 package org.vovka.birthdaycountdown;
@@ -63,6 +63,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
     private int[] mColorChoices = {};
     private int mValue = 0;
     private int mDefaultValue = 0;
+    private boolean mEnableCustomColors = true;
     private int mItemLayoutId = R.layout.item_color;
     private int mNumColumns = 5;
     private String mSelectDialogTitle = "";
@@ -171,14 +172,23 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
     public void onClick(View v) {
         try {
             // Вызов без слушателя, если кликнули просто по view (например, в настройках)
-            selectColor(0, 0, null, null);
+            selectColor(0, 0, true, null, null);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
-    void selectColor(@ColorInt int initValue, @ColorInt int defaultValue, String idToPass, OnColorSelectedListener listener) {
+    /**
+     * Выбор цвета
+     *
+     * @param initValue          Начальное значение
+     * @param defaultValue       Значение по-умолчанию
+     * @param enableCustomColors Включить возможность выбирать пользовательские цвета
+     * @param idToPass           Id для возврата результата
+     * @param listener           Интерфейс возврата результата
+     */
+    void selectColor(@ColorInt int initValue, @ColorInt int defaultValue, boolean enableCustomColors, String idToPass, OnColorSelectedListener listener) {
         try {
 
             View rootView = View.inflate(new ContextThemeWrapper(context, eventsData.preferences_theme.themeMain), R.layout.dialog_colors, null);
@@ -194,16 +204,19 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             if (defaultValue != 0) {
                 mDefaultValue = defaultValue;
             }
+            mEnableCustomColors = enableCustomColors;
 
             AlertDialog.Builder colorDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), eventsData.preferences_theme.themeDialog))
                     .setTitle(mSelectDialogTitle)
                     .setIcon(mSelectDialogIcon)
                     .setView(rootView);
 
-            colorDialogBuilder.setNeutralButton(R.string.button_rgb, (dialog, which) -> {
-                dialog.dismiss();
-                selectRGBColor(initValue, defaultValue, idToPass, listener);
-            });
+            if (mEnableCustomColors) {
+                colorDialogBuilder.setNeutralButton(R.string.button_rgb, (dialog, which) -> {
+                    dialog.dismiss();
+                    selectRGBColor(initValue, defaultValue, idToPass, listener);
+                });
+            }
             if (mDefaultValue != 0 && mDefaultValue != mAdapter.mSelectedColor) {
                 colorDialogBuilder.setPositiveButton(R.string.button_reset, (dialog, which) -> {
                     setColor(mDefaultValue);
@@ -669,13 +682,15 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     mChoices.add(color);
                 }
 
-                if (!mChoices.contains(mValue)) {
-                    mChoices.add(mValue);
-                }
+                if (mEnableCustomColors) {
+                    if (!mChoices.contains(mValue)) {
+                        mChoices.add(mValue);
+                    }
 
-                for (int valueInt : eventsData.preferences_RecentColors) {
-                    if (!mChoices.contains(valueInt)) {
-                        mChoices.add(valueInt);
+                    for (int valueInt : eventsData.preferences_RecentColors) {
+                        if (!mChoices.contains(valueInt)) {
+                            mChoices.add(valueInt);
+                        }
                     }
                 }
 

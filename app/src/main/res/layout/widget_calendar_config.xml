@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.06.2026, 22:04
+  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.06.2026, 21:47
+  ~  * Last modified 04.07.2026, 15:36
   ~  */
   -->
 
@@ -619,6 +619,33 @@
 
             </LinearLayout>
         </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/hints"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_above="@id/layout_buttons" >
+
+            <View
+                android:id="@+id/hints_divider"
+                android:layout_width="100dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:background="?attr/colorAccent" />
+
+            <TextView
+                android:id="@+id/adv_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:textStyle="bold"
+                android:text="@string/adv_hint"
+                android:textColor="?android:attr/textColorSecondary" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layout_buttons"

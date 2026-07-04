@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.06.2026, 14:56
+  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 29.06.2026, 11:43
+  ~  * Last modified 03.07.2026, 00:22
   ~  */
   -->
 
@@ -934,7 +934,8 @@
         <item>+2</item>
     </string-array>
 
-    <string name="widget_hint">Чтобы отредактировать настройки виджета, нажмите на подпись самого правого события:</string>
+    <string name="adv_hint">💡 Для появления дополнительных настроек включите их в Общие настройки -> Доп. функции. Нажмите на эту подсказку, чтобы открыть настройки приложения</string>
+    <string name="widget_hint">💡 Чтобы отредактировать настройки виджета, нажмите на подпись самого правого события:</string>
 
     <string name="widget_config_event_info_empty">Использовать установки из настроек приложения</string>
 

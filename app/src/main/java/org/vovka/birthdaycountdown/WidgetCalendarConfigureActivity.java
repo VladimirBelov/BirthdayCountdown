@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 04.07.2026, 16:31
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 04.07.2026, 16:03
  *
  */
 
@@ -501,6 +501,12 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 colorWeeksPicker.setColor(colorWeeks);
             } catch (final Exception e) { /**/ }
 
+            findViewById(R.id.adv_hint).setOnClickListener(v -> {
+                try {
+                    startActivity(new Intent(this, SettingsActivity.class));
+                } catch (ActivityNotFoundException e) { /**/ }
+            });
+
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -631,12 +637,12 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             prefsToStore.add(eventSources); //Источники событий (через +)
             prefsToStore.add(fontMagnify); //Размер шрифта
             prefsToStore.add(selectedWidgetBackground); //Цвет подложки
-            prefsToStore.add(selectedCommon); //Обычные дни
-            prefsToStore.add(selectedMonthTitle); //Заголовок
+            prefsToStore.add(selectedCommon); //Цвет обычных дней
+            prefsToStore.add(selectedMonthTitle); //Цвет заголовка
             prefsToStore.add(selectedHeaderBack); //Фон заголовка
-            prefsToStore.add(selectedArrows); //Стрелки
-            prefsToStore.add(selectedWeeks); //Дни недели
-            prefsToStore.add(selectedToday); //Сегодня
+            prefsToStore.add(selectedArrows); //Цвет стрелок
+            prefsToStore.add(selectedWeeks); //Цвет дней недели
+            prefsToStore.add(selectedToday); //Цвет дня сегодня
             prefsToStore.add(TextUtils.join(Constants.STRING_PLUS, listColors)); //Цвета календарей
             prefsToStore.add(selectedOnClick); //Действие на нажатие
 
@@ -936,7 +942,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         }
                         picker.setDialogTitle(eventSourcesTitles.get(position));
                         picker.setDialogIcon(R.drawable.ic_menu_paste);
-                        picker.selectColor(colorValue, colorDefault, sourceId, (sourceIdToSave, newColorValue) -> {
+                        picker.selectColor(colorValue, colorDefault, true, sourceId, (sourceIdToSave, newColorValue) -> {
                             if (!TextUtils.isEmpty(sourceIdToSave)) {
                                 ToastExpander.showDebugMsg(getApplicationContext(), getString(R.string.msg_event_color_selected, Integer.toHexString(newColorValue & 0x00ffffff), sourceIdToSave));
                                 eventSourcesColors.put(sourceIdToSave, newColorValue);
@@ -977,6 +983,34 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 valueFontMagnify.setPaintFlags(currentPaintFlags | Paint.STRIKE_THRU_TEXT_FLAG);
                 blockFontMagnifyManual.setVisibility(View.VISIBLE);
             }
+
+            boolean isAdvSettings = eventsData.isFeatureEnabled(Constants.FEATURE_WIDGETS_MORE_SETTINGS);
+            int advSettingsVisibility = isAdvSettings ? View.VISIBLE : View.GONE;
+
+            //Скрываем реакцию на нажатие
+            findViewById(R.id.dividerOnClick).setVisibility(advSettingsVisibility);
+            findViewById(R.id.captionOnClick).setVisibility(advSettingsVisibility);
+            findViewById(R.id.blockOnClickCommon).setVisibility(advSettingsVisibility);
+            findViewById(R.id.blockOnClickHolidays).setVisibility(advSettingsVisibility);
+
+            //Скрываем изменения цвета
+            findViewById(R.id.dividerColorWidgetBackground).setVisibility(advSettingsVisibility);
+            findViewById(R.id.colorWidgetBackground).setVisibility(advSettingsVisibility);
+            findViewById(R.id.dividerColorCommon).setVisibility(advSettingsVisibility);
+            findViewById(R.id.colorCommon).setVisibility(advSettingsVisibility);
+            findViewById(R.id.dividerColorToday).setVisibility(advSettingsVisibility);
+            findViewById(R.id.colorToday).setVisibility(advSettingsVisibility);
+            findViewById(R.id.dividerColorHeader).setVisibility(advSettingsVisibility);
+            findViewById(R.id.colorMonthTitle).setVisibility(advSettingsVisibility);
+            findViewById(R.id.dividerColorHeaderBack).setVisibility(advSettingsVisibility);
+            findViewById(R.id.colorHeaderBack).setVisibility(advSettingsVisibility);
+            findViewById(R.id.dividerColorArrows).setVisibility(advSettingsVisibility);
+            findViewById(R.id.colorArrows).setVisibility(advSettingsVisibility);
+            findViewById(R.id.dividerColorWeeks).setVisibility(advSettingsVisibility);
+            findViewById(R.id.colorWeeks).setVisibility(advSettingsVisibility);
+
+            //Подсказки
+            findViewById(R.id.hints).setVisibility(isAdvSettings ? View.GONE : View.VISIBLE);
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);

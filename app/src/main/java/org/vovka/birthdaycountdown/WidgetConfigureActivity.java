@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 04.07.2026, 16:31
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 04.07.2026, 15:57
  *
  */
 
@@ -41,7 +41,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.transition.TransitionManager;
 
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
@@ -582,10 +581,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 ColorPicker picker = new ColorPicker(this);
                 TextView captionCaptionsUpperColor = findViewById(R.id.captionCaptionsUpperColor);
                 captionCaptionsUpperColor.setOnClickListener(v ->
-                        picker.selectColor(colorCaptionUpper, eventsData.preferences_widgets_color_default, UPPER_ROW, this::updateSelectedColor));
+                        picker.selectColor(colorCaptionUpper, eventsData.preferences_widgets_color_default, true, UPPER_ROW, this::updateSelectedColor));
                 TextView captionCaptionsBottomColor = findViewById(R.id.captionCaptionsBottomColor);
                 captionCaptionsBottomColor.setOnClickListener(v ->
-                        picker.selectColor(colorCaptionBottom, eventsData.preferences_widgets_color_default, BOTTOM_ROW, this::updateSelectedColor));
+                        picker.selectColor(colorCaptionBottom, eventsData.preferences_widgets_color_default, true, BOTTOM_ROW, this::updateSelectedColor));
 
             }
 
@@ -695,6 +694,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                                 updateEventSources();
                             })
             );
+
+            findViewById(R.id.adv_hint).setOnClickListener(v -> {
+                try {
+                    startActivity(new Intent(this, SettingsActivity.class));
+                } catch (ActivityNotFoundException e) { /**/ }
+            });
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -844,6 +849,15 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private void updateVisibility() {
         try {
 
+            boolean isAdvSettings = eventsData.isFeatureEnabled(Constants.FEATURE_WIDGETS_MORE_SETTINGS);
+
+            //https://habr.com/ru/articles/243363/
+            androidx.transition.AutoTransition transition = new androidx.transition.AutoTransition();
+            // Исключаем скрытые спиннеры из анимации изменения границ
+            transition.excludeTarget(R.id.spinnerCaptionsUpper, true);
+            transition.excludeTarget(R.id.spinnerCaptionsBottom, true);
+            androidx.transition.TransitionManager.beginDelayedTransition(findViewById(R.id.layout_main), transition);
+
             if (!Constants.WIDGET_TYPE_5X1.equals(widgetType)) {
                 findViewById(R.id.blockLayout).setVisibility(View.GONE);
             }
@@ -873,24 +887,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 findViewById(R.id.blockOnClickLastEvent).setVisibility(View.GONE);
             }
 
-            if (!eventsData.isFeatureEnabled(Constants.FEATURE_WIDGETS_MORE_SETTINGS)) {
-
-                findViewById(R.id.blockEventShift).setVisibility(View.GONE);
-
-                //Скрываем заголовок виджета
-                findViewById(R.id.dividerCustomWidgetCaption).setVisibility(View.GONE);
-                findViewById(R.id.captionCustomWidgetCaption).setVisibility(View.GONE);
-                findViewById(R.id.editCustomWidgetCaption).setVisibility(View.GONE);
-                findViewById(R.id.hintCustomWidgetCaption).setVisibility(View.GONE);
-
-                //Скрываем своё сообщение об отсутствии событий
-                findViewById(R.id.dividerCustomZeroEventsMessage).setVisibility(View.GONE);
-                findViewById(R.id.captionCustomZeroEventsMessage).setVisibility(View.GONE);
-                findViewById(R.id.editCustomZeroEventsMessage).setVisibility(View.GONE);
-                findViewById(R.id.hintCustomZeroEventsMessage).setVisibility(View.GONE);
-
-            }
-
             if (!eventsData.isFeatureEnabled(Constants.FEATURE_SELECT_SOURCES)) {
                 //Источники событий
                 findViewById(R.id.dividerEventSources).setVisibility(View.GONE);
@@ -910,26 +906,18 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
-            if (this.eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + this.widgetId)
-                    || Constants.WIDGET_TYPE_LIST.equals(widgetType)
-                    || Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType)) {
-
-                //Скрываем фото подсказку для существующих виджетов
-                findViewById(R.id.widget_hint).setVisibility(View.GONE);
-
-            }
-
             //Параметры заголовков
             CheckBox checkCaptionsUsePrefs = findViewById(R.id.checkCaptionsUsePrefs);
-            int visibilityCaptionsPrefs = checkCaptionsUsePrefs.isChecked() ? View.GONE : View.VISIBLE;
-            //https://habr.com/ru/articles/243363/
-            TransitionManager.beginDelayedTransition(findViewById(R.id.layout_main));
-            findViewById(R.id.blockCaptionsUpper).setVisibility(visibilityCaptionsPrefs);
+            int advSettingsVisibility = isAdvSettings ? View.VISIBLE : View.GONE;
+            int visibilityCaptionsTitles = checkCaptionsUsePrefs.isChecked() ? View.GONE : View.VISIBLE;
+            int visibilityCaptionsPrefs = checkCaptionsUsePrefs.isChecked() | !isAdvSettings ? View.GONE : View.VISIBLE;
+
+            findViewById(R.id.blockCaptionsUpper).setVisibility(visibilityCaptionsTitles);
             findViewById(R.id.blockCaptionsUpperAligning).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsUpperRows).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsUpperFontStyle).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsUpperSize).setVisibility(visibilityCaptionsPrefs);
-            findViewById(R.id.blockCaptionsBottom).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsBottom).setVisibility(visibilityCaptionsTitles);
             findViewById(R.id.blockCaptionsBottomAligning).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsBottomRows).setVisibility(visibilityCaptionsPrefs);
             findViewById(R.id.blockCaptionsBottomFontStyle).setVisibility(visibilityCaptionsPrefs);
@@ -957,6 +945,49 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             if (isNewPinnedWidget) {
                 findViewById(R.id.button_cancel).setVisibility(View.GONE);
+            }
+
+            //Доп. настройки
+            findViewById(R.id.blockEventShift).setVisibility(advSettingsVisibility);
+
+            //Скрываем заголовок виджета
+            findViewById(R.id.dividerCustomWidgetCaption).setVisibility(advSettingsVisibility);
+            findViewById(R.id.captionCustomWidgetCaption).setVisibility(advSettingsVisibility);
+            findViewById(R.id.editCustomWidgetCaption).setVisibility(advSettingsVisibility);
+            findViewById(R.id.hintCustomWidgetCaption).setVisibility(advSettingsVisibility);
+
+            //Скрываем своё сообщение об отсутствии событий
+            findViewById(R.id.dividerCustomZeroEventsMessage).setVisibility(advSettingsVisibility);
+            findViewById(R.id.captionCustomZeroEventsMessage).setVisibility(advSettingsVisibility);
+            findViewById(R.id.editCustomZeroEventsMessage).setVisibility(advSettingsVisibility);
+            findViewById(R.id.hintCustomZeroEventsMessage).setVisibility(advSettingsVisibility);
+
+            //Скрываем доп. параметры ограничения объёма событий
+            findViewById(R.id.blockScopeEventsCount).setVisibility(advSettingsVisibility);
+            findViewById(R.id.blockLayout).setVisibility(advSettingsVisibility);
+
+            //Скрываем реакцию на нажатие
+            findViewById(R.id.dividerOnClick).setVisibility(advSettingsVisibility);
+            findViewById(R.id.captionOnClick).setVisibility(advSettingsVisibility);
+            findViewById(R.id.blockOnClickCommon).setVisibility(advSettingsVisibility);
+            findViewById(R.id.blockOnClickLastEvent).setVisibility(advSettingsVisibility);
+
+            //Скрываем изменения цвета
+            findViewById(R.id.dividerWidgetBackgroundColor).setVisibility(advSettingsVisibility);
+            findViewById(R.id.colorWidgetBackgroundColor).setVisibility(advSettingsVisibility);
+
+            //Подсказки
+            findViewById(R.id.adv_hint).setVisibility(isAdvSettings ? View.GONE : View.VISIBLE);
+            if (this.eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + this.widgetId)
+                    || Constants.WIDGET_TYPE_LIST.equals(widgetType)
+                    || Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType)) {
+
+                //Скрываем фото подсказку для существующих виджетов
+                findViewById(R.id.widget_hint).setVisibility(View.GONE);
+
+                if (advSettingsVisibility != View.GONE) {
+                    findViewById(R.id.hints).setVisibility(View.GONE);
+                }
             }
 
         } catch (final Exception e) {
@@ -1168,6 +1199,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         eventsData.initLanguage(this);
         if (!localeAtCreate.equals(eventsData.currentLocale)) {
             recreate();
+        } else {
+            updateVisibility();
         }
     }
     @Override

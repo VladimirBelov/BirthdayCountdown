@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.06.2026, 14:56
+  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 29.06.2026, 11:42
+  ~  * Last modified 04.07.2026, 16:23
   ~  */
   -->
 
@@ -934,7 +934,8 @@
         <item>+2</item>
     </string-array>
 
-    <string name="widget_hint">Aby edytować ustawienia widżetu, kliknij sygnaturę wydarzenia znajdującą się najbardziej po prawej stronie:</string>
+    <string name="adv_hint">💡 Aby uzyskać dostęp do dodatkowych ustawień, włącz je w Ustawienia wspólne -> Dodatkowe funkcje. Dotknij tej wskazówki, aby otworzyć ustawienia aplikacji</string>
+    <string name="widget_hint">💡 Aby edytować ustawienia widżetu, kliknij sygnaturę wydarzenia znajdującą się najbardziej po prawej stronie:</string>
 
     <string name="widget_config_event_info_empty">Użyj ustawień z ustawień aplikacji</string>
 
