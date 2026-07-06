@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.07.2026, 21:13
+ *  * Created by Vladimir Belov on 06.07.2026, 23:10
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.07.2026, 21:07
+ *  * Last modified 06.07.2026, 22:39
  *
  */
 
@@ -10301,9 +10301,9 @@ public class ContactsEvents {
                 }
                 if (preferences_DaysInfo.containsKey(key_noYear) && preferences_DaysInfo.get(key_noYear) != null) {
                     String[] eventsList = StringUtils.getNotNullString(preferences_DaysInfo.get(key_noYear)).split(Constants.STRING_EOT, -1);
-                    final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(context.getString(R.string.event_type_anniversary));
+                    //final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(context.getString(R.string.event_type_anniversary));
                     for (String eventInfo : eventsList) {
-                        if (!eventInfo.contains(weddingPrefix)) {
+                        /*if (!eventInfo.contains(weddingPrefix)) {
                             //Для событий без года заменяем дату в скобках на год из day
                             int indParOpen = eventInfo.lastIndexOf(Constants.STRING_PARENTHESIS_OPEN);
                             int indParClose = eventInfo.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
@@ -10312,7 +10312,7 @@ public class ContactsEvents {
                                         + StringUtils.substringBefore(day, Constants.STRING_MINUS)
                                         + eventInfo.substring(indParClose);
                             }
-                        }
+                        }*/
 
                         dayInfo.add(Constants.FONT_COLOR_DOT_START + colorRGB + Constants.FONT_COLOR_DOT_END + eventInfo);
                     }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.07.2026, 21:13
+ *  * Created by Vladimir Belov on 06.07.2026, 23:10
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.07.2026, 19:35
+ *  * Last modified 06.07.2026, 23:06
  *
  */
 
@@ -991,23 +991,28 @@ public class WidgetCalendar extends AppWidgetProvider {
                 if (!allEventsThisDay.isEmpty()) {
                     //Подставляем в годовщину свадьбы её название
                     final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(context.getString(R.string.event_type_anniversary));
+                    final String birthdayPrefix = Constants.eventTitleFavoritePrefix.concat(context.getString(R.string.event_type_birthday));
                     for (int i = 0; i < allEventsThisDay.size(); i++) {
                         String event = allEventsThisDay.get(i);
-                        if (!event.contains(weddingPrefix)) continue;
-
-                        //Вытаскиваем год первоначального события
                         int indParOpen = event.lastIndexOf(Constants.STRING_PARENTHESIS_OPEN);
                         int indParClose = event.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
                         if (indParOpen > -1 && indParClose > -1) {
-                            String strYear = event.substring(indParOpen + Constants.STRING_PARENTHESIS_OPEN.length(), indParClose);
-                            try {
-                                int year = Integer.parseInt(strYear);
-                                String anCaption = StringUtils.getWeddingName(cal.get(Calendar.YEAR) - year, eventsData.getContext(), eventsData.getResources());
-                                if (StringUtils.hasContent(anCaption)) {
-                                    allEventsThisDay.set(i, event.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption)
-                                            .concat(Constants.STRING_PARENTHESIS_CLOSE));
-                                }
-                            } catch (NumberFormatException ignored) { /**/ }
+                            int indMinus = event.indexOf(Constants.STRING_MINUS, indParOpen);
+                            if (event.contains(weddingPrefix)) {
+                                //Подставляем в годовщину свадьбы её название
+                                String strYear = event.substring(indParOpen + Constants.STRING_PARENTHESIS_OPEN.length(), indParClose);
+                                try {
+                                    int year = Integer.parseInt(strYear);
+                                    String anCaption = StringUtils.getWeddingName(cal.get(Calendar.YEAR) - year, eventsData.getContext(), eventsData.getResources());
+                                    if (StringUtils.hasContent(anCaption)) {
+                                        allEventsThisDay.set(i, event.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption)
+                                                .concat(Constants.STRING_PARENTHESIS_CLOSE));
+                                    }
+                                } catch (NumberFormatException ignored) { /**/ }
+                            } else if (indMinus == -1 && !event.contains(birthdayPrefix)) {
+                                //Если событие на один день - удаляем год в скобках
+                                allEventsThisDay.set(i, event.substring(0, indParOpen));
+                            }
                         }
                     }
 
