@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.07.2026, 16:31
+ *  * Created by Vladimir Belov on 06.07.2026, 21:13
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.07.2026, 16:03
+ *  * Last modified 06.07.2026, 19:01
  *
  */
 
@@ -63,6 +63,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Этот класс предоставляет активность конфигурации для виджета "Календарь".
@@ -674,6 +675,8 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
         eventsData.initLanguage(this);
         if (!localeAtCreate.equals(eventsData.currentLocale)) {
             recreate();
+        } else {
+            updateVisibility();
         }
     }
 
@@ -721,6 +724,20 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private static class Source {
+        final String packPrefix;
+        final Set<String> prefSelected;
+
+        /**
+         * @param packPrefix Префикс массива событий в ресурсах
+         * @param prefSelected Выбранные в настройках приложения источники
+         */
+        public Source(@NonNull String packPrefix, @NonNull Set<String> prefSelected) {
+            this.packPrefix = packPrefix;
+            this.prefSelected = prefSelected;
+        }
+    }
+
     @SuppressLint("DiscouragedApi")
     private void getEventSources() {
         try {
@@ -741,19 +758,28 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             eventSourcesTitles.add(getString(R.string.widget_config_events_favorites));
 
             //Справочники праздников и выходных
-            int eventsPackCount = 1;
-            int packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
-            while (packId > 0) {
-                try {
-                    String[] eventsPack = getResources().getStringArray(packId);
+            final ArrayList<Source> sources = new ArrayList<>();
+            sources.add(new Source(Constants.STRING_TYPE_HOLIDAY, eventsData.preferences_HolidayEvent_ids));
+            sources.add(new Source(Constants.STRING_TYPE_OTHER_HOLIDAY, eventsData.preferences_HolidayEvent_Other_ids));
 
-                    eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]));
-                    eventSourcesTitles.add(eventsPack[0]);
+            for (Source source: sources) {
+                int eventsPackCount = 1;
+                int packId = getResources().getIdentifier(source.packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+                while (packId > 0) {
+                    try {
+                        String[] eventsPack = getResources().getStringArray(packId);
+                        String packHash = StringUtils.getHash(Constants.eventSourceHolidayPrefix + eventsPack[0]);
 
-                } catch (Resources.NotFoundException ignored) { /**/ }
+                        if (source.prefSelected.contains(packHash)) {
+                            eventSourcesIds.add(packHash);
+                            eventSourcesTitles.add(eventsPack[0]);
+                        }
 
-                eventsPackCount++;
-                packId = getResources().getIdentifier(Constants.STRING_TYPE_HOLIDAY + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+                    } catch (Resources.NotFoundException ignored) { /**/ }
+
+                    eventsPackCount++;
+                    packId = getResources().getIdentifier(source.packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+                }
             }
 
             //Локальные события

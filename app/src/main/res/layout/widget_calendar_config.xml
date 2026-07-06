@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
+  ~  * Created by Vladimir Belov on 06.07.2026, 21:13
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.07.2026, 15:36
+  ~  * Last modified 05.07.2026, 09:55
   ~  */
   -->
 
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="true"
             android:fadeScrollbars="true"
-            android:layout_above="@id/layout_buttons"
+            android:layout_above="@id/hints"
             android:layout_alignParentTop="true">
 
             <LinearLayout

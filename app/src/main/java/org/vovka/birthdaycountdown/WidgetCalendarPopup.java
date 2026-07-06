@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.07.2026, 16:31
+ *  * Created by Vladimir Belov on 06.07.2026, 21:13
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.07.2026, 23:07
+ *  * Last modified 06.07.2026, 19:21
  *
  */
 package org.vovka.birthdaycountdown;
@@ -381,6 +381,7 @@ public class WidgetCalendarPopup extends Activity {
                             }
                             //Заполнение типов дней из справочников
                             eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
+                            eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
                             //Заполнение типов дней из файлов
                             eventsData.fillDaysTypesFromFiles(listEventsPacks);
                         }

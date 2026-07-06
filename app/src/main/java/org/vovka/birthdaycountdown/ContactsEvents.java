@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 06.07.2026, 21:13
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 30.06.2026, 00:10
+ *  * Last modified 06.07.2026, 21:07
  *
  */
 
@@ -6587,7 +6587,7 @@ public class ContactsEvents {
 
                 String anCaption = singleEventArray[Position_eventCaption];
                 // Если это годовщина свадьбы - убираем название свадьбы. Оно будет вычислено
-                // для конкретного для в {@link WidgetCalendar}
+                // для конкретного дня в {@link WidgetCalendar}
                 if (eventType.equals(Constants.EventType_Anniversary)) {
                     anCaption = eventCaption;
                 }
@@ -10301,7 +10301,19 @@ public class ContactsEvents {
                 }
                 if (preferences_DaysInfo.containsKey(key_noYear) && preferences_DaysInfo.get(key_noYear) != null) {
                     String[] eventsList = StringUtils.getNotNullString(preferences_DaysInfo.get(key_noYear)).split(Constants.STRING_EOT, -1);
+                    final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(context.getString(R.string.event_type_anniversary));
                     for (String eventInfo : eventsList) {
+                        if (!eventInfo.contains(weddingPrefix)) {
+                            //Для событий без года заменяем дату в скобках на год из day
+                            int indParOpen = eventInfo.lastIndexOf(Constants.STRING_PARENTHESIS_OPEN);
+                            int indParClose = eventInfo.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                            if (indParOpen > -1 && indParClose > -1) {
+                                eventInfo = eventInfo.substring(0, indParOpen + Constants.STRING_PARENTHESIS_OPEN.length())
+                                        + StringUtils.substringBefore(day, Constants.STRING_MINUS)
+                                        + eventInfo.substring(indParClose);
+                            }
+                        }
+
                         dayInfo.add(Constants.FONT_COLOR_DOT_START + colorRGB + Constants.FONT_COLOR_DOT_END + eventInfo);
                     }
                 }
@@ -10351,11 +10363,11 @@ public class ContactsEvents {
                                 String[] events = eventsArray.split(Constants.STRING_EOL, -1);
 
                                 String titlePrefix = Constants.STRING_EMPTY;
-                                if (StringUtils.hasContent(eventPrefix)) {
+                                String eventEmoji = StringUtils.extractLeadingEmoji(eventsPack[0]);
+                                if (StringUtils.hasContent(eventEmoji)) {
+                                    titlePrefix = eventEmoji + Constants.STRING_SPACE;
+                                } else if (StringUtils.hasContent(eventPrefix)) {
                                     titlePrefix = eventPrefix;
-                                }
-                                if (eventsPack[0].indexOf(Constants.STRING_SPACE) == 4) {
-                                    titlePrefix = eventsPack[0].substring(0, eventsPack[0].indexOf(Constants.STRING_SPACE) + 1);
                                 }
                                 fillDaysTypesFromFile(packHash, events, titlePrefix, DayType.Type.Common);
                             }
@@ -11034,6 +11046,12 @@ public class ContactsEvents {
             final int eventIcon;
             final Set<String> prefSelected;
 
+            /**
+             * @param packPrefix Префикс массива событий в ресурсах
+             * @param eventIdHashPrefix Префикс ID для hash
+             * @param eventIcon Иконка событий из этого источника
+             * @param prefSelected Выбранные в настройках приложения источники
+             */
             public Source(@NonNull String packPrefix, @NonNull String eventIdHashPrefix,
                           @DrawableRes int eventIcon, @NonNull Set<String> prefSelected) {
                 this.packPrefix = packPrefix;

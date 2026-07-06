@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.07.2026, 16:31
+ *  * Created by Vladimir Belov on 06.07.2026, 21:13
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.07.2026, 22:34
+ *  * Last modified 06.07.2026, 19:35
  *
  */
 
@@ -95,6 +95,7 @@ public class WidgetCalendar extends AppWidgetProvider {
     private boolean atLeastOneDayInMonth;
     private int rowsToDraw = 4;
     private int columnsToDraw = 3;
+    private SimpleDateFormat sdfWeekDay = new SimpleDateFormat(" (EEE)", Locale.getDefault());
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -195,6 +196,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             eventsData.initLanguage(context);
             this.context = eventsData.getContext();
             this.res = eventsData.getResources();
+            sdfWeekDay = new SimpleDateFormat(" (EEE)", Locale.forLanguageTag(eventsData.currentLocale));
 
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 eventsData.getEvents();
@@ -596,6 +598,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay);
                 //Заполнение типов дней из справочников
                 eventsData.fillDaysTypesFromHolidays(prefOtherEvents, Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
+                eventsData.fillDaysTypesFromHolidays(prefOtherEvents, Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
                 //Заполнение типов дней из файлов
                 eventsData.fillDaysTypesFromFiles(prefOtherEvents);
             }
@@ -870,7 +873,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (!dayTypes.isEmpty()) {
                 int maxTypeIndex = -1;
                 for (ContactsEvents.DayType dayType : dayTypes) {
-                    if (dayType.type != ContactsEvents.DayType.Type.Common) {
+                    //if (dayType.type != ContactsEvents.DayType.Type.Common) {
                         if (prefOtherEvents.indexOf(dayType.sourceId) > maxTypeIndex) {
                             Integer colorOfDay;
                             if (inMonth) {
@@ -891,7 +894,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 if (dayType.type == ContactsEvents.DayType.Type.Holiday) break; //Нашли праздник
                             }
                         }
-                    }
+                    //}
                 }
             }
             if (!isColoredByEvent && colorizeSaturdays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
@@ -1012,14 +1015,13 @@ public class WidgetCalendar extends AppWidgetProvider {
                 }
 
                 Intent intent = new Intent(context, WidgetCalendarPopup.class);
-                SimpleDateFormat sdf = new SimpleDateFormat(" (EEE)", Locale.getDefault());
 
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 intent.putExtra(Constants.EXTRA_DAY_CAPTION,  context.getString(R.string.month_event_popup_prefix)
                         .concat(AppDateUtils.getDateFormatted(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime()),
                                 ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
                                 eventsData.getResources(), eventsData.currentLocale))
-                        .concat(sdf.format(cal.getTime())));
+                        .concat(sdfWeekDay.format(cal.getTime())));
                 intent.putExtra(Constants.EXTRA_DAY_INFO, dayInfo);
                 intent.putExtra(Constants.EXTRA_VALUES, Long.toString(cal.getTimeInMillis()));
                 intent.putStringArrayListExtra(Constants.EXTRA_LIST, prefOtherEvents);
@@ -1028,7 +1030,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 intent.putExtra(Constants.EXTRA_DAY2, calLastDay);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,
+                pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.YEAR) * 1000 + cal.get(Calendar.DAY_OF_YEAR), intent,
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
             } else if (action == Constants.onClick_Calendar) {
@@ -1037,7 +1039,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 builder.appendPath(Long.toString(cal.getTimeInMillis()));
                 Intent intent = new Intent(Intent.ACTION_VIEW, builder.build());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.DAY_OF_YEAR), intent,
+                pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.YEAR) * 1000 + cal.get(Calendar.DAY_OF_YEAR), intent,
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             }
 
