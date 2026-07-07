@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 07.07.2026, 23:43
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 07.07.2026, 19:00
+  ~  */
+  -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#00000000"/>
+    <stroke android:width="1dp" android:color="@color/white" />
+    <corners android:radius="10dp"/>
+</shape>

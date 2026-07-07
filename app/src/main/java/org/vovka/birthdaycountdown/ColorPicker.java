@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.07.2026, 16:31
+ *  * Created by Vladimir Belov on 07.07.2026, 23:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.07.2026, 23:07
+ *  * Last modified 07.07.2026, 19:33
  *
  */
 package org.vovka.birthdaycountdown;
@@ -113,6 +113,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             if (choicesResId > 0) {
                 mColorChoices = ta.getResources().getIntArray(choicesResId);
             }
+            mEnableCustomColors = ta.getBoolean(R.styleable.ColorPreference_enableCustomColors, mEnableCustomColors);
 
             if (ta.hasValue(R.styleable.ColorPreference_title)) {
                 int id = getResources().getIdentifier(Constants.EXTRA_TITLE, Constants.RES_TYPE_ID, Constants.RES_PACKAGE_ANDROID);
@@ -172,7 +173,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
     public void onClick(View v) {
         try {
             // Вызов без слушателя, если кликнули просто по view (например, в настройках)
-            selectColor(0, 0, true, null, null);
+            selectColor(0, 0, mEnableCustomColors, null, null);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);

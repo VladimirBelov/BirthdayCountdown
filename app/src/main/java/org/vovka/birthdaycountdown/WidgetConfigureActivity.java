@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.07.2026, 16:31
+ *  * Created by Vladimir Belov on 07.07.2026, 23:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.07.2026, 15:57
+ *  * Last modified 07.07.2026, 22:30
  *
  */
 
@@ -664,19 +664,25 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
             spinnerEventInfo.setSelection(eventInfoSelections);
 
-
             //Цвета
-            int colorWidgetBackground = 0;
+            @ColorInt int colorWidgetBackground = ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default);
+            @ColorInt int colorWidgetBorder = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_WidgetBorder_default);
+
             if (widgetPref.size() > 5 && !widgetPref.get(5).isEmpty()) {
                 try {
-                    colorWidgetBackground = Color.parseColor(widgetPref.get(5));
+                    String[] prefColors = widgetPref.get(5).split(Constants.REGEX_PLUS, -1);
+                    if (!prefColors[0].isEmpty()) colorWidgetBackground = Color.parseColor(prefColors[0]);
+                    if (prefColors.length > 1 && !prefColors[1].isEmpty()) {
+                        colorWidgetBorder = Color.parseColor(prefColors[1]);
+                    }
                 } catch (final Exception e) {/**/}
             }
-            if (colorWidgetBackground == 0) {
-                colorWidgetBackground = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_WidgetBackground_default);
-            }
-            final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
+
+            final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackground);
             colorWidgetBackgroundPicker.setColor(colorWidgetBackground);
+
+            final ColorPicker colorWidgetBorderPicker = findViewById(R.id.colorWidgetBorder);
+            colorWidgetBorderPicker.setColor(colorWidgetBorder);
 
             //Источники событий
             if (widgetPref.size() > 10) {
@@ -973,8 +979,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             findViewById(R.id.blockOnClickLastEvent).setVisibility(advSettingsVisibility);
 
             //Скрываем изменения цвета
-            findViewById(R.id.dividerWidgetBackgroundColor).setVisibility(advSettingsVisibility);
-            findViewById(R.id.colorWidgetBackgroundColor).setVisibility(advSettingsVisibility);
+            findViewById(R.id.dividerWidgetBackground).setVisibility(advSettingsVisibility);
+            findViewById(R.id.colorWidgetBackground).setVisibility(advSettingsVisibility);
+            findViewById(R.id.dividerColorWidgetBorder).setVisibility(advSettingsVisibility);
+            findViewById(R.id.colorWidgetBorder).setVisibility(advSettingsVisibility);
 
             //Подсказки
             findViewById(R.id.adv_hint).setVisibility(isAdvSettings ? View.GONE : View.VISIBLE);
@@ -1151,8 +1159,15 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 }
             }
 
-            final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackgroundColor);
+            final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackground);
             final int colorWidgetBackground = colorWidgetBackgroundPicker.getColor();
+            final String selectedWidgetBackground = colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default)
+                    ? ImageUtils.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY;
+
+            final ColorPicker colorWidgetBorderPicker = findViewById(R.id.colorWidgetBorder);
+            final int colorWidgetBorder = colorWidgetBorderPicker.getColor();
+            final String selectedWidgetBorder = colorWidgetBorder != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBorder_default)
+                    ? ImageUtils.toARGBString(colorWidgetBorder) : Constants.STRING_EMPTY;
 
             //Сохранение настроек
             List<String> prefsToStore = new ArrayList<>();
@@ -1162,8 +1177,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             prefsToStore.add(String.valueOf(spinnerEventsCount.getSelectedItemPosition())); //Количество событий (позиция в списке выбора)
             prefsToStore.add(eventTypes.toString()); //Типы событий (через +)
             prefsToStore.add(eventInfo.toString()); //Детали события (через +)
-            prefsToStore.add(colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default) ?
-                    ImageUtils.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY); //Цвет подложки
+            prefsToStore.add(selectedWidgetBackground + Constants.STRING_PLUS + selectedWidgetBorder); //Цвет подложки + бордюра
             prefsToStore.add(String.valueOf(spinnerPhotoStyle.getSelectedItemPosition())); //Стиль фото
             prefsToStore.add(editCustomZeroEvents.getText().toString().replace(Constants.STRING_COMMA, Constants.STRING_EOT)); //Сообщение, когда нет событий
             prefsToStore.add(scopeInfo.toString()); //Объём событий

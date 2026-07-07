@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.07.2026, 23:10
+ *  * Created by Vladimir Belov on 07.07.2026, 23:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.07.2026, 23:06
+ *  * Last modified 07.07.2026, 18:53
  *
  */
 package org.vovka.birthdaycountdown;
@@ -193,8 +193,8 @@ public class WidgetCalendarPopup extends Activity {
 
             executorService = Executors.newSingleThreadExecutor();
 
-            setupClickListeners();
             showDayInfo();
+            setupClickListeners();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

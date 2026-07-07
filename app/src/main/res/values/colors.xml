@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
+  ~  * Created by Vladimir Belov on 07.07.2026, 23:43
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 08.03.2026, 18:21
+  ~  * Last modified 07.07.2026, 22:05
   ~  */
   -->
 
@@ -18,6 +18,7 @@
     <color name="black_transp">#80000000</color>
     <color name="white">#FFFFFFFF</color> <!--pref_Widgets_Colors_values-->
     <color name="white_transp">#1fff</color>
+    <color name="white_transp50">#88ffffff</color>
     <color name="white_semi">#4fff</color>
     <color name="ic_launcher_background">@color/dark_green</color>
 
@@ -46,6 +47,7 @@
     <color name="theme_orange_status">#c25e00</color>
     <color name="theme_orange_status_transp">#32c25e00</color>
     <color name="theme_orange_panels">#33FB8C00</color>
+    <color name="theme_orange_border">#fb8c00</color>
 
     <color name="theme_brown_primary">@color/brown</color>
     <color name="theme_brown_primary_transp">#80873A07</color>
@@ -142,6 +144,12 @@
         <item>@color/black</item>
         <item>@color/white</item>
         <item>@color/dark_gray_transp</item>
+    </string-array>
+
+    <string-array name="widget_border_values" translatable="false">
+        <item>@color/white_transp50</item>
+        <item>@color/white</item>
+        <item>@color/theme_orange_border</item>
     </string-array>
 
 </resources>

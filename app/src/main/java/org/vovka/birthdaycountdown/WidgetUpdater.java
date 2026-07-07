@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.07.2026, 16:31
+ *  * Created by Vladimir Belov on 07.07.2026, 23:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.07.2026, 22:37
+ *  * Last modified 07.07.2026, 23:12
  *
  */
 
@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -336,14 +337,17 @@ class WidgetUpdater {
             }
 
             //Цвет подложки
-            int colorWidgetBackground = 0;
+            @ColorInt int colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_Calendar_Back_default);
+            @ColorInt int colorWidgetBorder = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBorder_default);
+
             if (widgetPref.size() > 5 && !widgetPref.get(5).isEmpty()) {
                 try {
-                    colorWidgetBackground = Color.parseColor(widgetPref.get(5));
+                    String[] prefColors = widgetPref.get(5).split(Constants.REGEX_PLUS, -1);
+                    if (!prefColors[0].isEmpty()) colorWidgetBackground = Color.parseColor(prefColors[0]);
+                    if (prefColors.length > 1 && !prefColors[1].isEmpty()) {
+                        colorWidgetBorder = Color.parseColor(prefColors[1]);
+                    }
                 } catch (Exception e) { /* */}
-            }
-            if (colorWidgetBackground == 0) {
-                colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBackground_default);
             }
             views.setInt(R.id.events,Constants.METHOD_SET_BACKGROUND_COLOR, colorWidgetBackground);
 
@@ -351,7 +355,7 @@ class WidgetUpdater {
             //Если события есть - рисуем бордюр, иначе - прозрачность
             if (eventsDisplayed > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Border_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Border_ID)))) {
-                views.setInt(R.id.appwidget_main, Constants.METHOD_SET_BACKGROUND_RES, ImageUtils.getWidgetBorder());
+                views.setInt(R.id.appwidget_main, Constants.METHOD_SET_BACKGROUND_RES, ImageUtils.getWidgetBorder(colorWidgetBorder, context, false));
             } else {
                 views.setInt(R.id.appwidget_main,Constants.METHOD_SET_BACKGROUND_RES, 0);
             }

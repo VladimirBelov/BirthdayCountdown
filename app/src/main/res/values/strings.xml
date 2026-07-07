@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
+  ~  * Created by Vladimir Belov on 07.07.2026, 23:43
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 03.07.2026, 00:22
+  ~  * Last modified 07.07.2026, 19:28
   ~  */
   -->
 
@@ -941,6 +941,9 @@
 
     <string name="widget_config_color_back_label">Widget background color</string>
     <string name="widget_config_color_back_description">Background color for widget</string>
+
+    <string name="widget_config_color_border_label">Widget border color</string>
+    <string name="widget_config_color_border_description">Border color for widget</string>
 
     <string name="widget_config_layout_title">Months layout</string>
     <string name="widget_config_layout_description">How many months to display</string>
@@ -2307,8 +2310,9 @@ Long click on item to select color"</string>
     <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,,,1+7</string>
     <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,100e0d,,,,1</string>
     <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,50e0d,,,</string>
-    <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,0,1+2+3+4+5,01+02,0,,,,,,,,,2+1</string>
+    <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,0,1+2+3+4+5,01+02,0,,,,,,,,,1+1</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
+    <color name="pref_Widgets_Color_WidgetBorder_default" translatable="false">@color/white_transp50</color>
     <color name="pref_Widgets_Color_Calendar_Back_default" translatable="false">@color/black_transp</color>
     <color name="pref_Widgets_Color_Calendar_HeaderBack_default" translatable="false">@color/dark_gray_transp</color>
     <color name="pref_Widgets_Color_Calendar_Common_default" translatable="false">@color/white</color>

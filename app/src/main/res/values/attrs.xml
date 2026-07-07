@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.12.2025, 13:49
-  ~  * Copyright (c) 2018 - 2025. All rights reserved.
-  ~  * Last modified 27.12.2025, 11:14
+  ~  * Created by Vladimir Belov on 07.07.2026, 23:43
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 07.07.2026, 19:33
   ~  */
   -->
 
@@ -46,6 +46,7 @@
         <attr name="title" format="string" />
         <attr name="summary" format="string"/>
         <attr name="defaultValue" format="string|boolean|integer|reference|float" />
+        <attr name="enableCustomColors" format="boolean" />
         <attr name="icon"/>
     </declare-styleable>
 

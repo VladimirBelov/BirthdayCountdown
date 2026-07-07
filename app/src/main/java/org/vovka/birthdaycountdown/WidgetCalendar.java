@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.07.2026, 23:10
+ *  * Created by Vladimir Belov on 07.07.2026, 23:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.07.2026, 23:06
+ *  * Last modified 07.07.2026, 23:12
  *
  */
 
@@ -31,6 +31,7 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import org.intellij.lang.annotations.JdkConstants;
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
@@ -400,10 +401,15 @@ public class WidgetCalendar extends AppWidgetProvider {
             //Цвета
 
             //Фон виджета
-            @ColorInt int colorWidgetBackground = res.getColor(R.color.pref_Widgets_Color_Calendar_Back_default);
+            @ColorInt int colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_Calendar_Back_default);
+            @ColorInt int colorWidgetBorder = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBorder_default);
             if (widgetPref.size() > 7 && !widgetPref.get(7).isEmpty()) {
                 try {
-                    colorWidgetBackground = Color.parseColor(widgetPref.get(7));
+                    String[] prefColors = widgetPref.get(7).split(Constants.REGEX_PLUS, -1);
+                    if (!prefColors[0].isEmpty()) colorWidgetBackground = Color.parseColor(prefColors[0]);
+                    if (prefColors.length > 1 && !prefColors[1].isEmpty()) {
+                        colorWidgetBorder = Color.parseColor(prefColors[1]);
+                    }
                 } catch (final Exception e) {/* */}
             }
 
@@ -514,7 +520,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             todayWeekday = cal.get(Calendar.DAY_OF_WEEK);
 
             //Бордюр
-            rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, drawBorder ? ImageUtils.getWidgetBorder() : 0);
+            rv.setInt(R.id.calendarAll, Constants.METHOD_SET_BACKGROUND_RES, drawBorder ? ImageUtils.getWidgetBorder(colorWidgetBorder, context, false) : 0);
 
             //Фон
             rv.setInt(R.id.calendarBack, Constants.METHOD_SET_BACKGROUND_COLOR, colorWidgetBackground);

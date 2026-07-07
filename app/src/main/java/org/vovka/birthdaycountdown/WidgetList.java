@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 07.07.2026, 23:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 07.07.2026, 23:12
  *
  */
 
@@ -26,6 +26,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
@@ -139,16 +140,20 @@ public class WidgetList extends AppWidgetProvider {
             if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
             views.setTextViewText(R.id.empty_view, TextUtils.isEmpty(prefZeroEventsMessage) ? context.getString(R.string.msg_no_events) : prefZeroEventsMessage);
 
-            //Цвет подложки
-            int colorWidgetBackground = 0;
+            //Цвет подложки и бордюра
+            @ColorInt int colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_Calendar_Back_default);
+            @ColorInt int colorWidgetBorder = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBorder_default);
+
             if (widgetPref.size() > 5 && !widgetPref.get(5).isEmpty()) {
                 try {
-                    colorWidgetBackground = Color.parseColor(widgetPref.get(5));
+                    String[] prefColors = widgetPref.get(5).split(Constants.REGEX_PLUS, -1);
+                    if (!prefColors[0].isEmpty()) colorWidgetBackground = Color.parseColor(prefColors[0]);
+                    if (prefColors.length > 1 && !prefColors[1].isEmpty()) {
+                        colorWidgetBorder = Color.parseColor(prefColors[1]);
+                    }
                 } catch (Exception e) { /* */}
             }
-            if (colorWidgetBackground == 0) {
-                colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBackground_default);
-            }
+
             //Иначе не скрывается caption_bar
             views.setInt(R.id.caption_bar, Constants.METHOD_SET_BACKGROUND_COLOR, !prefWidgetCaption.isEmpty() ? colorWidgetBackground : 0);
             views.setInt(R.id.widget_list,Constants.METHOD_SET_BACKGROUND_COLOR, colorWidgetBackground);
@@ -156,7 +161,7 @@ public class WidgetList extends AppWidgetProvider {
             //Если события есть - рисуем бордюр, иначе - прозрачность
             if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Border_ID))
                     : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Border_ID)))) {
-                views.setInt(R.id.widget_layout,Constants.METHOD_SET_BACKGROUND_RES, R.drawable.layout_bg);
+                views.setInt(R.id.widget_layout,Constants.METHOD_SET_BACKGROUND_RES, ImageUtils.getWidgetBorder(colorWidgetBorder, context, true));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     views.setViewPadding(R.id.widget_frame, 10, 10, 10, 10);
                 }

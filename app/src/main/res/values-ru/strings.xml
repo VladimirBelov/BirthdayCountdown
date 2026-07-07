@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
+  ~  * Created by Vladimir Belov on 07.07.2026, 23:43
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 03.07.2026, 00:22
+  ~  * Last modified 07.07.2026, 19:28
   ~  */
   -->
 
@@ -941,6 +941,9 @@
 
     <string name="widget_config_color_back_label">Цвет фона</string>
     <string name="widget_config_color_back_description">Цвет подложки виджета</string>
+
+    <string name="widget_config_color_border_label">Цвет бордюра</string>
+    <string name="widget_config_color_border_description">Цвет бордюра виджета</string>
 
     <string name="widget_config_layout_title">Количество месяцев</string>
     <string name="widget_config_layout_description">Сколько месяцев отображать</string>

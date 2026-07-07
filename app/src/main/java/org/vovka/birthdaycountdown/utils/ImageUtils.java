@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.07.2026, 16:31
+ *  * Created by Vladimir Belov on 07.07.2026, 23:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.07.2026, 22:37
+ *  * Last modified 07.07.2026, 23:12
  *
  */
 
@@ -23,11 +23,12 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.util.TypedValue;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,6 +46,9 @@ import java.util.Map;
 
 public class ImageUtils {
     static final String TAG = "ImageUtils";
+    private static SparseIntArray colorToBorderMap;      // версионные (drawable-v31, -v36)
+    private static SparseIntArray colorToBaseBorderMap;  // базовые (drawable)
+
     public static String toARGBString(int color) {
         // format: #AARRGGBB
         String alpha = Integer.toHexString(Color.alpha(color));
@@ -630,17 +634,39 @@ public class ImageUtils {
         }
     }
 
+    private static void initColorMaps(Context context) {
+        colorToBorderMap = new SparseIntArray(3);
+        colorToBaseBorderMap = new SparseIntArray(3);
+
+        // Версионные (система сама выберет из drawable-v31 / -v36)
+        colorToBorderMap.put(ContextCompat.getColor(context, R.color.white_transp50), R.drawable.widget_border_grey);
+        colorToBorderMap.put(ContextCompat.getColor(context, R.color.white), R.drawable.widget_border_white);
+        colorToBorderMap.put(ContextCompat.getColor(context, R.color.theme_orange_border), R.drawable.widget_border_orange);
+
+        // Базовые (строго из drawable/, без квалификаторов)
+        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.white_transp50), R.drawable.widget_border_base_grey);
+        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.white), R.drawable.widget_border_base_white);
+        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.theme_orange_border), R.drawable.widget_border_base_orange);
+    }
+
     /** Возвращает ресурс бордюра для виджетов
+     * @param color Цвет бордюра из списка widget_border_values
+     * @param context Контекст
+     * @param useBase Не учитывать классификатор версии Android
      * @return Бордюр
      */
     @DrawableRes
-    public static int getWidgetBorder() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
-            return R.drawable.layout_bg_36;
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            return R.drawable.layout_bg_31;
-        } else {
-            return R.drawable.layout_bg;
+    public static int getWidgetBorder(@ColorInt int color, Context context, boolean useBase) {
+        ensureInitialized(context);
+        SparseIntArray map = useBase ? colorToBaseBorderMap : colorToBorderMap;
+        int fallback = useBase ? R.drawable.widget_border_base_grey : R.drawable.widget_border_grey;
+        int res = map.get(color);
+        return res != 0 ? res : fallback;
+    }
+
+    private static synchronized void ensureInitialized(Context context) {
+        if (colorToBorderMap == null) {
+            initColorMaps(context.getApplicationContext());
         }
     }
 }

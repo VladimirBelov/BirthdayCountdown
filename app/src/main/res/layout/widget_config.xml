@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
+  ~  * Created by Vladimir Belov on 07.07.2026, 23:43
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 03.07.2026, 02:25
+  ~  * Last modified 07.07.2026, 22:27
   ~  */
   -->
 
@@ -896,7 +896,7 @@
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <View
-                    android:id="@+id/dividerWidgetBackgroundColor"
+                    android:id="@+id/dividerWidgetBackground"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
@@ -904,7 +904,7 @@
                     android:background="?attr/listDividerColor" />
 
                 <org.vovka.birthdaycountdown.ColorPicker
-                    android:id="@+id/colorWidgetBackgroundColor"
+                    android:id="@+id/colorWidgetBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="2dp"
@@ -917,6 +917,31 @@
                     app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_color_back_label"
+                    app:dialogIcon="@drawable/ic_menu_paste" />
+
+                <View
+                    android:id="@+id/dividerColorWidgetBorder"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor" />
+
+                <org.vovka.birthdaycountdown.ColorPicker
+                    android:id="@+id/colorWidgetBorder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="10dp"
+                    app:title="@string/widget_config_color_border_label"
+                    app:summary="@string/widget_config_color_border_description"
+                    app:defaultValue="@color/pref_Widgets_Color_WidgetBorder_default"
+                    app:choices="@array/widget_border_values"
+                    app:icon="@null"
+                    app:numColumns="5"
+                    app:enableCustomColors="false"
+                    app:itemLayout="@layout/item_color"
+                    app:dialogTitle="@string/widget_config_color_border_label"
                     app:dialogIcon="@drawable/ic_menu_paste" />
 
                 <View

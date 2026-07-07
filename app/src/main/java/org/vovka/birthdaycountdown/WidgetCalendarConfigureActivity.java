@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.07.2026, 21:13
+ *  * Created by Vladimir Belov on 07.07.2026, 23:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.07.2026, 19:01
+ *  * Last modified 07.07.2026, 22:27
  *
  */
 
@@ -389,21 +389,26 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             //Цвета
 
-            //Фон виджета
+            //Фон виджета + бордюра
             try {
-                int colorWidgetBackground = 0;
+                @ColorInt int colorWidgetBackground = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Back_default);
+                @ColorInt int colorWidgetBorder = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_WidgetBorder_default);
 
                 if (widgetPref.size() > 7 && !widgetPref.get(7).isEmpty()) {
                     try {
-                        colorWidgetBackground = Color.parseColor(widgetPref.get(7));
+                        String[] prefColors = widgetPref.get(7).split(Constants.REGEX_PLUS, -1);
+                        if (!prefColors[0].isEmpty()) colorWidgetBackground = Color.parseColor(prefColors[0]);
+                        if (prefColors.length > 1 && !prefColors[1].isEmpty()) {
+                            colorWidgetBorder = Color.parseColor(prefColors[1]);
+                        }
                     } catch (IllegalArgumentException ignored) { /**/ }
                 }
 
-                if (colorWidgetBackground == 0) {
-                    colorWidgetBackground = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Back_default);
-                }
                 final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackground);
                 colorWidgetBackgroundPicker.setColor(colorWidgetBackground);
+
+                final ColorPicker colorWidgetBorderPicker = findViewById(R.id.colorWidgetBorder);
+                colorWidgetBorderPicker.setColor(colorWidgetBorder);
             } catch (final Exception e) { /**/ }
 
             //Обычные дни
@@ -573,6 +578,11 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             final String selectedWidgetBackground = colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Back_default)
                     ? ImageUtils.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY;
 
+            final ColorPicker colorWidgetBorderPicker = findViewById(R.id.colorWidgetBorder);
+            final int colorWidgetBorder = colorWidgetBorderPicker.getColor();
+            final String selectedWidgetBorder = colorWidgetBorder != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBorder_default)
+                    ? ImageUtils.toARGBString(colorWidgetBorder) : Constants.STRING_EMPTY;
+
             final ColorPicker colorCommonPicker = findViewById(R.id.colorCommon);
             final int colorCommon = colorCommonPicker.getColor();
             final String selectedCommon = colorCommon != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Common_default)
@@ -637,7 +647,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             prefsToStore.add(selectedElements.toString()); //Элементы
             prefsToStore.add(eventSources); //Источники событий (через +)
             prefsToStore.add(fontMagnify); //Размер шрифта
-            prefsToStore.add(selectedWidgetBackground); //Цвет подложки
+            prefsToStore.add(selectedWidgetBackground + Constants.STRING_PLUS + selectedWidgetBorder); //Цвет подложки + бордюра
             prefsToStore.add(selectedCommon); //Цвет обычных дней
             prefsToStore.add(selectedMonthTitle); //Цвет заголовка
             prefsToStore.add(selectedHeaderBack); //Фон заголовка
@@ -1022,6 +1032,8 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             //Скрываем изменения цвета
             findViewById(R.id.dividerColorWidgetBackground).setVisibility(advSettingsVisibility);
             findViewById(R.id.colorWidgetBackground).setVisibility(advSettingsVisibility);
+            findViewById(R.id.dividerColorWidgetBorder).setVisibility(advSettingsVisibility);
+            findViewById(R.id.colorWidgetBorder).setVisibility(advSettingsVisibility);
             findViewById(R.id.dividerColorCommon).setVisibility(advSettingsVisibility);
             findViewById(R.id.colorCommon).setVisibility(advSettingsVisibility);
             findViewById(R.id.dividerColorToday).setVisibility(advSettingsVisibility);
