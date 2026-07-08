@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.07.2026, 23:43
+ *  * Created by Vladimir Belov on 08.07.2026, 17:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.07.2026, 18:53
+ *  * Last modified 08.07.2026, 17:41
  *
  */
 package org.vovka.birthdaycountdown;
@@ -16,6 +16,8 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.CalendarContract;
 import android.text.TextUtils;
 import android.util.Log;
@@ -75,6 +77,7 @@ public class WidgetCalendarPopup extends Activity {
     private ArrayList<String> listEventsPacks;
     private HashMap<String, Integer> eventsColorsInMonth = null;
     private ExecutorService executorService;
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public WidgetCalendarPopup() {
     }
@@ -193,7 +196,7 @@ public class WidgetCalendarPopup extends Activity {
 
             executorService = Executors.newSingleThreadExecutor();
 
-            showDayInfo();
+            //showDayInfo();
             setupClickListeners();
 
         } catch (Exception e) {
@@ -371,30 +374,37 @@ public class WidgetCalendarPopup extends Activity {
             if (eventsData.isEmptyEventList() || eventsData.preferences_DaysTypes.isEmpty()) {
                 if (executorService != null && !executorService.isShutdown()) {
                     executorService.execute(() -> {
-                        //Background work
-                        if (eventsData.preferences_DaysTypes.isEmpty() && intent != null) {
-                            //Заполнение типов дней из календарей по периоду
-                            Calendar calFirstDay = null;
-                            Calendar calLastDay = null;
-                            if (intent.hasExtra(Constants.EXTRA_DAY1) && intent.hasExtra(Constants.EXTRA_DAY2)) {
-                                calFirstDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY1);
-                                calLastDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY2);
+                        try {
+                            if (eventsData.preferences_DaysTypes.isEmpty() && intent != null) {
+                                //Заполнение типов дней из календарей по периоду
+                                Calendar calFirstDay = null;
+                                Calendar calLastDay = null;
+                                if (intent.hasExtra(Constants.EXTRA_DAY1) && intent.hasExtra(Constants.EXTRA_DAY2)) {
+                                    calFirstDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY1);
+                                    calLastDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY2);
+                                }
+                                if (calFirstDay != null && calLastDay != null) {
+                                    eventsData.fillDaysTypesFromCalendars(listEventsPacks, calFirstDay, calLastDay);
+                                }
+                                //Заполнение типов дней из справочников
+                                eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
+                                eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
+                                //Заполнение типов дней из файлов
+                                eventsData.fillDaysTypesFromFiles(listEventsPacks);
                             }
-                            if (calFirstDay != null && calLastDay != null) {
-                                eventsData.fillDaysTypesFromCalendars(listEventsPacks, calFirstDay, calLastDay);
-                            }
-                            //Заполнение типов дней из справочников
-                            eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
-                            eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
-                            //Заполнение типов дней из файлов
-                            eventsData.fillDaysTypesFromFiles(listEventsPacks);
-                        }
 
-                        if (eventsData.isEmptyEventList()) {
-                            eventsData.getEvents();
+                            if (eventsData.isEmptyEventList()) {
+                                eventsData.getEvents();
+                            }
+                            // Обновляем UI в главном потоке
+                            mainHandler.post(this::showDayInfo);
+                        } catch (Exception e) {
+                            Log.e(TAG, e.getMessage(), e);
                         }
                     });
                 }
+            } else {
+                showDayInfo();
             }
 
         } catch (Exception e) {

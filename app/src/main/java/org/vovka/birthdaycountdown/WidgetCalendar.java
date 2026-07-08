@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.07.2026, 23:43
+ *  * Created by Vladimir Belov on 08.07.2026, 17:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.07.2026, 23:12
+ *  * Last modified 08.07.2026, 15:25
  *
  */
 
@@ -563,51 +563,49 @@ public class WidgetCalendar extends AppWidgetProvider {
 
             //Определение периода показа дней
             int monthsToDraw = rowsToDraw * columnsToDraw;
-            Calendar calFirstDay;
-            Calendar calLastDay;
-            {
-                calFirstDay = (Calendar) cal.clone();
-                calFirstDay.add(Calendar.MONTH, prefMonthsShift);
-                calFirstDay.set(Calendar.DAY_OF_MONTH, 1);
-                calFirstDay.set(Calendar.HOUR_OF_DAY, 0);
-                calFirstDay.set(Calendar.MINUTE, 0);
-                calFirstDay.set(Calendar.SECOND, 0);
-                calFirstDay.set(Calendar.MILLISECOND, 0);
-                int monthStartDayOfWeek = calFirstDay.get(Calendar.DAY_OF_WEEK);
-                calLastDay = (Calendar) calFirstDay.clone();
-                calLastDay.add(Calendar.MONTH, monthsToDraw - 1);
-                calLastDay.set(Calendar.DATE, calLastDay.getActualMaximum(Calendar.DATE));
 
-                if (calFirstDay.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
-                    calFirstDay.add(Calendar.DAY_OF_MONTH, 1 - monthStartDayOfWeek);
+            Calendar calFirstDay = (Calendar) cal.clone();
+            calFirstDay.add(Calendar.MONTH, prefMonthsShift);
+            calFirstDay.set(Calendar.DAY_OF_MONTH, 1);
+            calFirstDay.set(Calendar.HOUR_OF_DAY, 0);
+            calFirstDay.set(Calendar.MINUTE, 0);
+            calFirstDay.set(Calendar.SECOND, 0);
+            calFirstDay.set(Calendar.MILLISECOND, 0);
+            int monthStartDayOfWeek = calFirstDay.get(Calendar.DAY_OF_WEEK);
+            Calendar calLastDay = (Calendar) calFirstDay.clone();
+            calLastDay.add(Calendar.MONTH, monthsToDraw - 1);
+            calLastDay.set(Calendar.DATE, calLastDay.getActualMaximum(Calendar.DATE));
+
+            if (calFirstDay.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
+                calFirstDay.add(Calendar.DAY_OF_MONTH, 1 - monthStartDayOfWeek);
+            } else {
+                if (monthStartDayOfWeek == 1) {
+                    calFirstDay.add(Calendar.DAY_OF_MONTH, -6);
                 } else {
-                    if (monthStartDayOfWeek == 1) {
-                        calFirstDay.add(Calendar.DAY_OF_MONTH, -6);
-                    } else {
-                        calFirstDay.add(Calendar.DAY_OF_MONTH, 2 - monthStartDayOfWeek);
-                    }
+                    calFirstDay.add(Calendar.DAY_OF_MONTH, 2 - monthStartDayOfWeek);
                 }
-
-                if (calLastDay.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
-                    calLastDay.add(Calendar.DAY_OF_MONTH, 7 - calLastDay.get(Calendar.DAY_OF_WEEK));
-                } else {
-                    if (calLastDay.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-                        calLastDay.add(Calendar.DAY_OF_MONTH, 8 - calLastDay.get(Calendar.DAY_OF_WEEK));
-                    }
-                }
-
-                if (BuildConfig.DEBUG) {
-                    Log.i(TAG + ".Period", Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(calFirstDay.getTime()) + " : " + Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(calLastDay.getTime()));
-                }
-
-                //Заполнение типов дней из календарей по периоду
-                eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay);
-                //Заполнение типов дней из справочников
-                eventsData.fillDaysTypesFromHolidays(prefOtherEvents, Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
-                eventsData.fillDaysTypesFromHolidays(prefOtherEvents, Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
-                //Заполнение типов дней из файлов
-                eventsData.fillDaysTypesFromFiles(prefOtherEvents);
             }
+
+            if (calLastDay.getFirstDayOfWeek() == Calendar.SUNDAY) { //вс - в начале
+                calLastDay.add(Calendar.DAY_OF_MONTH, 7 - calLastDay.get(Calendar.DAY_OF_WEEK));
+            } else {
+                if (calLastDay.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                    calLastDay.add(Calendar.DAY_OF_MONTH, 8 - calLastDay.get(Calendar.DAY_OF_WEEK));
+                }
+            }
+
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG + ".Period", Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(calFirstDay.getTime())
+                        + " : " + Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(calLastDay.getTime()));
+            }
+
+            //Заполнение типов дней из календарей по периоду
+            eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay);
+            //Заполнение типов дней из справочников
+            eventsData.fillDaysTypesFromHolidays(prefOtherEvents, Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
+            eventsData.fillDaysTypesFromHolidays(prefOtherEvents, Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
+            //Заполнение типов дней из файлов
+            eventsData.fillDaysTypesFromFiles(prefOtherEvents);
 
             monthRowTextSize = 12 * fontMagnify_Month;
 
@@ -989,15 +987,18 @@ public class WidgetCalendar extends AppWidgetProvider {
                 action = prefOnClickCommon;
             }
 
+            // URI на основе данных дня
+            Uri data = Uri.parse("calendar://" + appWidgetId + "/" +
+                    cal.get(Calendar.YEAR) + "/" + cal.get(Calendar.DAY_OF_YEAR));
             if (action == Constants.onClick_Popup) {
-                String dayInfo = context.getString(R.string.month_event_empty);
+                String dayInfo = eventsData.getResources().getString(R.string.month_event_empty);
                 List<String> allEventsThisDay = eventsData.getDayInfo(Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime()), prefOtherEvents, eventsColorsInMonth);
 
                 // Аналогичный блок есть в WidgetCalendarPopup#updateDayData
                 if (!allEventsThisDay.isEmpty()) {
                     //Подставляем в годовщину свадьбы её название
-                    final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(context.getString(R.string.event_type_anniversary));
-                    final String birthdayPrefix = Constants.eventTitleFavoritePrefix.concat(context.getString(R.string.event_type_birthday));
+                    final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(eventsData.getResources().getString(R.string.event_type_anniversary));
+                    final String birthdayPrefix = Constants.eventTitleFavoritePrefix.concat(eventsData.getResources().getString(R.string.event_type_birthday));
                     for (int i = 0; i < allEventsThisDay.size(); i++) {
                         String event = allEventsThisDay.get(i);
                         int indParOpen = event.lastIndexOf(Constants.STRING_PARENTHESIS_OPEN);
@@ -1028,7 +1029,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 Intent intent = new Intent(context, WidgetCalendarPopup.class);
 
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                intent.putExtra(Constants.EXTRA_DAY_CAPTION,  context.getString(R.string.month_event_popup_prefix)
+                intent.putExtra(Constants.EXTRA_DAY_CAPTION,  eventsData.getResources().getString(R.string.month_event_popup_prefix)
                         .concat(AppDateUtils.getDateFormatted(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime()),
                                 ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
                                 eventsData.getResources(), eventsData.currentLocale))
@@ -1040,8 +1041,11 @@ public class WidgetCalendar extends AppWidgetProvider {
                 intent.putExtra(Constants.EXTRA_DAY1, calFirstDay);
                 intent.putExtra(Constants.EXTRA_DAY2, calLastDay);
 
+                //Чтобы похожие intent разных виджетов отличались для системы
+                intent.setData(data);
+
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.YEAR) * 1000 + cal.get(Calendar.DAY_OF_YEAR), intent,
+                pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent,
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
             } else if (action == Constants.onClick_Calendar) {
@@ -1049,8 +1053,13 @@ public class WidgetCalendar extends AppWidgetProvider {
                 builder.appendPath(Constants.QUERY_PARAM_TIME);
                 builder.appendPath(Long.toString(cal.getTimeInMillis()));
                 Intent intent = new Intent(Intent.ACTION_VIEW, builder.build());
+
+                //Чтобы похожие intent разных виджетов отличались для системы
+                intent.setData(data);
+
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                pendingIntent = PendingIntent.getActivity(context, cal.get(Calendar.YEAR) * 1000 + cal.get(Calendar.DAY_OF_YEAR), intent,
+
+                pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent,
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             }
 

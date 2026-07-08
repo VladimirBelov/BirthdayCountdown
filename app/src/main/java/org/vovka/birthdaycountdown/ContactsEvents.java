@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.07.2026, 23:10
+ *  * Created by Vladimir Belov on 08.07.2026, 17:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.07.2026, 22:39
+ *  * Last modified 08.07.2026, 17:48
  *
  */
 
@@ -397,13 +397,9 @@ public class ContactsEvents {
     final int PendingIntentImmutable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
     final Map<Integer, Integer> preferences_IconPackImages_M = new TreeMap<>();
     final Map<Integer, Integer> preferences_IconPackImages_F = new TreeMap<>();
-    /**
-     * Типы дней для календаря
-     */
+    /** Типы дней для календаря */
     final Map<String, DayType.Type> preferences_DaysTypes = new HashMap<>();
-    /**
-     * Данные о событиях для календаря
-     */
+    /** Данные о событиях для календаря */
     private final Map<String, String> preferences_DaysInfo = new HashMap<>();
 
     //Даты
@@ -861,11 +857,6 @@ public class ContactsEvents {
     //Оптимизация обработки
     private final ExecutorService widgetUpdateExecutor = Executors.newSingleThreadExecutor();
     private Future<?> pendingUpdateTask = null; // Для отслеживания текущей задачи
-
-    public interface EventsLoadCallback {
-        void onEventsLoaded(boolean success);
-    }
-
     private static final ExecutorService eventsExecutor =
             Executors.newSingleThreadExecutor(r -> {
                 Thread t = new Thread(r, "EventsLoader");
@@ -873,7 +864,6 @@ public class ContactsEvents {
                 t.setDaemon(true);
                 return t;
             });
-
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     private ContactsEvents() {
@@ -882,6 +872,10 @@ public class ContactsEvents {
     @NonNull
     public static ContactsEvents getInstance() {
         return ourInstance;
+    }
+
+    public interface EventsLoadCallback {
+        void onEventsLoaded(boolean success);
     }
 
     public enum FormatDate {
@@ -936,13 +930,9 @@ public class ContactsEvents {
     }
 
     static class Event implements Cloneable {
-        /**
-         * Наименование события
-         */
+        /** Наименование события */
         String caption = Constants.STRING_EMPTY;
-        /**
-         * Заголовок пользовательского события
-         */
+        /** Заголовок пользовательского события */
         String label = Constants.STRING_EMPTY;
         String type = Constants.STRING_EMPTY;
         String subType = Constants.STRING_EMPTY;
@@ -995,9 +985,7 @@ public class ContactsEvents {
         }
     }
 
-    /**
-     * Дополнительные функции приложения
-     */
+    /** Дополнительные функции приложения */
     enum EnabledFeatures {
 
         QUIZ(Constants.FEATURE_QUIZ, R.string.pref_Quiz_title,
@@ -1064,9 +1052,7 @@ public class ContactsEvents {
         return preferences_enabled_features.contains(code);
     }
 
-    /**
-     * Адаптер для множественного выбора значений
-     */
+    /** Адаптер для множественного выбора значений */
     static class MultiCheckboxesAdapter extends ArrayAdapter<String> {
 
         private static final String TAG = "MultiCheckboxesAdapter";
@@ -10244,7 +10230,7 @@ public class ContactsEvents {
      * @return Список типов событий
      */
     @NonNull
-    List<DayType> getDayTypes(@NonNull String day, @NonNull List<String> fromPacks) {
+    private List<DayType> getDayTypesInternal(@NonNull String day, @NonNull List<String> fromPacks) {
         List<DayType> types = new ArrayList<>();
         try {
 
@@ -10266,6 +10252,13 @@ public class ContactsEvents {
         return types;
     }
 
+    @NonNull
+    List<DayType> getDayTypes(@NonNull String day, @NonNull List<String> fromPacks) {
+        synchronized (preferences_DaysTypes) {
+            return getDayTypesInternal(day, fromPacks);
+        }
+    }
+
     /**
      * Получение списка событий из общего массива
      *
@@ -10275,7 +10268,7 @@ public class ContactsEvents {
      * @return Список событий
      */
     @NonNull
-    List<String> getDayInfo(@NonNull String day, @NonNull List<String> fromPacks, HashMap<String, Integer> colors) {
+    private List<String> getDayInfoInternal(@NonNull String day, @NonNull List<String> fromPacks, HashMap<String, Integer> colors) {
         List<String> dayInfo = new ArrayList<>();
         try {
 
@@ -10301,19 +10294,7 @@ public class ContactsEvents {
                 }
                 if (preferences_DaysInfo.containsKey(key_noYear) && preferences_DaysInfo.get(key_noYear) != null) {
                     String[] eventsList = StringUtils.getNotNullString(preferences_DaysInfo.get(key_noYear)).split(Constants.STRING_EOT, -1);
-                    //final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(context.getString(R.string.event_type_anniversary));
                     for (String eventInfo : eventsList) {
-                        /*if (!eventInfo.contains(weddingPrefix)) {
-                            //Для событий без года заменяем дату в скобках на год из day
-                            int indParOpen = eventInfo.lastIndexOf(Constants.STRING_PARENTHESIS_OPEN);
-                            int indParClose = eventInfo.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
-                            if (indParOpen > -1 && indParClose > -1) {
-                                eventInfo = eventInfo.substring(0, indParOpen + Constants.STRING_PARENTHESIS_OPEN.length())
-                                        + StringUtils.substringBefore(day, Constants.STRING_MINUS)
-                                        + eventInfo.substring(indParClose);
-                            }
-                        }*/
-
                         dayInfo.add(Constants.FONT_COLOR_DOT_START + colorRGB + Constants.FONT_COLOR_DOT_END + eventInfo);
                     }
                 }
@@ -10326,9 +10307,20 @@ public class ContactsEvents {
         return dayInfo;
     }
 
+    @NonNull
+    List<String> getDayInfo(@NonNull String day, @NonNull List<String> fromPacks, HashMap<String, Integer> colors) {
+        synchronized (preferences_DaysInfo) {
+            return getDayInfoInternal(day, fromPacks, colors);
+        }
+    }
+
     void clearDaysTypesAndInfo() {
-        preferences_DaysTypes.clear();
-        preferences_DaysInfo.clear();
+        synchronized (preferences_DaysTypes) {
+            preferences_DaysTypes.clear();
+        }
+        synchronized (preferences_DaysInfo) {
+            preferences_DaysInfo.clear();
+        }
     }
 
     /**
@@ -10339,9 +10331,8 @@ public class ContactsEvents {
      * @param eventSourcePrefix Префикс типа события для составления hash
      * @param eventPrefix Префикс, добавляемый перед названием события из этого массива
      */
-    @SuppressWarnings("SameParameterValue")
     @SuppressLint("DiscouragedApi")
-    void fillDaysTypesFromHolidays(@NonNull List<String> packsHashes, @NonNull String packPrefix, @NonNull String eventSourcePrefix, String eventPrefix) {
+    private void fillDaysTypesFromHolidaysInternal(@NonNull List<String> packsHashes, @NonNull String packPrefix, @NonNull String eventSourcePrefix, String eventPrefix) {
         try {
 
             if (packsHashes.isEmpty()) return;
@@ -10369,7 +10360,7 @@ public class ContactsEvents {
                                 } else if (StringUtils.hasContent(eventPrefix)) {
                                     titlePrefix = eventPrefix;
                                 }
-                                fillDaysTypesFromFile(packHash, events, titlePrefix, DayType.Type.Common);
+                                fillDaysTypesFromList(packHash, events, titlePrefix, DayType.Type.Common);
                             }
                             preferences_DaysTypes.put(packHash, DayType.Type.Holiday); //todo: для других праздников - продумать
                         }
@@ -10387,13 +10378,20 @@ public class ContactsEvents {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
+    void fillDaysTypesFromHolidays(@NonNull List<String> packsHashes, @NonNull String packPrefix, @NonNull String eventSourcePrefix, String eventPrefix) {
+        synchronized (preferences_DaysTypes) {
+            fillDaysTypesFromHolidaysInternal(packsHashes, packPrefix, eventSourcePrefix, eventPrefix);
+        }
+    }
+
     /**
      * Считывание событий для {@link WidgetCalendar} из файлов
      *
      * @param fileHashes Хэши источников для получения событий
      */
     @SuppressLint("DiscouragedApi")
-    void fillDaysTypesFromFiles(@NonNull List<String> fileHashes) {
+    private void fillDaysTypesFromFilesInternal(@NonNull List<String> fileHashes) {
         try {
 
             if (fileHashes.isEmpty()) return;
@@ -10411,7 +10409,7 @@ public class ContactsEvents {
                             ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
                             continue;
                         }
-                        fillDaysTypesFromFile(packHash, eventsArray, Constants.eventTitleFilePrefix, DayType.Type.Holiday);
+                        fillDaysTypesFromList(packHash, eventsArray, Constants.eventTitleFilePrefix, DayType.Type.Holiday);
                     }
                     preferences_DaysTypes.put(packHash, DayType.Type.Holiday);
                 }
@@ -10423,6 +10421,12 @@ public class ContactsEvents {
         }
     }
 
+    void fillDaysTypesFromFiles(@NonNull List<String> fileHashes) {
+        synchronized (preferences_DaysTypes) {
+            fillDaysTypesFromFilesInternal(fileHashes);
+        }
+    }
+
     /**
      * Добавление массива событий в общие массивы событий и типов событий для {@link WidgetCalendar}
      *
@@ -10431,7 +10435,7 @@ public class ContactsEvents {
      * @param titlePrefix    Префикс, добавляемый для всех событий (например: иконка)
      * @param defaultDayType Тип дня по-умолчанию (если не стоят флаги "!" или "?")
      */
-    private void fillDaysTypesFromFile(String packHash, String[] events, @NonNull String titlePrefix, @NonNull DayType.Type defaultDayType) {
+    private void fillDaysTypesFromList(String packHash, String[] events, @NonNull String titlePrefix, @NonNull DayType.Type defaultDayType) {
         try {
 
             if (preferences_DaysTypes.containsKey(packHash)) return;
@@ -10554,7 +10558,7 @@ public class ContactsEvents {
      * @param startPeriod    Первый день периода считывания
      * @param endPeriod      Последний день периода считывания
      */
-    void fillDaysTypesFromCalendars(List<String> calendarHashes, @NonNull Calendar startPeriod, @NonNull Calendar endPeriod) {
+    private void fillDaysTypesFromCalendarsInternal(List<String> calendarHashes, @NonNull Calendar startPeriod, @NonNull Calendar endPeriod) {
         try {
 
             if (DeviceTools.checkNoCalendarAccess(context)) return;
@@ -10665,6 +10669,12 @@ public class ContactsEvents {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    void fillDaysTypesFromCalendars(List<String> calendarHashes, @NonNull Calendar startPeriod, @NonNull Calendar endPeriod) {
+        synchronized (preferences_DaysTypes) {
+            fillDaysTypesFromCalendarsInternal(calendarHashes, startPeriod, endPeriod);
         }
     }
 
