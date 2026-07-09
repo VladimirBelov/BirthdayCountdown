@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 04.02.2023, 11:43
+  ~  * Created by Vladimir Belov on 10.07.2026, 00:03
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 09.07.2026, 23:37
   ~  */
   -->
 
@@ -13,7 +13,7 @@
     <item
         android:id="@+id/menu_ok"
         android:icon="@android:drawable/checkbox_on_background"
-        android:title="@string/menu_ok"
+        android:title="@string/menu_save"
         android:visible="false"
         app:showAsAction="ifRoom" />
 

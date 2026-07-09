@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
+  ~  * Created by Vladimir Belov on 10.07.2026, 00:03
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.07.2026, 16:16
+  ~  * Last modified 09.07.2026, 23:54
   ~  */
   -->
 
@@ -72,7 +72,7 @@
     <string name="menu_context_next_fact">Наступны факт</string>
     <string name="menu_context_set_without_year">Ігнараваць год з календара</string>
     <string name="menu_context_unset_without_year">Улічваць год з календара</string>
-    <string name="menu_ok">Добра</string>
+    <string name="menu_save">Захаваць змены</string>
     <string name="menu_help">Даведка</string>
     <string name="menu_help_events_calendar">Падзеі календара</string>
     <string name="menu_help_events_files">Падзеі з лакальных файлаў</string>
@@ -867,14 +867,14 @@
     <string name="pref_Widgets_Color_WidgetCaption_title">Колер загалоўка</string>
     <string name="pref_Widgets_Color_WidgetCaption_summary">Колер загалоўка спісавага віджэта</string>
 
-    <string name="pref_Widgets_Color_EventToday_title">Узрост</string>
-    <string name="pref_Widgets_Color_EventToday_summary">Колер ўзросту для падзей сёння</string>
+    <string name="pref_Widgets_Color_EventToday_title">Падзеі сёння</string>
+    <string name="pref_Widgets_Color_EventToday_summary">Колер узросту або дат для сённяшніх падзей</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">Дзён да падзеі (блізка)</string>
-    <string name="pref_Widgets_Color_EventSoon_summary">Колер лічыльніка дзён для найблізкіх падзей</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Бліжэйшыя падзеі</string>
+    <string name="pref_Widgets_Color_EventSoon_summary">Колер колькасці дзён або дат для блізкіх падзей</string>
 
-    <string name="pref_Widgets_Color_EventFar_title">Дзён да падзеі (далёка)</string>
-    <string name="pref_Widgets_Color_EventFar_summary">Колер лічыльніка дзён для далёкіх падзей</string>
+    <string name="pref_Widgets_Color_EventFar_title">Далёкія падзеі</string>
+    <string name="pref_Widgets_Color_EventFar_summary">Колер колькасці дзён для далёкіх падзей</string>
 
     <string name="pref_Widgets_Days_EventSoon_summary">За колькі дзён падзеі лічацца найблізкімі</string>
     <string name="pref_Widgets_Days_EventSoon_title">Найблізкія падзеі</string>

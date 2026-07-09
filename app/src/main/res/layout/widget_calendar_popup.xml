@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.03.2026, 02:21
+  ~  * Created by Vladimir Belov on 10.07.2026, 00:03
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.03.2026, 21:44
+  ~  * Last modified 08.07.2026, 21:14
   ~  */
   -->
 
@@ -57,6 +57,7 @@
             android:id="@+id/textInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/appwidget_text"
             android:padding="6dp" />
     </ScrollView>
 

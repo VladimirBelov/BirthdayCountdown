@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
+  ~  * Created by Vladimir Belov on 10.07.2026, 00:03
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.07.2026, 16:16
+  ~  * Last modified 09.07.2026, 23:56
   ~  */
   -->
 
@@ -72,7 +72,7 @@
     <string name="menu_context_next_fact">Nächste Tatsache</string>
     <string name="menu_context_set_without_year">Jahr aus dem Kalender ignorieren</string>
     <string name="menu_context_unset_without_year">Jahr aus dem Kalender einbeziehen</string>
-    <string name="menu_ok">OK</string>
+    <string name="menu_save">Änderungen speichern</string>
     <string name="menu_help">Referenz</string>
     <string name="menu_help_events_calendar">Kalenderereignisse</string>
     <string name="menu_help_events_files">Lokale Ereignisse aus Dateien</string>
@@ -867,14 +867,14 @@
     <string name="pref_Widgets_Color_WidgetCaption_title">Widget-Beschriftungsfarbe</string>
     <string name="pref_Widgets_Color_WidgetCaption_summary">Die Farbe für die Beschriftung des Listen-Widgets</string>
 
-    <string name="pref_Widgets_Color_EventToday_title">Alter</string>
-    <string name="pref_Widgets_Color_EventToday_summary">Farbe des Alters für heutige Ereignisse</string>
+    <string name="pref_Widgets_Color_EventToday_title">Heutige Ereignisse</string>
+    <string name="pref_Widgets_Color_EventToday_summary">Farbe für das Alter oder Datum der heutigen Ereignisse</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">Tage bis zum Ereignis (nah)</string>
-    <string name="pref_Widgets_Color_EventSoon_summary">Tageszählerfarbe für bevorstehende Ereignisse</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Ereignisse in der Nähe</string>
+    <string name="pref_Widgets_Color_EventSoon_summary">Farbe für die Anzahl der Tage oder das Datum der Ereignisse in der Nähe</string>
 
-    <string name="pref_Widgets_Color_EventFar_title">Tage bis zum Ereignis (weiter entfernt)</string>
-    <string name="pref_Widgets_Color_EventFar_summary">Tageszählerfarbe für weiter entfernte Ereignisse</string>
+    <string name="pref_Widgets_Color_EventFar_title">Ereignisse in der Ferne</string>
+    <string name="pref_Widgets_Color_EventFar_summary">Farbe für die Anzahl der Tage der Ereignisse in der Ferne</string>
 
     <string name="pref_Widgets_Days_EventSoon_summary">Ab wieviel Tagen gelten Ereignisse als nah</string>
     <string name="pref_Widgets_Days_EventSoon_title">Bevorstehende Ereignisse</string>

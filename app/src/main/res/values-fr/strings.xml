@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
+  ~  * Created by Vladimir Belov on 10.07.2026, 00:03
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.07.2026, 16:22
+  ~  * Last modified 09.07.2026, 23:57
   ~  */
   -->
 
@@ -72,7 +72,7 @@
     <string name="menu_context_next_fact">Fait suivant</string>
     <string name="menu_context_set_without_year">"Ignorer l'année civile"</string>
     <string name="menu_context_unset_without_year">"Utiliser l'année civile"</string>
-    <string name="menu_ok">OK</string>
+    <string name="menu_save">Enregistrer les modifications</string>
     <string name="menu_help">Aide</string>
     <string name="menu_help_events_calendar">Événements du calendrier</string>
     <string name="menu_help_events_files">Événements des fichiers locaux</string>
@@ -867,14 +867,14 @@
     <string name="pref_Widgets_Color_WidgetCaption_title">Couleur du titre</string>
     <string name="pref_Widgets_Color_WidgetCaption_summary">La couleur du titre du widget de liste</string>
 
-    <string name="pref_Widgets_Color_EventToday_title">Âge</string>
-    <string name="pref_Widgets_Color_EventToday_summary">"Couleur de l'âge pour les événements d'aujourd'hui"</string>
+    <string name="pref_Widgets_Color_EventToday_title">Événements du jour</string>
+    <string name="pref_Widgets_Color_EventToday_summary">"Couleur de l'âge ou des dates des événements du jour"</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">"Jours avant l'événement (proche)"</string>
-    <string name="pref_Widgets_Color_EventSoon_summary">Couleur du compteur de jours pour les événements proches</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Événements proches</string>
+    <string name="pref_Widgets_Color_EventSoon_summary">Couleur du nombre de jours ou des dates des événements proches</string>
 
-    <string name="pref_Widgets_Color_EventFar_title">"Jours avant l'événement (loin)"</string>
-    <string name="pref_Widgets_Color_EventFar_summary">Couleur du compteur de jours pour les événements lointains</string>
+    <string name="pref_Widgets_Color_EventFar_title">Événements lointains</string>
+    <string name="pref_Widgets_Color_EventFar_summary">Couleur du nombre de jours pour les événements lointains</string>
 
     <string name="pref_Widgets_Days_EventSoon_summary">Pendant combien de jours les événements sont considérés comme les plus proches</string>
     <string name="pref_Widgets_Days_EventSoon_title">"Événements proches"</string>

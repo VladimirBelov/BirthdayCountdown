@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.07.2026, 23:43
+  ~  * Created by Vladimir Belov on 10.07.2026, 00:03
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 07.07.2026, 19:28
+  ~  * Last modified 09.07.2026, 23:53
   ~  */
   -->
 
@@ -72,7 +72,7 @@
     <string name="menu_context_next_fact">Next fact</string>
     <string name="menu_context_set_without_year">Ignore calendar year</string>
     <string name="menu_context_unset_without_year">Use calendar year</string>
-    <string name="menu_ok">OK</string>
+    <string name="menu_save">Save changes</string>
     <string name="menu_help">Reference</string>
     <string name="menu_help_events_calendar">Calendar events</string>
     <string name="menu_help_events_files">Local files events</string>
@@ -867,13 +867,13 @@
     <string name="pref_Widgets_Color_WidgetCaption_title">Widget caption color</string>
     <string name="pref_Widgets_Color_WidgetCaption_summary">The color for list widget caption</string>
 
-    <string name="pref_Widgets_Color_EventToday_title">Age</string>
-    <string name="pref_Widgets_Color_EventToday_summary">Color of age for today events</string>
+    <string name="pref_Widgets_Color_EventToday_title">Today events</string>
+    <string name="pref_Widgets_Color_EventToday_summary">Color of age or dates for today events</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">Days to event (near)</string>
-    <string name="pref_Widgets_Color_EventSoon_summary">Color of days count for near events</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Near events</string>
+    <string name="pref_Widgets_Color_EventSoon_summary">Color of days count or dates for near events</string>
 
-    <string name="pref_Widgets_Color_EventFar_title">Days to event (far)</string>
+    <string name="pref_Widgets_Color_EventFar_title">Far events</string>
     <string name="pref_Widgets_Color_EventFar_summary">Color of days count for far events</string>
 
     <string name="pref_Widgets_Days_EventSoon_summary">For how many days events are considered to be nearest</string>

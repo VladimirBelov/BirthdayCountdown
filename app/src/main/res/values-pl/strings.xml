@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
+  ~  * Created by Vladimir Belov on 10.07.2026, 00:03
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.07.2026, 16:23
+  ~  * Last modified 09.07.2026, 23:57
   ~  */
   -->
 
@@ -72,7 +72,7 @@
     <string name="menu_context_next_fact">Następny fakt</string>
     <string name="menu_context_set_without_year">Ignoruj rok z kalendarza</string>
     <string name="menu_context_unset_without_year">Uwzględnij rok z kalendarza</string>
-    <string name="menu_ok">OK</string>
+    <string name="menu_save">Zapisz zmiany</string>
     <string name="menu_help">Pomoc</string>
     <string name="menu_help_events_calendar">Wydarzenia w kalendarzu</string>
     <string name="menu_help_events_files">Wydarzenia z plików lokalnych</string>
@@ -867,14 +867,14 @@
     <string name="pref_Widgets_Color_WidgetCaption_title">Kolor podpisu</string>
     <string name="pref_Widgets_Color_WidgetCaption_summary">Kolor tytułu widżetu listy</string>
 
-    <string name="pref_Widgets_Color_EventToday_title">Wiek</string>
-    <string name="pref_Widgets_Color_EventToday_summary">Kolor wieku dla dzisiejszych wydarzeń</string>
+    <string name="pref_Widgets_Color_EventToday_title">Wydarzenia dnia dzisiejszego</string>
+    <string name="pref_Widgets_Color_EventToday_summary">Kolor wieku lub dat wydarzeń dnia dzisiejszego</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">Dni do wydarzenia (zamknięcie)</string>
-    <string name="pref_Widgets_Color_EventSoon_summary">Kolor licznika dni dla nadchodzących wydarzeń</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Wydarzenia w pobliżu</string>
+    <string name="pref_Widgets_Color_EventSoon_summary">Kolor liczby dni lub dat wydarzeń w pobliżu</string>
 
-    <string name="pref_Widgets_Color_EventFar_title">Dni do wydarzenia (daleko)</string>
-    <string name="pref_Widgets_Color_EventFar_summary">Kolor licznika dni dla odległych wydarzeń</string>
+    <string name="pref_Widgets_Color_EventFar_title">Wydarzenia w pobliżu</string>
+    <string name="pref_Widgets_Color_EventFar_summary">Kolor liczby dni wydarzeń w pobliżu</string>
 
     <string name="pref_Widgets_Days_EventSoon_summary">Ile dni wcześniej wydarzenia są uważane za najbliższe</string>
     <string name="pref_Widgets_Days_EventSoon_title">Nadchodzące wydarzenia</string>

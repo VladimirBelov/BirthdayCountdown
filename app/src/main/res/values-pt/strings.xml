@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.07.2026, 16:31
+  ~  * Created by Vladimir Belov on 10.07.2026, 00:03
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.07.2026, 16:24
+  ~  * Last modified 09.07.2026, 23:58
   ~  */
   -->
 
@@ -72,7 +72,7 @@
     <string name="menu_context_next_fact">Próximo fato</string>
     <string name="menu_context_set_without_year">Ignorar o ano do calendário</string>
     <string name="menu_context_unset_without_year">Incluir o ano do calendário</string>
-    <string name="menu_ok">OK</string>
+    <string name="menu_save">Salvar alterações</string>
     <string name="menu_help">Referência</string>
     <string name="menu_help_events_calendar">Eventos de calendário</string>
     <string name="menu_help_events_files">Eventos de arquivos locais</string>
@@ -867,13 +867,13 @@
     <string name="pref_Widgets_Color_WidgetCaption_title">Cor da legenda do widget</string>
     <string name="pref_Widgets_Color_WidgetCaption_summary">A cor da legenda do widget de lista</string>
 
-    <string name="pref_Widgets_Color_EventToday_title">Idade</string>
-    <string name="pref_Widgets_Color_EventToday_summary">Cor da idade para eventos de hoje</string>
+    <string name="pref_Widgets_Color_EventToday_title">Eventos de hoje</string>
+    <string name="pref_Widgets_Color_EventToday_summary">Cor da idade ou datas para eventos de hoje</string>
 
-    <string name="pref_Widgets_Color_EventSoon_title">Dias até o evento (próximo)</string>
-    <string name="pref_Widgets_Color_EventSoon_summary">Cor da contagem de dias para eventos próximos</string>
+    <string name="pref_Widgets_Color_EventSoon_title">Eventos próximos</string>
+    <string name="pref_Widgets_Color_EventSoon_summary">Cor da contagem de dias ou datas para eventos próximos</string>
 
-    <string name="pref_Widgets_Color_EventFar_title">Dias até o evento (distante)</string>
+    <string name="pref_Widgets_Color_EventFar_title">Eventos distantes</string>
     <string name="pref_Widgets_Color_EventFar_summary">Cor da contagem de dias para eventos distantes</string>
 
     <string name="pref_Widgets_Days_EventSoon_summary">Por quantos dias os eventos são considerados mais próximos</string>
