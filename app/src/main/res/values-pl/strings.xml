@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.07.2026, 00:03
+  ~  * Created by Vladimir Belov on 12.07.2026, 13:14
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 09.07.2026, 23:57
+  ~  * Last modified 12.07.2026, 13:08
   ~  */
   -->
 
@@ -941,6 +941,9 @@
 
     <string name="widget_config_color_back_label">Kolor tła</string>
     <string name="widget_config_color_back_description">Kolor tła widgetu</string>
+
+    <string name="widget_config_color_border_label">Kolor obramowania widżetu</string>
+    <string name="widget_config_color_border_description">Kolor obramowania widżetu</string>
 
     <string name="widget_config_layout_title">Liczba miesięcy</string>
     <string name="widget_config_layout_description">Ile miesięcy wyświetlić</string>

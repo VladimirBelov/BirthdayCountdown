@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.07.2026, 17:49
+ *  * Created by Vladimir Belov on 12.07.2026, 13:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 08.07.2026, 15:25
+ *  * Last modified 12.07.2026, 11:28
  *
  */
 
@@ -622,6 +622,14 @@ public class WidgetCalendar extends AppWidgetProvider {
 
                     addMonth(appWidgetId, row, column, monthsToDraw, cal, calFirstDay, calLastDay, rv);
                 }
+            }
+
+            if (eventsData.preferences_debug_on) {
+                rv.setTextViewText(R.id.info, res.getString(R.string.widget_msg_updated)
+                        + Objects.requireNonNull(eventsData.sdf_DDMMYYYYHHMM.get()).format(Calendar.getInstance().getTime()));
+                rv.setViewVisibility(R.id.info, View.VISIBLE);
+            } else {
+                rv.setViewVisibility(R.id.info, View.GONE);
             }
 
             ToastExpander.showDebugMsg(context, widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref);

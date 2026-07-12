@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.07.2026, 23:43
+ *  * Created by Vladimir Belov on 12.07.2026, 13:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.07.2026, 23:42
+ *  * Last modified 12.07.2026, 11:32
  *
  */
 
@@ -14,6 +14,7 @@ import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -50,6 +51,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
     private static final String TAG = "WidgetPhotoList";
     final ContactsEvents eventsData = ContactsEvents.getInstance();
+    private Resources res;
 
     private void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
@@ -60,6 +62,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
         try {
 
             eventsData.initLanguage(context);
+            this.res = eventsData.getResources();
 
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(eventsData.getContext()).getAppWidgetInfo(appWidgetId);
             String widgetType = Constants.WIDGET_TYPE_PHOTO_LIST;
@@ -74,7 +77,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             }
 
             RemoteViews views;
-            if (widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Dividers_ID))) {
+            if (widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_Dividers_ID))) {
                 views = new RemoteViews(context.getPackageName(), R.layout.widgetlist_dividers);
             } else {
                 views = new RemoteViews(context.getPackageName(), R.layout.widgetlist);
@@ -89,7 +92,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             views.setEmptyView(R.id.widget_list, R.id.empty_view);
 
             //Кнопка настроек
-            if (DeviceTools.isWidgetSupportConfig() && !widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ButtonConfig_ID))) {
+            if (DeviceTools.isWidgetSupportConfig() && !widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_ButtonConfig_ID))) {
                 views.setViewVisibility(R.id.config_button, View.GONE);
             } else {
                 views.setViewVisibility(R.id.config_button, View.VISIBLE);
@@ -102,9 +105,9 @@ public class WidgetPhotoList extends AppWidgetProvider {
             int eventsToShow = eventsData.getFilteredEventList(eventsData.eventList, widgetPref).size();
 
             if (eventsData.preferences_debug_on) {
-                views.setTextViewText(R.id.info, context.getString(R.string.widget_msg_updated)
+                views.setTextViewText(R.id.info, res.getString(R.string.widget_msg_updated)
                         + Objects.requireNonNull(eventsData.sdf_DDMMYYYYHHMM.get()).format(Calendar.getInstance().getTime())
-                        + Constants.STRING_EOL + context.getString(R.string.widget_msg_events) + eventsToShow + Constants.STRING_SLASH + eventsData.eventList.size());
+                        + Constants.STRING_EOL + res.getString(R.string.widget_msg_events) + eventsToShow + Constants.STRING_SLASH + eventsData.eventList.size());
             } else {
                 views.setTextViewText(R.id.info, Constants.STRING_EMPTY);
             }
@@ -127,7 +130,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             if (!prefWidgetCaption.isEmpty() || eventsData.preferences_debug_on) {
                 int paddingTop = (int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
-                        (float) (22 * sizeForWidgetElement / (Constants.WIDGET_TEXT_SIZE_TINY * defaultMagnify)), eventsData.getResources().getDisplayMetrics()
+                        (float) (22 * sizeForWidgetElement / (Constants.WIDGET_TEXT_SIZE_TINY * defaultMagnify)), res.getDisplayMetrics()
                 );
                 views.setViewPadding(R.id.widget_layout, 0, paddingTop, 0, 0);
             } else {
@@ -143,7 +146,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             //Сообщение при отсутствии событий
             String prefZeroEventsMessage = Constants.STRING_EMPTY;
             if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
-            views.setTextViewText(R.id.empty_view, TextUtils.isEmpty(prefZeroEventsMessage) ? context.getString(R.string.msg_no_events) : prefZeroEventsMessage);
+            views.setTextViewText(R.id.empty_view, TextUtils.isEmpty(prefZeroEventsMessage) ? res.getString(R.string.msg_no_events) : prefZeroEventsMessage);
 
             //Цвет подложки и бордюра
             @ColorInt int colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_Calendar_Back_default);
@@ -164,8 +167,8 @@ public class WidgetPhotoList extends AppWidgetProvider {
             views.setInt(R.id.widget_list,Constants.METHOD_SET_BACKGROUND_COLOR, colorWidgetBackground);
 
             //Если события есть - рисуем бордюр, иначе - прозрачность
-            if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Border_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Border_ID)))) {
+            if (eventsToShow > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(res.getString(R.string.pref_EventInfo_Border_ID))
+                    : widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_Border_ID)))) {
                 views.setInt(R.id.widget_layout,Constants.METHOD_SET_BACKGROUND_RES, ImageUtils.getWidgetBorder(colorWidgetBorder, context, true));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     views.setViewPadding(R.id.widget_frame, 10, 10, 10, 10);
@@ -178,8 +181,8 @@ public class WidgetPhotoList extends AppWidgetProvider {
             }
 
             ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
-                    context.getResources().getString(R.string.msg_debug_widget_list_config, widgetType, appWidgetId,
-                            context.getResources().getResourceEntryName(views.getLayoutId()), TextUtils.join(Constants.STRING_COMMA, widgetPref))
+                    res.getString(R.string.msg_debug_widget_list_config, widgetType, appWidgetId,
+                            res.getResourceEntryName(views.getLayoutId()), TextUtils.join(Constants.STRING_COMMA, widgetPref))
                     : widgetType.concat(Constants.STRING_COLON)
                     .concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL)
                     .concat(TextUtils.join(Constants.STRING_COMMA, widgetPref))
@@ -239,7 +242,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
             int pref_onClick = 0;
             try {
-                pref_onClick = intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(context.getString(R.string.pref_Widgets_OnClick_default)));
+                pref_onClick = intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(res.getString(R.string.pref_Widgets_OnClick_default)));
             } catch (NumberFormatException ignored) { /**/ }
             if (pref_onClick == 0 || eventInfo == null || eventInfo.isEmpty()) return;
 

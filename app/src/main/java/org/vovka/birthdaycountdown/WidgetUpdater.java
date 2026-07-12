@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.07.2026, 23:43
+ *  * Created by Vladimir Belov on 12.07.2026, 13:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.07.2026, 23:12
+ *  * Last modified 12.07.2026, 11:41
  *
  */
 
@@ -63,13 +63,13 @@ class WidgetUpdater {
     public static final String ALIGN_RIGHT = "Right";
     final private Context context;
     final private ContactsEvents eventsData;
+    private final Resources res;
     final private RemoteViews views;
     private final int eventsCount;
     private int daysCount = 0;
     final private int width;
     final private int height;
     private final int widgetId;
-    private final Resources resources;
     private String packageName;
     private double fontMagnify;
     private int colorDefault;
@@ -91,8 +91,8 @@ class WidgetUpdater {
 
     WidgetUpdater(@NonNull Context context, @NonNull ContactsEvents eventsData, @NonNull RemoteViews views, int eventsCount, int width, int height, int widgetId) {
         this.context = context;
-        this.resources = context.getResources();
         this.eventsData = eventsData;
+        this.res = eventsData.getResources();
         this.views = views;
         this.eventsCount = eventsCount > Constants.WIDGET_EVENTS_MAX ? Constants.WIDGET_EVENTS_MAX : eventsCount > 0 ? eventsCount : 1;
         this.width = width;
@@ -117,7 +117,7 @@ class WidgetUpdater {
             //Скрываем все события
             packageName = context.getPackageName();
             for (int e = 0; e < Constants.WIDGET_EVENTS_MAX; e++) {
-                views.setViewVisibility(resources.getIdentifier(Constants.WIDGET_EVENT_INFO + e, Constants.RES_TYPE_ID, packageName), View.GONE);
+                views.setViewVisibility(res.getIdentifier(Constants.WIDGET_EVENT_INFO + e, Constants.RES_TYPE_ID, packageName), View.GONE);
             }
 
             //Получаем настройки отображения виджета
@@ -135,7 +135,7 @@ class WidgetUpdater {
 
                 String prefZeroEventsMessage = null;
                 if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
-                if (TextUtils.isEmpty(prefZeroEventsMessage)) prefZeroEventsMessage = context.getString(R.string.msg_no_events);
+                if (TextUtils.isEmpty(prefZeroEventsMessage)) prefZeroEventsMessage = res.getString(R.string.msg_no_events);
                 views.setTextViewText(R.id.appwidget_text, prefZeroEventsMessage);
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
                 return;
@@ -182,7 +182,7 @@ class WidgetUpdater {
                         if (scopeLayout != null) {
                             if (scopeLayout.equals(Constants.STRING_MINUS)) { //Оставить пустоту
                                 for (int e = 0; e < Constants.WIDGET_EVENTS_MAX; e++) {
-                                    views.setViewVisibility(resources.getIdentifier(Constants.WIDGET_EVENT_INFO + e, Constants.RES_TYPE_ID, packageName), View.INVISIBLE);
+                                    views.setViewVisibility(res.getIdentifier(Constants.WIDGET_EVENT_INFO + e, Constants.RES_TYPE_ID, packageName), View.INVISIBLE);
                                 }
                             }
                         }
@@ -209,11 +209,11 @@ class WidgetUpdater {
             List<String> prefCaptions = new ArrayList<>();
             if (widgetPref.size() > 11) prefCaptions.addAll(Arrays.asList(widgetPref.get(11).split(Constants.REGEX_PLUS)));
 
-            List<String> listBottomInfo = Arrays.asList(resources.getStringArray(R.array.pref_Widgets_BottomInfo_values));
+            List<String> listBottomInfo = Arrays.asList(res.getStringArray(R.array.pref_Widgets_BottomInfo_values));
 
             //Из общих настроек
             captionsPrefMap.put(Constants.PhotoWidget_Upper_Caption, Integer.valueOf(eventsData.preferences_widgets_bottom_info_2nd));
-            if (!eventsData.preferences_widgets_bottom_info_2nd.equals(resources.getString(R.string.pref_Widgets_BottomInfo_none))) {
+            if (!eventsData.preferences_widgets_bottom_info_2nd.equals(res.getString(R.string.pref_Widgets_BottomInfo_none))) {
                 captionsPrefMap.put(Constants.PhotoWidget_Upper_Aligning, eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info_2nd));
                 captionsPrefMap.put(Constants.PhotoWidget_Upper_Rows, 3);
                 captionsPrefMap.put(Constants.PhotoWidget_Upper_FontStyle, Typeface.NORMAL);
@@ -222,7 +222,7 @@ class WidgetUpdater {
             }
 
             captionsPrefMap.put(Constants.PhotoWidget_Bottom_Caption, Integer.valueOf(eventsData.preferences_widgets_bottom_info));
-            if (!eventsData.preferences_widgets_bottom_info.equals(resources.getString(R.string.pref_Widgets_BottomInfo_none))) {
+            if (!eventsData.preferences_widgets_bottom_info.equals(res.getString(R.string.pref_Widgets_BottomInfo_none))) {
                 captionsPrefMap.put(Constants.PhotoWidget_Bottom_Aligning, eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info));
                 captionsPrefMap.put(Constants.PhotoWidget_Bottom_Rows, 3);
                 captionsPrefMap.put(Constants.PhotoWidget_Bottom_FontStyle, Typeface.NORMAL);
@@ -289,10 +289,10 @@ class WidgetUpdater {
 
             //Реакция на нажатие
             try {
-                this.widgetPref_onClick_events = Integer.parseInt(resources.getString(R.string.pref_widget_list_onclick_from_prefs));
+                this.widgetPref_onClick_events = Integer.parseInt(res.getString(R.string.pref_widget_list_onclick_from_prefs));
             } catch (NumberFormatException ignored) { /**/ }
             try {
-                this.widgetPref_onClick_lastEvent = Integer.parseInt(resources.getString(R.string.pref_widget_list_onclick_events_list));
+                this.widgetPref_onClick_lastEvent = Integer.parseInt(res.getString(R.string.pref_widget_list_onclick_events_list));
             } catch (NumberFormatException ignored) { /**/ }
 
             if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty()) {
@@ -321,7 +321,7 @@ class WidgetUpdater {
 
                 String prefZeroEventsMessage = null;
                 if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
-                if (TextUtils.isEmpty(prefZeroEventsMessage)) prefZeroEventsMessage = context.getString(R.string.msg_no_events);
+                if (TextUtils.isEmpty(prefZeroEventsMessage)) prefZeroEventsMessage = res.getString(R.string.msg_no_events);
                 views.setTextViewText(R.id.appwidget_text, prefZeroEventsMessage);
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
 
@@ -353,15 +353,15 @@ class WidgetUpdater {
 
             //https://stackoverflow.com/questions/12523005/how-set-background-drawable-programmatically-in-android
             //Если события есть - рисуем бордюр, иначе - прозрачность
-            if (eventsDisplayed > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Border_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Border_ID)))) {
+            if (eventsDisplayed > 0 && (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(res.getString(R.string.pref_EventInfo_Border_ID))
+                    : widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_Border_ID)))) {
                 views.setInt(R.id.appwidget_main, Constants.METHOD_SET_BACKGROUND_RES, ImageUtils.getWidgetBorder(colorWidgetBorder, context, false));
             } else {
                 views.setInt(R.id.appwidget_main,Constants.METHOD_SET_BACKGROUND_RES, 0);
             }
 
             if (eventsData.preferences_debug_on) {
-                views.setTextViewText(R.id.info, (width > 70 ? context.getString(R.string.widget_msg_updated)
+                views.setTextViewText(R.id.info, (width > 70 ? res.getString(R.string.widget_msg_updated)
                         : Constants.STRING_EMPTY) + Objects.requireNonNull(eventsData.sdf_DDMMYYYYHHMM.get()).format(Calendar.getInstance().getTime()));
                 views.setViewVisibility(R.id.info, View.VISIBLE);
             } else {
@@ -444,13 +444,13 @@ class WidgetUpdater {
 
             //Надпись (верхний ряд)
 
-            int layoutCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND_LAYOUT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+            int layoutCaptionUpper = res.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND_LAYOUT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
             views.setViewVisibility(layoutCaptionUpper, View.INVISIBLE);
 
             int textCaptionUpper = 0;
 
             for (String align: aligns) {
-                textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + align + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+                textCaptionUpper = res.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + align + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                 views.setViewVisibility(textCaptionUpper, View.GONE);
             }
 
@@ -459,12 +459,12 @@ class WidgetUpdater {
             String captionUpper = String.valueOf(captionsPrefMap.get(Constants.PhotoWidget_Upper_Caption));
             String captionBottom = String.valueOf(captionsPrefMap.get(Constants.PhotoWidget_Bottom_Caption));
             String personFullName = singleEventArray[ContactsEvents.Position_personFullName];
-            if (!captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_none))) {
+            if (!captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_none))) {
 
                 //Надпись
-                if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))) { //Фамилия Имя Отчество
+                if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))) { //Фамилия Имя Отчество
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
-                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))) { //Фамилия Имя Отчество (Псевдоним)
+                } else if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))) { //Фамилия Имя Отчество (Псевдоним)
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                     if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = rowValue
@@ -472,54 +472,54 @@ class WidgetUpdater {
                                 .concat(singleEventArray[ContactsEvents.Position_nickname])
                                 .concat(Constants.STRING_PARENTHESIS_CLOSE);
                     }
-                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventDate))) { //Дата события
+                } else if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_EventDate))) { //Дата события
                     rowValue = AppDateUtils.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime],
                             ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
-                            eventsData.getResources(), eventsData.currentLocale);
-                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))) { //Фамилия И.О. (Имя Отчество, если нет фамилии)
+                            res, eventsData.currentLocale);
+                } else if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_LastFS))) { //Фамилия И.О. (Имя Отчество, если нет фамилии)
                     rowValue = person.getFullNameShort();
-                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))) { //Имя Отчество Фамилия
+                } else if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))) { //Имя Отчество Фамилия
                     rowValue = personFullName;
-                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) { //Имя
+                } else if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_First))) { //Имя
                     rowValue = personFullName;
                     indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }
-                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Last))) { //Фамилия
+                } else if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_Last))) { //Фамилия
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                     indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }
-                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Nick))) { //Псевдоним (Имя, если отсутствует)
+                } else if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_Nick))) { //Псевдоним (Имя, если отсутствует)
                     if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = singleEventArray[ContactsEvents.Position_nickname];
-                    } else if (!captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))
-                            && !captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))
-                            && !captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))
-                            && !captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))
-                            && !captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) {
+                    } else if (!captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))
+                            && !captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))
+                            && !captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_LastFS))
+                            && !captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))
+                            && !captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_First))) {
                         rowValue = personFullName;
                         indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                         if (indSpace > -1) {
                             rowValue = rowValue.substring(0, indSpace);
                         }
                     }
-                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventType))) { //Тип события
+                } else if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_EventType))) { //Тип события
                     rowValue = singleEventArray[ContactsEvents.Position_eventCaption];
-                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventLabel))) { //Наименование события
+                } else if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_EventLabel))) { //Наименование события
                     rowValue =
                             !StringUtils.hasContent(singleEventArray[ContactsEvents.Position_eventLabel]) ? singleEventArray[ContactsEvents.Position_eventCaption] :
                                     singleEventArray[ContactsEvents.Position_eventLabel];
-                } else if (captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Organization))) { //Организация (Должность, если отсутствует)
+                } else if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_Organization))) { //Организация (Должность, если отсутствует)
                     rowValue = StringUtils.hasContent(singleEventArray[ContactsEvents.Position_organization]) ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
                 }
 
             }
             if (!TextUtils.isEmpty(rowValue)) {
 
-                textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_CENTER + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+                textCaptionUpper = res.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_CENTER + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
                 //Выравнивание
                 //TextView до Android 12 не понимает setGravity через setInt, по-этому, для каждого выравнивания - свой TextView
@@ -528,9 +528,9 @@ class WidgetUpdater {
                 Integer aligning = captionsPrefMap.get(Constants.PhotoWidget_Upper_Aligning);
                 if (aligning != null) {
                     if (aligning == Constants.Align_Left) {
-                        textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_LEFT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+                        textCaptionUpper = res.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_LEFT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                     } else if (aligning == Constants.Align_Right) {
-                        textCaptionUpper = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_RIGHT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+                        textCaptionUpper = res.getIdentifier(Constants.WIDGET_TEXT_VIEW_2_ND + ALIGN_RIGHT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                     }
                 }
                 //Размер
@@ -567,23 +567,23 @@ class WidgetUpdater {
 
             //Надпись (нижний ряд)
 
-            int layoutCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_LAYOUT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+            int layoutCaptionBottom = res.getIdentifier(Constants.WIDGET_TEXT_VIEW_LAYOUT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
             views.setViewVisibility(layoutCaptionBottom, View.INVISIBLE);
 
             int textCaptionBottom = 0;
             for (String align: aligns) {
-                textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + align + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+                textCaptionBottom = res.getIdentifier(Constants.WIDGET_TEXT_VIEW + align + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                 views.setViewVisibility(textCaptionBottom, View.GONE);
             }
 
             boolean isBottomCaption = false;
             rowValue = null;
-            if (!captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_none))) {
+            if (!captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_none))) {
 
                 //Надпись
-                if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))) { //Фамилия Имя Отчество
+                if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))) { //Фамилия Имя Отчество
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
-                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))) { //Фамилия Имя Отчество (Псевдоним)
+                } else if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))) { //Фамилия Имя Отчество (Псевдоним)
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                     if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = rowValue
@@ -591,62 +591,62 @@ class WidgetUpdater {
                                 .concat(singleEventArray[ContactsEvents.Position_nickname])
                                 .concat(Constants.STRING_PARENTHESIS_CLOSE);
                     }
-                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventDate))) { //Дата события
+                } else if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_EventDate))) { //Дата события
                     rowValue = AppDateUtils.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime],
                             ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
-                            eventsData.getResources(), eventsData.currentLocale);
-                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))) { //Фамилия И.О. (Имя Отчество, если нет фамилии)
+                            res, eventsData.currentLocale);
+                } else if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_LastFS))) { //Фамилия И.О. (Имя Отчество, если нет фамилии)
                     rowValue = person.getFullNameShort();
-                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))) { //Имя Отчество Фамилия
+                } else if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))) { //Имя Отчество Фамилия
                     rowValue = personFullName;
-                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) { //Имя
+                } else if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_First))) { //Имя
                     rowValue = personFullName;
                     indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }
-                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Last))) { //Фамилия
+                } else if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_Last))) { //Фамилия
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                     indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }
-                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Nick))) { //Псевдоним (Имя, если отсутствует)
+                } else if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_Nick))) { //Псевдоним (Имя, если отсутствует)
                     if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = singleEventArray[ContactsEvents.Position_nickname];
-                    } else if (!captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))
-                            && !captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))
-                            && !captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_LastFS))
-                            && !captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))
-                            && !captionUpper.equals(resources.getString(R.string.pref_Widgets_BottomInfo_First))) {
+                    } else if (!captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecond))
+                            && !captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_LastFirstSecondNick))
+                            && !captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_LastFS))
+                            && !captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))
+                            && !captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_First))) {
                         rowValue = personFullName;
                         indSpace = rowValue.indexOf(Constants.STRING_SPACE);
                         if (indSpace > -1) {
                             rowValue = rowValue.substring(0, indSpace);
                         }
                     }
-                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventType))) { //Тип события
+                } else if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_EventType))) { //Тип события
                     rowValue = singleEventArray[ContactsEvents.Position_eventCaption];
-                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_EventLabel))) { //Наименование события
+                } else if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_EventLabel))) { //Наименование события
                     rowValue =
                             !StringUtils.hasContent(singleEventArray[ContactsEvents.Position_eventLabel]) ? singleEventArray[ContactsEvents.Position_eventCaption] :
                                     singleEventArray[ContactsEvents.Position_eventLabel];
-                } else if (captionBottom.equals(resources.getString(R.string.pref_Widgets_BottomInfo_Organization))) { //Организация (Должность, если отсутствует)
+                } else if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_Organization))) { //Организация (Должность, если отсутствует)
                     rowValue = StringUtils.hasContent(singleEventArray[ContactsEvents.Position_organization]) ? singleEventArray[ContactsEvents.Position_organization] : singleEventArray[ContactsEvents.Position_title];
                 }
 
             }
             if (!TextUtils.isEmpty(rowValue)) {
 
-                textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_CENTER + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+                textCaptionBottom = res.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_CENTER + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
                 //Выравнивание
                 Integer aligning = captionsPrefMap.get(Constants.PhotoWidget_Bottom_Aligning);
                 if (aligning != null) {
                     if (aligning == Constants.Align_Left) {
-                        textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_LEFT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+                        textCaptionBottom = res.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_LEFT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                     } else if (aligning == Constants.Align_Right) {
-                        textCaptionBottom = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_RIGHT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+                        textCaptionBottom = res.getIdentifier(Constants.WIDGET_TEXT_VIEW + ALIGN_RIGHT + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                     }
                 }
                 //Размер
@@ -692,15 +692,15 @@ class WidgetUpdater {
                 }
             }
 
-            ContactsEvents.EventPhoto photo = eventsData.getEventPhotoInternal(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Photo_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Photo_ID)), true, false, roundingFactor);
+            ContactsEvents.EventPhoto photo = eventsData.getEventPhotoInternal(event, widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(res.getString(R.string.pref_EventInfo_Photo_ID))
+                    : widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_Photo_ID)), true, false, roundingFactor);
             if (photo.bitmap != null) {
 
                 //https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners
                 //https://stackoverflow.com/questions/7895118/android-remoteviews-how-to-set-scaletype-of-an-imageview-inside-a-widget
-                int id_widget_Photo = resources.getIdentifier(Constants.WIDGET_IMAGE_VIEW + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
-                int id_widget_Photo_Centered = resources.getIdentifier(Constants.WIDGET_IMAGE_VIEW_CENTERED + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
-                int id_widget_Photo_Start = resources.getIdentifier(Constants.WIDGET_IMAGE_VIEW_START + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+                int id_widget_Photo = res.getIdentifier(Constants.WIDGET_IMAGE_VIEW + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+                int id_widget_Photo_Centered = res.getIdentifier(Constants.WIDGET_IMAGE_VIEW_CENTERED + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+                int id_widget_Photo_Start = res.getIdentifier(Constants.WIDGET_IMAGE_VIEW_START + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
                 int id_Photo;
 
                 if (roundingFactor > 8 || photo.type == ContactsEvents.PhotoType.ICON) {
@@ -736,10 +736,10 @@ class WidgetUpdater {
             }
 
             //Иконка события
-            int id_widget_EventIcon = resources.getIdentifier(Constants.WIDGET_ICON_EVENT_TYPE + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+            int id_widget_EventIcon = res.getIdentifier(Constants.WIDGET_ICON_EVENT_TYPE + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
-            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_EventIcon_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_EventIcon_ID))) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(res.getString(R.string.pref_EventInfo_EventIcon_ID))
+                    : widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_EventIcon_ID))) {
 
                 int eventIcon;
                 try {
@@ -760,12 +760,12 @@ class WidgetUpdater {
             //Иконка знака зодиака
             //https://emojipedia.org/microsoft/windows-10-may-2019-update/aquarius/
             String strZodiacInfo = Constants.STRING_EMPTY;
-            int id_widget_ZodiacIcon = resources.getIdentifier(Constants.WIDGET_ICON_ZODIAC + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+            int id_widget_ZodiacIcon = res.getIdentifier(Constants.WIDGET_ICON_ZODIAC + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
             String contactID = singleEventArray[ContactsEvents.Position_contactID];
             boolean isBirthdayEvent = eventSubType.equals(Constants.EventType_BirthDay) || eventSubType.equals(Constants.EventType_5K);
-            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_ZodiacSign_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(res.getString(R.string.pref_EventInfo_ZodiacSign_ID))
+                    : widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
 
                 if (isBirthdayEvent) {
 
@@ -796,10 +796,10 @@ class WidgetUpdater {
 
             //Иконка зодиакального года
             String strZodiacYearInfo = Constants.STRING_EMPTY;
-            int id_widget_ZodiacYearIcon = resources.getIdentifier(Constants.WIDGET_ICON_ZODIAC_YEAR + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+            int id_widget_ZodiacYearIcon = res.getIdentifier(Constants.WIDGET_ICON_ZODIAC_YEAR + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
-            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_ZodiacYear_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_ZodiacYear_ID))) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(res.getString(R.string.pref_EventInfo_ZodiacYear_ID))
+                    : widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_ZodiacYear_ID))) {
 
                 if (isBirthdayEvent) {
 
@@ -824,18 +824,18 @@ class WidgetUpdater {
             }
 
             //Иконка фаворита
-            int id_widget_FavIcon = resources.getIdentifier(Constants.WIDGET_ICON_FAV + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
-            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_FavIcon_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_FavIcon_ID))) && eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
+            int id_widget_FavIcon = res.getIdentifier(Constants.WIDGET_ICON_FAV + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(res.getString(R.string.pref_EventInfo_FavIcon_ID))
+                    : widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_FavIcon_ID))) && eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
                 views.setViewVisibility(id_widget_FavIcon, View.VISIBLE);
             } else {
                 views.setViewVisibility(id_widget_FavIcon, View.GONE);
             }
 
             //Иконка события без уведомления
-            int id_widget_SilencedIcon = resources.getIdentifier(Constants.WIDGET_ICON_SILENCED + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
-            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_SilencedIcon_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_SilencedIcon_ID))) && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
+            int id_widget_SilencedIcon = res.getIdentifier(Constants.WIDGET_ICON_SILENCED + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+            if ((widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(res.getString(R.string.pref_EventInfo_SilencedIcon_ID))
+                    : widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_SilencedIcon_ID))) && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
                 views.setTextViewText(id_widget_SilencedIcon, "\uD83D\uDEAB"); //https://emojipedia.org/prohibited/
                 views.setViewVisibility(id_widget_SilencedIcon, View.VISIBLE);
             } else {
@@ -843,7 +843,7 @@ class WidgetUpdater {
             }
 
             //Цвета по-умолчанию
-            int id_widget_Age = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_AGE + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+            int id_widget_Age = res.getIdentifier(Constants.WIDGET_TEXT_VIEW_AGE + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
             views.setTextColor(id_widget_Age, colorDefault);
 
@@ -851,10 +851,10 @@ class WidgetUpdater {
             //https://stackoverflow.com/questions/44417666/change-properties-of-view-inside-remoteview
             //https://stackoverflow.com/questions/6435648/any-way-to-set-the-text-shadow-for-a-spannablestring - не работает
             // @android.view.RemotableViewMethod
-            //views.setInt(id_widget_Caption2nd_centered, "setShadowColor", resources.getColor(R.color.white));
+            //views.setInt(id_widget_Caption2nd_centered, "setShadowColor", res.getColor(R.color.white));
 
             //Сколько осталось до события
-            int id_widget_Distance = resources.getIdentifier(Constants.WIDGET_TEXT_VIEW_DISTANCE + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+            int id_widget_Distance = res.getIdentifier(Constants.WIDGET_TEXT_VIEW_DISTANCE + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
             String eventDistance = singleEventArray[ContactsEvents.Position_eventDistance];
             int eventDistance_Days;
             try {
@@ -896,8 +896,8 @@ class WidgetUpdater {
             }
 
             //Возраст
-            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(context.getString(R.string.pref_EventInfo_Age_ID))
-                    : widgetPref_eventInfo.contains(context.getString(R.string.pref_EventInfo_Age_ID))) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(res.getString(R.string.pref_EventInfo_Age_ID))
+                    : widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_Age_ID))) {
 
                 String ageCaption = singleEventArray[ContactsEvents.Position_age_caption];
                 if (ageCaption.contains(Constants.STRING_SPACE)) {
@@ -915,7 +915,7 @@ class WidgetUpdater {
 
             }
 
-            int idEventPlaceholder = resources.getIdentifier(Constants.WIDGET_EVENT_INFO + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
+            int idEventPlaceholder = res.getIdentifier(Constants.WIDGET_EVENT_INFO + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
             int pref_onClick;
             Intent intentAction;
 
@@ -942,7 +942,7 @@ class WidgetUpdater {
 
             final String eventDay = AppDateUtils.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime],
                     ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
-                    eventsData.getResources(), eventsData.currentLocale);
+                    res, eventsData.currentLocale);
             String eventText = singleEventArray[ContactsEvents.Position_eventEmoji] +
                     Constants.STRING_SPACE +
                     Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + eventDay + Constants.HTML_COLOR_END +

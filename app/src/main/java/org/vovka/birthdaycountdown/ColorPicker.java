@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.07.2026, 23:43
+ *  * Created by Vladimir Belov on 12.07.2026, 13:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.07.2026, 19:33
+ *  * Last modified 12.07.2026, 11:51
  *
  */
 package org.vovka.birthdaycountdown;
@@ -70,7 +70,8 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
     private int mSelectDialogIcon;
     private ColorGridAdapter mAdapter;
     private final Context context;
-    final ContactsEvents eventsData = ContactsEvents.getInstance();
+    private final ContactsEvents eventsData = ContactsEvents.getInstance();
+    private final Resources res = eventsData.getResources();
 
     // Интерфейс обратного вызова для передачи результата
     public interface OnColorSelectedListener {
@@ -240,7 +241,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 });
                 mColorGrid.setOnItemLongClickListener((parent, view, position, id) -> {
                     Toast.makeText(context,
-                            context.getString(R.string.pref_Color_title) +
+                            res.getString(R.string.pref_Color_title) +
                                     Constants.STRING_SPACE +
                                     ImageUtils.toARGBString(mAdapter.getItem(position))
                             , Toast.LENGTH_SHORT).show();
@@ -317,7 +318,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             }
 
             TextView color_label = view.findViewById(R.id.color_label);
-            color_label.setText(context.getString(R.string.pref_Color_title));
+            color_label.setText(res.getString(R.string.pref_Color_title));
 
             final int[] colorValue = {mValue};
             TextView color_edit = view.findViewById(R.id.color_edit);
@@ -327,28 +328,28 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             setColorViewValue(color_preview, colorValue[0]);
 
             TextView seek1_label = view.findViewById(R.id.seek1_label);
-            seek1_label.setText(context.getString(R.string.pref_Red_title));
+            seek1_label.setText(res.getString(R.string.pref_Red_title));
             SeekBar seek1 = view.findViewById(R.id.seek1);
             seek1.setProgress(Color.red(colorValue[0]));
             TextView seek1_progress = view.findViewById(R.id.seek1_progress);
             seek1_progress.setText(String.valueOf(seek1.getProgress()));
 
             TextView seek2_label = view.findViewById(R.id.seek2_label);
-            seek2_label.setText(context.getString(R.string.pref_Green_title));
+            seek2_label.setText(res.getString(R.string.pref_Green_title));
             SeekBar seek2 = view.findViewById(R.id.seek2);
             seek2.setProgress(Color.green(colorValue[0]));
             TextView seek2_progress = view.findViewById(R.id.seek2_progress);
             seek2_progress.setText(String.valueOf(Color.green(colorValue[0])));
 
             TextView seek3_label = view.findViewById(R.id.seek3_label);
-            seek3_label.setText(context.getString(R.string.pref_Blue_title));
+            seek3_label.setText(res.getString(R.string.pref_Blue_title));
             SeekBar seek3 = view.findViewById(R.id.seek3);
             seek3.setProgress(Color.blue(colorValue[0]));
             TextView seek3_progress = view.findViewById(R.id.seek3_progress);
             seek3_progress.setText(String.valueOf(Color.blue(colorValue[0])));
 
             TextView seek4_label = view.findViewById(R.id.seek4_label);
-            seek4_label.setText(context.getString(R.string.pref_Alpha_title));
+            seek4_label.setText(res.getString(R.string.pref_Alpha_title));
             SeekBar seek4 = view.findViewById(R.id.seek4);
             seek4.setProgress(255 - Color.alpha(colorValue[0]));
             TextView seek4_progress = view.findViewById(R.id.seek4_progress);
@@ -553,7 +554,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                         returnResult(idToPass, colorInt, listener);
                         dialog.cancel();
                     } catch (IllegalArgumentException e) {
-                        ToastExpander.showInfoMsg(getContext(), eventsData.getResources().getString(R.string.msg_color_parse_error));
+                        ToastExpander.showInfoMsg(getContext(), res.getString(R.string.msg_color_parse_error));
                     }
                 });
 

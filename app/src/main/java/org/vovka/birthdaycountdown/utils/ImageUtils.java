@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.07.2026, 23:43
+ *  * Created by Vladimir Belov on 12.07.2026, 13:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.07.2026, 23:12
+ *  * Last modified 10.07.2026, 22:43
  *
  */
 
@@ -639,14 +639,14 @@ public class ImageUtils {
         colorToBaseBorderMap = new SparseIntArray(3);
 
         // Версионные (система сама выберет из drawable-v31 / -v36)
-        colorToBorderMap.put(ContextCompat.getColor(context, R.color.white_transp50), R.drawable.widget_border_grey);
-        colorToBorderMap.put(ContextCompat.getColor(context, R.color.white), R.drawable.widget_border_white);
-        colorToBorderMap.put(ContextCompat.getColor(context, R.color.theme_orange_border), R.drawable.widget_border_orange);
+        colorToBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_grey), R.drawable.widget_border_grey);
+        colorToBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_white), R.drawable.widget_border_white);
+        colorToBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_orange), R.drawable.widget_border_orange);
 
         // Базовые (строго из drawable/, без квалификаторов)
-        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.white_transp50), R.drawable.widget_border_base_grey);
-        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.white), R.drawable.widget_border_base_white);
-        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.theme_orange_border), R.drawable.widget_border_base_orange);
+        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_grey), R.drawable.widget_border_base_grey);
+        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_white), R.drawable.widget_border_base_white);
+        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_orange), R.drawable.widget_border_base_orange);
     }
 
     /** Возвращает ресурс бордюра для виджетов

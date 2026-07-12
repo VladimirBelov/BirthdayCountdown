@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 12.07.2026, 13:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 12.07.2026, 13:05
  *
  */
 
@@ -20,6 +20,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.text.LineBreaker;
 import android.os.Build;
 import android.os.Bundle;
@@ -65,6 +66,7 @@ public class QuizActivity extends Activity {
 
     private static final String TAG = "QuizActivity";
     ContactsEvents eventsData;
+    private static Resources res;
     private static String currentLocale;
     private QuizQuestionDispatcher dispatcher;
     private List<String> masterEventList;
@@ -90,6 +92,7 @@ public class QuizActivity extends Activity {
 
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
+            res = eventsData.getResources();
             currentLocale = eventsData.currentLocale;
 
             this.setTheme(eventsData.preferences_theme.themeDialog);
@@ -264,7 +267,7 @@ public class QuizActivity extends Activity {
 
     private void renderQuestion(QuizQuestion q) {
 
-        // 👇 Сбрасываем прогресс
+        // Сбрасываем прогресс
         cancelAutoNextTransition();
         if (buttonNextProgress != null) {
             buttonNextProgress.setVisibility(View.INVISIBLE);
@@ -302,7 +305,7 @@ public class QuizActivity extends Activity {
             if (btn == null) continue;
 
             if (i < answers.size()) {
-                // 👇 Есть ответ для этой кнопки — показываем
+                // Есть ответ для этой кнопки — показываем
                 QuizAnswerData answer = answers.get(i);
                 btn.setText(answer.displayText);
                 btn.setTag(answer);
@@ -325,7 +328,7 @@ public class QuizActivity extends Activity {
                 }
 
             } else {
-                // 👇 Ответов меньше, чем кнопок — скрываем лишние
+                // Ответов меньше, чем кнопок — скрываем лишние
                 btn.setVisibility(View.GONE);
                 btn.setTag(null);
                 btn.setEnabled(false);
@@ -374,7 +377,7 @@ public class QuizActivity extends Activity {
                 // 🔒 Блокируем все остальные кнопки
                 disableRemainingAnswerButtons();
 
-                // 👇 Запускаем авто-переход
+                // Запускаем авто-переход
                 if (duration_AutoNext > 0) {
                     startAutoNextTransition(duration_AutoNext);
                 }
@@ -392,7 +395,7 @@ public class QuizActivity extends Activity {
                     answerInfo.setVisibility(VISIBLE);
                     highlightLastRemainingButton();
 
-                    // 👇 Запускаем авто-переход
+                    // Запускаем авто-переход
                     if (duration_AutoNext > 0) {
                         startAutoNextTransition(duration_AutoNext_failure);
                     }
@@ -463,7 +466,7 @@ public class QuizActivity extends Activity {
                 return;
             }
 
-            // 👇 Анимация ширины
+            // Анимация ширины
             ValueAnimator widthAnimator = ValueAnimator.ofInt(0, targetWidth);
             widthAnimator.setDuration(durationMs);
             widthAnimator.setInterpolator(new LinearInterpolator());
@@ -559,11 +562,11 @@ public class QuizActivity extends Activity {
         }
 
         public String getCode(Context context) {
-            return context.getResources().getString(codeResId);
+            return context.getString(codeResId);
         }
 
         public String getDisplayName(Context context) {
-            return context.getResources().getString(nameResId);
+            return context.getString(nameResId);
         }
 
         public int getIcon() {
@@ -651,7 +654,7 @@ public class QuizActivity extends Activity {
         private final Context context;
         final ContactsEvents eventsData;
 
-        // 👇 Отдельные пулы для каждого типа событий
+        // Отдельные пулы для каждого типа событий
         private List<String> filteredBirthdays = new ArrayList<>();      // Дни рождения
         private List<String> filteredAnniversaries = new ArrayList<>();  // Годовщины свадеб
         private List<String> filteredOtherEvents = new ArrayList<>();    // Другие события
@@ -690,13 +693,13 @@ public class QuizActivity extends Activity {
         public void refreshQuestionPool(List<String> allEvents, Set<String> activeTypeCodes) {
             loadActiveTypes(activeTypeCodes);
 
-            // 👇 Заполняем отдельные пулы по типам событий
-            filteredBirthdays = filterEventsFromList(allEvents, Constants.EventType_BirthDay);
-            filteredAnniversaries = filterEventsFromList(allEvents, Constants.EventType_Anniversary);
-            filteredOtherEvents = filterEventsFromList(allEvents, Constants.EventType_Other);
-            filteredHolidays = filterEventsFromList(allEvents, Constants.EventType_Holiday);
+            // Заполняем отдельные пулы по типам событий
+            filteredBirthdays = filterEventsFromList(allEvents, Collections.singletonList(Constants.EventType_BirthDay));
+            filteredAnniversaries = filterEventsFromList(allEvents, Collections.singletonList(Constants.EventType_Anniversary));
+            filteredOtherEvents = filterEventsFromList(allEvents, Arrays.asList(Constants.EventType_Other, Constants.EventType_Custom, Constants.EventType_Another));
+            filteredHolidays = filterEventsFromList(allEvents, Collections.singletonList(Constants.EventType_Holiday));
 
-            // 👇 Обновляем пулы для всех генераторов
+            // Обновляем пулы для всех генераторов
             for (QuestionGenerator gen : generators.values()) {
                 if (gen instanceof PoolAwareGenerator) {
                     PoolType poolType = gen.getRequiredPoolType();
@@ -709,15 +712,20 @@ public class QuizActivity extends Activity {
         /**
          * Универсальный фильтр событий.
          * @param events исходный список
-         * @param requiredEventType если не null — фильтровать только по этому подтипу
+         * @param requiredEventTypes если не null и не пуст — фильтровать только по этим типам
          */
-        private List<String> filterEventsFromList(List<String> events, @Nullable String requiredEventType) {
+        private List<String> filterEventsFromList(List<String> events, @Nullable List<String> requiredEventTypes) {
             List<String> result = new ArrayList<>(events.size());
+
+            // Если список типов пуст или null — берём все события (после фильтрации скрытых)
+            boolean filterByType = requiredEventTypes != null && !requiredEventTypes.isEmpty();
+
             for (String event : events) {
                 String[] eventInfo = event.split(Constants.STRING_EOT, -1);
+                String eventType = eventInfo[ContactsEvents.Position_eventType];
 
-                // 👇 Если requiredEventType = null, пропускаем все события
-                if (requiredEventType != null && !requiredEventType.equals(eventInfo[ContactsEvents.Position_eventType])) {
+                // 👇 Если фильтрация по типу включена — проверяем вхождение
+                if (filterByType && !requiredEventTypes.contains(eventType)) {
                     continue;
                 }
 
@@ -759,7 +767,7 @@ public class QuizActivity extends Activity {
                 case HOLIDAYS_ONLY:
                     return filteredHolidays;
                 default:
-                    // 👇 Явно логируем ошибку — это программная ошибка
+                    // Явно логируем ошибку — это программная ошибка
                     Log.e(TAG, "Unknown PoolType: " + poolType + ". This should not happen!");
                     return Collections.emptyList(); // Безопасный пустой список
             }
@@ -777,9 +785,9 @@ public class QuizActivity extends Activity {
                 QuestionGenerator gen = generators.get(type);
                 if (gen == null) continue;
 
-                // 👇 Проверяем, что нужный пул не пуст
+                // Проверяем, что нужный пул не пуст
                 PoolType poolType = gen.getRequiredPoolType();
-                List<String> pool = getPoolForType(poolType);  // 👇 Используем новый метод
+                List<String> pool = getPoolForType(poolType);  // Используем новый метод
                 if (!pool.isEmpty()) {
                     availableGenerators.add(gen);
                 }
@@ -810,8 +818,8 @@ public class QuizActivity extends Activity {
 
         private QuizQuestion createErrorQuestion() {
             return new QuizQuestion(
-                    context.getResources().getString(R.string.quiz_msg_error_title),
-                    context.getResources().getString(R.string.quiz_msg_error_get_question),
+                    res.getString(R.string.quiz_msg_error_title),
+                    res.getString(R.string.quiz_msg_error_get_question),
                     Constants.quiz_error_button_OK
             );
         }
@@ -906,7 +914,7 @@ public class QuizActivity extends Activity {
 
                     String personInfo = buildPersonInfo(eventInfo);
                     QuizQuestion result = new QuizQuestion(
-                            context.getResources().getString(R.string.quiz_month01_title),
+                            res.getString(R.string.quiz_month01_title),
                             personInfo
                     );
                     result.event = event;
@@ -925,10 +933,10 @@ public class QuizActivity extends Activity {
                         sb.append(monthName).append(Constants.STRING_EOT);
 
                         if (isCorrect) {
-                            sb.append(context.getResources().getString(R.string.quiz_answer_true,
+                            sb.append(res.getString(R.string.quiz_answer_true,
                                     correctMonthName, eventInfo[ContactsEvents.Position_eventDateFirstTime]));
                         } else {
-                            sb.append(context.getResources().getString(R.string.quiz_answer_false,
+                            sb.append(res.getString(R.string.quiz_answer_false,
                                     correctMonthName, eventInfo[ContactsEvents.Position_eventDateFirstTime]));
                         }
                         result.actions.add(sb.toString());
@@ -973,7 +981,7 @@ public class QuizActivity extends Activity {
 
                     String personInfo = buildPersonInfo(eventInfo);
                     QuizQuestion result = new QuizQuestion(
-                            context.getResources().getString(R.string.quiz_year01_title),
+                            res.getString(R.string.quiz_year01_title),
                             personInfo
                     );
                     result.event = event;
@@ -991,10 +999,10 @@ public class QuizActivity extends Activity {
                                 .append(Constants.STRING_EOT);
 
                         if (isCorrect) {
-                            sb.append(context.getResources().getString(R.string.quiz_answer_true,
+                            sb.append(res.getString(R.string.quiz_answer_true,
                                     correctYearStr, eventInfo[ContactsEvents.Position_eventDateFirstTime]));
                         } else {
-                            sb.append(context.getResources().getString(R.string.quiz_answer_false,
+                            sb.append(res.getString(R.string.quiz_answer_false,
                                     correctYearStr, eventInfo[ContactsEvents.Position_eventDateFirstTime]));
                         }
                         result.actions.add(sb.toString());
@@ -1044,13 +1052,13 @@ public class QuizActivity extends Activity {
                     String quizTitle;
 
                     if (isDead) {
-                        quizTitle = context.getResources().getString(R.string.quiz_age01_title_dead);
+                        quizTitle = res.getString(R.string.quiz_age01_title_dead);
                         correctAge = AppDateUtils.countYearsDiff(birthDate, today);
                     } else if (isBirthdayPassed) {
-                        quizTitle = context.getResources().getString(R.string.quiz_age01_title_past);
+                        quizTitle = res.getString(R.string.quiz_age01_title_past);
                         correctAge = AppDateUtils.countYearsDiff(birthDate, today);
                     } else {
-                        quizTitle = context.getResources().getString(R.string.quiz_age01_title_future);
+                        quizTitle = res.getString(R.string.quiz_age01_title_future);
                         correctAge = AppDateUtils.countYearsDiff(birthDate, today) + 1;
                     }
 
@@ -1069,7 +1077,7 @@ public class QuizActivity extends Activity {
                             R.string.msg_after_year_prefix_2_3_4,
                             R.string.msg_after_year_prefix_5_20,
                             currentLocale,
-                            context.getResources()).toUpperCase();
+                            res).toUpperCase();
 
                     for (Integer age : answerAges) {
                         boolean isCorrect = age.equals(correctAge);
@@ -1079,7 +1087,7 @@ public class QuizActivity extends Activity {
                                 R.string.msg_after_year_prefix_2_3_4,
                                 R.string.msg_after_year_prefix_5_20,
                                 currentLocale,
-                                context.getResources()).toUpperCase();
+                                res).toUpperCase();
 
                         StringBuilder sb = new StringBuilder(isCorrect ? Constants.STRING_1 : Constants.STRING_0)
                                 .append(Constants.STRING_EOT)
@@ -1087,10 +1095,10 @@ public class QuizActivity extends Activity {
                                 .append(Constants.STRING_EOT);
 
                         if (isCorrect) {
-                            sb.append(context.getResources().getString(R.string.quiz_answer_true,
+                            sb.append(res.getString(R.string.quiz_answer_true,
                                     ageStr, eventInfo[ContactsEvents.Position_eventDateFirstTime]));
                         } else {
-                            sb.append(context.getResources().getString(R.string.quiz_answer_false,
+                            sb.append(res.getString(R.string.quiz_answer_false,
                                     correctAgeStr, eventInfo[ContactsEvents.Position_eventDateFirstTime]));
                         }
                         result.actions.add(sb.toString());
@@ -1154,7 +1162,7 @@ public class QuizActivity extends Activity {
 
                     String personInfo = buildPersonInfo(eventInfo);
                     QuizQuestion result = new QuizQuestion(
-                            context.getResources().getString(R.string.quiz_anniversary01_title),
+                            res.getString(R.string.quiz_anniversary01_title),
                             personInfo
                     );
                     result.event = event;
@@ -1188,11 +1196,11 @@ public class QuizActivity extends Activity {
                                 + Constants.STRING_COMMA_SPACE
                                 + eventInfo[ContactsEvents.Position_eventDateNextTime];
                         if (isCorrect) {
-                            sb.append(context.getResources().getString(R.string.quiz_answer_true,
+                            sb.append(res.getString(R.string.quiz_answer_true,
                                     title, eventDetails));
                         } else {
                             String correctTitleUpper = correctTitle.toUpperCase();
-                            sb.append(context.getResources().getString(R.string.quiz_answer_false,
+                            sb.append(res.getString(R.string.quiz_answer_false,
                                     correctTitleUpper, eventDetails));
                         }
                         result.actions.add(sb.toString());
@@ -1218,14 +1226,14 @@ public class QuizActivity extends Activity {
                 for (int year = 1; year <= 100; year++) {
                     try {
                         String resourceId = "event_type_wedding_" + year;
-                        @SuppressLint("DiscouragedApi") int resId = context.getResources().getIdentifier(
+                        @SuppressLint("DiscouragedApi") int resId = res.getIdentifier(
                                 resourceId,
                                 Constants.RES_TYPE_STRING,
                                 context.getPackageName()
                         );
 
                         if (resId != 0) {
-                            String title = context.getResources().getString(resId);
+                            String title = res.getString(resId);
                             // Пропускаем пустые названия
                             if (!TextUtils.isEmpty(title) && !title.equals("\"\"")) {
                                 weddingAnniversaryTitles.put(year, title.trim());
@@ -1259,7 +1267,7 @@ public class QuizActivity extends Activity {
                     String event = currentPool.get(generator.nextInt(currentPool.size()));
                     String[] eventInfo = event.split(Constants.STRING_EOT, -1);
 
-                    // 👇 Пропускаем события без года (Position_age пустой)
+                    // Пропускаем события без года (Position_age пустой)
                     if (TextUtils.isEmpty(eventInfo[ContactsEvents.Position_age])) {
                         return null;
                     }
@@ -1268,8 +1276,8 @@ public class QuizActivity extends Activity {
                     String eventDateFirstTime = eventInfo[ContactsEvents.Position_eventDateFirstTime];
                     if (TextUtils.isEmpty(eventDateFirstTime)) return null;
 
-                    // 👇 Проверяем, есть ли постфикс "до н.э."
-                    String bcPostfix = context.getResources().getString(R.string.msg_after_year_bc);
+                    // Проверяем, есть ли постфикс "до н.э."
+                    String bcPostfix = res.getString(R.string.msg_after_year_bc);
                     boolean isBC = eventDateFirstTime.endsWith(bcPostfix);
 
                     // Извлекаем год из даты
@@ -1292,13 +1300,22 @@ public class QuizActivity extends Activity {
                     }
 
                     String personInfo = buildPersonInfo(eventInfo);
+                    // Если это событие с меткой - добавляем эту метку
+                    final String eventCaption = eventInfo[ContactsEvents.Position_eventCaption];
+                    final String eventLabel = eventInfo[ContactsEvents.Position_eventLabel];
+                    if (!TextUtils.isEmpty(eventCaption) && !eventCaption.equalsIgnoreCase(res.getString(R.string.event_type_other))) {
+                        personInfo += Constants.STRING_EOL + eventInfo[ContactsEvents.Position_eventEmoji] + eventCaption;
+                        if (!TextUtils.isEmpty(eventLabel) && !eventCaption.equalsIgnoreCase(eventLabel)) {
+                            personInfo += Constants.STRING_PARENTHESIS_OPEN + eventLabel + Constants.STRING_PARENTHESIS_CLOSE;
+                        }
+                    }
                     QuizQuestion result = new QuizQuestion(
-                            context.getResources().getString(R.string.quiz_other01_year),
+                            res.getString(R.string.quiz_other01_year),
                             personInfo
                     );
                     result.event = event;
 
-                    // 👇 Генерируем варианты ответов
+                    // Генерируем варианты ответов
                     int answerCount = eventsData.preferences_quiz_difficulty;
 
                     // Получаем текущий год и ограничиваем диапазон
@@ -1313,14 +1330,14 @@ public class QuizActivity extends Activity {
                             Collections.emptySet()
                     );
 
-                    // 👇 Формируем строку года с постфиксом BC если нужно
+                    // Формируем строку года с постфиксом BC если нужно
                     String bcSuffix = isBC ? bcPostfix : Constants.STRING_EMPTY;
                     String correctYearStr = (isBC ? Math.abs(correctYear) : correctYear) + bcSuffix;
 
                     for (Integer year : answerYears) {
                         boolean isCorrect = year.equals(correctYear);
 
-                        // 👇 Добавляем постфикс BC ко всем вариантам ответа
+                        // Добавляем постфикс BC ко всем вариантам ответа
                         String yearStr = (isBC ? Math.abs(year) : year) + bcSuffix;
 
                         StringBuilder sb = new StringBuilder(isCorrect ? Constants.STRING_1 : Constants.STRING_0)
@@ -1328,14 +1345,14 @@ public class QuizActivity extends Activity {
                                 .append(yearStr)
                                 .append(Constants.STRING_EOT);
 
-                        // 👇 В фидбеке показываем дату как есть (там уже есть "до н.э." если нужно)
+                        // В фидбеке показываем дату как есть (там уже есть "до н.э." если нужно)
                         String eventDateDisplay = eventInfo[ContactsEvents.Position_eventDateFirstTime];
 
                         if (isCorrect) {
-                            sb.append(context.getResources().getString(R.string.quiz_answer_true,
+                            sb.append(res.getString(R.string.quiz_answer_true,
                                     correctYearStr, eventDateDisplay));
                         } else {
-                            sb.append(context.getResources().getString(R.string.quiz_answer_false,
+                            sb.append(res.getString(R.string.quiz_answer_false,
                                     correctYearStr, eventDateDisplay));
                         }
                         result.actions.add(sb.toString());
@@ -1358,7 +1375,7 @@ public class QuizActivity extends Activity {
          */
         private class HolidayDayGenerator extends BaseQuestionGenerator {
 
-            final Matcher skipHolidays = Pattern.compile(context.getString(R.string.quiz_holiday_day_ignore_titles), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+            final Matcher skipHolidays = Pattern.compile(res.getString(R.string.quiz_holiday_day_ignore_titles), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
 
             @Override
             public QuestionType getType() {
@@ -1398,7 +1415,7 @@ public class QuizActivity extends Activity {
 
                     String personInfo = buildPersonInfo(eventInfo);
                     QuizQuestion result = new QuizQuestion(
-                            context.getResources().getString(R.string.quiz_holiday01_day),
+                            res.getString(R.string.quiz_holiday01_day),
                             personInfo
                     );
                     result.event = event;
@@ -1416,12 +1433,12 @@ public class QuizActivity extends Activity {
 
                         String eventDate = AppDateUtils.getDateFormatted(eventInfo[ContactsEvents.Position_eventDateNextTime],
                                 ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
-                                eventsData.getResources(), eventsData.currentLocale);
+                                res, eventsData.currentLocale);
                         if (isCorrect) {
-                            sb.append(context.getResources().getString(R.string.quiz_answer_true,
+                            sb.append(res.getString(R.string.quiz_answer_true,
                                     correctDateStr, eventDate));
                         } else {
-                            sb.append(context.getResources().getString(R.string.quiz_answer_false,
+                            sb.append(res.getString(R.string.quiz_answer_false,
                                     correctDateStr, eventDate));
                         }
                         result.actions.add(sb.toString());

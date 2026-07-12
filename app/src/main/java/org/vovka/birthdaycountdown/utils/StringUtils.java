@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 10:06
+ *  * Created by Vladimir Belov on 12.07.2026, 13:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 30.06.2026, 09:16
+ *  * Last modified 12.07.2026, 11:41
  *
  */
 
@@ -644,7 +644,7 @@ public class StringUtils {
     @Nullable
     public static String getWeddingName(int age, Context context, Resources res) {
         try {
-            return context.getString(res.getIdentifier(Constants.STRING_TYPE_WEDDING + age, Constants.RES_TYPE_STRING, context.getPackageName()));
+            return res.getString(res.getIdentifier(Constants.STRING_TYPE_WEDDING + age, Constants.RES_TYPE_STRING, context.getPackageName()));
         } catch (Resources.NotFoundException nfe) {
             return null;
         }

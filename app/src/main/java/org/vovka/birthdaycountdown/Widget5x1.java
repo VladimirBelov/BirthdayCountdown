@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 12.07.2026, 13:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 12.07.2026, 11:37
  *
  */
 
@@ -132,8 +132,8 @@ public class Widget5x1 extends AppWidgetProvider {
             RemoteViews views = getRemoteViews(eventsData.getContext(), eventsCount);
 
             ToastExpander.showDebugMsg(eventsData.getContext(), Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
-                    context.getResources().getString(R.string.msg_debug_widget_photo_config, widgetType, appWidgetId,
-                            context.getResources().getResourceEntryName(views.getLayoutId()), minWidth, minHeight, TextUtils.join(Constants.STRING_COMMA, widgetPref))
+                    eventsData.getResources().getString(R.string.msg_debug_widget_photo_config, widgetType, appWidgetId,
+                            eventsData.getResources().getResourceEntryName(views.getLayoutId()), minWidth, minHeight, TextUtils.join(Constants.STRING_COMMA, widgetPref))
                     : widgetType.concat(Constants.STRING_COLON).concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL).concat(TextUtils.join(Constants.STRING_COMMA, widgetPref))
             );
 
