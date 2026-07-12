@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
+  ~  * Created by Vladimir Belov on 12.07.2026, 23:52
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.03.2026, 13:41
+  ~  * Last modified 12.07.2026, 23:50
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.1</item>
+        <item>Eventos anteriormente disponíveis como arquivos externos foram integrados ao aplicativo. Na seção de feriados: "🇷🇺 Профессиональные праздники", "☦️ Православные церковные праздники", "✝️ Katholische Feiertage in Deutschland", e na seção de outros eventos: "ℹ️ Интересные даты"</item>
+        <item>📅 Adicionado suporte para eventos de vCards (podem ser conectados como fontes ou importados para eventos locais)</item>
+        <item>Adicionado um botão para expandir a descrição do evento (se houver) ao menu pop-up de ações do evento em widgets e na janela principal da lista de eventos</item>
+        <item>Formato de string expandido para feriados anexados de um arquivo. O formato agora é consistente em todos os tipos de evento. Você pode adicionar uma descrição e links externos a um evento</item>
+        <item>O destaque de texto e nome completo agora está habilitado na janela "Detalhes do Evento" (para copiar)</item>
+        <item>🎨 Cor da borda adicionada para widgets</item>
+        <item>Somente as fontes habilitadas podem ser selecionadas nas fontes de eventos do widget de calendário (lógica sincronizada com outros widgets)</item>
+        <item>Mais configurações de widget estão ocultas em funções extras. Uma dica ativa foi adicionada às configurações do widget mostrando onde encontrar funções extras</item>
+        <item>Correções de bugs e otimizações para Android 16 e 17</item>
 
         <item>#1.9.0</item>
         <item>🎯 Reinvenção do Quiz (recursos extras), 6 tipos de perguntas</item>

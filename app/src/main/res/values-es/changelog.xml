@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
+  ~  * Created by Vladimir Belov on 12.07.2026, 23:52
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.03.2026, 13:43
+  ~  * Last modified 12.07.2026, 23:47
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.1</item>
+        <item>Los eventos que antes estaban disponibles como archivos externos se han integrado en la aplicación. En la sección de vacaciones: \"🇷🇺 Профессиональные праздники\", \"☦️ Православные церковные праздники\", \"✝️ Katholische Feiertage in Deutschland\", y en la sección de otros eventos: \"ℹ️ Интересные даты\"</item>
+        <item>📅 Se agregó soporte para eventos desde vCards (se pueden conectar como fuentes o importar a eventos locales)</item>
+        <item>Se agregó un botón para expandir la descripción del evento (si la hay) al menú emergente de acciones del evento en los widgets y en la ventana principal de la lista de eventos</item>
+        <item>Se amplió el formato de cadena para los días festivos adjuntos desde un archivo. El formato ahora es consistente en todos los tipos de eventos. Puede agregar una descripción y enlaces externos a un evento</item>
+        <item>Ahora se habilita el resaltado de texto y nombre completo en la ventana \"Detalles del evento\" (para copiar)</item>
+        <item>🎨 Se agregó color de borde para los widgets</item>
+        <item>Solo se pueden seleccionar las fuentes habilitadas en las fuentes de eventos del widget de calendario (lógica sincronizada con otros widgets)</item>
+        <item>Más configuraciones del widget están ocultas en funciones adicionales. Se ha agregado una sugerencia activa a la configuración del widget que muestra dónde encontrar las funciones adicionales</item>
+        <item>Corrección de errores y optimizaciones para Android 16 y 17</item>
 
         <item>#1.9.0</item>
         <item>🎯 Reinvención del cuestionario (funciones adicionales), 6 tipos de preguntas</item>

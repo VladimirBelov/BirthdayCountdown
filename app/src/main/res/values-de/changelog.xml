@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
+  ~  * Created by Vladimir Belov on 12.07.2026, 23:52
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.03.2026, 13:50
+  ~  * Last modified 12.07.2026, 23:28
   ~  */
   -->
 
@@ -11,10 +11,21 @@
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
+        <item>#1.9.1</item>
+        <item>Ereignisse, die zuvor als externe Dateien verfügbar waren, wurden in die App integriert. Im Abschnitt „Feiertage“: „🇷🇺 Профессиональные праздники“, „☦️ Православные церковные праздники“, „✝️ Katholische Feiertage in Deutschland“ und im Abschnitt „Andere Ereignisse“: „ℹ️ Интересные даты“</item>
+        <item>📅 Unterstützung für Ereignisse aus vCards hinzugefügt (können als Quellen verbunden oder in lokale Ereignisse importiert werden)</item>
+        <item>Eine Schaltfläche hinzugefügt, um die Ereignisbeschreibung (falls vorhanden) zum Popup-Menü der Ereignisaktion zu erweitern Widgets und im Hauptfenster der Ereignisliste</item>
+        <item>Erweitertes Zeichenkettenformat für Feiertage, die aus einer Datei angehängt werden. Das Format ist jetzt für alle Ereignistypen einheitlich. Sie können einem Ereignis eine Beschreibung und externe Links hinzufügen</item>
+        <item>Die Hervorhebung von Text und vollständigem Namen ist jetzt im Fenster „Ereignisdetails“ aktiviert (zum Kopieren)</item>
+        <item>🎨 Rahmenfarbe für Widgets hinzugefügt</item>
+        <item>Im Kalender-Widget können nur aktivierte Quellen für Ereignisquellen ausgewählt werden (Logik mit anderen Widgets synchronisiert)</item>
+        <item>Weitere Widget-Einstellungen befinden sich in den Extrafunktionen. Ein Hinweis in den Widget-Einstellungen zeigt an, wo die Extrafunktionen zu finden sind</item>
+        <item>Fehlerbehebungen und Optimierungen für Android 16 und 17</item>
+
         <item>#1.9.0</item>
         <item>🎯 Quiz-Neugestaltung (Extrafunktionen), 6 Fragetypen</item>
         <item>🎨 Farbauswahl für einen bestimmten Kalendertag</item>
-        <item>⚙️ Separate Auswahl aktivierter Zusatzfunktionen</item>
+        <item>⚙️ Separate Auswahl aktivierter Extrafunktionen</item>
         <item>🌈 Farbspektrum bei Farbauswahl hinzugefügt</item>
         <item>Dem Listen-Widget hinzugefügt: „Kontaktfoto für das nächstgelegene Ereignis anzeigen“, „Original-Ereignisbezeichnung“, „Tab“, „Expander“, „:“. Mithilfe von Tabs im Listen-Widget können Sie Daten in separate Spalten (bis zu drei) aufteilen. Standardmäßig sind die Spalten gleich breit. Wenn Sie innerhalb einer Spalte eine „Erweiterung“ hinzufügen, verdoppelt sich die Breite dieser Spalte</item>
         <item>Aktion „Jahr aus dem Kalender ignorieren“ für Kalenderereignisse hinzugefügt (Extrafunktionen)</item>

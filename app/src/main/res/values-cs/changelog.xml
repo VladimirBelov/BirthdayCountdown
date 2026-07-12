@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
+  ~  * Created by Vladimir Belov on 12.07.2026, 23:52
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.03.2026, 13:42
+  ~  * Last modified 12.07.2026, 23:38
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.1</item>
+        <item>Události dříve dostupné jako externí soubory byly integrovány do aplikace. V sekci svátků: „🇷🇺 Профессиональные праздники“, „☦️ Православные церковные праздники“, „✝️ Katholische Feiertage in Deutschland“ a v sekci ostatních událostí: „ℹ️ Интересные даты“</item>
+        <item>📅 Přidána podpora pro události z vCard (lze je připojit jako zdroje nebo importovat do lokálních událostí)</item>
+        <item>Přidáno tlačítko pro rozbalení popisu události (pokud existuje) do rozbalovací nabídky akcí události ve widgetech a v hlavním okně seznamu událostí</item>
+        <item>Rozšířený formát řetězce pro svátky připojené ze souboru. Formát je nyní konzistentní pro všechny typy událostí. K události můžete přidat popis a externí odkazy</item>
+        <item>V okně „Podrobnosti o události“ je nyní povoleno zvýraznění textu a celého jména (pro kopírování)</item>
+        <item>🎨 Pro widgety přidána barva ohraničení</item>
+        <item>Ve zdrojích událostí widgetu kalendáře lze vybrat pouze povolené zdroje (logika synchronizovaná s ostatními widgety)</item>
+        <item>Další nastavení widgetů je skryto v doplňkových funkcích. Do nastavení widgetu byla přidána aktivní nápověda, která ukazuje, kde najít doplňkové funkce</item>
+        <item>Opravy chyb a optimalizace pro Android 16 a 17</item>
 
         <item>#1.9.0</item>
         <item>🎯 Přepracovaný kvíz (další funkce), 6 typů otázek</item>

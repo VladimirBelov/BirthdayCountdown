@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.05.2026, 23:59
+  ~  * Created by Vladimir Belov on 12.07.2026, 23:52
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 07.05.2026, 00:17
+  ~  * Last modified 12.07.2026, 23:47
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.1</item>
+        <item>Events previously available as external files have been integrated into the app. In the holidays section: \"🇷🇺 Профессиональные праздники\", \"☦️ Православные церковные праздники\", \"✝️ Katholische Feiertage in Deutschland\", and in the other events section: \"ℹ️ Интересные даты\"</item>
+        <item>📅 Added support for events from vCards (can be connected as sources or imported into local events)</item>
+        <item>Added a button to expand the event description (if any) to the event action pop-up menu in widgets and in the main event list window</item>
+        <item>Expanded string format for holidays attached from a file. The format is now consistent across all event types. You can add a description and external links to an event</item>
+        <item>Text and full name highlighting is now enabled in the \"Event Details\" window (for copying)</item>
+        <item>🎨 Border color added for widgets</item>
+        <item>Only enabled sources can be selected in the calendar widget events sources (logic synchronized with other widgets)</item>
+        <item>More widget settings are hidden in extra functions. An active hint has been added to widget settings showing where to find extra functions</item>
+        <item>Bug fixes and optimizations for Android 16 and 17</item>
 
         <item>#1.9.0</item>
         <item>🎯 Quiz Reinvention (extra features), 6 questions types</item>

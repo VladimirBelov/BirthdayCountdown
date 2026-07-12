@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2026, 13:14
+  ~  * Created by Vladimir Belov on 12.07.2026, 23:52
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.07.2026, 21:33
+  ~  * Last modified 12.07.2026, 23:04
   ~  */
   -->
 
@@ -146,11 +146,21 @@
 
     <color name="widget_border_grey">#88ffffff</color>
     <color name="widget_border_white">@color/white</color>
-    <color name="widget_border_orange">#fb8c00</color>
+    <color name="widget_border_orange">#FB8C00</color>
+    <color name="widget_border_purple">#AB47BC</color>
+    <color name="widget_border_yellow">#E1D000</color>
+    <color name="widget_border_green">#C82ED70E</color>
+    <color name="widget_border_indigo">#0019C8</color>
+    <color  name="widget_border_red">@color/dark_red</color>
     <string-array name="widget_border_values" translatable="false">
         <item>@color/widget_border_grey</item>
         <item>@color/widget_border_white</item>
         <item>@color/widget_border_orange</item>
+        <item>@color/widget_border_purple</item>
+        <item>@color/widget_border_yellow</item>
+        <item>@color/widget_border_green</item>
+        <item>@color/widget_border_indigo</item>
+        <item>@color/widget_border_red</item>
     </string-array>
 
 </resources>

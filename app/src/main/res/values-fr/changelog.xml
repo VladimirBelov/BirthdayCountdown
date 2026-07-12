@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
+  ~  * Created by Vladimir Belov on 12.07.2026, 23:52
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.03.2026, 13:44
+  ~  * Last modified 12.07.2026, 23:47
   ~  */
   -->
 
@@ -11,7 +11,18 @@
 
 <string-array name="changelog" tools:ignore="InconsistentArrays">
 
-    <item>#1.8.9</item>
+
+    <item>#1.9.1</item>
+
+    <item>"Les événements précédemment disponibles sous forme de fichiers externes ont été intégrés à l'application. Dans la section vacances : "🇷🇺 Профессиональные праздники", "☦️ Православные церковные праздники", "✝️ Katholische Feiertage in Deutschland", et dans la section autres événements : "ℹ️ Интересные даты""</item>
+    <item>📅 Ajout de la prise en charge des événements à partir de vCards (peuvent être connectés en tant que sources ou importés dans des événements locaux)</item>
+    <item>"Ajout d'un bouton permettant d'afficher la description de l'événement (le cas échéant) dans le menu contextuel des actions de l'événement, aussi bien dans les widgets que dans la fenêtre principale de la liste des événements"</item>
+    <item>"Format de chaîne étendu pour les jours fériés joints à partir d'un fichier. Le format est désormais uniforme pour tous les types d'événements. Vous pouvez ajouter une description et des liens externes à un événement"</item>
+    <item>"La mise en surbrillance du texte et du nom complet est désormais activée dans la fenêtre «Détails de l'événement» (pour la copie)"</item>
+    <item>"🎨 Ajout d'une couleur de bordure pour les widgets"</item>
+    <item>"Seules les sources activées peuvent être sélectionnées dans les sources d'événements du widget Calendrier (logique synchronisée avec les autres widgets)"</item>
+    <item>Plusieurs paramètres du widget sont masqués dans les fonctions supplémentaires. Une indication a été ajoutée aux paramètres du widget pour signaler où trouver ces fonctions supplémentaires</item>
+    <item>Corrections de bugs et optimisations pour Android 16 et 17</item>
 
     <item>#1.9.0</item>
     <item>🎯 Réinvention du quiz (fonctionnalités supplémentaires), 6 types de questions</item>
@@ -23,6 +34,7 @@
     <item>"Par défaut, les événements des fichiers spécifiés dans la section «Jours fériés» sont considérés comme des jours fériés dans le widget calendrier (sauf s'ils comportent les indicateurs «!» ou «?»)"</item>
     <item>Corrections de bugs dans les widgets</item>
 
+    <item>#1.8.9</item>
     <item>🎵 Possibilité de sélectionner un fichier externe comme sonnerie de notification</item>
     <item>"Code réécrit pour la planification de l'affichage des notifications, la mise à jour des widgets et la fonction «Rappel»"</item>
     <item>"Ajout de la possibilité d'associer des événements de fichiers aux contacts (comme pour les événements du calendrier), actuellement uniquement pour les anniversaires"</item>

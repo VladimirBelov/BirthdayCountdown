@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.03.2026, 18:43
+  ~  * Created by Vladimir Belov on 12.07.2026, 23:52
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.03.2026, 13:44
+  ~  * Last modified 12.07.2026, 23:49
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.1</item>
+        <item>Wydarzenia, które wcześniej były dostępne jako pliki zewnętrzne, zostały zintegrowane z aplikacją. W dziale święta: „🇷🇺 Профессиональные праздники”, „☦️ Православные церковные праздники”, „✝️ Katholische Feiertage in Deutschland”, a w dziale pozostałe wydarzenia: „ℹ️ Интересные даты”</item>
+        <item>📅 Dodano obsługę wydarzeń z kart vCard (można je podłączyć jako źródła lub zaimportować do wydarzeń lokalnych)</item>
+        <item>Dodano Przycisk rozwijający opis wydarzenia (jeśli istnieje) w menu podręcznym akcji wydarzenia w widżetach i w głównym oknie listy wydarzeń</item>
+        <item>Rozszerzony format ciągu znaków dla świąt dołączonych z pliku. Format jest teraz spójny dla wszystkich typów wydarzeń. Możesz dodać opis i linki zewnętrzne do wydarzenia</item>
+        <item>Podświetlanie tekstu i pełnej nazwy jest teraz włączone w oknie „Szczegóły wydarzenia” (do kopiowania)</item>
+        <item>🎨Dodano kolor obramowania dla widżetów</item>
+        <item>W źródłach wydarzeń w widżecie kalendarza można wybrać tylko włączone źródła (logika zsynchronizowana z innymi widżetami)</item>
+        <item>Więcej ustawień widżetu jest ukrytych w funkcjach dodatkowych. Do ustawień widżetu dodano aktywną wskazówkę pokazującą, gdzie znaleźć dodatkowe funkcje</item>
+        <item>Poprawki błędów i optymalizacje dla Androida 16 i 17</item>
 
         <item>#1.9.0</item>
         <item>🎯 Quiz Reinvention (dodatkowe funkcje), 6 typów pytań</item>

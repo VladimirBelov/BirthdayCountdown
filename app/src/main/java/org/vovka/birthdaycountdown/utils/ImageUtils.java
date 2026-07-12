@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2026, 13:14
+ *  * Created by Vladimir Belov on 12.07.2026, 23:52
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.07.2026, 22:43
+ *  * Last modified 12.07.2026, 22:48
  *
  */
 
@@ -642,11 +642,21 @@ public class ImageUtils {
         colorToBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_grey), R.drawable.widget_border_grey);
         colorToBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_white), R.drawable.widget_border_white);
         colorToBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_orange), R.drawable.widget_border_orange);
+        colorToBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_purple), R.drawable.widget_border_purple);
+        colorToBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_yellow), R.drawable.widget_border_yellow);
+        colorToBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_green), R.drawable.widget_border_green);
+        colorToBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_indigo), R.drawable.widget_border_indigo);
+        colorToBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_red), R.drawable.widget_border_red);
 
         // Базовые (строго из drawable/, без квалификаторов)
         colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_grey), R.drawable.widget_border_base_grey);
         colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_white), R.drawable.widget_border_base_white);
         colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_orange), R.drawable.widget_border_base_orange);
+        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_purple), R.drawable.widget_border_base_purple);
+        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_yellow), R.drawable.widget_border_base_yellow);
+        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_green), R.drawable.widget_border_base_green);
+        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_indigo), R.drawable.widget_border_base_indigo);
+        colorToBaseBorderMap.put(ContextCompat.getColor(context, R.color.widget_border_red), R.drawable.widget_border_base_red);
     }
 
     /** Возвращает ресурс бордюра для виджетов
