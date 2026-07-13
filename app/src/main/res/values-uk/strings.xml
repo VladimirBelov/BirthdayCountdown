@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2026, 13:14
+  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 12.07.2026, 13:08
+  ~  * Last modified 14.07.2026, 01:11
   ~  */
   -->
 
@@ -918,7 +918,10 @@
     </string-array>
 
     <string name="widget_config_custom_widget_caption_label">Користувацький підпис віджета</string>
-    <string name="widget_config_custom_widget_caption_description">Користувацький підпис для цього віджета (підтримуються Emojis 🎂)</string>
+    <string name="widget_config_custom_widget_caption_description">Свій заголовок для віджету. Підтримуються такі макроси:\n
+        день тижня - ## , день тижня (коротко) - #\n
+        дата - @@ , дата (без року) - @\n
+    наприклад: @@(##)</string>
     <string name="widget_config_custom_widget_caption_hint">Введіть повідомлення…</string>
 
     <string name="widget_config_custom_zero_events_label">Спеціальне повідомлення для нульових подій</string>

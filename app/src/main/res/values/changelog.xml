@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2026, 23:52
+  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 12.07.2026, 23:47
+  ~  * Last modified 14.07.2026, 01:14
   ~  */
   -->
 
@@ -19,6 +19,7 @@
         <item>Text and full name highlighting is now enabled in the \"Event Details\" window (for copying)</item>
         <item>🎨 Border color added for widgets</item>
         <item>Only enabled sources can be selected in the calendar widget events sources (logic synchronized with other widgets)</item>
+        <item>The date and day of the week can be displayed in the header of list widgets</item>
         <item>More widget settings are hidden in extra functions. An active hint has been added to widget settings showing where to find extra functions</item>
         <item>Bug fixes and optimizations for Android 16 and 17</item>
 

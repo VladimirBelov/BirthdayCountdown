@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2026, 13:14
+  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 12.07.2026, 13:08
+  ~  * Last modified 14.07.2026, 01:08
   ~  */
   -->
 
@@ -918,7 +918,10 @@
     </string-array>
 
     <string name="widget_config_custom_widget_caption_label">Podpis widżetu</string>
-    <string name="widget_config_custom_widget_caption_description">Niestandardowy tytuł tego widżetu (obsługiwane są emoji 🎂)</string>
+    <string name="widget_config_custom_widget_caption_description">Niestandardowy podpis widżetu. Obsługiwane są następujące makra:\n
+        dzień tygodnia - ##, dzień tygodnia (krótki) - #\n
+        data - @@, data (bez roku) - @\n
+    na przykład: @@ (##)</string>
     <string name="widget_config_custom_widget_caption_hint">Wpisz wiadomość…</string>
 
     <string name="widget_config_custom_zero_events_label">Wiadomość w przypadku braku wydarzeń</string>

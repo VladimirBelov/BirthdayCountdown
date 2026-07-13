@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2026, 13:14
+  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 12.07.2026, 13:08
+  ~  * Last modified 14.07.2026, 01:08
   ~  */
   -->
 
@@ -918,7 +918,10 @@
     </string-array>
 
     <string name="widget_config_custom_widget_caption_label">Legenda de widget personalizada</string>
-    <string name="widget_config_custom_widget_caption_description">Legenda personalizada para este widget (Emojis são suportados 🎂)</string>
+    <string name="widget_config_custom_widget_caption_description">Legenda personalizada do widget. As seguintes macros são suportadas:\n
+        dia da semana - ##, dia da semana (abreviado) - #\n
+        data - @@, data (sem ano) - @\n
+    por exemplo: @@ (##)</string>
     <string name="widget_config_custom_widget_caption_hint">Insira a mensagem…</string>
 
     <string name="widget_config_custom_zero_events_label">Mensagem personalizada para zero eventos</string>

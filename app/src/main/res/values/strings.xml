@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2026, 13:14
+  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 12.07.2026, 13:11
+  ~  * Last modified 14.07.2026, 01:04
   ~  */
   -->
 
@@ -918,7 +918,10 @@
     </string-array>
 
     <string name="widget_config_custom_widget_caption_label">Custom widget caption</string>
-    <string name="widget_config_custom_widget_caption_description">Custom caption for this widget (Emojis are supported 🎂)</string>
+    <string name="widget_config_custom_widget_caption_description">Custom widget caption. The following macros are supported:\n
+        day of the week - ##, day of the week (short) - #\n
+        date - @@, date (without year) - @\n
+    for example: @@ (##)</string>
     <string name="widget_config_custom_widget_caption_hint">Enter message…</string>
 
     <string name="widget_config_custom_zero_events_label">Custom message for zero events</string>

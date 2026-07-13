@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2026, 13:14
+ *  * Created by Vladimir Belov on 14.07.2026, 01:17
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.07.2026, 11:51
+ *  * Last modified 13.07.2026, 22:45
  *
  */
 package org.vovka.birthdaycountdown;
@@ -108,7 +108,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             mSelectDialogIcon = ta.getResourceId(R.styleable.ColorPreference_dialogIcon, 0);
             mItemLayoutId = ta.getResourceId(R.styleable.ColorPreference_itemLayout, mItemLayoutId);
             mNumColumns = ta.getInteger(R.styleable.ColorPreference_numColumns, mNumColumns);
-            mDefaultValue = ta.getInteger(R.styleable.ColorPreference_defaultValue, 0);
+            mDefaultValue = ta.getColor(R.styleable.ColorPreference_defaultValue, 0);
             mValue = ta.getInteger(R.styleable.ColorPreference_defaultValue, mDefaultValue);
             int choicesResId = ta.getResourceId(R.styleable.ColorPreference_choices, R.array.default_color_choice_values);
             if (choicesResId > 0) {

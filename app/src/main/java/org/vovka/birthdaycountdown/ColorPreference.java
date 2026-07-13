@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 14.07.2026, 01:17
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 13.07.2026, 22:52
  *
  */
 
@@ -72,6 +72,7 @@ class ColorPreference extends Preference {
     private int[] mColorChoices = {};
     private int mValue = 0;
     private int mDefaultValue = 0;
+    private boolean mHasPersistedValue = false;
     private int mItemLayoutId = R.layout.item_color;
     private int mNumColumns = 5;
     private String mSelectDialogTitle = "";
@@ -109,7 +110,7 @@ class ColorPreference extends Preference {
             mSelectDialogIcon = ta.getResourceId(R.styleable.ColorPreference_dialogIcon, 0);
             mItemLayoutId = ta.getResourceId(R.styleable.ColorPreference_itemLayout, mItemLayoutId);
             mNumColumns = ta.getInteger(R.styleable.ColorPreference_numColumns, mNumColumns);
-            mDefaultValue = ta.getInt(R.styleable.ColorPreference_defaultValue, 0);
+            mDefaultValue = ta.getColor(R.styleable.ColorPreference_defaultValue, 0);
             int choicesResId = ta.getResourceId(R.styleable.ColorPreference_choices, R.array.default_color_choice_values);
             if (choicesResId > 0) {
                 //https://stackoverflow.com/questions/9114587/how-can-i-save-colors-in-array-xml-and-get-its-back-to-color-array
@@ -123,6 +124,12 @@ class ColorPreference extends Preference {
         }
 
         setWidgetLayoutResource(mItemLayoutId);
+
+        // Исправляем проблему порядка вызовов: onSetInitialValue вызывается в super()
+        // до initAttrs, и к тому моменту mDefaultValue ещё 0.
+        if (!mHasPersistedValue && mValue == 0 && mDefaultValue != 0) {
+            mValue = mDefaultValue;
+        }
     }
 
     @Override
@@ -171,12 +178,17 @@ class ColorPreference extends Preference {
 
     @Override
     protected Object onGetDefaultValue(TypedArray a, int index) {
-        return a.getInt(index, 0);
+        return mDefaultValue;
     }
 
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-        setValue(restoreValue ? getPersistedInt(0) : (Integer) defaultValue);
+        if (restoreValue) {
+            mValue = getPersistedInt(0);
+            mHasPersistedValue = true;
+        } else {
+            mValue = (Integer) defaultValue;
+        }
     }
 
     public String getFragmentTag() {

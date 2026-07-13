@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.07.2026, 23:43
+ *  * Created by Vladimir Belov on 14.07.2026, 01:17
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.07.2026, 22:30
+ *  * Last modified 14.07.2026, 00:29
  *
  */
 
@@ -110,10 +110,17 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             if (DeviceTools.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
-                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
                     Insets insetsStatus = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
-                    layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
+                    Insets insetsGestures = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
+                    Insets insetsIme = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
+
+                    // Верхний отступ — status bar
+                    // Нижний — максимум из жестов и клавиатуры (клавиатура всегда выше)
+                    int bottomPadding = Math.max(insetsGestures.bottom, insetsIme.bottom);
+
+                    layoutCoordinator.setPadding(0, insetsStatus.top, 0, bottomPadding);
                     layoutMain.setPadding(0, insetsStatus.bottom + ImageUtils.Sp2Px(getResources(), 50), 0, 0);
+
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
@@ -864,6 +871,68 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             transition.excludeTarget(R.id.spinnerCaptionsBottom, true);
             androidx.transition.TransitionManager.beginDelayedTransition(findViewById(R.id.layout_main), transition);
 
+            //Параметры заголовков
+            CheckBox checkCaptionsUsePrefs = findViewById(R.id.checkCaptionsUsePrefs);
+            int advSettingsVisibility = isAdvSettings ? View.VISIBLE : View.GONE;
+            int visibilityCaptionsTitles = checkCaptionsUsePrefs.isChecked() ? View.GONE : View.VISIBLE;
+            int visibilityCaptionsPrefs = checkCaptionsUsePrefs.isChecked() | !isAdvSettings ? View.GONE : View.VISIBLE;
+
+            findViewById(R.id.blockCaptionsUpper).setVisibility(visibilityCaptionsTitles);
+            findViewById(R.id.blockCaptionsUpperAligning).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsUpperRows).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsUpperFontStyle).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsUpperSize).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsBottom).setVisibility(visibilityCaptionsTitles);
+            findViewById(R.id.blockCaptionsBottomAligning).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsBottomRows).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsBottomFontStyle).setVisibility(visibilityCaptionsPrefs);
+            findViewById(R.id.blockCaptionsBottomSize).setVisibility(visibilityCaptionsPrefs);
+
+            //Доп. настройки
+            findViewById(R.id.blockEventShift).setVisibility(advSettingsVisibility);
+
+            //Скрываем заголовок виджета
+            findViewById(R.id.dividerCustomWidgetCaption).setVisibility(advSettingsVisibility);
+            findViewById(R.id.captionCustomWidgetCaption).setVisibility(advSettingsVisibility);
+            findViewById(R.id.editCustomWidgetCaption).setVisibility(advSettingsVisibility);
+            findViewById(R.id.hintCustomWidgetCaption).setVisibility(advSettingsVisibility);
+
+            //Скрываем своё сообщение об отсутствии событий
+            findViewById(R.id.dividerCustomZeroEventsMessage).setVisibility(advSettingsVisibility);
+            findViewById(R.id.captionCustomZeroEventsMessage).setVisibility(advSettingsVisibility);
+            findViewById(R.id.editCustomZeroEventsMessage).setVisibility(advSettingsVisibility);
+            findViewById(R.id.hintCustomZeroEventsMessage).setVisibility(advSettingsVisibility);
+
+            //Скрываем доп. параметры ограничения объёма событий
+            findViewById(R.id.blockScopeEventsCount).setVisibility(advSettingsVisibility);
+            findViewById(R.id.blockLayout).setVisibility(advSettingsVisibility);
+
+            //Скрываем реакцию на нажатие
+            findViewById(R.id.dividerOnClick).setVisibility(advSettingsVisibility);
+            findViewById(R.id.captionOnClick).setVisibility(advSettingsVisibility);
+            findViewById(R.id.blockOnClickCommon).setVisibility(advSettingsVisibility);
+            findViewById(R.id.blockOnClickLastEvent).setVisibility(advSettingsVisibility);
+
+            //Скрываем изменения цвета
+            findViewById(R.id.dividerWidgetBackground).setVisibility(advSettingsVisibility);
+            findViewById(R.id.colorWidgetBackground).setVisibility(advSettingsVisibility);
+            findViewById(R.id.dividerColorWidgetBorder).setVisibility(advSettingsVisibility);
+            findViewById(R.id.colorWidgetBorder).setVisibility(advSettingsVisibility);
+
+            //Подсказки
+            findViewById(R.id.adv_hint).setVisibility(isAdvSettings ? View.GONE : View.VISIBLE);
+            if (this.eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + this.widgetId)
+                    || Constants.WIDGET_TYPE_LIST.equals(widgetType)
+                    || Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType)) {
+
+                //Скрываем фото подсказку для существующих виджетов
+                findViewById(R.id.widget_hint).setVisibility(View.GONE);
+
+                if (advSettingsVisibility != View.GONE) {
+                    findViewById(R.id.hints).setVisibility(View.GONE);
+                }
+            }
+
             if (!Constants.WIDGET_TYPE_5X1.equals(widgetType)) {
                 findViewById(R.id.blockLayout).setVisibility(View.GONE);
             }
@@ -912,23 +981,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             }
 
-            //Параметры заголовков
-            CheckBox checkCaptionsUsePrefs = findViewById(R.id.checkCaptionsUsePrefs);
-            int advSettingsVisibility = isAdvSettings ? View.VISIBLE : View.GONE;
-            int visibilityCaptionsTitles = checkCaptionsUsePrefs.isChecked() ? View.GONE : View.VISIBLE;
-            int visibilityCaptionsPrefs = checkCaptionsUsePrefs.isChecked() | !isAdvSettings ? View.GONE : View.VISIBLE;
-
-            findViewById(R.id.blockCaptionsUpper).setVisibility(visibilityCaptionsTitles);
-            findViewById(R.id.blockCaptionsUpperAligning).setVisibility(visibilityCaptionsPrefs);
-            findViewById(R.id.blockCaptionsUpperRows).setVisibility(visibilityCaptionsPrefs);
-            findViewById(R.id.blockCaptionsUpperFontStyle).setVisibility(visibilityCaptionsPrefs);
-            findViewById(R.id.blockCaptionsUpperSize).setVisibility(visibilityCaptionsPrefs);
-            findViewById(R.id.blockCaptionsBottom).setVisibility(visibilityCaptionsTitles);
-            findViewById(R.id.blockCaptionsBottomAligning).setVisibility(visibilityCaptionsPrefs);
-            findViewById(R.id.blockCaptionsBottomRows).setVisibility(visibilityCaptionsPrefs);
-            findViewById(R.id.blockCaptionsBottomFontStyle).setVisibility(visibilityCaptionsPrefs);
-            findViewById(R.id.blockCaptionsBottomSize).setVisibility(visibilityCaptionsPrefs);
-
             //Ограничение объёма
             final LinearLayout blockScopeEvents = findViewById(R.id.blockScopeEvents);
             blockScopeEvents.setVisibility(Constants.WIDGET_TYPE_5X1.equals(widgetType) || isListWidget ? View.VISIBLE : View.GONE);
@@ -951,51 +1003,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             if (isNewPinnedWidget) {
                 findViewById(R.id.button_cancel).setVisibility(View.GONE);
-            }
-
-            //Доп. настройки
-            findViewById(R.id.blockEventShift).setVisibility(advSettingsVisibility);
-
-            //Скрываем заголовок виджета
-            findViewById(R.id.dividerCustomWidgetCaption).setVisibility(advSettingsVisibility);
-            findViewById(R.id.captionCustomWidgetCaption).setVisibility(advSettingsVisibility);
-            findViewById(R.id.editCustomWidgetCaption).setVisibility(advSettingsVisibility);
-            findViewById(R.id.hintCustomWidgetCaption).setVisibility(advSettingsVisibility);
-
-            //Скрываем своё сообщение об отсутствии событий
-            findViewById(R.id.dividerCustomZeroEventsMessage).setVisibility(advSettingsVisibility);
-            findViewById(R.id.captionCustomZeroEventsMessage).setVisibility(advSettingsVisibility);
-            findViewById(R.id.editCustomZeroEventsMessage).setVisibility(advSettingsVisibility);
-            findViewById(R.id.hintCustomZeroEventsMessage).setVisibility(advSettingsVisibility);
-
-            //Скрываем доп. параметры ограничения объёма событий
-            findViewById(R.id.blockScopeEventsCount).setVisibility(advSettingsVisibility);
-            findViewById(R.id.blockLayout).setVisibility(advSettingsVisibility);
-
-            //Скрываем реакцию на нажатие
-            findViewById(R.id.dividerOnClick).setVisibility(advSettingsVisibility);
-            findViewById(R.id.captionOnClick).setVisibility(advSettingsVisibility);
-            findViewById(R.id.blockOnClickCommon).setVisibility(advSettingsVisibility);
-            findViewById(R.id.blockOnClickLastEvent).setVisibility(advSettingsVisibility);
-
-            //Скрываем изменения цвета
-            findViewById(R.id.dividerWidgetBackground).setVisibility(advSettingsVisibility);
-            findViewById(R.id.colorWidgetBackground).setVisibility(advSettingsVisibility);
-            findViewById(R.id.dividerColorWidgetBorder).setVisibility(advSettingsVisibility);
-            findViewById(R.id.colorWidgetBorder).setVisibility(advSettingsVisibility);
-
-            //Подсказки
-            findViewById(R.id.adv_hint).setVisibility(isAdvSettings ? View.GONE : View.VISIBLE);
-            if (this.eventsData.hasPreferences(getString(R.string.widget_config_PrefName) + this.widgetId)
-                    || Constants.WIDGET_TYPE_LIST.equals(widgetType)
-                    || Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType)) {
-
-                //Скрываем фото подсказку для существующих виджетов
-                findViewById(R.id.widget_hint).setVisibility(View.GONE);
-
-                if (advSettingsVisibility != View.GONE) {
-                    findViewById(R.id.hints).setVisibility(View.GONE);
-                }
             }
 
         } catch (final Exception e) {

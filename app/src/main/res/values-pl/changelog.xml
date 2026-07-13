@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2026, 23:52
+  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 12.07.2026, 23:49
+  ~  * Last modified 14.07.2026, 01:12
   ~  */
   -->
 
@@ -19,6 +19,7 @@
         <item>Podświetlanie tekstu i pełnej nazwy jest teraz włączone w oknie „Szczegóły wydarzenia” (do kopiowania)</item>
         <item>🎨Dodano kolor obramowania dla widżetów</item>
         <item>W źródłach wydarzeń w widżecie kalendarza można wybrać tylko włączone źródła (logika zsynchronizowana z innymi widżetami)</item>
+        <item>Data i dzień tygodnia mogą być wyświetlane w nagłówku widżetów listy</item>
         <item>Więcej ustawień widżetu jest ukrytych w funkcjach dodatkowych. Do ustawień widżetu dodano aktywną wskazówkę pokazującą, gdzie znaleźć dodatkowe funkcje</item>
         <item>Poprawki błędów i optymalizacje dla Androida 16 i 17</item>
 

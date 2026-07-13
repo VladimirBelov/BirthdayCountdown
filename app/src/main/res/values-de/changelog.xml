@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2026, 23:52
+  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 12.07.2026, 23:28
+  ~  * Last modified 14.07.2026, 01:13
   ~  */
   -->
 
@@ -19,6 +19,7 @@
         <item>Die Hervorhebung von Text und vollständigem Namen ist jetzt im Fenster „Ereignisdetails“ aktiviert (zum Kopieren)</item>
         <item>🎨 Rahmenfarbe für Widgets hinzugefügt</item>
         <item>Im Kalender-Widget können nur aktivierte Quellen für Ereignisquellen ausgewählt werden (Logik mit anderen Widgets synchronisiert)</item>
+        <item>Datum und Wochentag können in der Kopfzeile von Listen-Widgets angezeigt werden</item>
         <item>Weitere Widget-Einstellungen befinden sich in den Extrafunktionen. Ein Hinweis in den Widget-Einstellungen zeigt an, wo die Extrafunktionen zu finden sind</item>
         <item>Fehlerbehebungen und Optimierungen für Android 16 und 17</item>
 

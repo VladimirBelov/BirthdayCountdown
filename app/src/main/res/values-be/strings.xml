@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2026, 13:14
+  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 12.07.2026, 13:09
+  ~  * Last modified 14.07.2026, 01:04
   ~  */
   -->
 
@@ -918,7 +918,10 @@
     </string-array>
 
     <string name="widget_config_custom_widget_caption_label">Загаловак віджэта</string>
-    <string name="widget_config_custom_widget_caption_description">Свой загаловак для гэтага віджэта (падтрымваюцца эмодзі 🎂)</string>
+    <string name="widget_config_custom_widget_caption_description">Наладжвальны подпіс віджэта. Падтрымліваюцца наступныя макрасы:\n
+        дзень тыдня - ##, дзень тыдня (скарочаны) - #\n
+        дата - @@, дата (без года) - @\n
+    напрыклад: @@ (##)</string>
     <string name="widget_config_custom_widget_caption_hint">Увядзіце паведамленне…</string>
 
     <string name="widget_config_custom_zero_events_label">Паведамленне пры адсутнасці падзей</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2026, 13:14
+ *  * Created by Vladimir Belov on 14.07.2026, 01:17
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.07.2026, 11:32
+ *  * Last modified 14.07.2026, 00:49
  *
  */
 
@@ -31,14 +31,17 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
 
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -107,10 +110,32 @@ public class WidgetList extends AppWidgetProvider {
                 views.setTextViewText(R.id.info, Constants.STRING_EMPTY);
             }
 
+            //Заголовок виджета (с макросами)
             String prefWidgetCaption = Constants.STRING_EMPTY;
             if (widgetPref.size() > 9) {
                 prefWidgetCaption = widgetPref.get(9);
+                if (prefWidgetCaption.contains("##")) { // День недели
+                    prefWidgetCaption = prefWidgetCaption.replace("##",
+                            new DateFormatSymbols(Locale.forLanguageTag(eventsData.currentLocale))
+                                    .getWeekdays()[Calendar.getInstance().get(Calendar.DAY_OF_WEEK)].toUpperCase());
+                } else if (prefWidgetCaption.contains("#")) { // День недели (кратко)
+                    prefWidgetCaption = prefWidgetCaption.replace("#",
+                            new DateFormatSymbols(Locale.forLanguageTag(eventsData.currentLocale))
+                                    .getShortWeekdays()[Calendar.getInstance().get(Calendar.DAY_OF_WEEK)].toUpperCase());
+                }
+                if (prefWidgetCaption.contains("@@")) { // Дата
+                    String date = AppDateUtils.getDateFormatted(
+                            Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(Calendar.getInstance().getTime()), ContactsEvents.FormatDate.WithYear,
+                            eventsData.preferences_date_format, eventsData.getContext(), eventsData.getResources(), eventsData.currentLocale).toUpperCase();
+                    prefWidgetCaption = prefWidgetCaption.replace("@@", date);
+                } else if (prefWidgetCaption.contains("@")) { // Дата (без года)
+                    String date = AppDateUtils.getDateFormatted(
+                            Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(Calendar.getInstance().getTime()), ContactsEvents.FormatDate.WithoutYear,
+                            eventsData.preferences_date_format, eventsData.getContext(), eventsData.getResources(), eventsData.currentLocale).toUpperCase();
+                    prefWidgetCaption = prefWidgetCaption.replace("@", date);
+                }
             }
+
             double defaultMagnify = 1.6;
             float sizeForWidgetElement = ImageUtils.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, defaultMagnify);
             if (!prefWidgetCaption.isEmpty()) {
@@ -118,6 +143,7 @@ public class WidgetList extends AppWidgetProvider {
                 views.setTextViewText(R.id.caption, prefWidgetCaption);
                 views.setTextViewTextSize(R.id.caption, TypedValue.COMPLEX_UNIT_SP, sizeForWidgetElement);
                 views.setTextColor(R.id.caption, eventsData.preferences_widgets_color_widget_caption);
+                views.setViewPadding(R.id.caption, ImageUtils.Dip2Px(res, 10), 0, 0, 0);
             } else {
                 views.setViewVisibility(R.id.caption, View.INVISIBLE);
             }

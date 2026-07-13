@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 12.07.2026, 13:14
+  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 12.07.2026, 13:09
+  ~  * Last modified 14.07.2026, 01:07
   ~  */
   -->
 
@@ -918,7 +918,10 @@
     </string-array>
 
     <string name="widget_config_custom_widget_caption_label">Titre du widget</string>
-    <string name="widget_config_custom_widget_caption_description">"Votre titre pour ce widget (l'emoji pris en charge 🎂)"</string>
+    <string name="widget_config_custom_widget_caption_description">Légende personnalisée du widget. Les macros suivantes sont prises en charge:\n
+        jour de la semaine - ##, jour de la semaine (abrégé) - #\n
+        date - @@, date (sans année) - @\n
+    Par exemple: @@ (##)</string>
     <string name="widget_config_custom_widget_caption_hint">Entrez un message…</string>
 
     <string name="widget_config_custom_zero_events_label">"Message en l'absence des événements"</string>
