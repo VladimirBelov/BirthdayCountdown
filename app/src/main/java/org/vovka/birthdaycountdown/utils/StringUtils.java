@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2026, 13:14
+ *  * Created by Vladimir Belov on 15.07.2026, 01:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.07.2026, 11:41
+ *  * Last modified 15.07.2026, 01:05
  *
  */
 
@@ -37,6 +37,7 @@ import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -88,6 +89,20 @@ public class StringUtils {
         if (text == null) return Constants.STRING_EMPTY;
         if (sep == null) return text;
         return text.contains(sep) ? text.substring(0, text.indexOf(sep)) : text;
+    }
+
+    /** Возвращает список, оставив у значений только текст до подстроки. Если подстрока не найдена - исходное значение
+     * @param list Исходный список
+     * @param sep Подстрока
+     * @return Преобразованный список
+     */
+    @NonNull
+    public static Set<String> substringBefore(Set<String> list, String sep) {
+        Set<String> result = new HashSet<>();
+        for (String value: list) {
+            result.add(value.contains(sep) ? value.substring(0, value.indexOf(sep)) : value);
+        }
+        return result;
     }
 
     /** Возвращает текст после подстроки sep. Если подстрока не найдена - исходный текст

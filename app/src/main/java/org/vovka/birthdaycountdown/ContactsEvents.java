@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.07.2026, 17:49
+ *  * Created by Vladimir Belov on 15.07.2026, 01:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 08.07.2026, 17:48
+ *  * Last modified 15.07.2026, 01:51
  *
  */
 
@@ -2442,7 +2442,7 @@ public class ContactsEvents {
             //https://stackoverflow.com/questions/61252550/android-how-to-use-kotlin-coroutine-in-java
             //https://stackoverflow.com/questions/58767733/the-asynctask-api-is-deprecated-in-android-11-what-are-the-alternatives
 
-            boolean result = getContactsEvents()
+            boolean result = getContactsData()
                     | getLocalEvents()
                     | getCalendarEvents(Constants.EventType_BirthDay)
                     | getCalendarEvents(Constants.EventType_Other)
@@ -2495,7 +2495,7 @@ public class ContactsEvents {
         });
     }
 
-    private boolean getContactsEvents() {
+    private boolean getContactsData() {
         //Получаем требуемые события (дни рождения, и т.п.)
         //todo: попробовать добраться до ДР стандартными способами https://stackoverflow.com/questions/35448250/how-to-get-whatsapp-contacts-from-android
         //todo: сделать импорт ДР одноклассники https://ruseller.com/lessons.php?id=1661 https://apiok.ru/ext/oauth/
@@ -2510,140 +2510,118 @@ public class ContactsEvents {
             if (preferences_Accounts.contains(Constants.account_none)) return false;
 
             long statCurrentModuleStart = System.currentTimeMillis();
-            TreeMap<Integer, String> eventData = new TreeMap<>();
-            List<String> dataList = new ArrayList<>();
 
             if (contentResolver == null) contentResolver = context.getContentResolver();
-            ColumnIndexCache cache = new ColumnIndexCache();
 
             //Организации и должности
-            final String[] projectionOrgTitle = {
+            getContactsOrganizations();
+
+            //Псевдонимы
+            getContactsNicknames();
+
+            //Web ссылки
+            getContactsWeblinks();
+
+            //Заметки
+            getContactsNotes();
+
+            //Контакты
+            getContactsNames();
+
+            //События
+            int countErrors = getContactsEvents();
+            if (countErrors > 1)
+                ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + resources.getString(R.string.msg_errors_total) + countErrors);
+
+            statTimeGetContactEvents = System.currentTimeMillis() - statCurrentModuleStart;
+            return true;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return false;
+        }
+    }
+
+    private int getContactsEvents() {
+        int countErrors = 0;
+        TreeMap<Integer, String> eventData = new TreeMap<>();
+        List<String> dataList = new ArrayList<>();
+        try (ColumnIndexCache cache = new ColumnIndexCache()) {
+            final String[] projectionContactsEvents = {
+                    ContactsContract.CommonDataKinds.Event.DATA,
+                    ContactsContract.CommonDataKinds.Event.TYPE,
+                    Constants.ColumnNames_ACCOUNT_TYPE,
+                    Constants.ColumnNames_ACCOUNT_NAME,
+                    ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE,
+                    ContactsContract.Data.DISPLAY_NAME,
+                    ContactsContract.CommonDataKinds.Event.LABEL,
                     Constants.ColumnNames_CONTACT_ID,
-                    ContactsContract.CommonDataKinds.Organization.COMPANY,
-                    ContactsContract.CommonDataKinds.Organization.TITLE
+                    ContactsContract.Contacts.PHOTO_URI,
+                    ContactsContract.Contacts.STARRED
             };
             Cursor contactData = contentResolver.query(
                     ContactsContract.Data.CONTENT_URI,
-                    projectionOrgTitle,
+                    projectionContactsEvents,
                     ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
-                    new String[]{ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE},
-                    null
+                    new String[]{ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE},
+                    ContactsContract.Data.DISPLAY_NAME + Constants.SQL_SORT_ASC_CONT
+                            + ContactsContract.CommonDataKinds.Event.TYPE + Constants.SQL_SORT_ASC_CONT
+                            + ContactsContract.CommonDataKinds.Event.LABEL + Constants.SQL_SORT_ASC
             );
             if (contactData != null) {
+                String eventKey = Constants.STRING_EMPTY;
+
                 if (contactData.moveToFirst()) {
                     do {
-
-                        String personID = contactData.getString(cache.getColumnIndex(contactData, Constants.ColumnNames_CONTACT_ID));
-
-                        String organization = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Organization.COMPANY));
-                        if (!map_organizations.containsKey(personID) && organization != null && !organization.isEmpty())
-                            map_organizations.put(personID, organization);
-
-                        String title = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Organization.TITLE));
-                        if (!map_contacts_titles.containsKey(personID) && title != null && !title.isEmpty())
-                            map_contacts_titles.put(personID, title);
-
-                    } while (contactData.moveToNext());
-                    contactData.close();
-                }
-            }
-            statContactsOrganizationCount = map_organizations.size();
-            statContactsTitleCount = map_contacts_titles.size();
-            cache.clear();
-
-            //Псевдонимы
-            final String[] projectionNick = {Constants.ColumnNames_CONTACT_ID, ContactsContract.CommonDataKinds.Nickname.NAME};
-            contactData = contentResolver.query(
-                    ContactsContract.Data.CONTENT_URI,
-                    projectionNick,
-                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
-                    new String[]{ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE},
-                    null
-            );
-            if (contactData != null) {
-                if (contactData.moveToFirst()) {
-                    do {
-
-                        String personID = contactData.getString(cache.getColumnIndex(contactData, Constants.ColumnNames_CONTACT_ID));
-                        String nick = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Nickname.NAME));
-                        if (nick != null && !nick.isEmpty()) {
-                            if (!map_contacts_aliases.containsKey(personID))
-                                map_contacts_aliases.put(personID, nick);
-                            //todo: добавлять ники в map_contacts_names
-                        }
-
-                    } while (contactData.moveToNext());
-                    contactData.close();
-                }
-            }
-            statContactsNicknameCount = map_contacts_aliases.size();
-            cache.clear();
-
-            //Web ссылки
-            final String[] projectionURL = {ContactsContract.Data.CONTACT_ID, ContactsContract.CommonDataKinds.Website.URL};
-            contactData = contentResolver.query(
-                    ContactsContract.Data.CONTENT_URI,
-                    projectionURL,
-                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
-                    new String[]{ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE},
-                    null
-            );
-            if (contactData != null) {
-                if (contactData.moveToFirst()) {
-                    do {
-
-                        String personID = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.Data.CONTACT_ID));
-                        String URL = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Website.URL));
-                        if (URL != null && !URL.isEmpty()) {
-                            if (!map_events_weblinks.containsKey(personID)) {
-                                map_events_weblinks.put(personID, URL);
-                            } else {
-                                String URlstored = map_events_weblinks.get(personID);
-                                if (!TextUtils.isEmpty(URlstored))
-                                    map_events_weblinks.put(personID, URlstored.concat(Constants.STRING_2TILDA).concat(URL));
+                        try {
+                            eventKey = getContactEventFromCursor(contactData, eventData, dataList, cache, eventKey);
+                        } catch (RuntimeException e) {
+                            countErrors++;
+                            if (countErrors < 3) {
+                                StringBuilder sb = new StringBuilder();
+                                sb.append(StringUtils.getMethodName(3)).append(Constants.STRING_COLON_SPACE).append(e).append(Constants.STRING_EOL);
+                                for (String name : contactData.getColumnNames()) {
+                                    String data = contactData.getString(cache.getColumnIndex(contactData, name));
+                                    if (data != null && !data.equals(Constants.STRING_0))
+                                        sb.append(name).append(Constants.STRING_COLON_SPACE).append(data).append(Constants.STRING_EOL);
+                                }
+                                ToastExpander.showInfoMsg(context, sb.toString());
                             }
-                            statContactsURLCount++;
                         }
-
                     } while (contactData.moveToNext());
-                    contactData.close();
+
+                    if (!eventData.isEmpty()) { // Данные последнего контакта
+                        if (dataList.add(getEventData(eventData))) {
+                            //Добавляем для поиска календарных событий (дни рождения)
+                            String personID = eventData.get(Position_contactID);
+                            if (!TextUtils.isEmpty(personID))
+                                map_eventsBySubtypeAndPersonID_offset.put(personID + Constants.STRING_2HASH + eventData.get(Position_eventSubType), dataList.size() - 1);
+                        }
+                        eventData.clear();
+                    }
                 }
+                contactData.close();
+                eventListUpdated.addAll(dataList);
+                statEventsCount += statContactsEventCount;
+                dataList.clear();
             }
-            cache.clear();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return countErrors;
+    }
 
-            //Заметки
-            //https://stackoverflow.com/a/6301244/4928833
-            final String[] projectionNotes = {Constants.ColumnNames_CONTACT_ID, ContactsContract.CommonDataKinds.Note.NOTE};
-            contactData = contentResolver.query(
-                    ContactsContract.Data.CONTENT_URI,
-                    projectionNotes,
-                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
-                    new String[]{ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE},
-                    null
-            );
-            if (contactData != null) {
-                if (contactData.moveToFirst()) {
-                    do {
-
-                        String personID = contactData.getString(cache.getColumnIndex(contactData, Constants.ColumnNames_CONTACT_ID));
-                        String note = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Note.NOTE));
-                        if (!map_notes.containsKey(personID))
-                            map_notes.put(personID, note != null ? note.replace(Constants.STRING_EOL, Constants.STRING_SPACE) : Constants.STRING_EMPTY);
-
-                    } while (contactData.moveToNext());
-                    contactData.close();
-                }
-            }
-            cache.clear();
-
-            //Контакты
+    private void getContactsNames() {
+        try (ColumnIndexCache cache = new ColumnIndexCache()) {
             final String[] projectionAllContacts = {
                     ContactsContract.RawContacts.CONTACT_ID,
                     ContactsContract.RawContacts._ID,
                     ContactsContract.Data.DISPLAY_NAME,
                     ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE
             };
-            contactData = contentResolver.query(
+            Cursor contactData = contentResolver.query(
                     ContactsContract.RawContacts.CONTENT_URI,
                     projectionAllContacts,
                     null,
@@ -2701,85 +2679,153 @@ public class ContactsEvents {
                         //todo: добавить имена латиницей (для мэппинга)
 
                     } while (contactData.moveToNext());
-                    contactData.close();
                 }
+                contactData.close();
             }
             statContactsCount = map_contacts_ids.size();
-            cache.clear();
-
-            //События
-            final String[] projectionContactsEvents = {
-                    ContactsContract.CommonDataKinds.Event.DATA,
-                    ContactsContract.CommonDataKinds.Event.TYPE,
-                    Constants.ColumnNames_ACCOUNT_TYPE,
-                    Constants.ColumnNames_ACCOUNT_NAME,
-                    ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE,
-                    ContactsContract.Data.DISPLAY_NAME,
-                    ContactsContract.CommonDataKinds.Event.LABEL,
-                    Constants.ColumnNames_CONTACT_ID,
-                    ContactsContract.Contacts.PHOTO_URI,
-                    ContactsContract.Contacts.STARRED
-            };
-            Cursor cursor = contentResolver.query(
-                    ContactsContract.Data.CONTENT_URI,
-                    projectionContactsEvents,
-                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
-                    new String[]{ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE},
-                    ContactsContract.Data.DISPLAY_NAME + Constants.SQL_SORT_ASC_CONT
-                            + ContactsContract.CommonDataKinds.Event.TYPE + Constants.SQL_SORT_ASC_CONT
-                            + ContactsContract.CommonDataKinds.Event.LABEL + Constants.SQL_SORT_ASC
-            );
-            if (cursor == null) return false;
-
-            int countErrors = 0;
-            String eventKey = Constants.STRING_EMPTY;
-
-            if (cursor.moveToFirst()) {
-                do {
-                    try {
-                        eventKey = getContactEventFromCursor(cursor, eventData, dataList, cache, eventKey);
-                    } catch (RuntimeException e) {
-                        countErrors++;
-                        if (countErrors < 3) {
-                            StringBuilder sb = new StringBuilder();
-                            sb.append(StringUtils.getMethodName(3)).append(Constants.STRING_COLON_SPACE).append(e).append(Constants.STRING_EOL);
-                            for (String name : cursor.getColumnNames()) {
-                                String data = cursor.getString(cache.getColumnIndex(cursor, name));
-                                if (data != null && !data.equals(Constants.STRING_0))
-                                    sb.append(name).append(Constants.STRING_COLON_SPACE).append(data).append(Constants.STRING_EOL);
-                            }
-                            ToastExpander.showInfoMsg(context, sb.toString());
-                        }
-                    }
-                } while (cursor.moveToNext());
-
-                if (!eventData.isEmpty()) { // Данные последнего контакта
-                    if (dataList.add(getEventData(eventData))) {
-                        //Добавляем для поиска календарных событий (дни рождения)
-                        String personID = eventData.get(Position_contactID);
-                        if (!TextUtils.isEmpty(personID))
-                            map_eventsBySubtypeAndPersonID_offset.put(personID + Constants.STRING_2HASH + eventData.get(Position_eventSubType), dataList.size() - 1);
-                    }
-                    eventData.clear();
-                }
-            }
-            cache.clear();
-            cursor.close();
-
-            eventListUpdated.addAll(dataList);
-            statEventsCount += statContactsEventCount;
-            dataList.clear();
-            statTimeGetContactEvents = System.currentTimeMillis() - statCurrentModuleStart;
-
-            if (countErrors > 1)
-                ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + resources.getString(R.string.msg_errors_total) + countErrors);
-
-            return true;
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return false;
+        }
+    }
+
+    private void getContactsNotes() {
+        //https://stackoverflow.com/a/6301244/4928833
+        try (ColumnIndexCache cache = new ColumnIndexCache()) {
+            final String[] projectionNotes = {Constants.ColumnNames_CONTACT_ID, ContactsContract.CommonDataKinds.Note.NOTE};
+            Cursor contactData = contentResolver.query(
+                    ContactsContract.Data.CONTENT_URI,
+                    projectionNotes,
+                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
+                    new String[]{ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE},
+                    null
+            );
+            if (contactData != null) {
+                if (contactData.moveToFirst()) {
+                    do {
+
+                        String personID = contactData.getString(cache.getColumnIndex(contactData, Constants.ColumnNames_CONTACT_ID));
+                        String note = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Note.NOTE));
+                        if (!map_notes.containsKey(personID))
+                            map_notes.put(personID, note != null ? note.replace(Constants.STRING_EOL, Constants.STRING_SPACE) : Constants.STRING_EMPTY);
+
+                    } while (contactData.moveToNext());
+                }
+                contactData.close();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void getContactsWeblinks() {
+        try (ColumnIndexCache cache = new ColumnIndexCache()) {
+            final String[] projectionURL = {ContactsContract.Data.CONTACT_ID, ContactsContract.CommonDataKinds.Website.URL};
+            Cursor contactData = contentResolver.query(
+                    ContactsContract.Data.CONTENT_URI,
+                    projectionURL,
+                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
+                    new String[]{ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE},
+                    null
+            );
+            if (contactData != null) {
+                if (contactData.moveToFirst()) {
+                    do {
+
+                        String personID = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.Data.CONTACT_ID));
+                        String URL = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Website.URL));
+                        if (URL != null && !URL.isEmpty()) {
+                            if (!map_events_weblinks.containsKey(personID)) {
+                                map_events_weblinks.put(personID, URL);
+                            } else {
+                                String URlstored = map_events_weblinks.get(personID);
+                                if (!TextUtils.isEmpty(URlstored))
+                                    map_events_weblinks.put(personID, URlstored.concat(Constants.STRING_2TILDA).concat(URL));
+                            }
+                            statContactsURLCount++;
+                        }
+
+                    } while (contactData.moveToNext());
+                }
+                contactData.close();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void getContactsNicknames() {
+        try (ColumnIndexCache cache = new ColumnIndexCache()) {
+            final String[] projectionNick = {Constants.ColumnNames_CONTACT_ID, ContactsContract.CommonDataKinds.Nickname.NAME};
+            Cursor contactData = contentResolver.query(
+                    ContactsContract.Data.CONTENT_URI,
+                    projectionNick,
+                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
+                    new String[]{ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE},
+                    null
+            );
+            if (contactData != null) {
+                if (contactData.moveToFirst()) {
+                    do {
+
+                        String personID = contactData.getString(cache.getColumnIndex(contactData, Constants.ColumnNames_CONTACT_ID));
+                        String nick = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Nickname.NAME));
+                        if (nick != null && !nick.isEmpty()) {
+                            if (!map_contacts_aliases.containsKey(personID))
+                                map_contacts_aliases.put(personID, nick);
+                            //todo: добавлять ники в map_contacts_names
+                        }
+
+                    } while (contactData.moveToNext());
+                }
+                contactData.close();
+            }
+            statContactsNicknameCount = map_contacts_aliases.size();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void getContactsOrganizations() {
+        try (ColumnIndexCache cache = new ColumnIndexCache()) {
+            final String[] projectionOrgTitle = {
+                    Constants.ColumnNames_CONTACT_ID,
+                    ContactsContract.CommonDataKinds.Organization.COMPANY,
+                    ContactsContract.CommonDataKinds.Organization.TITLE
+            };
+            Cursor contactData = contentResolver.query(
+                    ContactsContract.Data.CONTENT_URI,
+                    projectionOrgTitle,
+                    ContactsContract.Data.MIMETYPE + Constants.STRING_EQ_Q,
+                    new String[]{ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE},
+                    null
+            );
+            if (contactData != null) {
+                if (contactData.moveToFirst()) {
+                    do {
+
+                        String personID = contactData.getString(cache.getColumnIndex(contactData, Constants.ColumnNames_CONTACT_ID));
+
+                        String organization = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Organization.COMPANY));
+                        if (!map_organizations.containsKey(personID) && organization != null && !organization.isEmpty())
+                            map_organizations.put(personID, organization);
+
+                        String title = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.CommonDataKinds.Organization.TITLE));
+                        if (!map_contacts_titles.containsKey(personID) && title != null && !title.isEmpty())
+                            map_contacts_titles.put(personID, title);
+
+                    } while (contactData.moveToNext());
+                }
+                contactData.close();
+            }
+            statContactsOrganizationCount = map_organizations.size();
+            statContactsTitleCount = map_contacts_titles.size();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
@@ -4660,6 +4706,9 @@ public class ContactsEvents {
                         if (!eventData.isEmpty()) {
                             statEventsCount++;
                             statFilesEventCount++;
+                            increaseStatForEventSources(Constants.EVENT_PREFIX_FILE_EVENT);
+                            increaseStatForEventSourcesIds(StringUtils.getHash(Constants.eventSourceFilePrefix + eventSource));
+
                             fillEmptyEventData(eventData);
                             String eventRow = getEventData(eventData);
                             if (!eventListUpdated.contains(eventRow)) {
@@ -4902,6 +4951,9 @@ public class ContactsEvents {
                         if (!eventData.isEmpty()) {
                             statEventsCount++;
                             statFilesEventCount++;
+                            increaseStatForEventSources(Constants.EVENT_PREFIX_FILE_EVENT);
+                            increaseStatForEventSourcesIds(StringUtils.getHash(Constants.eventSourceFilePrefix + eventSource));
+
                             fillEmptyEventData(eventData);
                             String eventRow = getEventData(eventData);
                             if (!eventListUpdated.contains(eventRow)) {
@@ -6268,8 +6320,6 @@ public class ContactsEvents {
             List<String> magicList = new ArrayList<>(); //Для 5k событий
             Date currentDay = getToday().getTime();
 
-            //setLocale();
-
             for (int i = 0; i < eventList.size(); i++) {
                 computeDateForEvent(i, magicList, getToday(), currentDay);
             }
@@ -6333,7 +6383,7 @@ public class ContactsEvents {
                     String accountType = StringUtils.substringBefore(dayValue, Constants.STRING_COLON_SPACE);
                     String storedDate = StringUtils.substringBetween(dayValue, Constants.STRING_COLON_SPACE, Constants.STRING_COLON_SPACE);
 
-                    increaseStatForEventSources(accountType);
+                    //increaseStatForEventSources(accountType);
 
                     Date storedDate_Date = null;
                     boolean storedDate_isYear = false;
@@ -6476,7 +6526,7 @@ public class ContactsEvents {
                     eventDateThisTime = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(singleEventArray[Position_eventDateNextTime]);
                 } catch (ParseException e) { /**/ }
 
-                if (!dayArray[0].isEmpty()) {
+                if (!dayArray[0].isEmpty() && Constants.STRING_STORAGE_CALENDAR.equals(singleEventArray[Position_eventStorage])) {
                     increaseStatForEventSources(StringUtils.substringBefore(dayArray[0], Constants.STRING_COLON_SPACE));
                 }
 
@@ -6931,20 +6981,24 @@ public class ContactsEvents {
     }
 
     private void increaseStatForEventSources(@NonNull String sourceType) {
-        if (!statEventSources.containsKey(sourceType)) {
-            statEventSources.put(sourceType, 1);
-        } else {
-            Integer oldCount = statEventSources.get(sourceType);
-            statEventSources.put(sourceType, (oldCount == null ? 0 : oldCount) + 1);
+        synchronized (statEventSources) {
+            if (!statEventSources.containsKey(sourceType)) {
+                statEventSources.put(sourceType, 1);
+            } else {
+                Integer oldCount = statEventSources.get(sourceType);
+                statEventSources.put(sourceType, (oldCount == null ? 0 : oldCount) + 1);
+            }
         }
     }
 
     private void increaseStatForEventSourcesIds(@NonNull String sourceId) {
-        if (!statEventSourcesIds.containsKey(sourceId)) {
-            statEventSourcesIds.put(sourceId, 1);
-        } else {
-            Integer oldCount = statEventSourcesIds.get(sourceId);
-            statEventSourcesIds.put(sourceId, (oldCount == null ? 0 : oldCount) + 1);
+        synchronized (statEventSourcesIds) {
+            if (!statEventSourcesIds.containsKey(sourceId)) {
+                statEventSourcesIds.put(sourceId, 1);
+            } else {
+                Integer oldCount = statEventSourcesIds.get(sourceId);
+                statEventSourcesIds.put(sourceId, (oldCount == null ? 0 : oldCount) + 1);
+            }
         }
     }
 
@@ -9800,19 +9854,19 @@ public class ContactsEvents {
 
             String birthdayFilesParam = preferences_Birthday_files.isEmpty()
                     ? msg_not_selected
-                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + TextUtils.join(Constants.STRING_COMMA_SPACE, preferences_Birthday_files) + Constants.HTML_COLOR_END;
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + TextUtils.join(Constants.STRING_COMMA_SPACE, StringUtils.substringBefore(preferences_Birthday_files, Constants.STRING_BAR)) + Constants.HTML_COLOR_END;
 
             String otherEventFilesParam = preferences_OtherEvent_files.isEmpty()
                     ? msg_not_selected
-                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + TextUtils.join(Constants.STRING_COMMA_SPACE, preferences_OtherEvent_files) + Constants.HTML_COLOR_END;
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + TextUtils.join(Constants.STRING_COMMA_SPACE, StringUtils.substringBefore(preferences_OtherEvent_files, Constants.STRING_BAR)) + Constants.HTML_COLOR_END;
 
             String holidayEventFilesParam = preferences_HolidayEvent_files.isEmpty()
                     ? msg_not_selected
-                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + TextUtils.join(Constants.STRING_COMMA_SPACE, preferences_HolidayEvent_files) + Constants.HTML_COLOR_END;
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + TextUtils.join(Constants.STRING_COMMA_SPACE, StringUtils.substringBefore(preferences_HolidayEvent_files, Constants.STRING_BAR)) + Constants.HTML_COLOR_END;
 
             String multiTypeFilesParam = preferences_MultiType_files.isEmpty()
                     ? msg_not_selected
-                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + TextUtils.join(Constants.STRING_COMMA_SPACE, preferences_MultiType_files) + Constants.HTML_COLOR_END;
+                    : Constants.HTML_BR + Constants.FONT_COLOR_GREEN + TextUtils.join(Constants.STRING_COMMA_SPACE, StringUtils.substringBefore(preferences_MultiType_files, Constants.STRING_BAR)) + Constants.HTML_COLOR_END;
 
             List<String> allFiltersList = Arrays.asList(
                     resources.getString(R.string.events_scope_not_hidden),
