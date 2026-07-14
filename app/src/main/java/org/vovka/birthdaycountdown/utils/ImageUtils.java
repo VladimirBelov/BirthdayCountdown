@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2026, 23:52
+ *  * Created by Vladimir Belov on 14.07.2026, 12:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.07.2026, 22:48
+ *  * Last modified 14.07.2026, 10:43
  *
  */
 
@@ -678,5 +678,16 @@ public class ImageUtils {
         if (colorToBorderMap == null) {
             initColorMaps(context.getApplicationContext());
         }
+    }
+
+    // 🛠 Вспомогательный метод для резолва цветов
+    public static int resolveThemeColor(Context context, int attrId) {
+        TypedValue tv = new TypedValue();
+        if (context.getTheme().resolveAttribute(attrId, tv, true)) {
+            return (tv.type == TypedValue.TYPE_REFERENCE)
+                    ? ContextCompat.getColor(context, tv.resourceId)
+                    : tv.data;
+        }
+        return 0;
     }
 }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.07.2026, 01:17
+ *  * Created by Vladimir Belov on 14.07.2026, 12:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 14.07.2026, 00:49
+ *  * Last modified 14.07.2026, 12:07
  *
  */
 
@@ -54,7 +54,6 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
     private static final String TAG = "WidgetPhotoList";
     final ContactsEvents eventsData = ContactsEvents.getInstance();
-    private Resources res;
 
     private void updateAppWidget(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId) {
 
@@ -65,7 +64,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
         try {
 
             eventsData.initLanguage(context);
-            this.res = eventsData.getResources();
+            Resources res = eventsData.getResources();
 
             final AppWidgetProviderInfo appWidgetInfo = AppWidgetManager.getInstance(eventsData.getContext()).getAppWidgetInfo(appWidgetId);
             String widgetType = Constants.WIDGET_TYPE_PHOTO_LIST;
@@ -262,25 +261,30 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
         super.onReceive(context, intent);
 
-        final String action = intent.getAction();
-        if (action != null && action.equalsIgnoreCase(Constants.ACTION_CLICK)) {
-            String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);
-            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            int pref_onClick = 0;
-            try {
-                pref_onClick = intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(res.getString(R.string.pref_Widgets_OnClick_default)));
-            } catch (NumberFormatException ignored) { /**/ }
-            if (pref_onClick == 0 || eventInfo == null || eventInfo.isEmpty()) return;
-
-            String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
-            String eventText = StringUtils.getNotNullString(intent.getStringExtra(Constants.EXTRA_CLICKED_TEXT));
-            Intent intentAction = ContactsEvents.getViewActionIntent(eventInfo, eventText, singleEventArray, pref_onClick, context);
-            if (intentAction != null) {
+        try {
+            final String action = intent.getAction();
+            if (action != null && action.equalsIgnoreCase(Constants.ACTION_CLICK)) {
+                String eventInfo = intent.getStringExtra(Constants.EXTRA_CLICKED_EVENT);
+                int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+                int pref_onClick = 0;
                 try {
-                    intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                    context.getApplicationContext().startActivity(intentAction);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                    pref_onClick = intent.getIntExtra(Constants.EXTRA_CLICKED_PREFS, Integer.parseInt(context.getString(R.string.pref_Widgets_OnClick_default)));
+                } catch (NumberFormatException ignored) { /**/ }
+                if (pref_onClick == 0 || eventInfo == null || eventInfo.isEmpty()) return;
+
+                String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
+                String eventText = StringUtils.getNotNullString(intent.getStringExtra(Constants.EXTRA_CLICKED_TEXT));
+                Intent intentAction = ContactsEvents.getViewActionIntent(eventInfo, eventText, singleEventArray, pref_onClick, context);
+                if (intentAction != null) {
+                    try {
+                        intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                        context.getApplicationContext().startActivity(intentAction);
+                    } catch (android.content.ActivityNotFoundException e) { /**/ }
+                }
             }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 14.07.2026, 12:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 14.07.2026, 10:43
  *
  */
 
@@ -822,9 +822,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             Window window = alertToShow.getWindow();
             Context themeContext = new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog);
-            int textColor = resolveThemeColor(themeContext, android.R.attr.textColor);
+            int textColor = ImageUtils.resolveThemeColor(themeContext, android.R.attr.textColor);
             if (window != null) {
-                int dialogBgColor = resolveThemeColor(themeContext, android.R.attr.background);
+                int dialogBgColor = ImageUtils.resolveThemeColor(themeContext, android.R.attr.background);
                 if (dialogBgColor != 0) {
                     window.setBackgroundDrawable(new ColorDrawable(dialogBgColor));
                 }
@@ -1340,8 +1340,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    @SuppressLint("RestrictedApi") //https://stackoverflow.com/questions/48607853/menubuilder-setoptionaliconsvisible-can-only-be-called-from-within-the-same-libr
+    @SuppressLint("RestrictedApi")
     private void setMenuIconsVisible(Menu menu) {
+        //https://stackoverflow.com/a/43411336/4928833
+        //https://stackoverflow.com/questions/48607853/menubuilder-setoptionaliconsvisible-can-only-be-called-from-within-the-same-libr
         try {
             if (menu instanceof MenuBuilder) {
                 ((MenuBuilder) menu).setOptionalIconsVisible(true);
@@ -1644,10 +1646,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public boolean onCreateOptionsMenu(Menu menu) {
         try {
 
-            //https://stackoverflow.com/a/43411336/4928833
-            if (menu instanceof MenuBuilder) {
-                ((MenuBuilder) menu).setOptionalIconsVisible(true);
-            }
+            setMenuIconsVisible(menu);
 
             MenuItem menuItem;
             menuItem = menu.add(Menu.NONE, Constants.MainMenu_Search, Menu.NONE, R.string.menu_search).setIcon(android.R.drawable.ic_menu_search)
@@ -3457,17 +3456,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(2) + Constants.STRING_COLON_SPACE + e);
         }
-    }
-
-    // 🛠 Вспомогательный метод для резолва цветов
-    private int resolveThemeColor(Context context, int attrId) {
-        TypedValue tv = new TypedValue();
-        if (context.getTheme().resolveAttribute(attrId, tv, true)) {
-            return (tv.type == TypedValue.TYPE_REFERENCE)
-                    ? ContextCompat.getColor(context, tv.resourceId)
-                    : tv.data;
-        }
-        return 0;
     }
 
 }
