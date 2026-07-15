@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.07.2026, 17:42
+ *  * Created by Vladimir Belov on 15.07.2026, 18:16
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.07.2026, 17:38
+ *  * Last modified 15.07.2026, 18:13
  *
  */
 
@@ -879,7 +879,7 @@ public class ContactsEvents {
     }
 
     public interface EventsLoadCallback {
-        void onEventsLoaded(boolean success);
+        void onEventsLoaded();
     }
 
     public enum FormatDate {
@@ -2489,9 +2489,9 @@ public class ContactsEvents {
         }
         eventsExecutor.execute(() -> {
             try {
-                boolean result = getEvents();
+                getEvents();
                 if (callback != null) {
-                    mainHandler.post(() -> callback.onEventsLoaded(result));
+                    mainHandler.post(callback::onEventsLoaded);
                 }
             } finally {
                 pendingRefresh.set(false);

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.07.2026, 12:14
+ *  * Created by Vladimir Belov on 15.07.2026, 18:16
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 14.07.2026, 10:43
+ *  * Last modified 15.07.2026, 18:13
  *
  */
 
@@ -2665,7 +2665,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         updateUIAfterEventsLoad();
                     }
                 } else {
-                    eventsData.getEventsAsync(success -> {
+                    eventsData.getEventsAsync(() -> {
                         if (!isFinishing() && !isDestroyed()) {
                             updateUIAfterEventsLoad();
                         }

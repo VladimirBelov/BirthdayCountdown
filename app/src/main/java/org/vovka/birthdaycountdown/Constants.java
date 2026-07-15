@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 15.07.2026, 18:16
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:51
+ *  * Last modified 15.07.2026, 17:59
  *
  */
 
@@ -322,7 +322,7 @@ public final class Constants {
     static final int pref_Events_Scope_Clear = 10;
     static final int pref_Events_Scope_Clean = 11;
 
-    static final int WIDGET_TEXT_SIZE_TINY = 10;
+    public static final int WIDGET_TEXT_SIZE_TINY = 10;
     static final int WIDGET_TEXT_SIZE_SMALL = 12;
     static final int WIDGET_TEXT_SIZE_BIG = 18;
     static final int WIDGET_EVENTS_MAX = 7;
