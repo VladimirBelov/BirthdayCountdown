@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.07.2026, 01:57
+ *  * Created by Vladimir Belov on 15.07.2026, 17:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.07.2026, 01:51
+ *  * Last modified 15.07.2026, 17:38
  *
  */
 
@@ -387,8 +387,12 @@ public class ContactsEvents {
     final HashMap<String, Integer> map_eventsBySubtypeAndPersonName_offset = new HashMap<>();
     final HashMap<String, String> map_organizations = new HashMap<>();
     final HashMap<String, String> map_contacts_titles = new HashMap<>();
-    final HashMap<String, String> map_contacts_rawIds = new HashMap<>(); //ID всех контактов в адресной книге: rawId -> contactId
-    final HashMap<String, String> map_contacts_ids = new HashMap<>(); //ID всех контактов в адресной книге: contactId -> rawId
+    /** ID всех контактов в адресной книге: rawId -> contactId */
+    final HashMap<String, String> map_contacts_rawIds = new HashMap<>();
+    /** ID всех контактов в адресной книге: contactId -> rawId */
+    final HashMap<String, String> map_contacts_ids = new HashMap<>();
+    /** Хранит соответствие: RAW_CONTACT_ID -> "account_name (account_type)" */
+    final Map<String, String> map_rawContactAccounts = new HashMap<>();
     final HashMap<String, String> map_contacts_aliases = new HashMap<>();
     final HashMap<String, String> map_events_weblinks = new HashMap<>();
     final HashMap<String, String> map_notes = new HashMap<>();
@@ -2549,10 +2553,9 @@ public class ContactsEvents {
         List<String> dataList = new ArrayList<>();
         try (ColumnIndexCache cache = new ColumnIndexCache()) {
             final String[] projectionContactsEvents = {
+                    ContactsContract.Data.RAW_CONTACT_ID,
                     ContactsContract.CommonDataKinds.Event.DATA,
                     ContactsContract.CommonDataKinds.Event.TYPE,
-                    Constants.ColumnNames_ACCOUNT_TYPE,
-                    Constants.ColumnNames_ACCOUNT_NAME,
                     ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE,
                     ContactsContract.Data.DISPLAY_NAME,
                     ContactsContract.CommonDataKinds.Event.LABEL,
@@ -2618,6 +2621,8 @@ public class ContactsEvents {
             final String[] projectionAllContacts = {
                     ContactsContract.RawContacts.CONTACT_ID,
                     ContactsContract.RawContacts._ID,
+                    ContactsContract.RawContacts.ACCOUNT_NAME,
+                    ContactsContract.RawContacts.ACCOUNT_TYPE,
                     ContactsContract.Data.DISPLAY_NAME,
                     ContactsContract.Data.DISPLAY_NAME_ALTERNATIVE
             };
@@ -2634,6 +2639,22 @@ public class ContactsEvents {
 
                         final String personID = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.RawContacts.CONTACT_ID));
                         final String personRawID = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.RawContacts._ID));
+
+                        // Формируем ключ аккаунта
+                        if (personRawID != null) {
+                            String accName = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.RawContacts.ACCOUNT_NAME));
+                            String accType = contactData.getString(cache.getColumnIndex(contactData, ContactsContract.RawContacts.ACCOUNT_TYPE));
+
+                            if (accName == null || accName.trim().isEmpty()) {
+                                accName = context.getResources().getString(R.string.account_type_local); // или "Локальный"
+                            }
+                            if (accType == null) {
+                                accType = Constants.STRING_NULL;
+                            }
+
+                            String accKey = accName + Constants.STRING_PARENTHESIS_OPEN + accType + Constants.STRING_PARENTHESIS_CLOSE;
+                            map_rawContactAccounts.put(personRawID, accKey);
+                        }
 
                         if (personID != null && personRawID != null && !map_contacts_ids.containsKey(personID)) {
                             map_contacts_ids.put(personID, personRawID);
@@ -3140,14 +3161,20 @@ public class ContactsEvents {
         String accountKey = null;
 
         try {
+            String rawId = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Data.RAW_CONTACT_ID));
             eventDateStr = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.DATA));
             eventType = cursor.getString(cache.getColumnIndex(cursor, ContactsContract.CommonDataKinds.Event.TYPE));
-            String accountType = cursor.getString(cache.getColumnIndex(cursor, Constants.ColumnNames_ACCOUNT_TYPE));
-            if (accountType == null) accountType = Constants.STRING_NULL;
-            String accountName = cursor.getString(cache.getColumnIndex(cursor, Constants.ColumnNames_ACCOUNT_NAME));
-            if (accountName == null)
+            String accountType;
+            String accountName;
+            if (map_rawContactAccounts.containsKey(rawId)) {
+                accountKey = map_rawContactAccounts.get(rawId);
+                accountName = StringUtils.substringBefore(accountKey, Constants.STRING_PARENTHESIS_OPEN);
+                accountType = StringUtils.substringBetween(accountKey, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
+            } else {
                 accountName = getResources().getString(R.string.account_type_local);
-            accountKey = accountName + Constants.STRING_PARENTHESIS_OPEN + accountType + Constants.STRING_PARENTHESIS_CLOSE;
+                accountType = Constants.STRING_NULL;
+                accountKey = accountName + Constants.STRING_PARENTHESIS_OPEN + accountType + Constants.STRING_PARENTHESIS_CLOSE;
+            }
 
             if (eventDateStr != null && eventType != null && (preferences_Accounts.isEmpty() || preferences_Accounts.contains(accountKey))) {
 
