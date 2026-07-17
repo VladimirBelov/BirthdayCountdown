@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 10.07.2026, 00:03
+ *  * Created by Vladimir Belov on 17.07.2026, 15:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.07.2026, 23:41
+ *  * Last modified 17.07.2026, 13:32
  *
  */
 package org.vovka.birthdaycountdown;
@@ -374,7 +374,7 @@ public class WidgetCalendarPopup extends Activity {
             if (executorService != null && !executorService.isShutdown()) {
                 executorService.execute(() -> {
                     try {
-                        if (eventsData.preferences_DaysTypes.isEmpty() && intent != null) {
+                        if (intent != null) {
                             //Заполнение типов дней из календарей по периоду
                             Calendar calFirstDay = null;
                             Calendar calLastDay = null;
