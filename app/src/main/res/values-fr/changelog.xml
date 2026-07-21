@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
+  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 14.07.2026, 01:12
+  ~  * Last modified 21.07.2026, 11:41
   ~  */
   -->
 
@@ -14,11 +14,11 @@
 
     <item>#1.9.1</item>
 
-    <item>"Les événements précédemment disponibles sous forme de fichiers externes ont été intégrés à l'application. Dans la section vacances : "🇷🇺 Профессиональные праздники", "☦️ Православные церковные праздники", "✝️ Katholische Feiertage in Deutschland", et dans la section autres événements : "ℹ️ Интересные даты""</item>
+    <item>"Les événements précédemment disponibles sous forme de fichiers externes ont été intégrés à l'application. Dans la section vacances : \"🇷🇺 Профессиональные праздники\", \"☦️ Православные церковные праздники\", \"✝️ Katholische Feiertage in Deutschland\", et dans la section autres événements : \"ℹ️ Интересные даты\""</item>
     <item>📅 Ajout de la prise en charge des événements à partir de vCards (peuvent être connectés en tant que sources ou importés dans des événements locaux)</item>
     <item>"Ajout d'un bouton permettant d'afficher la description de l'événement (le cas échéant) dans le menu contextuel des actions de l'événement, aussi bien dans les widgets que dans la fenêtre principale de la liste des événements"</item>
-    <item>"Format de chaîne étendu pour les jours fériés joints à partir d'un fichier. Le format est désormais uniforme pour tous les types d'événements. Vous pouvez ajouter une description et des liens externes à un événement"</item>
-    <item>"La mise en surbrillance du texte et du nom complet est désormais activée dans la fenêtre «Détails de l'événement» (pour la copie)"</item>
+    <item>"Format de chaîne étendu pour les jours fériés joints à partir d'un fichier. Le format est désormais uniforme pour tous les types d'événements. Les événements peuvent désormais inclure une description et des liens externes. Il est maintenant possible de spécifier une plage de dates au lieu d'une date"</item>
+    <item>"Ajout du paramètre «Utiliser l'année» pour les «Autres événements»"</item>
     <item>"🎨 Ajout d'une couleur de bordure pour les widgets"</item>
     <item>"Seules les sources activées peuvent être sélectionnées dans les sources d'événements du widget Calendrier (logique synchronisée avec les autres widgets)"</item>
     <item>"La date et le jour de la semaine peuvent être affichés dans l'en-tête des widgets de liste"</item>
@@ -30,7 +30,7 @@
     <item>🎨 Sélection de la couleur pour un jour spécifique du calendrier</item>
     <item>⚙️ Sélection séparée des fonctionnalités supplémentaires activées</item>
     <item>"🌈 Ajout d'un spectre lors du choix d'une couleur"</item>
-    <item>"Ajouté au widget de liste: «Afficher la photo de contact pour l’événement le plus proche», «Titre original de l’événement», «onglet», «développeur», ":". Grâce aux onglets du widget de liste, vous pouvez diviser les données en colonnes distinctes (jusqu’à trois). Par défaut, les colonnes ont la même largeur. Si vous ajoutez un «développeur» à l’intérieur d’une colonne, cette colonne sera deux fois plus large"</item>
+    <item>"Ajouté au widget de liste: «Afficher la photo de contact pour l’événement le plus proche», «Titre original de l’événement», «onglet», «développeur», «:». Grâce aux onglets du widget de liste, vous pouvez diviser les données en colonnes distinctes (jusqu’à trois). Par défaut, les colonnes ont la même largeur. Si vous ajoutez un «développeur» à l’intérieur d’une colonne, cette colonne sera deux fois plus large"</item>
     <item>"Ajout de l'action «Ignorer l'année civile» pour les événements du calendrier (fonctions supplémentaires)"</item>
     <item>"Par défaut, les événements des fichiers spécifiés dans la section «Jours fériés» sont considérés comme des jours fériés dans le widget calendrier (sauf s'ils comportent les indicateurs «!» ou «?»)"</item>
     <item>Corrections de bugs dans les widgets</item>
@@ -141,7 +141,7 @@
 
     <item>#1.8.0</item>
     <item>"Ajout de l'affichage de l'âge actuel sur le widget de liste de photos"</item>
-    <item>"L'élément "Paramètres" a été ajouté aux raccourcis des applications. Les raccourcis peuvent être épinglés sur le lanceur"</item>
+    <item>"L'élément «Paramètres» a été ajouté aux raccourcis des applications. Les raccourcis peuvent être épinglés sur le lanceur"</item>
     <item>Widget de calendrier ajouté</item>
 
     <item>#1.7.9</item>

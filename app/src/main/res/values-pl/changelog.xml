@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
+  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 14.07.2026, 01:12
+  ~  * Last modified 20.07.2026, 13:36
   ~  */
   -->
 
@@ -15,8 +15,8 @@
         <item>Wydarzenia, które wcześniej były dostępne jako pliki zewnętrzne, zostały zintegrowane z aplikacją. W dziale święta: „🇷🇺 Профессиональные праздники”, „☦️ Православные церковные праздники”, „✝️ Katholische Feiertage in Deutschland”, a w dziale pozostałe wydarzenia: „ℹ️ Интересные даты”</item>
         <item>📅 Dodano obsługę wydarzeń z kart vCard (można je podłączyć jako źródła lub zaimportować do wydarzeń lokalnych)</item>
         <item>Dodano Przycisk rozwijający opis wydarzenia (jeśli istnieje) w menu podręcznym akcji wydarzenia w widżetach i w głównym oknie listy wydarzeń</item>
-        <item>Rozszerzony format ciągu znaków dla świąt dołączonych z pliku. Format jest teraz spójny dla wszystkich typów wydarzeń. Możesz dodać opis i linki zewnętrzne do wydarzenia</item>
-        <item>Podświetlanie tekstu i pełnej nazwy jest teraz włączone w oknie „Szczegóły wydarzenia” (do kopiowania)</item>
+        <item>Rozszerzony format ciągu znaków dla świąt dołączonych z pliku. Format jest teraz spójny dla wszystkich typów wydarzeń. Wydarzenia mogą teraz zawierać opis i linki zewnętrzne. Zamiast daty można teraz określić zakres dat</item>
+        <item>Dodano parametr „Użyj roku” dla „Innych wydarzeń”</item>
         <item>🎨Dodano kolor obramowania dla widżetów</item>
         <item>W źródłach wydarzeń w widżecie kalendarza można wybrać tylko włączone źródła (logika zsynchronizowana z innymi widżetami)</item>
         <item>Data i dzień tygodnia mogą być wyświetlane w nagłówku widżetów listy</item>

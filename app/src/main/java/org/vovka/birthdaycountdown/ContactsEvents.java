@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.07.2026, 18:16
+ *  * Created by Vladimir Belov on 21.07.2026, 11:41
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.07.2026, 18:13
+ *  * Last modified 20.07.2026, 12:53
  *
  */
 
@@ -667,6 +667,7 @@ public class ContactsEvents {
     @Nullable
     private Matcher preferences_holiday_event_labels;
     private boolean preferences_birthday_calendars_useyear;
+    private boolean preferences_other_event_calendars_useyear;
     private boolean preferences_customevent1_enabled;
     private Matcher preferences_customevent1_labels;
     private boolean preferences_customevent1_useyear;
@@ -1888,6 +1889,7 @@ public class ContactsEvents {
             } else {
                 preferences_other_event_labels = Pattern.compile(customLabels.replace(Constants.STRING_COMMA, div_inter), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
             }
+            preferences_other_event_calendars_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Other_Calendars_UseYear_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_Other_Calendars_UseYear_default)));
             preferences_OtherEvent_files = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Other_LocalFiles_key), new HashSet<>());
 
             //Праздники
@@ -3447,9 +3449,11 @@ public class ContactsEvents {
             if (eventType.equals(Constants.EventType_BirthDay)) {
                 event = createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
                 useEventYear = preferences_birthday_calendars_useyear;
+                event.useEventYear = useEventYear;
             } else if (eventType.equals(Constants.EventType_Other)) {
                 event = createTypedEvent(Constants.Type_Other, Constants.STRING_EMPTY);
-                useEventYear = true;
+                useEventYear = preferences_other_event_calendars_useyear;
+                event.useEventYear = useEventYear;
             } else if (eventType.equals(Constants.EventType_Holiday)) {
                 event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY);
                 useEventYear = true;
@@ -3626,6 +3630,9 @@ public class ContactsEvents {
                 if (isMultiTypeSource) {
                     //Пытаемся распознать по описанию события. Если не получится - ниже будем извлекать тип из заголовка
                     event = recognizeEventByLabel(eventDescription, false, useEventYear);
+                    if (Objects.equals(event.type, Constants.EventType_Other)) {
+                        event.useEventYear = preferences_other_event_calendars_useyear;
+                    }
                 }
 
             } else if (isMultiTypeSource) {
@@ -3672,6 +3679,9 @@ public class ContactsEvents {
                 }
 
                 event = recognizeEventByLabel(StringUtils.getNotNullString(foundLabel), setOtherIfUnknown, useEventYear);
+                if (Objects.equals(event.type, Constants.EventType_Other)) {
+                    event.useEventYear = preferences_other_event_calendars_useyear;
+                }
             }
 
             if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && event.icon == R.drawable.ic_event_unknown)

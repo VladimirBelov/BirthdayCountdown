@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.06.2026, 19:57
+  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.06.2026, 19:52
+  ~  * Last modified 20.07.2026, 13:49
   ~  */
   -->
 
@@ -100,7 +100,7 @@
         </ol>]]></item>
 
         <item>#<![CDATA[<a id="events_files">Events from local files]]></item>
-        <item><![CDATA[Events and birthdays by these formats are supported: <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a>, <a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a>, <b>iCalendar (ICS)</b>. Extra notes:<ul>
+        <item><![CDATA[Events and birthdays by these formats are supported: <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a>, <a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a>, <b>iCalendar (ICS)</b> and <b>vCard (VCF)</b>. Extra notes:<ul>
         <li>event date can be of any format without spaces (DD.MM.YYYY, MM/DD/YYYY, YYYY-MM-DD etc)
         <li>if the year is unknown set 0000 (1900 for Birthdays)
         <li>the file must be saved in UTF-8 encoding
@@ -114,8 +114,8 @@
         </ul>]]></item>
 
         <item><![CDATA[<b><a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a> event format</b> (in square brackets - optional parameters):<br>]]></item>
-        <item><![CDATA[<b></b># COMMENT<br>&lt;<b>DATE</b>&gt;[,FLAGS] &lt;<b>NAME or EVENT TITLE</b>&gt;  [([ORGANIZATION,] TITLE)] [| DESCRIPTION] [WEB LINK]<br><br>]]></item>
-        <item><![CDATA[<img src="ic_event_other.webp" style="vertical-align:middle"> Other event. Format (in square brackets - optional parameters):<br><br># COMMENT<br>&lt;<b>DATE</b>&gt;[,FLAGS] &lt;<b>EVENT TITLE</b>&gt; [WEB LINK]
+        <item><![CDATA[<b>#</b> COMMENT
+        <br>&lt;<b>DATE or PERIOD</b>&gt;[,FLAGS] &lt;<b>NAME or EVENT TITLE</b>&gt;  [([ORGANIZATION,] TITLE)] [| DESCRIPTION] [WEB LINK]
         <br><br>Examples:
         <br>01.01.2000 John Doe (Enigma, Boss) | Event description https://enigma.com/
         <br>02.01.2000 Richard Roe (Enigma,)
@@ -126,7 +126,11 @@
         <br>01.06.2025-06.06.2025 Multi-day event
         <br>01.01.0000-02.01.0000,! New Year
         <br>]]></item>
-        <item><![CDATA[FLAGS:<br>1 - single event, which must be shown only once (year is required)<br>BC - Before the Common Era date (year is required!)<br>Event_label - for files containing events of different types, the event type is determined by this label. If there is a space in the label, then it must be replaced with an underscore \"_\"<br>]]></item>
+        <item><![CDATA[FLAGS:
+        <br>1 - single event, which must be shown only once (year is required)
+        <br>BC - Before the Common Era date (year is required!)<br>Event_label - for files containing events of different types, the event type is determined by this label. If there is a space in the label, then it must be replaced with an underscore \"_\"
+        <br><b>!</b> - day off (for the calendar widget)
+        <br><b>?</b> - working Saturday (for the calendar widget)<br>]]></item>
 
         <item><![CDATA[<b>Events with floating dates format</b>:<br>]]></item>
         <item><![CDATA[<b>NWW</b>[+-OFFSET]<b>.MM.YYYY</b>[,flags] <b>EVENT TITLE</b>

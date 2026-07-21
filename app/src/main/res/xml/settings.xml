@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 20.06.2026, 00:32
+  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 19.06.2026, 13:28
+  ~  * Last modified 20.07.2026, 11:58
   ~  */
   -->
 
@@ -419,6 +419,7 @@
             </PreferenceCategory>
 
             <PreferenceCategory
+                android:key="@string/pref_CustomEvents_Other_key"
                 android:title="@string/pref_CustomEvents_Other_title"
                 android:layout="@layout/settings_category_with_icon"
                 android:icon="@drawable/ic_event_other">
@@ -442,6 +443,12 @@
                     android:key="@string/pref_CustomEvents_Other_Calendars_key"
                     android:title="@string/pref_CustomEvents_Calendars_title"
                     android:summary="@string/pref_CustomEvents_Calendars_summary"/>
+
+                <SwitchPreference
+                    android:defaultValue="@string/pref_CustomEvents_Other_Calendars_UseYear_default"
+                    android:key="@string/pref_CustomEvents_Other_Calendars_UseYear_key"
+                    android:summary="@string/pref_CustomEvents_Birthday_Calendars_UseYear_summary"
+                    android:title="@string/pref_CustomEvents_Custom_UseYear_title"/>
 
                 <Preference
                     android:key="@string/pref_CustomEvents_Other_LocalFiles_key"

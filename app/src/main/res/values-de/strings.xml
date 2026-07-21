@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
+  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 14.07.2026, 01:06
+  ~  * Last modified 20.07.2026, 13:17
   ~  */
   -->
 
@@ -411,7 +411,7 @@
     <string name="pref_CustomEvents_Birthday_Labels_title">Eigene Bezeichnung(en)</string>
     <string name="pref_CustomEvents_Birthday_Labels_summary">Ereignisse mit diesen Bezeichnungen werden als "Geburtstag" erkannt (durch Komma getrennt)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Geburtstagsereignisse aus ausgewählten Kalendern anzeigen</string>
-      <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Verwenden Sie das Jahr</string>
+      <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Jahr verwenden</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_summary">Verwenden Sie das Jahr vom Kalenderereignis, um die Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
     <string name="pref_CustomEvents_Birthday_LocalFiles_summary">Geburtstagsereignisse aus ausgewählten Dateien anzeigen (Formate: DarkBirthday, iCalendar, vCard, BirthdayPro). Drücken Sie lange auf ein Listenelement, um eine Datei anzuzeigen</string>
 
@@ -469,7 +469,7 @@
     <string name="pref_CustomEvents_Custom_Caption_summary">Geben Sie eine Bezeichnung für dieses Ereignis ein, um es zu verwenden</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Eigene Bezeichnung(en)</string>
     <string name="pref_CustomEvents_Custom_Labels_summary">Ereignisse mit diesen Bezeichnungen werden als dieses Ereignis erkannt (durch Komma getrennt)</string>
-    <string name="pref_CustomEvents_Custom_UseYear_title">Verwenden Sie das Jahr</string>
+    <string name="pref_CustomEvents_Custom_UseYear_title">Jahr verwenden</string>
     <string name="pref_CustomEvents_Custom_UseYear_summary">Verwenden Sie das Jahr, um Jahrestage zu berechnen (nicht nur Tag und Monat)</string>
 
     <string name="pref_CustomEvents_Calendars_title">Kalender</string>

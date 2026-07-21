@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
+  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 14.07.2026, 01:07
+  ~  * Last modified 20.07.2026, 13:08
   ~  */
   -->
 
@@ -411,7 +411,7 @@
     <string name="pref_CustomEvents_Birthday_Labels_title">"Étiquettes des événements"</string>
     <string name="pref_CustomEvents_Birthday_Labels_summary">Les événements avec ces étiquettes seront identifiés comme des anniversaires (par virgule)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_summary">"Afficher les anniversaires à partir des calendriers sélectionnés"</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">"Utiliser la date avec l'année"</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">"Utiliser l'année"</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_summary">"Utiliser la date complète de l'événement du calendrier pour l'événement (pas seulement le jour et le mois)"</string>
     <string name="pref_CustomEvents_Birthday_LocalFiles_summary">"Afficher les événements d'anniversaire à partir des fichiers choisis. Appuyez longuement sur un élément de la liste pour afficher un fichier"</string>
 
@@ -469,7 +469,7 @@
     <string name="pref_CustomEvents_Custom_Caption_summary">"Remplissez le titre de l'événement pour activer son utilisation"</string>
     <string name="pref_CustomEvents_Custom_Labels_title">"Noms des événements"</string>
     <string name="pref_CustomEvents_Custom_Labels_summary">Les événements avec ces étiquettes seront identifiés comme cet événement (par virgule)</string>
-    <string name="pref_CustomEvents_Custom_UseYear_title">"Utiliser la date avec l'année"</string>
+    <string name="pref_CustomEvents_Custom_UseYear_title">"Utiliser l'année"</string>
     <string name="pref_CustomEvents_Custom_UseYear_summary">"Utiliser l'année pour calculer les anniversaires (pas seulement le jour et le mois)"</string>
 
     <string name="pref_CustomEvents_Calendars_title">Calendriers</string>

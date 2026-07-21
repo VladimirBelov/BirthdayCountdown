@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
+  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 14.07.2026, 01:11
+  ~  * Last modified 21.07.2026, 11:41
   ~  */
   -->
 
@@ -11,11 +11,11 @@
     <string-array name="changelog" tools:ignore="InconsistentArrays">
 
         <item>#1.9.1</item>
-        <item>Eventos anteriormente disponíveis como arquivos externos foram integrados ao aplicativo. Na seção de feriados: "🇷🇺 Профессиональные праздники", "☦️ Православные церковные праздники", "✝️ Katholische Feiertage in Deutschland", e na seção de outros eventos: "ℹ️ Интересные даты"</item>
+        <item>Eventos anteriormente disponíveis como arquivos externos foram integrados ao aplicativo. Na seção de feriados: \"🇷🇺 Профессиональные праздники\", \"☦️ Православные церковные праздники\", \"✝️ Katholische Feiertage in Deutschland\", e na seção de outros eventos: \"ℹ️ Интересные даты\"</item>
         <item>📅 Adicionado suporte para eventos de vCards (podem ser conectados como fontes ou importados para eventos locais)</item>
         <item>Adicionado um botão para expandir a descrição do evento (se houver) ao menu pop-up de ações do evento em widgets e na janela principal da lista de eventos</item>
-        <item>Formato de string expandido para feriados anexados de um arquivo. O formato agora é consistente em todos os tipos de evento. Você pode adicionar uma descrição e links externos a um evento</item>
-        <item>O destaque de texto e nome completo agora está habilitado na janela "Detalhes do Evento" (para copiar)</item>
+        <item>Formato de string estendido para feriados anexados de um arquivo. O formato agora é consistente em todos os tipos de evento. Os eventos agora podem incluir uma descrição e links externos. Um intervalo de datas agora pode ser especificado em vez de uma data</item>
+        <item>Adicionado o parâmetro \"Usar Ano\" para \"Outros Eventos\"</item>
         <item>🎨 Cor da borda adicionada para widgets</item>
         <item>Somente as fontes habilitadas podem ser selecionadas nas fontes de eventos do widget de calendário (lógica sincronizada com outros widgets)</item>
         <item>A data e o dia da semana podem ser exibidos no cabeçalho dos widgets de lista</item>
@@ -34,7 +34,7 @@
 
         <item>#1.8.9</item>
         <item>🎵 Possibilidade de selecionar um arquivo externo como toque de notificação</item>
-        <item>Código reescrito para definir agendamentos para exibição de notificações, atualização de widgets e para a função "Lembrar"</item>
+        <item>Código reescrito para definir agendamentos para exibição de notificações, atualização de widgets e para a função \"Lembrar\"</item>
         <item>Adicionada a capacidade de anexar eventos de arquivo a contatos (como é feito para eventos de calendário), atualmente apenas para aniversários</item>
         <item>Criar um evento local a partir de outro selecionado</item>
         <item>Atualizar dados em todos os eventos locais semelhantes ao salvar</item>
@@ -46,8 +46,8 @@
         <item>Correções de bugs</item>
 
         <item>#1.8.8</item>
-        <item>Adicionados os campos "Descrição" e "Link da Web" aos 📅 eventos locais, além da possibilidade de especificar datas em BC</item>
-        <item>Adicionados os campos "Ano do Evento", "Data Original do Evento" e "Ano Original do Evento" ao widget da lista de fotos</item>
+        <item>Adicionados os campos \"Descrição\" e \"Link da Web\" aos 📅 eventos locais, além da possibilidade de especificar datas em BC</item>
+        <item>Adicionados os campos \"Ano do Evento\", \"Data Original do Evento\" e \"Ano Original do Evento\" ao widget da lista de fotos</item>
         <item>Adicionado 11..19 às configurações de limite de eventos nos widgets</item>
         <item>Interface de dimensionamento de elementos do widget redesenhada, agora de 50% a 200% em incrementos de 1%</item>
         <item>Role pelos dias na mensagem pop-up do calendário e selecione o botão de data</item>

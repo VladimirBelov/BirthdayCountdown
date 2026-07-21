@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
+  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 14.07.2026, 01:13
+  ~  * Last modified 21.07.2026, 11:39
   ~  */
   -->
 
@@ -15,8 +15,8 @@
         <item>Los eventos que antes estaban disponibles como archivos externos se han integrado en la aplicación. En la sección de vacaciones: \"🇷🇺 Профессиональные праздники\", \"☦️ Православные церковные праздники\", \"✝️ Katholische Feiertage in Deutschland\", y en la sección de otros eventos: \"ℹ️ Интересные даты\"</item>
         <item>📅 Se agregó soporte para eventos desde vCards (se pueden conectar como fuentes o importar a eventos locales)</item>
         <item>Se agregó un botón para expandir la descripción del evento (si la hay) al menú emergente de acciones del evento en los widgets y en la ventana principal de la lista de eventos</item>
-        <item>Se amplió el formato de cadena para los días festivos adjuntos desde un archivo. El formato ahora es consistente en todos los tipos de eventos. Puede agregar una descripción y enlaces externos a un evento</item>
-        <item>Ahora se habilita el resaltado de texto y nombre completo en la ventana \"Detalles del evento\" (para copiar)</item>
+        <item>Formato de cadena extendido para días festivos adjuntos desde un archivo. El formato ahora es consistente en todos los tipos de eventos. Los eventos ahora pueden incluir una descripción y enlaces externos. Ahora se puede especificar un rango de fechas en lugar de una fecha (consulte la ayuda para obtener más detalles)</item>
+        <item>Se agregó el parámetro \"Año de uso\" para \"Otros eventos\"</item>
         <item>🎨 Se agregó color de borde para los widgets</item>
         <item>Solo se pueden seleccionar las fuentes habilitadas en las fuentes de eventos del widget de calendario (lógica sincronizada con otros widgets)</item>
         <item>La fecha y el día de la semana se pueden mostrar en el encabezado de los widgets de lista</item>
@@ -35,7 +35,7 @@
 
         <item>#1.8.9</item>
         <item>🎵 Posibilidad de seleccionar un archivo externo como tono de notificación</item>
-        <item>Código reescrito para configurar horarios para mostrar notificaciones, actualizar widgets y para la función "Recordatorio"</item>
+        <item>Código reescrito para configurar horarios para mostrar notificaciones, actualizar widgets y para la función \"Recordatorio\"</item>
         <item>Se añadió la posibilidad de adjuntar eventos de archivo a los contactos (como se hace con los eventos del calendario), actualmente solo para cumpleaños</item>
         <item>Crear un evento local a partir de otro seleccionado</item>
         <item>Actualizar los datos de todos los eventos locales similares al guardar</item>
@@ -47,8 +47,8 @@
         <item>Corrección de errores</item>
 
         <item>#1.8.8</item>
-        <item>Se añadieron los campos "Descripción" y "Enlace web" a los 📅 eventos locales, junto con la posibilidad de especificar fechas en BC</item>
-        <item>Se añadieron los campos "Año del evento", "Fecha original del evento" y "Año original del evento" al widget de lista de fotos</item>
+        <item>Se añadieron los campos \"Descripción\" y \"Enlace web\" a los 📅 eventos locales, junto con la posibilidad de especificar fechas en BC</item>
+        <item>Se añadieron los campos \"Año del evento\", \"Fecha original del evento\" y \"Año original del evento\" al widget de lista de fotos</item>
         <item>Se añadió 11..19 a la configuración del límite de eventos en los widgets</item>
         <item>Se rediseñó la interfaz de escalado de elementos del widget, ahora del 50 % al 200 % en incrementos del 1 %</item>
         <item>Desplázate por los días en el mensaje emergente del calendario y selecciona el botón de fecha</item>
@@ -65,7 +65,7 @@
         <item>Nuevo tipo de evento: \"Otro evento de contacto\". El tipo de evento \"Otro evento\" ya no intenta encontrar una conexión con un contacto de la libreta de direcciones (se comporta como \"Vacaciones\")</item>
         <item>Reacción al pulsar en el widget de foto (+ menú con acciones)</item>
         <item>En el widget de calendario, ahora es posible configurar tamaños separados para el mes, los días de la semana y los días</item>
-        <item>Se han añadido "Foto de contacto", "Edad actual" y "Negrita" al widget de lista</item>
+        <item>Se han añadido \"Foto de contacto\", \"Edad actual\" y \"Negrita\" al widget de lista</item>
         <item>Seleccionar una foto para un evento local (foto local o de la tarjeta de contacto). El tamaño de la foto local se configura en la configuración adicional común</item>
         <item>Posicionamiento en el aniversario de boda actual en la lista general de aniversarios (pulsación prolongada sobre el evento - todos los aniversarios de boda)</item>
         <item>Optimización para Android 15 y 16</item>

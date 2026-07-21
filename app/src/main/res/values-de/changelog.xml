@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
+  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 14.07.2026, 01:13
+  ~  * Last modified 20.07.2026, 13:12
   ~  */
   -->
 
@@ -15,8 +15,8 @@
         <item>Ereignisse, die zuvor als externe Dateien verfügbar waren, wurden in die App integriert. Im Abschnitt „Feiertage“: „🇷🇺 Профессиональные праздники“, „☦️ Православные церковные праздники“, „✝️ Katholische Feiertage in Deutschland“ und im Abschnitt „Andere Ereignisse“: „ℹ️ Интересные даты“</item>
         <item>📅 Unterstützung für Ereignisse aus vCards hinzugefügt (können als Quellen verbunden oder in lokale Ereignisse importiert werden)</item>
         <item>Eine Schaltfläche hinzugefügt, um die Ereignisbeschreibung (falls vorhanden) zum Popup-Menü der Ereignisaktion zu erweitern Widgets und im Hauptfenster der Ereignisliste</item>
-        <item>Erweitertes Zeichenkettenformat für Feiertage, die aus einer Datei angehängt werden. Das Format ist jetzt für alle Ereignistypen einheitlich. Sie können einem Ereignis eine Beschreibung und externe Links hinzufügen</item>
-        <item>Die Hervorhebung von Text und vollständigem Namen ist jetzt im Fenster „Ereignisdetails“ aktiviert (zum Kopieren)</item>
+        <item>Erweitertes Zeichenkettenformat für Feiertage, die aus einer Datei angehängt werden. Das Format ist nun für alle Ereignistypen einheitlich. Ereignisse können jetzt eine Beschreibung und externe Links enthalten. Anstelle eines Datums kann nun ein Datumsbereich angegeben werden (siehe Hilfe für Details)</item>
+        <item>Der Parameter „Jahr verwenden“ wurde für „Andere Ereignisse“ hinzugefügt</item>
         <item>🎨 Rahmenfarbe für Widgets hinzugefügt</item>
         <item>Im Kalender-Widget können nur aktivierte Quellen für Ereignisquellen ausgewählt werden (Logik mit anderen Widgets synchronisiert)</item>
         <item>Datum und Wochentag können in der Kopfzeile von Listen-Widgets angezeigt werden</item>

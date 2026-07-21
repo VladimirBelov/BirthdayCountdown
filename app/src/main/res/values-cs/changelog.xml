@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
+  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 14.07.2026, 01:13
+  ~  * Last modified 20.07.2026, 13:36
   ~  */
   -->
 
@@ -15,8 +15,8 @@
         <item>Události dříve dostupné jako externí soubory byly integrovány do aplikace. V sekci svátků: „🇷🇺 Профессиональные праздники“, „☦️ Православные церковные праздники“, „✝️ Katholische Feiertage in Deutschland“ a v sekci ostatních událostí: „ℹ️ Интересные даты“</item>
         <item>📅 Přidána podpora pro události z vCard (lze je připojit jako zdroje nebo importovat do lokálních událostí)</item>
         <item>Přidáno tlačítko pro rozbalení popisu události (pokud existuje) do rozbalovací nabídky akcí události ve widgetech a v hlavním okně seznamu událostí</item>
-        <item>Rozšířený formát řetězce pro svátky připojené ze souboru. Formát je nyní konzistentní pro všechny typy událostí. K události můžete přidat popis a externí odkazy</item>
-        <item>V okně „Podrobnosti o události“ je nyní povoleno zvýraznění textu a celého jména (pro kopírování)</item>
+        <item>Rozšířený formát řetězce pro svátky připojené ze souboru. Formát je nyní konzistentní pro všechny typy událostí. Události nyní mohou obsahovat popis a externí odkazy. Místo data lze nyní zadat rozsah dat</item>
+        <item>Přidán parametr „Použít datum s rokem“ pro „Ostatní události“</item>
         <item>🎨 Pro widgety přidána barva ohraničení</item>
         <item>Ve zdrojích událostí widgetu kalendáře lze vybrat pouze povolené zdroje (logika synchronizovaná s ostatními widgety)</item>
         <item>Datum a den v týdnu lze zobrazit v záhlaví widgetů seznamu</item>

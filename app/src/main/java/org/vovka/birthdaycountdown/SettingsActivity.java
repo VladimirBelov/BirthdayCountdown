@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 21.07.2026, 11:41
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 20.07.2026, 11:44
  *
  */
 
@@ -407,6 +407,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_key, R.string.pref_CustomEvents_Rules_key);
             hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_Birthday_key, R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key);
+            hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_Other_key, R.string.pref_CustomEvents_Other_Calendars_UseYear_key);
             hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_Custom1_key, R.string.pref_CustomEvents_Custom1_UseYear_key);
             hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_Custom2_key, R.string.pref_CustomEvents_Custom2_UseYear_key);
             hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_Custom3_key, R.string.pref_CustomEvents_Custom3_UseYear_key);
@@ -3753,6 +3754,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_CustomEvents_Anniversary_UseInternal_key),
                         getString(R.string.pref_CustomEvents_Birthday_Calendars_UseYear_key),
                         getString(R.string.pref_CustomEvents_Birthday_UseInternal_key),
+                        getString(R.string.pref_CustomEvents_Other_Calendars_UseYear_key),
                         getString(R.string.pref_CustomEvents_Crowning_UseInternal_key),
                         getString(R.string.pref_CustomEvents_Custom1_UseYear_key),
                         getString(R.string.pref_CustomEvents_Custom2_UseYear_key),

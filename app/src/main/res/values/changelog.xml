@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
+  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 14.07.2026, 01:14
+  ~  * Last modified 21.07.2026, 11:39
   ~  */
   -->
 
@@ -15,8 +15,8 @@
         <item>Events previously available as external files have been integrated into the app. In the holidays section: \"🇷🇺 Профессиональные праздники\", \"☦️ Православные церковные праздники\", \"✝️ Katholische Feiertage in Deutschland\", and in the other events section: \"ℹ️ Интересные даты\"</item>
         <item>📅 Added support for events from vCards (can be connected as sources or imported into local events)</item>
         <item>Added a button to expand the event description (if any) to the event action pop-up menu in widgets and in the main event list window</item>
-        <item>Expanded string format for holidays attached from a file. The format is now consistent across all event types. You can add a description and external links to an event</item>
-        <item>Text and full name highlighting is now enabled in the \"Event Details\" window (for copying)</item>
+        <item>Extended string format for holidays attached from a file. The format is now consistent across all event types. Events can now include a description and external links. A date range can now be specified instead of a date (see the help for details)</item>
+        <item>Added \"Use Year\" parameter for \"Other Events\"</item>
         <item>🎨 Border color added for widgets</item>
         <item>Only enabled sources can be selected in the calendar widget events sources (logic synchronized with other widgets)</item>
         <item>The date and day of the week can be displayed in the header of list widgets</item>
@@ -35,7 +35,7 @@
 
         <item>#1.8.9</item>
         <item>🎵 Ability to select an external file as a notification ringtone</item>
-        <item>Rewritten code for setting schedules for displaying notifications, updating widgets, and for the "Remind" function</item>
+        <item>Rewritten code for setting schedules for displaying notifications, updating widgets, and for the \"Remind\" function</item>
         <item>Added the ability to attach file events to contacts (as is done for calendar events), currently only for birthdays</item>
         <item>Create a local event from another selected one</item>
         <item>Update data in all similar local events when saving</item>

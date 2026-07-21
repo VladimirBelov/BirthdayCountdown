@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
+  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 14.07.2026, 01:08
+  ~  * Last modified 20.07.2026, 13:22
   ~  */
   -->
 
@@ -411,7 +411,7 @@
     <string name="pref_CustomEvents_Birthday_Labels_title">Rótulos de eventos</string>
     <string name="pref_CustomEvents_Birthday_Labels_summary">Eventos com esses rótulos serão identificados como aniversários (por vírgula)</string>
     <string name="pref_CustomEvents_Birthday_Calendars_summary">Mostrar eventos de aniversário dos calendários escolhidos</string>
-    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Usar data com ano</string>
+    <string name="pref_CustomEvents_Birthday_Calendars_UseYear_title">Usar Ano</string>
     <string name="pref_CustomEvents_Birthday_Calendars_UseYear_summary">Use a data completa do calendário para o evento (não apenas dia e mês)</string>
     <string name="pref_CustomEvents_Birthday_LocalFiles_summary">Mostrar eventos de aniversário dos arquivos escolhidos. Pressione e segure um item da lista para visualizar um arquivo</string>
 
@@ -469,7 +469,7 @@
     <string name="pref_CustomEvents_Custom_Caption_summary">Insira a legenda deste evento para começar a usá-lo</string>
     <string name="pref_CustomEvents_Custom_Labels_title">Rótulos de eventos</string>
     <string name="pref_CustomEvents_Custom_Labels_summary">Eventos com esses rótulos serão identificados como este evento (por vírgula)</string>
-    <string name="pref_CustomEvents_Custom_UseYear_title">Usar data com ano</string>
+    <string name="pref_CustomEvents_Custom_UseYear_title">Usar Ano</string>
     <string name="pref_CustomEvents_Custom_UseYear_summary">Usar informações de data completa para o evento (não apenas dia e mês)</string>
 
     <string name="pref_CustomEvents_Calendars_title">Calendários</string>
