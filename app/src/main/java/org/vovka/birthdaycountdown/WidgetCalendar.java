@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2026, 13:14
+ *  * Created by Vladimir Belov on 23.07.2026, 12:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.07.2026, 11:28
+ *  * Last modified 23.07.2026, 12:18
  *
  */
 
@@ -995,9 +995,6 @@ public class WidgetCalendar extends AppWidgetProvider {
                 action = prefOnClickCommon;
             }
 
-            // URI на основе данных дня
-            Uri data = Uri.parse("calendar://" + appWidgetId + "/" +
-                    cal.get(Calendar.YEAR) + "/" + cal.get(Calendar.DAY_OF_YEAR));
             if (action == Constants.onClick_Popup) {
                 String dayInfo = eventsData.getResources().getString(R.string.month_event_empty);
                 List<String> allEventsThisDay = eventsData.getDayInfo(Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime()), prefOtherEvents, eventsColorsInMonth);
@@ -1050,6 +1047,8 @@ public class WidgetCalendar extends AppWidgetProvider {
                 intent.putExtra(Constants.EXTRA_DAY2, calLastDay);
 
                 //Чтобы похожие intent разных виджетов отличались для системы
+                Uri data = Uri.parse("calendar://" + appWidgetId + "/" +
+                        cal.get(Calendar.YEAR) + "/" + cal.get(Calendar.DAY_OF_YEAR));
                 intent.setData(data);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1061,12 +1060,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 builder.appendPath(Constants.QUERY_PARAM_TIME);
                 builder.appendPath(Long.toString(cal.getTimeInMillis()));
                 Intent intent = new Intent(Intent.ACTION_VIEW, builder.build());
-
-                //Чтобы похожие intent разных виджетов отличались для системы
-                intent.setData(data);
-
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
                 pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent,
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             }

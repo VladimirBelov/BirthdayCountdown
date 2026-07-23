@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.07.2026, 12:14
+ *  * Created by Vladimir Belov on 23.07.2026, 12:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 14.07.2026, 12:07
+ *  * Last modified 22.07.2026, 23:43
  *
  */
 
@@ -174,7 +174,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             views.setTextViewText(R.id.empty_view, TextUtils.isEmpty(prefZeroEventsMessage) ? res.getString(R.string.msg_no_events) : prefZeroEventsMessage);
 
             //Цвет подложки и бордюра
-            @ColorInt int colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_Calendar_Back_default);
+            @ColorInt int colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBackground_default);
             @ColorInt int colorWidgetBorder = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBorder_default);
 
             if (widgetPref.size() > 5 && !widgetPref.get(5).isEmpty()) {

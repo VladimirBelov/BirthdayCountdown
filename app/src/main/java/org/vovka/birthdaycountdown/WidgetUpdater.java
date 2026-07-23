@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2026, 13:14
+ *  * Created by Vladimir Belov on 23.07.2026, 12:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.07.2026, 11:41
+ *  * Last modified 22.07.2026, 23:51
  *
  */
 
@@ -337,7 +337,7 @@ class WidgetUpdater {
             }
 
             //Цвет подложки
-            @ColorInt int colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_Calendar_Back_default);
+            @ColorInt int colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBackground_default);
             @ColorInt int colorWidgetBorder = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBorder_default);
 
             if (widgetPref.size() > 5 && !widgetPref.get(5).isEmpty()) {
