@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2025, 21:29
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 25.09.2025, 02:47
+ *  * Created by Vladimir Belov on 23.07.2026, 14:22
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 23.07.2026, 13:42
  *
  */
 
@@ -17,11 +17,11 @@ import android.widget.RemoteViewsService;
  * реализацию {@link android.widget.RemoteViewsService.RemoteViewsFactory} для управления списком представлений,
  * которые отображаются в виджете.
  */
-public class EventPhotoListWidgetService extends RemoteViewsService {
+public class WidgetPhotoListService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new EventPhotoListDataProvider(this.getApplicationContext(), intent);
+        return new WidgetPhotoListDataProvider(this.getApplicationContext(), intent);
     }
 
 }

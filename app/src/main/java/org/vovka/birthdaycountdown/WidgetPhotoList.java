@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.07.2026, 12:42
+ *  * Created by Vladimir Belov on 23.07.2026, 14:22
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.07.2026, 23:43
+ *  * Last modified 23.07.2026, 13:42
  *
  */
 
@@ -46,7 +46,7 @@ import java.util.Objects;
  * WidgetPhotoList - это AppWidgetProvider, который отображает прокручиваемый список событий,
  * потенциально включая фотографии, в виджете на главном экране.
  * <p>
- * Виджет использует RemoteViews для отображения контента и {@link EventPhotoListDataProvider} для заполнения списка.
+ * Виджет использует RemoteViews для отображения контента и {@link WidgetPhotoListDataProvider} для заполнения списка.
  * Он поддерживает настраиваемые заголовки, цвета, границы и другие визуальные атрибуты.
  * Он использует класс {@link ContactsEvents} для обработки логики приложения, данных событий и настроек.
  */
@@ -86,7 +86,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             }
 
             //Привязываем адаптер
-            Intent adapter = new Intent(context, EventPhotoListWidgetService.class);
+            Intent adapter = new Intent(context, WidgetPhotoListService.class);
             adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             Uri data = Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME));
             adapter.setData(data); //Чтобы разные виджеты одного адаптера отличались для системы

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 23.07.2026, 14:22
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 23.07.2026, 14:22
  *
  */
 
@@ -41,7 +41,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * EventListDataProvider предоставляет данные для ListView, используемого в виджете приложения.
+ * WidgetListDataProvider предоставляет данные для виджета {@link WidgetList}.
  * Он реализует интерфейс {@link RemoteViewsService.RemoteViewsFactory} для предоставления коллекции RemoteViews,
  * которые будут отображаться в ListView виджета.
  *
@@ -67,9 +67,9 @@ import java.util.regex.Pattern;
 //https://www.androidauthority.com/create-an-android-widget-1020839/
 //https://startandroid.ru/ru/uroki/vse-uroki-spiskom/212-urok-121-vidzhety-spisok.html
 //https://stackoverflow.com/questions/12980025/replacing-remoteviewsfactory-on-app-widget-update
-public class EventListDataProvider implements RemoteViewsService.RemoteViewsFactory {
+public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFactory {
 
-    private static final String TAG = "EventListDataProvider";
+    private static final String TAG = "ListDataProvider";
     final List<String> eventListView = new ArrayList<>();
     final Context context;
     Resources localizedResources;
@@ -83,7 +83,7 @@ public class EventListDataProvider implements RemoteViewsService.RemoteViewsFact
     ContactsEvents eventsData;
     long lastUpdated = 0;
 
-    public EventListDataProvider(Context context, Intent intent) {
+    public WidgetListDataProvider(Context context, Intent intent) {
         this.context = context;
         widgetID = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
     }

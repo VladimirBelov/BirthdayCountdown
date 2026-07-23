@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.07.2026, 12:42
+ *  * Created by Vladimir Belov on 23.07.2026, 14:22
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.07.2026, 23:43
+ *  * Last modified 23.07.2026, 13:42
  *
  */
 
@@ -47,7 +47,7 @@ import java.util.Objects;
 /**
  * Класс WidgetList - это AppWidgetProvider, который отображает список событий в виджете.
  * <p>
- * Виджет использует RemoteViews для отображения контента и {@link EventListDataProvider} для заполнения списка.
+ * Виджет использует RemoteViews для отображения контента и {@link WidgetListDataProvider} для заполнения списка.
  * Он поддерживает настраиваемые заголовки, цвета, границы и другие визуальные атрибуты.
  * Он использует класс {@link ContactsEvents} для обработки логики приложения, данных событий и настроек.
  */
@@ -246,7 +246,7 @@ public class WidgetList extends AppWidgetProvider {
             // https://issuetracker.google.com/issues/398066578
             // list widget it now calls ListWidgetRemoteViewsFactory#getViewAt for all items, regardless of how many are actually visible
             // https://github.com/UweTrottmann/SeriesGuide/issues/1118
-            Intent adapter = new Intent(context, EventListWidgetService.class);
+            Intent adapter = new Intent(context, WidgetListService.class);
             adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             Uri data = Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME));
             adapter.setData(data); //Чтобы разные виджеты одного адаптера отличались для системы

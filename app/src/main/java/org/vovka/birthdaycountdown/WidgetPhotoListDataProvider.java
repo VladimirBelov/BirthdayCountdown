@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 23.07.2026, 14:22
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 23.07.2026, 14:22
  *
  */
 
@@ -42,13 +42,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * EventPhotoListDataProvider - это поставщик данных для спискового виджета с фото.
+ * WidgetPhotoListDataProvider предоставляет данные для спискового виджета с фото {@link WidgetPhotoList}.
  * Он реализует интерфейс {@link RemoteViewsService.RemoteViewsFactory} для предоставления данных ListView виджета.
  * Он получает данные о событиях, обрабатывает их и предоставляет отформатированные данные и изображения для отображения в виджете.
  */
-public class EventPhotoListDataProvider implements RemoteViewsService.RemoteViewsFactory {
+public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteViewsFactory {
 
-    private static final String TAG = "EventPhotoListProvider";
+    private static final String TAG = "PhotoListDataProvider";
     final List<String> eventListView = new ArrayList<>();
     final Context context;
     private Resources localizedResources;
@@ -61,7 +61,7 @@ public class EventPhotoListDataProvider implements RemoteViewsService.RemoteView
     ContactsEvents eventsData;
     long lastUpdated = 0;
 
-    public EventPhotoListDataProvider(Context context, Intent intent) {
+    public WidgetPhotoListDataProvider(Context context, Intent intent) {
         this.context = context;
         this.widgetID = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
     }
