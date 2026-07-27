@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 14.07.2026, 01:17
+  ~  * Created by Vladimir Belov on 27.07.2026, 11:42
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 14.07.2026, 01:06
+  ~  * Last modified 27.07.2026, 08:31
   ~  */
   -->
 
@@ -83,6 +83,7 @@
     <string name="msg_no_events">No se encontraron eventos</string>
     <string name="msg_no_image_picker">No hay ninguna aplicación para elegir fotos</string>
     <string name="msg_no_file_picker">No hay ninguna aplicación para seleccionar archivos</string>
+    <string name="msg_no_calendar">No hay aplicación de calendario</string>
     <string name="msg_no_files_selected">"  - no seleccionado -"</string>
     <string name="msg_file_open_error">"Error al abrir el archivo: "</string>
     <string name="msg_file_access_write_error">No se puede obtener acceso de escritura al archivo. Intente volver a seleccionar el archivo en la preferencia de la aplicación</string>

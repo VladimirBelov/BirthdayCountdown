@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
+  ~  * Created by Vladimir Belov on 27.07.2026, 11:42
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.07.2026, 13:17
+  ~  * Last modified 27.07.2026, 08:29
   ~  */
   -->
 
@@ -83,6 +83,7 @@
     <string name="msg_no_events">Keine Ereignissе gefunden</string>
     <string name="msg_no_image_picker">Es gibt keine App zum Auswählen von Fotos</string>
     <string name="msg_no_file_picker">Es gibt keine App zum Auswählen von Dateien</string>
+    <string name="msg_no_calendar">Keine Kalender-App</string>
     <string name="msg_no_files_selected">"  - nicht ausgewählt -"</string>
     <string name="msg_file_open_error">"Fehler beim Öffnen der Datei: "</string>
     <string name="msg_file_access_write_error">Schreibzugriff auf Datei nicht möglich. Versuchen Sie, die Datei in den Anwendungseinstellungen erneut auszuwählen.</string>

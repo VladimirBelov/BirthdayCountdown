@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
+  ~  * Created by Vladimir Belov on 27.07.2026, 11:42
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.07.2026, 11:44
+  ~  * Last modified 23.07.2026, 20:33
   ~  */
   -->
 
@@ -83,6 +83,7 @@
     <string name="msg_no_events">Events not found</string>
     <string name="msg_no_image_picker">There is no app for choosing photos</string>
     <string name="msg_no_file_picker">There is no app for choosing files</string>
+    <string name="msg_no_calendar">There is no calendar app</string>
     <string name="msg_no_files_selected">"  - not selected -"</string>
     <string name="msg_file_open_error">"Error opening file: "</string>
     <string name="msg_file_access_write_error">"Can't obtain write access to file. Try reselect file in application preference"</string>

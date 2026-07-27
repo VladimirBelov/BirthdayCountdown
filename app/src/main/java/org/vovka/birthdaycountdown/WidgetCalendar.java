@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.07.2026, 12:42
+ *  * Created by Vladimir Belov on 27.07.2026, 11:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 23.07.2026, 12:18
+ *  * Last modified 27.07.2026, 08:04
  *
  */
 
@@ -17,6 +17,8 @@ import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
@@ -619,6 +621,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     }
                     cal.add(Calendar.MONTH, prefMonthsShift);
                     cal.set(Calendar.DAY_OF_MONTH, 1);
+                    AppDateUtils.clearTime(cal);
 
                     addMonth(appWidgetId, row, column, monthsToDraw, cal, calFirstDay, calLastDay, rv);
                 }
@@ -1059,9 +1062,21 @@ public class WidgetCalendar extends AppWidgetProvider {
                 Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
                 builder.appendPath(Constants.QUERY_PARAM_TIME);
                 builder.appendPath(Long.toString(cal.getTimeInMillis()));
-                Intent intent = new Intent(Intent.ACTION_VIEW, builder.build());
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent,
+                Intent intentCalendar = new Intent(Intent.ACTION_VIEW, builder.build());
+                intentCalendar.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                // Находим пакет основного системного календаря
+                PackageManager pm = context.getPackageManager();
+                Intent mainCalendarIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_CALENDAR);
+                List<ResolveInfo> resolveInfoList = pm.queryIntentActivities(mainCalendarIntent, 0);
+
+                if (!resolveInfoList.isEmpty()) {
+                    // Берем первое приложение из списка (это и есть дефолтный календарь системы)
+                    String defaultCalendarPackage = resolveInfoList.get(0).activityInfo.packageName;
+                    intentCalendar.setPackage(defaultCalendarPackage);
+                }
+
+                pendingIntent = PendingIntent.getActivity(context, appWidgetId, intentCalendar,
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             }
 

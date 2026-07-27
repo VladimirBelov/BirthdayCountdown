@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
+  ~  * Created by Vladimir Belov on 27.07.2026, 11:42
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.07.2026, 13:22
+  ~  * Last modified 27.07.2026, 08:31
   ~  */
   -->
 
@@ -83,6 +83,7 @@
     <string name="msg_no_events">Eventos não encontrados</string>
     <string name="msg_no_image_picker">Não há aplicativo para escolher fotos</string>
     <string name="msg_no_file_picker">Não existe aplicativo para selecionar arquivos</string>
+    <string name="msg_no_calendar">Nenhum aplicativo de calendário</string>
     <string name="msg_no_files_selected">" - não selecionado -"</string>
     <string name="msg_file_open_error">"Erro ao abrir arquivo: "</string>
     <string name="msg_file_access_write_error">"Não é possível obter acesso de gravação ao arquivo. Tente selecionar novamente o arquivo na preferência do aplicativo"</string>

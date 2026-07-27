@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
+  ~  * Created by Vladimir Belov on 27.07.2026, 11:42
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.07.2026, 13:08
+  ~  * Last modified 27.07.2026, 08:31
   ~  */
   -->
 
@@ -83,6 +83,7 @@
     <string name="msg_no_events">Aucun événement trouvé</string>
     <string name="msg_no_image_picker">"Il n'existe pas d'application pour choisir des photos"</string>
     <string name="msg_no_file_picker">"Il n'existe aucune application pour choisir des fichiers"</string>
+    <string name="msg_no_calendar">Aucune application de calendrier</string>
     <string name="msg_no_files_selected">" - pas sélectionné -"</string>
     <string name="msg_file_open_error">"Erreur d'ouverture du fichier: "</string>
     <string name="msg_file_access_write_error">"Impossible d'accéder à la modification du fichier. Réinitialisez le fichier dans les paramètres de l'application"</string>

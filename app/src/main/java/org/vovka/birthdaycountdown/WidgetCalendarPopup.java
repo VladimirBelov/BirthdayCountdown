@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.07.2026, 15:44
+ *  * Created by Vladimir Belov on 27.07.2026, 11:42
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 17.07.2026, 13:32
+ *  * Last modified 27.07.2026, 08:33
  *
  */
 package org.vovka.birthdaycountdown;
@@ -13,7 +13,10 @@ import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
 import android.content.ClipDescription;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -76,6 +79,7 @@ public class WidgetCalendarPopup extends Activity {
     private String dayMills = null;
     private ArrayList<String> listEventsPacks;
     private HashMap<String, Integer> eventsColorsInMonth = null;
+    private String defaultCalendarPackage = null;
     private ExecutorService executorService;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -125,14 +129,40 @@ public class WidgetCalendarPopup extends Activity {
             //Календарь
             buttonCalendar = findViewById(R.id.button2);
             if (buttonCalendar != null) {
-                buttonCalendar.setText(getString(R.string.event_type_other_emoji).concat(Constants.STRING_SPACE).concat(getString(R.string.appwidget_label_Calendar)));
-                UiTools.addClickEffect(buttonCalendar);
-                buttonCalendar.getBackground().setAlpha(50);
-                buttonCalendar.setOnLongClickListener(v -> {
-                    Toast.makeText(this, getString(R.string.widget_calendar_popup_open_calendar), Toast.LENGTH_LONG).show();
-                    return true;
-                });
-                buttonCalendar.setVisibility(View.VISIBLE);
+                PackageManager pm = getPackageManager();
+                Intent mainCalendarIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_CALENDAR);
+                List<ResolveInfo> resolveInfoList = pm.queryIntentActivities(mainCalendarIntent, 0);
+
+                if (!resolveInfoList.isEmpty()) {
+                    // Приложение календаря найдено
+                    ResolveInfo resolveInfo = resolveInfoList.get(0);
+                    defaultCalendarPackage = resolveInfo.activityInfo.packageName;
+
+                    // Получаем иконку приложения
+                    Drawable icon = resolveInfo.loadIcon(pm);
+                    if (icon != null) {
+                        // Размер иконки ~20dp
+                        int iconSize = (int) (20 * getResources().getDisplayMetrics().density);
+                        icon.setBounds(0, 0, iconSize, iconSize);
+                        buttonCalendar.setCompoundDrawables(icon, null, null, null);
+                        // Небольшой отступ между иконкой и текстом (4dp)
+                        buttonCalendar.setCompoundDrawablePadding((int) (4 * getResources().getDisplayMetrics().density));
+                    }
+
+                    // Текст: пробел + название из ресурсов (иконка уже стоит слева)
+                    buttonCalendar.setText(Constants.STRING_SPACE.concat(getString(R.string.appwidget_label_Calendar)));
+
+                    UiTools.addClickEffect(buttonCalendar);
+                    buttonCalendar.getBackground().setAlpha(50);
+                    buttonCalendar.setOnLongClickListener(v -> {
+                        Toast.makeText(this, getString(R.string.widget_calendar_popup_open_calendar), Toast.LENGTH_LONG).show();
+                        return true;
+                    });
+                    buttonCalendar.setVisibility(View.VISIBLE);
+                } else {
+                    // Приложение календаря не найдено, скрываем кнопку полностью
+                    buttonCalendar.setVisibility(View.GONE);
+                }
             }
 
             //Поделиться
@@ -206,164 +236,209 @@ public class WidgetCalendarPopup extends Activity {
     }
 
     private void setupClickListeners() {
-        //Календарь
-        buttonCalendar.setOnClickListener(view -> {
-            if (dayMills != null) {
-                Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-                builder.appendPath(Constants.QUERY_PARAM_TIME);
-                builder.appendPath(dayMills);
-                Intent intentCalendar = new Intent(Intent.ACTION_VIEW, builder.build());
-                intentCalendar.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    startActivity(intentCalendar);
-                    finish();
-                } catch (ActivityNotFoundException ignored) { /**/ }
-            }
-        });
-        //Поделиться
-        buttonShare.setOnClickListener(v -> {
-            if (!dayInfo.equals(getString(R.string.month_event_empty))) {
-                Intent intentShare = new Intent(Intent.ACTION_SEND);
-                intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
-                intentShare.putExtra(Intent.EXTRA_TEXT,
-                        viewCaption.getText().toString().concat(Constants.STRING_EOL)
-                                .concat(viewInfo.getText().toString()));
-                try {
-                    startActivity(Intent.createChooser(intentShare, " "));
-                } catch (ActivityNotFoundException ignored) { /**/ }
-            }
-        });
+        try {
+            //Календарь
+            if (buttonCalendar != null && defaultCalendarPackage != null) {
+                buttonCalendar.setOnClickListener(view -> {
+                    if (dayMills != null) {
+                        Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+                        builder.appendPath(Constants.QUERY_PARAM_TIME);
 
-        //Выбрать день
-        buttonSelectDay.setOnClickListener(v -> {
-            if (dayMills != null) {
-                long millis = Long.parseLong(dayMills);
-                Calendar newCal = Calendar.getInstance();
-                newCal.setTimeInMillis(millis);
+                        Calendar calForUri = Calendar.getInstance();
+                        calForUri.setTimeInMillis(Long.parseLong(dayMills));
+                        AppDateUtils.clearTime(calForUri); // Обнуляем до 00:00:00.000
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                        (view, selectedYear, selectedMonth, dayOfMonth) -> {
-                            newCal.clear();
-                            newCal.set(selectedYear, selectedMonth, dayOfMonth);
-                            updateDayData(newCal);
-                            showDayInfo();
-                        },
-                        newCal.get(Calendar.YEAR),
-                        newCal.get(Calendar.MONTH),
-                        newCal.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.show();
-            }
-        });
+                        // Используем обнуленное время, а не исходную строку dayMills
+                        builder.appendPath(Long.toString(calForUri.getTimeInMillis()));
 
-        //Выбрать цвет
-        buttonSelectColor.setOnClickListener(v -> {
-            if (dayMills != null) {
-                long millis = Long.parseLong(dayMills);
-                Calendar cal = Calendar.getInstance();
-                cal.setTimeInMillis(millis);
-                String date = Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime());
+                        Intent intentCalendar = new Intent(Intent.ACTION_VIEW, builder.build());
+                        intentCalendar.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                int colorDefaultValue = ContextCompat.getColor(this, android.R.color.transparent);
-                int colorValue = colorDefaultValue;
+                        // Жестко указываем найденный пакет, чтобы избежать системного диалога выбора
+                        intentCalendar.setPackage(defaultCalendarPackage);
 
-                String storedColorValue = eventsData.getDayInfo(date);
-                if (!storedColorValue.isEmpty()) {
-                    try {
-                        colorValue = Integer.parseInt(storedColorValue);
-                    } catch (NumberFormatException ignored) { /**/ }
-                }
-
-                ColorPicker picker = new ColorPicker(
-                        new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain)
-                );
-                picker.setDialogTitle(getString(R.string.widget_calendar_popup_select_color_title));
-                picker.setDialogIcon(R.drawable.ic_menu_paste);
-                picker.selectColor(colorValue, colorDefaultValue, true, date, (id, color) -> {
-                    if (StringUtils.hasContent(id)) {
-                        ToastExpander.showDebugMsg(getApplicationContext(),
-                                getString(R.string.msg_event_color_selected, Integer.toHexString(color & 0x00ffffff), id));
-                        int colorDefaultValue1 = ContextCompat.getColor(WidgetCalendarPopup.this, android.R.color.transparent);
-                        eventsData.setDayInfo(id, color != colorDefaultValue1 ? String.valueOf(color) : null);
-                        eventsData.updateWidgets(appWidgetId, null);
+                        try {
+                            startActivity(intentCalendar);
+                            finish();
+                        } catch (ActivityNotFoundException e) {
+                            // Fallback: если вдруг даже основной календарь не сработал
+                            try {
+                                Intent fallbackIntent = new Intent(Intent.ACTION_MAIN);
+                                fallbackIntent.addCategory(Intent.CATEGORY_APP_CALENDAR);
+                                fallbackIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(fallbackIntent);
+                                finish();
+                            } catch (ActivityNotFoundException ignored) {
+                                ToastExpander.showInfoMsg(getApplicationContext(), getString(R.string.msg_no_calendar));
+                            }
+                        }
                     }
-                    showDayInfo();
                 });
             }
-        });
 
-        //Предыдущий день
-        buttonPrevDay.setOnClickListener(v -> {
-            if (dayMills != null) {
-                long millis = Long.parseLong(dayMills);
-                Calendar newCal = Calendar.getInstance();
-                newCal.setTimeInMillis(millis);
-                newCal.add(Calendar.DAY_OF_YEAR, -1);
-
-                updateDayData(newCal);
-                showDayInfo();
+            //Поделиться
+            if (buttonShare != null) {
+                buttonShare.setOnClickListener(v -> {
+                    if (!dayInfo.equals(getString(R.string.month_event_empty))) {
+                        Intent intentShare = new Intent(Intent.ACTION_SEND);
+                        intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+                        intentShare.putExtra(Intent.EXTRA_TEXT,
+                                viewCaption.getText().toString().concat(Constants.STRING_EOL)
+                                        .concat(viewInfo.getText().toString()));
+                        try {
+                            startActivity(Intent.createChooser(intentShare, " "));
+                        } catch (ActivityNotFoundException ignored) { /**/ }
+                    }
+                });
             }
-        });
 
-        //Следующий день
-        buttonNextDay.setOnClickListener(v -> {
-            if (dayMills != null) {
-                long millis = Long.parseLong(dayMills);
-                Calendar newCal = Calendar.getInstance();
-                newCal.setTimeInMillis(millis);
-                newCal.add(Calendar.DAY_OF_YEAR, +1);
+            //Выбрать день
+            if (buttonSelectDay != null) {
+                buttonSelectDay.setOnClickListener(v -> {
+                    if (dayMills != null) {
+                        long millis = Long.parseLong(dayMills);
+                        Calendar newCal = Calendar.getInstance();
+                        newCal.setTimeInMillis(millis);
 
-                updateDayData(newCal);
-                showDayInfo();
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                                (view, selectedYear, selectedMonth, dayOfMonth) -> {
+                                    newCal.clear();
+                                    newCal.set(selectedYear, selectedMonth, dayOfMonth);
+                                    updateDayData(newCal);
+                                    showDayInfo();
+                                },
+                                newCal.get(Calendar.YEAR),
+                                newCal.get(Calendar.MONTH),
+                                newCal.get(Calendar.DAY_OF_MONTH));
+                        datePickerDialog.show();
+                    }
+                });
             }
-        });
+
+            //Выбрать цвет
+            if (buttonSelectColor != null) {
+                buttonSelectColor.setOnClickListener(v -> {
+                    if (dayMills != null) {
+                        long millis = Long.parseLong(dayMills);
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTimeInMillis(millis);
+                        String date = Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime());
+
+                        int colorDefaultValue = ContextCompat.getColor(this, android.R.color.transparent);
+                        int colorValue = colorDefaultValue;
+
+                        String storedColorValue = eventsData.getDayInfo(date);
+                        if (!storedColorValue.isEmpty()) {
+                            try {
+                                colorValue = Integer.parseInt(storedColorValue);
+                            } catch (NumberFormatException ignored) { /**/ }
+                        }
+
+                        ColorPicker picker = new ColorPicker(
+                                new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain)
+                        );
+                        picker.setDialogTitle(getString(R.string.widget_calendar_popup_select_color_title));
+                        picker.setDialogIcon(R.drawable.ic_menu_paste);
+                        picker.selectColor(colorValue, colorDefaultValue, true, date, (id, color) -> {
+                            if (StringUtils.hasContent(id)) {
+                                ToastExpander.showDebugMsg(getApplicationContext(),
+                                        getString(R.string.msg_event_color_selected, Integer.toHexString(color & 0x00ffffff), id));
+                                int colorDefaultValue1 = ContextCompat.getColor(WidgetCalendarPopup.this, android.R.color.transparent);
+                                eventsData.setDayInfo(id, color != colorDefaultValue1 ? String.valueOf(color) : null);
+                                eventsData.updateWidgets(appWidgetId, null);
+                            }
+                            showDayInfo();
+                        });
+                    }
+                });
+            }
+
+            //Предыдущий день
+            if (buttonPrevDay != null) {
+                buttonPrevDay.setOnClickListener(v -> {
+                    if (dayMills != null) {
+                        long millis = Long.parseLong(dayMills);
+                        Calendar newCal = Calendar.getInstance();
+                        newCal.setTimeInMillis(millis);
+                        newCal.add(Calendar.DAY_OF_YEAR, -1);
+
+                        updateDayData(newCal);
+                        showDayInfo();
+                    }
+                });
+            }
+
+            //Следующий день
+            if (buttonNextDay != null) {
+                buttonNextDay.setOnClickListener(v -> {
+                    if (dayMills != null) {
+                        long millis = Long.parseLong(dayMills);
+                        Calendar newCal = Calendar.getInstance();
+                        newCal.setTimeInMillis(millis);
+                        newCal.add(Calendar.DAY_OF_YEAR, +1);
+
+                        updateDayData(newCal);
+                        showDayInfo();
+                    }
+                });
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     private void updateDayData(Calendar cal) {
-        SimpleDateFormat sdf = new SimpleDateFormat(" (EEE) ", Locale.getDefault());
-        List<String> allEventsThisDay = eventsData.getDayInfo(
-                Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime()),
-                listEventsPacks,
-                eventsColorsInMonth
-        );
-        // Аналогичный блок есть в WidgetCalendar#getAction
-        if (!allEventsThisDay.isEmpty()) {
-            final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(getString(R.string.event_type_anniversary));
-            final String birthdayPrefix = Constants.eventTitleFavoritePrefix.concat(getString(R.string.event_type_birthday));
-            for (int i = 0; i < allEventsThisDay.size(); i++) {
-                String event = allEventsThisDay.get(i);
-                int indParOpen = event.lastIndexOf(Constants.STRING_PARENTHESIS_OPEN);
-                int indParClose = event.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
-                if (indParOpen > -1 && indParClose > -1) {
-                    int indMinus = event.indexOf(Constants.STRING_MINUS, indParOpen);
-                    if (event.contains(weddingPrefix)) {
-                        //Подставляем в годовщину свадьбы её название
-                        String strYear = event.substring(indParOpen + Constants.STRING_PARENTHESIS_OPEN.length(), indParClose);
-                        try {
-                            int year = Integer.parseInt(strYear);
-                            String anCaption = StringUtils.getWeddingName(cal.get(Calendar.YEAR) - year, eventsData.getContext(), eventsData.getResources());
-                            if (StringUtils.hasContent(anCaption)) {
-                                allEventsThisDay.set(i, event.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption)
-                                        .concat(Constants.STRING_PARENTHESIS_CLOSE));
-                            }
-                        } catch (NumberFormatException ignored) { /**/ }
-                    } else if (indMinus == -1 && !event.contains(birthdayPrefix)) {
-                        //Если событие на один день - удаляем год в скобках
-                        allEventsThisDay.set(i, event.substring(0, indParOpen));
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(" (EEE) ", Locale.getDefault());
+            List<String> allEventsThisDay = eventsData.getDayInfo(
+                    Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime()),
+                    listEventsPacks,
+                    eventsColorsInMonth
+            );
+            // Аналогичный блок есть в WidgetCalendar#getAction
+            if (!allEventsThisDay.isEmpty()) {
+                final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(getString(R.string.event_type_anniversary));
+                final String birthdayPrefix = Constants.eventTitleFavoritePrefix.concat(getString(R.string.event_type_birthday));
+                for (int i = 0; i < allEventsThisDay.size(); i++) {
+                    String event = allEventsThisDay.get(i);
+                    int indParOpen = event.lastIndexOf(Constants.STRING_PARENTHESIS_OPEN);
+                    int indParClose = event.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                    if (indParOpen > -1 && indParClose > -1) {
+                        int indMinus = event.indexOf(Constants.STRING_MINUS, indParOpen);
+                        if (event.contains(weddingPrefix)) {
+                            //Подставляем в годовщину свадьбы её название
+                            String strYear = event.substring(indParOpen + Constants.STRING_PARENTHESIS_OPEN.length(), indParClose);
+                            try {
+                                int year = Integer.parseInt(strYear);
+                                String anCaption = StringUtils.getWeddingName(cal.get(Calendar.YEAR) - year, eventsData.getContext(), eventsData.getResources());
+                                if (StringUtils.hasContent(anCaption)) {
+                                    allEventsThisDay.set(i, event.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption)
+                                            .concat(Constants.STRING_PARENTHESIS_CLOSE));
+                                }
+                            } catch (NumberFormatException ignored) { /**/ }
+                        } else if (indMinus == -1 && !event.contains(birthdayPrefix)) {
+                            //Если событие на один день - удаляем год в скобках
+                            allEventsThisDay.set(i, event.substring(0, indParOpen));
+                        }
                     }
                 }
             }
-        }
 
-        dayInfo = allEventsThisDay.isEmpty()
-                ? getString(R.string.month_event_empty)
-                : TextUtils.join(Constants.HTML_BR, allEventsThisDay);
-        dayCaption = getString(R.string.month_event_popup_prefix)
-                .concat(AppDateUtils.getDateFormatted(
-                        Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime()),
-                        ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
-                        eventsData.getResources(), eventsData.currentLocale))
-                .concat(sdf.format(cal.getTime()));
-        dayMills = Long.toString(cal.getTimeInMillis());
+            dayInfo = allEventsThisDay.isEmpty()
+                    ? getString(R.string.month_event_empty)
+                    : TextUtils.join(Constants.HTML_BR, allEventsThisDay);
+            dayCaption = getString(R.string.month_event_popup_prefix)
+                    .concat(AppDateUtils.getDateFormatted(
+                            Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime()),
+                            ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
+                            eventsData.getResources(), eventsData.currentLocale))
+                    .concat(sdf.format(cal.getTime()));
+            dayMills = Long.toString(cal.getTimeInMillis());
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
     }
 
     @Override
