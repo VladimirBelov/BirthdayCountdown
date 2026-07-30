@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.07.2026, 11:41
+ *  * Created by Vladimir Belov on 31.07.2026, 00:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.07.2026, 12:53
+ *  * Last modified 29.07.2026, 19:24
  *
  */
 
@@ -10428,6 +10428,14 @@ public class ContactsEvents {
 
             if (packsHashes.isEmpty()) return;
 
+            // Кэшируем массив форматов
+            final SimpleDateFormat[] dateFormats = {
+                    Objects.requireNonNull(sdf_DDMMYYYY.get()),
+                    Objects.requireNonNull(sdf_india.get()),
+                    Objects.requireNonNull(sdf_uk.get()),
+                    Objects.requireNonNull(sdf_java.get())
+            };
+
             //Справочники праздников и выходных
             int eventsPackCount = 1;
             int packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, context.getPackageName());
@@ -10451,7 +10459,8 @@ public class ContactsEvents {
                                 } else if (StringUtils.hasContent(eventPrefix)) {
                                     titlePrefix = eventPrefix;
                                 }
-                                fillDaysTypesFromList(packHash, events, titlePrefix, DayType.Type.Common);
+                                List<String> expandedEvents = AppDateUtils.splitMultidayEventsAsSeparateLine(events, dateFormats, getToday());
+                                fillDaysTypesFromList(packHash, expandedEvents.toArray(new String[0]), titlePrefix, DayType.Type.Common);
                             }
                             preferences_DaysTypes.put(packHash, DayType.Type.Holiday); //todo: для других праздников - продумать
                         }
@@ -10489,6 +10498,14 @@ public class ContactsEvents {
             Set<String> fileList = preferences_HolidayEvent_files;
             if (fileList == null || fileList.isEmpty()) return;
 
+            // Кэшируем массив форматов
+            final SimpleDateFormat[] dateFormats = {
+                    Objects.requireNonNull(sdf_DDMMYYYY.get()),
+                    Objects.requireNonNull(sdf_india.get()),
+                    Objects.requireNonNull(sdf_uk.get()),
+                    Objects.requireNonNull(sdf_java.get())
+            };
+
             for (String file : fileList) {
                 final String packHash = StringUtils.getHash(Constants.eventSourceFilePrefix + file);
                 if (fileHashes.contains(packHash)) {
@@ -10500,7 +10517,8 @@ public class ContactsEvents {
                             ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_file_open_error) + fileDetails[0]);
                             continue;
                         }
-                        fillDaysTypesFromList(packHash, eventsArray, Constants.eventTitleFilePrefix, DayType.Type.Holiday);
+                        List<String> expandedEvents = AppDateUtils.splitMultidayEventsAsSeparateLine(eventsArray, dateFormats, getToday());
+                        fillDaysTypesFromList(packHash, expandedEvents.toArray(new String[0]), Constants.eventTitleFilePrefix, DayType.Type.Holiday);
                     }
                     preferences_DaysTypes.put(packHash, DayType.Type.Holiday);
                 }
