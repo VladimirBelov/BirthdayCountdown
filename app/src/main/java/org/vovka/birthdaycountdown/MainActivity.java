@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.07.2026, 18:16
+ *  * Created by Vladimir Belov on 03.08.2026, 16:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.07.2026, 18:13
+ *  * Last modified 03.08.2026, 00:05
  *
  */
 
@@ -1688,10 +1688,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //показывать, если есть события или выбран фильтр
             final boolean isItemFilterVisible = eventsData != null && !eventsData.isEmptyEventList() &&
                     (
-                            (eventsData.getHiddenEventsCount() > 0 || eventsData.getSilencedEventsCount() > 0)
+                            eventsData.getHiddenEventsCount() > 0
+                                    || eventsData.getSilencedEventsCount() > 0
                                     || (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_All && eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_NotHidden)
                                     || statsUnrecognizedEvents > 0
                                     || eventsData.statFavoriteEventsCount > 0
+                                    || eventsData.getXDaysEventsCount() > 0
                     );
             final boolean isItemSourcesVisible = eventsData != null
                     && (eventsData.isFeatureEnabled(Constants.FEATURE_SELECT_SOURCES) || eventsData.preferences_list_quick_action == Constants.MainMenu_EventsSources);

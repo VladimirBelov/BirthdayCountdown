@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.07.2026, 11:42
+ *  * Created by Vladimir Belov on 03.08.2026, 16:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 27.07.2026, 08:04
+ *  * Last modified 03.08.2026, 01:02
  *
  */
 
@@ -897,11 +897,14 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 colorOfDay = eventsColorsOutMonth.get(dayType.sourceId);
                             }
                             if (colorOfDay == null) continue;
+                            /*
+                            //todo: дилема. для гос праздников надо рабочий выходной делать белым (без цвета), а пользовательский - цветом источника
+                            //todo: но здесь мы не знаем, откуда получено событие
                             if (dayType.type == ContactsEvents.DayType.Type.Workday) { //Рабочий в выходной день
                                 isColoredByEvent = true;
                                 maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
                                 continue;
-                            }
+                            }*/
                             if (Color.alpha(colorOfDay) > 0) { //Цвет дня не полностью прозрачный
                                 isColoredByEvent = true;
                                 maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
