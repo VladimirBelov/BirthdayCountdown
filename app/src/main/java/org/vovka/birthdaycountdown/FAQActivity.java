@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 03.08.2026, 16:53
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 03.08.2026, 16:51
  *
  */
 
@@ -122,6 +122,22 @@ public class FAQActivity extends AppCompatActivity {
                     public void onPageFinished(WebView view, String url) {
                         super.onPageFinished(view, url);
                         webViewLoaded = true;
+                    }
+
+                    // Перехватываем клики по ссылкам, чтобы открыть их во внешнем браузере
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
+                            try {
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                startActivity(intent);
+                            } catch (android.content.ActivityNotFoundException e) {
+                                Log.e(TAG, "Не найдено приложение для открытия ссылки: " + url);
+                            }
+                            return true;
+                        }
+                        // Для любых других URL (например, внутренних якорей или file://) оставляем стандартное поведение
+                        return false;
                     }
                 });
 
