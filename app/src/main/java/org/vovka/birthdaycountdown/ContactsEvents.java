@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.07.2026, 00:26
+ *  * Created by Vladimir Belov on 05.08.2026, 17:59
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.07.2026, 19:24
+ *  * Last modified 05.08.2026, 09:33
  *
  */
 
@@ -410,9 +410,8 @@ public class ContactsEvents {
     public void setToday() {
         today = AppDateUtils.getWithoutTime(new GregorianCalendar());
     }
-    public Calendar getToday() {
-        return today;
-    }
+
+    public Calendar getToday() { return today; }
 
     /** Дата формата "yyyy-MM-dd" */
     static final ThreadLocal<SimpleDateFormat> sdf_java = new ThreadLocal<SimpleDateFormat>() {
@@ -2441,7 +2440,7 @@ public class ContactsEvents {
             statFavoriteEventsCount = 0;
 
             needUpdateEventList = false;
-
+            setToday();
             getPreferences();
 
             //todo: сделать через отдельный thread, но сделать это опциональным

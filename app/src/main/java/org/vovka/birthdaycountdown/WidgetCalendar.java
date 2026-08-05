@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.08.2026, 16:33
+ *  * Created by Vladimir Belov on 05.08.2026, 17:59
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 03.08.2026, 01:02
+ *  * Last modified 05.08.2026, 17:58
  *
  */
 
@@ -888,7 +888,7 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (!dayTypes.isEmpty()) {
                 int maxTypeIndex = -1;
                 for (ContactsEvents.DayType dayType : dayTypes) {
-                    //if (dayType.type != ContactsEvents.DayType.Type.Common) {
+                    if (dayType.type != ContactsEvents.DayType.Type.Common) {
                         if (prefOtherEvents.indexOf(dayType.sourceId) > maxTypeIndex) {
                             Integer colorOfDay;
                             if (inMonth) {
@@ -897,14 +897,12 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 colorOfDay = eventsColorsOutMonth.get(dayType.sourceId);
                             }
                             if (colorOfDay == null) continue;
-                            /*
-                            //todo: дилема. для гос праздников надо рабочий выходной делать белым (без цвета), а пользовательский - цветом источника
-                            //todo: но здесь мы не знаем, откуда получено событие
+
                             if (dayType.type == ContactsEvents.DayType.Type.Workday) { //Рабочий в выходной день
                                 isColoredByEvent = true;
                                 maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
                                 continue;
-                            }*/
+                            }
                             if (Color.alpha(colorOfDay) > 0) { //Цвет дня не полностью прозрачный
                                 isColoredByEvent = true;
                                 maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
@@ -912,7 +910,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 if (dayType.type == ContactsEvents.DayType.Type.Holiday) break; //Нашли праздник
                             }
                         }
-                    //}
+                    }
                 }
             }
             if (!isColoredByEvent && colorizeSaturdays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
