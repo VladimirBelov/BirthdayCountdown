@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.07.2026, 11:41
+ *  * Created by Vladimir Belov on 21.08.2026, 13:51
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.07.2026, 11:44
+ *  * Last modified 21.08.2026, 13:45
  *
  */
 
@@ -307,7 +307,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
             updateTitles();
             updateVisibility();
-            if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) setSummaryUpdate();
+            setSummaryUpdate();
         }
     }
 
@@ -589,6 +589,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private void setSummaryUpdate() {
 
         try {
+            if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -697,6 +698,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             setSummaryForLabels(R.string.pref_CustomEvents_Custom4_Labels_key, R.string.pref_CustomEvents_Custom_Labels_summary);
             setSummaryForLabels(R.string.pref_CustomEvents_Custom5_Labels_key, R.string.pref_CustomEvents_Custom_Labels_summary);
 
+            //Встроенные справочники
+            setSummaryForEmbeddedSources();
+
             //Список событий. Типы событий
             setSummaryForMultiList(
                     R.string.pref_List_Events_key, R.array.pref_EventTypes_values_default, R.string.pref_List_EventTypes_summary,
@@ -740,6 +744,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     private void setSummaryForNotifications() {
+        if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
 
         //Источники событий
         setSummaryForEventSources(R.string.pref_Notifications_EventSources_key, R.string.pref_Notifications_EventSources_description);
@@ -769,6 +774,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     private void setSummaryForNotificationsAlarmHour() {
+        if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
+
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, eventsData.preferences_notifications_alarm_hour);
         cal.set(Calendar.MINUTE, eventsData.preferences_notifications_alarm_minute);
@@ -782,6 +789,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     private void setSummaryForNotificationsRingtone() {
+        if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
+
         String currentRingtone = eventsData.preferences_notifications_ringtone.isEmpty()
                 ? getString(R.string.pref_Notifications_Ringtone_choice_silent)
                 : getRingtoneDisplayTitle(Uri.parse(eventsData.preferences_notifications_ringtone));
@@ -819,6 +828,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private void setSummaryForAccounts() {
 
         try {
+            if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
 
             String value;
             if (eventsData.preferences_Accounts.isEmpty()) {
@@ -852,6 +862,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private void setSummaryForCalendars(String eventType) {
 
         try {
+            if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
 
             StringBuilder valueBuilder = new StringBuilder();
             if (eventsData.map_calendars.isEmpty()) AppDateUtils.fillCalendarList(eventsData.getContext(), eventsData.map_calendars, eventsData.map_calendars_colors);
@@ -906,6 +917,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private void setSummaryForFiles(String eventType) {
 
         try {
+            if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
 
             StringBuilder valueBuilder = new StringBuilder();
             int prefKey = 0;
@@ -955,6 +967,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     private void setSummaryForIcon() {
+        if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
+
         List<String> iconEntries = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Icon_entries)));
         List<String> iconValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_Icon_values)));
         List<Integer> icons = getResourceList(this, R.array.pref_Icon_photos);
@@ -971,6 +985,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private void setSummaryForLabels(@StringRes int prefKey, @StringRes int prefSummaryKey) {
 
         try {
+            if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             Preference pref = findPreference(getString(prefKey));
@@ -990,6 +1005,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                    @ArrayRes int prefEntries, @ArrayRes int prefValues) {
 
         try {
+            if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             Preference pref = findPreference(getString(prefKey));
@@ -1020,6 +1036,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             @ArrayRes int prefEntries, @ArrayRes int prefValues) {
 
         try {
+            if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             Preference pref = findPreference(getString(prefKey));
@@ -1073,6 +1090,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         //Добавлять и в onCreate и в getSelectedSources
 
         try {
+            if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             Preference pref = findPreference(getString(prefKey));
@@ -1100,9 +1118,43 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     }
 
+    private void setSummaryForEmbeddedSource(@StringRes int prefKey, @StringRes int prefSummaryKey, @NonNull Set<String> preferences, @NonNull String packPrefix, @NonNull String eventIdHashPrefix) {
+        try {
+
+            List<String> selectedSources = getEmbeddedPacksTitles(preferences, packPrefix, eventIdHashPrefix);
+
+            if (prefKey != 0 && prefSummaryKey != 0) {
+                final String summary = selectedSources.isEmpty() ? getString(R.string.msg_no_files_selected).trim() : TextUtils.join(Constants.STRING_EOL, selectedSources);
+                updateSummary(prefKey, summary, getString(prefSummaryKey), 0, 0);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void setSummaryForEmbeddedSources() {
+        if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
+
+        setSummaryForEmbeddedSource(
+                R.string.pref_Holidays_key, R.string.pref_CustomEvents_Holiday_Public_Labels_summary,
+                eventsData.preferences_HolidayEvent_ids, Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix);
+        setSummaryForEmbeddedSource(
+                R.string.pref_Other_Holidays_key, R.string.pref_CustomEvents_Holiday_Other_Labels_summary,
+                eventsData.preferences_HolidayEvent_Other_ids, Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix);
+        setSummaryForEmbeddedSource(
+                R.string.pref_CustomEvents_Other_Embedded_key, R.string.pref_CustomEvents_Other_Embedded_summary,
+                eventsData.preferences_OtherEvent_ids, Constants.STRING_TYPE_OTHER_EVENT, Constants.eventSourceOtherEventPrefix);
+        setSummaryForEmbeddedSource(
+                R.string.pref_Facts_key, R.string.pref_CustomEvents_Fact_Bundled_Labels_summary,
+                eventsData.preferences_FactEvent_ids, Constants.STRING_TYPE_FACT, Constants.eventSourceFactPrefix);
+    }
+
     private void setSummaryForQuizQuestions() {
 
         try {
+            if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
 
             List<String> selectedQuestions = new ArrayList<>();
             for (QuizActivity.QuestionType type : QuizActivity.QuestionType.values()) {
@@ -1119,6 +1171,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
+    /** Обновляет summary для настройки
+     * @param prefKey Ключ настройки
+     * @param value Новое значение summary
+     * @param template Шаблон (значение по-умолчанию)
+     * @param colorCircle Цвет кружка, который необходимо нарисовать до значения
+     * @param drawable Маленькое изображение, которое необходимо вывести до значения
+     * @return Обновление произошло без ошибки
+     */
     private boolean updateSummary(@StringRes int prefKey, Object value, @NonNull String template, @ColorInt int colorCircle, @DrawableRes int drawable) {
 
         try {
@@ -1848,6 +1908,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         eventsData.savePreferences();
                         eventsData.clearDaysTypesAndInfo();
 
+                        setSummaryForEmbeddedSources();
+
                         dialog.cancel();
                     })
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
@@ -1923,6 +1985,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         preferences.addAll(toStore);
                         eventsData.savePreferences();
                         eventsData.clearDaysTypesAndInfo();
+
+                        setSummaryForEmbeddedSources();
 
                         dialog.cancel();
                     })
@@ -4685,6 +4749,41 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
             return res;
         }
+    }
+
+    /** Возвращает наименования встроенных справочников по hash
+     * @param preferences Список hash справочников
+     * @param packPrefix Префикс массива событий в ресурсах
+     * @param eventIdHashPrefix Префикс ID для hash
+     */
+    @SuppressLint("DiscouragedApi")
+    @NonNull private List<String> getEmbeddedPacksTitles(@NonNull Set<String> preferences, @NonNull String packPrefix, @NonNull String eventIdHashPrefix) {
+        final List<String> eventSourcesTitles = new ArrayList<>();
+        try {
+
+
+            int eventsPackCount = 1;
+            int packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            while (packId > 0) {
+                try {
+                    String[] eventsPack = getResources().getStringArray(packId);
+                    String packHash = StringUtils.getHash(eventIdHashPrefix + eventsPack[0]);
+
+                    if (preferences.contains(packHash)) {
+                        eventSourcesTitles.add(eventsPack[0]);
+                    }
+
+                } catch (Resources.NotFoundException ignored) { /**/ }
+
+                eventsPackCount++;
+                packId = getResources().getIdentifier(packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+        return eventSourcesTitles;
     }
 
     /**

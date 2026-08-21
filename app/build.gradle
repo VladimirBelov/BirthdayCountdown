@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 16.07.2026, 21:31
+ *  * Created by Vladimir Belov on 21.08.2026, 13:51
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.07.2026, 21:22
+ *  * Last modified 21.08.2026, 13:21
  *
  */
 //file:noinspection HardCodedStringLiteral
@@ -17,7 +17,7 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
-def appVersionName = "1.9.1"
+def appVersionName = "1.9.2"
 
 android {
 
@@ -151,6 +151,7 @@ androidComponents {
 }
 
 dependencies {
+    //noinspection GradleDependency 1.8.0 - API23+
     implementation 'androidx.appcompat:appcompat:1.7.1' //https://developer.android.com/jetpack/androidx/releases/appcompat
     //noinspection GradleDependency 1.14.0-alpha09 - API23+
     implementation 'com.google.android.material:material:1.14.0-alpha08' //https://github.com/material-components/material-components-android/releases
@@ -159,6 +160,7 @@ dependencies {
     //noinspection GradleDependency 1.18 - API23+
     implementation 'androidx.core:core:1.17.0' //https://developer.android.com/jetpack/androidx/releases/core
     implementation 'androidx.core:core-splashscreen:1.2.0' //https://developer.android.com/jetpack/androidx/releases/core#core-splashscreen-1.2.0
+    //noinspection GradleDependency 1.9.0 - API23+
     implementation 'androidx.fragment:fragment:1.8.9' //https://developer.android.com/jetpack/androidx/releases/fragment
     //noinspection GradleDependency 1.12 - API23+
     implementation 'androidx.activity:activity:1.11.0' //https://developer.android.com/jetpack/androidx/releases/activity

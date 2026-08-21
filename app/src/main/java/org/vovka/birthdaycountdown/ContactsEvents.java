@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.08.2026, 17:59
+ *  * Created by Vladimir Belov on 21.08.2026, 13:51
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.08.2026, 09:33
+ *  * Last modified 21.08.2026, 13:20
  *
  */
 
@@ -707,6 +707,7 @@ public class ContactsEvents {
     Set<String> preferences_HolidayEvent_Other_ids = new HashSet<>();
     /** Список id справочников встроенных других событий */
     Set<String> preferences_OtherEvent_ids = new HashSet<>();
+    /** Список id справочников фактов */
     Set<String> preferences_FactEvent_ids = new HashSet<>();
     final private Set<String> preferences_eventsWithoutYear = new HashSet<>();
     private int preferences_IconPackNumber;
