@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 27.08.2026, 01:42
+  ~  */
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dip">
+
+    <!-- Выбор категории -->
+    <Spinner
+        android:id="@+id/emoji_category_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dip"
+        android:minHeight="48dip"/>
+
+    <!-- Сетка эмодзи -->
+    <GridView
+        android:id="@+id/emoji_grid"
+        android:layout_width="match_parent"
+        android:layout_height="300dip"
+        android:numColumns="8"
+        android:verticalSpacing="4dip"
+        android:horizontalSpacing="4dip"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:scrollbarStyle="insideOverlay"/>
+
+    <!-- Превью выбранного эмодзи -->
+    <TextView
+        android:id="@+id/emoji_preview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="32sp"
+        android:padding="8dip"
+        android:layout_marginTop="8dip"
+        tools:text="😀"/>
+</LinearLayout>

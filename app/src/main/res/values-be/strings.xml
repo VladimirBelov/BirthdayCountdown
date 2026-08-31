@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.07.2026, 11:42
+  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 27.07.2026, 08:30
+  ~  * Last modified 01.09.2026, 01:42
   ~  */
   -->
 
@@ -290,6 +290,7 @@
     <string name="event_type_death">Гадавіна смерці</string>
     <string name="event_type_crowning">Вянчанне</string>
     <string name="event_type_nameday">Імяніны</string>
+    <string name="event_type_fact">Факт</string>
     <string name="event_type_calendar">Падзея календара</string>
     <string name="event_type_file">Падзея з файла</string>
     <string name="event_type_custom">Карыстальніцкая падзея</string>
@@ -471,6 +472,14 @@
     <string name="pref_CustomEvents_LocalFiles_summary">Паказваць падзеі з абраных файлаў. Доўгі націск на элеменце спісу для прагляду файла</string>
 
     <string name="pref_CustomEvents_MultiType_LocalFiles_summary">Паказваць падзеі з абраных файлаў (фарматы: DarkBirthday, iCalendar, vCard, BirthdayPro). Доўгі націск на элеменце спісу для прагляду файла</string>
+
+    <string name="pref_EventType_Icon_title">Значок</string>
+    <string name="pref_EventType_Emoji_title">Сімвал</string>
+    <string name="pref_EventType_Caption_title">Назва</string>
+    <string name="dialog_title_select_event_icon">Выберыце значок падзеі</string>
+    <string name="msg_event_icon_changed">Значок падзеі зменены</string>
+    <string name="msg_event_emoji_changed">Сімвал падзеі зменены: %1$s</string>
+    <string name="dialog_title_select_event_emoji">Выберыце сімвал падзеі</string>
 
     <string name="pref_CustomEvents_Custom_title">Карыстальніцкая падзея</string>
     <string name="pref_CustomEvents_Custom_Caption_title">Загаловак падзеі</string>

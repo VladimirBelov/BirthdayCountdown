@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.07.2026, 11:42
+  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 27.07.2026, 08:29
+  ~  * Last modified 01.09.2026, 01:42
   ~  */
   -->
 
@@ -290,6 +290,7 @@
     <string name="event_type_death">Todestag</string>
     <string name="event_type_crowning">Kirchlicher Hochzeitstag</string>
     <string name="event_type_nameday">Namenstag</string>
+    <string name="event_type_fact">Fakt</string>
     <string name="event_type_calendar">Kalenderereignis</string>
     <string name="event_type_file">Dateiereignis</string>
     <string name="event_type_custom">Benutzerdefiniertes Ereignis</string>
@@ -479,6 +480,14 @@
     <string name="pref_CustomEvents_LocalFiles_summary">Ereignisse aus ausgewählten Dateien anzeigen (Formate: DarkBirthday, iCalendar, BirthdayPro). Drücken Sie lange auf ein Listenelement, um eine Datei anzuzeigen</string>
 
     <string name="pref_CustomEvents_MultiType_LocalFiles_summary">Ereignisse aus ausgewählten Dateien anzeigen (Formate: DarkBirthday, iCalendar, vCard, BirthdayPro). Drücken Sie lange auf ein Listenelement, um eine Datei anzuzeigen</string>
+
+    <string name="pref_EventType_Icon_title">Symbol</string>
+    <string name="pref_EventType_Emoji_title">Emoji</string>
+    <string name="pref_EventType_Caption_title">Beschriftung</string>
+    <string name="dialog_title_select_event_icon">Ereignissymbol auswählen</string>
+    <string name="msg_event_icon_changed">Ereignissymbol geändert</string>
+    <string name="msg_event_emoji_changed">Ereignis-Emoji geändert: %1$s</string>
+    <string name="dialog_title_select_event_emoji">Ereignis-Emoji auswählen</string>
 
     <string-array name="pref_Theme_entries">
         <item>Braun</item>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 31.08.2026, 00:15
+  ~  */
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="48dip"
+    android:paddingEnd="16dip"
+    android:paddingTop="2dip"
+    android:paddingBottom="4dip"
+    tools:ignore="RtlSymmetry">
+
+    <!-- Кнопка: Иконка -->
+    <LinearLayout
+        android:id="@+id/action_event_icon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="6dip"
+        android:background="@drawable/selector_action_button"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:id="@+id/action_event_icon_preview"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:src="@drawable/ic_event_custom1"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="8dip"
+            tools:ignore="ContentDescription"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_EventType_Icon_title"
+            android:textSize="12sp"
+            android:textColor="?android:attr/textColorSecondary"/>
+    </LinearLayout>
+
+    <!-- Кнопка: Символ -->
+    <LinearLayout
+        android:id="@+id/action_event_emoji"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="6dip"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/selector_action_button"
+        android:clickable="true"
+        android:focusable="true">
+        <TextView
+            android:id="@+id/action_event_emoji_preview"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:layout_marginEnd="8dip"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_EventType_Emoji_title"
+            android:textSize="12sp"
+            android:textColor="?android:attr/textColorSecondary"/>
+    </LinearLayout>
+
+    <!-- Кнопка: Заголовок -->
+    <LinearLayout
+        android:id="@+id/action_event_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="6dip"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/selector_action_button"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:src="@android:drawable/ic_menu_edit"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="8dip"
+            tools:ignore="ContentDescription"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_EventType_Caption_title"
+            android:textSize="12sp"
+            android:textColor="?android:attr/textColorSecondary"/>
+    </LinearLayout>
+</LinearLayout>

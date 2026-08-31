@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.07.2026, 14:22
+ *  * Created by Vladimir Belov on 01.09.2026, 02:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 23.07.2026, 14:22
+ *  * Last modified 31.08.2026, 01:54
  *
  */
 
@@ -199,7 +199,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
                 }
                 List<String> listFacts = eventsData.getNextRandomFacts(maxFacts, new HashSet<>(sourcesPrefList));
                 for (String fact: listFacts) {
-                    String factDecorated = localizedResources.getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE + fact;
+                    String factDecorated = eventsData.getEventEmojiForType(Constants.EventType_Holiday) + Constants.STRING_SPACE + fact;
                     eventListView.add(factDecorated);
                     eventsData.saveRecentFact(factDecorated);
                 }

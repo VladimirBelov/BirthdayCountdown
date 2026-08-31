@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.07.2026, 11:42
+  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 27.07.2026, 08:33
+  ~  * Last modified 01.09.2026, 01:42
   ~  */
   -->
 
@@ -290,6 +290,7 @@
     <string name="event_type_death">Річниця смерті</string>
     <string name="event_type_crowning">Вінчання</string>
     <string name="event_type_nameday">Іменини</string>
+    <string name="event_type_fact">Факт</string>
     <string name="event_type_calendar">Подія календаря</string>
     <string name="event_type_file">Подія з файлу</string>
     <string name="event_type_custom">Користувацька подія</string>
@@ -479,6 +480,14 @@
     <string name="pref_CustomEvents_LocalFiles_summary">Показувати події з вибраних файлів. Довге натискання на елементі списку для перегляду файлу</string>
 
     <string name="pref_CustomEvents_MultiType_LocalFiles_summary">Показувати події з вибраних файлів (формати: DarkBirthday, iCalendar, vCard, BirthdayPro). Довге натискання на елементі списку для перегляду файлу</string>
+
+    <string name="pref_EventType_Icon_title">Значок</string>
+    <string name="pref_EventType_Emoji_title">Символ</string>
+    <string name="pref_EventType_Caption_title">Назва</string>
+    <string name="dialog_title_select_event_icon">Вибрати значок події</string>
+    <string name="msg_event_icon_changed">Значок події змінено</string>
+    <string name="msg_event_emoji_changed">Символ події змінено: %1$s</string>
+    <string name="dialog_title_select_event_emoji">Вибрати символ події</string>
 
     <string-array name="pref_Theme_entries">
         <item>Коричнева</item>

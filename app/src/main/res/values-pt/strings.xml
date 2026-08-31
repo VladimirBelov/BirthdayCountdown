@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.07.2026, 11:42
+  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 27.07.2026, 08:31
+  ~  * Last modified 01.09.2026, 01:42
   ~  */
   -->
 
@@ -290,6 +290,7 @@
     <string name="event_type_death">Aniversário de falecimento</string>
     <string name="event_type_crowning">Casamento na igreja</string>
     <string name="event_type_nameday">Nome do dia</string>
+    <string name="event_type_fact">Fato</string>
     <string name="event_type_calendar">Evento de calendário</string>
     <string name="event_type_file">Evento de arquivo</string>
     <string name="event_type_custom">Evento personalizado</string>
@@ -479,6 +480,14 @@
     <string name="pref_CustomEvents_LocalFiles_summary">Exibir eventos de arquivos selecionados (formatos: DarkBirthday, iCalendar, BirthdayPro). Pressione e segure um item da lista para visualizar o arquivo.</string>
 
     <string name="pref_CustomEvents_MultiType_LocalFiles_summary">Exibir eventos de arquivos selecionados (formatos: DarkBirthday, iCalendar, vCard, BirthdayPro). Pressione e segure um item da lista para visualizar o arquivo.</string>
+
+    <string name="pref_EventType_Icon_title">Ícone</string>
+    <string name="pref_EventType_Emoji_title">Símbolo</string>
+    <string name="pref_EventType_Caption_title">Título</string>
+    <string name="dialog_title_select_event_icon">Selecionar um ícone de evento</string>
+    <string name="msg_event_icon_changed">Ícone do evento alterado</string>
+    <string name="msg_event_emoji_changed">Símbolo do evento alterado: %1$s</string>
+    <string name="dialog_title_select_event_emoji">Selecionar um símbolo de evento</string>
 
     <string-array name="pref_Theme_entries">
         <item>Marrom</item>

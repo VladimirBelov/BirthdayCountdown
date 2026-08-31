@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 31.08.2026, 00:22
+  ~  */
+  -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Нажатое состояние -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#1A000000"/> <!-- Лёгкий затемнённый фон при нажатии (10% чёрного) -->
+            <stroke
+                android:width="1dp"
+                android:color="#80FFFFFF"/> <!-- Бордюр 50% белый (полупрозрачный) -->
+            <corners android:radius="4dp"/> <!-- Лёгкое скругление углов -->
+            <padding
+                android:left="4dp"
+                android:top="4dp"
+                android:right="4dp"
+                android:bottom="4dp"/>
+        </shape>
+    </item>
+
+    <!-- Обычное состояние -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent"/> <!-- Прозрачный фон -->
+            <stroke
+                android:width="1dp"
+                android:color="#80808080"/> <!-- Бордюр 50% серый (полупрозрачный) -->
+            <corners android:radius="4dp"/> <!-- Лёгкое скругление углов -->
+            <padding
+                android:left="4dp"
+                android:top="4dp"
+                android:right="4dp"
+                android:bottom="4dp"/>
+        </shape>
+    </item>
+</selector>

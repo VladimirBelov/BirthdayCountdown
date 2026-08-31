@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.08.2026, 13:51
+ *  * Created by Vladimir Belov on 01.09.2026, 02:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.08.2026, 13:45
+ *  * Last modified 01.09.2026, 01:57
  *
  */
 
@@ -77,14 +77,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -308,6 +311,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             updateTitles();
             updateVisibility();
             setSummaryUpdate();
+            setupEventTypeActions();
         }
     }
 
@@ -336,45 +340,67 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         super.onDestroy();
     }
 
+    /**
+     * Обновление заголовка пользовательских событий и summary
+     */
     private void updateTitles() {
-
         try {
-
             PreferenceCategory prefCat;
 
+            // Факты
+            prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Fact_key));
+            if (!eventsData.preferences_fact_caption.isEmpty()) {
+                prefCat.setTitle(eventsData.preferences_fact_caption);
+            }
+
+            // Custom1
             prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Custom1_key));
             if (!eventsData.preferences_customevent1_caption.isEmpty()) {
                 prefCat.setTitle(eventsData.preferences_customevent1_caption);
+                prefCat.setSummary(null); // Убираем summary если заголовок заполнен
             } else {
                 prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
+                prefCat.setSummary(getString(R.string.pref_CustomEvents_Custom_Caption_summary)); // Показываем подсказку
             }
 
+            // Custom2
             prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Custom2_key));
             if (!eventsData.preferences_customevent2_caption.isEmpty()) {
                 prefCat.setTitle(eventsData.preferences_customevent2_caption);
+                prefCat.setSummary(null);
             } else {
                 prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
+                prefCat.setSummary(getString(R.string.pref_CustomEvents_Custom_Caption_summary));
             }
 
+            // Custom3
             prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Custom3_key));
             if (!eventsData.preferences_customevent3_caption.isEmpty()) {
                 prefCat.setTitle(eventsData.preferences_customevent3_caption);
+                prefCat.setSummary(null);
             } else {
                 prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
+                prefCat.setSummary(getString(R.string.pref_CustomEvents_Custom_Caption_summary));
             }
 
+            // Custom4
             prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Custom4_key));
             if (!eventsData.preferences_customevent4_caption.isEmpty()) {
                 prefCat.setTitle(eventsData.preferences_customevent4_caption);
+                prefCat.setSummary(null);
             } else {
                 prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
+                prefCat.setSummary(getString(R.string.pref_CustomEvents_Custom_Caption_summary));
             }
 
+            // Custom5
             prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Custom5_key));
             if (!eventsData.preferences_customevent5_caption.isEmpty()) {
                 prefCat.setTitle(eventsData.preferences_customevent5_caption);
+                prefCat.setSummary(null);
             } else {
                 prefCat.setTitle(getString(R.string.pref_CustomEvents_Custom_title));
+                prefCat.setSummary(getString(R.string.pref_CustomEvents_Custom_Caption_summary));
             }
 
         } catch (Exception e) {
@@ -3850,6 +3876,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_CustomEvents_Custom5_Caption_key),
                         getString(R.string.pref_CustomEvents_Custom5_Labels_key),
                         getString(R.string.pref_CustomEvents_Death_Labels_key),
+                        getString(R.string.pref_CustomEvents_Fact_Caption_key),
                         getString(R.string.pref_CustomEvents_Holiday_Labels_key),
                         getString(R.string.pref_CustomEvents_NameDay_Labels_key),
                         getString(R.string.pref_CustomEvents_Other_Labels_key),
@@ -3922,6 +3949,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_DaysInfo_key),
                         getString(R.string.pref_EnabledFeatures_key),
                         getString(R.string.pref_List_Events_key),
+                        getString(R.string.pref_EventType_Icons_key),
+                        getString(R.string.pref_EventType_Emojis_key),
                         getString(R.string.pref_EventsWithoutYear_key),
                         getString(R.string.pref_Events_Hidden_key),
                         getString(R.string.pref_Events_Hidden_rawIds_key),
@@ -4882,6 +4911,455 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             alertToShow.show();
 
         } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void setupEventTypeActions() {
+        try {
+            // Проверяем, включена ли функция "Больше настроек"
+            boolean moreSettingsEnabled = eventsData.isFeatureEnabled(Constants.FEATURE_MORE_SETTINGS);
+
+            // Маппинг: key Actions Preference -> тип события
+            Map<String, String> actionsToEventType = new HashMap<>();
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_Birthday_Actions_key), Constants.EventType_BirthDay);
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_Anniversary_Actions_key), Constants.EventType_Anniversary);
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_NameDay_Actions_key), Constants.EventType_NameDay);
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_Crowning_Actions_key), Constants.EventType_Crowning);
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_Death_Actions_key), Constants.EventType_Death);
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_Another_Actions_key), Constants.EventType_Another);
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_Holiday_Actions_key), Constants.EventType_Holiday);
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_Other_Actions_key), Constants.EventType_Other);
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_Custom1_Actions_key), Constants.EventType_Custom1);
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_Custom2_Actions_key), Constants.EventType_Custom2);
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_Custom3_Actions_key), Constants.EventType_Custom3);
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_Custom4_Actions_key), Constants.EventType_Custom4);
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_Custom5_Actions_key), Constants.EventType_Custom5);
+            actionsToEventType.put(getString(R.string.pref_CustomEvents_Fact_Actions_key), Constants.EventType_Fact);
+
+            for (Map.Entry<String, String> entry : actionsToEventType.entrySet()) {
+                Preference pref = findPreference(entry.getKey());
+                if (pref instanceof EventTypeActionsPreference) {
+                    EventTypeActionsPreference actionsPref = (EventTypeActionsPreference) pref;
+                    String eventType = entry.getValue();
+                    actionsPref.setEventType(eventType);
+                    actionsPref.setCurrentEmoji(eventsData.getEventEmojiForType(eventType));
+                    actionsPref.setCurrentIconResId(eventsData.getEventIconForType(eventType));
+
+                    // Управляем видимостью кнопок в зависимости от FEATURE_MORE_SETTINGS
+                    actionsPref.setIconButtonVisible(moreSettingsEnabled);
+                    actionsPref.setEmojiButtonVisible(moreSettingsEnabled);
+
+                    // Кнопка заголовка видна только для пользовательских событий и фактов
+                    boolean showTitleButton = isCaptionEditEnable(eventType);
+                    actionsPref.setTitleButtonVisible(showTitleButton);
+
+                    actionsPref.setOnActionClickListener(new EventTypeActionsPreference.OnActionClickListener() {
+                        @Override
+                        public void onIconClick(String eventType) {
+                            selectEventIcon(eventType);
+                        }
+                        @Override
+                        public void onEmojiClick(String eventType) {
+                            selectEventEmoji(eventType);
+                        }
+                        @Override
+                        public void onTitleClick(String eventType) {
+                            if (isCaptionEditEnable(eventType)) {
+                                openCaptionEditor(eventType);
+                            }
+                        }
+                    });
+                    actionsPref.refresh();
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Проверяет, можно ли для этого типа события менять заголовок
+     */
+    private boolean isCaptionEditEnable(String eventType) {
+        return Constants.EventType_Custom1.equals(eventType)
+                || Constants.EventType_Custom2.equals(eventType)
+                || Constants.EventType_Custom3.equals(eventType)
+                || Constants.EventType_Custom4.equals(eventType)
+                || Constants.EventType_Custom5.equals(eventType);
+    }
+
+    // Метод выбора иконки (прототип - выбор из списка стандартных иконок)
+    private void selectEventIcon(String eventType) {
+        try {
+            List<String> iconNames = new ArrayList<>();
+            List<Integer> iconImages = new ArrayList<>();
+
+            // Стандартные иконки событий
+            iconNames.add(getString(R.string.event_type_birthday));
+            iconImages.add(R.drawable.ic_event_birthday);
+            iconNames.add(getString(R.string.event_type_anniversary));
+            iconImages.add(R.drawable.ic_event_wedding);
+            iconNames.add(getString(R.string.event_type_nameday));
+            iconImages.add(R.drawable.ic_event_nameday);
+            iconNames.add(getString(R.string.event_type_crowning));
+            iconImages.add(R.drawable.ic_event_crowning);
+            iconNames.add(getString(R.string.event_type_death));
+            iconImages.add(R.drawable.ic_event_death);
+            iconNames.add(getString(R.string.event_type_holiday));
+            iconImages.add(R.drawable.ic_event_holiday);
+            iconNames.add(getString(R.string.event_type_other));
+            iconImages.add(R.drawable.ic_event_other);
+            iconNames.add(getString(R.string.event_type_fact));
+            iconImages.add(R.drawable.ic_event_fact);
+            iconNames.add(getString(R.string.event_type_custom));
+            iconImages.add(R.drawable.ic_event_custom1);
+            iconNames.add(getString(R.string.event_type_custom));
+            iconImages.add(R.drawable.ic_event_custom2);
+            iconNames.add(getString(R.string.event_type_custom));
+            iconImages.add(R.drawable.ic_event_custom3);
+            iconNames.add(getString(R.string.event_type_custom));
+            iconImages.add(R.drawable.ic_event_custom4);
+            iconNames.add(getString(R.string.event_type_custom));
+            iconImages.add(R.drawable.ic_event_custom5);
+
+            ListAdapter adapter = new ImageSelectAdapter(this, iconNames, iconImages,
+                    ImageSelectAdapter.Scale.SQUARED, ta);
+            AlertDialog.Builder builder = new AlertDialog.Builder(
+                    new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.dialog_title_select_event_icon)
+                    .setAdapter(adapter, null)
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setNeutralButton(R.string.button_reset, (dialog, which) -> {
+                        // Сброс к иконке по умолчанию
+                        eventsData.preferences_event_icons.remove(eventType);
+                        eventsData.savePreferences();
+                        setupEventTypeActions(); // Обновляем UI
+                        ToastExpander.showInfoMsg(this, getString(R.string.msg_event_icon_changed));
+                    })
+                    .setCancelable(true);
+
+            AlertDialog alertToShow = builder.create();
+            ListView listView = alertToShow.getListView();
+            listView.setItemsCanFocus(false);
+            listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                eventsData.setEventIcon(eventType, iconImages.get(position));
+                eventsData.savePreferences();
+                alertToShow.dismiss();
+                ToastExpander.showInfoMsg(this, getString(R.string.msg_event_icon_changed));
+                // Обновляем UI
+                setupEventTypeActions();
+                eventsData.needUpdateEventList = true;
+            });
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
+                        ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(
+                        ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                // Отмечаем текущую иконку
+                int currentIcon = eventsData.getEventIconForType(eventType);
+                int currentIndex = iconImages.indexOf(currentIcon);
+                if (currentIndex >= 0) {
+                    listView.setItemChecked(currentIndex, true);
+                }
+            });
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Открывает диалог выбора эмодзи для типа события.
+     * Логика работы:
+     * 1. Выбранный эмодзи хранится в переменной selectedEmoji на уровне метода (не в адаптере),
+     *    чтобы сохранять состояние между сменами категорий.
+     * 2. При смене категории адаптер грида пересоздаётся с текущим selectedEmoji.
+     * 3. При выборе эмодзи обновляется selectedEmoji и пересоздаётся адаптер для отображения рамки.
+     * 4. Кнопка "Сбросить" не закрывает диалог, а устанавливает эмодзи по умолчанию.
+     */
+    private void selectEventEmoji(String eventType) {
+        try {
+            // === 1. Инициализация диалога и UI элементов ===
+            View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_emoji_picker, null);
+            GridView emojiGrid = dialogView.findViewById(R.id.emoji_grid);
+            Spinner categorySpinner = dialogView.findViewById(R.id.emoji_category_spinner);
+            TextView emojiPreview = dialogView.findViewById(R.id.emoji_preview);
+
+            // === 2. Получаем текущий выбранный эмодзи для этого типа события ===
+            final String[] selectedEmoji = {eventsData.getEventEmojiForType(eventType).trim()};
+            emojiPreview.setText(selectedEmoji[0]);
+
+            // === 3. Инициализация Spinner категорий ===
+            final List<String> allCategories = EmojiData.getAllCategories();
+            EmojiCategoryAdapter categoryAdapter = new EmojiCategoryAdapter(this, allCategories);
+            categorySpinner.setAdapter(categoryAdapter);
+
+            // === 4. Инициализация GridView эмодзи ===
+            final String[] selectedCategory = {allCategories.get(0)};
+            List<String> initialEmojis = EmojiData.getEmojisForCategory(selectedCategory[0]);
+
+            // Создаём адаптер грида, передавая текущий выбранный эмодзи для отображения рамки
+            final EmojiPickerAdapter[] gridAdapterHolder = {new EmojiPickerAdapter(this, initialEmojis, selectedEmoji[0])};
+            emojiGrid.setAdapter(gridAdapterHolder[0]);
+
+            // === 5. Обработчик смены категории в Spinner ===
+            categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    // Обновляем текущую категорию
+                    selectedCategory[0] = allCategories.get(position);
+
+                    // Получаем список эмодзи для новой категории
+                    List<String> emojis = EmojiData.getEmojisForCategory(selectedCategory[0]);
+
+                    // Пересоздаём адаптер грида с новым списком эмодзи и текущим выбранным эмодзи
+                    // Это гарантирует, что рамка будет отображена, если выбранный эмодзи есть в новой категории
+                    gridAdapterHolder[0] = new EmojiPickerAdapter(SettingsActivity.this, emojis, selectedEmoji[0]);
+                    emojiGrid.setAdapter(gridAdapterHolder[0]);
+
+                    // Если выбранный эмодзи есть в новой категории — скроллим к нему
+                    int emojiIndex = emojis.indexOf(selectedEmoji[0]);
+                    if (emojiIndex >= 0) {
+                        emojiGrid.smoothScrollToPosition(emojiIndex);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Ничего не делаем
+                }
+            });
+
+            // === 6. Обработчик выбора эмодзи в сетке ===
+            emojiGrid.setOnItemClickListener((parent, view, position, id) -> {
+                String newSelectedEmoji = ((String) parent.getItemAtPosition(position)).trim();
+                if (!newSelectedEmoji.isEmpty()) {
+                    // Обновляем выбранный эмодзи
+                    selectedEmoji[0] = newSelectedEmoji;
+                    emojiPreview.setText(selectedEmoji[0]);
+
+                    // Обновляем адаптер БЕЗ пересоздания — это сохраняет позицию скролла
+                    gridAdapterHolder[0].updateSelectedEmoji(selectedEmoji[0]);
+
+                    // Скроллим к выбранному эмодзи ТОЛЬКО если он не виден на экране
+                    emojiGrid.post(() -> {
+                        int firstVisible = emojiGrid.getFirstVisiblePosition();
+                        int lastVisible = emojiGrid.getLastVisiblePosition();
+                        if (position < firstVisible || position > lastVisible) {
+                            emojiGrid.smoothScrollToPosition(position);
+                        }
+                    });
+                }
+            });
+
+            // === 7. Создание AlertDialog ===
+            AlertDialog.Builder builder = new AlertDialog.Builder(
+                    new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+            builder.setTitle(R.string.dialog_title_select_event_emoji);
+            builder.setView(dialogView);
+
+            // Кнопка "ОК" — сохраняет выбранный эмодзи и закрывает диалог
+            builder.setPositiveButton(R.string.button_ok, (dialog, which) -> {
+                if (!selectedEmoji[0].isEmpty()) {
+                    eventsData.setEventEmoji(eventType, selectedEmoji[0]);
+                    eventsData.savePreferences();
+                    setupEventTypeActions(); // Обновляем UI в настройках
+                    ToastExpander.showInfoMsg(this,
+                            getString(R.string.msg_event_emoji_changed, selectedEmoji[0]));
+                    eventsData.needUpdateEventList = true; // Помечаем, что нужно обновить список событий
+                }
+            });
+
+            // Кнопка "Отмена" — закрывает диалог без сохранения
+            builder.setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
+
+            // Кнопка "Сбросить" — передаём null, чтобы диалог НЕ закрывался автоматически
+            // Обработчик будет установлен позже в setOnShowListener
+            builder.setNeutralButton(R.string.button_reset, null);
+
+            // === 8. Настройка диалога после отображения ===
+            AlertDialog alertToShow = builder.create();
+            alertToShow.setOnShowListener(arg0 -> {
+                // Устанавливаем цвета кнопок согласно теме
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
+                        ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
+                        ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(
+                        ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+
+                // === 8.1. Обработчик кнопки "Сбросить" ===
+                // Переопределяем обработчик после show(), чтобы диалог не закрывался
+                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> {
+                    // Получаем эмодзи по умолчанию
+                    String defaultEmoji = eventsData.getDefaultEmojiForType(eventType).trim();
+
+                    // Удаляем кастомное значение из preferences
+                    eventsData.preferences_event_emojis.remove(eventType);
+                    eventsData.savePreferences();
+
+                    // Обновляем UI
+                    selectedEmoji[0] = defaultEmoji;
+                    emojiPreview.setText(defaultEmoji);
+
+                    // Находим категорию с дефолтным эмодзи
+                    int categoryIndex = EmojiData.findCategoryIndexForEmoji(defaultEmoji);
+                    selectedCategory[0] = allCategories.get(categoryIndex);
+
+                    // Пересоздаём адаптер грида с дефолтным эмодзи
+                    List<String> emojis = EmojiData.getEmojisForCategory(selectedCategory[0]);
+                    gridAdapterHolder[0] = new EmojiPickerAdapter(SettingsActivity.this, emojis, selectedEmoji[0]);
+                    emojiGrid.setAdapter(gridAdapterHolder[0]);
+
+                    // Переключаем Spinner на нужную категорию
+                    categorySpinner.setSelection(categoryIndex);
+
+                    // Скроллим к дефолтному эмодзи
+                    emojiGrid.post(() -> {
+                        int emojiIndex = emojis.indexOf(defaultEmoji);
+                        if (emojiIndex >= 0) {
+                            int firstVisible = emojiGrid.getFirstVisiblePosition();
+                            int lastVisible = emojiGrid.getLastVisiblePosition();
+                            if (emojiIndex < firstVisible || emojiIndex > lastVisible) {
+                                emojiGrid.smoothScrollToPosition(emojiIndex);
+                            }
+                        }
+                    });
+
+                    ToastExpander.showInfoMsg(this,
+                            getString(R.string.msg_event_emoji_changed, defaultEmoji));
+                });
+
+                // === 8.2. При открытии диалога — находим категорию текущего эмодзи и скроллим к нему ===
+                if (!selectedEmoji[0].isEmpty()) {
+                    int categoryIndex = EmojiData.findCategoryIndexForEmoji(selectedEmoji[0]);
+                    categorySpinner.setSelection(categoryIndex);
+
+                    // После установки категории — скроллим к выбранному эмодзи
+                    emojiGrid.post(() -> {
+                        List<String> emojis = EmojiData.getEmojisForCategory(allCategories.get(categoryIndex));
+                        int emojiIndex = emojis.indexOf(selectedEmoji[0]);
+                        if (emojiIndex >= 0) {
+                            int firstVisible = emojiGrid.getFirstVisiblePosition();
+                            int lastVisible = emojiGrid.getLastVisiblePosition();
+                            if (emojiIndex < firstVisible || emojiIndex > lastVisible) {
+                                emojiGrid.smoothScrollToPosition(emojiIndex);
+                            }
+                        }
+                    });
+                }
+            });
+
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertToShow.show();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    // Метод открытия редактора заголовка для пользовательских событий
+    private void openCaptionEditor(String eventType) {
+        try {
+            String prefKey;
+            String currentCaption;
+
+            switch (eventType) {
+                case Constants.EventType_Fact:
+                    prefKey = getString(R.string.pref_CustomEvents_Fact_Caption_key);
+                    currentCaption = eventsData.preferences_fact_caption;
+                    break;
+                case Constants.EventType_Custom1:
+                    prefKey = getString(R.string.pref_CustomEvents_Custom1_Caption_key);
+                    currentCaption = eventsData.preferences_customevent1_caption;
+                    break;
+                case Constants.EventType_Custom2:
+                    prefKey = getString(R.string.pref_CustomEvents_Custom2_Caption_key);
+                    currentCaption = eventsData.preferences_customevent2_caption;
+                    break;
+                case Constants.EventType_Custom3:
+                    prefKey = getString(R.string.pref_CustomEvents_Custom3_Caption_key);
+                    currentCaption = eventsData.preferences_customevent3_caption;
+                    break;
+                case Constants.EventType_Custom4:
+                    prefKey = getString(R.string.pref_CustomEvents_Custom4_Caption_key);
+                    currentCaption = eventsData.preferences_customevent4_caption;
+                    break;
+                case Constants.EventType_Custom5:
+                    prefKey = getString(R.string.pref_CustomEvents_Custom5_Caption_key);
+                    currentCaption = eventsData.preferences_customevent5_caption;
+                    break;
+                default:
+                    return;
+            }
+
+            // Создаём диалог редактирования заголовка
+            int themeEditText = ContactsEvents.getInstance().preferences_theme.themeEditText != 0
+                    ? ContactsEvents.getInstance().preferences_theme.themeEditText
+                    : ContactsEvents.themeEditText_default;
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(
+                    new ContextThemeWrapper(this, themeEditText));
+            builder.setTitle(R.string.pref_CustomEvents_Custom_Caption_title);
+            builder.setIcon(android.R.drawable.ic_menu_edit);
+
+            final EditText input = new EditText(this);
+            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+            // Устанавливаем текст только если он не пустой
+            if (!currentCaption.isEmpty()) {
+                input.setText(currentCaption);
+            }
+            input.setHint(R.string.pref_CustomEvent_Caption_hint);
+            input.setTextSize(16);
+            input.setSingleLine(true);
+            builder.setView(input);
+
+            builder.setPositiveButton(R.string.button_ok, (dialog, which) -> {/**/});
+            builder.setNegativeButton(R.string.button_cancel, (dialog1, which) -> dialog1.cancel());
+
+            AlertDialog alertToShow = builder.create();
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
+                        ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
+                        ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+            });
+            alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            input.requestFocus();
+            if (alertToShow.getWindow() != null)
+                alertToShow.getWindow().setSoftInputMode(
+                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            alertToShow.show();
+
+            if (alertToShow.getWindow() != null) {
+                alertToShow.getWindow().setBackgroundDrawable(
+                        new ColorDrawable(ta.getColor(R.styleable.Theme_editTextBackgroundCustom, 0)));
+            }
+
+            // Обработчик кнопки OK
+            alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+                String newCaption = input.getText().toString().trim();
+                // Сохраняем новый заголовок (даже если пустой)
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                preferences.edit().putString(prefKey, newCaption).apply();
+                // Обновляем данные
+                eventsData.getPreferences();
+                updateTitles(); // Обновляем заголовки категорий в настройках
+                setupEventTypeActions(); // Обновляем превью эмодзи
+                if (!newCaption.isEmpty()) {
+                    ToastExpander.showInfoMsg(this,
+                            getString(R.string.msg_event_type_label_set, newCaption));
+                }
+                alertToShow.dismiss();
+            });
+
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }

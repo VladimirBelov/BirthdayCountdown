@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.08.2026, 16:33
+ *  * Created by Vladimir Belov on 01.09.2026, 02:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 03.08.2026, 00:05
+ *  * Last modified 31.08.2026, 01:54
  *
  */
 
@@ -1957,14 +1957,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             for (String file: eventsData.preferences_Birthday_files) {
                 String[] fileDetails = file.split(Constants.REGEX_BAR);
                 if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
-                    fileNames.add(getString(R.string.event_type_birthday_emoji) + Constants.STRING_SPACE + fileDetails[0]);
+                    fileNames.add(eventsData.getEventEmojiForType(Constants.EventType_BirthDay) + Constants.STRING_SPACE + fileDetails[0]);
                     fileURIs.add(fileDetails[1]);
                 }
             }
             for (String file: eventsData.preferences_OtherEvent_files) {
                 String[] fileDetails = file.split(Constants.REGEX_BAR);
                 if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
-                    fileNames.add(getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + fileDetails[0]);
+                    fileNames.add(eventsData.getEventEmojiForType(Constants.EventType_Other) + Constants.STRING_SPACE + fileDetails[0]);
                     fileURIs.add(fileDetails[1]);
                 }
             }
@@ -1978,14 +1978,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             for (String file: eventsData.preferences_HolidayEvent_files) {
                 String[] fileDetails = file.split(Constants.REGEX_BAR);
                 if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
-                    fileNames.add(getString(R.string.event_type_holiday_emoji) + Constants.STRING_SPACE + fileDetails[0]);
+                    fileNames.add(eventsData.getEventEmojiForType(Constants.EventType_Holiday) + Constants.STRING_SPACE + fileDetails[0]);
                     fileURIs.add(fileDetails[1]);
                 }
             }
             for (String file: eventsData.preferences_FactEvent_files) {
                 String[] fileDetails = file.split(Constants.REGEX_BAR);
                 if (!fileDetails[0].isEmpty() && !fileURIs.contains(fileDetails[1])) {
-                    fileNames.add(getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE + fileDetails[0]);
+                    fileNames.add(eventsData.getEventEmojiForType(Constants.EventType_Fact) + Constants.STRING_SPACE + fileDetails[0]);
                     fileURIs.add(fileDetails[1]);
                 }
             }

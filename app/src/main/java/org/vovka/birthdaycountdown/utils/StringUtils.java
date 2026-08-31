@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.07.2026, 01:57
+ *  * Created by Vladimir Belov on 01.09.2026, 02:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.07.2026, 01:05
+ *  * Last modified 31.08.2026, 01:54
  *
  */
 
@@ -557,11 +557,11 @@ public class StringUtils {
 
     /** Возвращает список фактов как единую строку с иконками и переводом строк
      * @param listFacts Список фактов
-     * @param res Ресурсы
+     * @param eventsData Синглтон ContactsEvents
      * @return Единая строка с фактами
      */
     @NonNull
-    public static String getFactsAsString(@NonNull List<String> listFacts, Resources res) {
+    public static String getFactsAsString(@NonNull List<String> listFacts, ContactsEvents eventsData) {
         StringBuilder eventDetails = new StringBuilder();
         try {
 
@@ -569,7 +569,7 @@ public class StringUtils {
                 if (eventDetails.length() > 0) {
                     eventDetails.append(Constants.STRING_EOL);
                 }
-                eventDetails.append(res.getString(R.string.event_type_fact_emoji));
+                eventDetails.append(eventsData.getEventEmojiForType(Constants.EventType_Holiday));
                 eventDetails.append(Constants.STRING_SPACE);
                 eventDetails.append(fact);
             }

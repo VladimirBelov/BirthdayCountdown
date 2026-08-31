@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 27.08.2026, 01:43
+  ~  */
+  -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/emoji_text"
+    android:layout_width="48dip"
+    android:layout_height="48dip"
+    android:gravity="center"
+    android:textSize="28sp"
+    android:textColor="@android:color/black"
+    android:background="?android:attr/selectableItemBackground"/>

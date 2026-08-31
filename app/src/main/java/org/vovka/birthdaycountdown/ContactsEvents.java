@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.08.2026, 13:51
+ *  * Created by Vladimir Belov on 01.09.2026, 02:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.08.2026, 13:20
+ *  * Last modified 31.08.2026, 02:09
  *
  */
 
@@ -646,6 +646,7 @@ public class ContactsEvents {
     FormatName preferences_rules_calendars_name_format;
     FormatName preferences_rules_files_name_format;
     int preferences_rules_unrecognized;
+    String preferences_fact_caption;
     String preferences_customevent1_caption;
     String preferences_customevent2_caption;
     String preferences_customevent3_caption;
@@ -710,8 +711,14 @@ public class ContactsEvents {
     /** Список id справочников фактов */
     Set<String> preferences_FactEvent_ids = new HashSet<>();
     final private Set<String> preferences_eventsWithoutYear = new HashSet<>();
+    /** Выбранный набор иконок для силуэтов персон */
     private int preferences_IconPackNumber;
+    /** Список недавно использовавшихся цветов */
     final List<Integer> preferences_RecentColors = new ArrayList<>();
+    /** Хранилище иконок для типов событий */
+    final HashMap<String, Integer> preferences_event_icons = new HashMap<>();
+    /** Хранилище эмодзи для типов событий */
+    final HashMap<String, String> preferences_event_emojis = new HashMap<>();
 
     //Список событий
     int preferences_list_events_scope;
@@ -1565,7 +1572,7 @@ public class ContactsEvents {
             }
 
             if (singleEventArray.length < Position_attrAmount) {
-                if (eventInfo.startsWith(context.getString(R.string.event_type_fact_emoji) + Constants.STRING_SPACE)) {
+                if (eventInfo.startsWith(ContactsEvents.getInstance().getEventEmojiForType(Constants.EventType_Holiday) + Constants.STRING_SPACE)) {
                     Intent intentShare = new Intent(Intent.ACTION_SEND);
                     intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                     intentShare.putExtra(Intent.EXTRA_TEXT, eventInfo);
@@ -1905,6 +1912,7 @@ public class ContactsEvents {
             preferences_OtherEvent_ids = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Other_Embedded_key), new HashSet<>());
 
             //Факты
+            preferences_fact_caption = getPreferenceString(preferences, context.getString(R.string.pref_CustomEvents_Fact_Caption_key), context.getString(R.string.pref_CustomEvents_Fact_title)).trim();
             preferences_FactEvent_files = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Fact_LocalFiles_key), new HashSet<>());
             preferences_FactEvent_ids = getPreferenceStringSet(preferences, context.getString(R.string.pref_CustomEvents_Fact_Bundled_Ids_key), new HashSet<>());
 
@@ -1986,6 +1994,28 @@ public class ContactsEvents {
                 }
             }
             preferences_customevent5_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom5_UseYear_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
+
+            // Иконки и символы событий
+            preferences_event_icons.clear();
+            preferences_event_emojis.clear();
+            // формат: "eventType:drawableResId" и "eventType:emoji"
+            Set<String> iconsSet = getPreferenceStringSet(preferences, context.getString(R.string.pref_EventType_Icons_key), new HashSet<>());
+            for (String item : iconsSet) {
+                int idx = item.indexOf(Constants.STRING_COLON_SPACE);
+                if (idx > -1) {
+                    try {
+                        preferences_event_icons.put(item.substring(0, idx),
+                                Integer.parseInt(item.substring(idx + Constants.STRING_COLON_SPACE.length())));
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
+            Set<String> emojisSet = getPreferenceStringSet(preferences, context.getString(R.string.pref_EventType_Emojis_key), new HashSet<>());
+            for (String item : emojisSet) {
+                int idx = item.indexOf(Constants.STRING_COLON_SPACE);
+                if (idx > -1) {
+                    preferences_event_emojis.put(item.substring(0, idx), item.substring(idx + Constants.STRING_COLON_SPACE.length()));
+                }
+            }
 
             preferences_local_events_photo_size = getPreferenceInt(preferences, context.getString(R.string.pref_LocalEvents_PhotoSize_key), resources.getInteger(R.integer.pref_LocalEvents_PhotoSize_default));
 
@@ -2372,6 +2402,20 @@ public class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_Quiz_Questions_key), preferences_quiz_questions);
             editor.putStringSet(context.getString(R.string.pref_Quiz_EventSources_key), preferences_quiz_sources);
             editor.putStringSet(context.getString(R.string.pref_EnabledFeatures_key), preferences_enabled_features);
+
+            Set<String> iconsToSave = new HashSet<>();
+            for (Map.Entry<String, Integer> entry : preferences_event_icons.entrySet()) {
+                iconsToSave.add(entry.getKey() + Constants.STRING_COLON_SPACE + entry.getValue());
+            }
+            editor.putStringSet(context.getString(R.string.pref_EventType_Icons_key), iconsToSave);
+            iconsToSave.clear();
+
+            Set<String> emojisToSave = new HashSet<>();
+            for (Map.Entry<String, String> entry : preferences_event_emojis.entrySet()) {
+                emojisToSave.add(entry.getKey() + Constants.STRING_COLON_SPACE + entry.getValue());
+            }
+            editor.putStringSet(context.getString(R.string.pref_EventType_Emojis_key), emojisToSave);
+            emojisToSave.clear();
 
             //Чистка
             editor.putString("ColorsResent", null);
@@ -5822,156 +5866,123 @@ public class ContactsEvents {
      */
     @NonNull
     Event createTypedEvent(int eventType, @NonNull String eventLabel) {
-
         Event event = new Event();
-
         try {
-
             event.label = eventLabel;
-
             switch (eventType) {
                 case Constants.Type_BirthDay:
-
                     event.caption = getResources().getString(R.string.event_type_birthday);
                     event.type = Constants.EventType_BirthDay;
                     event.subType = Constants.EventType_BirthDay;
-                    event.icon = R.drawable.ic_event_birthday;
-                    event.emoji = getResources().getString(R.string.event_type_birthday_emoji);
+                    event.icon = getEventIconForType(Constants.EventType_BirthDay);
+                    event.emoji = getEventEmojiForType(Constants.EventType_BirthDay);
                     event.needScanContacts = true;
-
                     break;
                 case Constants.Type_Other:
-
                     event.caption = getResources().getString(R.string.event_type_other);
                     event.type = Constants.EventType_Other;
                     event.subType = Constants.EventType_Other;
-                    event.icon = R.drawable.ic_event_other;
-                    event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
+                    event.icon = getEventIconForType(Constants.EventType_Other);
+                    event.emoji = getEventEmojiForType(Constants.EventType_Other);
                     event.needScanContacts = false;
-
                     break;
                 case Constants.Type_HolidayEvent:
-
                     event.caption = getResources().getString(R.string.event_type_holiday);
                     event.type = Constants.EventType_Holiday;
                     event.subType = Constants.EventType_Holiday;
-                    event.icon = R.drawable.ic_event_holiday;
-                    event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
+                    event.icon = getEventIconForType(Constants.EventType_Holiday);
+                    event.emoji = getEventEmojiForType(Constants.EventType_Holiday);
                     event.needScanContacts = false;
-
                     break;
                 case Constants.Type_Death:
-
                     event.caption = getResources().getString(R.string.event_type_death);
                     event.type = Constants.EventType_Custom;
                     event.subType = Constants.EventType_Death;
-                    event.icon = R.drawable.ic_event_death;
-                    event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_death_emoji) : "\uD83D\uDCC5";
+                    event.icon = getEventIconForType(Constants.EventType_Death);
+                    event.emoji = getEventEmojiForType(Constants.EventType_Death);
                     event.needScanContacts = true;
-
                     break;
                 case Constants.Type_Anniversary:
-
                     event.caption = getResources().getString(R.string.event_type_anniversary);
                     event.type = Constants.EventType_Anniversary;
                     event.subType = Constants.EventType_Anniversary;
-                    event.icon = R.drawable.ic_event_wedding;
-                    event.emoji = getResources().getString(R.string.event_type_wedding_emoji);
+                    event.icon = getEventIconForType(Constants.EventType_Anniversary);
+                    event.emoji = getEventEmojiForType(Constants.EventType_Anniversary);
                     event.needScanContacts = true;
-
                     break;
                 case Constants.Type_NameDay:
-
                     event.caption = getResources().getString(R.string.event_type_nameday);
                     event.type = Constants.EventType_Custom;
                     event.subType = Constants.EventType_NameDay;
-                    event.icon = R.drawable.ic_event_nameday;
-                    event.emoji = getResources().getString(R.string.event_type_nameday_emoji);
+                    event.icon = getEventIconForType(Constants.EventType_NameDay);
+                    event.emoji = getEventEmojiForType(Constants.EventType_NameDay);
                     event.needScanContacts = true;
-
                     break;
                 case Constants.Type_Crowning:
-
                     event.caption = getResources().getString(R.string.event_type_crowning);
                     event.type = Constants.EventType_Custom;
                     event.subType = Constants.EventType_Crowning;
-                    event.icon = R.drawable.ic_event_crowning;
-                    event.emoji = getResources().getString(R.string.event_type_crowning_emoji);
+                    event.icon = getEventIconForType(Constants.EventType_Crowning);
+                    event.emoji = getEventEmojiForType(Constants.EventType_Crowning);
                     event.needScanContacts = true;
-
                     break;
                 case Constants.Type_Another:
-
                     event.caption = getResources().getString(R.string.event_type_another);
                     event.type = Constants.EventType_Another;
                     event.subType = Constants.EventType_Another;
-                    event.icon = R.drawable.ic_event_other;
-                    event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
+                    event.icon = getEventIconForType(Constants.EventType_Another);
+                    event.emoji = getEventEmojiForType(Constants.EventType_Another);
                     event.needScanContacts = true;
-
                     break;
                 case Constants.Type_Custom1:
-
                     event.caption = preferences_customevent1_caption;
                     event.type = Constants.EventType_Custom;
                     event.subType = Constants.EventType_Custom1;
-                    event.icon = R.drawable.ic_event_custom1;
-                    event.emoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_custom1_emoji) : "\uD83D\uDCC6";
+                    event.icon = getEventIconForType(Constants.EventType_Custom1);
+                    event.emoji = getEventEmojiForType(Constants.EventType_Custom1);
                     event.needScanContacts = true;
-
                     break;
                 case Constants.Type_Custom2:
-
                     event.caption = preferences_customevent2_caption;
                     event.type = Constants.EventType_Custom;
                     event.subType = Constants.EventType_Custom2;
-                    event.icon = R.drawable.ic_event_custom2;
-                    event.emoji = getResources().getString(R.string.event_type_custom2_emoji);
+                    event.icon = getEventIconForType(Constants.EventType_Custom2);
+                    event.emoji = getEventEmojiForType(Constants.EventType_Custom2);
                     event.needScanContacts = true;
-
                     break;
                 case Constants.Type_Custom3:
-
                     event.caption = preferences_customevent3_caption;
                     event.type = Constants.EventType_Custom;
                     event.subType = Constants.EventType_Custom3;
-                    event.icon = R.drawable.ic_event_custom3;
-                    event.emoji = getResources().getString(R.string.event_type_custom3_emoji);
+                    event.icon = getEventIconForType(Constants.EventType_Custom3);
+                    event.emoji = getEventEmojiForType(Constants.EventType_Custom3);
                     event.needScanContacts = true;
-
                     break;
                 case Constants.Type_Custom4:
-
                     event.caption = preferences_customevent4_caption;
                     event.type = Constants.EventType_Custom;
                     event.subType = Constants.EventType_Custom4;
-                    event.icon = R.drawable.ic_event_custom4;
-                    event.emoji = getResources().getString(R.string.event_type_custom4_emoji);
+                    event.icon = getEventIconForType(Constants.EventType_Custom4);
+                    event.emoji = getEventEmojiForType(Constants.EventType_Custom4);
                     event.needScanContacts = true;
-
                     break;
                 case Constants.Type_Custom5:
-
                     event.caption = preferences_customevent5_caption;
                     event.type = Constants.EventType_Custom;
                     event.subType = Constants.EventType_Custom5;
-                    event.icon = R.drawable.ic_event_custom5;
-                    event.emoji = getResources().getString(R.string.event_type_custom5_emoji);
+                    event.icon = getEventIconForType(Constants.EventType_Custom5);
+                    event.emoji = getEventEmojiForType(Constants.EventType_Custom5);
                     event.needScanContacts = true;
-
                     break;
                 default:
-
                     event.caption = getResources().getString(R.string.event_type_unrecognized);
                     event.type = Constants.EventType_Unrecognized;
                     event.subType = Constants.EventType_Unrecognized;
                     event.icon = R.drawable.ic_event_unknown;
                     event.emoji = getResources().getString(R.string.event_type_unknown_emoji);
                     event.needScanContacts = false;
-
                     break;
             }
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -7818,7 +7829,7 @@ public class ContactsEvents {
                 String textSmall = null;
                 int countEvents = 0;
                 if (!listFacts.isEmpty()) {
-                    String factsDetails = StringUtils.getFactsAsString(listFacts, resources);
+                    String factsDetails = StringUtils.getFactsAsString(listFacts, ContactsEvents.this);
                     textBig.append(factsDetails);
                     eventsList.addAll(Arrays.asList(factsDetails.split(Constants.STRING_EOL)));
                 }
@@ -8138,7 +8149,7 @@ public class ContactsEvents {
                 //Только факты
                 if (prefType != 4 && !listFacts.isEmpty()) {
                     int notificationID = Constants.defaultNotificationID + generator.nextInt(100);
-                    final String factsDetails = StringUtils.getFactsAsString(listFacts, resources);
+                    final String factsDetails = StringUtils.getFactsAsString(listFacts, ContactsEvents.this);
                     ArrayList<String> eventsList = new ArrayList<>(Arrays.asList(factsDetails.split(Constants.STRING_EOL)));
 
                     //Запуск диалога со списком событий
@@ -11008,7 +11019,7 @@ public class ContactsEvents {
 
                             String eventEmoji = StringUtils.extractLeadingEmoji(eventsPack[0]);
                             if (!StringUtils.hasContent(eventEmoji)) {
-                                eventEmoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_holiday_emoji) : "\uD83C\uDFD6️";
+                                eventEmoji = getEventEmojiForType(Constants.EventType_Holiday);
                             }
 
                             for (int i = 1; i < countEvents; i++) {
@@ -11086,7 +11097,7 @@ public class ContactsEvents {
 
                             String eventEmoji = StringUtils.extractLeadingEmoji(eventsPack[0]);
                             if (!StringUtils.hasContent(eventEmoji)) {
-                                eventEmoji = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getString(R.string.event_type_other_emoji) : "\uD83D\uDCC6";
+                                eventEmoji = getEventEmojiForType(Constants.EventType_Other);
                             }
 
                             for (int i = 1; i < countEvents; i++) {
@@ -11768,6 +11779,72 @@ public class ContactsEvents {
         }
         if (eventsExecutor != null) {
             eventsExecutor.shutdown();
+        }
+    }
+
+    // Методы для получения иконки и эмодзи по типу события
+    @DrawableRes
+    int getEventIconForType(@NonNull String eventType) {
+        Integer icon = preferences_event_icons.get(eventType);
+        if (icon != null && icon > 0) return icon;
+        // Возвращаем иконку по умолчанию
+        return getDefaultIconForType(eventType);
+    }
+
+    @NonNull
+    public String getEventEmojiForType(@NonNull String eventType) {
+        String emoji = preferences_event_emojis.get(eventType);
+        if (emoji != null && !emoji.isEmpty()) return emoji;
+        // Возвращаем эмодзи по умолчанию
+        return getDefaultEmojiForType(eventType);
+    }
+
+    void setEventIcon(@NonNull String eventType, @DrawableRes int iconResId) {
+        preferences_event_icons.put(eventType, iconResId);
+    }
+
+    void setEventEmoji(@NonNull String eventType, @NonNull String emoji) {
+        preferences_event_emojis.put(eventType, emoji);
+    }
+
+    @DrawableRes
+    int getDefaultIconForType(@NonNull String eventType) {
+        switch (eventType) {
+            case Constants.EventType_BirthDay: return R.drawable.ic_event_birthday;
+            case Constants.EventType_Anniversary: return R.drawable.ic_event_wedding;
+            case Constants.EventType_NameDay: return R.drawable.ic_event_nameday;
+            case Constants.EventType_Crowning: return R.drawable.ic_event_crowning;
+            case Constants.EventType_Death: return R.drawable.ic_event_death;
+            case Constants.EventType_Holiday: return R.drawable.ic_event_holiday;
+            case Constants.EventType_Fact: return R.drawable.ic_event_fact;
+            case Constants.EventType_Custom1: return R.drawable.ic_event_custom1;
+            case Constants.EventType_Custom2: return R.drawable.ic_event_custom2;
+            case Constants.EventType_Custom3: return R.drawable.ic_event_custom3;
+            case Constants.EventType_Custom4: return R.drawable.ic_event_custom4;
+            case Constants.EventType_Custom5: return R.drawable.ic_event_custom5;
+            default: return R.drawable.ic_event_other;
+        }
+    }
+
+    @NonNull
+    String getDefaultEmojiForType(@NonNull String eventType) {
+        switch (eventType) {
+            case Constants.EventType_BirthDay: return getResources().getString(R.string.event_type_birthday_emoji);
+            case Constants.EventType_Anniversary: return getResources().getString(R.string.event_type_wedding_emoji);
+            case Constants.EventType_NameDay: return getResources().getString(R.string.event_type_nameday_emoji);
+            case Constants.EventType_Crowning: return getResources().getString(R.string.event_type_crowning_emoji);
+            case Constants.EventType_Death: return getResources().getString(R.string.event_type_death_emoji);
+            case Constants.EventType_Holiday: return getResources().getString(R.string.event_type_holiday_emoji);
+            case Constants.EventType_Another:
+            case Constants.EventType_Other:
+                return getResources().getString(R.string.event_type_other_emoji);
+            case Constants.EventType_Custom1: return getResources().getString(R.string.event_type_custom1_emoji);
+            case Constants.EventType_Custom2: return getResources().getString(R.string.event_type_custom2_emoji);
+            case Constants.EventType_Custom3: return getResources().getString(R.string.event_type_custom3_emoji);
+            case Constants.EventType_Custom4: return getResources().getString(R.string.event_type_custom4_emoji);
+            case Constants.EventType_Custom5: return getResources().getString(R.string.event_type_custom5_emoji);
+            case Constants.EventType_Fact: return getResources().getString(R.string.event_type_fact_emoji);
+            default: return getResources().getString(R.string.event_type_unknown_emoji);
         }
     }
 

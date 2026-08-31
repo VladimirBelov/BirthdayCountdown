@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 27.07.2026, 11:42
+  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 27.07.2026, 08:30
+  ~  * Last modified 01.09.2026, 01:41
   ~  */
   -->
 
@@ -290,6 +290,7 @@
     <string name="event_type_death">Výročí úmrtí</string>
     <string name="event_type_crowning">Korunování</string>
     <string name="event_type_nameday">Svátky</string>
+    <string name="event_type_fact">Fakt</string>
     <string name="event_type_calendar">Událost kalendáře</string>
     <string name="event_type_file">Událost souboru</string>
     <string name="event_type_custom">Vlastní událost</string>
@@ -479,6 +480,14 @@
     <string name="pref_CustomEvents_LocalFiles_summary">Zobrazit události z vybraných souborů. Dlouhým stisknutím položky seznamu zobrazíte soubor</string>
 
     <string name="pref_CustomEvents_MultiType_LocalFiles_summary">Zobrazit události z vybraných souborů (formáty: DarkBirthday, iCalendar, vCard, BirthdayPro). Dlouhým stisknutím položky seznamu zobrazíte soubor</string>
+
+    <string name="pref_EventType_Icon_title">Ikona</string>
+    <string name="pref_EventType_Emoji_title">Symbol</string>
+    <string name="pref_EventType_Caption_title">Popisek</string>
+    <string name="dialog_title_select_event_icon">Vyberte ikonu události</string>
+    <string name="msg_event_icon_changed">Ikona události změněna</string>
+    <string name="msg_event_emoji_changed">Symbol události změněn: %1$s</string>
+    <string name="dialog_title_select_event_emoji">Vyberte symbol události</string>
 
     <string-array name="pref_Theme_entries">
         <item>Hnědá</item>
