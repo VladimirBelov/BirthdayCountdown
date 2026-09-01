@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.07.2026, 18:16
+ *  * Created by Vladimir Belov on 02.09.2026, 01:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.07.2026, 17:59
+ *  * Last modified 01.09.2026, 20:55
  *
  */
 
@@ -193,8 +193,8 @@ public final class Constants {
     public static final String EventType_Holiday = "4";
     static final String EventType_Calendar = "20";
     static final String EventType_File = "21";
-    public static final String EventType_Xdays = "22";
-    static final String EventType_Fact = "24";
+    public static final String EventType_XDays = "22";
+    public static final String EventType_Fact = "24";
     static final String EventType_Unrecognized = "99";
 
     static final int pref_List_NameFormat_FirstSecondLast = 1;

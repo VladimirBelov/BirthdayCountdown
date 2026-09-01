@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 02:02
+ *  * Created by Vladimir Belov on 02.09.2026, 01:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 01:57
+ *  * Last modified 02.09.2026, 00:18
  *
  */
 
@@ -48,6 +48,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceGroup;
@@ -346,6 +347,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private void updateTitles() {
         try {
             PreferenceCategory prefCat;
+
+            // Типы событий
+            MultiSelectListPreference pref = (MultiSelectListPreference) findPreference(getString(R.string.pref_List_Events_key));
+            if (pref != null) {
+                pref.setEntries(eventsData.getEventTypesWithEmoji().toArray(new CharSequence[0]));
+            }
+            pref = (MultiSelectListPreference) findPreference(getString(R.string.pref_Notifications_Events_key));
+            if (pref != null) {
+                pref.setEntries(eventsData.getEventTypesWithEmojiForNotify().toArray(new CharSequence[0]));
+            }
+            pref = (MultiSelectListPreference) findPreference(getString(R.string.pref_Notifications2_Events_key));
+            if (pref != null) {
+                pref.setEntries(eventsData.getEventTypesWithEmojiForNotify().toArray(new CharSequence[0]));
+            }
 
             // Факты
             prefCat = (PreferenceCategory) findPreference(getString(R.string.pref_CustomEvents_Fact_key));
@@ -730,7 +745,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             //Список событий. Типы событий
             setSummaryForMultiList(
                     R.string.pref_List_Events_key, R.array.pref_EventTypes_values_default, R.string.pref_List_EventTypes_summary,
-                    R.array.pref_List_EventTypes_entries, R.array.pref_List_EventTypes_values);
+                    eventsData.getEventTypesWithEmoji(), R.array.pref_List_EventTypes_values);
 
             //Источники событий для списка
             setSummaryForEventSources(R.string.pref_List_EventSources_key, R.string.pref_List_EventSources_description);
@@ -787,10 +802,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         //Типы событий
         setSummaryForMultiList(
                 R.string.pref_Notifications_Events_key, R.array.pref_EventTypes_values_default, R.string.pref_Notifications_EventTypes_summary,
-                R.array.pref_Notifications_EventTypes_entries, R.array.pref_Notifications_EventTypes_values);
+                eventsData.getEventTypesWithEmojiForNotify(), R.array.pref_Notifications_EventTypes_values);
         setSummaryForMultiList(
                 R.string.pref_Notifications2_Events_key, R.array.pref_EventTypes_values_default, R.string.pref_Notifications_EventTypes_summary,
-                R.array.pref_Notifications_EventTypes_entries, R.array.pref_Notifications_EventTypes_values);
+                eventsData.getEventTypesWithEmojiForNotify(), R.array.pref_Notifications_EventTypes_values);
 
         //Время уведомления
         setSummaryForNotificationsAlarmHour();
@@ -1073,12 +1088,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             String[] defaultArr = getResources().getStringArray(prefDefaultKey);
             if (entriesArr.length != valuesArr.length) return;
 
-            //Маппинг: value → entry (O(1) поиск)
-            Map<String, String> valueToEntry = new HashMap<>();
-            for (int i = 0; i < entriesArr.length; i++) {
-                valueToEntry.put(valuesArr[i], entriesArr[i]);
-            }
-
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
                 if (!(newValue instanceof Set<?>)) return false;
 
@@ -1086,9 +1095,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 Set<String> newValues = (Set<String>) newValue;
 
                 List<String> displayNames = new ArrayList<>();
-                for (String value : newValues) {
-                    String entry = valueToEntry.get(value);
-                    if (entry != null) displayNames.add(entry);
+                for (int i = 0; i < entriesArr.length; i++) {
+                    if (newValues.contains(valuesArr[i])) displayNames.add(entriesArr[i]);
                 }
 
                 String summary = TextUtils.join(Constants.STRING_EOL, displayNames);
@@ -1098,9 +1106,54 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Set<String> currentValue = preferences.getStringSet(getString(prefKey), new HashSet<>(Arrays.asList(defaultArr)));
 
             List<String> displayNames = new ArrayList<>();
-            for (String value : currentValue) {
-                String entry = valueToEntry.get(value);
-                if (entry != null) displayNames.add(entry);
+            for (int i = 0; i < entriesArr.length; i++) {
+                if (currentValue.contains(valuesArr[i])) displayNames.add(entriesArr[i]);
+            }
+
+            String summary = TextUtils.join(Constants.STRING_EOL, displayNames);
+            updateSummary(prefKey, summary, getString(prefSummaryKey), 0, 0);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void setSummaryForMultiList(@StringRes int prefKey, @ArrayRes int prefDefaultKey, @StringRes int prefSummaryKey,
+                                        @NonNull ArrayList<String> prefEntries, @ArrayRes int prefValues) {
+
+        try {
+            if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) return;
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            Preference pref = findPreference(getString(prefKey));
+            if (pref == null) return;
+
+            String[] entriesArr = prefEntries.toArray(new String[0]);
+            String[] valuesArr = getResources().getStringArray(prefValues);
+            String[] defaultArr = getResources().getStringArray(prefDefaultKey);
+            if (entriesArr.length != valuesArr.length) return;
+
+            pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                if (!(newValue instanceof Set<?>)) return false;
+
+                @SuppressWarnings("unchecked")
+                Set<String> newValues = (Set<String>) newValue;
+
+                List<String> displayNames = new ArrayList<>();
+                for (int i = 0; i < entriesArr.length; i++) {
+                    if (newValues.contains(valuesArr[i])) displayNames.add(entriesArr[i]);
+                }
+
+                String summary = TextUtils.join(Constants.STRING_EOL, displayNames);
+                return updateSummary(prefKey, summary, getString(prefSummaryKey), 0, 0);
+            });
+
+            Set<String> currentValue = preferences.getStringSet(getString(prefKey), new HashSet<>(Arrays.asList(defaultArr)));
+
+            List<String> displayNames = new ArrayList<>();
+            for (int i = 0; i < entriesArr.length; i++) {
+                if (currentValue.contains(valuesArr[i])) displayNames.add(entriesArr[i]);
             }
 
             String summary = TextUtils.join(Constants.STRING_EOL, displayNames);

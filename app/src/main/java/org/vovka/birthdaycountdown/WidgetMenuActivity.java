@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 02:02
+ *  * Created by Vladimir Belov on 02.09.2026, 01:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 31.08.2026, 01:54
+ *  * Last modified 01.09.2026, 20:55
  *
  */
 package org.vovka.birthdaycountdown;
@@ -493,7 +493,7 @@ public class WidgetMenuActivity extends Activity {
 
     @NonNull
     private String getFactText(String factValue) {
-        return eventsData.getEventEmojiForType(Constants.EventType_Holiday)
+        return eventsData.getEventEmojiForType(Constants.EventType_Fact)
                 .concat(Constants.STRING_SPACE)
                 .concat(factValue);
     }

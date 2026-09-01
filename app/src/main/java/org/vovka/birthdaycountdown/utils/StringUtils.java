@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 02:02
+ *  * Created by Vladimir Belov on 02.09.2026, 01:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 31.08.2026, 01:54
+ *  * Last modified 01.09.2026, 20:55
  *
  */
 
@@ -569,7 +569,7 @@ public class StringUtils {
                 if (eventDetails.length() > 0) {
                     eventDetails.append(Constants.STRING_EOL);
                 }
-                eventDetails.append(eventsData.getEventEmojiForType(Constants.EventType_Holiday));
+                eventDetails.append(eventsData.getEventEmojiForType(Constants.EventType_Fact));
                 eventDetails.append(Constants.STRING_SPACE);
                 eventDetails.append(fact);
             }

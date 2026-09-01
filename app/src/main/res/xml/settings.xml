@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
+  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 01.09.2026, 01:34
+  ~  * Last modified 02.09.2026, 00:18
   ~  */
   -->
 
@@ -668,7 +668,6 @@
         <org.vovka.birthdaycountdown.CustomMultiSelectListPreference
             android:key="@string/pref_List_Events_key"
             android:defaultValue="@array/pref_EventTypes_values_default"
-            android:entries="@array/pref_List_EventTypes_entries"
             android:entryValues="@array/pref_List_EventTypes_values"
             android:title="@string/pref_List_EventTypes_title"
             android:summary="@string/pref_List_EventTypes_summary"
@@ -1053,7 +1052,6 @@
         <org.vovka.birthdaycountdown.CustomMultiSelectListPreference
             android:key="@string/pref_Notifications_Events_key"
             android:defaultValue="@array/pref_EventTypes_values_default"
-            android:entries="@array/pref_Notifications_EventTypes_entries"
             android:entryValues="@array/pref_Notifications_EventTypes_values"
             android:title="@string/pref_Notifications_EventTypes_title"
             android:summary="@string/pref_Notifications_EventTypes_summary"
@@ -1175,7 +1173,6 @@
         <org.vovka.birthdaycountdown.CustomMultiSelectListPreference
             android:key="@string/pref_Notifications2_Events_key"
             android:defaultValue="@array/pref_EventTypes_values_default"
-            android:entries="@array/pref_Notifications_EventTypes_entries"
             android:entryValues="@array/pref_Notifications_EventTypes_values"
             android:title="@string/pref_Notifications_EventTypes_title"
             android:summary="@string/pref_Notifications_EventTypes_summary"

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.07.2026, 01:17
+ *  * Created by Vladimir Belov on 02.09.2026, 01:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 14.07.2026, 00:29
+ *  * Last modified 01.09.2026, 23:40
  *
  */
 
@@ -327,19 +327,22 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             //Типы событий
             eventTypesIDs = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_values)));
-            eventTypesValues = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_entries)));
+            eventTypesValues = eventsData.getEventTypesWithEmoji();
 
             if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
                     || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
                 eventTypesIDs.remove(getString(R.string.pref_EventTypes_Other));
-                eventTypesValues.remove(getString(R.string.pref_List_EventTypes_Other));
+                eventTypesValues.remove(eventsData.getEventEmojiForType(Constants.EventType_Other)
+                        .concat(Constants.STRING_SPACE).concat(getString(R.string.pref_List_EventTypes_Other)));
                 eventTypesIDs.remove(getString(R.string.pref_EventTypes_Holiday));
-                eventTypesValues.remove(getString(R.string.pref_List_EventTypes_Holidays));
+                eventTypesValues.remove(eventsData.getEventEmojiForType(Constants.EventType_Holiday)
+                        .concat(Constants.STRING_SPACE).concat(getString(R.string.pref_List_EventTypes_Holidays)));
             }
 
             if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                 eventTypesIDs.add(getString(R.string.pref_EventTypes_Facts));
-                eventTypesValues.add(getString(R.string.pref_List_EventTypes_Facts));
+                eventTypesValues.add(eventsData.getEventEmojiForType(Constants.EventType_Fact)
+                        .concat(Constants.STRING_SPACE).concat(getString(R.string.pref_List_EventTypes_Facts)));
             }
 
             //Добавление количества событий
@@ -998,7 +1001,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
             findViewById(R.id.blockFacts).setVisibility(
                     Constants.WIDGET_TYPE_LIST.equals(widgetType)
-                            && selectedEventTypes.contains(getString(R.string.pref_List_EventTypes_Facts)) ? View.VISIBLE : View.GONE
+                            && selectedEventTypes.contains(eventsData.getEventEmojiForType(Constants.EventType_Fact)
+                            .concat(Constants.STRING_SPACE)
+                            .concat(getString(R.string.pref_List_EventTypes_Facts))) ? View.VISIBLE : View.GONE
             );
 
             if (isNewPinnedWidget) {

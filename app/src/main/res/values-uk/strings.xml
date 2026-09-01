@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
+  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 01.09.2026, 01:42
+  ~  * Last modified 02.09.2026, 00:38
   ~  */
   -->
 
@@ -488,6 +488,17 @@
     <string name="msg_event_icon_changed">Значок події змінено</string>
     <string name="msg_event_emoji_changed">Символ події змінено: %1$s</string>
     <string name="dialog_title_select_event_emoji">Вибрати символ події</string>
+    <string name="pref_Emoji_Category_smileys">Смайлики</string>
+    <string name="pref_Emoji_Category_people">Люди</string>
+    <string name="pref_Emoji_Category_animals">Тварини</string>
+    <string name="pref_Emoji_Category_food">Їжа</string>
+    <string name="pref_Emoji_Category_activity">Активність</string>
+    <string name="pref_Emoji_Category_travel">Подорожі</string>
+    <string name="pref_Emoji_Category_objects">Об\'єкти</string>
+    <string name="pref_Emoji_Category_calendar">Календар</string>
+    <string name="pref_Emoji_Category_celebration">Свята</string>
+    <string name="pref_Emoji_Category_symbols">Символи</string>
+    <string name="pref_Emoji_Category_flags">Прапори</string>
 
     <string-array name="pref_Theme_entries">
         <item>Коричнева</item>
@@ -504,14 +515,14 @@
     <string name="pref_List_EventTypes_title">Типи подій</string>
     <string name="pref_List_EventTypes_summary">Які події відображати в списку подій</string>
 
-    <string name="pref_List_EventTypes_Birthdays">🎂 Дні народження</string>
-    <string name="pref_List_EventTypes_Anniversaries">💑 Річниці весілля</string>
-    <string name="pref_List_EventTypes_Another">🗓️ Інші події контакту</string>
-    <string name="pref_List_EventTypes_Custom">⏰ Події користувача</string>
-    <string name="pref_List_EventTypes_RoundDays">🏆 Круглі дати (5K днів)</string>
-    <string name="pref_List_EventTypes_Holidays">🏖️ Свята</string>
-    <string name="pref_List_EventTypes_Other">🗓️ Інші події</string>
-    <string name="pref_List_EventTypes_Facts">📝 Факти</string>
+    <string name="pref_List_EventTypes_Birthdays">Дні народження</string>
+    <string name="pref_List_EventTypes_Anniversaries">Річниці весілля</string>
+    <string name="pref_List_EventTypes_Another">Інші події контакту</string>
+    <string name="pref_List_EventTypes_Custom">Події користувача</string>
+    <string name="pref_List_EventTypes_RoundDays">Круглі дати (5K днів)</string>
+    <string name="pref_List_EventTypes_Holidays">Свята</string>
+    <string name="pref_List_EventTypes_Other">Інші події</string>
+    <string name="pref_List_EventTypes_Facts">Факти</string>
 
     <string name="pref_List_EventSources_title">Джерела подій</string>
     <string name="pref_List_EventSources_description">Показати події лише з цих джерел подій. Якщо жодне джерело не вибрано - показуються події з усіх джерел</string>

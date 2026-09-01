@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
+  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 01.09.2026, 01:43
+  ~  * Last modified 02.09.2026, 00:38
   ~  */
   -->
 
@@ -488,6 +488,17 @@
     <string name="msg_event_icon_changed">Icône de l\'événement modifiée</string>
     <string name="msg_event_emoji_changed">Symbole de l\'événement modifié : %1$s</string>
     <string name="dialog_title_select_event_emoji">Sélectionner un symbole d\'événement</string>
+    <string name="pref_Emoji_Category_smileys">Émoticônes</string>
+    <string name="pref_Emoji_Category_people">Personnes</string>
+    <string name="pref_Emoji_Category_animals">Animaux</string>
+    <string name="pref_Emoji_Category_food">Nourriture</string>
+    <string name="pref_Emoji_Category_activity">Activités</string>
+    <string name="pref_Emoji_Category_travel">Voyages</string>
+    <string name="pref_Emoji_Category_objects">Objets</string>
+    <string name="pref_Emoji_Category_calendar">Calendrier</string>
+    <string name="pref_Emoji_Category_celebration">Célébrations</string>
+    <string name="pref_Emoji_Category_symbols">Symboles</string>
+    <string name="pref_Emoji_Category_flags">Drapeaux</string>
 
     <string-array name="pref_Theme_entries">
         <item>Brun</item>
@@ -504,14 +515,14 @@
     <string name="pref_List_EventTypes_title">"Types des événements"</string>
     <string name="pref_List_EventTypes_summary">"Quels types des événements inclure dans la liste"</string>
 
-    <string name="pref_List_EventTypes_Birthdays">🎂 Anniversaires</string>
-    <string name="pref_List_EventTypes_Anniversaries">💑 Anniversaires de mariage</string>
-    <string name="pref_List_EventTypes_Another">🗓️ Autres événements de contact</string>
-    <string name="pref_List_EventTypes_Custom">⏰ Événements personnalisés</string>
-    <string name="pref_List_EventTypes_RoundDays">🏆 Les jours ronds comptent (5 000, 10 000, 15 000 jours)</string>
-    <string name="pref_List_EventTypes_Holidays">🏖️ Vacances</string>
-    <string name="pref_List_EventTypes_Other">🗓️ Autres événements</string>
-    <string name="pref_List_EventTypes_Facts">📝 Faits</string>
+    <string name="pref_List_EventTypes_Birthdays">Anniversaires</string>
+    <string name="pref_List_EventTypes_Anniversaries">Anniversaires de mariage</string>
+    <string name="pref_List_EventTypes_Another">Autres événements de contact</string>
+    <string name="pref_List_EventTypes_Custom">Événements personnalisés</string>
+    <string name="pref_List_EventTypes_RoundDays">Les jours ronds comptent (5 000, 10 000, 15 000 jours)</string>
+    <string name="pref_List_EventTypes_Holidays">Vacances</string>
+    <string name="pref_List_EventTypes_Other">Autres événements</string>
+    <string name="pref_List_EventTypes_Facts">Faits</string>
 
     <string name="pref_List_EventSources_title">"Sources d'événements"</string>
     <string name="pref_List_EventSources_description">"Afficher uniquement les événements de ces sources d'événements. Si aucune source n'est sélectionnée, les événements de toutes les sources sont affichés"</string>

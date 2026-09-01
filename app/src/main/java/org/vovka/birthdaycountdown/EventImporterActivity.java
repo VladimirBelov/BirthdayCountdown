@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 03:49
+ *  * Created by Vladimir Belov on 02.09.2026, 01:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 02:34
+ *  * Last modified 02.09.2026, 00:32
  *
  */
 
@@ -130,143 +130,144 @@ public class EventImporterActivity extends AppCompatActivity {
 
             final String urlStr = extras.getString(Constants.EXTRA_URL);
 
-            java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
-            executor.execute(() -> {
-                // 1. Читаем данные в фоне
-                final List<String> importedData = getEventsToImport(Uri.parse(urlStr));
+            try (java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor()) {
+                executor.execute(() -> {
+                    // 1. Читаем данные в фоне
+                    final List<String> importedData = getEventsToImport(Uri.parse(urlStr));
 
-                // 2. Возвращаемся в UI поток для обновления интерфейса
-                runOnUiThread(() -> {
-                    // Скрываем прогресс-бар
-                    ((android.view.ViewGroup) getWindow().getDecorView().getRootView()).removeView(progressBar);
+                    // 2. Возвращаемся в UI поток для обновления интерфейса
+                    runOnUiThread(() -> {
+                        // Скрываем прогресс-бар
+                        ((ViewGroup) getWindow().getDecorView().getRootView()).removeView(progressBar);
 
-                    dataForImport.addAll(importedData);
+                        dataForImport.addAll(importedData);
 
-                    if (dataForImport.isEmpty()) {
-                        summary.setText(R.string.pref_Tools_Events_Import_result_noEvents);
-                        // Тут можно скрыть кнопки импорта, если данных нет
-                    } else {
-                        summary.setText(dataForImport.get(0));
-                        dataForImport.remove(0);
-                    }
-
-                    checkUseYear = findViewById(R.id.checkUseYear);
-                    viewEventType = findViewById(R.id.captionType);
-                    spinnerEventTypes = findViewById(R.id.spinnerEventType);
-                    buttonSelectAll = findViewById(R.id.button1);
-                    buttonSelectNone = findViewById(R.id.button2);
-                    buttonCancel = findViewById(R.id.button3);
-                    buttonImport = findViewById(R.id.button4);
-
-                    if (!dataForImport.isEmpty()) {
-                        try {
-                            recyclerView = findViewById(R.id.listEvents);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-                            DividerItemDecoration divider = new DividerItemDecoration(
-                                    recyclerView.getContext(),
-                                    DividerItemDecoration.VERTICAL
-                            );
-                            recyclerView.addItemDecoration(divider);
-
-                            findViewById(R.id.dividerOptions).setVisibility(View.VISIBLE);
-                            checkUseYear.setVisibility(View.VISIBLE);
-
-                            List<EventItem> events = new ArrayList<>();
-                            for (String eventStr : dataForImport) {
-                                TreeMap<Integer, String> eventData = eventsData.getEventData(eventStr);
-
-                                String details = StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventCaption))
-                                        .concat(Constants.STRING_COLON_SPACE)
-                                        .concat(StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventDateFirstTime)));
-                                events.add(new EventItem(
-                                        eventData.get(ContactsEvents.Position_eventIcon),
-                                        eventData.get(ContactsEvents.Position_personFullName), //todo: вывод Position_personFullNameAlt
-                                        details,
-                                        eventData.get(ContactsEvents.Position_photo))
-                                );
-                                if (!hasUnrecognizedEvents && StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
-                                        .equals(Constants.EventType_Unrecognized)) {
-                                    hasUnrecognizedEvents = true;
-                                }
-                            }
-
-                            adapter = new EventListAdapter(events);
-                            adapter.setOnSelectionChangedListener((allSelected, noneSelected) -> {
-                                buttonSelectAll.setAlpha(allSelected ? 0.4f : 1.0f);
-                                buttonSelectNone.setAlpha(noneSelected ? 0.4f : 1.0f);
-                                buttonImport.setAlpha(noneSelected ? 0.4f : 1.0f);
-                            });
-
-                            recyclerView.setAdapter(adapter);
-                            recyclerView.setVisibility(View.VISIBLE);
-
-                            buttonSelectAll.setText(R.string.pref_Tools_Events_Import_Button_SelectAll);
-                            UiTools.addClickEffect(buttonSelectAll);
-                            buttonSelectAll.setVisibility(View.VISIBLE);
-                            buttonSelectAll.setOnClickListener(v -> {
-                                saveRecyclerViewScrollPosition();
-                                updateSelectionWithoutAnimation(true);
-                                restoreRecyclerViewScrollPosition();
-                            });
-
-                            buttonSelectNone.setText(R.string.pref_Tools_Events_Import_Button_SelectNone);
-                            UiTools.addClickEffect(buttonSelectNone);
-                            buttonSelectNone.setVisibility(View.VISIBLE);
-                            buttonSelectNone.setOnClickListener(v -> {
-                                saveRecyclerViewScrollPosition();
-                                updateSelectionWithoutAnimation(false);
-                                restoreRecyclerViewScrollPosition();
-                            });
-
-                            buttonImport.setText(R.string.pref_Tools_Events_Import_Button_Import);
-                            UiTools.addClickEffect(buttonImport);
-                            buttonImport.setVisibility(View.VISIBLE);
-                            buttonImport.setOnClickListener(v -> doImport());
-
-                            adapter.selectAll();
-
-                            if (hasUnrecognizedEvents) {
-                                viewEventType.setVisibility(View.VISIBLE);
-
-                                eventsData.initEventTypes(eventTypesValues, eventTypesIds, eventSubTypesIds);
-                                eventTypesValues.add(0, getResources().getString(R.string.event_type_unknown_emoji) + Constants.STRING_SPACE + getResources().getString(R.string.pref_Tools_Events_Import_Unrecognized_type));
-                                eventTypesIds.add(0, Constants.Type_Unrecognized);
-                                eventSubTypesIds.add(0, Constants.Type_Unrecognized);
-
-                                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, eventTypesValues);
-                                spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-                                spinnerEventTypes.setAdapter(spinnerArrayAdapter);
-                                spinnerEventTypes.setVisibility(View.VISIBLE);
-                            }
-
-                        } catch (Exception e) {
-                            ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
-                            ToastExpander.showDebugMsg(context, e.getMessage() != null ? e.getMessage() : e.toString());
+                        if (dataForImport.isEmpty()) {
+                            summary.setText(R.string.pref_Tools_Events_Import_result_noEvents);
+                            // Тут можно скрыть кнопки импорта, если данных нет
+                        } else {
+                            summary.setText(dataForImport.get(0));
+                            dataForImport.remove(0);
                         }
-                    }
 
-                    buttonCancel.setText(R.string.pref_Tools_Events_Import_Button_Cancel);
-                    UiTools.addClickEffect(buttonCancel);
-                    buttonCancel.setVisibility(View.VISIBLE);
-                    buttonCancel.setOnClickListener(this::buttonCancelOnClick);
+                        checkUseYear = findViewById(R.id.checkUseYear);
+                        viewEventType = findViewById(R.id.captionType);
+                        spinnerEventTypes = findViewById(R.id.spinnerEventType);
+                        buttonSelectAll = findViewById(R.id.button1);
+                        buttonSelectNone = findViewById(R.id.button2);
+                        buttonCancel = findViewById(R.id.button3);
+                        buttonImport = findViewById(R.id.button4);
 
-                    //Ширина диалога
-                    WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-                    DisplayMetrics displayMetrics = new DisplayMetrics();
-                    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                    layoutParams.width = displayMetrics.widthPixels;
-                    getWindow().setAttributes(layoutParams);
+                        if (!dataForImport.isEmpty()) {
+                            try {
+                                recyclerView = findViewById(R.id.listEvents);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-                    TextView buttonCloseX = findViewById(R.id.buttonClose);
-                    if (buttonCloseX != null) {
-                        buttonCloseX.setText(Constants.BUTTON_X);
-                        buttonCloseX.setOnClickListener(this::buttonCancelOnClick);
-                    }
+                                DividerItemDecoration divider = new DividerItemDecoration(
+                                        recyclerView.getContext(),
+                                        DividerItemDecoration.VERTICAL
+                                );
+                                recyclerView.addItemDecoration(divider);
 
-                    setFinishOnTouchOutside(false);
+                                findViewById(R.id.dividerOptions).setVisibility(View.VISIBLE);
+                                checkUseYear.setVisibility(View.VISIBLE);
+
+                                List<EventItem> events = new ArrayList<>();
+                                for (String eventStr : dataForImport) {
+                                    TreeMap<Integer, String> eventData = eventsData.getEventData(eventStr);
+
+                                    String details = StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventCaption))
+                                            .concat(Constants.STRING_COLON_SPACE)
+                                            .concat(StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventDateFirstTime)));
+                                    events.add(new EventItem(
+                                            eventData.get(ContactsEvents.Position_eventIcon),
+                                            eventData.get(ContactsEvents.Position_personFullName), //todo: вывод Position_personFullNameAlt
+                                            details,
+                                            eventData.get(ContactsEvents.Position_photo))
+                                    );
+                                    if (!hasUnrecognizedEvents && StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventType))
+                                            .equals(Constants.EventType_Unrecognized)) {
+                                        hasUnrecognizedEvents = true;
+                                    }
+                                }
+
+                                adapter = new EventListAdapter(events);
+                                adapter.setOnSelectionChangedListener((allSelected, noneSelected) -> {
+                                    buttonSelectAll.setAlpha(allSelected ? 0.4f : 1.0f);
+                                    buttonSelectNone.setAlpha(noneSelected ? 0.4f : 1.0f);
+                                    buttonImport.setAlpha(noneSelected ? 0.4f : 1.0f);
+                                });
+
+                                recyclerView.setAdapter(adapter);
+                                recyclerView.setVisibility(View.VISIBLE);
+
+                                buttonSelectAll.setText(R.string.pref_Tools_Events_Import_Button_SelectAll);
+                                UiTools.addClickEffect(buttonSelectAll);
+                                buttonSelectAll.setVisibility(View.VISIBLE);
+                                buttonSelectAll.setOnClickListener(v -> {
+                                    saveRecyclerViewScrollPosition();
+                                    updateSelectionWithoutAnimation(true);
+                                    restoreRecyclerViewScrollPosition();
+                                });
+
+                                buttonSelectNone.setText(R.string.pref_Tools_Events_Import_Button_SelectNone);
+                                UiTools.addClickEffect(buttonSelectNone);
+                                buttonSelectNone.setVisibility(View.VISIBLE);
+                                buttonSelectNone.setOnClickListener(v -> {
+                                    saveRecyclerViewScrollPosition();
+                                    updateSelectionWithoutAnimation(false);
+                                    restoreRecyclerViewScrollPosition();
+                                });
+
+                                buttonImport.setText(R.string.pref_Tools_Events_Import_Button_Import);
+                                UiTools.addClickEffect(buttonImport);
+                                buttonImport.setVisibility(View.VISIBLE);
+                                buttonImport.setOnClickListener(v -> doImport());
+
+                                adapter.selectAll();
+
+                                if (hasUnrecognizedEvents) {
+                                    viewEventType.setVisibility(View.VISIBLE);
+
+                                    eventsData.initEventTypes(eventTypesValues, eventTypesIds, eventSubTypesIds);
+                                    eventTypesValues.add(0, getResources().getString(R.string.event_type_unknown_emoji) + Constants.STRING_SPACE + getResources().getString(R.string.pref_Tools_Events_Import_Unrecognized_type));
+                                    eventTypesIds.add(0, Constants.Type_Unrecognized);
+                                    eventSubTypesIds.add(0, Constants.Type_Unrecognized);
+
+                                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, eventTypesValues);
+                                    spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                                    spinnerEventTypes.setAdapter(spinnerArrayAdapter);
+                                    spinnerEventTypes.setVisibility(View.VISIBLE);
+                                }
+
+                            } catch (Exception e) {
+                                ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
+                                ToastExpander.showDebugMsg(context, e.getMessage() != null ? e.getMessage() : e.toString());
+                            }
+                        }
+
+                        buttonCancel.setText(R.string.pref_Tools_Events_Import_Button_Cancel);
+                        UiTools.addClickEffect(buttonCancel);
+                        buttonCancel.setVisibility(View.VISIBLE);
+                        buttonCancel.setOnClickListener(this::buttonCancelOnClick);
+
+                        //Ширина диалога
+                        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+                        DisplayMetrics displayMetrics = new DisplayMetrics();
+                        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                        layoutParams.width = displayMetrics.widthPixels;
+                        getWindow().setAttributes(layoutParams);
+
+                        TextView buttonCloseX = findViewById(R.id.buttonClose);
+                        if (buttonCloseX != null) {
+                            buttonCloseX.setText(Constants.BUTTON_X);
+                            buttonCloseX.setOnClickListener(this::buttonCancelOnClick);
+                        }
+
+                        setFinishOnTouchOutside(false);
+                    });
                 });
-            });
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

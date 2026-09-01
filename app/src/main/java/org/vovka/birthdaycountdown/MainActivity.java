@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 03:49
+ *  * Created by Vladimir Belov on 02.09.2026, 01:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 03:45
+ *  * Last modified 01.09.2026, 23:03
  *
  */
 
@@ -2739,7 +2739,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         try {
 
             final List<String> eventTypesIDs = new ArrayList<>(Arrays.asList(resources.getStringArray(R.array.pref_List_EventTypes_values)));
-            final List<String> eventTypesTitles = new ArrayList<>(Arrays.asList(resources.getStringArray(R.array.pref_List_EventTypes_entries)));
+            final List<String> eventTypesTitles = eventsData.getEventTypesWithEmoji();
             ArrayList<Boolean> eventTypesSelected = new ArrayList<>();
             final boolean[] isProgrammaticChange = {false};
 

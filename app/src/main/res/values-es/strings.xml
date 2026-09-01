@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
+  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 01.09.2026, 01:45
+  ~  * Last modified 02.09.2026, 00:38
   ~  */
   -->
 
@@ -488,6 +488,17 @@
     <string name="msg_event_icon_changed">Icono del evento cambiado</string>
     <string name="msg_event_emoji_changed">Símbolo del evento cambiado: %1$s</string>
     <string name="dialog_title_select_event_emoji">Seleccionar un símbolo de evento</string>
+    <string name="pref_Emoji_Category_smileys">Emoticonos</string>
+    <string name="pref_Emoji_Category_people">Personas</string>
+    <string name="pref_Emoji_Category_animals">Animales</string>
+    <string name="pref_Emoji_Category_food">Comida</string>
+    <string name="pref_Emoji_Category_activity">Actividades</string>
+    <string name="pref_Emoji_Category_travel">Viajes</string>
+    <string name="pref_Emoji_Category_objects">Objetos</string>
+    <string name="pref_Emoji_Category_calendar">Calendario</string>
+    <string name="pref_Emoji_Category_celebration">Celebraciones</string>
+    <string name="pref_Emoji_Category_symbols">Símbolos</string>
+    <string name="pref_Emoji_Category_flags">Banderas</string>
 
     <string-array name="pref_Theme_entries">
         <item>Marrón</item>
@@ -504,14 +515,14 @@
     <string name="pref_List_EventTypes_title">Tipos de eventos</string>
     <string name="pref_List_EventTypes_summary">Qué eventos mostrar en la lista</string>
 
-    <string name="pref_List_EventTypes_Birthdays">🎂 Cumpleaños</string>
-    <string name="pref_List_EventTypes_Anniversaries">💑 Aniversario de bodas</string>
-    <string name="pref_List_EventTypes_Another">🗓️ Otros eventos de contacto</string>
-    <string name="pref_List_EventTypes_Custom">⏰ Eventos personalizados</string>
-    <string name="pref_List_EventTypes_RoundDays">🏆 Fechas redondas (5K días)</string>
-    <string name="pref_List_EventTypes_Holidays">🏖️ Vacaciones</string>
-    <string name="pref_List_EventTypes_Other">🗓️ Otros eventos</string>
-    <string name="pref_List_EventTypes_Facts">📝 Hechos</string>
+    <string name="pref_List_EventTypes_Birthdays">Cumpleaños</string>
+    <string name="pref_List_EventTypes_Anniversaries">Aniversario de bodas</string>
+    <string name="pref_List_EventTypes_Another">Otros eventos de contacto</string>
+    <string name="pref_List_EventTypes_Custom">Eventos personalizados</string>
+    <string name="pref_List_EventTypes_RoundDays">Fechas redondas (5K días)</string>
+    <string name="pref_List_EventTypes_Holidays">Vacaciones</string>
+    <string name="pref_List_EventTypes_Other">Otros eventos</string>
+    <string name="pref_List_EventTypes_Facts">Hechos</string>
 
     <string name="pref_List_EventSources_title">Fuentes de eventos</string>
     <string name="pref_List_EventSources_description">Mostrar eventos solo de estas fuentes de eventos. Si no se selecciona ninguna fuente, se muestran los eventos de todas las fuentes.</string>

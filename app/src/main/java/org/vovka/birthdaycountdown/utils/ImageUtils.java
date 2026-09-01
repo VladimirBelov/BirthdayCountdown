@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.07.2026, 12:14
+ *  * Created by Vladimir Belov on 02.09.2026, 01:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 14.07.2026, 10:43
+ *  * Last modified 01.09.2026, 20:55
  *
  */
 
@@ -403,7 +403,7 @@ public class ImageUtils {
                 return R.drawable.ic_event_custom5;
             case Constants.EventType_5K:
                 return R.drawable.ic_event_medal;
-            case Constants.EventType_Xdays:
+            case Constants.EventType_XDays:
                 return R.drawable.ic_event_xdays;
             case Constants.EventType_Another:
                 return R.drawable.ic_event_other;

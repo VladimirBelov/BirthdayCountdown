@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 03:49
+ *  * Created by Vladimir Belov on 02.09.2026, 01:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 02:27
+ *  * Last modified 02.09.2026, 00:18
  *
  */
 
@@ -290,7 +290,7 @@ public class ContactsEvents {
         map.put(Constants.Type_Custom5, Constants.EventType_Custom5);
         map.put(Constants.Type_CalendarEvent, Constants.EventType_Calendar); //todo: можно удалить
         map.put(Constants.Type_FileEvent, Constants.EventType_File); //todo: можно удалить
-        map.put(Constants.Type_Xdays, Constants.EventType_Xdays); //todo: можно удалить
+        map.put(Constants.Type_Xdays, Constants.EventType_XDays); //todo: можно удалить
         map.put(Constants.Type_Other, Constants.EventType_Other);
         map.put(Constants.Type_Fact, Constants.EventType_Fact); //todo: можно удалить
         map.put(Constants.Type_HolidayEvent, Constants.EventType_Holiday);
@@ -1577,7 +1577,7 @@ public class ContactsEvents {
             }
 
             if (singleEventArray.length < Position_attrAmount) {
-                if (eventInfo.startsWith(ContactsEvents.getInstance().getEventEmojiForType(Constants.EventType_Holiday) + Constants.STRING_SPACE)) {
+                if (eventInfo.startsWith(ContactsEvents.getInstance().getEventEmojiForType(Constants.EventType_Fact) + Constants.STRING_SPACE)) {
                     Intent intentShare = new Intent(Intent.ACTION_SEND);
                     intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                     intentShare.putExtra(Intent.EXTRA_TEXT, eventInfo);
@@ -9847,7 +9847,7 @@ public class ContactsEvents {
             StringBuilder listEventsTypes = new StringBuilder();
             if (!preferences_list_event_types.isEmpty()) {
                 String[] typeIDs = resources.getStringArray(R.array.pref_List_EventTypes_values);
-                String[] typeNames = resources.getStringArray(R.array.pref_List_EventTypes_entries);
+                String[] typeNames = getEventTypesWithEmoji().toArray(new String[0]);
                 int countTypes = typeIDs.length;
                 for (int i = 0; i < countTypes; i++) {
                     if (preferences_list_event_types.contains(typeIDs[i])) {
@@ -11787,6 +11787,54 @@ public class ContactsEvents {
         }
     }
 
+    /**
+     * Возвращает список типов событий с текущими эмодзи (для списков собыий)
+     */
+    @NonNull
+    ArrayList<String> getEventTypesWithEmoji() {
+        ArrayList<String> list = new ArrayList<>();
+
+        String[] eventTypes = {
+                Constants.EventType_BirthDay,
+                Constants.EventType_Anniversary,
+                Constants.EventType_Another,
+                Constants.EventType_Custom,
+                Constants.EventType_5K,
+                Constants.EventType_Holiday,
+                Constants.EventType_Other
+        };
+
+        int[] eventNameResIds = {
+                R.string.pref_List_EventTypes_Birthdays,
+                R.string.pref_List_EventTypes_Anniversaries,
+                R.string.pref_List_EventTypes_Another,
+                R.string.pref_List_EventTypes_Custom,
+                R.string.pref_List_EventTypes_RoundDays,
+                R.string.pref_List_EventTypes_Holidays,
+                R.string.pref_List_EventTypes_Other
+        };
+
+        for (int i = 0; i < eventTypes.length; i++) {
+            String emoji = getEventEmojiForType(eventTypes[i]);
+            String name = resources.getString(eventNameResIds[i]);
+            list.add(emoji.concat(Constants.STRING_SPACE).concat(name));
+        }
+
+        return list;
+    }
+
+    /**
+     * Возвращает список типов событий с текущими эмодзи (для уведомлений)
+     */
+    ArrayList<String> getEventTypesWithEmojiForNotify() {
+        ArrayList<String> list = getEventTypesWithEmoji();
+        list.add(getEventEmojiForType(Constants.EventType_Fact)
+                .concat(Constants.STRING_SPACE)
+                .concat(resources.getString(R.string.pref_List_EventTypes_Facts)));
+
+        return list;
+    }
+
     // Методы для получения иконки и эмодзи по типу события
     @DrawableRes
     int getEventIconForType(@NonNull String eventType) {
@@ -11843,12 +11891,16 @@ public class ContactsEvents {
             case Constants.EventType_Another:
             case Constants.EventType_Other:
                 return getResources().getString(R.string.event_type_other_emoji);
-            case Constants.EventType_Custom1: return getResources().getString(R.string.event_type_custom1_emoji);
+            case Constants.EventType_Custom:
+            case Constants.EventType_Custom1:
+                return getResources().getString(R.string.event_type_custom1_emoji);
             case Constants.EventType_Custom2: return getResources().getString(R.string.event_type_custom2_emoji);
             case Constants.EventType_Custom3: return getResources().getString(R.string.event_type_custom3_emoji);
             case Constants.EventType_Custom4: return getResources().getString(R.string.event_type_custom4_emoji);
             case Constants.EventType_Custom5: return getResources().getString(R.string.event_type_custom5_emoji);
             case Constants.EventType_Fact: return getResources().getString(R.string.event_type_fact_emoji);
+            case Constants.EventType_5K: return getResources().getString(R.string.event_type_5k_emoji);
+            case Constants.EventType_XDays: return getResources().getString(R.string.event_type_xdays_emoji);
             default: return getResources().getString(R.string.event_type_unknown_emoji);
         }
     }

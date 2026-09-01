@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 02:02
+ *  * Created by Vladimir Belov on 02.09.2026, 01:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 31.08.2026, 01:54
+ *  * Last modified 01.09.2026, 20:55
  *
  */
 
@@ -70,7 +70,7 @@ public class FactsPopupActivity extends Activity {
             TextView txtInfo = findViewById(R.id.textInfo);
             List<String> facts = eventsData.getNextRandomFacts(1, eventSources);
             if (!facts.isEmpty()) {
-                txtInfo.setText(eventsData.getEventEmojiForType(Constants.EventType_Holiday).concat(Constants.STRING_SPACE).concat(facts.get(0)));
+                txtInfo.setText(eventsData.getEventEmojiForType(Constants.EventType_Fact).concat(Constants.STRING_SPACE).concat(facts.get(0)));
             } else {
                 txtInfo.setText(R.string.facts_popup_empty);
                 return;
@@ -108,7 +108,7 @@ public class FactsPopupActivity extends Activity {
                 List<String> factsNext = eventsData.getNextRandomFacts(1, eventSources);
                 if (!factsNext.isEmpty()) {
                     listPrevFacts.add(txtInfo.getText().toString());
-                    txtInfo.setText(eventsData.getEventEmojiForType(Constants.EventType_Holiday).concat(Constants.STRING_SPACE).concat(factsNext.get(0)));
+                    txtInfo.setText(eventsData.getEventEmojiForType(Constants.EventType_Fact).concat(Constants.STRING_SPACE).concat(factsNext.get(0)));
                     buttonPrev.setVisibility(View.VISIBLE);
                 }
             });

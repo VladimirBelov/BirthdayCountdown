@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 02:02
+ *  * Created by Vladimir Belov on 02.09.2026, 01:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 01:57
+ *  * Last modified 02.09.2026, 00:53
  *
  */
 package org.vovka.birthdaycountdown;
@@ -20,10 +20,12 @@ import java.util.List;
  * Адаптер для Spinner выбора категории эмодзи
  */
 public class EmojiCategoryAdapter extends BaseAdapter {
+    private final Context context;
     private final List<String> categories;
     private final LayoutInflater inflater;
 
     public EmojiCategoryAdapter(Context context, List<String> categories) {
+        this.context = context;
         this.categories = categories;
         this.inflater = LayoutInflater.from(context);
     }
@@ -53,7 +55,7 @@ public class EmojiCategoryAdapter extends BaseAdapter {
 
         String category = categories.get(position);
         iconView.setText(EmojiData.CATEGORY_ICONS.get(category));
-        nameView.setText(EmojiData.CATEGORY_NAMES.get(category));
+        nameView.setText(EmojiData.getCategoryName(context, category));
 
         return convertView;
     }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 02:02
+ *  * Created by Vladimir Belov on 02.09.2026, 01:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 01:57
+ *  * Last modified 01.09.2026, 20:24
  *
  */
 package org.vovka.birthdaycountdown;
@@ -22,7 +22,7 @@ import java.util.List;
 public class EmojiPickerAdapter extends BaseAdapter {
     private final List<String> emojis;
     private final LayoutInflater inflater;
-    private String selectedEmoji; // Убрали final
+    private String selectedEmoji;
 
     public EmojiPickerAdapter(Context context, List<String> emojis, String selectedEmoji) {
         this.emojis = emojis;

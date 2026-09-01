@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
+  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 01.09.2026, 01:40
+  ~  * Last modified 02.09.2026, 00:37
   ~  */
   -->
 
@@ -488,6 +488,17 @@
     <string name="msg_event_icon_changed">Event icon changed</string>
     <string name="msg_event_emoji_changed">Event symbol changed: %1$s</string>
     <string name="dialog_title_select_event_emoji">Select an event symbol</string>
+    <string name="pref_Emoji_Category_smileys">Smileys</string>
+    <string name="pref_Emoji_Category_people">People</string>
+    <string name="pref_Emoji_Category_animals">Animals</string>
+    <string name="pref_Emoji_Category_food">Food</string>
+    <string name="pref_Emoji_Category_activity">Activity</string>
+    <string name="pref_Emoji_Category_travel">Travel</string>
+    <string name="pref_Emoji_Category_objects">Objects</string>
+    <string name="pref_Emoji_Category_calendar">Calendar</string>
+    <string name="pref_Emoji_Category_celebration">Celebration</string>
+    <string name="pref_Emoji_Category_symbols">Symbols</string>
+    <string name="pref_Emoji_Category_flags">Flags</string>
 
     <string-array name="pref_Theme_entries">
         <item>Brown</item>
@@ -504,14 +515,14 @@
     <string name="pref_List_EventTypes_title">Event types</string>
     <string name="pref_List_EventTypes_summary">What kind of events to include in list</string>
 
-    <string name="pref_List_EventTypes_Birthdays">🎂 Birthdays</string>
-    <string name="pref_List_EventTypes_Anniversaries">💑 Anniversaries</string>
-    <string name="pref_List_EventTypes_Another">🗓️ Other contact events</string>
-    <string name="pref_List_EventTypes_Custom">⏰ Custom events</string>
-    <string name="pref_List_EventTypes_RoundDays">🏆 Round days count (5K, 10K, 15K days)</string>
-    <string name="pref_List_EventTypes_Holidays">🏖️ Holidays</string>
-    <string name="pref_List_EventTypes_Other">🗓️ Other events</string>
-    <string name="pref_List_EventTypes_Facts">📝 Facts</string>
+    <string name="pref_List_EventTypes_Birthdays">Birthdays</string>
+    <string name="pref_List_EventTypes_Anniversaries">Anniversaries</string>
+    <string name="pref_List_EventTypes_Another">Other contact events</string>
+    <string name="pref_List_EventTypes_Custom">Custom events</string>
+    <string name="pref_List_EventTypes_RoundDays">Round days count (5K, 10K, 15K days)</string>
+    <string name="pref_List_EventTypes_Holidays">Holidays</string>
+    <string name="pref_List_EventTypes_Other">Other events</string>
+    <string name="pref_List_EventTypes_Facts">Facts</string>
 
     <string name="pref_List_EventSources_title">Event sources</string>
     <string name="pref_List_EventSources_description">Show events only from these event sources. If no source is selected, events from all sources are shown</string>
@@ -1790,16 +1801,6 @@ Long click on item to select color"</string>
         <item>@string/pref_EventTypes_Facts</item>
     </string-array>
 
-    <string-array name="pref_List_EventTypes_entries" translatable="false">
-        <item>@string/pref_List_EventTypes_Birthdays</item>
-        <item>@string/pref_List_EventTypes_Anniversaries</item>
-        <item>@string/pref_List_EventTypes_Another</item>
-        <item>@string/pref_List_EventTypes_Custom</item>
-        <item>@string/pref_List_EventTypes_RoundDays</item>
-        <item>@string/pref_List_EventTypes_Holidays</item>
-        <item>@string/pref_List_EventTypes_Other</item>
-    </string-array>
-
     <string name="pref_EventType_Icons_key" translatable="false">EventType_Icons</string>
     <string name="pref_EventType_Emojis_key" translatable="false">EventType_Emojis</string>
 
@@ -2444,17 +2445,6 @@ Long click on item to select color"</string>
         <item>0</item>
     </string-array>
     <string-array name="pref_Notifications2_Days_values_default" translatable="false">
-    </string-array>
-
-    <string-array name="pref_Notifications_EventTypes_entries" translatable="false">
-        <item>@string/pref_List_EventTypes_Birthdays</item>
-        <item>@string/pref_List_EventTypes_Anniversaries</item>
-        <item>@string/pref_List_EventTypes_Another</item>
-        <item>@string/pref_List_EventTypes_Custom</item>
-        <item>@string/pref_List_EventTypes_RoundDays</item>
-        <item>@string/pref_List_EventTypes_Holidays</item>
-        <item>@string/pref_List_EventTypes_Other</item>
-        <item>@string/pref_List_EventTypes_Facts</item>
     </string-array>
 
     <string name="pref_Notifications_EventInfo_key" translatable="false">Notifications_EventInfo</string>

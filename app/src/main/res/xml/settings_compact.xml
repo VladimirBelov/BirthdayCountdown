@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
+  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 31.08.2026, 00:49
+  ~  * Last modified 02.09.2026, 00:18
   ~  */
   -->
 
@@ -668,7 +668,6 @@
             android:title="@string/pref_List_EventTypes_title"
             android:summary="@string/pref_List_EventTypes_summary"
             android:defaultValue="@array/pref_EventTypes_values_default"
-            android:entries="@array/pref_List_EventTypes_entries"
             android:entryValues="@array/pref_List_EventTypes_values"
             android:icon="@drawable/ic_menu_copy"
             android:dialogIcon="@drawable/ic_menu_copy"
@@ -1050,7 +1049,6 @@
             android:title="@string/pref_Notifications_EventTypes_title"
             android:summary="@string/pref_Notifications_EventTypes_summary"
             android:defaultValue="@array/pref_EventTypes_values_default"
-            android:entries="@array/pref_Notifications_EventTypes_entries"
             android:entryValues="@array/pref_Notifications_EventTypes_values"
             android:icon="@android:drawable/ic_menu_more"
             android:dialogIcon="@android:drawable/ic_menu_more"
@@ -1175,7 +1173,6 @@
             android:defaultValue="@array/pref_EventTypes_values_default"
             android:title="@string/pref_Notifications_EventTypes_title"
             android:summary="@string/pref_Notifications_EventTypes_summary"
-            android:entries="@array/pref_Notifications_EventTypes_entries"
             android:entryValues="@array/pref_Notifications_EventTypes_values"
             android:icon="@android:drawable/ic_menu_more"
             android:dialogIcon="@android:drawable/ic_menu_more"

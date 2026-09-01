@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 03:49
+ *  * Created by Vladimir Belov on 02.09.2026, 01:33
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 03:39
+ *  * Last modified 02.09.2026, 00:26
  *
  */
 
@@ -372,7 +372,6 @@ public class LocalEventActivity extends AppCompatActivity {
 
     }
 
-    @SuppressLint("WrongThread")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -839,6 +838,7 @@ public class LocalEventActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("WrongThread")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 

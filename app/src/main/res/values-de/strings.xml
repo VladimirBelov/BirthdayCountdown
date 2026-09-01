@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
+  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 01.09.2026, 01:42
+  ~  * Last modified 02.09.2026, 00:37
   ~  */
   -->
 
@@ -488,6 +488,17 @@
     <string name="msg_event_icon_changed">Ereignissymbol geändert</string>
     <string name="msg_event_emoji_changed">Ereignis-Emoji geändert: %1$s</string>
     <string name="dialog_title_select_event_emoji">Ereignis-Emoji auswählen</string>
+    <string name="pref_Emoji_Category_smileys">Smileys</string>
+    <string name="pref_Emoji_Category_people">Menschen</string>
+    <string name="pref_Emoji_Category_animals">Tiere</string>
+    <string name="pref_Emoji_Category_food">Essen</string>
+    <string name="pref_Emoji_Category_activity">Aktivitäten</string>
+    <string name="pref_Emoji_Category_travel">Reisen</string>
+    <string name="pref_Emoji_Category_objects">Objekte</string>
+    <string name="pref_Emoji_Category_calendar">Kalender</string>
+    <string name="pref_Emoji_Category_celebration">Feiern</string>
+    <string name="pref_Emoji_Category_symbols">Symbole</string>
+    <string name="pref_Emoji_Category_flags">Flaggen</string>
 
     <string-array name="pref_Theme_entries">
         <item>Braun</item>
@@ -504,14 +515,14 @@
     <string name="pref_List_EventTypes_title">Arten von Ereignissen</string>
     <string name="pref_List_EventTypes_summary">Welche Ereignisse in der Liste der Ereignisse angezeigt werden sollen</string>
 
-    <string name="pref_List_EventTypes_Birthdays">🎂 Geburtstage</string>
-    <string name="pref_List_EventTypes_Anniversaries">💑 Hochzeitstage</string>
-    <string name="pref_List_EventTypes_Another">🗓️ Andere Kontaktereignisse</string>
-    <string name="pref_List_EventTypes_Custom">⏰ Benutzerdefinierte Ereignisse</string>
-    <string name="pref_List_EventTypes_RoundDays">🏆 Besondere Geburtstage (Alle 5000 Tage)</string>
-    <string name="pref_List_EventTypes_Holidays">🏖️ Feiertage</string>
-    <string name="pref_List_EventTypes_Other">🗓️ Andere Ereignisse</string>
-    <string name="pref_List_EventTypes_Facts">📝 Fakten</string>
+    <string name="pref_List_EventTypes_Birthdays">Geburtstage</string>
+    <string name="pref_List_EventTypes_Anniversaries">Hochzeitstage</string>
+    <string name="pref_List_EventTypes_Another">Andere Kontaktereignisse</string>
+    <string name="pref_List_EventTypes_Custom">Benutzerdefinierte Ereignisse</string>
+    <string name="pref_List_EventTypes_RoundDays">Besondere Geburtstage (Alle 5000 Tage)</string>
+    <string name="pref_List_EventTypes_Holidays">Feiertage</string>
+    <string name="pref_List_EventTypes_Other">Andere Ereignisse</string>
+    <string name="pref_List_EventTypes_Facts">Fakten</string>
 
     <string name="pref_List_EventSources_title">Ereignisquellen</string>
     <string name="pref_List_EventSources_description">Ereignisse nur aus diesen Ereignisquellen anzeigen. Wenn keine Quelle ausgewählt ist, werden Ereignisse aus allen Quellen angezeigt</string>

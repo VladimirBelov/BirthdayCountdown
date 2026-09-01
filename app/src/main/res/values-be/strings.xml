@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.09.2026, 02:02
+  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 01.09.2026, 01:42
+  ~  * Last modified 02.09.2026, 00:40
   ~  */
   -->
 
@@ -466,6 +466,14 @@
     <string name="pref_CustomEvents_Fact_Bundled_Labels_summary">"Паказаць гэтыя факты з аб'яднанай базы дадзеных"</string>
     <string name="pref_CustomEvents_Fact_LocalFiles_summary">Паказаць факты з выбраных файлаў</string>
 
+    <string name="pref_CustomEvents_Custom_title">Карыстальніцкая падзея</string>
+    <string name="pref_CustomEvents_Custom_Caption_title">Загаловак падзеі</string>
+    <string name="pref_CustomEvents_Custom_Caption_summary">Запоўніце загаловак падзеі, каб уключыць яго выкарыстанне</string>
+    <string name="pref_CustomEvents_Custom_Labels_title">Назвы падзей</string>
+    <string name="pref_CustomEvents_Custom_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікаваны як гэта падзея (праз коску)</string>
+    <string name="pref_CustomEvents_Custom_UseYear_title">Выкарыстаць год</string>
+    <string name="pref_CustomEvents_Custom_UseYear_summary">Выкарыстаць год для разліку гадавін (не толькі дзень і месяц)</string>
+
     <string name="pref_CustomEvents_Calendars_title">Календары</string>
     <string name="pref_CustomEvents_Calendars_summary">Паказваць падзеі з абраных календароў</string>
     <string name="pref_CustomEvents_LocalFiles_title">Файлы</string>
@@ -480,14 +488,17 @@
     <string name="msg_event_icon_changed">Значок падзеі зменены</string>
     <string name="msg_event_emoji_changed">Сімвал падзеі зменены: %1$s</string>
     <string name="dialog_title_select_event_emoji">Выберыце сімвал падзеі</string>
-
-    <string name="pref_CustomEvents_Custom_title">Карыстальніцкая падзея</string>
-    <string name="pref_CustomEvents_Custom_Caption_title">Загаловак падзеі</string>
-    <string name="pref_CustomEvents_Custom_Caption_summary">Запоўніце загаловак падзеі, каб уключыць яго выкарыстанне</string>
-    <string name="pref_CustomEvents_Custom_Labels_title">Назвы падзей</string>
-    <string name="pref_CustomEvents_Custom_Labels_summary">Падзеі з такімі пазнакамі будуць ідэнтыфікаваны як гэта падзея (праз коску)</string>
-    <string name="pref_CustomEvents_Custom_UseYear_title">Выкарыстаць год</string>
-    <string name="pref_CustomEvents_Custom_UseYear_summary">Выкарыстаць год для разліку гадавін (не толькі дзень і месяц)</string>
+    <string name="pref_Emoji_Category_smileys">Смайлікі</string>
+    <string name="pref_Emoji_Category_people">Людзі</string>
+    <string name="pref_Emoji_Category_animals">Жывёлы</string>
+    <string name="pref_Emoji_Category_food">Ежа</string>
+    <string name="pref_Emoji_Category_activity">Актыўнасць</string>
+    <string name="pref_Emoji_Category_travel">Падарожжы</string>
+    <string name="pref_Emoji_Category_objects">Аб\'екты</string>
+    <string name="pref_Emoji_Category_calendar">Каляндар</string>
+    <string name="pref_Emoji_Category_celebration">Святы</string>
+    <string name="pref_Emoji_Category_symbols">Сімвалы</string>
+    <string name="pref_Emoji_Category_flags">Сцягі</string>
 
     <string-array name="pref_Theme_entries">
         <item>Карычневая</item>
@@ -504,14 +515,14 @@
     <string name="pref_List_EventTypes_title">Тыпы падзей</string>
     <string name="pref_List_EventTypes_summary">Якія падзеі адлюстроўваць у спісе</string>
 
-    <string name="pref_List_EventTypes_Birthdays">🎂 Дні нараджэння</string>
-    <string name="pref_List_EventTypes_Anniversaries">💑 Гадавіны вяселляў</string>
-    <string name="pref_List_EventTypes_Another">🗓️ Іншыя падзеі кантакту</string>
-    <string name="pref_List_EventTypes_Custom">⏰ Карыстальніцкія падзеі</string>
-    <string name="pref_List_EventTypes_RoundDays">🏆 Круглыя даты (5K дзён)</string>
-    <string name="pref_List_EventTypes_Holidays">🏖️ Святы</string>
-    <string name="pref_List_EventTypes_Other">🗓️ Іншыя падзеі</string>
-    <string name="pref_List_EventTypes_Facts">📝 Факты</string>
+    <string name="pref_List_EventTypes_Birthdays">Дні нараджэння</string>
+    <string name="pref_List_EventTypes_Anniversaries">Гадавіны вяселляў</string>
+    <string name="pref_List_EventTypes_Another">Іншыя падзеі кантакту</string>
+    <string name="pref_List_EventTypes_Custom">Карыстальніцкія падзеі</string>
+    <string name="pref_List_EventTypes_RoundDays">Круглыя даты (5K дзён)</string>
+    <string name="pref_List_EventTypes_Holidays">Святы</string>
+    <string name="pref_List_EventTypes_Other">Іншыя падзеі</string>
+    <string name="pref_List_EventTypes_Facts">Факты</string>
 
     <string name="pref_List_EventSources_title">Крыніцы падзей</string>
     <string name="pref_List_EventSources_description">Паказваць падзеі толькі з гэтых крыніц падзей. Калі ніводная крыніца не выбрана - паказваюцца падзеі з усіх крыніц</string>
