@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 02:02
+ *  * Created by Vladimir Belov on 01.09.2026, 03:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 31.08.2026, 02:09
+ *  * Last modified 01.09.2026, 02:27
  *
  */
 
@@ -1388,43 +1388,48 @@ public class ContactsEvents {
     }
 
     void initEventTypes(@NonNull List<String> eventTypesValues, @NonNull List<Integer> eventTypesIds, @NonNull List<Integer> eventSubTypesIds) {
-        eventTypesValues.add(getResources().getString(R.string.event_type_birthday_emoji) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_birthday));
+        eventTypesValues.add(getEventEmojiForType(Constants.EventType_BirthDay) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_birthday));
         eventTypesIds.add(Constants.Type_BirthDay);
         eventSubTypesIds.add(Constants.Type_BirthDay);
-        eventTypesValues.add(getResources().getString(R.string.event_type_wedding_emoji) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_anniversary));
+        eventTypesValues.add(getEventEmojiForType(Constants.EventType_Anniversary) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_anniversary));
         eventTypesIds.add(Constants.Type_Anniversary);
         eventSubTypesIds.add(Constants.Type_Anniversary);
-        eventTypesValues.add(getResources().getString(R.string.event_type_death_emoji) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_death));
+        eventTypesValues.add(getEventEmojiForType(Constants.EventType_Death) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_death));
         eventTypesIds.add(Constants.Type_Custom);
         eventSubTypesIds.add(Constants.Type_Death);
-        eventTypesValues.add(getResources().getString(R.string.event_type_crowning_emoji) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_crowning));
+        eventTypesValues.add(getEventEmojiForType(Constants.EventType_Crowning) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_crowning));
         eventTypesIds.add(Constants.Type_Custom);
         eventSubTypesIds.add(Constants.Type_Crowning);
-        eventTypesValues.add(getResources().getString(R.string.event_type_nameday_emoji) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_nameday));
+        eventTypesValues.add(getEventEmojiForType(Constants.EventType_NameDay) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_nameday));
         eventTypesIds.add(Constants.Type_Custom);
         eventSubTypesIds.add(Constants.Type_NameDay);
-        eventTypesValues.add(getResources().getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_another));
+        eventTypesValues.add(getEventEmojiForType(Constants.EventType_Another) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_another));
         eventTypesIds.add(Constants.Type_Another);
         eventSubTypesIds.add(Constants.Type_Another);
-        eventTypesValues.add(getResources().getString(R.string.event_type_holiday_emoji) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_holiday));
+        eventTypesValues.add(getEventEmojiForType(Constants.EventType_Holiday) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_holiday));
         eventTypesIds.add(Constants.Type_HolidayEvent);
         eventSubTypesIds.add(Constants.Type_HolidayEvent);
-        eventTypesValues.add(getResources().getString(R.string.event_type_other_emoji) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_other));
+        eventTypesValues.add(getEventEmojiForType(Constants.EventType_Other) + Constants.STRING_SPACE + getResources().getString(R.string.event_type_other));
         eventTypesIds.add(Constants.Type_Other);
         eventSubTypesIds.add(Constants.Type_Other);
-        eventTypesValues.add(getResources().getString(R.string.event_type_custom1_emoji) + Constants.STRING_SPACE + (preferences_customevent1_caption.isEmpty() ? getResources().getString(R.string.event_type_custom) : preferences_customevent1_caption));
+        eventTypesValues.add(getEventEmojiForType(Constants.EventType_Custom1) + Constants.STRING_SPACE
+                + (preferences_customevent1_caption.isEmpty() ? getResources().getString(R.string.event_type_custom) : preferences_customevent1_caption));
         eventTypesIds.add(Constants.Type_Custom);
         eventSubTypesIds.add(Constants.Type_Custom1);
-        eventTypesValues.add(getResources().getString(R.string.event_type_custom2_emoji) + Constants.STRING_SPACE + (preferences_customevent2_caption.isEmpty() ? getResources().getString(R.string.event_type_custom) : preferences_customevent2_caption));
+        eventTypesValues.add(getEventEmojiForType(Constants.EventType_Custom2) + Constants.STRING_SPACE
+                + (preferences_customevent2_caption.isEmpty() ? getResources().getString(R.string.event_type_custom) : preferences_customevent2_caption));
         eventTypesIds.add(Constants.Type_Custom);
         eventSubTypesIds.add(Constants.Type_Custom2);
-        eventTypesValues.add(getResources().getString(R.string.event_type_custom3_emoji) + Constants.STRING_SPACE + (preferences_customevent3_caption.isEmpty() ? getResources().getString(R.string.event_type_custom) : preferences_customevent3_caption));
+        eventTypesValues.add(getEventEmojiForType(Constants.EventType_Custom3) + Constants.STRING_SPACE
+                + (preferences_customevent3_caption.isEmpty() ? getResources().getString(R.string.event_type_custom) : preferences_customevent3_caption));
         eventTypesIds.add(Constants.Type_Custom);
         eventSubTypesIds.add(Constants.Type_Custom3);
-        eventTypesValues.add(getResources().getString(R.string.event_type_custom4_emoji) + Constants.STRING_SPACE + (preferences_customevent4_caption.isEmpty() ? getResources().getString(R.string.event_type_custom) : preferences_customevent4_caption));
+        eventTypesValues.add(getEventEmojiForType(Constants.EventType_Custom4) + Constants.STRING_SPACE
+                + (preferences_customevent4_caption.isEmpty() ? getResources().getString(R.string.event_type_custom) : preferences_customevent4_caption));
         eventTypesIds.add(Constants.Type_Custom);
         eventSubTypesIds.add(Constants.Type_Custom4);
-        eventTypesValues.add(getResources().getString(R.string.event_type_custom5_emoji) + Constants.STRING_SPACE + (preferences_customevent5_caption.isEmpty() ? getResources().getString(R.string.event_type_custom) : preferences_customevent5_caption));
+        eventTypesValues.add(getEventEmojiForType(Constants.EventType_Custom5) + Constants.STRING_SPACE
+                + (preferences_customevent5_caption.isEmpty() ? getResources().getString(R.string.event_type_custom) : preferences_customevent5_caption));
         eventTypesIds.add(Constants.Type_Custom);
         eventSubTypesIds.add(Constants.Type_Custom5);
     }

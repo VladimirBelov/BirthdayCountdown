@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.07.2026, 13:14
+ *  * Created by Vladimir Belov on 01.09.2026, 03:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.07.2026, 13:05
+ *  * Last modified 01.09.2026, 03:04
  *
  */
 
@@ -99,10 +99,6 @@ public class QuizActivity extends Activity {
 
             setContentView(R.layout.activity_quiz);
 
-            if (eventsData.needUpdateEventList || eventsData.isEmptyEventList()) {
-                eventsData.getEvents();
-            }
-
             TextView viewCaption = findViewById(R.id.textCaption);
             if (viewCaption != null) {
                 viewCaption.setText(R.string.pref_Quiz_title);
@@ -164,16 +160,32 @@ public class QuizActivity extends Activity {
             duration_AutoNext = eventsData.preferences_quiz_AutoNext * 1000;
             duration_AutoNext_failure = duration_AutoNext + 2000;
 
-            //Загрузка первого вопроса
-            masterEventList = loadMasterEventList();
-            dispatcher = new QuizQuestionDispatcher(this, filterDeps, eventsData);
-            refreshQuizPool();
-            showNextQuestion();
+            // Загружаем события асинхронно, если нужно
+            if (eventsData.needUpdateEventList || eventsData.isEmptyEventList()) {
+                eventsData.getEventsAsync(this::initQuizData);
+            } else {
+                initQuizData();
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
             finish();
+        }
+    }
+
+    /**
+     * Инициализация данных викторины после загрузки событий
+     */
+    private void initQuizData() {
+        try {
+            masterEventList = loadMasterEventList();
+            dispatcher = new QuizQuestionDispatcher(this, filterDeps, eventsData);
+            refreshQuizPool();
+            showNextQuestion();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

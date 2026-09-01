@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 01.09.2026, 03:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 01.09.2026, 03:39
  *
  */
 
@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -106,6 +107,8 @@ public class LocalEventActivity extends AppCompatActivity {
     private static final List<Integer> eventSubTypesIds = new ArrayList<>();
     private boolean isReadOnly;
     private String eventDataSaved = null;
+    // Executor для фоновой обработки фото, чтобы не блокировать UI
+    private final java.util.concurrent.ExecutorService photoExecutor = java.util.concurrent.Executors.newSingleThreadExecutor();
 
     TextView viewActivityTitle;
     ImageView imagePhoto;
@@ -242,7 +245,10 @@ public class LocalEventActivity extends AppCompatActivity {
                         .setTitle(R.string.local_event_date_picker_title)
                         .setPositiveButton(R.string.button_ok, (dialog, which) -> {
                             updateEventDate(editDate, selectedDay.get(), selectedMonth.get(), selectedYear.get(), useYear.get(), isBC.get());
-                            updateEventPhoto((LocalEventActivity) getActivity());
+                            LocalEventActivity activity = (LocalEventActivity) getActivity();
+                            if (activity != null) {
+                                activity.updateEventPhoto();
+                            }
                         })
                         .setNegativeButton(R.string.button_cancel, (dialog, which) -> dismiss());
 
@@ -366,6 +372,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("WrongThread")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -620,7 +627,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        updateEventPhoto(LocalEventActivity.this);
+                        updateEventPhoto();
                     }
                 });
 
@@ -647,7 +654,7 @@ public class LocalEventActivity extends AppCompatActivity {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         updateCaptionsAndVisibility(LocalEventActivity.this);
-                        updateEventPhoto(LocalEventActivity.this);
+                        updateEventPhoto();
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {}
@@ -706,7 +713,7 @@ public class LocalEventActivity extends AppCompatActivity {
 
             updateCaptionsAndVisibility(this);
             updateEventDate(editDate, day, month, year, useYear, isBC);
-            updateEventPhoto(this);
+            updateEventPhoto();
             this.eventDataSaved = eventsData.getEventData(eventData);
 
         } catch (Exception e) {
@@ -722,7 +729,7 @@ public class LocalEventActivity extends AppCompatActivity {
             eventData.put(ContactsEvents.Position_photo, Constants.STRING_EMPTY);
             eventData.put(ContactsEvents.Position_photo_uri, Constants.STRING_EMPTY);
             updateCaptionsAndVisibility(this);
-            updateEventPhoto(this);
+            updateEventPhoto();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -881,7 +888,7 @@ public class LocalEventActivity extends AppCompatActivity {
                             eventData.put(ContactsEvents.Position_photo, ImageUtils.encodeImageToBase64(this, croppedUri, maxSize));
                             eventData.put(ContactsEvents.Position_photo_uri, Constants.STRING_EMPTY);
                             updateCaptionsAndVisibility(this);
-                            updateEventPhoto(this);
+                            updateEventPhoto();
                         }
                     }
                 }
@@ -1203,39 +1210,43 @@ public class LocalEventActivity extends AppCompatActivity {
         }
     }
 
-    private static void updateEventPhoto(LocalEventActivity activity) {
-        try {
+    private void updateEventPhoto() {
+        if (this.imagePhoto == null) return;
 
-            if (activity.imagePhoto != null) {
-                prepareEventData(activity);
-                TreeMap<Integer, String> eventDataForPhoto = new TreeMap<>(eventData);
-
-                if (eventUseYear) {
-                    final Date eventDate = new Date(eventYear - 1900, eventMonth, eventDay);
-                    final Date today = eventsData.getToday().getTime();
-                    int age = -1;
-                    if (eventDate.before(today)) {
-                        age = AppDateUtils.countYearsDiff(eventDate, today);
-                    }
-                    eventDataForPhoto.put(ContactsEvents.Position_age, String.valueOf(age));
-                }
-
-                String eventType = eventDataForPhoto.get(ContactsEvents.Position_eventType);
-                if (eventType != null) {
-                    eventDataForPhoto.put(ContactsEvents.Position_eventType, ContactsEvents.getEventType(Integer.parseInt(eventType)));
-                }
-                String eventSubType = eventDataForPhoto.get(ContactsEvents.Position_eventSubType);
-                if (eventSubType != null) {
-                    eventDataForPhoto.put(ContactsEvents.Position_eventSubType, ContactsEvents.getEventType(Integer.parseInt(eventSubType)));
-                }
-
-                activity.imagePhoto.setImageBitmap(eventsData.getEventPhoto(eventsData.getEventData(eventDataForPhoto), true, false, true, 1));
+        // 1. Быстрая подготовка данных в UI-потоке
+        prepareEventData(this);
+        final TreeMap<Integer, String> eventDataForPhoto = new TreeMap<>(eventData);
+        if (eventUseYear) {
+            final Date eventDate = new Date(eventYear - 1900, eventMonth, eventDay);
+            final Date today = eventsData.getToday().getTime();
+            int age = -1;
+            if (eventDate.before(today)) {
+                age = AppDateUtils.countYearsDiff(eventDate, today);
             }
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(activity, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            eventDataForPhoto.put(ContactsEvents.Position_age, String.valueOf(age));
         }
+        String eventType = eventDataForPhoto.get(ContactsEvents.Position_eventType);
+        if (eventType != null) {
+            eventDataForPhoto.put(ContactsEvents.Position_eventType, ContactsEvents.getEventType(Integer.parseInt(eventType)));
+        }
+        String eventSubType = eventDataForPhoto.get(ContactsEvents.Position_eventSubType);
+        if (eventSubType != null) {
+            eventDataForPhoto.put(ContactsEvents.Position_eventSubType, ContactsEvents.getEventType(Integer.parseInt(eventSubType)));
+        }
+
+        final String eventDataString = eventsData.getEventData(eventDataForPhoto);
+
+        // 2. Тяжелая операция декодирования Bitmap выносится в фоновый поток
+        photoExecutor.execute(() -> {
+            final Bitmap bitmap = eventsData.getEventPhoto(eventDataString, true, false, true, 1);
+
+            // 3. Применение результата в UI-потоке
+            runOnUiThread(() -> {
+                if (imagePhoto != null && !isFinishing()) {
+                    imagePhoto.setImageBitmap(bitmap);
+                }
+            });
+        });
     }
 
     private static void updateCaptionsAndVisibility(LocalEventActivity activity) {
@@ -1315,6 +1326,11 @@ public class LocalEventActivity extends AppCompatActivity {
         eventTypesValues.clear();
         eventTypesIds.clear();
         eventSubTypesIds.clear();
+
+        // Останавливаем фоновый поток при уничтожении Activity
+        if (photoExecutor != null) {
+            photoExecutor.shutdownNow();
+        }
 
         super.onDestroy();
     }

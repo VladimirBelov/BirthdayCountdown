@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 02:02
+ *  * Created by Vladimir Belov on 01.09.2026, 03:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 31.08.2026, 01:54
+ *  * Last modified 01.09.2026, 03:45
  *
  */
 
@@ -852,71 +852,79 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private void shareEventAsImage(ListView listView) {
         try {
-
-            //https://stackoverflow.com/questions/12742343/android-get-screenshot-of-all-listview-items
-            //https://demonuts.com/android-take-screenshot/
-            //https://stackoverflow.com/questions/19514174/convert-listview-items-into-a-single-bitmap-image
-
+            // === ЧАСТЬ 1: Работа с View — только в UI потоке ===
             View childView = adapter.getView(selectedEvent_num, null, listView);
-
             childView.measure(
                     View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.EXACTLY),
                     View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-
             childView.layout(0, 0, childView.getMeasuredWidth(), childView.getMeasuredHeight());
             childView.setBackgroundColor(ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(this, R.color.theme_secondary)));
             childView.setDrawingCacheEnabled(true);
             childView.buildDrawingCache(true);
-            Bitmap bmp = childView.getDrawingCache(true);
+            final Bitmap bmp = childView.getDrawingCache(true);
             if (bmp == null) {
                 ToastExpander.showInfoMsg(this, getString(R.string.msg_error_get_event_image));
                 return;
             }
-
-            Uri bitmapShareUri;
-
-            File file = new File(this.getCacheDir(), "event.jpg");
-            try {
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                bmp.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
-                fileOutputStream.close();
-                bitmapShareUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", file);
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-                return;
-            }
+            // Создаём копию Bitmap, чтобы можно было безопасно освободить drawing cache
+            final Bitmap bmpToSave = bmp.copy(Bitmap.Config.ARGB_8888, false);
             childView.destroyDrawingCache();
 
-            if (bitmapShareUri != null) {
-                //https://stackoverflow.com/questions/48045626/chooser-created-with-createchooserintent-title-doesnt-display-a-title
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType(Constants.MIME_IMAGE_ALL);
-                final String[] mimeTypes = {Constants.MIME_IMAGE_JPEG, Constants.MIME_IMAGE_PNG};
-                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes); //https://stackoverflow.com/questions/54478638/effect-of-intent-settype-on-androids-intent-chooser
-                intent.putExtra(Intent.EXTRA_STREAM, bitmapShareUri);
-
-                // ClipData для preview в chooser'е
-                intent.setClipData(ClipData.newRawUri("", bitmapShareUri));
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                // Грант права приложениям-получателям
-                List<ResolveInfo> resInfoList = getPackageManager()
-                        .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-
-                for (ResolveInfo resolveInfo : resInfoList) {
-                    String packageName = resolveInfo.activityInfo.packageName;
-                    grantUriPermission(packageName, bitmapShareUri,
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                                    Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
-                }
+            // === ЧАСТЬ 2: Сохранение файла — в фоновом потоке ===
+            executor.execute(() -> {
+                Uri bitmapShareUri = null;
                 try {
-                    Intent chooser = Intent.createChooser(intent, Constants.STRING_EMPTY);
-                    startActivity(chooser);
-                } catch (ActivityNotFoundException e) { /**/ }
-            }
+                    File file = new File(getCacheDir(), "event.jpg");
+                    try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                        bmpToSave.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+                    }
+                    bitmapShareUri = FileProvider.getUriForFile(
+                            MainActivity.this,
+                            getPackageName() + ".fileprovider",
+                            file);
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage(), e);
+                    runOnUiThread(() -> ToastExpander.showDebugMsg(MainActivity.this,
+                            StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e));
+                } finally {
+                    bmpToSave.recycle();
+                }
 
+                // === ЧАСТЬ 3: Запуск Intent — снова в UI потоке ===
+                if (bitmapShareUri != null) {
+                    final Uri shareUri = bitmapShareUri;
+                    runOnUiThread(() -> {
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.setType(Constants.MIME_IMAGE_ALL);
+                            final String[] mimeTypes = {Constants.MIME_IMAGE_JPEG, Constants.MIME_IMAGE_PNG};
+                            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+                            intent.putExtra(Intent.EXTRA_STREAM, shareUri);
+                            intent.setClipData(ClipData.newRawUri("", shareUri));
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                            // Грант права приложениям-получателям
+                            List<ResolveInfo> resInfoList = getPackageManager()
+                                    .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                            for (ResolveInfo resolveInfo : resInfoList) {
+                                String packageName = resolveInfo.activityInfo.packageName;
+                                grantUriPermission(packageName, shareUri,
+                                        Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                                                Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
+                            }
+                            try {
+                                Intent chooser = Intent.createChooser(intent, Constants.STRING_EMPTY);
+                                startActivity(chooser);
+                            } catch (ActivityNotFoundException e) { /**/ }
+                        } catch (Exception e) {
+                            Log.e(TAG, e.getMessage(), e);
+                            ToastExpander.showDebugMsg(MainActivity.this,
+                                    StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                        }
+                    });
+                }
+            });
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -2649,34 +2657,51 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     synchronized void updateList(boolean setRefreshing) {
         try {
-            boolean coldStart = false;
+            final android.widget.ProgressBar[] coldStartProgress = {null};
+
             if (setRefreshing) {
                 if (swipeRefresh.isLaidOut()) {
                     swipeRefresh.setRefreshing(true);
                 } else {
-                    coldStart = true;
+                    // Холодный старт: SwipeRefreshLayout ещё не отрисован,
+                    // показываем программный ProgressBar поверх контента
+                    coldStartProgress[0] = new android.widget.ProgressBar(this);
+                    coldStartProgress[0].setIndeterminate(true);
+                    android.widget.FrameLayout.LayoutParams params = new android.widget.FrameLayout.LayoutParams(
+                            android.widget.FrameLayout.LayoutParams.WRAP_CONTENT,
+                            android.widget.FrameLayout.LayoutParams.WRAP_CONTENT);
+                    params.gravity = android.view.Gravity.CENTER;
+                    coldStartProgress[0].setLayoutParams(params);
+                    ((android.view.ViewGroup) getWindow().getDecorView().getRootView())
+                            .addView(coldStartProgress[0]);
                 }
             }
 
             boolean needLoad = eventsData.needUpdateEventList || eventsData.isEmptyEventList();
-
             if (needLoad) {
-                if (coldStart) {
-                    eventsData.getEvents();
+                // Всегда используем асинхронную загрузку — UI не фризит
+                eventsData.getEventsAsync(() -> {
                     if (!isFinishing() && !isDestroyed()) {
+                        // Убираем программный ProgressBar, если он был показан
+                        if (coldStartProgress[0] != null) {
+                            try {
+                                ((android.view.ViewGroup) getWindow().getDecorView().getRootView())
+                                        .removeView(coldStartProgress[0]);
+                            } catch (Exception ignored) { /**/ }
+                        }
                         updateUIAfterEventsLoad();
                     }
-                } else {
-                    eventsData.getEventsAsync(() -> {
-                        if (!isFinishing() && !isDestroyed()) {
-                            updateUIAfterEventsLoad();
-                        }
-                    });
-                }
+                });
             } else {
+                // Убираем программный ProgressBar, если он был показан
+                if (coldStartProgress[0] != null) {
+                    try {
+                        ((android.view.ViewGroup) getWindow().getDecorView().getRootView())
+                                .removeView(coldStartProgress[0]);
+                    } catch (Exception ignored) { /**/ }
+                }
                 updateUIAfterEventsLoad();
             }
-
         } catch (Exception e) {
             if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
             Log.e(TAG, e.getMessage(), e);
