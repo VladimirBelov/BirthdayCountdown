@@ -1,11 +1,10 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.08.2026, 14:10
+ *  * Created by Vladimir Belov on 03.09.2026, 20:56
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.08.2026, 14:07
+ *  * Last modified 03.09.2026, 20:55
  *
  */
-//file:noinspection HardCodedStringLiteral
 
 plugins {
     id 'com.android.application'
@@ -38,7 +37,7 @@ android {
         }
     }
     compileSdk = 37
-    compileSdkMinor = 1
+    compileSdkMinor = 2
     buildToolsVersion '37.0.0'
     namespace = 'org.vovka.birthdaycountdown'
 
@@ -88,8 +87,7 @@ android {
         defaultConfig {
             applicationId "org.vovka.birthdaycountdown"
             //https://stackoverflow.com/questions/24441178/recommended-minimum-android-app-sdk
-            minSdkVersion 21 //выше или ниже 17- увеличивают объём APK, 21 - минимальная для поддержки тем и ?android:attr
-            //https://stackoverflow.com/questions/26694108/what-is-the-difference-between-compilesdkversion-and-targetsdkversion
+            minSdkVersion 21 // 21 - minimum for themes and ?android:attr support
             //minSdkVersion (lowest possible) <= targetSdkVersion == compileSdkVersion (latest SDK)
             targetSdkVersion 37 //https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
             versionCode code
