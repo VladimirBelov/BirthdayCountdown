@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
+  ~  * Created by Vladimir Belov on 05.09.2026, 00:47
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.09.2026, 00:40
+  ~  * Last modified 04.09.2026, 01:16
   ~  */
   -->
 
@@ -1069,6 +1069,21 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
 
     <string name="widget_config_events_favorites">🌟 Ulubione</string>
     <string name="widget_config_events_local_events">📅 Wydarzenia lokalne</string>
+
+    <string name="menu_save_template">Zapisz szablon</string>
+    <string name="menu_load_template">Wczytaj szablon</string>
+    <string name="msg_template_save_title">Zapisz szablon</string>
+    <string name="msg_template_save_hint">Nazwa szablonu</string>
+    <string name="msg_template_saved">Szablon \"%1$s\" zapisany</string>
+    <string name="msg_template_load_title">Wczytaj szablon</string>
+    <string name="msg_template_loaded">Szablon \"%1$s\" wczytany</string>
+    <string name="msg_template_empty_name">Nazwa szablonu nie może być pusta</string>
+    <string name="msg_template_delete">Usuń szablon</string>
+    <string name="msg_template_deleted">Szablon \"%1$s\" usunięty</string>
+    <string name="msg_template_overwrite">Szablon \"%1$s\" już istnieje. Zastąpić?</string>
+    <string name="msg_template_no_templates">Brak zapisanych szablonów</string>
+    <string name="msg_template_limit_reached">Osiągnięto limit szablonów (%1$d).\n\nUsuń niepotrzebny szablon, przytrzymując go długo w menu „Wczytaj szablon"</string>
+    <string name="msg_template_delete_confirm">Usunąć szablon \"%1$s\"?</string>
 
     <string name="pref_Notifications_title">Powiadomienia</string>
     <string name="pref_Notifications_summary">Kiedy i jak wyświetlać powiadomienia o wydarzeniach</string>

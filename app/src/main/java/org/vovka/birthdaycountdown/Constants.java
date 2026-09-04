@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.09.2026, 01:33
+ *  * Created by Vladimir Belov on 05.09.2026, 00:47
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 20:55
+ *  * Last modified 04.09.2026, 23:06
  *
  */
 
@@ -63,6 +63,7 @@ public final class Constants {
     static final String STRING_TAB = "\t";
     static final String STRING_EOL_RN = "\\r?\\n";
     public static final String STRING_EOT = "\u0004";
+    public static final String STRING_ETX = "\u0003";
     static final String STRING_EQ_Q = "=?";
     public static final String STRING_EQ = "=";
     static final String STRING_MINUS1 = "-1";
@@ -349,6 +350,7 @@ public final class Constants {
     static final String WIDGET_TYPE_4X1 = "Widget4x1";
     static final String WIDGET_TYPE_2X2 = "Widget2x2";
     static final String WIDGET_TYPE_CALENDAR = "WidgetCalendar";
+    static final String WIDGET_TEMPLATES_PREFIX = "WidgetTemplates_";
 
     static final String quiz_error_button_OK = "-##OK##";
     static final String BUTTON_X = "X";
@@ -540,4 +542,6 @@ public final class Constants {
     public static final String FEATURE_ADV_INFO = "show_adv_info";
     /** Включить больше действий */
     public static final String FEATURE_ADV_ACTIONS = "show_adv_actions";
+    /** Максимальное количество шаблонов на один тип виджета */
+    static final int MAX_WIDGET_TEMPLATES = 10;
 }

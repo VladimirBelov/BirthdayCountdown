@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.09.2026, 01:33
+ *  * Created by Vladimir Belov on 05.09.2026, 00:47
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.09.2026, 00:18
+ *  * Last modified 05.09.2026, 00:11
  *
  */
 
@@ -3690,6 +3690,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                 intent.putExtra(Intent.EXTRA_TITLE,
                         getText(R.string.app_name)
+                                + Constants.STRING_SPACE
                                 + Objects.requireNonNull(eventsData.sdf_DDMMYYYYHHMM.get()).format(Calendar.getInstance().getTime())
                                 + ".txt");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
@@ -3722,12 +3723,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         for (String key : keys) {
                             Object pref = prefs.get(key);
                             if (pref != null) {
-                                outputStream.write(key
-                                        .concat(Constants.STRING_COLON_SPACE)
-                                        .concat(pref.toString())
-                                        .concat(Constants.STRING_EOL)
-                                        .getBytes(StandardCharsets.UTF_8)
-                                );
+                                String valueStr;
+                                if (key.startsWith(Constants.WIDGET_TEMPLATES_PREFIX) && pref instanceof Set) {
+                                    Set<?> stringSet = (Set<?>) pref;
+                                    valueStr = Constants.STRING_BRACKETS_START
+                                            + android.text.TextUtils.join(Constants.STRING_ETX, stringSet)
+                                            + Constants.STRING_BRACKETS_CLOSE;
+                                } else {
+                                    valueStr = pref.toString();
+                                }
+
+                                String line = key + Constants.STRING_COLON_SPACE + valueStr + Constants.STRING_EOL;
+                                outputStream.write(line.getBytes(StandardCharsets.UTF_8));
                                 countExported++;
                             }
                         }
@@ -4029,7 +4036,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Quiz_EventSources_key),
                         getString(R.string.pref_Quiz_Questions_key),
                         getString(R.string.pref_xDaysEvents_key),
-                        getString(R.string.pref_Widgets_EventInfo_key)
+                        getString(R.string.pref_Widgets_EventInfo_key),
+                        Constants.WIDGET_TEMPLATES_PREFIX + Constants.WIDGET_TYPE_CALENDAR,
+                        Constants.WIDGET_TEMPLATES_PREFIX + Constants.WIDGET_TYPE_LIST,
+                        Constants.WIDGET_TEMPLATES_PREFIX + Constants.WIDGET_TYPE_PHOTO_LIST,
+                        Constants.WIDGET_TEMPLATES_PREFIX + Constants.WIDGET_TYPE_2X2,
+                        Constants.WIDGET_TEMPLATES_PREFIX + Constants.WIDGET_TYPE_4X1,
+                        Constants.WIDGET_TEMPLATES_PREFIX + Constants.WIDGET_TYPE_5X1
                 ));
 
                 ArrayList<String> listLongs = new ArrayList<>(Arrays.asList(
@@ -4038,100 +4051,112 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 ));
 
                 for (String prefLine: prefsArray) {
-                    int indColon = prefLine.indexOf(Constants.STRING_COLON);
-                    if (indColon > -1) {
+                    try {
+                        int indColon = prefLine.indexOf(Constants.STRING_COLON);
+                        if (indColon == -1) continue;
                         String[] pref = new String[2];
                         pref[0] = prefLine.substring(0, indColon).trim();
+                        if (pref[0].isEmpty() || pref[0].startsWith(Constants.STRING_HASH))
+                            continue;
+                        pref[1] = prefLine.substring(indColon + 1).trim();
+                        if (listIntegers.contains(pref[0])) { // Integers
 
-                        if (!pref[0].isEmpty() && !pref[0].startsWith(Constants.STRING_HASH)) {
-                            pref[1] = prefLine.substring(indColon + 1).trim();
-                            if (listIntegers.contains(pref[0])) { // Integers
-
-                                Integer valInt = null;
-                                try {
-                                    valInt = Integer.parseInt(pref[1]);
-                                } catch (NumberFormatException e) {
-                                    countErrors++;
-                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
-                                }
-                                if (valInt != null) {
-                                    editor.putInt(pref[0], valInt);
-                                    countSuccess++;
-                                }
-
-                            } else if (listBooleans.contains(pref[0])) { // Booleans
-
-                                Boolean valBoolean = null;
-                                try {
-                                    valBoolean = Boolean.parseBoolean(pref[1]);
-                                } catch (NumberFormatException e) {
-                                    countErrors++;
-                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
-                                }
-                                if (valBoolean != null) {
-                                    editor.putBoolean(pref[0], valBoolean);
-                                    countSuccess++;
-                                }
-
-                            } else if (listSets.contains(pref[0])) { // Sets
-
-                                Set<String> valSet = null;
-                                int brake1 = pref[1].indexOf(Constants.STRING_BRACKETS_START);
-                                int brake2 = pref[1].lastIndexOf(Constants.STRING_BRACKETS_CLOSE);
-                                if (brake1 != -1 && brake2 != -1) {
-                                    String[] values = pref[1].substring(brake1 + 1, brake2).split(Constants.STRING_COMMA, -1);
-                                    valSet = new HashSet<>();
-                                    for (String value : values) {
-                                        final String valueTrimmed = value.trim();
-                                        if (!valueTrimmed.isEmpty()) valSet.add(valueTrimmed);
-                                    }
-                                }
-
-                                if (valSet == null) {
-                                    countErrors++;
-                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
-                                } else {
-                                    editor.putStringSet(pref[0], valSet);
-                                    countSuccess++;
-                                }
-
-                            } else if (listStrings.contains(pref[0]) || pref[0].startsWith(getString(R.string.widget_config_PrefName))) { // Strings
-
-                                editor.putString(pref[0], pref[1]);
-                                countSuccess++;
-
-                            } else if (listLongs.contains(pref[0])) { // Longs
-
-                                Long valLong = null;
-                                try {
-                                    valLong = Long.parseLong(pref[1]);
-                                } catch (NumberFormatException e) {
-                                    countErrors++;
-                                    ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
-                                }
-                                if (valLong != null) {
-                                    editor.putLong(pref[0], valLong);
-                                    countSuccess++;
-                                }
-
-                            } else {
-
+                            Integer valInt = null;
+                            try {
+                                valInt = Integer.parseInt(pref[1]);
+                            } catch (NumberFormatException e) {
                                 countErrors++;
-                                ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_unknown, prefLine));
-
+                                ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
                             }
-                        }
-                    }
+                            if (valInt != null) {
+                                editor.putInt(pref[0], valInt);
+                                countSuccess++;
+                            }
 
+                        } else if (listBooleans.contains(pref[0])) { // Booleans
+
+                            Boolean valBoolean = null;
+                            try {
+                                valBoolean = Boolean.parseBoolean(pref[1]);
+                            } catch (NumberFormatException e) {
+                                countErrors++;
+                                ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
+                            }
+                            if (valBoolean != null) {
+                                editor.putBoolean(pref[0], valBoolean);
+                                countSuccess++;
+                            }
+
+                        } else if (listSets.contains(pref[0])) { // Sets
+
+                            Set<String> valSet = null;
+                            int brake1 = pref[1].indexOf(Constants.STRING_BRACKETS_START);
+                            int brake2 = pref[1].lastIndexOf(Constants.STRING_BRACKETS_CLOSE);
+                            if (brake1 != -1 && brake2 != -1) {
+                                String[] values;
+                                if (pref[1].contains(Constants.STRING_ETX)) {
+                                    values = pref[1].substring(brake1 + 1, brake2).split(Constants.STRING_ETX, -1);
+                                } else {
+                                    values = pref[1].substring(brake1 + 1, brake2).split(Constants.STRING_COMMA_SPACE, -1);
+                                }
+                                valSet = new HashSet<>();
+                                for (String value : values) {
+                                    final String valueTrimmed = value.trim();
+                                    if (!valueTrimmed.isEmpty()) valSet.add(valueTrimmed);
+                                }
+                            }
+
+                            if (valSet == null) {
+                                countErrors++;
+                                ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
+                            } else {
+                                editor.putStringSet(pref[0], valSet);
+                                countSuccess++;
+                            }
+
+                        } else if (listStrings.contains(pref[0]) || pref[0].startsWith(getString(R.string.widget_config_PrefName))) { // Strings
+
+                            editor.putString(pref[0], pref[1]);
+                            countSuccess++;
+
+                        } else if (listLongs.contains(pref[0])) { // Longs
+
+                            Long valLong = null;
+                            try {
+                                valLong = Long.parseLong(pref[1]);
+                            } catch (NumberFormatException e) {
+                                countErrors++;
+                                ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
+                            }
+                            if (valLong != null) {
+                                editor.putLong(pref[0], valLong);
+                                countSuccess++;
+                            }
+
+                        } else {
+
+                            countErrors++;
+                            ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_unknown, prefLine));
+
+                        }
+                    } catch (Exception e) {
+                        countErrors++;
+                        ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine + Constants.STRING_EOL + e));
+                    }
                 }
 
-                ToastExpander.showMsg(this, getString(R.string.pref_Tools_Preferences_Import_result, countSuccess, countErrors));
+                android.widget.Toast.makeText(
+                        getApplicationContext(),
+                        getString(R.string.pref_Tools_Preferences_Import_result, countSuccess, countErrors),
+                        android.widget.Toast.LENGTH_LONG
+                ).show();
                 if (countSuccess > 0) {
                     if (editor.commit()) {
                         eventsData.setAppIcon();
                         eventsData.needUpdateEventList = true;
                     }
                 }
+
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
@@ -4354,7 +4379,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
                 }
 
-                ToastExpander.showMsg(this, getString(R.string.pref_Tools_LocalEvents_Restore_result, countSuccess, countSkip, countError));
+                android.widget.Toast.makeText(
+                        getApplicationContext(),
+                        getString(R.string.pref_Tools_LocalEvents_Restore_result, countSuccess, countSkip, countError),
+                        android.widget.Toast.LENGTH_LONG
+                ).show();
                 if (countSuccess > 0) {
                     if (editor.commit()) {
                         eventsData.needUpdateEventList = true;

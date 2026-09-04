@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
+  ~  * Created by Vladimir Belov on 05.09.2026, 00:47
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.09.2026, 00:37
+  ~  * Last modified 04.09.2026, 00:48
   ~  */
   -->
 
@@ -1069,6 +1069,21 @@ Long click on item to select color"</string>
 
     <string name="widget_config_events_favorites">🌟 Favorites</string>
     <string name="widget_config_events_local_events">📅 Local events</string>
+
+    <string name="menu_save_template">Save template</string>
+    <string name="menu_load_template">Load template</string>
+    <string name="msg_template_save_title">Save template</string>
+    <string name="msg_template_save_hint">Template name</string>
+    <string name="msg_template_saved">Template \"%1$s\" saved</string>
+    <string name="msg_template_load_title">Load template</string>
+    <string name="msg_template_loaded">Template \"%1$s\" loaded</string>
+    <string name="msg_template_empty_name">Template name cannot be empty</string>
+    <string name="msg_template_delete">Delete template</string>
+    <string name="msg_template_deleted">Template \"%1$s\" deleted</string>
+    <string name="msg_template_overwrite">Template \"%1$s\" already exists. Overwrite?</string>
+    <string name="msg_template_no_templates">No saved templates</string>
+    <string name="msg_template_limit_reached">Template limit reached (%1$d).\n\nLong-press a template in the "Load template" menu to delete it</string>
+    <string name="msg_template_delete_confirm">Delete template \"%1$s\"?</string>
 
     <string name="pref_Notifications_title">Notifications</string>
     <string name="pref_Notifications_summary">When and how to show event notifications</string>

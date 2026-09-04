@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
+  ~  * Created by Vladimir Belov on 05.09.2026, 00:47
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.09.2026, 00:38
+  ~  * Last modified 04.09.2026, 01:14
   ~  */
   -->
 
@@ -1069,6 +1069,21 @@ Haga clic largo en el elemento para seleccionar el color"</string>
 
     <string name="widget_config_events_favorites">🌟 Favoritos</string>
     <string name="widget_config_events_local_events">📅 Eventos locales</string>
+
+    <string name="menu_save_template">Guardar plantilla</string>
+    <string name="menu_load_template">Cargar plantilla</string>
+    <string name="msg_template_save_title">Guardar plantilla</string>
+    <string name="msg_template_save_hint">Nombre de la plantilla</string>
+    <string name="msg_template_saved">Plantilla \"%1$s\" guardada</string>
+    <string name="msg_template_load_title">Cargar plantilla</string>
+    <string name="msg_template_loaded">Plantilla \"%1$s\" cargada</string>
+    <string name="msg_template_empty_name">El nombre de la plantilla no puede estar vacío</string>
+    <string name="msg_template_delete">Eliminar plantilla</string>
+    <string name="msg_template_deleted">Plantilla \"%1$s\" eliminada</string>
+    <string name="msg_template_overwrite">La plantilla \"%1$s\" ya existe. ¿Sobrescribir?</string>
+    <string name="msg_template_no_templates">No hay plantillas guardadas</string>
+    <string name="msg_template_limit_reached">Se alcanzó el límite de plantillas (%1$d).\n\nElimine una plantilla no utilizada manteniéndola pulsada en el menú «Cargar plantilla»</string>
+    <string name="msg_template_delete_confirm">¿Eliminar la plantilla \"%1$s\"?</string>
 
     <string name="pref_Notifications_title">Notificaciones</string>
     <string name="pref_Notifications_summary">Cuándo y cómo mostrar notificaciones de eventos</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.09.2026, 01:33
+ *  * Created by Vladimir Belov on 05.09.2026, 00:47
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 23:40
+ *  * Last modified 05.09.2026, 00:40
  *
  */
 
@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,7 +35,10 @@ import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -71,13 +75,12 @@ import java.util.regex.Pattern;
  * </ul>
  */
 public class WidgetConfigureActivity extends AppCompatActivity {
-
     private static final String TAG = "WidgetConfigureActivity";
     private static final String UPPER_ROW = "upperRow";
     private static final String BOTTOM_ROW = "bottomRow";
     private int widgetId = 0;
     private String widgetType = Constants.WIDGET_TYPE_PHOTO_LIST;
-    List<String> widgetPref;
+    private List<String> widgetPref;
     private boolean isListWidget = false;
     private final ContactsEvents eventsData = ContactsEvents.getInstance();
     private List<String> eventTypesIDs;
@@ -91,19 +94,33 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private boolean isNewPinnedWidget;
     private final int minValueSeekOffset = 49;
     private String localeAtCreate = "";
+    CheckBox checkCaptionsUsePrefs;
+    ColorPicker pickerColorWidgetBackground;
+    ColorPicker pickerColorWidgetBorder;
+    EditText editCustomWidgetCaption;
+    EditText editCustomZeroEvents;
+    MultiSelectionSpinner spinnerEventInfo;
+    MultiSelectionSpinner spinnerEventTypes;
+    SeekBar seekFontMagnifyPhoto;
+    SeekBar seekFontMagnifyText;
+    Spinner spinnerEventShift;
+    Spinner spinnerEventsCount;
+    Spinner spinnerPhotoStyle;
+    Spinner spinnerScopeDays;
+    Spinner spinnerScopeEvents;
+    TextView listEventSources;
+    private Menu menuOptions;
+    @Nullable
+    private AlertDialog loadTemplateDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         TypedArray ta = null;
         try {
-
             eventsData.initLanguage(this);
             localeAtCreate = eventsData.currentLocale;
-
             setTheme(eventsData.preferences_theme.themeMain);
-
             setContentView(R.layout.widget_config);
 
             View layoutMain = findViewById(R.id.layout_main);
@@ -113,21 +130,15 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     Insets insetsStatus = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
                     Insets insetsGestures = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures());
                     Insets insetsIme = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
-
-                    // Верхний отступ — status bar
-                    // Нижний — максимум из жестов и клавиатуры (клавиатура всегда выше)
                     int bottomPadding = Math.max(insetsGestures.bottom, insetsIme.bottom);
-
                     layoutCoordinator.setPadding(0, insetsStatus.top, 0, bottomPadding);
                     layoutMain.setPadding(0, insetsStatus.bottom + ImageUtils.Sp2Px(getResources(), 50), 0, 0);
-
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
                 layoutMain.setPadding(0, ImageUtils.Dip2Px(getResources(), 50), 0, 0);
             }
 
-            //Отступы всего окна
             RelativeLayout.MarginLayoutParams marginParams = (RelativeLayout.MarginLayoutParams) layoutMain.getLayoutParams();
             marginParams.setMargins(
                     (int) (eventsData.preferences_list_margin * eventsData.displayMetrics_density + 0.5f),
@@ -140,12 +151,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);
             toolbar.setTitle(R.string.window_widget_settings);
 
-            //Цвет заголовка окна
             ta = getTheme().obtainStyledAttributes(R.styleable.Theme);
             toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
             setSupportActionBar(toolbar);
-
-            //todo: цвет spinner https://stackoverflow.com/questions/9476665/how-to-change-spinner-text-size-and-text-color
 
             setResult(RESULT_CANCELED);
 
@@ -161,8 +169,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             if (appWidgetInfo != null) {
                 widgetType = appWidgetInfo.provider.getShortClassName().substring(1);
             }
-
             widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
+
             if (widgetId > 0 && eventsData.preferences_debug_on) {
                 toolbar.setTitle(getString(R.string.window_widget_settings)
                         .concat(Constants.STRING_PARENTHESIS_OPEN)
@@ -182,153 +190,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 buttonOk.setOnClickListener(v -> buttonOkOnClick());
             }
 
-            //Стартовый номер
-            int prefStartingIndex = 1;
-            try {
-                if (!widgetPref.isEmpty()) prefStartingIndex = Integer.parseInt(widgetPref.get(0));
-            } catch (Exception e) {/**/}
-
-            Spinner spinnerIndex = findViewById(R.id.spinnerEventShift);
-            spinnerIndex.setSelection(prefStartingIndex - 1, true);
-
-            //Масштабирование размеров
-            int maxValueSeek = 200;
-            int prefMagnifyText = 0;
-            int prefMagnifyPhoto = 0;
-
-            try {
-                if (widgetPref.size() > 1) {
-                    String[] prefMagnify = widgetPref.get(1).split(Constants.REGEX_PLUS);
-                    if (widgetPref.get(1).contains(Constants.STRING_PERIOD)) { //В настройках - мультипликатор
-
-                        prefMagnifyText = Math.min((int) Math.round(Double.parseDouble(prefMagnify[0]) * 100), maxValueSeek);
-                        if (prefMagnifyText > 0) prefMagnifyText -= minValueSeekOffset;
-                        if (prefMagnify.length > 1) {
-                            prefMagnifyPhoto = Math.min((int) Math.round(Double.parseDouble(prefMagnify[1]) * 100), maxValueSeek);
-                            if (prefMagnifyPhoto > 0) prefMagnifyPhoto -= minValueSeekOffset;
-                        }
-
-                    } else { //В настройках - индекс в списке (старый формат)
-
-                        List<String> listMagnifyValues = Arrays.asList("0+0.5+0.65+0.75+0.85+1.0+1.1+1.2+1.3+1.4+1.5+1.6+1.75+2.0".split(Constants.REGEX_PLUS));
-                        int prefMagnifyIndex = Integer.parseInt(prefMagnify[0]);
-                        if (prefMagnifyIndex >= 0 && prefMagnifyIndex < listMagnifyValues.size()) {
-                            prefMagnifyText = Math.min((int) Math.round(Double.parseDouble(listMagnifyValues.get(prefMagnifyIndex)) * 100), maxValueSeek);
-                            if (prefMagnifyText > 0) prefMagnifyText -= minValueSeekOffset;
-                        }
-                        if (prefMagnify.length > 1) {
-                            prefMagnifyIndex = Integer.parseInt(prefMagnify[1]);
-                            if (prefMagnifyIndex >= 0 && prefMagnifyIndex < listMagnifyValues.size()) {
-                                prefMagnifyPhoto = Math.min((int) Math.round(Double.parseDouble(listMagnifyValues.get(prefMagnifyIndex)) * 100), maxValueSeek);
-                                if (prefMagnifyPhoto > 0) prefMagnifyPhoto -= minValueSeekOffset;
-                            }
-                        }
-
-                    }
-                }
-            } catch (Exception e) {/**/}
-
-            //Текст
-            SeekBar seekFontMagnifyText = findViewById(R.id.seekFontMagnifyText);
-            seekFontMagnifyText.setMax(maxValueSeek - minValueSeekOffset);
-            seekFontMagnifyText.setProgress(prefMagnifyText);
-            TextView valueFontMagnifyText = findViewById(R.id.valueFontMagnifyText);
-            valueFontMagnifyText.setText(
-                    seekFontMagnifyText.getProgress() == 0 ? getString(R.string.widget_config_magnify_auto) :
-                            getString(R.string.pref_List_FontMagnify_progress, String.valueOf(minValueSeekOffset + seekFontMagnifyText.getProgress()))
-            );
-            seekFontMagnifyText.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    valueFontMagnifyText.setText(
-                            seekFontMagnifyText.getProgress() == 0 ? getString(R.string.widget_config_magnify_auto) :
-                            getString(R.string.pref_List_FontMagnify_progress, String.valueOf(minValueSeekOffset + seekFontMagnifyText.getProgress()))
-                    );
-                }
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
-            });
-
-            //Фото
-            SeekBar seekFontMagnifyPhoto = findViewById(R.id.seekFontMagnifyPhoto);
-            seekFontMagnifyPhoto.setMax(maxValueSeek - minValueSeekOffset);
-            seekFontMagnifyPhoto.setProgress(prefMagnifyPhoto);
-            TextView valueFontMagnifyPhoto = findViewById(R.id.valueFontMagnifyPhoto);
-            valueFontMagnifyPhoto.setText(
-                    seekFontMagnifyPhoto.getProgress() == 0 ? getString(R.string.widget_config_magnify_auto) :
-                            getString(R.string.pref_List_FontMagnify_progress, String.valueOf(minValueSeekOffset + seekFontMagnifyPhoto.getProgress()))
-            );
-            seekFontMagnifyPhoto.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    valueFontMagnifyPhoto.setText(
-                            seekFontMagnifyPhoto.getProgress() == 0 ? getString(R.string.widget_config_magnify_auto) :
-                                    getString(R.string.pref_List_FontMagnify_progress, String.valueOf(minValueSeekOffset + seekFontMagnifyPhoto.getProgress()))
-                    );
-                }
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
-            });
-
-            //Реакция на нажатие
-            //todo: https://stackoverflow.com/questions/2695746/how-to-get-a-list-of-installed-android-applications-and-pick-one-to-run
-
-            String[] prefActionsValues = getResources().getStringArray(R.array.pref_widget_list_onclick_values);
-            int selectedLastEventAction = -1;
-
-            if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty()) {
-                String[] selectedValues = widgetPref.get(12).split(Constants.REGEX_PLUS, -1);
-
-                int ind = -1;
-                for (String value: prefActionsValues) {
-                    ind++;
-                    if (value.equals(selectedValues[0])) {
-                        Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
-                        spinnerOnClickCommon.setSelection(ind, true);
-                    }
-                    if (selectedValues.length > 1 && value.equals(selectedValues[1])) {
-                        selectedLastEventAction = ind;
-                    }
-                }
-            }
-            Spinner spinnerOnClickLastEvent = findViewById(R.id.spinnerOnClickLastEvent);
-            if (selectedLastEventAction > -1) {
-                spinnerOnClickLastEvent.setSelection(selectedLastEventAction, true);
-            } else { //Если в настройках нет установленного, ставим по-умолчанию
-                int ind = -1;
-                for (String value: prefActionsValues) {
-                    ind++;
-                    if (value.equals(getResources().getString(R.string.pref_widget_list_onclick_events_list))) {
-                        spinnerOnClickLastEvent.setSelection(ind, true);
-                        break;
-                    }
-                }
-            }
-
-            //Стиль фото
-            int prefPhotoStyle = 0;
-            try {
-                if (widgetPref.size() > 6) prefPhotoStyle = Integer.parseInt(widgetPref.get(6));
-            } catch (Exception e) {/**/}
-
-            Spinner spinnerPhotoStyle = findViewById(R.id.spinnerPhotoStyle);
-            spinnerPhotoStyle.setSelection(prefPhotoStyle, true);
-
-            //Количество событий в ширину (фото виджет)
-            int prefEventsCountIndex = 0;
-            try {
-                if (widgetPref.size() > 2) prefEventsCountIndex = Integer.parseInt(widgetPref.get(2));
-            } catch (Exception e) {/**/}
-
-            Spinner spinnerEventsCount = findViewById(R.id.spinnerScopeEventsCount);
-            spinnerEventsCount.setSelection(prefEventsCountIndex, true);
+            // ===== 1. ИНИЦИАЛИЗАЦИЯ ДАННЫХ ДЛЯ СПИННЕРОВ =====
 
             //Типы событий
             eventTypesIDs = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.pref_List_EventTypes_values)));
             eventTypesValues = eventsData.getEventTypesWithEmoji();
-
             if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
                     || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
                 eventTypesIDs.remove(getString(R.string.pref_EventTypes_Other));
@@ -338,14 +204,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 eventTypesValues.remove(eventsData.getEventEmojiForType(Constants.EventType_Holiday)
                         .concat(Constants.STRING_SPACE).concat(getString(R.string.pref_List_EventTypes_Holidays)));
             }
-
             if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                 eventTypesIDs.add(getString(R.string.pref_EventTypes_Facts));
                 eventTypesValues.add(eventsData.getEventEmojiForType(Constants.EventType_Fact)
                         .concat(Constants.STRING_SPACE).concat(getString(R.string.pref_List_EventTypes_Facts)));
             }
-
-            //Добавление количества событий
             if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) {
                 for (int i = 0; i < eventTypesValues.size(); i++) {
                     if (eventsData.statEventTypes.containsKey(eventTypesIDs.get(i))) {
@@ -357,28 +220,62 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 }
             }
 
-            MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
-            List<String> listEventTypes = new ArrayList<>();
+            //Детали события (заполняет eventInfoIDs и eventInfoValues)
+            initEventDetailsOptions();
 
-            String[] eventsArray = null;
-            try {
-                if (widgetPref.size() > 3) eventsArray = widgetPref.get(3).split(Constants.REGEX_PLUS);
-                if (eventsArray != null) {
-                    for (String item : eventsArray) {
-                        if (eventTypesIDs.contains(item)) listEventTypes.add(eventTypesValues.get(eventTypesIDs.indexOf(item)));
-                    }
+            isListWidget = Constants.WIDGET_TYPE_LIST.equals(widgetType) || Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType);
+
+            // ===== 2. ИНИЦИАЛИЗАЦИЯ ЭЛЕМЕНТОВ UI (адаптеры, слушатели) =====
+
+            //Стартовый номер (спиннер уже в layout, адаптер из XML)
+            //Масштабирование
+            int maxValueSeek = 200;
+            seekFontMagnifyText = findViewById(R.id.seekFontMagnifyText);
+            seekFontMagnifyText.setMax(maxValueSeek - minValueSeekOffset);
+            seekFontMagnifyText.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    TextView valueFontMagnifyText = findViewById(R.id.valueFontMagnifyText);
+                    valueFontMagnifyText.setText(
+                            seekFontMagnifyText.getProgress() == 0 ? getString(R.string.widget_config_magnify_auto) :
+                                    getString(R.string.pref_List_FontMagnify_progress, String.valueOf(minValueSeekOffset + seekFontMagnifyText.getProgress()))
+                    );
                 }
-            } catch (Exception e) {/**/}
+                @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
 
+            seekFontMagnifyPhoto = findViewById(R.id.seekFontMagnifyPhoto);
+            seekFontMagnifyPhoto.setMax(maxValueSeek - minValueSeekOffset);
+            seekFontMagnifyPhoto.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    TextView valueFontMagnifyPhoto = findViewById(R.id.valueFontMagnifyPhoto);
+                    valueFontMagnifyPhoto.setText(
+                            seekFontMagnifyPhoto.getProgress() == 0 ? getString(R.string.widget_config_magnify_auto) :
+                                    getString(R.string.pref_List_FontMagnify_progress, String.valueOf(minValueSeekOffset + seekFontMagnifyPhoto.getProgress()))
+                    );
+                }
+                @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+
+            spinnerEventShift = findViewById(R.id.spinnerEventShift);
+            spinnerEventsCount = findViewById(R.id.spinnerScopeEventsCount);
+            spinnerPhotoStyle = findViewById(R.id.spinnerPhotoStyle);
+            editCustomWidgetCaption = findViewById(R.id.editCustomWidgetCaption);
+            editCustomZeroEvents = findViewById(R.id.editCustomZeroEventsMessage);
+            pickerColorWidgetBackground = findViewById(R.id.colorWidgetBackground);
+            pickerColorWidgetBorder = findViewById(R.id.colorWidgetBorder);
+
+            //Спиннер типов событий
+            spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
             spinnerEventTypes.setZeroSelectedTitle(getString(R.string.widget_config_event_types_empty));
             spinnerEventTypes.setItems(eventTypesValues);
-            spinnerEventTypes.setSelection(listEventTypes);
             if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                 spinnerEventTypes.onDismissListener = dialog -> updateVisibility();
             }
 
-            isListWidget = Constants.WIDGET_TYPE_LIST.equals(widgetType) || Constants.WIDGET_TYPE_PHOTO_LIST.equals(widgetType);
-            CheckBox checkCaptionsUsePrefs = findViewById(R.id.checkCaptionsUsePrefs);
+            //Чекбокс "использовать настройки приложения" для заголовков
+            checkCaptionsUsePrefs = findViewById(R.id.checkCaptionsUsePrefs);
             checkCaptionsUsePrefs.setOnClickListener(v -> updateVisibility());
             checkCaptionsUsePrefs.setChecked(true);
             TextView labelCaptionsUsePrefs = findViewById(R.id.labelCaptionsUsePrefs);
@@ -394,8 +291,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             } else {
                 spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_photo_scope_events_items).split(Constants.STRING_COMMA, -1)));
             }
-
-            Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
+            spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
             ArrayAdapter<String> spinnerScopeEventsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerScopeEventsItems);
             spinnerScopeEvents.setAdapter(spinnerScopeEventsAdapter);
             spinnerScopeEvents.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -403,12 +299,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     updateVisibility();
                 }
-
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {}
             });
 
-            Spinner spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
+            spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
             List<String> spinnerScopeDaysItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
             ArrayAdapter<String> spinnerScopeDaysAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerScopeDaysItems);
             spinnerScopeDays.setAdapter(spinnerScopeDaysAdapter);
@@ -416,12 +311,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             Spinner spinnerLayout = findViewById(R.id.spinnerLayout);
             if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
                     || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
-
                 List<String> spinnerLayoutItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_layout_items).split(Constants.STRING_COMMA, -1)));
                 ArrayAdapter<String> spinnerLayoutAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerLayoutItems);
                 spinnerLayout.setAdapter(spinnerLayoutAdapter);
-                spinnerLayout.setSelection(1, true); //Оставить пустоту по-умолчанию
-
             }
 
             Spinner spinnerFacts = findViewById(R.id.spinnerFacts);
@@ -429,165 +321,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             ArrayAdapter<String> spinnerFactsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerFactsItems);
             spinnerFacts.setAdapter(spinnerFactsAdapter);
 
-            String prefScope = Constants.STRING_EMPTY;
-            if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
-            if (!TextUtils.isEmpty(prefScope)) {
-                Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_PLUS).matcher(prefScope);
-                boolean found = matchScopes.find();
-                if (!found) {
-                    matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_RAND).matcher(prefScope).reset();
-                    found = matchScopes.find();
-                }
-                if (!found) {
-                    matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(prefScope).reset();
-                    found = matchScopes.find();
-                }
-                if (found) {
-                    final String scopeEvents = matchScopes.group(1);
-                    if (scopeEvents != null) {
-                        if (scopeEvents.equals(Constants.STRING_0)) { //Без ограничений
-                            spinnerScopeEvents.setSelection(0, true);
-                        } else if (spinnerScopeEventsItems.contains(scopeEvents)) {
-                            spinnerScopeEvents.setSelection(spinnerScopeEventsItems.indexOf(scopeEvents), true);
-                        }
-                    }
-                    final String scopeDays = matchScopes.group(2);
-                    if (scopeDays != null) {
-                        if (scopeDays.equals(Constants.STRING_0)) { //Без ограничений
-                            spinnerScopeDays.setSelection(0, true);
-                        } else if (spinnerScopeDaysItems.contains(scopeDays)) {
-                            spinnerScopeDays.setSelection(spinnerScopeDaysItems.indexOf(scopeDays), true);
-                        }
-                    }
-                    if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
-                            || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
-                        final String scopeLayout = matchScopes.group(3);
-                        if (scopeLayout != null) {
-                            if (scopeLayout.equals(Constants.STRING_PLUS)) { //Расширить
-                                spinnerLayout.setSelection(0, true);
-                            } else if (scopeLayout.equals(Constants.STRING_MINUS)) { //Оставить пустоту
-                                spinnerLayout.setSelection(1, true);
-                            }
-                        }
-                    } else if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
-                        try {
-                            final String scopeFacts = matchScopes.group(3);
-                            if (scopeFacts != null) {
-                                if (spinnerFactsItems.contains(scopeFacts)) {
-                                    spinnerFacts.setSelection(spinnerFactsItems.indexOf(scopeFacts), true);
-                                }
-                            }
-                        } catch (IndexOutOfBoundsException ignored) { /**/ }
-                    }
-                }
-            }
-
+            //Заголовки (для фото-виджетов) — пикеры цветов
             if (!isListWidget) {
-
-                //Параметры заголовков
-                List<String> prefCaptions = new ArrayList<>();
-                if (widgetPref.size() > 11) prefCaptions.addAll(Arrays.asList(widgetPref.get(11).split(Constants.REGEX_PLUS)));
-
-                List<String> listBottomInfo = Arrays.asList(getResources().getStringArray(R.array.pref_Widgets_BottomInfo_values));
-
-                Spinner spinnerCaptionsUpper = findViewById(R.id.spinnerCaptionsUpper);
-                int position = listBottomInfo.indexOf(eventsData.preferences_widgets_bottom_info_2nd);
-                if (position != -1) spinnerCaptionsUpper.setSelection(position, true);
-                Spinner spinnerCaptionsBottom = findViewById(R.id.spinnerCaptionsBottom);
-                position = listBottomInfo.indexOf(eventsData.preferences_widgets_bottom_info);
-                if (position != -1) spinnerCaptionsBottom.setSelection(position, true);
-
-                Spinner spinnerCaptionsUpperAligning = findViewById(R.id.spinnerCaptionsUpperAligning);
-                spinnerCaptionsUpperAligning.setSelection(eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info_2nd) - 1, true);
-                Spinner spinnerCaptionsBottomAligning = findViewById(R.id.spinnerCaptionsBottomAligning);
-                spinnerCaptionsBottomAligning.setSelection(eventsData.getDefaultAligningForEventInfo(eventsData.preferences_widgets_bottom_info) - 1, true);
-
-                Spinner spinnerCaptionsUpperRows = findViewById(R.id.spinnerCaptionsUpperRows);
-                Spinner spinnerCaptionsBottomRows = findViewById(R.id.spinnerCaptionsBottomRows);
-
-                Spinner spinnerCaptionsUpperFontStyle = findViewById(R.id.spinnerCaptionsUpperFontStyle);
-                Spinner spinnerCaptionsBottomFontStyle = findViewById(R.id.spinnerCaptionsBottomFontStyle);
-
-                EditText editCaptionsUpperFontSize = findViewById(R.id.editCaptionsUpperFontSize);
-                editCaptionsUpperFontSize.setText(String.valueOf(Constants.WIDGET_TEXT_SIZE_SMALL));
-                EditText editCaptionsBottomFontSize = findViewById(R.id.editCaptionsBottomFontSize);
-                editCaptionsBottomFontSize.setText(String.valueOf(Constants.WIDGET_TEXT_SIZE_SMALL));
-
-                updateCaptionsColors(eventsData.preferences_widgets_color_default, eventsData.preferences_widgets_color_default);
-
-                if (prefCaptions.size() == Constants.PhotoWidget_Bottom_Color + 1) {
-
-                    checkCaptionsUsePrefs.setChecked(false);
-
-                    position = listBottomInfo.indexOf(prefCaptions.get(Constants.PhotoWidget_Upper_Caption));
-                    if (position != -1 && spinnerCaptionsUpper.getAdapter().getCount() > position)
-                        spinnerCaptionsUpper.setSelection(position, true);
-
-                    try {
-                        position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_Aligning));
-                        if (spinnerCaptionsUpperAligning.getAdapter().getCount() > position - 1)
-                            spinnerCaptionsUpperAligning.setSelection(position - 1, true);
-                    } catch (NumberFormatException ignored) { /**/ }
-
-                    try {
-                        position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_Rows));
-                        if (spinnerCaptionsUpperRows.getAdapter().getCount() > position - 1)
-                            spinnerCaptionsUpperRows.setSelection(position - 1, true);
-                    } catch (NumberFormatException ignored) { /**/ }
-
-                    try {
-                        position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_FontStyle));
-                        if (spinnerCaptionsUpperFontStyle.getAdapter().getCount() > position)
-                            spinnerCaptionsUpperFontStyle.setSelection(position, true);
-                    } catch (NumberFormatException ignored) { /**/ }
-
-                    try {
-                        int prefSize = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_FontSize));
-                        if (prefSize > 0 && prefSize < 100) editCaptionsUpperFontSize.setText(String.valueOf(prefSize));
-                    } catch (NumberFormatException ignored) { /**/ }
-
-                    try {
-                        @ColorInt int prefColor = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_Color));
-                        colorCaptionUpper = prefColor;
-                    } catch (NumberFormatException ignored) { /**/ }
-
-                    position = listBottomInfo.indexOf(prefCaptions.get(Constants.PhotoWidget_Bottom_Caption));
-                    if (position != -1 && spinnerCaptionsBottom.getAdapter().getCount() > position)
-                        spinnerCaptionsBottom.setSelection(position, true);
-
-                    try {
-                        position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Aligning));
-                        if (spinnerCaptionsBottomAligning.getAdapter().getCount() > position - 1)
-                            spinnerCaptionsBottomAligning.setSelection(position - 1, true);
-                    } catch (NumberFormatException ignored) { /**/ }
-
-                    try {
-                        position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Rows));
-                        if (spinnerCaptionsBottomRows.getAdapter().getCount() > position - 1)
-                            spinnerCaptionsBottomRows.setSelection(position - 1, true);
-                    } catch (NumberFormatException ignored) { /**/ }
-
-                    try {
-                        position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_FontStyle));
-                        if (spinnerCaptionsBottomFontStyle.getAdapter().getCount() > position)
-                            spinnerCaptionsBottomFontStyle.setSelection(position, true);
-                    } catch (NumberFormatException ignored) { /**/ }
-
-                    try {
-                        int prefSize = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_FontSize));
-                        if (prefSize > 0 && prefSize < 100) editCaptionsBottomFontSize.setText(String.valueOf(prefSize));
-                    } catch (NumberFormatException ignored) { /**/ }
-
-                    try {
-                        @ColorInt int prefColor = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Color));
-                        colorCaptionBottom = prefColor;
-                    } catch (NumberFormatException ignored) { /**/ }
-
-                    updateCaptionsColors(0, 0);
-
-                }
-
-                //Выбор цвета
                 ColorPicker picker = new ColorPicker(this);
                 TextView captionCaptionsUpperColor = findViewById(R.id.captionCaptionsUpperColor);
                 captionCaptionsUpperColor.setOnClickListener(v ->
@@ -595,49 +330,15 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 TextView captionCaptionsBottomColor = findViewById(R.id.captionCaptionsBottomColor);
                 captionCaptionsBottomColor.setOnClickListener(v ->
                         picker.selectColor(colorCaptionBottom, eventsData.preferences_widgets_color_default, true, BOTTOM_ROW, this::updateSelectedColor));
-
             }
 
-            //Заголовок виджета
-            String prefWidgetCaption = Constants.STRING_EMPTY;
-            if (widgetPref.size() > 9) prefWidgetCaption = widgetPref.get(9).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
-            EditText editCustomWidgetCaption = findViewById(R.id.editCustomWidgetCaption);
-            editCustomWidgetCaption.setText(prefWidgetCaption);
-
-            //Сообщение при отсутствии событий
-            String prefZeroEventsMessage = Constants.STRING_EMPTY;
-            if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
-            EditText editCustomZeroEvents = findViewById(R.id.editCustomZeroEventsMessage);
-            editCustomZeroEvents.setText(prefZeroEventsMessage);
-
             //Детали события
-            initEventDetailsOptions();
-
-            final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
-            final List<String> eventInfoSelections = new ArrayList<>();
-            String[] infoArray = null;
-            try {
-                if (widgetPref.size() > 4) {
-                    if (Constants.WIDGET_TYPE_LIST.equals(widgetType) && (widgetPref.get(4).isEmpty() || widgetPref.get(4).equals(getString(R.string.pref_EventInfo_None_ID)))) {
-                        widgetPref.set(4, getString(R.string.widget_config_defaultPref_List).split(Constants.STRING_COMMA, -1)[4]);
-                    }
-
-                    infoArray = widgetPref.get(4).split(Constants.REGEX_PLUS);
-                }
-                if (infoArray != null) {
-                    for (final String item : infoArray) {
-                        if (this.eventInfoIDs.contains(item)) eventInfoSelections.add(this.eventInfoValues.get(this.eventInfoIDs.indexOf(item)));
-                    }
-                }
-            } catch (final Exception e) {/**/}
-
+            spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
             if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                 spinnerEventInfo.setSortable(true);
                 spinnerEventInfo.fm = getSupportFragmentManager();
                 spinnerEventInfo.setZeroSelectedIndex(-1);
-
                 spinnerEventInfo.setItems(this.eventInfoValues);
-                spinnerEventInfo.moveToBeginning(eventInfoSelections); //Двигаем выбранные вперёд
                 spinnerEventInfo.setColored(new ArrayList<String>(){{
                     add(getString(R.string.pref_EventInfo_EventDate_Original));
                     add(getString(R.string.pref_EventInfo_EventDate_Original_WithYear));
@@ -645,7 +346,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     add(getString(R.string.pref_EventInfo_EventDate_WithYear));
                     add(getString(R.string.pref_EventInfo_DaysBeforeEvent));
                 }}, this.eventsData.preferences_widgets_color_event_today);
-
                 ArrayList<String> listNonSorted = new ArrayList<String>() {{
                     add(getString(R.string.pref_EventInfo_Border));
                     add(getString(R.string.pref_EventInfo_Dividers));
@@ -655,53 +355,23 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     add(getString(R.string.pref_EventInfo_Photo));
                 }};
                 spinnerEventInfo.setNonSorted(listNonSorted);
-                spinnerEventInfo.moveToBeginning(listNonSorted); //Двигаем зафиксированные элементы вперёд
-
                 spinnerEventInfo.setBold(new ArrayList<String>() {{
                     add(getString(R.string.pref_EventInfo_BoldStart));
                     add(getString(R.string.pref_EventInfo_BoldEnd));
                 }});
-
                 TextView hintEventInfo = findViewById(R.id.hintEventInfo);
                 if (hintEventInfo != null) {
                     hintEventInfo.setText(R.string.pref_Widgets_EventInfo_list_summary);
                 }
-
             } else {
                 spinnerEventInfo.setZeroSelectedTitle(getString(R.string.widget_config_event_info_empty));
                 spinnerEventInfo.setZeroSelectedIndex(0);
                 spinnerEventInfo.setItems(this.eventInfoValues);
             }
-            spinnerEventInfo.setSelection(eventInfoSelections);
-
-            //Цвета
-            @ColorInt int colorWidgetBackground = ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default);
-            @ColorInt int colorWidgetBorder = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_WidgetBorder_default);
-
-            if (widgetPref.size() > 5 && !widgetPref.get(5).isEmpty()) {
-                try {
-                    String[] prefColors = widgetPref.get(5).split(Constants.REGEX_PLUS, -1);
-                    if (!prefColors[0].isEmpty()) colorWidgetBackground = Color.parseColor(prefColors[0]);
-                    if (prefColors.length > 1 && !prefColors[1].isEmpty()) {
-                        colorWidgetBorder = Color.parseColor(prefColors[1]);
-                    }
-                } catch (final Exception e) {/**/}
-            }
-
-            final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackground);
-            colorWidgetBackgroundPicker.setColor(colorWidgetBackground);
-
-            final ColorPicker colorWidgetBorderPicker = findViewById(R.id.colorWidgetBorder);
-            colorWidgetBorderPicker.setColor(colorWidgetBorder);
 
             //Источники событий
-            if (widgetPref.size() > 10) {
-                String pref = widgetPref.get(10);
-                if (!pref.isEmpty()) eventSourcesSelected = new ArrayList<>(Arrays.asList(pref.split(Constants.REGEX_PLUS)));
-            }
             eventSources.loadEventSources(widgetType);
-            updateEventSources();
-            TextView listEventSources = findViewById(R.id.listEventSources);
+            listEventSources = findViewById(R.id.listEventSources);
             listEventSources.setOnClickListener(v ->
                     eventsData.selectEventSources(eventSources, eventSourcesSelected, this,
                             selectedSources -> {
@@ -717,12 +387,16 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 } catch (ActivityNotFoundException e) { /**/ }
             });
 
+            // ===== 3. ЗАПОЛНЕНИЕ UI ИЗ СОХРАНЁННЫХ НАСТРОЕК ВИДЖЕТА =====
+            populateUIFromWidgetPref();
+
+            // ===== 4. ОБНОВЛЕНИЕ ВИДИМОСТИ =====
+            updateVisibility();
+
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         } finally {
-            //Обновляем видимость элементов
-            updateVisibility();
             if (ta != null) ta.recycle();
         }
     }
@@ -831,7 +505,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     private void updateEventSources() {
         try {
 
-            TextView listEventSources = findViewById(R.id.listEventSources);
             StringBuilder sb = new StringBuilder();
             for (String source: eventSourcesSelected) {
                 int ind = eventSources.getHashes().indexOf(source);
@@ -875,7 +548,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             androidx.transition.TransitionManager.beginDelayedTransition(findViewById(R.id.layout_main), transition);
 
             //Параметры заголовков
-            CheckBox checkCaptionsUsePrefs = findViewById(R.id.checkCaptionsUsePrefs);
             int advSettingsVisibility = isAdvSettings ? View.VISIBLE : View.GONE;
             int visibilityCaptionsTitles = checkCaptionsUsePrefs.isChecked() ? View.GONE : View.VISIBLE;
             int visibilityCaptionsPrefs = checkCaptionsUsePrefs.isChecked() | !isAdvSettings ? View.GONE : View.VISIBLE;
@@ -987,14 +659,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             //Ограничение объёма
             final LinearLayout blockScopeEvents = findViewById(R.id.blockScopeEvents);
             blockScopeEvents.setVisibility(Constants.WIDGET_TYPE_5X1.equals(widgetType) || isListWidget ? View.VISIBLE : View.GONE);
-            final Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
             final LinearLayout blockScopeEventsCount = findViewById(R.id.blockScopeEventsCount);
             blockScopeEventsCount.setVisibility(
                     !Constants.WIDGET_TYPE_5X1.equals(widgetType) || spinnerScopeEvents.getSelectedItemPosition() != 0 ? View.GONE : View.VISIBLE
             );
 
             //Факты
-            final MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
             List<String> selectedEventTypes = new ArrayList<>();
             for (String eventType: spinnerEventTypes.getSelectedStrings()) {
                 selectedEventTypes.add(StringUtils.substringBefore(eventType, Constants.STRING_BRACKETS_OPEN));
@@ -1019,21 +689,35 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     public void buttonOkOnClick() {
         try {
 
-            //todo: вынести в global
-            final MultiSelectionSpinner spinnerEventTypes = findViewById(R.id.spinnerEventTypes);
-            final Spinner spinnerEventShift = findViewById(R.id.spinnerEventShift);
-            SeekBar seekFontMagnifyText = findViewById(R.id.seekFontMagnifyText);
-            SeekBar seekFontMagnifyPhoto = findViewById(R.id.seekFontMagnifyPhoto);
-            final Spinner spinnerEventsCount = findViewById(R.id.spinnerScopeEventsCount);
-            final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
-            final Spinner spinnerPhotoStyle = findViewById(R.id.spinnerPhotoStyle);
-            final EditText editCustomWidgetCaption = findViewById(R.id.editCustomWidgetCaption);
-            final EditText editCustomZeroEvents = findViewById(R.id.editCustomZeroEventsMessage);
+            String currentConfig = getCurrentConfig();
+            if (currentConfig == null) return;
+            this.eventsData.setWidgetPreference(this.widgetId, currentConfig);
+
+            final Intent intent = new Intent();
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.widgetId);
+            setResult(Activity.RESULT_OK, intent);
+
+            // Логи ServiceConnectionLeaked в AppWidgetManager — игнорировать, это фальшивая ошибка
+            this.eventsData.updateWidgets(this.widgetId, null);
+
+            finish();
+        } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /** Возвращает текущую конфигурацию виджета в виде строки
+     * @return Текущая конфигурация виджета
+     */
+    @Nullable
+    private String getCurrentConfig() {
+        try {
 
             //Проверки
             if (this.widgetId == 0) {
                 ToastExpander.showInfoMsg(this, getString(R.string.msg_widget_bad_id));
-                return;
+                return null;
             }
 
             final StringBuilder eventTypes = new StringBuilder();
@@ -1050,9 +734,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             //Объём событий
             final StringBuilder scopeInfo = new StringBuilder();
-            final Spinner spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
-            final Spinner spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
-
             scopeInfo.append(spinnerScopeEvents.getSelectedItemPosition() == 0 ? Constants.STRING_0 : spinnerScopeEvents.getSelectedItem()).append("e");
             scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? Constants.STRING_0 : spinnerScopeDays.getSelectedItem()).append("d");
 
@@ -1081,7 +762,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             //Параметры заголовков
             List<String> selectedCaptionsDetails = new ArrayList<>();
             if (!this.isListWidget) {
-                final CheckBox checkCaptionsUsePrefs = findViewById(R.id.checkCaptionsUsePrefs);
                 if (!checkCaptionsUsePrefs.isChecked()) {
                     List<String> listBottomInfo = Arrays.asList(getResources().getStringArray(R.array.pref_Widgets_BottomInfo_values));
 
@@ -1171,13 +851,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 }
             }
 
-            final ColorPicker colorWidgetBackgroundPicker = findViewById(R.id.colorWidgetBackground);
-            final int colorWidgetBackground = colorWidgetBackgroundPicker.getColor();
+            final int colorWidgetBackground = pickerColorWidgetBackground.getColor();
             final String selectedWidgetBackground = colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default)
                     ? ImageUtils.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY;
 
-            final ColorPicker colorWidgetBorderPicker = findViewById(R.id.colorWidgetBorder);
-            final int colorWidgetBorder = colorWidgetBorderPicker.getColor();
+            final int colorWidgetBorder = pickerColorWidgetBorder.getColor();
             final String selectedWidgetBorder = colorWidgetBorder != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBorder_default)
                     ? ImageUtils.toARGBString(colorWidgetBorder) : Constants.STRING_EMPTY;
 
@@ -1198,19 +876,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             prefsToStore.add(TextUtils.join(Constants.STRING_PLUS, selectedCaptionsDetails)); //Параметры заголовков (через +)
             prefsToStore.add(spinnerOnClickCommonValue.toString()); //Реакция на нажатие
 
-            this.eventsData.setWidgetPreference(this.widgetId, TextUtils.join(Constants.STRING_COMMA, prefsToStore));
+            return TextUtils.join(Constants.STRING_COMMA, prefsToStore);
 
-            final Intent intent = new Intent();
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.widgetId);
-            setResult(Activity.RESULT_OK, intent);
-
-            // Логи ServiceConnectionLeaked в AppWidgetManager — игнорировать, это фальшивая ошибка
-            this.eventsData.updateWidgets(this.widgetId, null);
-
-            finish();
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return null;
         }
     }
 
@@ -1244,8 +915,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_widget_config, menu);
+        this.menuOptions = menu;
 
-        final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
         if (spinnerEventInfo != null) spinnerEventInfo.menu = menu;
 
         MenuItem itemHelp = menu.findItem(R.id.menu_help_widgets);
@@ -1253,64 +924,324 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             itemHelp.setVisible(eventsData.isContextHelpAvailable());
         }
 
+        // Обновляем видимость кнопки "Загрузить шаблон"
+        updateLoadTemplateVisibility(menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
-
         final int itemId = item.getItemId();
 
         if (itemId == R.id.menu_ok) {
-
-            final MultiSelectionSpinner spinnerEventInfo = findViewById(R.id.spinnerEventInfo);
             List<String> allSelectedItems = ((RecyclerListFragment) spinnerEventInfo.fragment).adapter.getAllSelectedItems();
             allSelectedItems.remove(getString(R.string.pref_EventInfo_Border));
             if (allSelectedItems.isEmpty()) {
-
                 ToastExpander.showInfoMsg(getApplicationContext(), getString(R.string.msg_no_selection));
-
             } else {
-
                 onBackPressed();
                 spinnerEventInfo.setSelectedFromFragmentResults();
                 item.setVisible(false);
-
-                final MenuItem item2 = spinnerEventInfo.menu.getItem(1);
-                if (item2 != null) item2.setVisible(true);
+                final MenuItem itemBack = spinnerEventInfo.menu.findItem(R.id.menu_cancel);
+                if (itemBack != null) itemBack.setVisible(false);
+                final MenuItem itemHelp = spinnerEventInfo.menu.findItem(R.id.menu_help_widgets);
+                if (itemHelp != null) itemHelp.setVisible(true);
+                updateLoadTemplateVisibility(menuOptions);
             }
+            return true;
 
+        } else if (itemId == R.id.menu_cancel) {
+
+            onBackPressed();
+            item.setVisible(false);
+            final MenuItem itemOk = spinnerEventInfo.menu.findItem(R.id.menu_ok);
+            if (itemOk != null) itemOk.setVisible(false);
+            final MenuItem itemHelp = spinnerEventInfo.menu.findItem(R.id.menu_help_widgets);
+            if (itemHelp != null) itemHelp.setVisible(true);
+            updateLoadTemplateVisibility(menuOptions);
+
+        } else if (itemId == R.id.menu_save_template) {
+            showSaveTemplateDialog();
+            return true;
+
+        } else if (itemId == R.id.menu_load_template) {
+            showLoadTemplateDialog();
             return true;
 
         } else if (itemId == R.id.menu_help_widgets) {
-
-                Intent intent = new Intent(this, FAQActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                intent.putExtra(Constants.EXTRA_ANCHOR, getString(R.string.faq_anchor_widgets));
-                try {
-                    startActivity(intent);
-                    return true;
-                } catch (ActivityNotFoundException e) { /**/ }
-
+            Intent intent = new Intent(this, FAQActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            intent.putExtra(Constants.EXTRA_ANCHOR, getString(R.string.faq_anchor_widgets));
+            try {
+                startActivity(intent);
+                return true;
+            } catch (ActivityNotFoundException e) { /**/ }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    void updateCaptionsColors(@ColorInt int colorUpper, @ColorInt int colorBottom) {
+// ==================== Шаблоны конфигурации виджетов ====================
+
+    /**
+     * Обновляет видимость пункта меню "Загрузить шаблон"
+     */
+    private void updateLoadTemplateVisibility(@Nullable Menu menu) {
+        if (menu == null) return;
+        final MenuItem itemSave = menu.findItem(R.id.menu_save_template);
+        if (itemSave != null) itemSave.setVisible(true);
+        final MenuItem itemLoad = menu.findItem(R.id.menu_load_template);
+        if (itemLoad != null) {
+            itemLoad.setVisible(eventsData.hasWidgetTemplates(widgetType));
+        }
+    }
+
+    /**
+     * Возвращает имя шаблона по умолчанию: текущая дата и время (дд.ММ.гггг чч:мм)
+     */
+    @NonNull
+    private String getDefaultTemplateName() {
         try {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
+            return sdf.format(new java.util.Date());
+        } catch (Exception e) {
+            return "Template";
+        }
+    }
 
-            if (colorUpper != 0) colorCaptionUpper = colorUpper;
-            if (colorBottom != 0) colorCaptionBottom = colorBottom;
+    /**
+     * Диалог сохранения шаблона
+     */
+    private void showSaveTemplateDialog() {
+        try {
+            final String currentConfig = getCurrentConfig();
+            if (currentConfig == null) {
+                ToastExpander.showInfoMsg(this, getString(R.string.msg_widget_bad_id));
+                return;
+            }
 
+            final EditText editName = new EditText(this);
+            editName.setText(getDefaultTemplateName());
+            editName.setHint(R.string.msg_template_save_hint);
+            editName.setSingleLine(true);
+            editName.selectAll();
+
+            int padding = (int) (20 * eventsData.displayMetrics_density);
+            LinearLayout layout = new LinearLayout(this);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.setPadding(padding, padding / 2, padding, 0);
+            layout.addView(editName, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(
+                    new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog))
+                    .setTitle(R.string.msg_template_save_title)
+                    .setIcon(android.R.drawable.ic_menu_save)
+                    .setView(layout)
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+                        String templateName = editName.getText().toString().trim();
+                        if (templateName.isEmpty()) {
+                            ToastExpander.showInfoMsg(WidgetConfigureActivity.this,
+                                    getString(R.string.msg_template_empty_name));
+                            return;
+                        }
+                        List<String> existingNames = eventsData.getWidgetTemplateNames(widgetType);
+                        if (existingNames.contains(templateName)) {
+                            confirmOverwriteTemplate(templateName, currentConfig);
+                        } else {
+                            boolean saved = eventsData.saveWidgetTemplate(widgetType, templateName, currentConfig);
+                            if (saved) {
+                                ToastExpander.showInfoMsg(WidgetConfigureActivity.this,
+                                        getString(R.string.msg_template_saved, templateName));
+                                updateLoadTemplateVisibility(menuOptions);
+                            } else {
+                                // Лимит достигнут
+                                showTemplateLimitDialog();
+                            }
+                        }
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            AlertDialog alert = builder.create();
+            alert.setOnShowListener(arg0 -> {
+                TypedArray ta = getTheme().obtainStyledAttributes(R.styleable.Theme);
+                alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                ta.recycle();
+            });
+            alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alert.show();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Диалог о достижении лимита шаблонов
+     */
+    private void showTemplateLimitDialog() {
+        try {
+            new AlertDialog.Builder(new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog))
+                    .setTitle(R.string.msg_template_save_title)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setMessage(getString(R.string.msg_template_limit_reached, Constants.MAX_WIDGET_TEMPLATES))
+                    .setPositiveButton(R.string.button_ok, null)
+                    .setCancelable(true)
+                    .show();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Подтверждение перезаписи существующего шаблона
+     */
+    private void confirmOverwriteTemplate(@NonNull final String templateName, @NonNull final String config) {
+        try {
+            new AlertDialog.Builder(new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog))
+                    .setTitle(R.string.msg_template_save_title)
+                    .setMessage(getString(R.string.msg_template_overwrite, templateName))
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+                        boolean saved = eventsData.saveWidgetTemplate(widgetType, templateName, config);
+                        if (saved) {
+                            ToastExpander.showInfoMsg(WidgetConfigureActivity.this,
+                                    getString(R.string.msg_template_saved, templateName));
+                            updateLoadTemplateVisibility(menuOptions);
+                        }
+                    })
+                    .setNegativeButton(R.string.button_cancel, null)
+                    .setCancelable(true)
+                    .show();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Диалог загрузки шаблона
+     */
+    private void showLoadTemplateDialog() {
+        try {
+            List<String> templates = eventsData.getWidgetTemplates(widgetType);
+            if (templates.isEmpty()) {
+                // Закрываем старый диалог, если он ещё открыт
+                if (loadTemplateDialog != null && loadTemplateDialog.isShowing()) {
+                    loadTemplateDialog.dismiss();
+                    loadTemplateDialog = null;
+                }
+                ToastExpander.showInfoMsg(this, getString(R.string.msg_template_no_templates));
+                return;
+            }
+
+            // Формируем список имён
+            final List<String> templateNames = new ArrayList<>();
+            for (String template : templates) {
+                int idx = template.indexOf(Constants.STRING_EOT);
+                templateNames.add(idx > 0 ? template.substring(0, idx) : template);
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    R.layout.dialog_list_item_template,
+                    android.R.id.text1,
+                    templateNames.toArray(new String[0]));
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(
+                    new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog))
+                    .setTitle(R.string.msg_template_load_title)
+                    .setIcon(android.R.drawable.ic_menu_upload)
+                    .setAdapter(adapter, (dialog, which) -> {
+                        // Короткое нажатие — загрузка шаблона
+                        String selectedName = templateNames.get(which);
+                        String config = eventsData.getWidgetTemplateConfig(widgetType, selectedName);
+                        if (config != null && !config.isEmpty()) {
+                            applyTemplateConfig(config);
+                            ToastExpander.showInfoMsg(WidgetConfigureActivity.this,
+                                    getString(R.string.msg_template_loaded, selectedName));
+                        }
+                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
+                    .setCancelable(true);
+
+            AlertDialog alert = builder.create();
+
+            // Долгое нажатие — удаление шаблона
+            alert.setOnShowListener(arg0 -> {
+                try (TypedArray ta = getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                    alert.getButton(AlertDialog.BUTTON_NEGATIVE)
+                            .setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                }
+                // Устанавливаем слушатель долгого нажатия на элементы списка
+                if (alert.getListView() != null) {
+                    alert.getListView().setOnItemLongClickListener((parent, view, position, id) -> {
+                        confirmDeleteTemplate(templateNames.get(position));
+                        return true;
+                    });
+                }
+            });
+            alert.setOnDismissListener(d -> {
+                if (loadTemplateDialog == d) loadTemplateDialog = null;
+            });
+
+            alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            loadTemplateDialog = alert;
+            alert.show();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Подтверждение удаления шаблона
+     */
+    private void confirmDeleteTemplate(@NonNull final String templateName) {
+        try {
+            new AlertDialog.Builder(new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog))
+                    .setTitle(R.string.msg_template_delete)
+                    .setMessage(getString(R.string.msg_template_delete_confirm, templateName))
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+                        eventsData.deleteWidgetTemplate(widgetType, templateName);
+                        updateLoadTemplateVisibility(menuOptions);
+                        // Закрываем старый диалог загрузки перед пересозданием
+                        if (loadTemplateDialog != null && loadTemplateDialog.isShowing()) {
+                            loadTemplateDialog.dismiss();
+                            loadTemplateDialog = null;
+                        }
+                        // Перезапускаем диалог выбора с обновлённым списком
+                        showLoadTemplateDialog();
+                    })
+                    .setNegativeButton(R.string.button_cancel, null)
+                    .setCancelable(true)
+                    .show();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Обновляет отображение цветов заголовков (текстовые метки)
+     * на основе текущих значений colorCaptionUpper и colorCaptionBottom
+     */
+    void updateCaptionsColorsDisplay() {
+        try {
             TextView captionCaptionsUpperColor = findViewById(R.id.captionCaptionsUpperColor);
             captionCaptionsUpperColor.setText(HtmlCompat.fromHtml(
-                    (Constants.FONT_COLOR_DOT_START + Integer.toHexString(colorCaptionUpper & 0x00ffffff) + Constants.FONT_COLOR_DOT_END).trim(), HtmlCompat.FROM_HTML_MODE_LEGACY));
+                    (Constants.FONT_COLOR_DOT_START
+                            + Integer.toHexString(colorCaptionUpper & 0x00ffffff)
+                            + Constants.FONT_COLOR_DOT_END).trim(),
+                    HtmlCompat.FROM_HTML_MODE_LEGACY));
 
             TextView captionCaptionsBottomColor = findViewById(R.id.captionCaptionsBottomColor);
             captionCaptionsBottomColor.setText(HtmlCompat.fromHtml(
-                    (Constants.FONT_COLOR_DOT_START + Integer.toHexString(colorCaptionBottom & 0x00ffffff) + Constants.FONT_COLOR_DOT_END).trim(), HtmlCompat.FROM_HTML_MODE_LEGACY));
-
+                    (Constants.FONT_COLOR_DOT_START
+                            + Integer.toHexString(colorCaptionBottom & 0x00ffffff)
+                            + Constants.FONT_COLOR_DOT_END).trim(),
+                    HtmlCompat.FROM_HTML_MODE_LEGACY));
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
@@ -1337,6 +1268,458 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
 
         } catch (final Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Заполняет все элементы UI из текущего содержимого widgetPref.
+     * Вызывается из onCreate() при первой загрузке и из applyTemplateConfig() при загрузке шаблона.
+     */
+    private void populateUIFromWidgetPref() {
+        try {
+            if (widgetPref == null || widgetPref.isEmpty()) return;
+
+            // 0: Стартовый номер события
+            try {
+                int startIdx = Integer.parseInt(widgetPref.get(0));
+                if (startIdx >= 1 && startIdx <= spinnerEventShift.getAdapter().getCount()) {
+                    spinnerEventShift.setSelection(startIdx - 1, true);
+                }
+            } catch (NumberFormatException ignored) { /**/ }
+
+            // 1: Масштабирование
+            populateMagnifyFromPref(widgetPref.size() > 1 ? widgetPref.get(1) : Constants.STRING_EMPTY);
+
+            // 2: Количество событий в ширину
+            try {
+                int countIdx = Integer.parseInt(widgetPref.size() > 2 ? widgetPref.get(2) : "0");
+                if (countIdx >= 0 && countIdx < spinnerEventsCount.getAdapter().getCount()) {
+                    spinnerEventsCount.setSelection(countIdx, true);
+                }
+            } catch (NumberFormatException ignored) { /**/ }
+
+            // 3: Типы событий
+            populateEventTypesFromPref(widgetPref.size() > 3 ? widgetPref.get(3) : Constants.STRING_EMPTY);
+
+            // 4: Детали события
+            populateEventInfoFromPref(widgetPref.size() > 4 ? widgetPref.get(4) : Constants.STRING_EMPTY);
+
+            // 5: Цвета (подложка + бордюр)
+            populateColorsFromPref(widgetPref.size() > 5 ? widgetPref.get(5) : Constants.STRING_EMPTY);
+
+            // 6: Стиль фото
+            try {
+                int photoStyle = Integer.parseInt(widgetPref.size() > 6 ? widgetPref.get(6) : "0");
+                if (photoStyle >= 0 && photoStyle < spinnerPhotoStyle.getAdapter().getCount()) {
+                    spinnerPhotoStyle.setSelection(photoStyle, true);
+                }
+            } catch (NumberFormatException ignored) { /**/ }
+
+            // 7: Сообщение при отсутствии событий
+            String prefZeroEventsMessage = widgetPref.size() > 7 ? widgetPref.get(7) : Constants.STRING_EMPTY;
+            editCustomZeroEvents.setText(prefZeroEventsMessage.replace(Constants.STRING_EOT, Constants.STRING_COMMA));
+
+            // 8: Ограничения объёма
+            populateScopeFromPref(widgetPref.size() > 8 ? widgetPref.get(8) : Constants.STRING_EMPTY);
+
+            // 9: Заголовок виджета
+            String prefWidgetCaption = widgetPref.size() > 9 ? widgetPref.get(9) : Constants.STRING_EMPTY;
+            editCustomWidgetCaption.setText(prefWidgetCaption.replace(Constants.STRING_EOT, Constants.STRING_COMMA));
+
+            // 10: Источники событий
+            if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
+                eventSourcesSelected = new ArrayList<>(Arrays.asList(widgetPref.get(10).split(Constants.REGEX_PLUS)));
+            } else {
+                eventSourcesSelected = new ArrayList<>();
+            }
+            updateEventSources();
+
+            // 11: Параметры заголовков (для фото-виджетов)
+            populateCaptionsFromPref(widgetPref.size() > 11 ? widgetPref.get(11) : Constants.STRING_EMPTY);
+
+            // 12: Реакция на нажатие
+            populateOnClickFromPref(widgetPref.size() > 12 ? widgetPref.get(12) : Constants.STRING_EMPTY);
+
+            // Обновляем видимость элементов
+            updateVisibility();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Заполняет параметры масштабирования из строки настроек
+     */
+    private void populateMagnifyFromPref(@NonNull String magnifyStr) {
+        try {
+            int maxValueSeek = 200;
+            int prefMagnifyText = 0;
+            int prefMagnifyPhoto = 0;
+
+            if (!magnifyStr.isEmpty()) {
+                String[] prefMagnify = magnifyStr.split(Constants.REGEX_PLUS);
+                if (magnifyStr.contains(Constants.STRING_PERIOD)) { //В настройках - мультипликатор
+                    prefMagnifyText = Math.min((int) Math.round(Double.parseDouble(prefMagnify[0]) * 100), maxValueSeek);
+                    if (prefMagnifyText > 0) prefMagnifyText -= minValueSeekOffset;
+                    if (prefMagnify.length > 1) {
+                        prefMagnifyPhoto = Math.min((int) Math.round(Double.parseDouble(prefMagnify[1]) * 100), maxValueSeek);
+                        if (prefMagnifyPhoto > 0) prefMagnifyPhoto -= minValueSeekOffset;
+                    }
+                } else { //В настройках - индекс в списке (старый формат)
+                    List<String> listMagnifyValues = Arrays.asList("0+0.5+0.65+0.75+0.85+1.0+1.1+1.2+1.3+1.4+1.5+1.6+1.75+2.0".split(Constants.REGEX_PLUS));
+                    int prefMagnifyIndex = Integer.parseInt(prefMagnify[0]);
+                    if (prefMagnifyIndex >= 0 && prefMagnifyIndex < listMagnifyValues.size()) {
+                        prefMagnifyText = Math.min((int) Math.round(Double.parseDouble(listMagnifyValues.get(prefMagnifyIndex)) * 100), maxValueSeek);
+                        if (prefMagnifyText > 0) prefMagnifyText -= minValueSeekOffset;
+                    }
+                    if (prefMagnify.length > 1) {
+                        prefMagnifyIndex = Integer.parseInt(prefMagnify[1]);
+                        if (prefMagnifyIndex >= 0 && prefMagnifyIndex < listMagnifyValues.size()) {
+                            prefMagnifyPhoto = Math.min((int) Math.round(Double.parseDouble(listMagnifyValues.get(prefMagnifyIndex)) * 100), maxValueSeek);
+                            if (prefMagnifyPhoto > 0) prefMagnifyPhoto -= minValueSeekOffset;
+                        }
+                    }
+                }
+            }
+
+            seekFontMagnifyText.setProgress(Math.max(0, prefMagnifyText));
+            TextView valueFontMagnifyText = findViewById(R.id.valueFontMagnifyText);
+            valueFontMagnifyText.setText(
+                    seekFontMagnifyText.getProgress() == 0 ? getString(R.string.widget_config_magnify_auto) :
+                            getString(R.string.pref_List_FontMagnify_progress, String.valueOf(minValueSeekOffset + seekFontMagnifyText.getProgress())));
+
+            seekFontMagnifyPhoto.setProgress(Math.max(0, prefMagnifyPhoto));
+            TextView valueFontMagnifyPhoto = findViewById(R.id.valueFontMagnifyPhoto);
+            valueFontMagnifyPhoto.setText(
+                    seekFontMagnifyPhoto.getProgress() == 0 ? getString(R.string.widget_config_magnify_auto) :
+                            getString(R.string.pref_List_FontMagnify_progress, String.valueOf(minValueSeekOffset + seekFontMagnifyPhoto.getProgress())));
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Заполняет типы событий из строки настроек
+     */
+    private void populateEventTypesFromPref(@NonNull String typesStr) {
+        try {
+            List<String> listEventTypes = new ArrayList<>();
+            if (!typesStr.isEmpty()) {
+                String[] eventsArray = typesStr.split(Constants.REGEX_PLUS);
+                for (String item : eventsArray) {
+                    if (eventTypesIDs.contains(item)) {
+                        listEventTypes.add(eventTypesValues.get(eventTypesIDs.indexOf(item)));
+                    }
+                }
+            }
+            spinnerEventTypes.setSelection(listEventTypes);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Заполняет детали события из строки настроек
+     */
+    private void populateEventInfoFromPref(@NonNull String infoStr) {
+        try {
+            List<String> eventInfoSelections = new ArrayList<>();
+            if (!infoStr.isEmpty()) {
+                String[] infoArray = infoStr.split(Constants.REGEX_PLUS);
+                for (String item : infoArray) {
+                    if (eventInfoIDs.contains(item)) {
+                        eventInfoSelections.add(eventInfoValues.get(eventInfoIDs.indexOf(item)));
+                    }
+                }
+            }
+            if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
+                spinnerEventInfo.moveToBeginning(eventInfoSelections);
+                ArrayList<String> listNonSorted = new ArrayList<String>() {{
+                    add(getString(R.string.pref_EventInfo_Border));
+                    add(getString(R.string.pref_EventInfo_Dividers));
+                    add(getString(R.string.pref_EventInfo_ButtonConfig));
+                    add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
+                    add(getString(R.string.pref_EventInfo_ShowNearestEventPhoto));
+                    add(getString(R.string.pref_EventInfo_Photo));
+                }};
+                spinnerEventInfo.moveToBeginning(listNonSorted);
+            }
+            spinnerEventInfo.setSelection(eventInfoSelections);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Заполняет цвета из строки настроек
+     */
+    private void populateColorsFromPref(@NonNull String colorsStr) {
+        try {
+            @ColorInt int colorWidgetBackground = ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default);
+            @ColorInt int colorWidgetBorder = ContextCompat.getColor(eventsData.getContext(), R.color.pref_Widgets_Color_WidgetBorder_default);
+
+            if (!colorsStr.isEmpty()) {
+                String[] prefColors = colorsStr.split(Constants.REGEX_PLUS, -1);
+                if (!prefColors[0].isEmpty()) {
+                    colorWidgetBackground = Color.parseColor(prefColors[0]);
+                }
+                if (prefColors.length > 1 && !prefColors[1].isEmpty()) {
+                    colorWidgetBorder = Color.parseColor(prefColors[1]);
+                }
+            }
+            pickerColorWidgetBackground.setColor(colorWidgetBackground);
+            pickerColorWidgetBorder.setColor(colorWidgetBorder);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Заполняет ограничения объёма из строки настроек
+     */
+    private void populateScopeFromPref(@NonNull String scopeStr) {
+        try {
+            if (TextUtils.isEmpty(scopeStr)) return;
+
+            List<String> spinnerScopeEventsItems;
+            if (isListWidget) {
+                spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
+            } else {
+                spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_photo_scope_events_items).split(Constants.STRING_COMMA, -1)));
+            }
+            List<String> spinnerScopeDaysItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
+
+            Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_PLUS).matcher(scopeStr);
+            boolean found = matchScopes.find();
+            if (!found) {
+                matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_RAND).matcher(scopeStr).reset();
+                found = matchScopes.find();
+            }
+            if (!found) {
+                matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE).matcher(scopeStr).reset();
+                found = matchScopes.find();
+            }
+            if (found) {
+                final String scopeEvents = matchScopes.group(1);
+                if (scopeEvents != null) {
+                    if (scopeEvents.equals(Constants.STRING_0)) {
+                        spinnerScopeEvents.setSelection(0, true);
+                    } else if (spinnerScopeEventsItems.contains(scopeEvents)) {
+                        spinnerScopeEvents.setSelection(spinnerScopeEventsItems.indexOf(scopeEvents), true);
+                    }
+                }
+                final String scopeDays = matchScopes.group(2);
+                if (scopeDays != null) {
+                    if (scopeDays.equals(Constants.STRING_0)) {
+                        spinnerScopeDays.setSelection(0, true);
+                    } else if (spinnerScopeDaysItems.contains(scopeDays)) {
+                        spinnerScopeDays.setSelection(spinnerScopeDaysItems.indexOf(scopeDays), true);
+                    }
+                }
+
+                if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
+                        || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
+                    Spinner spinnerLayout = findViewById(R.id.spinnerLayout);
+                    final String scopeLayout = matchScopes.group(3);
+                    if (scopeLayout != null) {
+                        if (scopeLayout.equals(Constants.STRING_PLUS)) {
+                            spinnerLayout.setSelection(0, true);
+                        } else if (scopeLayout.equals(Constants.STRING_MINUS)) {
+                            spinnerLayout.setSelection(1, true);
+                        }
+                    }
+                } else if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
+                    try {
+                        Spinner spinnerFacts = findViewById(R.id.spinnerFacts);
+                        List<String> spinnerFactsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_facts_items).split(Constants.STRING_COMMA, -1)));
+                        final String scopeFacts = matchScopes.group(3);
+                        if (scopeFacts != null && spinnerFactsItems.contains(scopeFacts)) {
+                            spinnerFacts.setSelection(spinnerFactsItems.indexOf(scopeFacts), true);
+                        }
+                    } catch (IndexOutOfBoundsException ignored) { /**/ }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Заполняет параметры заголовков из строки настроек (для фото-виджетов)
+     */
+    private void populateCaptionsFromPref(@NonNull String captionsStr) {
+        try {
+            if (isListWidget) return;
+
+            // 1. Сначала устанавливаем цвета по умолчанию
+            colorCaptionUpper = eventsData.preferences_widgets_color_default;
+            colorCaptionBottom = eventsData.preferences_widgets_color_default;
+
+            if (TextUtils.isEmpty(captionsStr)) {
+                // Нет сохранённых параметров — просто отображаем дефолтные цвета
+                updateCaptionsColorsDisplay();
+                return;
+            }
+
+            List<String> prefCaptions = new ArrayList<>(Arrays.asList(captionsStr.split(Constants.REGEX_PLUS)));
+            if (prefCaptions.size() < Constants.PhotoWidget_Bottom_Color + 1) {
+                updateCaptionsColorsDisplay();
+                return;
+            }
+
+            checkCaptionsUsePrefs.setChecked(false);
+
+            List<String> listBottomInfo = Arrays.asList(getResources().getStringArray(R.array.pref_Widgets_BottomInfo_values));
+
+            // Верхний заголовок
+            Spinner spinnerCaptionsUpper = findViewById(R.id.spinnerCaptionsUpper);
+            int position = listBottomInfo.indexOf(prefCaptions.get(Constants.PhotoWidget_Upper_Caption));
+            if (position != -1 && spinnerCaptionsUpper.getAdapter().getCount() > position) {
+                spinnerCaptionsUpper.setSelection(position, true);
+            }
+
+            try {
+                Spinner spinnerCaptionsUpperAligning = findViewById(R.id.spinnerCaptionsUpperAligning);
+                position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_Aligning));
+                if (spinnerCaptionsUpperAligning.getAdapter().getCount() > position - 1) {
+                    spinnerCaptionsUpperAligning.setSelection(position - 1, true);
+                }
+            } catch (NumberFormatException ignored) { /**/ }
+
+            try {
+                Spinner spinnerCaptionsUpperRows = findViewById(R.id.spinnerCaptionsUpperRows);
+                position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_Rows));
+                if (spinnerCaptionsUpperRows.getAdapter().getCount() > position - 1) {
+                    spinnerCaptionsUpperRows.setSelection(position - 1, true);
+                }
+            } catch (NumberFormatException ignored) { /**/ }
+
+            try {
+                Spinner spinnerCaptionsUpperFontStyle = findViewById(R.id.spinnerCaptionsUpperFontStyle);
+                position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_FontStyle));
+                if (spinnerCaptionsUpperFontStyle.getAdapter().getCount() > position) {
+                    spinnerCaptionsUpperFontStyle.setSelection(position, true);
+                }
+            } catch (NumberFormatException ignored) { /**/ }
+
+            try {
+                EditText editCaptionsUpperFontSize = findViewById(R.id.editCaptionsUpperFontSize);
+                int prefSize = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_FontSize));
+                if (prefSize > 0 && prefSize < 100) editCaptionsUpperFontSize.setText(String.valueOf(prefSize));
+            } catch (NumberFormatException ignored) { /**/ }
+
+            try {
+                colorCaptionUpper = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Upper_Color));
+            } catch (NumberFormatException ignored) { /**/ }
+
+            // Нижний заголовок
+            Spinner spinnerCaptionsBottom = findViewById(R.id.spinnerCaptionsBottom);
+            position = listBottomInfo.indexOf(prefCaptions.get(Constants.PhotoWidget_Bottom_Caption));
+            if (position != -1 && spinnerCaptionsBottom.getAdapter().getCount() > position) {
+                spinnerCaptionsBottom.setSelection(position, true);
+            }
+
+            try {
+                Spinner spinnerCaptionsBottomAligning = findViewById(R.id.spinnerCaptionsBottomAligning);
+                position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Aligning));
+                if (spinnerCaptionsBottomAligning.getAdapter().getCount() > position - 1) {
+                    spinnerCaptionsBottomAligning.setSelection(position - 1, true);
+                }
+            } catch (NumberFormatException ignored) { /**/ }
+
+            try {
+                Spinner spinnerCaptionsBottomRows = findViewById(R.id.spinnerCaptionsBottomRows);
+                position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Rows));
+                if (spinnerCaptionsBottomRows.getAdapter().getCount() > position - 1) {
+                    spinnerCaptionsBottomRows.setSelection(position - 1, true);
+                }
+            } catch (NumberFormatException ignored) { /**/ }
+
+            try {
+                Spinner spinnerCaptionsBottomFontStyle = findViewById(R.id.spinnerCaptionsBottomFontStyle);
+                position = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_FontStyle));
+                if (spinnerCaptionsBottomFontStyle.getAdapter().getCount() > position) {
+                    spinnerCaptionsBottomFontStyle.setSelection(position, true);
+                }
+            } catch (NumberFormatException ignored) { /**/ }
+
+            try {
+                EditText editCaptionsBottomFontSize = findViewById(R.id.editCaptionsBottomFontSize);
+                int prefSize = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_FontSize));
+                if (prefSize > 0 && prefSize < 100) editCaptionsBottomFontSize.setText(String.valueOf(prefSize));
+            } catch (NumberFormatException ignored) { /**/ }
+
+            try {
+                colorCaptionBottom = Integer.parseInt(prefCaptions.get(Constants.PhotoWidget_Bottom_Color));
+            } catch (NumberFormatException ignored) { /**/ }
+
+            // 2. Обновляем отображение цветов (текстовые метки)
+            updateCaptionsColorsDisplay();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Заполняет реакцию на нажатие из строки настроек
+     */
+    private void populateOnClickFromPref(@NonNull String onClickStr) {
+        try {
+            if (TextUtils.isEmpty(onClickStr)) return;
+
+            String[] prefActionsValues = getResources().getStringArray(R.array.pref_widget_list_onclick_values);
+            String[] selectedValues = onClickStr.split(Constants.REGEX_PLUS, -1);
+
+            Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
+            int ind = -1;
+            for (String value : prefActionsValues) {
+                ind++;
+                if (value.equals(selectedValues[0])) {
+                    spinnerOnClickCommon.setSelection(ind, true);
+                    break;
+                }
+            }
+
+            if (selectedValues.length > 1) {
+                Spinner spinnerOnClickLastEvent = findViewById(R.id.spinnerOnClickLastEvent);
+                ind = -1;
+                for (String value : prefActionsValues) {
+                    ind++;
+                    if (value.equals(selectedValues[1])) {
+                        spinnerOnClickLastEvent.setSelection(ind, true);
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Применяет конфигурацию шаблона к текущим элементам UI активности
+     *
+     * @param config Строка конфигурации (формат как у getCurrentConfig())
+     */
+    private void applyTemplateConfig(@NonNull String config) {
+        try {
+            String[] parts = config.split(Constants.STRING_COMMA, -1);
+            List<String> prefList = new ArrayList<>(Arrays.asList(parts));
+            // Дополняем до нужного размера (13 полей)
+            while (prefList.size() < 13) {
+                prefList.add(Constants.STRING_EMPTY);
+            }
+            widgetPref = prefList;
+
+            // Используем общий метод заполнения
+            populateUIFromWidgetPref();
+
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }

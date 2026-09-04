@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
+  ~  * Created by Vladimir Belov on 05.09.2026, 00:47
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.09.2026, 00:41
+  ~  * Last modified 04.09.2026, 01:16
   ~  */
   -->
 
@@ -1069,6 +1069,21 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
 
     <string name="widget_config_events_favorites">🌟 Oblíbené</string>
     <string name="widget_config_events_local_events">📅 Místní události</string>
+
+    <string name="menu_save_template">Uložit šablonu</string>
+    <string name="menu_load_template">Načíst šablonu</string>
+    <string name="msg_template_save_title">Uložit šablonu</string>
+    <string name="msg_template_save_hint">Název šablony</string>
+    <string name="msg_template_saved">Šablona \"%1$s\" uložena</string>
+    <string name="msg_template_load_title">Načíst šablonu</string>
+    <string name="msg_template_loaded">Šablona \"%1$s\" načtena</string>
+    <string name="msg_template_empty_name">Název šablony nemůže být prázdný</string>
+    <string name="msg_template_delete">Smazat šablonu</string>
+    <string name="msg_template_deleted">Šablona \"%1$s\" smazána</string>
+    <string name="msg_template_overwrite">Šablona \"%1$s\" již existuje. Přepsat?</string>
+    <string name="msg_template_no_templates">Žádné uložené šablony</string>
+    <string name="msg_template_limit_reached">Dosažen limit šablon (%1$d).\n\nSmažte nepotřebnou šablonu dlouhým stiskem v nabídce „Načíst šablonu"</string>
+    <string name="msg_template_delete_confirm">Smazat šablonu \"%1$s\"?</string>
 
     <string name="pref_Notifications_title">Oznámení</string>
     <string name="pref_Notifications_summary">Kdy a jak zobrazovat oznámení o událostech</string>

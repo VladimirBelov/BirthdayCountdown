@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.09.2026, 01:33
+ *  * Created by Vladimir Belov on 05.09.2026, 00:47
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.09.2026, 00:18
+ *  * Last modified 04.09.2026, 00:10
  *
  */
 
@@ -10112,6 +10112,9 @@ public class ContactsEvents {
         }
     }
 
+    /**
+     * Возвращает True, если для текущего языка доступна документация
+     */
     boolean isContextHelpAvailable() {
 
         List<String> localesWithFullDocumentation = new ArrayList<>();
@@ -11905,4 +11908,145 @@ public class ContactsEvents {
         }
     }
 
+    // ==================== Шаблоны конфигурации виджетов ====================
+
+    /**
+     * Возвращает список шаблонов для указанного типа виджета.
+     * Каждый элемент: имя шаблона + STRING_EOT + конфигурация
+     *
+     * @param widgetType Тип виджета
+     * @return Список шаблонов (имя + EOT + конфиг), отсортированный по имени
+     */
+    @NonNull
+    List<String> getWidgetTemplates(@NonNull String widgetType) {
+        List<String> result = new ArrayList<>();
+        try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            Set<String> templates = getPreferenceStringSet(preferences, Constants.WIDGET_TEMPLATES_PREFIX + widgetType, new HashSet<>());
+            result.addAll(templates);
+            Collections.sort(result, (a, b) -> {
+                String nameA = a.contains(Constants.STRING_EOT) ? a.substring(0, a.indexOf(Constants.STRING_EOT)) : a;
+                String nameB = b.contains(Constants.STRING_EOT) ? b.substring(0, b.indexOf(Constants.STRING_EOT)) : b;
+                return nameA.compareToIgnoreCase(nameB);
+            });
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        return result;
+    }
+
+    /**
+     * Возвращает имена шаблонов для указанного типа виджета
+     *
+     * @param widgetType Тип виджета
+     * @return Список имён шаблонов
+     */
+    @NonNull
+    List<String> getWidgetTemplateNames(@NonNull String widgetType) {
+        List<String> names = new ArrayList<>();
+        for (String template : getWidgetTemplates(widgetType)) {
+            int idx = template.indexOf(Constants.STRING_EOT);
+            names.add(idx > 0 ? template.substring(0, idx) : template);
+        }
+        return names;
+    }
+
+    /**
+     * Возвращает конфигурацию шаблона по имени
+     *
+     * @param widgetType   Тип виджета
+     * @param templateName Имя шаблона
+     * @return Конфигурация или null
+     */
+    @Nullable
+    String getWidgetTemplateConfig(@NonNull String widgetType, @NonNull String templateName) {
+        try {
+            for (String template : getWidgetTemplates(widgetType)) {
+                int idx = template.indexOf(Constants.STRING_EOT);
+                if (idx > 0 && template.substring(0, idx).equals(templateName)) {
+                    return template.substring(idx + Constants.STRING_EOT.length());
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        return null;
+    }
+
+    /**
+     * Сохраняет шаблон конфигурации виджета
+     *
+     * @param widgetType   Тип виджета
+     * @param templateName Имя шаблона
+     * @param config       Конфигурация (результат getCurrentConfig())
+     * @return true — сохранено, false — достигнут лимит шаблонов
+     */
+    boolean saveWidgetTemplate(@NonNull String widgetType, @NonNull String templateName, @NonNull String config) {
+        try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            Set<String> templates = getPreferenceStringSet(preferences, Constants.WIDGET_TEMPLATES_PREFIX + widgetType, new HashSet<>());
+
+            // Удаляем существующий шаблон с таким же именем (если есть)
+            Iterator<String> iterator = templates.iterator();
+            while (iterator.hasNext()) {
+                String t = iterator.next();
+                int idx = t.indexOf(Constants.STRING_EOT);
+                if (idx > 0 && t.substring(0, idx).equals(templateName)) {
+                    iterator.remove();
+                }
+            }
+
+            // Проверяем лимит
+            if (templates.size() >= Constants.MAX_WIDGET_TEMPLATES) {
+                return false;
+            }
+
+            templates.add(templateName + Constants.STRING_EOT + config);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putStringSet(Constants.WIDGET_TEMPLATES_PREFIX + widgetType, templates);
+            editor.apply();
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            return false;
+        }
+    }
+
+    /**
+     * Удаляет шаблон конфигурации виджета
+     *
+     * @param widgetType   Тип виджета
+     * @param templateName Имя шаблона
+     */
+    void deleteWidgetTemplate(@NonNull String widgetType, @NonNull String templateName) {
+        try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            Set<String> templates = getPreferenceStringSet(preferences, Constants.WIDGET_TEMPLATES_PREFIX + widgetType, new HashSet<>());
+            Iterator<String> iterator = templates.iterator();
+            while (iterator.hasNext()) {
+                String t = iterator.next();
+                int idx = t.indexOf(Constants.STRING_EOT);
+                if (idx > 0 && t.substring(0, idx).equals(templateName)) {
+                    iterator.remove();
+                }
+            }
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putStringSet(Constants.WIDGET_TEMPLATES_PREFIX + widgetType, templates);
+            editor.apply();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Проверяет наличие шаблонов для указанного типа виджета
+     *
+     * @param widgetType Тип виджета
+     * @return true если есть хотя бы один шаблон
+     */
+    boolean hasWidgetTemplates(@NonNull String widgetType) {
+        return !getWidgetTemplates(widgetType).isEmpty();
+    }
 }

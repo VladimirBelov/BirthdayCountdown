@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 10.07.2026, 00:03
+  ~  * Created by Vladimir Belov on 05.09.2026, 00:47
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 09.07.2026, 23:37
+  ~  * Last modified 05.09.2026, 00:44
   ~  */
   -->
 
@@ -11,11 +11,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_cancel"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="@string/button_cancel"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_ok"
         android:icon="@android:drawable/checkbox_on_background"
         android:title="@string/menu_save"
         android:visible="false"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_save_template"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/menu_save_template"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_load_template"
+        android:icon="@android:drawable/ic_menu_upload"
+        android:title="@string/menu_load_template"
+        android:visible="false"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_help_widgets"

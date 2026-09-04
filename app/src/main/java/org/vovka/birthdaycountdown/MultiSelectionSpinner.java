@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.10.2025, 03:07
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 10.10.2025, 22:57
+ *  * Created by Vladimir Belov on 05.09.2026, 00:47
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 05.09.2026, 00:40
  *
  */
 
@@ -142,8 +142,14 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
                 final MenuItem itemOk = menu.findItem(R.id.menu_ok);
                 if (itemOk != null) itemOk.setVisible(true);
 
+                final MenuItem itemBack = menu.findItem(R.id.menu_cancel);
+                if (itemBack != null) itemBack.setVisible(true);
                 final MenuItem itemHelp = menu.findItem(R.id.menu_help_widgets);
                 if (itemHelp != null) itemHelp.setVisible(false);
+                final MenuItem itemSave = menu.findItem(R.id.menu_save_template);
+                if (itemSave != null) itemSave.setVisible(false);
+                final MenuItem itemLoad = menu.findItem(R.id.menu_load_template);
+                if (itemLoad != null) itemLoad.setVisible(false);
             }
 
             fm.beginTransaction()

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
+  ~  * Created by Vladimir Belov on 05.09.2026, 00:47
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.09.2026, 00:40
+  ~  * Last modified 04.09.2026, 01:15
   ~  */
   -->
 
@@ -1069,6 +1069,21 @@
 
     <string name="widget_config_events_favorites">🌟 Выбранае</string>
     <string name="widget_config_events_local_events">📅 Мясцовыя падзеі</string>
+
+    <string name="menu_save_template">Захаваць шаблон</string>
+    <string name="menu_load_template">Загрузіць шаблон</string>
+    <string name="msg_template_save_title">Захаваць шаблон</string>
+    <string name="msg_template_save_hint">Назва шаблону</string>
+    <string name="msg_template_saved">Шаблон \"%1$s\" захаваны</string>
+    <string name="msg_template_load_title">Загрузіць шаблон</string>
+    <string name="msg_template_loaded">Шаблон \"%1$s\" загружаны</string>
+    <string name="msg_template_empty_name">Назва шаблону не можа быць пустой</string>
+    <string name="msg_template_delete">Выдаліць шаблон</string>
+    <string name="msg_template_deleted">Шаблон \"%1$s\" выдалены</string>
+    <string name="msg_template_overwrite">Шаблон \"%1$s\" ужо існуе. Перазапісаць?</string>
+    <string name="msg_template_no_templates">Няма захаваных шаблонаў</string>
+    <string name="msg_template_limit_reached">Дасягнуты ліміт шаблонаў (%1$d).\n\nВыдаліце непатрэбны шаблон доўгім націскам у меню «Загрузіць шаблон»</string>
+    <string name="msg_template_delete_confirm">Выдаліць шаблон \"%1$s\"?</string>
 
     <string name="pref_Notifications_title">Паведамленні</string>
     <string name="pref_Notifications_summary">Калі і як паказваць паведамленні пра падзеі</string>

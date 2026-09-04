@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
+  ~  * Created by Vladimir Belov on 05.09.2026, 00:47
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.09.2026, 00:43
+  ~  * Last modified 04.09.2026, 01:15
   ~  */
   -->
 
@@ -1069,6 +1069,21 @@ Clique longamente no item para selecionar a cor"</string>
 
     <string name="widget_config_events_favorites">🌟 Favoritos</string>
     <string name="widget_config_events_local_events">📅 Eventos locais</string>
+
+    <string name="menu_save_template">Salvar modelo</string>
+    <string name="menu_load_template">Carregar modelo</string>
+    <string name="msg_template_save_title">Salvar modelo</string>
+    <string name="msg_template_save_hint">Nome do modelo</string>
+    <string name="msg_template_saved">Modelo \"%1$s\" salvo</string>
+    <string name="msg_template_load_title">Carregar modelo</string>
+    <string name="msg_template_loaded">Modelo \"%1$s\" carregado</string>
+    <string name="msg_template_empty_name">O nome do modelo não pode estar vazio</string>
+    <string name="msg_template_delete">Excluir modelo</string>
+    <string name="msg_template_deleted">Modelo \"%1$s\" excluído</string>
+    <string name="msg_template_overwrite">O modelo \"%1$s\" já existe. Sobrescrever?</string>
+    <string name="msg_template_no_templates">Nenhum modelo salvo</string>
+    <string name="msg_template_limit_reached">Limite de modelos atingido (%1$d).\n\nExclua um modelo não utilizado pressionando-o longamente no menu "Carregar modelo"</string>
+    <string name="msg_template_delete_confirm">Excluir o modelo \"%1$s\"?</string>
 
     <string name="pref_Notifications_title">Notificações</string>
     <string name="pref_Notifications_summary">Quando e como mostrar notificações de eventos</string>
