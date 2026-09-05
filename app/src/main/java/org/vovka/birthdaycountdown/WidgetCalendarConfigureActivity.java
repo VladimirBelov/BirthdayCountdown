@@ -1,11 +1,12 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2026, 00:47
+ *  * Created by Vladimir Belov on 05.09.2026, 13:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.09.2026, 23:50
+ *  * Last modified 05.09.2026, 13:25
  *
  */
 package org.vovka.birthdaycountdown;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -28,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -39,6 +41,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,16 +55,18 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.transition.TransitionManager;
+
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
+
 /**
  Этот класс предоставляет активность конфигурации для виджета "Календарь".
  Он позволяет пользователям настраивать внешний вид и поведение виджета,
@@ -744,10 +749,10 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     @NonNull
     private String getDefaultTemplateName() {
         try {
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
-            return sdf.format(new java.util.Date());
+            return AppDateUtils.getDateTimePreferable(new java.util.Date(),
+                    eventsData.preferences_date_format, eventsData.getContext(), eventsData.currentLocale);
         } catch (Exception e) {
-            return "Template";
+            return getString(R.string.msg_template_save_hint);
         }
     }
 
@@ -801,6 +806,13 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                     })
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                     .setCancelable(true);
+
+            if (eventsData.preferences_theme.themeEditText != 0) {
+                builder.getContext().setTheme(eventsData.preferences_theme.themeEditText);
+            } else {
+                builder.getContext().setTheme(ContactsEvents.themeEditText_default);
+            }
+
             AlertDialog alert = builder.create();
             alert.setOnShowListener(arg0 -> {
                 TypedArray ta = getTheme().obtainStyledAttributes(R.styleable.Theme);
@@ -809,6 +821,8 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 ta.recycle();
             });
             alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            editName.requestFocus();
+            if (alert.getWindow() != null) alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             alert.show();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

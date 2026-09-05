@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.09.2026, 01:33
+ *  * Created by Vladimir Belov on 05.09.2026, 13:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 23:03
+ *  * Last modified 05.09.2026, 13:06
  *
  */
 
@@ -1088,6 +1088,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                                 .setCancelable(true);
 
+                        //Без этого цвет подложки действий при выделении текста становится непрозрачным
                         if (eventsData.preferences_theme.themeEditText != 0) {
                             builderForEventTitleDialog.getContext().setTheme(eventsData.preferences_theme.themeEditText);
                         } else {

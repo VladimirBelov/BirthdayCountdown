@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2026, 00:47
+ *  * Created by Vladimir Belov on 05.09.2026, 13:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.09.2026, 00:40
+ *  * Last modified 05.09.2026, 13:25
  *
  */
 
@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -46,6 +47,7 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
@@ -1003,10 +1005,10 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     @NonNull
     private String getDefaultTemplateName() {
         try {
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
-            return sdf.format(new java.util.Date());
+            return AppDateUtils.getDateTimePreferable(new java.util.Date(),
+                    eventsData.preferences_date_format, eventsData.getContext(), eventsData.currentLocale);
         } catch (Exception e) {
-            return "Template";
+            return getString(R.string.msg_template_save_hint);
         }
     }
 
@@ -1064,6 +1066,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                     .setCancelable(true);
 
+            if (eventsData.preferences_theme.themeEditText != 0) {
+                builder.getContext().setTheme(eventsData.preferences_theme.themeEditText);
+            } else {
+                builder.getContext().setTheme(ContactsEvents.themeEditText_default);
+            }
+
             AlertDialog alert = builder.create();
             alert.setOnShowListener(arg0 -> {
                 TypedArray ta = getTheme().obtainStyledAttributes(R.styleable.Theme);
@@ -1072,6 +1080,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 ta.recycle();
             });
             alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            editName.requestFocus();
+            if (alert.getWindow() != null) alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             alert.show();
 
         } catch (Exception e) {
