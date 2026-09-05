@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2026, 00:47
+ *  * Created by Vladimir Belov on 05.09.2026, 15:55
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.09.2026, 00:40
+ *  * Last modified 05.09.2026, 15:09
  *
  */
 
@@ -13,8 +13,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 
@@ -58,7 +56,7 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
     private int mColor = 0;
     FragmentManager fm;
     Fragment fragment;
-    Menu menu;
+    OnEditModeChangeListener editModeListener;
     DialogInterface.OnDismissListener onDismissListener = null;
 
     public MultiSelectionSpinner(Context context) {
@@ -73,6 +71,10 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
 
         adapter = new ArrayAdapter<>(context, R.layout.list_item_text);
         super.setAdapter(adapter);
+    }
+
+    public interface OnEditModeChangeListener {
+        void onEditModeChanged(boolean isInEditMode);
     }
 
     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -115,7 +117,6 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
             }
 
             dialog.show();
-            //dialogBuilder.show();
             //todo: добавить onDismiss обработчик для пост обработки выбранного (когда будет дерево вариантов)
 
         } else {
@@ -138,19 +139,8 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
 
             fragment.setArguments(args);
 
-            if (menu != null) {
-                final MenuItem itemOk = menu.findItem(R.id.menu_ok);
-                if (itemOk != null) itemOk.setVisible(true);
-
-                final MenuItem itemBack = menu.findItem(R.id.menu_cancel);
-                if (itemBack != null) itemBack.setVisible(true);
-                final MenuItem itemHelp = menu.findItem(R.id.menu_help_widgets);
-                if (itemHelp != null) itemHelp.setVisible(false);
-                final MenuItem itemSave = menu.findItem(R.id.menu_save_template);
-                if (itemSave != null) itemSave.setVisible(false);
-                final MenuItem itemLoad = menu.findItem(R.id.menu_load_template);
-                if (itemLoad != null) itemLoad.setVisible(false);
-            }
+            // Уведомляем Activity о входе в режим редактирования
+            if (editModeListener != null) editModeListener.onEditModeChanged(true);
 
             fm.beginTransaction()
                     .replace(R.id.layout_fragment, fragment)
@@ -199,24 +189,18 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
     }
 
     /**
-     * Set {@link MultiSelectionSpinner} selection from {@link RecyclerListFragment} and move selected to the beginning
+     * Устанавливает выбор из списка
      */
-    public void setSelectedFromFragmentResults() {
-        Bundle args = fragment.getArguments();
-        if (args != null) {
-            final ArrayList<String> selected = args.getStringArrayList(Constants.EXTRA_RESULTS);
-            if (selected != null) {
-                if (!selected.isEmpty()) {
-                    moveToBeginning(selected);
-                    setSelection(selected);
-                }
-                if (!mNonSorted.isEmpty()) {
-                    moveToBeginning(mNonSorted);
-                    setSelection(selected);
-                }
+    public void setSelectedFromList(List<String> selected) {
+        if (selected != null) {
+            if (!selected.isEmpty()) {
+                moveToBeginning(selected);
+                setSelection(selected);
             }
-        } else {
-            ToastExpander.showInfoMsg(getContext(), "No results!");
+            if (!mNonSorted.isEmpty()) {
+                moveToBeginning(mNonSorted);
+                setSelection(selected);
+            }
         }
     }
 

@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
+  ~  * Created by Vladimir Belov on 05.09.2026, 15:55
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 21.07.2026, 11:39
+  ~  * Last modified 05.09.2026, 15:46
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.2</item>
+        <item>🎂 Выбор иконок и символов для типов событий</item>
+        <item>💾 Шаблоны настроек виджетов</item>
+        <item>Исправление ошибок</item>
 
         <item>#1.9.1</item>
         <item>Интеграция событий, которые раньше были доступны в виде внешних файлов, внутрь приложения. В разделе праздников: \"🇷🇺 Профессиональные праздники\", \"☦️ Православные церковные праздники\", \"✝️ Katholische Feiertage in Deutschland\", в разделе других событий: \"ℹ️ Интересные даты\"</item>

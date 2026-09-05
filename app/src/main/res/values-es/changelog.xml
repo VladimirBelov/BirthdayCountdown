@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
+  ~  * Created by Vladimir Belov on 05.09.2026, 15:55
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 21.07.2026, 11:39
+  ~  * Last modified 05.09.2026, 15:51
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.2</item>
+        <item>🎂 Selección de iconos y símbolos para tipos de eventos</item>
+        <item>💾 Plantillas de configuración de widgets</item>
+        <item>Corrección de errores</item>
 
         <item>#1.9.1</item>
         <item>Los eventos que antes estaban disponibles como archivos externos se han integrado en la aplicación. En la sección de vacaciones: \"🇷🇺 Профессиональные праздники\", \"☦️ Православные церковные праздники\", \"✝️ Katholische Feiertage in Deutschland\", y en la sección de otros eventos: \"ℹ️ Интересные даты\"</item>

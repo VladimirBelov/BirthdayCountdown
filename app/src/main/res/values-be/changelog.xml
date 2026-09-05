@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
+  ~  * Created by Vladimir Belov on 05.09.2026, 15:55
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.07.2026, 13:04
+  ~  * Last modified 05.09.2026, 15:48
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.2</item>
+        <item>🎂 Выбар абразкоў і сімвалаў для тыпаў падзей</item>
+        <item>💾 Шаблоны налад віджэтаў</item>
+        <item>Выпраўленне памылак</item>
 
         <item>#1.9.1</item>
         <item>Падзеі, якія раней былі даступныя ў выглядзе знешніх файлаў, інтэграваны ў праграму. У раздзеле святаў: \"🇷🇺 Профессиональные праздники\", \"☦️ Православные церковные праздники\", \"✝️ Katholische Feiertage in Deutschland\", а ў раздзеле іншых падзей: \"ℹ️ Интересные даты\"</item>

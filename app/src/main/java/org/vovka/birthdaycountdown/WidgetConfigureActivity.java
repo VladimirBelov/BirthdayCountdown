@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2026, 13:26
+ *  * Created by Vladimir Belov on 05.09.2026, 15:55
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.09.2026, 13:25
+ *  * Last modified 05.09.2026, 15:22
  *
  */
 
@@ -112,6 +112,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     Spinner spinnerScopeEvents;
     TextView listEventSources;
     private Menu menuOptions;
+    private boolean isSpinnerInEditMode = false;
     @Nullable
     private AlertDialog loadTemplateDialog;
 
@@ -394,6 +395,23 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             // ===== 4. ОБНОВЛЕНИЕ ВИДИМОСТИ =====
             updateVisibility();
+
+            // Подписываемся на изменения стека фрагментов
+            getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+                // Проверяем, находится ли наш фрагмент редактирования сейчас на экране
+                boolean isFragmentVisible = getSupportFragmentManager().findFragmentById(R.id.layout_fragment) instanceof RecyclerListFragment;
+
+                if (isSpinnerInEditMode != isFragmentVisible) {
+                    isSpinnerInEditMode = isFragmentVisible;
+                    updateMenuState(); // Перерисовываем меню
+                }
+            });
+
+            // Подключаем наш новый listener к спиннеру
+            spinnerEventInfo.editModeListener = isInEditMode -> {
+                isSpinnerInEditMode = isInEditMode;
+                updateMenuState();
+            };
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -919,15 +937,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_widget_config, menu);
         this.menuOptions = menu;
 
-        if (spinnerEventInfo != null) spinnerEventInfo.menu = menu;
-
-        MenuItem itemHelp = menu.findItem(R.id.menu_help_widgets);
-        if (itemHelp != null) {
-            itemHelp.setVisible(eventsData.isContextHelpAvailable());
-        }
-
-        // Обновляем видимость кнопки "Загрузить шаблон"
-        updateLoadTemplateVisibility(menu);
+        updateMenuState();
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -942,26 +952,15 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             if (allSelectedItems.isEmpty()) {
                 ToastExpander.showInfoMsg(getApplicationContext(), getString(R.string.msg_no_selection));
             } else {
+                spinnerEventInfo.setSelectedFromList(allSelectedItems);
                 onBackPressed();
-                spinnerEventInfo.setSelectedFromFragmentResults();
-                item.setVisible(false);
-                final MenuItem itemBack = spinnerEventInfo.menu.findItem(R.id.menu_cancel);
-                if (itemBack != null) itemBack.setVisible(false);
-                final MenuItem itemHelp = spinnerEventInfo.menu.findItem(R.id.menu_help_widgets);
-                if (itemHelp != null) itemHelp.setVisible(true);
-                updateLoadTemplateVisibility(menuOptions);
             }
             return true;
 
         } else if (itemId == R.id.menu_cancel) {
 
             onBackPressed();
-            item.setVisible(false);
-            final MenuItem itemOk = spinnerEventInfo.menu.findItem(R.id.menu_ok);
-            if (itemOk != null) itemOk.setVisible(false);
-            final MenuItem itemHelp = spinnerEventInfo.menu.findItem(R.id.menu_help_widgets);
-            if (itemHelp != null) itemHelp.setVisible(true);
-            updateLoadTemplateVisibility(menuOptions);
+            return true;
 
         } else if (itemId == R.id.menu_save_template) {
             showSaveTemplateDialog();
@@ -985,19 +984,6 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     }
 
 // ==================== Шаблоны конфигурации виджетов ====================
-
-    /**
-     * Обновляет видимость пункта меню "Загрузить шаблон"
-     */
-    private void updateLoadTemplateVisibility(@Nullable Menu menu) {
-        if (menu == null) return;
-        final MenuItem itemSave = menu.findItem(R.id.menu_save_template);
-        if (itemSave != null) itemSave.setVisible(true);
-        final MenuItem itemLoad = menu.findItem(R.id.menu_load_template);
-        if (itemLoad != null) {
-            itemLoad.setVisible(eventsData.hasWidgetTemplates(widgetType));
-        }
-    }
 
     /**
      * Возвращает имя шаблона по умолчанию: текущая дата и время (дд.ММ.гггг чч:мм)
@@ -1056,7 +1042,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                             if (saved) {
                                 ToastExpander.showInfoMsg(WidgetConfigureActivity.this,
                                         getString(R.string.msg_template_saved, templateName));
-                                updateLoadTemplateVisibility(menuOptions);
+                                updateMenuState();
                             } else {
                                 // Лимит достигнут
                                 showTemplateLimitDialog();
@@ -1120,7 +1106,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                         if (saved) {
                             ToastExpander.showInfoMsg(WidgetConfigureActivity.this,
                                     getString(R.string.msg_template_saved, templateName));
-                            updateLoadTemplateVisibility(menuOptions);
+                            updateMenuState();
                         }
                     })
                     .setNegativeButton(R.string.button_cancel, null)
@@ -1216,7 +1202,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     .setMessage(getString(R.string.msg_template_delete_confirm, templateName))
                     .setPositiveButton(R.string.button_ok, (dialog, which) -> {
                         eventsData.deleteWidgetTemplate(widgetType, templateName);
-                        updateLoadTemplateVisibility(menuOptions);
+                        updateMenuState();
                         // Закрываем старый диалог загрузки перед пересозданием
                         if (loadTemplateDialog != null && loadTemplateDialog.isShowing()) {
                             loadTemplateDialog.dismiss();
@@ -1733,6 +1719,30 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    /**
+     * Централизованный метод управления состоянием меню.
+     * Вызывается при любом изменении состояния (открытие спиннера, закрытие, смена языка и т.д.)
+     */
+    private void updateMenuState() {
+        if (menuOptions == null) return;
+
+        // Режим редактирования спиннера (показываем только ОК и Отмена)
+        menuOptions.findItem(R.id.menu_cancel).setVisible(isSpinnerInEditMode);
+        menuOptions.findItem(R.id.menu_ok).setVisible(isSpinnerInEditMode);
+
+        // Обычный режим (скрываем ОК/Отмена, показываем остальное)
+        boolean isNormalMode = !isSpinnerInEditMode;
+
+        MenuItem itemHelp = menuOptions.findItem(R.id.menu_help_widgets);
+        if (itemHelp != null) itemHelp.setVisible(isNormalMode && eventsData.isContextHelpAvailable());
+
+        MenuItem itemSave = menuOptions.findItem(R.id.menu_save_template);
+        if (itemSave != null) itemSave.setVisible(isNormalMode);
+
+        MenuItem itemLoad = menuOptions.findItem(R.id.menu_load_template);
+        if (itemLoad != null) itemLoad.setVisible(isNormalMode && eventsData.hasWidgetTemplates(widgetType));
     }
 
 }

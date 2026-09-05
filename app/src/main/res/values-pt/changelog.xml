@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
+  ~  * Created by Vladimir Belov on 05.09.2026, 15:55
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 21.07.2026, 11:41
+  ~  * Last modified 05.09.2026, 15:52
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.2</item>
+        <item>🎂 Selecionando ícones e símbolos para tipos de eventos</item>
+        <item>💾 Modelos de configurações de widgets</item>
+        <item>Correções de bugs</item>
 
         <item>#1.9.1</item>
         <item>Eventos anteriormente disponíveis como arquivos externos foram integrados ao aplicativo. Na seção de feriados: \"🇷🇺 Профессиональные праздники\", \"☦️ Православные церковные праздники\", \"✝️ Katholische Feiertage in Deutschland\", e na seção de outros eventos: \"ℹ️ Интересные даты\"</item>

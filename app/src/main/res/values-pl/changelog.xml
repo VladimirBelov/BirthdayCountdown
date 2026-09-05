@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
+  ~  * Created by Vladimir Belov on 05.09.2026, 15:55
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.07.2026, 13:36
+  ~  * Last modified 05.09.2026, 15:52
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.2</item>
+        <item>🎂 Wybieranie ikon i symboli dla typów zdarzeń</item>
+        <item>💾 Szablony ustawień widżetu</item>
+        <item>Poprawki błędów</item>
 
         <item>#1.9.1</item>
         <item>Wydarzenia, które wcześniej były dostępne jako pliki zewnętrzne, zostały zintegrowane z aplikacją. W dziale święta: „🇷🇺 Профессиональные праздники”, „☦️ Православные церковные праздники”, „✝️ Katholische Feiertage in Deutschland”, a w dziale pozostałe wydarzenia: „ℹ️ Интересные даты”</item>

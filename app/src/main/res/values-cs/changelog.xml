@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
+  ~  * Created by Vladimir Belov on 05.09.2026, 15:55
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.07.2026, 13:36
+  ~  * Last modified 05.09.2026, 15:50
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.2</item>
+        <item>🎂 Výběr ikon a symbolů pro typy událostí</item>
+        <item>💾 Šablony nastavení widgetů</item>
+        <item>Opravy chyb</item>
 
         <item>#1.9.1</item>
         <item>Události dříve dostupné jako externí soubory byly integrovány do aplikace. V sekci svátků: „🇷🇺 Профессиональные праздники“, „☦️ Православные церковные праздники“, „✝️ Katholische Feiertage in Deutschland“ a v sekci ostatních událostí: „ℹ️ Интересные даты“</item>
