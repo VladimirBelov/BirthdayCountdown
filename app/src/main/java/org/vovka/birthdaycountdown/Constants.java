@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2026, 00:47
+ *  * Created by Vladimir Belov on 07.09.2026, 23:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.09.2026, 23:06
+ *  * Last modified 06.09.2026, 20:20
  *
  */
 
@@ -137,6 +137,8 @@ public final class Constants {
     static final String PREFIX_FileEventID = "f";
     static final String PREFIX_HolidayEventID = "h";
     static final String PREFIX_OtherEventID = "o";
+    public static final String ICON_PREFIX_RES  = "res:";
+    public static final String ICON_PREFIX_FILE = "file:";
     static final String WIDGET_TEXT_VIEW = "textView";
     static final String WIDGET_TEXT_VIEW_LAYOUT = "textViewLayout";
     static final String WIDGET_TEXT_VIEW_2_ND = "textView2nd";
@@ -226,6 +228,7 @@ public final class Constants {
     static final int RESULT_EDIT_EVENT = 250;
     static final int RESULT_CROP_PHOTO = 260;
     static final int RESULT_IMPORT_EVENTS = 270;
+    static final int RESULT_PICK_ICON_FILE = 280;
 
     static final String NOTIFY_ID = "id: ";
     static final int defaultNotificationID = 1000;

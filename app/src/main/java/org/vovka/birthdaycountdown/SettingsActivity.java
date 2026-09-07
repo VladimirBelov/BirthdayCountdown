@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2026, 00:47
+ *  * Created by Vladimir Belov on 07.09.2026, 23:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.09.2026, 00:11
+ *  * Last modified 07.09.2026, 17:37
  *
  */
 
@@ -157,6 +157,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private Insets statusBarInsets;
     private CustomTextPreference prefEnabledFeatures;
     private String localeAtCreate = "";
+    private String eventTypeForIconPick;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -4803,6 +4804,51 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             startActivityForResult(intent, Constants.RESULT_IMPORT_EVENTS);
                         } catch (ActivityNotFoundException e) { /**/ }
                     }
+
+                } else if (requestCode == Constants.RESULT_PICK_ICON_FILE) {
+                    Uri sourceUri = resultData.getData();
+                    if (sourceUri == null || eventTypeForIconPick == null) return;
+
+                    // 1. Удаляем старый file-icon для этого типа (если был)
+                    removeOldIconFile(eventTypeForIconPick);
+
+                    // 2. Копируем файл в приватную папку приложения
+                    File destDir = new File(getFilesDir(), "event_icons");
+                    if (!destDir.exists() && !destDir.mkdirs()) {
+                        Log.w(TAG, "Failed to create folder: " + destDir);
+                        return;
+                    }
+
+                    String ext = getFileExtensionFromUri(sourceUri);
+                    if (ext.isEmpty()) ext = "png";
+                    String fileName = eventTypeForIconPick + "_" + System.currentTimeMillis() + "." + ext;
+                    File destFile = new File(destDir, fileName);
+
+                    try (InputStream in = getContentResolver().openInputStream(sourceUri);
+                         OutputStream out = new FileOutputStream(destFile)) {
+                        if (in == null) {
+                            ToastExpander.showInfoMsg(this, getString(R.string.msg_file_open_error) + sourceUri);
+                            return;
+                        }
+                        byte[] buf = new byte[8192];
+                        int n;
+                        while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
+                    } catch (IOException e) {
+                        ToastExpander.showDebugMsg(this, getString(R.string.msg_icon_copy_error));
+                        if (destFile.exists() && !destFile.delete()) {
+                            Log.w(TAG, "Failed to delete old icon: " + destFile);
+                        }
+                        return;
+                    }
+
+                    // 3. Сохраняем путь с префиксом "file:"
+                    eventsData.setEventIcon(eventTypeForIconPick, Constants.ICON_PREFIX_FILE + destFile.getAbsolutePath());
+                    eventsData.savePreferences();
+
+                    ToastExpander.showInfoMsg(this, getString(R.string.msg_event_icon_changed));
+                    setupEventTypeActions();
+                    eventsData.needUpdateEventList = true;
+                    eventTypeForIconPick = null;
                 }
 
             } else {
@@ -4815,6 +4861,31 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    private void removeOldIconFile(@NonNull String eventType) {
+        String oldValue = eventsData.preferences_event_icons.get(eventType);
+        if (oldValue != null && oldValue.startsWith(Constants.ICON_PREFIX_FILE)) {
+            File oldFile = new File(oldValue.substring(Constants.ICON_PREFIX_FILE.length()));
+            if (oldFile.exists() && !oldFile.delete()) {
+                Log.w(TAG, "Failed to delete old icon file: " + oldFile);
+            }
+        }
+    }
+
+    @NonNull
+    private String getFileExtensionFromUri(@NonNull Uri uri) {
+        String name = null;
+        try (Cursor cursor = getContentResolver().query(uri, new String[]{OpenableColumns.DISPLAY_NAME}, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int idx = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                if (idx >= 0) name = cursor.getString(idx);
+            }
+        } catch (Exception ignored) {}
+        if (name == null) name = uri.getLastPathSegment();
+        if (name == null) return "";
+        int dot = name.lastIndexOf('.');
+        return dot > 0 ? name.substring(dot + 1).toLowerCase() : "";
     }
 
     private void removeUselessMelody(Uri oldUri) {
@@ -5027,7 +5098,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     String eventType = entry.getValue();
                     actionsPref.setEventType(eventType);
                     actionsPref.setCurrentEmoji(eventsData.getEventEmojiForType(eventType));
-                    actionsPref.setCurrentIconResId(eventsData.getEventIconForType(eventType));
+                    Drawable iconDrawable = eventsData.getEventIconDrawable(eventType);
+                    actionsPref.setCurrentIconDrawable(iconDrawable);
 
                     // Управляем видимостью кнопок в зависимости от FEATURE_MORE_SETTINGS
                     actionsPref.setIconButtonVisible(moreSettingsEnabled);
@@ -5073,52 +5145,56 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 || Constants.EventType_Custom5.equals(eventType);
     }
 
-    // Метод выбора иконки (прототип - выбор из списка стандартных иконок)
     private void selectEventIcon(String eventType) {
         try {
             List<String> iconNames = new ArrayList<>();
-            List<Integer> iconImages = new ArrayList<>();
+            List<String> iconValues = new ArrayList<>(); // строки "res:..." вместо int
+            List<Object> iconImages = new ArrayList<>(); // для превью в диалоге
 
-            // Стандартные иконки событий
-            iconNames.add(getString(R.string.event_type_birthday));
-            iconImages.add(R.drawable.ic_event_birthday);
-            iconNames.add(getString(R.string.event_type_anniversary));
-            iconImages.add(R.drawable.ic_event_wedding);
-            iconNames.add(getString(R.string.event_type_nameday));
-            iconImages.add(R.drawable.ic_event_nameday);
-            iconNames.add(getString(R.string.event_type_crowning));
-            iconImages.add(R.drawable.ic_event_crowning);
-            iconNames.add(getString(R.string.event_type_death));
-            iconImages.add(R.drawable.ic_event_death);
-            iconNames.add(getString(R.string.event_type_holiday));
-            iconImages.add(R.drawable.ic_event_holiday);
-            iconNames.add(getString(R.string.event_type_other));
-            iconImages.add(R.drawable.ic_event_other);
-            iconNames.add(getString(R.string.event_type_fact));
-            iconImages.add(R.drawable.ic_event_fact);
-            iconNames.add(getString(R.string.event_type_custom));
-            iconImages.add(R.drawable.ic_event_custom1);
-            iconNames.add(getString(R.string.event_type_custom));
-            iconImages.add(R.drawable.ic_event_custom2);
-            iconNames.add(getString(R.string.event_type_custom));
-            iconImages.add(R.drawable.ic_event_custom3);
-            iconNames.add(getString(R.string.event_type_custom));
-            iconImages.add(R.drawable.ic_event_custom4);
-            iconNames.add(getString(R.string.event_type_custom));
-            iconImages.add(R.drawable.ic_event_custom5);
+            // Стандартные иконки — формируем значения с префиксом "res:"
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_birthday, R.drawable.ic_event_birthday);
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_anniversary, R.drawable.ic_event_wedding);
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_nameday, R.drawable.ic_event_nameday);
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_crowning, R.drawable.ic_event_crowning);
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_death, R.drawable.ic_event_death);
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_holiday, R.drawable.ic_event_holiday);
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_holiday, R.drawable.ic_event_holiday2);
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_other, R.drawable.ic_event_other);
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_fact, R.drawable.ic_event_fact);
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_custom, R.drawable.ic_event_custom1);
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_custom, R.drawable.ic_event_custom2);
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_custom, R.drawable.ic_event_custom3);
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_custom, R.drawable.ic_event_custom4);
+            addIconOption(iconNames, iconValues, iconImages, R.string.event_type_custom, R.drawable.ic_event_custom5);
+
+            //Выбрать из файла
+            iconNames.add(getString(R.string.dialog_select_event_icon_from_file));
+            iconValues.add(null); // маркер — обработаем отдельно
+
+            String currentIcon = eventsData.getEventIconForType(eventType);
+            if (currentIcon.startsWith(Constants.ICON_PREFIX_FILE)) {
+                Bitmap fileIcon = eventsData.getEventIconBitmap(eventType, 256);
+                if (fileIcon != null) {
+                    iconImages.add(fileIcon);
+                } else {
+                    iconImages.add(android.R.drawable.ic_menu_gallery);
+                }
+            } else {
+                iconImages.add(android.R.drawable.ic_menu_gallery);
+            }
 
             ListAdapter adapter = new ImageSelectAdapter(this, iconNames, iconImages,
                     ImageSelectAdapter.Scale.SQUARED, ta);
+
             AlertDialog.Builder builder = new AlertDialog.Builder(
                     new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                     .setTitle(R.string.dialog_title_select_event_icon)
                     .setAdapter(adapter, null)
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                     .setNeutralButton(R.string.button_reset, (dialog, which) -> {
-                        // Сброс к иконке по умолчанию
                         eventsData.preferences_event_icons.remove(eventType);
                         eventsData.savePreferences();
-                        setupEventTypeActions(); // Обновляем UI
+                        setupEventTypeActions();
                         ToastExpander.showInfoMsg(this, getString(R.string.msg_event_icon_changed));
                     })
                     .setCancelable(true);
@@ -5127,29 +5203,67 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             ListView listView = alertToShow.getListView();
             listView.setItemsCanFocus(false);
             listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
             listView.setOnItemClickListener((parent, view, position, id) -> {
-                eventsData.setEventIcon(eventType, iconImages.get(position));
-                eventsData.savePreferences();
-                alertToShow.dismiss();
-                ToastExpander.showInfoMsg(this, getString(R.string.msg_event_icon_changed));
-                // Обновляем UI
-                setupEventTypeActions();
-                eventsData.needUpdateEventList = true;
-            });
-            alertToShow.setOnShowListener(arg0 -> {
-                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
-                        ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(
-                        ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
-                // Отмечаем текущую иконку
-                int currentIcon = eventsData.getEventIconForType(eventType);
-                int currentIndex = iconImages.indexOf(currentIcon);
-                if (currentIndex >= 0) {
-                    listView.setItemChecked(currentIndex, true);
+                String iconValue = iconValues.get(position);
+                if (iconValue == null) {
+                    // Выбран пункт "Выбрать файл"
+                    alertToShow.dismiss();
+                    eventTypeForIconPick = eventType;
+                    pickIconFile();
+                } else {
+                    eventsData.setEventIcon(eventType, iconValue);
+                    eventsData.savePreferences();
+                    alertToShow.dismiss();
+                    ToastExpander.showInfoMsg(this, getString(R.string.msg_event_icon_changed));
+                    setupEventTypeActions();
+                    eventsData.needUpdateEventList = true;
                 }
+            });
+
+            alertToShow.setOnShowListener(arg0 -> {
+                alertToShow.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
+                // Отмечаем текущую иконку
+                String currentIconForCheck = eventsData.getEventIconForType(eventType);
+                int currentIndex;
+                if (currentIconForCheck.startsWith(Constants.ICON_PREFIX_FILE)) {
+                    //Если выбрана иконка из файла — отмечаем последний пункт
+                    currentIndex = iconValues.size() - 1;
+                } else {
+                    currentIndex = iconValues.indexOf(currentIconForCheck);
+                }
+                if (currentIndex >= 0) listView.setItemChecked(currentIndex, true);
             });
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    private void addIconOption(List<String> names, List<String> values, List<Object> images,
+                               @StringRes int nameResId, @DrawableRes int drawableResId) {
+        names.add(getString(nameResId));
+        values.add(Constants.ICON_PREFIX_RES + getResources().getResourceEntryName(drawableResId));
+        images.add(drawableResId);
+    }
+
+    private void pickIconFile() {
+        try {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{
+                    Constants.MIME_IMAGE_JPEG, Constants.MIME_IMAGE_PNG, Constants.MIME_IMAGE_WEBP
+            });
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(intent, Constants.RESULT_PICK_ICON_FILE);
+            } else {
+                ToastExpander.showInfoMsg(this, getString(R.string.msg_no_file_picker));
+            }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);

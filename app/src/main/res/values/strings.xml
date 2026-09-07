@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.09.2026, 00:47
+  ~  * Created by Vladimir Belov on 07.09.2026, 23:14
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.09.2026, 00:48
+  ~  * Last modified 06.09.2026, 20:25
   ~  */
   -->
 
@@ -485,6 +485,8 @@
     <string name="pref_EventType_Emoji_title">Symbol</string>
     <string name="pref_EventType_Caption_title">Caption</string>
     <string name="dialog_title_select_event_icon">Select an event icon</string>
+    <string name="dialog_select_event_icon_from_file">Select file…</string>
+    <string name="msg_icon_copy_error">Icon copy error</string>
     <string name="msg_event_icon_changed">Event icon changed</string>
     <string name="msg_event_emoji_changed">Event symbol changed: %1$s</string>
     <string name="dialog_title_select_event_emoji">Select an event symbol</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 07.09.2026, 23:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 07.09.2026, 17:40
  *
  */
 
@@ -39,7 +39,7 @@ class ImageSelectAdapter extends BaseAdapter {
     private final Context context;
     private static final String TAG = "ImageSelectAdapter";
     private final List<String> items;
-    private final List<Integer> images;
+    private final List<?> images;
     private final TypedArray ta;
     private final Scale scale;
 
@@ -47,7 +47,7 @@ class ImageSelectAdapter extends BaseAdapter {
         NO_SCALE, SQUARED, ONE_THIRD
     }
 
-    ImageSelectAdapter(Context context, @NonNull List<String> items, @NonNull List<Integer> images, Scale scale, @NonNull TypedArray theme) {
+    ImageSelectAdapter(Context context, @NonNull List<String> items, @NonNull List<?> images, Scale scale, @NonNull TypedArray theme) {
         this.context = context;
         this.items = items;
         this.images = images;
@@ -96,7 +96,14 @@ class ImageSelectAdapter extends BaseAdapter {
             Bitmap bmp;
             int targetBitmapSize = 130;
             if (position < images.size() && images.get(position) != null) {
-                bmp = ImageUtils.getBitmap(this.context, images.get(position));
+                Object imageObj = images.get(position);
+                if (imageObj instanceof Bitmap) {
+                    bmp = (Bitmap) imageObj;
+                } else if (imageObj instanceof Integer) {
+                    bmp = ImageUtils.getBitmap(this.context, (Integer) imageObj);
+                } else {
+                    bmp = null;
+                }
             } else {
                 Bitmap.Config conf = Bitmap.Config.ARGB_8888;
                 bmp = Bitmap.createBitmap(targetBitmapSize, targetBitmapSize, conf);

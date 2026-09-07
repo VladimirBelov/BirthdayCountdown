@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.09.2026, 01:33
+ *  * Created by Vladimir Belov on 07.09.2026, 23:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.09.2026, 00:32
+ *  * Last modified 06.09.2026, 21:53
  *
  */
 
@@ -447,7 +447,7 @@ public class EventImporterActivity extends AppCompatActivity {
                     eventData.put(ContactsEvents.Position_eventURL, eventURL);
                     eventData.put(ContactsEvents.Position_eventType, event.type);
                     eventData.put(ContactsEvents.Position_eventSubType, event.subType);
-                    eventData.put(ContactsEvents.Position_eventIcon, Integer.toString(event.icon));
+                    eventData.put(ContactsEvents.Position_eventIcon, event.icon);
                     eventData.put(ContactsEvents.Position_eventEmoji, event.emoji);
 
                     String eventDateString = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(eventDateFirstTime);
@@ -732,7 +732,7 @@ public class EventImporterActivity extends AppCompatActivity {
             eventData.put(ContactsEvents.Position_eventCaption, event.caption);
             eventData.put(ContactsEvents.Position_eventType, event.type);
             eventData.put(ContactsEvents.Position_eventSubType, event.subType);
-            eventData.put(ContactsEvents.Position_eventIcon, Integer.toString(event.icon));
+            eventData.put(ContactsEvents.Position_eventIcon, event.icon);
             eventData.put(ContactsEvents.Position_eventEmoji, event.emoji);
             if (useEventYear) {
                 eventData.put(ContactsEvents.Position_eventDateFirstTime, eventDateString);
@@ -935,7 +935,7 @@ public class EventImporterActivity extends AppCompatActivity {
                     eventData.put(ContactsEvents.Position_eventCaption, event.caption);
                     eventData.put(ContactsEvents.Position_eventType, event.type);
                     eventData.put(ContactsEvents.Position_eventSubType, event.subType);
-                    eventData.put(ContactsEvents.Position_eventIcon, Integer.toString(event.icon));
+                    eventData.put(ContactsEvents.Position_eventIcon, event.icon);
                     eventData.put(ContactsEvents.Position_eventEmoji, event.emoji);
                     eventData.put(ContactsEvents.Position_eventURL, url);
 

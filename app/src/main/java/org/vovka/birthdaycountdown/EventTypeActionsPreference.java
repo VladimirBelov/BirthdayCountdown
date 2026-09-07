@@ -1,19 +1,22 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 02:02
+ *  * Created by Vladimir Belov on 07.09.2026, 23:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 01:57
+ *  * Last modified 06.09.2026, 20:36
  *
  */
 package org.vovka.birthdaycountdown;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 /**
  * Preference с тремя кнопками действий для типа события:
@@ -22,7 +25,7 @@ import android.widget.TextView;
 public class EventTypeActionsPreference extends Preference {
     private String eventType;
     private String currentEmoji;
-    private int currentIconResId;
+    private Drawable currentIconDrawable;
     private boolean iconButtonVisible = true;
     private boolean emojiButtonVisible = true;
     private boolean titleButtonVisible = true;
@@ -41,8 +44,9 @@ public class EventTypeActionsPreference extends Preference {
         this.currentEmoji = emoji;
     }
 
-    public void setCurrentIconResId(int iconResId) {
-        this.currentIconResId = iconResId;
+    void setCurrentIconDrawable(@Nullable Drawable drawable) {
+        this.currentIconDrawable = drawable;
+        refresh();
     }
 
     public void setOnActionClickListener(OnActionClickListener listener) {
@@ -100,8 +104,8 @@ public class EventTypeActionsPreference extends Preference {
             emojiPreview.setText(currentEmoji);
         }
 
-        if (iconPreview != null && currentIconResId > 0) {
-            iconPreview.setImageResource(currentIconResId);
+        if (iconPreview != null && currentIconDrawable != null) {
+            iconPreview.setImageDrawable(currentIconDrawable);
         }
 
         // Управление видимостью кнопок

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2026, 00:47
+ *  * Created by Vladimir Belov on 07.09.2026, 23:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.09.2026, 00:10
+ *  * Last modified 06.09.2026, 22:39
  *
  */
 
@@ -96,6 +96,7 @@ import org.vovka.birthdaycountdown.utils.StringUtils;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -716,7 +717,7 @@ public class ContactsEvents {
     /** Список недавно использовавшихся цветов */
     final List<Integer> preferences_RecentColors = new ArrayList<>();
     /** Хранилище иконок для типов событий */
-    final HashMap<String, Integer> preferences_event_icons = new HashMap<>();
+    final HashMap<String, String> preferences_event_icons = new HashMap<>();
     /** Хранилище эмодзи для типов событий */
     final HashMap<String, String> preferences_event_emojis = new HashMap<>();
 
@@ -948,8 +949,7 @@ public class ContactsEvents {
         String label = Constants.STRING_EMPTY;
         String type = Constants.STRING_EMPTY;
         String subType = Constants.STRING_EMPTY;
-        @DrawableRes
-        int icon = 0;
+        String icon = Constants.STRING_EMPTY; // "res:..." или "file:..."
         String emoji = Constants.STRING_EMPTY;
         Date date;
         String distance;
@@ -1687,6 +1687,7 @@ public class ContactsEvents {
 
         try {
 
+            boolean needResaveIcons = false;
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             //https://medium.com/@anupamchugh/a-nightmare-with-shared-preferences-and-stringset-c53f39f1ef52
             //https://stackoverflow.com/questions/19949182/android-sharedpreferences-string-set-some-items-are-removed-after-app-restart
@@ -2003,17 +2004,33 @@ public class ContactsEvents {
             // Иконки и символы событий
             preferences_event_icons.clear();
             preferences_event_emojis.clear();
-            // формат: "eventType:drawableResId" и "eventType:emoji"
+            // формат: "eventType: res:drawableResName" или "eventType: file:drawableFilePath"
             Set<String> iconsSet = getPreferenceStringSet(preferences, context.getString(R.string.pref_EventType_Icons_key), new HashSet<>());
             for (String item : iconsSet) {
                 int idx = item.indexOf(Constants.STRING_COLON_SPACE);
                 if (idx > -1) {
-                    try {
-                        preferences_event_icons.put(item.substring(0, idx),
-                                Integer.parseInt(item.substring(idx + Constants.STRING_COLON_SPACE.length())));
-                    } catch (NumberFormatException ignored) {}
+                    String eventType = item.substring(0, idx);
+                    String iconValue = item.substring(idx + Constants.STRING_COLON_SPACE.length());
+
+                    // === МИГРАЦИЯ: если сохранился старый Integer (resource ID) — конвертируем в "res:имя" ===
+                    if (iconValue.matches("\\d+")) {
+                        try {
+                            int resId = Integer.parseInt(iconValue);
+                            String resName = context.getResources().getResourceEntryName(resId);
+                            preferences_event_icons.put(eventType, Constants.ICON_PREFIX_RES + resName);
+                            // Флаг, что нужно пересохранить в новом формате
+                            needResaveIcons = true;
+                        } catch (Resources.NotFoundException e) {
+                            // Старый ID больше не существует — пропускаем, будет дефолт
+                            Log.w(TAG, "Migrate icon: resource " + iconValue + " not found for " + eventType);
+                        }
+                    } else {
+                        // Новый формат — сохраняем как есть
+                        preferences_event_icons.put(eventType, iconValue);
+                    }
                 }
             }
+            // формат: "eventType:emoji"
             Set<String> emojisSet = getPreferenceStringSet(preferences, context.getString(R.string.pref_EventType_Emojis_key), new HashSet<>());
             for (String item : emojisSet) {
                 int idx = item.indexOf(Constants.STRING_COLON_SPACE);
@@ -2165,6 +2182,11 @@ public class ContactsEvents {
             dimen_List_details = resources.getDimension(R.dimen.event_details);
             dimen_List_name = resources.getDimension(R.dimen.event_name);
             dimen_list_date = resources.getDimension(R.dimen.event_date);
+
+            if (needResaveIcons) {
+                // Пересохраняем в новом формате, чтобы миграция сработала один раз
+                savePreferences();
+            }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -2409,7 +2431,7 @@ public class ContactsEvents {
             editor.putStringSet(context.getString(R.string.pref_EnabledFeatures_key), preferences_enabled_features);
 
             Set<String> iconsToSave = new HashSet<>();
-            for (Map.Entry<String, Integer> entry : preferences_event_icons.entrySet()) {
+            for (Map.Entry<String, String> entry : preferences_event_icons.entrySet()) {
                 iconsToSave.add(entry.getKey() + Constants.STRING_COLON_SPACE + entry.getValue());
             }
             editor.putStringSet(context.getString(R.string.pref_EventType_Icons_key), iconsToSave);
@@ -3101,7 +3123,7 @@ public class ContactsEvents {
 
                 }
 
-                if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && (event == null || event.icon == R.drawable.ic_event_unknown)) {
+                if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && (event == null || event.type.equals(Constants.EventType_Unrecognized))) {
                     continue;
                 }
 
@@ -3408,7 +3430,7 @@ public class ContactsEvents {
                     eventData.put(Position_organization, StringUtils.getNotNullString(map_organizations.get(contactID)));
                     eventData.put(Position_title, contactTitle);
                     eventData.put(Position_dates, newEventDate);
-                    eventData.put(Position_eventIcon, Integer.toString(event.icon));
+                    eventData.put(Position_eventIcon, event.icon);
                     eventData.put(Position_eventEmoji, event.emoji);
                     if (Constants.STRING_1.equals(cursor.getString(cache.getColumnIndex(cursor, ContactsContract.Contacts.STARRED)))) {
                         eventData.put(Position_starred, Constants.STRING_1);
@@ -3685,11 +3707,11 @@ public class ContactsEvents {
                 }
 
             } else if (isMultiTypeSource) {
-                event.icon = R.drawable.ic_event_unknown;
+                event.type = Constants.EventType_Unrecognized;
             }
 
             String foundName = null;
-            if (isMultiTypeSource && event.icon == R.drawable.ic_event_unknown) {
+            if (isMultiTypeSource && event.type.equals(Constants.EventType_Unrecognized)) {
                 String foundLabel = null;
                 if (matcherNameAndTypes != null && !matcherNameAndTypes.isEmpty()) { // ..[name]..[type]..
                     for (Matcher matcher : matcherNameAndTypes) {
@@ -3733,7 +3755,7 @@ public class ContactsEvents {
                 }
             }
 
-            if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && event.icon == R.drawable.ic_event_unknown)
+            if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && event.type.equals(Constants.EventType_Unrecognized))
                 return 0;
 
             //Если:
@@ -3888,7 +3910,7 @@ public class ContactsEvents {
                     eventData.put(Position_eventType, event.type); //Тип события
                     eventData.put(Position_eventSubType, event.subType); //Подтип события
                     eventData.put(Position_dates, eventNewDate);
-                    eventData.put(Position_eventIcon, Integer.toString(event.icon));
+                    eventData.put(Position_eventIcon, event.icon);
                     eventData.put(Position_eventEmoji, event.emoji);
                     eventData.put(Position_eventDateNextTime, Objects.requireNonNull(sdf_DDMMYYYY.get()).format(dateStartNextTime.getTime()));
                     eventData.put(Position_eventDateFirstTime, Objects.requireNonNull(sdf_DDMMYYYY.get()).format(dateFirstTime.getTime()));
@@ -4108,7 +4130,7 @@ public class ContactsEvents {
                             eventData.put(Position_dates, eventDates);
                             eventData.put(Position_eventCaption, event.caption);
                             eventData.put(Position_eventLabel, event.label);
-                            eventData.put(Position_eventIcon, Integer.toString(event.icon));
+                            eventData.put(Position_eventIcon, event.icon);
                             eventData.put(Position_eventEmoji, event.emoji);
                             eventData.put(Position_eventType, event.type);
                             eventData.put(Position_eventSubType, event.subType);
@@ -4736,7 +4758,7 @@ public class ContactsEvents {
                         eventData.put(Position_eventType, event.type);
                         eventData.put(Position_eventSubType, event.subType);
                         eventData.put(Position_dates, eventNewDate);
-                        eventData.put(Position_eventIcon, Integer.toString(event.icon));
+                        eventData.put(Position_eventIcon, event.icon);
                         eventData.put(Position_eventEmoji, event.emoji);
                         eventData.put(Position_eventURL, eventURL);
                         eventData.put(Position_eventID, eventID);
@@ -4988,7 +5010,7 @@ public class ContactsEvents {
                         eventData.put(Position_eventType, event.type);
                         eventData.put(Position_eventSubType, event.subType);
                         eventData.put(Position_dates, eventNewDate);
-                        eventData.put(Position_eventIcon, Integer.toString(event.icon));
+                        eventData.put(Position_eventIcon, event.icon);
                         eventData.put(Position_eventEmoji, event.emoji);
                         eventData.put(Position_eventURL, url);
                         eventData.put(Position_eventID, eventID);
@@ -5387,7 +5409,7 @@ public class ContactsEvents {
                 event = createTypedEvent(Constants.Type_HolidayEvent, Constants.STRING_EMPTY);
             }
 
-            if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && (event == null || event.icon == R.drawable.ic_event_unknown)) {
+            if (preferences_rules_unrecognized == Rules_Unrecognized_Skip && (event == null || event.type.equals(Constants.EventType_Unrecognized))) {
                 return;
             }
             if (event != null && eventEmoji != null) {
@@ -5420,7 +5442,7 @@ public class ContactsEvents {
             eventData.put(Position_eventType, event.type);
             eventData.put(Position_eventSubType, event.subType);
             eventData.put(Position_dates, eventNewDate);
-            eventData.put(Position_eventIcon, Integer.toString(event.icon));
+            eventData.put(Position_eventIcon, event.icon);
             eventData.put(Position_eventEmoji, event.emoji);
 
             int urlOffset = StringUtils.indexOfIgnoreCase(eventTitle, Constants.STRING_HTTP);
@@ -5983,7 +6005,7 @@ public class ContactsEvents {
                     event.caption = getResources().getString(R.string.event_type_unrecognized);
                     event.type = Constants.EventType_Unrecognized;
                     event.subType = Constants.EventType_Unrecognized;
-                    event.icon = R.drawable.ic_event_unknown;
+                    event.icon = Constants.ICON_PREFIX_RES + context.getResources().getResourceEntryName(R.drawable.ic_event_unknown);
                     event.emoji = getResources().getString(R.string.event_type_unknown_emoji);
                     event.needScanContacts = false;
                     break;
@@ -6253,8 +6275,11 @@ public class ContactsEvents {
         } catch (NumberFormatException ignored) { /**/ }
 
         if (preferences_IconPackNumber == resIconPack_event) {
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), ImageUtils.getEventIcon(eventType, eventSubType));
-            if (bm != null) return new BitmapLoadResult(bm, PhotoType.ICON, addMourningTape);
+            // 5. Пытаемся получить иконку типа события (включая file-based)
+            Bitmap iconBm = getEventIconBitmap(eventType, 256);
+            if (iconBm != null) {
+                return new BitmapLoadResult(iconBm, PhotoType.ICON, addMourningTape);
+            }
         }
 
         // 6. Получаем силуэт по возрасту и полу
@@ -6740,7 +6765,7 @@ public class ContactsEvents {
                         singleEventArray5K[Position_age_caption] = StringUtils.getAgeFormated(StringUtils.getAgeString(5 * k * 1000, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20, currentLocale, resources), preferences_list_age_format, resources);
                         singleEventArray5K[Position_eventDistance] = Integer.toString(magicDayDistance);
                         singleEventArray5K[Position_eventDistanceText] = getEventDistanceText(magicDayDistance, cal5K.getTime());
-                        singleEventArray5K[Position_eventIcon] = Integer.toString(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
+                        singleEventArray5K[Position_eventIcon] = Constants.ICON_PREFIX_RES + getResources().getResourceEntryName(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
                         singleEventArray5K[Position_eventEmoji] = resources.getString(R.string.event_type_5k_emoji);
                         singleEventArray5K[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType, AppDateUtils.countDaysDiffText(eventDateFirstTime, currentDay, 3, resources, currentLocale), currentDay); //Возраст текущий
                         singleEventArray5K[Position_eventDate_sorted] = getSortKey(singleEventArray5K);
@@ -6786,7 +6811,7 @@ public class ContactsEvents {
                             singleEventArrayXdays[Position_eventDistance] = Long.toString(xDaysDistance);
                             singleEventArrayXdays[Position_eventDistanceText] = getEventDistanceText(xDaysDistance, event.date);
                             singleEventArrayXdays[Position_eventEmoji] = resources.getString(R.string.event_type_xdays_emoji);
-                            singleEventArrayXdays[Position_eventIcon] = Integer.toString(R.drawable.ic_event_xdays);
+                            singleEventArrayXdays[Position_eventIcon] = Constants.ICON_PREFIX_RES + getResources().getResourceEntryName(R.drawable.ic_event_xdays);
                             singleEventArrayXdays[Position_eventDescription] = Constants.STRING_EMPTY;
                             singleEventArrayXdays[Position_eventDate_sorted] = getSortKey(singleEventArrayXdays);
                             if (Constants.STRING_1.equals(singleEventArrayXdays[Position_starred])) {
@@ -7901,26 +7926,26 @@ public class ContactsEvents {
                             .setWhen(0) //https://stackoverflow.com/questions/18249871/android-notification-buttons-not-showing-up/18603076#18603076
                             .setAutoCancel(true);
 
-                    @ColorInt int eventIcon = R.drawable.ic_icon_notify;
+                    int eventIcon = R.drawable.ic_icon_notify;
                     if (prefSmallIconStyle == 1) {
                         builder.setColor(this.getResources().getColor(R.color.dark_green));
                     } else if (prefSmallIconStyle == 2) {
                         builder.setColor(getThemeBackColor());
                     } else {
                         builder.setColor(getThemeBackColor());
-                        try {
-                            String mostIcon = null;
-                            int mostIconCount = 0;
-                            for (Map.Entry<String, Integer> entry : mostEventIcons.entrySet()) {
-                                if (entry.getValue() > mostIconCount) {
-                                    mostIconCount = entry.getValue();
-                                    mostIcon = entry.getKey();
-                                }
+                        // Определяем самую частую иконку среди событий
+                        String mostIconType = null;
+                        int mostIconCount = 0;
+                        for (Map.Entry<String, Integer> entry : mostEventIcons.entrySet()) {
+                            // entry.getKey() — это строка "res:..." или "file:..."
+                            if (entry.getValue() > mostIconCount) {
+                                mostIconCount = entry.getValue();
+                                mostIconType = entry.getKey();
                             }
-                            if (mostIcon != null) {
-                                eventIcon = Integer.parseInt(mostIcon);
-                            }
-                        } catch (NumberFormatException ignored) { /**/ }
+                        }
+                        if (mostIconType != null) {
+                            eventIcon = getEventIconResId(mostIconType);
+                        }
                         mostEventIcons.clear();
                     }
                     builder.setSmallIcon(eventIcon);
@@ -7999,16 +8024,14 @@ public class ContactsEvents {
                                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                                 .setAutoCancel(true);
 
-                        @ColorInt int eventIcon = R.drawable.ic_icon_notify;
+                        int eventIcon = R.drawable.ic_icon_notify;
                         if (prefSmallIconStyle == 1) {
                             builder.setColor(this.getResources().getColor(R.color.dark_green));
                         } else if (prefSmallIconStyle == 2) {
                             builder.setColor(getThemeBackColor());
                         } else {
                             builder.setColor(getThemeBackColor());
-                            try {
-                                eventIcon = Integer.parseInt(event.singleEventArray[Position_eventIcon]);
-                            } catch (NumberFormatException ignored) { /**/ }
+                            eventIcon = getEventIconResId(event.singleEventArray[Position_eventIcon]);
                         }
                         builder.setSmallIcon(eventIcon);
 
@@ -8467,16 +8490,14 @@ public class ContactsEvents {
                     .setAutoCancel(true);
 
             int prefSmallIconStyle = preferences_notifications_smallicons_style;
-            @ColorInt int eventIcon = R.drawable.ic_icon_notify;
+            int eventIcon = R.drawable.ic_icon_notify;
             if (prefSmallIconStyle == 1) {
                 builder.setColor(this.getResources().getColor(R.color.dark_green));
             } else if (prefSmallIconStyle == 2) {
                 builder.setColor(getThemeBackColor());
             } else {
                 builder.setColor(getThemeBackColor());
-                try {
-                    eventIcon = Integer.parseInt(singleEventArray[Position_eventIcon]);
-                } catch (NumberFormatException ignored) { /**/ }
+                eventIcon = getEventIconResId(singleEventArray[Position_eventIcon]);
             }
             builder.setSmallIcon(eventIcon);
 
@@ -11839,12 +11860,139 @@ public class ContactsEvents {
     }
 
     // Методы для получения иконки и эмодзи по типу события
+    @NonNull
+    String getEventIconForType(@NonNull String eventType) {
+        String icon = preferences_event_icons.get(eventType);
+        if (icon != null && !icon.isEmpty()) return icon;
+        return Constants.ICON_PREFIX_RES + context.getResources().getResourceEntryName(getDefaultIconForType(eventType));
+    }
+
+    void setEventIcon(@NonNull String eventType, String iconValue) {
+        // iconValue — уже с префиксом "res:..." или "file:..."
+        if (iconValue == null || iconValue.isEmpty()) {
+            preferences_event_icons.remove(eventType);
+        } else {
+            preferences_event_icons.put(eventType, iconValue);
+        }
+    }
+
+    /**
+     * Возвращает Drawable иконки для типа события (для ImageView.setImageDrawable).
+     * Учитывает кастомные настройки пользователя.
+     */
+    @Nullable
+    public Drawable getEventIconDrawable(@NonNull String eventType) {
+        String value = preferences_event_icons.get(eventType);
+        if (value == null || value.isEmpty()) {
+            return ContextCompat.getDrawable(context, getDefaultIconForType(eventType));
+        }
+        return resolveIconString(context, value, getDefaultIconForType(eventType));
+    }
+
+    /**
+     * Возвращает resource ID иконки (для Notification.setSmallIcon, который принимает только int).
+     * Для file-иконок возвращает дефолтный ресурс.
+     */
     @DrawableRes
-    int getEventIconForType(@NonNull String eventType) {
-        Integer icon = preferences_event_icons.get(eventType);
-        if (icon != null && icon > 0) return icon;
-        // Возвращаем иконку по умолчанию
+    public int getEventIconResId(@NonNull String eventType) {
+        String value = preferences_event_icons.get(eventType);
+        if (value == null || value.isEmpty()) return getDefaultIconForType(eventType);
+        if (value.startsWith(Constants.ICON_PREFIX_RES)) {
+            String resName = value.substring(Constants.ICON_PREFIX_RES.length());
+            @SuppressLint("DiscouragedApi") int resId = context.getResources().getIdentifier(resName, "drawable", context.getPackageName());
+            return resId != 0 ? resId : getDefaultIconForType(eventType);
+        }
+        // file-иконку нельзя использовать как small icon — возвращаем дефолт
         return getDefaultIconForType(eventType);
+    }
+
+    /**
+     * Возвращает Bitmap иконки (для large icon, виджетов, share).
+     * @param targetSizePx целевой размер в пикселях (для экономии памяти)
+     */
+    @Nullable
+    public Bitmap getEventIconBitmap(@NonNull String eventType, int targetSizePx) {
+        String value = preferences_event_icons.get(eventType);
+
+        // 1. Если настройки нет или она пустая — сразу берем дефолт
+        if (value == null || value.isEmpty()) {
+            return ImageUtils.getBitmap(context, getDefaultIconForType(eventType));
+        }
+
+        // 2. Самый частый случай: иконка из ресурсов приложения
+        if (value.startsWith(Constants.ICON_PREFIX_RES)) {
+            String resName = value.substring(Constants.ICON_PREFIX_RES.length());
+
+            @SuppressLint("DiscouragedApi")
+            int resId = context.getResources().getIdentifier(resName, "drawable", context.getPackageName());
+
+            if (resId != 0) {
+                return ImageUtils.getBitmap(context, resId);
+            } else {
+                // Защита: если ресурс вдруг был удален из проекта, не возвращаем null, а берем дефолт
+                Log.w(TAG, "Icon resource not found: " + resName + ". Fallback to default.");
+                return ImageUtils.getBitmap(context, getDefaultIconForType(eventType));
+            }
+        }
+        // 3. Редкий случай: пользователь выбрал свой файл
+        else if (value.startsWith(Constants.ICON_PREFIX_FILE)) {
+            String path = value.substring(Constants.ICON_PREFIX_FILE.length());
+            Bitmap bm = decodeSampledIconFile(path, targetSizePx);
+
+            if (bm != null) {
+                return bm;
+            } else {
+                // Защита: если файл был удален или поврежден, берем дефолт
+                Log.w(TAG, "Failed to decode icon file: " + path + ". Fallback to default.");
+                return ImageUtils.getBitmap(context, getDefaultIconForType(eventType));
+            }
+        }
+
+        // 4. Защита от "мусорных" данных в SharedPreferences (на всякий пожарный)
+        Log.w(TAG, "Unknown icon format in preferences: " + value + ". Fallback to default.");
+        return ImageUtils.getBitmap(context, getDefaultIconForType(eventType));
+    }
+
+    /**
+     * Универсальный резолвер строки иконки в Drawable.
+     * Статический — можно вызывать из любого места.
+     */
+    @Nullable
+    public static Drawable resolveIconString(@NonNull Context context, @NonNull String value, @DrawableRes int fallbackResId) {
+        if (value.startsWith(Constants.ICON_PREFIX_RES)) {
+            String resName = value.substring(Constants.ICON_PREFIX_RES.length());
+            @SuppressLint("DiscouragedApi") int resId = context.getResources().getIdentifier(resName, "drawable", context.getPackageName());
+            if (resId != 0) return ContextCompat.getDrawable(context, resId);
+        } else if (value.startsWith(Constants.ICON_PREFIX_FILE)) {
+            String path = value.substring(Constants.ICON_PREFIX_FILE.length());
+            File f = new File(path);
+            if (f.exists()) {
+                Bitmap bm = BitmapFactory.decodeFile(path);
+                if (bm != null) return new BitmapDrawable(context.getResources(), bm);
+            }
+        }
+        return fallbackResId != 0 ? ContextCompat.getDrawable(context, fallbackResId) : null;
+    }
+
+    /**
+     * Декодирование файла-иконки с уменьшением (чтобы не грузить 4K-картинку в иконку 48dp)
+     */
+    @Nullable
+    private Bitmap decodeSampledIconFile(@NonNull String path, int targetSizePx) {
+        try {
+            // 1. Читаем только размеры
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, opts);
+            if (opts.outWidth <= 0 || opts.outHeight <= 0) return null;
+            // 2. Вычисляем inSampleSize
+            opts.inSampleSize = ImageUtils.calculateInSampleSize(opts.outWidth, opts.outHeight, targetSizePx, targetSizePx);
+            opts.inJustDecodeBounds = false;
+            return BitmapFactory.decodeFile(path, opts);
+        } catch (Exception e) {
+            Log.e(TAG, "decodeSampledIconFile: " + path, e);
+            return null;
+        }
     }
 
     @NonNull
@@ -11853,10 +12001,6 @@ public class ContactsEvents {
         if (emoji != null && !emoji.isEmpty()) return emoji;
         // Возвращаем эмодзи по умолчанию
         return getDefaultEmojiForType(eventType);
-    }
-
-    void setEventIcon(@NonNull String eventType, @DrawableRes int iconResId) {
-        preferences_event_icons.put(eventType, iconResId);
     }
 
     void setEventEmoji(@NonNull String eventType, @NonNull String emoji) {
@@ -11878,7 +12022,12 @@ public class ContactsEvents {
             case Constants.EventType_Custom3: return R.drawable.ic_event_custom3;
             case Constants.EventType_Custom4: return R.drawable.ic_event_custom4;
             case Constants.EventType_Custom5: return R.drawable.ic_event_custom5;
-            default: return R.drawable.ic_event_other;
+            case Constants.EventType_5K: return R.drawable.ic_event_medal;
+            case Constants.EventType_XDays: return R.drawable.ic_event_xdays;
+            case Constants.EventType_Another:
+            case Constants.EventType_Other:
+                return R.drawable.ic_event_other;
+            default: return R.drawable.ic_event_unknown;
         }
     }
 

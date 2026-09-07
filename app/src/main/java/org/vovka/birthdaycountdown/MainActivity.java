@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2026, 13:26
+ *  * Created by Vladimir Belov on 07.09.2026, 23:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.09.2026, 13:06
+ *  * Last modified 06.09.2026, 20:10
  *
  */
 
@@ -3155,14 +3155,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 holder.CounterTextView.setText(singleEventArray[ContactsEvents.Position_age_caption]);
 
                 //Определяем иконку события
-                int eventIcon;
-                try {
-                    eventIcon = Integer.parseInt(singleEventArray[ContactsEvents.Position_eventIcon]);
-                } catch (NumberFormatException e) {
-                    eventIcon = 0;
-                }
-                if (eventIcon != 0 && eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventIcon))) {
-                    holder.EventIconImageView.setImageResource(eventIcon);
+                final String eventIconStr = singleEventArray[ContactsEvents.Position_eventIcon];
+                if (!eventIconStr.isEmpty() && eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventIcon))) {
+                    Drawable iconDrawable = ContactsEvents.resolveIconString(MainActivity.this, eventIconStr, 0);
+                    holder.EventIconImageView.setImageDrawable(iconDrawable);
                 } else {
                     holder.EventIconImageView.setImageDrawable(null);
                 }

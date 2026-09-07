@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.09.2026, 01:33
+ *  * Created by Vladimir Belov on 07.09.2026, 23:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 20:55
+ *  * Last modified 06.09.2026, 22:45
  *
  */
 
@@ -368,50 +368,6 @@ public class ImageUtils {
         bm.recycle();
         bm = bmOverlay;
         return bm;
-    }
-
-    /**
-     * Возвращает иконку события по типу и подтипу
-     *
-     * @param eventType    Тип события
-     * @param eventSubType Подтип события
-     * @return Ссылка на ресурс иконки события
-     */
-    public static int getEventIcon(@NonNull String eventType, @NonNull String eventSubType) {
-        switch (eventSubType) {
-            case Constants.EventType_BirthDay:
-                return R.drawable.ic_event_birthday;
-            case Constants.EventType_Anniversary:
-                return R.drawable.ic_event_wedding;
-            case Constants.EventType_NameDay:
-                return R.drawable.ic_event_nameday;
-            case Constants.EventType_Crowning:
-                return R.drawable.ic_event_crowning;
-            case Constants.EventType_Death:
-                return R.drawable.ic_event_death;
-            case Constants.EventType_Holiday:
-                return R.drawable.ic_event_holiday;
-            case Constants.EventType_Custom1:
-                return R.drawable.ic_event_custom1;
-            case Constants.EventType_Custom2:
-                return R.drawable.ic_event_custom2;
-            case Constants.EventType_Custom3:
-                return R.drawable.ic_event_custom3;
-            case Constants.EventType_Custom4:
-                return R.drawable.ic_event_custom4;
-            case Constants.EventType_Custom5:
-                return R.drawable.ic_event_custom5;
-            case Constants.EventType_5K:
-                return R.drawable.ic_event_medal;
-            case Constants.EventType_XDays:
-                return R.drawable.ic_event_xdays;
-            case Constants.EventType_Another:
-                return R.drawable.ic_event_other;
-        }
-        if (eventType.equals(Constants.EventType_Other)) {
-            return R.drawable.ic_event_other;
-        }
-        return R.drawable.ic_event_unknown;
     }
 
     public synchronized static void initIconPack(int packNumber, Map<Integer, Integer> packMales, Map<Integer, Integer> packFemales) {

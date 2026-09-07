@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.09.2026, 00:47
+  ~  * Created by Vladimir Belov on 07.09.2026, 23:14
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.09.2026, 01:15
+  ~  * Last modified 07.09.2026, 23:12
   ~  */
   -->
 
@@ -485,6 +485,8 @@
     <string name="pref_EventType_Emoji_title">Symbole</string>
     <string name="pref_EventType_Caption_title">Titre</string>
     <string name="dialog_title_select_event_icon">Sélectionner une icône d\'événement</string>
+    <string name="dialog_select_event_icon_from_file">Sélectionnez un fichier…</string>
+    <string name="msg_icon_copy_error">"Erreur de copie de l'icône"</string>
     <string name="msg_event_icon_changed">Icône de l\'événement modifiée</string>
     <string name="msg_event_emoji_changed">Symbole de l\'événement modifié : %1$s</string>
     <string name="dialog_title_select_event_emoji">Sélectionner un symbole d\'événement</string>
