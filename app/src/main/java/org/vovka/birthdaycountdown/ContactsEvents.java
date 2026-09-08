@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.09.2026, 11:18
+ *  * Created by Vladimir Belov on 08.09.2026, 14:28
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 08.09.2026, 10:42
+ *  * Last modified 08.09.2026, 14:19
  *
  */
 
@@ -7942,7 +7942,7 @@ public class ContactsEvents {
                             }
                         }
                         if (mostIconType != null) {
-                            eventIcon = getEventIconResId(mostIconType);
+                            eventIcon = getEventIconResIdByValue(mostIconType, R.drawable.ic_icon_notify);
                         }
                         mostEventIcons.clear();
                     }
@@ -8029,7 +8029,7 @@ public class ContactsEvents {
                             builder.setColor(getThemeBackColor());
                         } else {
                             builder.setColor(getThemeBackColor());
-                            eventIcon = getEventIconResId(event.singleEventArray[Position_eventIcon]);
+                            eventIcon = getEventIconResIdByValue(event.singleEventArray[Position_eventIcon], R.drawable.ic_icon_notify);
                         }
                         builder.setSmallIcon(eventIcon);
 
@@ -8495,7 +8495,7 @@ public class ContactsEvents {
                 builder.setColor(getThemeBackColor());
             } else {
                 builder.setColor(getThemeBackColor());
-                eventIcon = getEventIconResId(singleEventArray[Position_eventIcon]);
+                eventIcon = getEventIconResIdByValue(singleEventArray[Position_eventIcon], R.drawable.ic_icon_notify);
             }
             builder.setSmallIcon(eventIcon);
 
@@ -11888,20 +11888,22 @@ public class ContactsEvents {
     }
 
     /**
-     * Возвращает resource ID иконки (для Notification.setSmallIcon, который принимает только int).
-     * Для file-иконок возвращает дефолтный ресурс.
+     * Возвращает resource ID иконки по её строковому значению.
+     * Для file-иконок возвращает fallbackResId (так как file нельзя использовать как small icon).
+     * @param iconValue    Строка иконки (например, "res:ic_event_birthday" или "file:/path/to/icon.png")
+     * @param fallbackResId Resource ID для возврата, если иконку нельзя использовать
+     * @return Resource ID или fallbackResId
      */
     @DrawableRes
-    public int getEventIconResId(@NonNull String eventType) {
-        String value = preferences_event_icons.get(eventType);
-        if (value == null || value.isEmpty()) return getDefaultIconForType(eventType);
-        if (value.startsWith(Constants.ICON_PREFIX_RES)) {
-            String resName = value.substring(Constants.ICON_PREFIX_RES.length());
+    public int getEventIconResIdByValue(@Nullable String iconValue, @DrawableRes int fallbackResId) {
+        if (iconValue == null || iconValue.isEmpty()) return fallbackResId;
+        if (iconValue.startsWith(Constants.ICON_PREFIX_RES)) {
+            String resName = iconValue.substring(Constants.ICON_PREFIX_RES.length());
             @SuppressLint("DiscouragedApi") int resId = context.getResources().getIdentifier(resName, "drawable", context.getPackageName());
-            return resId != 0 ? resId : getDefaultIconForType(eventType);
+            return resId != 0 ? resId : fallbackResId;
         }
-        // file-иконку нельзя использовать как small icon — возвращаем дефолт
-        return getDefaultIconForType(eventType);
+        // file-иконку нельзя использовать как small icon — возвращаем fallback
+        return fallbackResId;
     }
 
     /**
