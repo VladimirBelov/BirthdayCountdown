@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.09.2026, 23:14
+ *  * Created by Vladimir Belov on 08.09.2026, 11:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.09.2026, 22:39
+ *  * Last modified 08.09.2026, 10:42
  *
  */
 
@@ -6193,21 +6193,19 @@ public class ContactsEvents {
 
         // 2. Пытаемся получить из других источников
         if (eventType.equals(Constants.EventType_Unrecognized)) {
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_unknown);
-            return new BitmapLoadResult(bm, PhotoType.ICON, false);
+            Bitmap bm = getEventIconBitmap(Constants.EventType_Unrecognized, 256);
+            if (bm != null) return new BitmapLoadResult(bm, PhotoType.ICON, false);
         }
-
         if ((eventSubType.equals(Constants.EventType_Calendar)
                 || eventSubType.equals(Constants.EventType_File)
                 || eventSubType.equals(Constants.EventType_Other))
                 && TextUtils.isEmpty(singleEventArray[Position_photo_uri])) {
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_other);
-            return new BitmapLoadResult(bm, PhotoType.ICON, false);
+            Bitmap bm = getEventIconBitmap(eventType, 256);
+            if (bm != null) return new BitmapLoadResult(bm, PhotoType.ICON, false);
         }
-
         if (eventSubType.equals(Constants.EventType_Holiday)) {
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_event_holiday);
-            return new BitmapLoadResult(bm, PhotoType.ICON, false);
+            Bitmap bm = getEventIconBitmap(eventType, 256);
+            if (bm != null) return new BitmapLoadResult(bm, PhotoType.ICON, false);
         }
 
         // 3. Пытаемся получить фото контакта
@@ -11948,14 +11946,13 @@ public class ContactsEvents {
             }
         }
 
-        // 4. Защита от "мусорных" данных в SharedPreferences (на всякий пожарный)
+        // 4. Защита от "мусорных" данных в SharedPreferences
         Log.w(TAG, "Unknown icon format in preferences: " + value + ". Fallback to default.");
         return ImageUtils.getBitmap(context, getDefaultIconForType(eventType));
     }
 
     /**
-     * Универсальный резолвер строки иконки в Drawable.
-     * Статический — можно вызывать из любого места.
+     * Универсальный резолвер строки иконки в Drawable
      */
     @Nullable
     public static Drawable resolveIconString(@NonNull Context context, @NonNull String value, @DrawableRes int fallbackResId) {
@@ -11978,7 +11975,7 @@ public class ContactsEvents {
      * Декодирование файла-иконки с уменьшением (чтобы не грузить 4K-картинку в иконку 48dp)
      */
     @Nullable
-    private Bitmap decodeSampledIconFile(@NonNull String path, int targetSizePx) {
+    Bitmap decodeSampledIconFile(@NonNull String path, int targetSizePx) {
         try {
             // 1. Читаем только размеры
             BitmapFactory.Options opts = new BitmapFactory.Options();

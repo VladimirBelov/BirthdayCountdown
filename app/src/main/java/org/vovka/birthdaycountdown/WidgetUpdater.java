@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.07.2026, 12:42
+ *  * Created by Vladimir Belov on 08.09.2026, 11:18
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.07.2026, 23:51
+ *  * Last modified 08.09.2026, 10:26
  *
  */
 
@@ -737,19 +737,37 @@ class WidgetUpdater {
 
             //Иконка события
             int id_widget_EventIcon = res.getIdentifier(Constants.WIDGET_ICON_EVENT_TYPE + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
-
             if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(res.getString(R.string.pref_EventInfo_EventIcon_ID))
                     : widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_EventIcon_ID))) {
-
-                int eventIcon;
-                try {
-                    eventIcon = Integer.parseInt(singleEventArray[ContactsEvents.Position_eventIcon]);
-                } catch (NumberFormatException e) {
-                    eventIcon = 0;
+                String iconValue = singleEventArray[ContactsEvents.Position_eventIcon];
+                boolean iconSet = false;
+                if (iconValue != null && !iconValue.isEmpty()) {
+                    if (iconValue.startsWith(Constants.ICON_PREFIX_RES)) {
+                        String resName = iconValue.substring(Constants.ICON_PREFIX_RES.length());
+                        int resId = res.getIdentifier(resName, "drawable", packageName);
+                        if (resId != 0) {
+                            views.setImageViewResource(id_widget_EventIcon, resId);
+                            iconSet = true;
+                        }
+                    } else if (iconValue.startsWith(Constants.ICON_PREFIX_FILE)) {
+                        String path = iconValue.substring(Constants.ICON_PREFIX_FILE.length());
+                        Bitmap bm = eventsData.decodeSampledIconFile(path, 96);
+                        if (bm != null) {
+                            views.setImageViewBitmap(id_widget_EventIcon, bm);
+                            iconSet = true;
+                        }
+                    } else {
+                        // Совместимость со старым форматом (Integer как строка)
+                        try {
+                            int resId = Integer.parseInt(iconValue);
+                            if (resId != 0) {
+                                views.setImageViewResource(id_widget_EventIcon, resId);
+                                iconSet = true;
+                            }
+                        } catch (NumberFormatException ignored) { /**/ }
+                    }
                 }
-                if (eventIcon != 0) {
-                    views.setImageViewResource(id_widget_EventIcon, eventIcon);
-                } else {
+                if (!iconSet) {
                     views.setImageViewResource(id_widget_EventIcon, android.R.color.transparent);
                 }
                 views.setViewVisibility(id_widget_EventIcon, View.VISIBLE);
