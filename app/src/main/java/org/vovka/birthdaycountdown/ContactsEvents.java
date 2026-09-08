@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.09.2026, 14:28
+ *  * Created by Vladimir Belov on 08.09.2026, 14:31
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 08.09.2026, 14:19
+ *  * Last modified 08.09.2026, 14:31
  *
  */
 
@@ -7942,7 +7942,7 @@ public class ContactsEvents {
                             }
                         }
                         if (mostIconType != null) {
-                            eventIcon = getEventIconResIdByValue(mostIconType, R.drawable.ic_icon_notify);
+                            eventIcon = getEventIconResIdByValue(mostIconType, eventIcon);
                         }
                         mostEventIcons.clear();
                     }
@@ -8029,7 +8029,7 @@ public class ContactsEvents {
                             builder.setColor(getThemeBackColor());
                         } else {
                             builder.setColor(getThemeBackColor());
-                            eventIcon = getEventIconResIdByValue(event.singleEventArray[Position_eventIcon], R.drawable.ic_icon_notify);
+                            eventIcon = getEventIconResIdByValue(event.singleEventArray[Position_eventIcon], eventIcon);
                         }
                         builder.setSmallIcon(eventIcon);
 
@@ -8495,7 +8495,7 @@ public class ContactsEvents {
                 builder.setColor(getThemeBackColor());
             } else {
                 builder.setColor(getThemeBackColor());
-                eventIcon = getEventIconResIdByValue(singleEventArray[Position_eventIcon], R.drawable.ic_icon_notify);
+                eventIcon = getEventIconResIdByValue(singleEventArray[Position_eventIcon], eventIcon);
             }
             builder.setSmallIcon(eventIcon);
 
