@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2026, 13:26
+ *  * Created by Vladimir Belov on 15.09.2026, 20:37
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.09.2026, 13:25
+ *  * Last modified 15.09.2026, 19:09
  *
  */
 package org.vovka.birthdaycountdown;
@@ -79,6 +79,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     private String widgetType = Constants.WIDGET_TYPE_CALENDAR;
     private final ContactsEvents eventsData = ContactsEvents.getInstance();
     private List <String > widgetPref;
+    private final List<String> prefElements = new ArrayList<>();
     private final List <String > eventSourcesIds = new ArrayList < >();
     private final List <String > eventSourcesTitles = new ArrayList < >();
     private List <String > eventSourcesSelected = new ArrayList < >();
@@ -87,6 +88,8 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     private int customMonthShift = 0;
     private boolean isNewPinnedWidget;
     private String localeAtCreate =  " ";
+    MultiSelectionSpinner spinnerElements;
+    TextView listEventSources;
     CheckBox checkFontMagnifyManual;
     ColorPicker pickerColorArrows;
     ColorPicker pickerColorCommon;
@@ -96,12 +99,14 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     ColorPicker pickerColorWeeks;
     ColorPicker pickerColorWidgetBackground;
     ColorPicker pickerColorWidgetBorder;
+    ColorPicker pickerColorGrid;
     LinearLayout blockFontMagnifyManual;
     SeekBar seekFontMagnify;
     SeekBar seekFontMagnifyDay;
     SeekBar seekFontMagnifyMonth;
     SeekBar seekFontMagnifyWeek;
     Spinner spinnerLayout;
+    Spinner spinnerColorDots;
     Spinner spinnerMonthShift;
     Spinner spinnerOnClickCommon;
     Spinner spinnerOnClickHolidays;
@@ -200,13 +205,28 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             spinnerStartingMonthPosition = findViewById(R.id.spinnerStartingMonthPosition);
 
             //Элементы календаря
-            List<String> elementsValues = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_entries));
-            final MultiSelectionSpinner spinnerElements = findViewById(R.id.spinnerElements);
+            final List<String> elementsValues = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_entries));
+            final List<String> elementsIDs = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_values));
+
+            spinnerElements = findViewById(R.id.spinnerElements);
             spinnerElements.setItems(elementsValues);
+            spinnerElements.setZeroSelectedTitle(getString(R.string.widget_config_month_sources_empty));
+
+            //Слушатель изменений выбора
+            spinnerElements.setOnItemSelectedListener(selectedItems -> {
+                prefElements.clear();
+                for (String selectedItem : selectedItems) {
+                    int index = elementsValues.indexOf(selectedItem);
+                    if (index != -1) {
+                        prefElements.add(elementsIDs.get(index));
+                    }
+                }
+                updateVisibility(); // Пересчитываем видимость блоков
+            });
 
             //Источники событий
             getEventSources();
-            TextView listEventSources = findViewById(R.id.listEventSources);
+            listEventSources = findViewById(R.id.listEventSources);
             listEventSources.setOnClickListener(v -> selectEventSources());
 
             //Размер шрифта
@@ -271,6 +291,9 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
             spinnerOnClickHolidays = findViewById(R.id.spinnerOnClickHolidays);
 
+            //Цветные метки событий
+            spinnerColorDots = findViewById(R.id.spinnerColorDots);
+
             //Цвета
             pickerColorWidgetBackground = findViewById(R.id.colorWidgetBackground);
             pickerColorWidgetBorder = findViewById(R.id.colorWidgetBorder);
@@ -280,6 +303,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             pickerColorHeaderBack = findViewById(R.id.colorHeaderBack);
             pickerColorArrows = findViewById(R.id.colorArrows);
             pickerColorWeeks = findViewById(R.id.colorWeeks);
+            pickerColorGrid = findViewById(R.id.colorGrid);
 
             findViewById(R.id.adv_hint).setOnClickListener(v -> {
                 try {
@@ -348,15 +372,23 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             try {
                 List<String> elementsIDs = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_values));
                 List<String> elementsValues = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_entries));
-                String[] prefElements = null;
+                prefElements.clear();
                 List<String> selectedElements = new ArrayList<>();
-                if (widgetPref.size() > 4) prefElements = widgetPref.get(4).split(Constants.REGEX_PLUS, -1);
-                if (prefElements != null) {
-                    for (String item : prefElements) {
-                        if (elementsIDs.contains(item)) selectedElements.add(elementsValues.get(elementsIDs.indexOf(item)));
+                if (widgetPref.size() > 4) prefElements.addAll(Arrays.asList(widgetPref.get(4).split(Constants.REGEX_PLUS, -1)));
+                for (String item : prefElements) {
+                    if (elementsIDs.contains(item)) selectedElements.add(elementsValues.get(elementsIDs.indexOf(item)));
+                }
+                // Настройки сохранены (widgetPref не дефолтный), но маркера новой версии нет
+                boolean isOldWidget = widgetPref.size() > 4 && !prefElements.contains(Constants.migration192);
+                if (isOldWidget) {
+                    String highlightDayKey = getString(R.string.widget_config_elements_highlight_day);
+                    // Если в старом виджете этой строки еще не было в UI —
+                    // принудительно взводим чекбокс в конфигураторе
+                    if (!selectedElements.contains(highlightDayKey)) {
+                        selectedElements.add(elementsValues.get(elementsIDs.indexOf(highlightDayKey)));
                     }
                 }
-                final MultiSelectionSpinner spinnerElements = findViewById(R.id.spinnerElements);
+
                 spinnerElements.setSelection(selectedElements);
             } catch (Exception e) {/**/}
 
@@ -436,15 +468,17 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         prefOnClickHolidays = onclickHolidaysIDs.indexOf(prefOnClick[1]);
                     }
                 }
-                spinnerOnClickCommon.setSelection(prefOnClickCommon);
-                spinnerOnClickHolidays.setSelection(prefOnClickHolidays);
+                spinnerOnClickCommon.setSelection(prefOnClickCommon, true);
+                spinnerOnClickHolidays.setSelection(prefOnClickHolidays, true);
             } catch (Exception e) { /**/ }
 
             //Цвета
-            //Фон виджета + бордюра
+            //Фон виджета + бордюра + цветные метки
             try {
                 @ColorInt int colorWidgetBackground = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Calendar_Back_default);
                 @ColorInt int colorWidgetBorder = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_WidgetBorder_default);
+                @ColorInt int colorGrid = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Grid_default);
+                String eventColorDot = getString(R.string.widget_config_color_dots_default);
                 if (widgetPref.size() > 7 && !widgetPref.get(7).isEmpty()) {
                     try {
                         String[] prefColors = widgetPref.get(7).split(Constants.REGEX_PLUS, -1);
@@ -452,10 +486,23 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         if (prefColors.length > 1 && !prefColors[1].isEmpty()) {
                             colorWidgetBorder = Color.parseColor(prefColors[1]);
                         }
+                        if (prefColors.length > 2 && !prefColors[2].isEmpty()) {
+                            colorGrid = Color.parseColor(prefColors[2]);
+                        }
+                        if (prefColors.length > 3 && !prefColors[3].isEmpty()) {
+                            eventColorDot = prefColors[3];
+                        }
                     } catch (IllegalArgumentException ignored) { /**/ }
                 }
                 pickerColorWidgetBackground.setColor(colorWidgetBackground);
                 pickerColorWidgetBorder.setColor(colorWidgetBorder);
+                pickerColorGrid.setColor(colorGrid);
+
+                List<String> colorDots = Arrays.asList(getResources().getStringArray(R.array.widget_config_color_dots_entries));
+                if (colorDots.contains(eventColorDot)) {
+                    spinnerColorDots.setSelection(colorDots.indexOf(eventColorDot), true);
+                }
+
             } catch (final Exception e) { /**/ }
 
             //Обычные дни
@@ -550,10 +597,10 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
     public void buttonOkOnClick() {
         try {
-            String currentConfig = getCurrentConfig();
+            String currentConfig = getCurrentConfig(true);
             if (currentConfig == null) return;
             eventsData.setWidgetPreference(this.widgetId, currentConfig);
-            eventsData.clearDaysTypesAndInfo();
+            //todo: похоже, что тут это лишнее eventsData.clearDaysTypesAndInfo();
             final Intent intent = new Intent();
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.widgetId);
             setResult(Activity.RESULT_OK, intent);
@@ -566,10 +613,11 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
         }
     }
     /** Возвращает текущую конфигурацию виджета в виде строки
-     @return Текущая конфигурация виджета
+     * @param includeMigration добавлять ли флаг миграции на версию 1.9.2
+     * @return Текущая конфигурация виджета
      */
     @Nullable
-    private String getCurrentConfig() {
+    private String getCurrentConfig(boolean includeMigration) {
         try {
             List<String> layouts = Arrays.asList(getResources().getStringArray(R.array.widget_config_layout_values));
             final String layoutId = spinnerLayout.getSelectedItemPosition() <= layouts.size() - 1 ?
@@ -582,14 +630,19 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             }
             int prefStartingMonthPosition = spinnerStartingMonthPosition.getSelectedItemPosition();
             if (prefStartingMonthPosition == Spinner.INVALID_POSITION) prefStartingMonthPosition = 0;
+
             List<String> elementsIDs = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_values));
             List<String> elementsValues = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_entries));
-            final MultiSelectionSpinner spinnerElements = findViewById(R.id.spinnerElements);
             final StringBuilder selectedElements = new StringBuilder();
             for(final String item: spinnerElements.getSelectedStrings()) {
                 if (selectedElements.length() > 0) selectedElements.append(Constants.STRING_PLUS);
                 selectedElements.append(elementsIDs.get(elementsValues.indexOf(item)));
             }
+            if (includeMigration) {
+                if (selectedElements.length() > 0) selectedElements.append(Constants.STRING_PLUS);
+                selectedElements.append(Constants.migration192);
+            }
+
             final String eventSources = TextUtils.join(Constants.STRING_PLUS, eventSourcesSelected);
             String fontMagnify;
             if (this.checkFontMagnifyManual.isChecked()) {
@@ -613,6 +666,9 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             final int colorWidgetBorder = pickerColorWidgetBorder.getColor();
             final String selectedWidgetBorder = colorWidgetBorder != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBorder_default)
                     ? ImageUtils.toARGBString(colorWidgetBorder) : Constants.STRING_EMPTY;
+            final int colorGrid = pickerColorGrid.getColor();
+            final String selectedGrid = colorGrid != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Grid_default)
+                    ? ImageUtils.toARGBString(colorGrid) : Constants.STRING_EMPTY;
             final int colorCommon = pickerColorCommon.getColor();
             final String selectedCommon = colorCommon != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Common_default)
                     ? ImageUtils.toARGBString(colorCommon) : Constants.STRING_EMPTY;
@@ -649,6 +705,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                     if (colorValue != null) listColors.add(sourceId.concat(Constants.STRING_COLON).concat(String.valueOf(colorValue)));
                 }
             }
+            String strColorDot = (String) spinnerColorDots.getSelectedItem();
             //Сохранение настроек
             List<String> prefsToStore = new ArrayList<>();
             prefsToStore.add(layoutId); //Количество месяцев
@@ -658,7 +715,10 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             prefsToStore.add(selectedElements.toString()); //Элементы
             prefsToStore.add(eventSources); //Источники событий (через +)
             prefsToStore.add(fontMagnify); //Размер шрифта
-            prefsToStore.add(selectedWidgetBackground + Constants.STRING_PLUS + selectedWidgetBorder); //Цвет подложки + бордюра
+            prefsToStore.add(selectedWidgetBackground //Цвет подложки
+                    + Constants.STRING_PLUS + selectedWidgetBorder //Цвет бордюра
+                    + Constants.STRING_PLUS + selectedGrid //Цвет сетки
+                    + Constants.STRING_PLUS + strColorDot); //Цветная метка
             prefsToStore.add(selectedCommon); //Цвет обычных дней
             prefsToStore.add(selectedMonthTitle); //Цвет заголовка
             prefsToStore.add(selectedHeaderBack); //Фон заголовка
@@ -761,7 +821,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
      */
     private void showSaveTemplateDialog() {
         try {
-            final String currentConfig = getCurrentConfig();
+            final String currentConfig = getCurrentConfig(false);
             if (currentConfig == null) {
                 ToastExpander.showInfoMsg(this, getString(R.string.msg_widget_bad_id));
                 return;
@@ -1076,7 +1136,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
     private void updateEventSources() {
         try {
             TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-            TextView listEventSources = findViewById(R.id.listEventSources);
             StringBuilder sb = new StringBuilder();
             for (String sourceId: eventSourcesSelected) {
                 int ind = eventSourcesIds.indexOf(sourceId);
@@ -1235,28 +1294,56 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             }
             boolean isAdvSettings = eventsData.isFeatureEnabled(Constants.FEATURE_WIDGETS_MORE_SETTINGS);
             int advSettingsVisibility = isAdvSettings ? View.VISIBLE : View.GONE;
-            //Скрываем реакцию на нажатие
-            findViewById(R.id.dividerOnClick).setVisibility(advSettingsVisibility);
-            findViewById(R.id.captionOnClick).setVisibility(advSettingsVisibility);
-            findViewById(R.id.blockOnClickCommon).setVisibility(advSettingsVisibility);
-            findViewById(R.id.blockOnClickHolidays).setVisibility(advSettingsVisibility);
-            //Скрываем изменения цвета
-            findViewById(R.id.dividerColorWidgetBackground).setVisibility(advSettingsVisibility);
-            findViewById(R.id.colorWidgetBackground).setVisibility(advSettingsVisibility);
-            findViewById(R.id.dividerColorWidgetBorder).setVisibility(advSettingsVisibility);
-            findViewById(R.id.colorWidgetBorder).setVisibility(advSettingsVisibility);
-            findViewById(R.id.dividerColorCommon).setVisibility(advSettingsVisibility);
-            findViewById(R.id.colorCommon).setVisibility(advSettingsVisibility);
-            findViewById(R.id.dividerColorToday).setVisibility(advSettingsVisibility);
-            findViewById(R.id.colorToday).setVisibility(advSettingsVisibility);
-            findViewById(R.id.dividerColorHeader).setVisibility(advSettingsVisibility);
-            findViewById(R.id.colorMonthTitle).setVisibility(advSettingsVisibility);
-            findViewById(R.id.dividerColorHeaderBack).setVisibility(advSettingsVisibility);
-            findViewById(R.id.colorHeaderBack).setVisibility(advSettingsVisibility);
-            findViewById(R.id.dividerColorArrows).setVisibility(advSettingsVisibility);
-            findViewById(R.id.colorArrows).setVisibility(advSettingsVisibility);
-            findViewById(R.id.dividerColorWeeks).setVisibility(advSettingsVisibility);
-            findViewById(R.id.colorWeeks).setVisibility(advSettingsVisibility);
+
+            if (isAdvSettings) {
+                // Реакция на нажатие
+                findViewById(R.id.dividerOnClick).setVisibility(advSettingsVisibility);
+                findViewById(R.id.captionOnClick).setVisibility(advSettingsVisibility);
+                findViewById(R.id.blockOnClickCommon).setVisibility(advSettingsVisibility);
+                findViewById(R.id.blockOnClickHolidays).setVisibility(advSettingsVisibility);
+
+                // Цвет фона
+                findViewById(R.id.dividerColorWidgetBackground).setVisibility(advSettingsVisibility);
+                findViewById(R.id.colorWidgetBackground).setVisibility(advSettingsVisibility);
+
+                // Цвет дней
+                findViewById(R.id.dividerColorCommon).setVisibility(advSettingsVisibility);
+                findViewById(R.id.colorCommon).setVisibility(advSettingsVisibility);
+                findViewById(R.id.dividerColorToday).setVisibility(advSettingsVisibility);
+                findViewById(R.id.colorToday).setVisibility(advSettingsVisibility);
+
+                // Бордюр виджета
+                boolean showBorder = prefElements.contains(getString(R.string.widget_config_elements_border));
+                findViewById(R.id.dividerColorWidgetBorder).setVisibility(showBorder ? View.VISIBLE : View.GONE);
+                findViewById(R.id.colorWidgetBorder).setVisibility(showBorder ? View.VISIBLE : View.GONE);
+
+                // Заголовок месяца (Month title) - влияет на цвет заголовка, фон заголовка и стрелки
+                boolean showMonthTitle = prefElements.contains(getString(R.string.widget_config_elements_month));
+                findViewById(R.id.dividerColorHeader).setVisibility(showMonthTitle ? View.VISIBLE : View.GONE);
+                findViewById(R.id.colorMonthTitle).setVisibility(showMonthTitle ? View.VISIBLE : View.GONE);
+                findViewById(R.id.dividerColorHeaderBack).setVisibility(showMonthTitle ? View.VISIBLE : View.GONE);
+                findViewById(R.id.colorHeaderBack).setVisibility(showMonthTitle ? View.VISIBLE : View.GONE);
+                findViewById(R.id.dividerColorArrows).setVisibility(showMonthTitle ? View.VISIBLE : View.GONE);
+                findViewById(R.id.colorArrows).setVisibility(showMonthTitle ? View.VISIBLE : View.GONE);
+
+                // Дни недели (Weekdays labels)
+                boolean showWeekdays = prefElements.contains(getString(R.string.widget_config_elements_weeks));
+                findViewById(R.id.dividerColorWeeks).setVisibility(showWeekdays ? View.VISIBLE : View.GONE);
+                findViewById(R.id.colorWeeks).setVisibility(showWeekdays ? View.VISIBLE : View.GONE);
+
+                // Сетка
+                boolean showGrid = prefElements.contains(getString(R.string.widget_config_elements_grid));
+                findViewById(R.id.dividerColorGrid).setVisibility(showGrid ? View.VISIBLE : View.GONE);
+                findViewById(R.id.colorGrid).setVisibility(showGrid ? View.VISIBLE : View.GONE);
+
+                // Цветные метки событий
+                boolean showColorDots = prefElements.contains(getString(R.string.widget_config_elements_dots));
+                findViewById(R.id.dividerColorDots).setVisibility(showColorDots ? View.VISIBLE : View.GONE);
+                findViewById(R.id.blockColorDots).setVisibility(showColorDots ? View.VISIBLE : View.GONE);
+                findViewById(R.id.hintColorDots).setVisibility(showColorDots ? View.VISIBLE : View.GONE);
+
+            }
+
             //Подсказки
             findViewById(R.id.hints).setVisibility(isAdvSettings ? View.GONE : View.VISIBLE);
         } catch (final Exception e) {

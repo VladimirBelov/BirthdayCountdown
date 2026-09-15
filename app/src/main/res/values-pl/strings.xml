@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.09.2026, 23:14
+  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 07.09.2026, 23:14
+  ~  * Last modified 15.09.2026, 17:48
   ~  */
   -->
 
@@ -971,6 +971,9 @@
     <string name="widget_config_color_border_label">Kolor obramowania widżetu</string>
     <string name="widget_config_color_border_description">Kolor obramowania widżetu</string>
 
+    <string name="widget_config_color_grid_label">Kolor siatki</string>
+    <string name="widget_config_color_grid_description">Kolor siatki dla dni</string>
+
     <string name="widget_config_layout_title">Liczba miesięcy</string>
     <string name="widget_config_layout_description">Ile miesięcy wyświetlić</string>
     <string name="widget_config_month_events_sources_label">Źródła świąt i wydarzeń</string>
@@ -1003,6 +1006,9 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
     <string name="widget_config_month_color_arrows_description">Kolor strzałki przełączającej miesiąc</string>
     <string name="widget_config_month_color_weeks_label">Dni tygodnia</string>
     <string name="widget_config_month_color_weeks_description">Kolor dnia tygodnia</string>
+
+    <string name="widget_config_color_dots_label">Znacznik wydarzeń:</string>
+    <string name="widget_config_color_dots_description">Znaczniki wydarzeń są wyświetlane pod datą i mają kolor odpowiadający źródłu wydarzenia</string>
 
     <string-array name="widget_config_layout_entries">
         <item>Automatycznie (według rozmiaru widżetu)</item>
@@ -1046,8 +1052,11 @@ Naciśnij i przytrzymaj element listy, aby wybrać kolor</string>
         <item>Dni tygodnia</item>
         <item>Dni przed i po miesiącu</item>
         <item>Marginesy zewnętrzne</item>
+        <item>Data w kolorze wydarzenia</item>
         <item>@string/pref_EventInfo_Border</item>
         <item>Podświetl dzień tygodnia</item>
+        <item>Siatka dni</item>
+        <item>Kolorowe etykiety wydarzeń</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.09.2026, 23:14
+  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 07.09.2026, 23:10
+  ~  * Last modified 15.09.2026, 17:48
   ~  */
   -->
 
@@ -971,6 +971,9 @@
     <string name="widget_config_color_border_label">Cor da borda do widget</string>
     <string name="widget_config_color_border_description">Cor da borda do widget</string>
 
+    <string name="widget_config_color_grid_label">Cor da grade</string>
+    <string name="widget_config_color_grid_description">Cor da grade para os dias</string>
+
     <string name="widget_config_layout_title">Layout dos meses</string>
     <string name="widget_config_layout_description">Quantos meses exibir</string>
     <string name="widget_config_month_events_sources_label">Fontes de feriados e eventos</string>
@@ -1003,6 +1006,9 @@ Clique longamente no item para selecionar a cor"</string>
     <string name="widget_config_month_color_arrows_description">Cor das setas do seletor de mês</string>
     <string name="widget_config_month_color_weeks_label">Cor dos dias da semana</string>
     <string name="widget_config_month_color_weeks_description">Cor dos dias da semana</string>
+
+    <string name="widget_config_color_dots_label">Marcador de eventos:</string>
+    <string name="widget_config_color_dots_description">Os marcadores de evento são exibidos abaixo da data e coloridos de acordo com a origem do evento</string>
 
     <string-array name="widget_config_layout_entries">
         <item>Automaticamente (por tamanho do widget)</item>
@@ -1046,8 +1052,11 @@ Clique longamente no item para selecionar a cor"</string>
         <item>Rótulos de dias da semana</item>
         <item>Dias antes e depois do mês</item>
         <item>Margens laterais externas</item>
+        <item>Data colorida por evento</item>
         <item>@string/pref_EventInfo_Border</item>
         <item>Dia da semana em destaque</item>
+        <item>Grade de dias</item>
+        <item>Marcadores de evento coloridos</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">

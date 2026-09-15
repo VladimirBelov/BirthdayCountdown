@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.09.2026, 23:14
+  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 06.09.2026, 21:07
+  ~  * Last modified 15.09.2026, 17:45
   ~  */
   -->
 
@@ -971,6 +971,9 @@
     <string name="widget_config_color_border_label">Цвет бордюра</string>
     <string name="widget_config_color_border_description">Цвет бордюра виджета</string>
 
+    <string name="widget_config_color_grid_label">Цвет сетки</string>
+    <string name="widget_config_color_grid_description">Цвет сетки для дней</string>
+
     <string name="widget_config_layout_title">Количество месяцев</string>
     <string name="widget_config_layout_description">Сколько месяцев отображать</string>
     <string name="widget_config_month_events_sources_label">Источники праздников и событий</string>
@@ -1003,6 +1006,9 @@
     <string name="widget_config_month_color_arrows_description">Цвет стрелок переключения месяцев</string>
     <string name="widget_config_month_color_weeks_label">Дни недели</string>
     <string name="widget_config_month_color_weeks_description">Цвет дней недели</string>
+
+    <string name="widget_config_color_dots_label">Маркер событий:</string>
+    <string name="widget_config_color_dots_description">Маркеры событий выводятся под датой и окрашиваются цветом источника события</string>
 
     <string-array name="widget_config_layout_entries">
         <item>Автоматически (по размеру виджета)</item>
@@ -1046,8 +1052,11 @@
         <item>Дни недели</item>
         <item>Дни до и после месяца</item>
         <item>Внешние боковые отступы</item>
+        <item>Дата цветом события</item>
         <item>@string/pref_EventInfo_Border</item>
         <item>Выделить день недели</item>
+        <item>Сетка дней</item>
+        <item>Цветные маркеры событий</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">

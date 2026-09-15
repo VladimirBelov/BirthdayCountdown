@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.09.2026, 23:14
+  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 07.09.2026, 23:12
+  ~  * Last modified 15.09.2026, 17:47
   ~  */
   -->
 
@@ -971,6 +971,9 @@
     <string name="widget_config_color_border_label">Couleur de la bordure du widget</string>
     <string name="widget_config_color_border_description">Couleur de la bordure du widget</string>
 
+    <string name="widget_config_color_grid_label">Couleur de la grille</string>
+    <string name="widget_config_color_grid_description">Couleur de la grille pour les jours</string>
+
     <string name="widget_config_layout_title">Disposition des mois</string>
     <string name="widget_config_layout_description">Combien de mois afficher</string>
     <string name="widget_config_month_events_sources_label">Sources des jours fériés et des événements</string>
@@ -1003,6 +1006,9 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
     <string name="widget_config_month_color_arrows_description">Couleur des flèches de sélection du mois</string>
     <string name="widget_config_month_color_weeks_label">Couleur des jours de la semaine</string>
     <string name="widget_config_month_color_weeks_description">Couleur des jours de la semaine</string>
+
+    <string name="widget_config_color_dots_label">"Marqueur d'événement :"</string>
+    <string name="widget_config_color_dots_description">"Les marqueurs d'événement s'affichent sous la date et prennent la couleur de la source de l'événement"</string>
 
     <string-array name="widget_config_layout_entries">
         <item>Automatiquement (par taille du widget)</item>
@@ -1046,8 +1052,11 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
         <item>Étiquettes des jours de la semaine</item>
         <item>Jours avant et après le mois</item>
         <item>Marges latérales externes</item>
+        <item>"Date en couleur de l'événement"</item>
         <item>@string/pref_EventInfo_Border</item>
         <item>Mettre en évidence le jour de la semaine</item>
+        <item>Grille des jours</item>
+        <item>"Étiquettes d'événements colorées"</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">

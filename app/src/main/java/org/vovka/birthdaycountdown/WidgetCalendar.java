@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.08.2026, 17:59
+ *  * Created by Vladimir Belov on 15.09.2026, 20:37
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.08.2026, 17:58
+ *  * Last modified 15.09.2026, 18:41
  *
  */
 
@@ -25,9 +25,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -78,12 +82,17 @@ public class WidgetCalendar extends AppWidgetProvider {
     private boolean colorizeSaturdays;
     private boolean colorizeSundays;
     private boolean enabledFillDays;
+    private boolean colorizeDays;
     private boolean enabledHeader;
+    private boolean enableYear;
     private boolean enabledWeeks;
+    private boolean enableGrid;
+    private boolean enableColorDots;
     private boolean highlightDayOfWeek;
     private boolean weekdaysFromSunday;
     private float fontMagnify_Month;
     private float fontMagnify_Weekdays;
+    /** Масштабирование размера текста */
     private float fontMagnify_Days;
     private float monthRowTextSize;
     private int today;
@@ -98,7 +107,12 @@ public class WidgetCalendar extends AppWidgetProvider {
     private boolean atLeastOneDayInMonth;
     private int rowsToDraw = 4;
     private int columnsToDraw = 3;
-    private SimpleDateFormat sdfWeekDay = new SimpleDateFormat(" (EEE)", Locale.getDefault());
+    private SimpleDateFormat sdfWeekDay = new SimpleDateFormat(Constants.DATE_EEE, Locale.getDefault());
+    private SimpleDateFormat sdfMonthYear = new SimpleDateFormat(Constants.DATE_LLLL_YYYY, Locale.getDefault());
+    private SimpleDateFormat sdfMonth = new SimpleDateFormat(Constants.DATE_LLLL, Locale.getDefault());
+    private SparseIntArray colorGridMap;
+    @ColorInt private int colorGrid;
+    private String eventColorDot;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -199,7 +213,9 @@ public class WidgetCalendar extends AppWidgetProvider {
             eventsData.initLanguage(context);
             this.context = eventsData.getContext();
             this.res = eventsData.getResources();
-            sdfWeekDay = new SimpleDateFormat(" (EEE)", Locale.forLanguageTag(eventsData.currentLocale));
+            sdfWeekDay = new SimpleDateFormat(Constants.DATE_EEE, Locale.forLanguageTag(eventsData.currentLocale));
+            sdfMonthYear = new SimpleDateFormat(Constants.DATE_LLLL_YYYY, Locale.forLanguageTag(eventsData.currentLocale));
+            sdfMonth = new SimpleDateFormat(Constants.DATE_LLLL, Locale.forLanguageTag(eventsData.currentLocale));
 
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 eventsData.getEvents();
@@ -236,7 +252,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                         prefFontMagnify_Month = Integer.parseInt(prefFontMagnify[1]);
                         prefFontMagnify_Weekdays = Integer.parseInt(prefFontMagnify[2]);
                         prefFontMagnify_Days = Integer.parseInt(prefFontMagnify[3]);
-                    } else {
+                    } else { //Берём общее масштабирование
                         prefFontMagnify_Month = prefFontMagnify_Common;
                         prefFontMagnify_Weekdays = prefFontMagnify_Common;
                         prefFontMagnify_Days = prefFontMagnify_Common;
@@ -338,9 +354,21 @@ public class WidgetCalendar extends AppWidgetProvider {
             enabledHeader = prefElements.contains(res.getString(R.string.widget_config_elements_month));
             enabledWeeks = prefElements.contains(res.getString(R.string.widget_config_elements_weeks));
             final boolean enabledMargins = prefElements.contains(res.getString(R.string.widget_config_elements_margins));
-            highlightDayOfWeek = prefElements.contains(res.getString(R.string.widget_config_elements_highlight_weekday));
+            enableYear = prefElements.contains(res.getString(R.string.widget_config_elements_year));
             enabledFillDays = prefElements.contains(res.getString(R.string.widget_config_elements_fill_days)); //Дни до и после месяца
+            highlightDayOfWeek = prefElements.contains(res.getString(R.string.widget_config_elements_highlight_weekday));
             final boolean drawBorder = prefElements.contains(res.getString(R.string.widget_config_elements_border));
+
+            boolean isPre192Config = !prefElements.contains(Constants.migration192);
+            if (isPre192Config) {
+                colorizeDays = true;
+                enableGrid = false;
+                enableColorDots = false;
+            } else {
+                colorizeDays = prefElements.contains(res.getString(R.string.widget_config_elements_highlight_day));
+                enableGrid = prefElements.contains(res.getString(R.string.widget_config_elements_grid));
+                enableColorDots = prefElements.contains(res.getString(R.string.widget_config_elements_dots));
+            }
 
             //Источники событий и цвета по умолчанию
             List<String> prefEvents = new ArrayList<>();
@@ -405,12 +433,20 @@ public class WidgetCalendar extends AppWidgetProvider {
             //Фон виджета
             @ColorInt int colorWidgetBackground = ContextCompat.getColor(context, R.color.pref_Widgets_Color_Calendar_Back_default);
             @ColorInt int colorWidgetBorder = ContextCompat.getColor(context, R.color.pref_Widgets_Color_WidgetBorder_default);
+            colorGrid = ContextCompat.getColor(this.eventsData.getContext(), R.color.pref_Widgets_Color_Grid_default);
+            eventColorDot = context.getString(R.string.widget_config_color_dots_default);
             if (widgetPref.size() > 7 && !widgetPref.get(7).isEmpty()) {
                 try {
                     String[] prefColors = widgetPref.get(7).split(Constants.REGEX_PLUS, -1);
                     if (!prefColors[0].isEmpty()) colorWidgetBackground = Color.parseColor(prefColors[0]);
                     if (prefColors.length > 1 && !prefColors[1].isEmpty()) {
                         colorWidgetBorder = Color.parseColor(prefColors[1]);
+                    }
+                    if (prefColors.length > 2 && !prefColors[2].isEmpty()) {
+                        colorGrid = Color.parseColor(prefColors[2]);
+                    }
+                    if (prefColors.length > 3 && !prefColors[3].isEmpty()) {
+                        eventColorDot = prefColors[3];
                     }
                 } catch (final Exception e) {/* */}
             }
@@ -675,10 +711,10 @@ public class WidgetCalendar extends AppWidgetProvider {
                 calendarRv.setTextColor(R.id.month_label, colorMonthTitle);
                 calendarRv.setTextColor(R.id.prev_month_button, colorArrows);
                 calendarRv.setTextColor(R.id.next_month_button, colorArrows);
-                if (prefElements.contains(res.getString(R.string.widget_config_elements_year)) || (monthsToDraw == 12 && cal.get(Calendar.MONTH) == Calendar.JANUARY)) {
-                    calendarRv.setTextViewText(R.id.month_label, DateFormat.format(Constants.DATE_LLLL_YYYY, cal).toString().toUpperCase());
+                if (enableYear || (monthsToDraw == 12 && cal.get(Calendar.MONTH) == Calendar.JANUARY)) {
+                    calendarRv.setTextViewText(R.id.month_label, sdfMonthYear.format(cal.getTime()).toUpperCase());
                 } else {
-                    calendarRv.setTextViewText(R.id.month_label, DateFormat.format("LLLL", cal).toString().toUpperCase());
+                    calendarRv.setTextViewText(R.id.month_label, sdfMonth.format(cal.getTime()).toUpperCase());
                 }
                 calendarRv.setTextViewTextSize(R.id.month_label, COMPLEX_UNIT_SP, monthRowTextSize);
                 if (row == rowsToDraw) {
@@ -771,7 +807,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 RemoteViews rowRv = new RemoteViews(context.getPackageName(), R.layout.row_week);
                 atLeastOneDayInMonth = false;
                 for (int day = 0; day < 7; day++) {
-                    RemoteViews rvCell = composeDayCell(cal, todayYear, thisMonth, today, appWidgetId, fontMagnify_Days, calFirstDay, calLastDay);
+                    RemoteViews rvCell = composeDayCell(cal, thisMonth, appWidgetId, calFirstDay, calLastDay);
                     if (rvCell != null) rowRv.addView(R.id.row_container, rvCell);
                     cal.add(Calendar.DAY_OF_MONTH, 1);
                 }
@@ -839,17 +875,14 @@ public class WidgetCalendar extends AppWidgetProvider {
 
     /** Построение ячейки дня календаря
      * @param cal Дата
-     * @param todayYear Текущий год
      * @param thisMonth Текущий месяц
-     * @param today Текущий день года
      * @param appWidgetId Id виджета
-     * @param fontMagnify_Days Масштабирование размера текста
      * @param calFirstDay Первый день календаря в виджете
      * @param calLastDay Последний день календаря в виджете
      * @return Ячейка дня
      */
-    private RemoteViews composeDayCell(Calendar cal, int todayYear, @JdkConstants.CalendarMonth int thisMonth, int today,
-                                       int appWidgetId, float fontMagnify_Days, Calendar calFirstDay, Calendar calLastDay) {
+    private RemoteViews composeDayCell(Calendar cal, @JdkConstants.CalendarMonth int thisMonth,
+                                       int appWidgetId, Calendar calFirstDay, Calendar calLastDay) {
         RemoteViews cellRv = null;
 
         try {
@@ -864,55 +897,100 @@ public class WidgetCalendar extends AppWidgetProvider {
             if (isToday) {
                 color = colorToday;
                 //todo: сделать различные варианты выделения "сегодня": рамка, подчёркивание
-                cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_today);
+                cellRv.setInt(R.id.cell_day, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_today);
                 atLeastOneDayInMonth = true;
             } else if (inMonth) {
                 color = colorCommon;
-                cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day_this_month);
+                cellRv.setInt(R.id.cell_day, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day_this_month);
                 atLeastOneDayInMonth = true;
             } else {
                 color = colorCommonOutMonth;
-                cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
+                cellRv.setInt(R.id.cell_day, Constants.METHOD_SET_BACKGROUND_RES, R.drawable.cell_day);
             }
 
-            if (enabledFillDays || inMonth) {
-                cellRv.setTextViewText(android.R.id.text1, Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
-            }
-            cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, 10 * fontMagnify_Days);
+            cellRv.setTextViewTextSize(android.R.id.text1, COMPLEX_UNIT_SP, Constants.WIDGET_TEXT_SIZE_TINY * fontMagnify_Days);
 
             //Цвет дня
             String dateToCompose = Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime());
             List<ContactsEvents.DayType> dayTypes = eventsData.getDayTypes(dateToCompose, prefOtherEvents);
 
             boolean isColoredByEvent = false;
-            if (!dayTypes.isEmpty()) {
-                int maxTypeIndex = -1;
-                for (ContactsEvents.DayType dayType : dayTypes) {
-                    if (dayType.type != ContactsEvents.DayType.Type.Common) {
-                        if (prefOtherEvents.indexOf(dayType.sourceId) > maxTypeIndex) {
-                            Integer colorOfDay;
-                            if (inMonth) {
-                                colorOfDay = eventsColorsInMonth.get(dayType.sourceId);
-                            } else {
-                                colorOfDay = eventsColorsOutMonth.get(dayType.sourceId);
-                            }
-                            if (colorOfDay == null) continue;
+            SpannableStringBuilder sbColorDots = new SpannableStringBuilder();
+            int countColorDots = 0;
 
-                            if (dayType.type == ContactsEvents.DayType.Type.Workday) { //Рабочий в выходной день
-                                isColoredByEvent = true;
-                                maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
-                                continue;
-                            }
-                            if (Color.alpha(colorOfDay) > 0) { //Цвет дня не полностью прозрачный
-                                isColoredByEvent = true;
-                                maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
-                                color = colorOfDay;
-                                if (dayType.type == ContactsEvents.DayType.Type.Holiday) break; //Нашли праздник
+            if (!dayTypes.isEmpty()) {
+                if (colorizeDays) {
+                    int maxTypeIndex = -1;
+                    for (ContactsEvents.DayType dayType : dayTypes) {
+                        if (dayType.type != ContactsEvents.DayType.Type.Common) {
+                            if (prefOtherEvents.indexOf(dayType.sourceId) > maxTypeIndex) {
+                                Integer colorOfDay;
+                                if (inMonth) {
+                                    colorOfDay = eventsColorsInMonth.get(dayType.sourceId);
+                                } else {
+                                    colorOfDay = eventsColorsOutMonth.get(dayType.sourceId);
+                                }
+                                if (colorOfDay == null) continue;
+
+                                if (dayType.type == ContactsEvents.DayType.Type.Workday) { //Рабочий в выходной день
+                                    isColoredByEvent = true;
+                                    maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
+                                    continue;
+                                }
+                                if (Color.alpha(colorOfDay) > 0) { //Цвет дня не полностью прозрачный
+                                    isColoredByEvent = true;
+                                    maxTypeIndex = prefOtherEvents.indexOf(dayType.sourceId);
+                                    color = colorOfDay;
+                                    if (dayType.type == ContactsEvents.DayType.Type.Holiday)
+                                        break; //Нашли праздник
+                                }
                             }
                         }
                     }
                 }
+
+                if (enableColorDots) {
+                    List<Integer> existColors = new ArrayList<>();
+
+                    for (ContactsEvents.DayType dayType : dayTypes) {
+                        Integer colorOfDay = inMonth ? eventsColorsInMonth.get(dayType.sourceId) : eventsColorsOutMonth.get(dayType.sourceId);
+                        if (colorOfDay == null) continue;
+
+                        if (Color.alpha(colorOfDay) > 0 && !existColors.contains(colorOfDay)) {
+                            int start = sbColorDots.length();
+                            sbColorDots.append(eventColorDot);
+                            int end = sbColorDots.length();
+
+                            // Красим точку
+                            sbColorDots.setSpan(new ForegroundColorSpan(colorOfDay), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            // Задаем размер точки
+                            sbColorDots.setSpan(new AbsoluteSizeSpan(Constants.WIDGET_DOTS_SIZE, true), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                            // Если выбран символ горизонтальной плашки, сжимаем его по горизонтали в 1.5 раза
+                            if ("▄".equals(eventColorDot)) {
+                                sbColorDots.setSpan(new android.text.style.ScaleXSpan(0.65f), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            }
+
+                            existColors.add(colorOfDay);
+                            countColorDots++;
+                        }
+                    }
+                }
             }
+
+            if (enabledFillDays || inMonth) {
+                // Цифра дня
+                cellRv.setTextViewText(android.R.id.text1, Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
+
+                // Цветные точки
+                if (countColorDots > 0) {
+                    cellRv.setViewVisibility(R.id.text_dots, View.VISIBLE);
+                    cellRv.setTextViewText(R.id.text_dots, sbColorDots);
+                } else {
+                    cellRv.setViewVisibility(R.id.text_dots, View.GONE);
+                }
+            }
+
             if (!isColoredByEvent && colorizeSaturdays && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
                 if (inMonth) {
                     color = eventsColorsInMonth.get(res.getString(R.string.widget_config_month_events_saturday_id));
@@ -926,16 +1004,34 @@ public class WidgetCalendar extends AppWidgetProvider {
                     color = eventsColorsOutMonth.get(res.getString(R.string.widget_config_month_events_sunday_id));
                 }
             }
+
+            // --- НАЧАЛО БЛОКА ФОНОВ И ЦВЕТА ТЕКСТА ---
+            // Управляем видимостью сетки через overlay-слой, не трогая основной фон
+            if (inMonth && enableGrid) {
+                cellRv.setViewVisibility(R.id.grid_overlay, View.VISIBLE);
+                cellRv.setInt(R.id.grid_overlay, Constants.METHOD_SET_BACKGROUND_RES, getGridDrawable(colorGrid));
+            } else {
+                cellRv.setViewVisibility(R.id.grid_overlay, View.GONE);
+            }
+
+            // Сбрасываем старые внутренние фоны текстовых полей, они больше не нужны
+            cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_COLOR, 0);
+            cellRv.setInt(R.id.text_dots, Constants.METHOD_SET_BACKGROUND_COLOR, 0);
+
             if (color != null) {
-                if (isToday) { //Фон и цвет текста для "сегодня"
-                    cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_COLOR, color);
+                if (isToday) { // Фон и цвет текста для "сегодня"
+                    // Всегда красим ячейку целиком! Пустоты больше не будет.
+                    cellRv.setInt(R.id.cell_day, Constants.METHOD_SET_BACKGROUND_COLOR, color);
+
                     if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
                         cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.black));
+                        cellRv.setTextColor(R.id.text_dots, res.getColor(R.color.black));
                     } else {
                         cellRv.setTextColor(android.R.id.text1, res.getColor(R.color.white));
+                        cellRv.setTextColor(R.id.text_dots, res.getColor(R.color.white));
                     }
                 } else {
-                    if (inMonth) { //Фон дня
+                    if (inMonth) { // Фон обычного дня с событиями
                         int colorValue = 0;
                         String storedColorValue = eventsData.getDayInfo(dateToCompose);
                         if (!storedColorValue.isEmpty()) {
@@ -943,9 +1039,11 @@ public class WidgetCalendar extends AppWidgetProvider {
                                 colorValue = Integer.parseInt(storedColorValue);
                             } catch (NumberFormatException ignored) { /**/ }
                         }
+
                         if (colorValue != 0) {
-                            cellRv.setInt(android.R.id.text1, Constants.METHOD_SET_BACKGROUND_COLOR, colorValue);
-                            //Если цвет текста совпадает с цветом текста, делаем его немного поярче или потусклее
+                            // Всегда красим ячейку целиком
+                            cellRv.setInt(R.id.cell_day, Constants.METHOD_SET_BACKGROUND_COLOR, colorValue);
+
                             if (colorValue == color) {
                                 if (Color.red(color) + Color.green(color) + Color.blue(color) > 180 * 3) {
                                     color = ImageUtils.addColorValue(color, -50);
@@ -953,17 +1051,24 @@ public class WidgetCalendar extends AppWidgetProvider {
                                     color = ImageUtils.addColorValue(color, 50);
                                 }
                             }
+                        } else {
+                            // Если заливки события нет — очищаем фон контейнера ячейки
+                            cellRv.setInt(R.id.cell_day, Constants.METHOD_SET_BACKGROUND_COLOR, 0);
                         }
                     }
-                    cellRv.setTextColor(android.R.id.text1, color); //Цвет текста
+                    cellRv.setTextColor(android.R.id.text1, color); // Цвет текста
                 }
+            } else {
+                // Если базовый цвет текста null — просто очищаем фон контейнера ячейки
+                cellRv.setInt(R.id.cell_day, Constants.METHOD_SET_BACKGROUND_COLOR, 0);
             }
+            // --- КОНЕЦ БЛОКА ФОНОВ ---
 
             //Реакция на нажатие
             if (enabledFillDays || inMonth) {
                 PendingIntent pendingIntent = getAction(context, appWidgetId, prefOtherEvents, cal, dayTypes, calFirstDay, calLastDay);
                 if (pendingIntent != null) {
-                    cellRv.setOnClickPendingIntent(android.R.id.text1, pendingIntent);
+                    cellRv.setOnClickPendingIntent(R.id.cell_day, pendingIntent);
                 }
             }
 
@@ -1086,6 +1191,22 @@ public class WidgetCalendar extends AppWidgetProvider {
             ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
         return pendingIntent;
+    }
+
+    private void initColorMaps() {
+        if (colorGridMap == null) {
+            colorGridMap = new SparseIntArray(3);
+            colorGridMap.put(ContextCompat.getColor(context, R.color.widget_calendar_grid_white), R.drawable.widget_calendar_cell_white);
+            colorGridMap.put(ContextCompat.getColor(context, R.color.widget_calendar_grid_black), R.drawable.widget_calendar_cell_black);
+            colorGridMap.put(ContextCompat.getColor(context, R.color.widget_calendar_grid_yellow), R.drawable.widget_calendar_cell_yellow);
+            colorGridMap.put(ContextCompat.getColor(context, R.color.widget_calendar_grid_orange), R.drawable.widget_calendar_cell_orange);
+        }
+    }
+
+    private int getGridDrawable(@ColorInt int color) {
+        initColorMaps();
+        int res = colorGridMap.get(color);
+        return res != 0 ? res : R.drawable.widget_calendar_cell_white;
     }
 
 }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2026, 15:55
+ *  * Created by Vladimir Belov on 15.09.2026, 20:37
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.09.2026, 15:09
+ *  * Last modified 14.09.2026, 23:54
  *
  */
 
@@ -58,6 +58,7 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
     Fragment fragment;
     OnEditModeChangeListener editModeListener;
     DialogInterface.OnDismissListener onDismissListener = null;
+    private OnItemSelectedListener onItemSelectedListener;
 
     public MultiSelectionSpinner(Context context) {
         super(context);
@@ -75,6 +76,12 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
 
     public interface OnEditModeChangeListener {
         void onEditModeChanged(boolean isInEditMode);
+    }
+    public interface OnItemSelectedListener {
+        void onSelected(List<String> selectedStrings);
+    }
+    public void setOnItemSelectedListener(OnItemSelectedListener listener) {
+        this.onItemSelectedListener = listener;
     }
 
     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -97,6 +104,10 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
 
             adapter.clear();
             adapter.add(buildSelectedItemString());
+
+            if (onItemSelectedListener != null) {
+                onItemSelectedListener.onSelected(getSelectedStrings());
+            }
 
             //todo: добавить выключение взаимоисключающих элементов https://stackoverflow.com/questions/39053333/disable-checkbox-items-in-alertdialog
             // https://stackoverflow.com/questions/7359685/android-disable-all-other-items-on-dialog-when-clicked-on-another
@@ -186,6 +197,10 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
         }
         adapter.clear();
         adapter.add(buildSelectedItemString());
+
+        if (onItemSelectedListener != null) {
+            onItemSelectedListener.onSelected(getSelectedStrings());
+        }
     }
 
     /**

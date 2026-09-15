@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.09.2026, 23:14
+  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 07.09.2026, 23:10
+  ~  * Last modified 15.09.2026, 17:47
   ~  */
   -->
 
@@ -971,6 +971,9 @@
     <string name="widget_config_color_border_label">Widget-Rahmenfarbe</string>
     <string name="widget_config_color_border_description">Rahmenfarbe für Widget</string>
 
+    <string name="widget_config_color_grid_label">Rasterfarbe</string>
+    <string name="widget_config_color_grid_description">Rasterfarbe für Tage</string>
+
     <string name="widget_config_layout_title">Monatslayout</string>
     <string name="widget_config_layout_description">Wie viele Monate werden angezeigt</string>
     <string name="widget_config_month_events_sources_label">Quellen für Feiertage und Ereignisse</string>
@@ -1003,6 +1006,9 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="widget_config_month_color_arrows_description">Farbe der Monatsauswahlpfeile</string>
     <string name="widget_config_month_color_weeks_label">Wochentagsfarbe</string>
     <string name="widget_config_month_color_weeks_description">Farbe der Wochentage</string>
+
+    <string name="widget_config_color_dots_label">Markierung für Ereignisse:</string>
+    <string name="widget_config_color_dots_description">Ereignismarker werden unter dem Datum angezeigt und in der Farbe der Ereignisquelle eingefärbt</string>
 
     <string-array name="widget_config_layout_entries">
         <item>Automatisch (nach Widget-Größe)</item>
@@ -1046,8 +1052,11 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
         <item>Wochentagsbeschriftungen</item>
         <item>Tage vor und nach dem Monat</item>
         <item>Außenseitenränder</item>
+        <item>Datum in Ereignisfarbe</item>
         <item>@string/pref_EventInfo_Border</item>
         <item>Wochentag hervorheben</item>
+        <item>Tagesraster</item>
+        <item>Farbige Ereignismarkierungen</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.09.2026, 15:55
+  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 05.09.2026, 15:52
+  ~  * Last modified 15.09.2026, 20:28
   ~  */
   -->
 
@@ -13,6 +13,7 @@
         <item>#1.9.2</item>
         <item>🎂 Selecionando ícones e símbolos para tipos de eventos</item>
         <item>💾 Modelos de configurações de widgets</item>
+        <item>Uma grade de dias e marcadores de eventos na cor 🟢 foram adicionados ao widget de calendário</item>
         <item>Correções de bugs</item>
 
         <item>#1.9.1</item>

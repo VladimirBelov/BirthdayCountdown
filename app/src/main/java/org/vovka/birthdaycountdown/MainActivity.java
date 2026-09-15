@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.09.2026, 23:14
+ *  * Created by Vladimir Belov on 15.09.2026, 20:37
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.09.2026, 20:10
+ *  * Last modified 09.09.2026, 23:07
  *
  */
 
@@ -2464,68 +2464,70 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         || eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_XDays
                         || eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Hidden;
 
-                for (String event : eventsData.eventList) {
-                    String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
-                    String eventKey = eventsData.getEventKey(singleEventArray);
-                    String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
+                synchronized (eventsData.eventList) {
+                    for (String event : eventsData.eventList) {
+                        String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
+                        String eventKey = eventsData.getEventKey(singleEventArray);
+                        String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
 
-                    boolean isHiddenEvent = eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId);
-                    boolean isSilencedEvent = eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId);
-                    boolean isXDayEvent = eventsData.isXDaysEvent(eventKey)
-                            && resources.getString(R.string.event_type_xdays_emoji).equals(singleEventArray[ContactsEvents.Position_eventEmoji]);
-                    boolean isFavoriteEvent = eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred]);
-                    boolean isEventTypeToShow = eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType]);
+                        boolean isHiddenEvent = eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId);
+                        boolean isSilencedEvent = eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId);
+                        boolean isXDayEvent = eventsData.isXDaysEvent(eventKey)
+                                && resources.getString(R.string.event_type_xdays_emoji).equals(singleEventArray[ContactsEvents.Position_eventEmoji]);
+                        boolean isFavoriteEvent = eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred]);
+                        boolean isEventTypeToShow = eventsData.preferences_list_event_types.contains(singleEventArray[ContactsEvents.Position_eventType]);
 
-                    if (isHiddenEvent) statsAllHiddenEvents++;
-                    if (isSilencedEvent) statsSilencedEvents++;
-                    if (isXDayEvent) statsXDaysEvents++;
+                        if (isHiddenEvent) statsAllHiddenEvents++;
+                        if (isSilencedEvent) statsSilencedEvents++;
+                        if (isXDayEvent) statsXDaysEvents++;
 
-                    //Фильтр по источникам
-                    boolean isEventSourceToShow = false;
-                    if (!eventsData.preferences_list_EventSources.isEmpty()) {
-                        final String eventDates = singleEventArray[ContactsEvents.Position_dates];
-                        for (String source: eventsData.preferences_list_EventSources) {
-                            if (eventDates.contains(source)) {
-                                isEventSourceToShow = true;
-                                break;
+                        //Фильтр по источникам
+                        boolean isEventSourceToShow = false;
+                        if (!eventsData.preferences_list_EventSources.isEmpty()) {
+                            final String eventDates = singleEventArray[ContactsEvents.Position_dates];
+                            for (String source : eventsData.preferences_list_EventSources) {
+                                if (eventDates.contains(source)) {
+                                    isEventSourceToShow = true;
+                                    break;
+                                }
+                            }
+                            if (!isSearchAllTypesAndSources && !isEventSourceToShow) continue;
+                        } else {
+                            isEventSourceToShow = true;
+                        }
+
+                        if (isEventTypeToShow && isEventSourceToShow) {
+                            statsAllEvents++;
+                            if (isHiddenEvent) statsHiddenEvents++;
+                        }
+
+                        boolean isUnrecognized = isUnrecognizedEvent(singleEventArray);
+                        boolean skipAdd = false;
+
+                        if (isUnrecognized) statsUnrecognizedEvents++;
+                        if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Unrecognized) {
+                            if (isUnrecognized) {
+                                dataList.add(event);
+                                skipAdd = true;
                             }
                         }
-                        if (!isSearchAllTypesAndSources && !isEventSourceToShow) continue;
-                    } else {
-                        isEventSourceToShow = true;
-                    }
 
-                    if (isEventTypeToShow && isEventSourceToShow) {
-                        statsAllEvents++;
-                        if (isHiddenEvent) statsHiddenEvents++;
-                    }
+                        //Фильтр по типам
+                        if (isEventTypeToShow || isSearchAllTypesAndSources) {
 
-                    boolean isUnrecognized = isUnrecognizedEvent(singleEventArray);
-                    boolean skipAdd = false;
-
-                    if (isUnrecognized) statsUnrecognizedEvents++;
-                    if (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Unrecognized) {
-                        if (isUnrecognized) {
-                            dataList.add(event);
-                            skipAdd = true;
+                            //Фильтр по режиму отображения
+                            if ((eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_NotHidden && !isHiddenEvent) || //Показывать нескрытые
+                                    (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Hidden && isHiddenEvent) || //Показывать только скрытые
+                                    (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Silenced && isSilencedEvent) || //Показывать только без уведомлений
+                                    (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_XDays && isXDayEvent) || //Показывать только счётчики дней
+                                    (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Favorite && isFavoriteEvent) || //Показывать только избранные
+                                    eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_All) {
+                                if (!skipAdd) dataList.add(event);
+                                statsVisibleEvents++;
+                            }
                         }
+
                     }
-
-                    //Фильтр по типам
-                    if (isEventTypeToShow || isSearchAllTypesAndSources) {
-
-                        //Фильтр по режиму отображения
-                        if ((eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_NotHidden && !isHiddenEvent) || //Показывать нескрытые
-                                (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Hidden && isHiddenEvent) || //Показывать только скрытые
-                                (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Silenced && isSilencedEvent) || //Показывать только без уведомлений
-                                (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_XDays && isXDayEvent) || //Показывать только счётчики дней
-                                (eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_Favorite && isFavoriteEvent) || //Показывать только избранные
-                                eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_All) {
-                                    if (!skipAdd) dataList.add(event);
-                                    statsVisibleEvents++;
-                        }
-                    }
-
                 }
             }
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.09.2026, 23:14
+  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 06.09.2026, 20:25
+  ~  * Last modified 15.09.2026, 17:45
   ~  */
   -->
 
@@ -971,6 +971,9 @@
     <string name="widget_config_color_border_label">Widget border color</string>
     <string name="widget_config_color_border_description">Border color for widget</string>
 
+    <string name="widget_config_color_grid_label">Grid color</string>
+    <string name="widget_config_color_grid_description">Grid color for days</string>
+
     <string name="widget_config_layout_title">Months layout</string>
     <string name="widget_config_layout_description">How many months to display</string>
     <string name="widget_config_month_events_sources_label">Sources of holidays and events</string>
@@ -1003,6 +1006,9 @@ Long click on item to select color"</string>
     <string name="widget_config_month_color_arrows_description">Color of month selector arrows</string>
     <string name="widget_config_month_color_weeks_label">Weekdays color</string>
     <string name="widget_config_month_color_weeks_description">Color of weekdays</string>
+
+    <string name="widget_config_color_dots_label">Events marker:</string>
+    <string name="widget_config_color_dots_description">Event markers are displayed below the date and are colored with the color of the event source</string>
 
     <string-array name="widget_config_layout_entries">
         <item>Automatically (by widget size)</item>
@@ -1046,8 +1052,11 @@ Long click on item to select color"</string>
         <item>Weekdays labels</item>
         <item>Days before and after month</item>
         <item>External side margins</item>
+        <item>Date colored by event</item>
         <item>@string/pref_EventInfo_Border</item>
         <item>Highlight day of week</item>
+        <item>Day grid</item>
+        <item>Colored events markers</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">
@@ -2361,9 +2370,10 @@ Long click on item to select color"</string>
     <string name="widget_config_defaultPref" translatable="false">1,0,0,,,,,,,,,,1+7</string>
     <string name="widget_config_defaultPref_List" translatable="false">1,0,0,,2+12+15+16+17+29+30,,,,100e0d,,,,1</string>
     <string name="widget_config_defaultPref_PhotoList" translatable="false">1,0,0,,10+1+2+7+16+18+19,,,,50e0d,,,</string>
-    <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,0,1+2+3+4+5,01+02,0,,,,,,,,,1+1</string>
+    <string name="widget_config_defaultPref_Calendar" translatable="false">0,0,0,0,1+2+3+4+5+8,01+02,0,,,,,,,,,1+1</string>
     <color name="pref_Widgets_Color_WidgetBackground_default" translatable="false">@color/dark_gray_transp</color>
     <color name="pref_Widgets_Color_WidgetBorder_default" translatable="false">@color/widget_border_grey</color>
+    <color name="pref_Widgets_Color_Grid_default" translatable="false">@color/widget_calendar_grid_white</color>
     <color name="pref_Widgets_Color_Calendar_Back_default" translatable="false">@color/black_transp</color>
     <color name="pref_Widgets_Color_Calendar_HeaderBack_default" translatable="false">@color/dark_gray_transp</color>
     <color name="pref_Widgets_Color_Calendar_Common_default" translatable="false">@color/white</color>
@@ -2374,6 +2384,22 @@ Long click on item to select color"</string>
     <color name="pref_Widgets_Color_Calendar_Events_Saturday_default" translatable="false">@color/dark_yellow</color>
     <color name="pref_Widgets_Color_Calendar_Events_Sunday_default" translatable="false">@color/dark_red</color>
     <color name="pref_Widgets_Color_Calendar_Events_default" translatable="false">@color/green</color>
+
+    <string name="widget_config_color_dots_default" translatable="false">●</string>
+    <string-array name="widget_config_color_dots_entries" translatable="false">
+        <item>@string/widget_config_color_dots_default</item> <!-- Крупный круг -->
+        <item>•</item> <!-- Компактная точка (буллит) -->
+        <item>▪</item> <!-- Маленький квадрат -->
+        <item>■</item> <!-- Крупный квадрат -->
+        <item>━</item> <!-- Горизонтальная плашка -->
+        <item>▄</item> <!-- Компактная плашка/тире -->
+        <item>▲</item> <!-- Треугольник острием вверх -->
+        <item>▼</item> <!-- Треугольник острием вниз -->
+        <item>◆</item> <!-- Плотный ромб -->
+        <item>⬢</item> <!-- Шестигранник (сота) -->
+        <item>★</item> <!-- Пятиконечная звезда -->
+        <item>✦</item> <!-- Четырехконечная звезда -->
+    </string-array>
 
     <string name="last_name_completions_man" translatable="false">ов,ев,ин,ын,цкий,ский,цкой,ской</string>
     <string name="last_name_completions_female" translatable="false">ова,ева,ина,ая,яя,екая,цкая</string>
@@ -2650,14 +2676,20 @@ Long click on item to select color"</string>
     <string name="widget_config_elements_fill_days" translatable="false">5</string>
     <string name="widget_config_elements_highlight_weekday" translatable="false">6</string>
     <string name="widget_config_elements_border" translatable="false">7</string>
+    <string name="widget_config_elements_highlight_day" translatable="false">8</string>
+    <string name="widget_config_elements_grid" translatable="false">9</string>
+    <string name="widget_config_elements_dots" translatable="false">10</string>
     <string-array name="widget_config_elements_values" translatable="false">
         <item>@string/widget_config_elements_month</item>
         <item>@string/widget_config_elements_year</item>
         <item>@string/widget_config_elements_weeks</item>
         <item>@string/widget_config_elements_fill_days</item>
         <item>@string/widget_config_elements_margins</item>
+        <item>@string/widget_config_elements_highlight_day</item>
         <item>@string/widget_config_elements_border</item>
         <item>@string/widget_config_elements_highlight_weekday</item>
+        <item>@string/widget_config_elements_grid</item>
+        <item>@string/widget_config_elements_dots</item>
     </string-array>
 
     <string name="previous_month_arrow" translatable="false">˄</string>

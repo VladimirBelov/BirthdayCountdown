@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.09.2026, 23:14
+ *  * Created by Vladimir Belov on 15.09.2026, 20:37
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.09.2026, 20:20
+ *  * Last modified 15.09.2026, 18:34
  *
  */
 
@@ -118,6 +118,8 @@ public final class Constants {
     static final String DATE_NO_DIV = "yyyyMMdd";
     static final String DATE_YY_MM_DD_HH_MM = " yy.MM.dd HH:mm";
     static final String DATE_LLLL_YYYY = "LLLL yyyy";
+    static final String DATE_LLLL = "LLLL";
+    static final String DATE_EEE = " (EEE)";
     static final String DATE_YYYY = "yyyy";
 
     public static final String STRING_TYPE_WEDDING = "event_type_wedding_";
@@ -329,6 +331,7 @@ public final class Constants {
     public static final int WIDGET_TEXT_SIZE_TINY = 10;
     static final int WIDGET_TEXT_SIZE_SMALL = 12;
     static final int WIDGET_TEXT_SIZE_BIG = 18;
+    static final int WIDGET_DOTS_SIZE = 10;
     static final int WIDGET_EVENTS_MAX = 7;
     static final int WIDGET_CALENDAR_OUT_MONTH_TINT = (int) (255 * 0.4);
     static final int WIDGET_CALENDAR_DAY_OF_WEEK_TINT = (int) (255 * 0.5);
@@ -492,7 +495,7 @@ public final class Constants {
     static final String STORE_NAME_SAMSUNG = "Galaxy Store";
     static final String STORE_LINK_4PDA = "https://4pda.to/forum/index.php?showtopic=939391";
 
-    static final String METHOD_SET_BACKGROUND_COLOR = "setBackgroundColor";
+    static final String METHOD_SET_BACKGROUND_COLOR = "setBackgroundColor"; //Только для TextView. Для LinearLayout не работает
     static final String METHOD_SET_BACKGROUND_RES = "setBackgroundResource";
     static final String METHOD_SET_MIN_WIDTH = "setMinWidth";
 
@@ -547,4 +550,8 @@ public final class Constants {
     public static final String FEATURE_ADV_ACTIONS = "show_adv_actions";
     /** Максимальное количество шаблонов на один тип виджета */
     static final int MAX_WIDGET_TEMPLATES = 10;
+    /** Если в элементах календарного виджета нет этого пункта
+     *
+     */
+    static final String migration192 = "m192";
 }

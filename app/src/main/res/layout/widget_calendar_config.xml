@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.07.2026, 23:43
+  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 07.07.2026, 19:33
+  ~  * Last modified 15.09.2026, 20:36
   ~  */
   -->
 
@@ -382,7 +382,8 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />
+                    android:background="?attr/listDividerColor"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/captionOnClick"
@@ -391,13 +392,15 @@
                     android:text="@string/widget_config_onclick_label"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="?android:attr/textColorSecondary"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:id="@+id/blockOnClickCommon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/captionOnClickCommon"
@@ -425,7 +428,8 @@
                     android:id="@+id/blockOnClickHolidays"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/captionOnClickHolidays"
@@ -449,12 +453,59 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/dividerColorDots"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor"
+                    android:visibility="gone"/>
+
+                <LinearLayout
+                    android:id="@+id/blockColorDots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/captionColorDots"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/widget_config_color_dots_label"
+                        android:textStyle="bold"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Spinner
+                        android:id="@+id/spinnerColorDots"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/widget_config_color_dots_label"
+                        android:textAlignment="textEnd"
+                        android:entries="@array/widget_config_color_dots_entries"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/hintColorDots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_config_color_dots_description"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:visibility="gone"/>
+
+                <View
                     android:id="@+id/dividerColorWidgetBackground"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />
+                    android:background="?attr/listDividerColor"
+                    android:visibility="gone"/>
 
                 <org.vovka.birthdaycountdown.ColorPicker
                     android:id="@+id/colorWidgetBackground"
@@ -470,7 +521,8 @@
                     app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_color_back_label"
-                    app:dialogIcon="@drawable/ic_menu_paste" />
+                    app:dialogIcon="@drawable/ic_menu_paste"
+                    android:visibility="gone"/>
 
                 <View
                     android:id="@+id/dividerColorWidgetBorder"
@@ -478,7 +530,8 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />
+                    android:background="?attr/listDividerColor"
+                    android:visibility="gone"/>
 
                 <org.vovka.birthdaycountdown.ColorPicker
                     android:id="@+id/colorWidgetBorder"
@@ -495,7 +548,8 @@
                     app:enableCustomColors="false"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_color_border_label"
-                    app:dialogIcon="@drawable/ic_menu_paste" />
+                    app:dialogIcon="@drawable/ic_menu_paste"
+                    android:visibility="gone"/>
 
                 <View
                     android:id="@+id/dividerColorCommon"
@@ -503,7 +557,8 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />
+                    android:background="?attr/listDividerColor"
+                    android:visibility="gone"/>
 
                 <org.vovka.birthdaycountdown.ColorPicker
                     android:id="@+id/colorCommon"
@@ -519,7 +574,8 @@
                     app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_month_color_common_label"
-                    app:dialogIcon="@drawable/ic_menu_paste" />
+                    app:dialogIcon="@drawable/ic_menu_paste"
+                    android:visibility="gone"/>
 
                 <View
                     android:id="@+id/dividerColorToday"
@@ -527,7 +583,8 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />
+                    android:background="?attr/listDividerColor"
+                    android:visibility="gone"/>
 
                 <org.vovka.birthdaycountdown.ColorPicker
                     android:id="@+id/colorToday"
@@ -543,7 +600,8 @@
                     app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_month_color_today_label"
-                    app:dialogIcon="@drawable/ic_menu_paste" />
+                    app:dialogIcon="@drawable/ic_menu_paste"
+                    android:visibility="gone"/>
 
                 <View
                     android:id="@+id/dividerColorHeader"
@@ -551,7 +609,8 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />
+                    android:background="?attr/listDividerColor"
+                    android:visibility="gone"/>
 
                 <org.vovka.birthdaycountdown.ColorPicker
                     android:id="@+id/colorMonthTitle"
@@ -567,7 +626,8 @@
                     app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_month_color_header_label"
-                    app:dialogIcon="@drawable/ic_menu_paste" />
+                    app:dialogIcon="@drawable/ic_menu_paste"
+                    android:visibility="gone"/>
 
                 <View
                     android:id="@+id/dividerColorHeaderBack"
@@ -575,7 +635,8 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />
+                    android:background="?attr/listDividerColor"
+                    android:visibility="gone"/>
 
                 <org.vovka.birthdaycountdown.ColorPicker
                     android:id="@+id/colorHeaderBack"
@@ -591,7 +652,8 @@
                     app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_month_color_header_back_label"
-                    app:dialogIcon="@drawable/ic_menu_paste" />
+                    app:dialogIcon="@drawable/ic_menu_paste"
+                    android:visibility="gone"/>
 
                 <View
                     android:id="@+id/dividerColorArrows"
@@ -599,7 +661,8 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />
+                    android:background="?attr/listDividerColor"
+                    android:visibility="gone"/>
 
                 <org.vovka.birthdaycountdown.ColorPicker
                     android:id="@+id/colorArrows"
@@ -615,7 +678,8 @@
                     app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_month_color_arrows_label"
-                    app:dialogIcon="@drawable/ic_menu_paste" />
+                    app:dialogIcon="@drawable/ic_menu_paste"
+                    android:visibility="gone"/>
 
                 <View
                     android:id="@+id/dividerColorWeeks"
@@ -623,7 +687,8 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
-                    android:background="?attr/listDividerColor" />
+                    android:background="?attr/listDividerColor"
+                    android:visibility="gone"/>
 
                 <org.vovka.birthdaycountdown.ColorPicker
                     android:id="@+id/colorWeeks"
@@ -639,8 +704,35 @@
                     app:numColumns="5"
                     app:itemLayout="@layout/item_color"
                     app:dialogTitle="@string/widget_config_month_color_weeks_label"
-                    app:dialogIcon="@drawable/ic_menu_paste" />
+                    app:dialogIcon="@drawable/ic_menu_paste"
+                    android:visibility="gone"/>
 
+                <View
+                    android:id="@+id/dividerColorGrid"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="?attr/listDividerColor"
+                    android:visibility="gone"/>
+
+                <org.vovka.birthdaycountdown.ColorPicker
+                    android:id="@+id/colorGrid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="10dp"
+                    app:title="@string/widget_config_color_grid_label"
+                    app:summary="@string/widget_config_color_grid_description"
+                    app:defaultValue="@color/pref_Widgets_Color_Grid_default"
+                    app:choices="@array/widget_calendar_grid_values"
+                    app:icon="@null"
+                    app:numColumns="5"
+                    app:enableCustomColors="false"
+                    app:itemLayout="@layout/item_color"
+                    app:dialogTitle="@string/widget_config_color_grid_label"
+                    app:dialogIcon="@drawable/ic_menu_paste"
+                    android:visibility="gone"/>
 
             </LinearLayout>
         </ScrollView>
@@ -686,7 +778,7 @@
                 android:layout_weight="1.0"
                 android:text="@string/button_cancel"
                 android:textColor="?attr/windowStatusbarColor"
-                tools:ignore="ButtonStyle,VisualLintButtonSize" />
+                tools:ignore="ButtonStyle,TooManyViews,VisualLintButtonSize" />
 
             <Button
                 android:id="@+id/button_ok"

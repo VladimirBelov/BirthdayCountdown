@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.09.2026, 23:14
+  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 07.09.2026, 23:10
+  ~  * Last modified 15.09.2026, 17:50
   ~  */
   -->
 
@@ -971,6 +971,9 @@
     <string name="widget_config_color_border_label">Колір межі віджета</string>
     <string name="widget_config_color_border_description">Колір межі для віджета</string>
 
+    <string name="widget_config_color_grid_label">Колір сітки</string>
+    <string name="widget_config_color_grid_description">Колір сітки для днів</string>
+
     <string name="widget_config_layout_title">Макет місяців</string>
     <string name="widget_config_layout_description">Скільки місяців відображати</string>
     <string name="widget_config_month_events_sources_label">Джерела свят і подій</string>
@@ -1003,6 +1006,9 @@
     <string name="widget_config_month_color_arrows_description">Колір стрілок вибору місяця</string>
     <string name="widget_config_month_color_weeks_label">Колір днів тижня</string>
     <string name="widget_config_month_color_weeks_description">Колір днів тижня</string>
+
+    <string name="widget_config_color_dots_label">Маркер подій:</string>
+    <string name="widget_config_color_dots_description">Маркери подій виводяться під датою та забарвлюються кольором джерела події</string>
 
     <string-array name="widget_config_layout_entries">
         <item>Автоматично (за розміром віджета)</item>
@@ -1046,8 +1052,11 @@
         <item>Мітки днів тижня</item>
         <item>Дні до і після місяця</item>
         <item>Зовнішні бічні поля</item>
+        <item>Дата кольором події</item>
         <item>@string/pref_EventInfo_Border</item>
         <item>Виділіть день тижня</item>
+        <item>Сітка днів</item>
+        <item>Кольорові маркери подій</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">

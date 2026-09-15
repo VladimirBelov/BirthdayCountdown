@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 08.03.2026, 21:23
+  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 08.03.2026, 15:04
+  ~  * Last modified 15.09.2026, 20:36
   ~  */
   -->
 
@@ -787,16 +787,6 @@
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textColorPrimary">@color/theme_black_primary</item>
         <item name="android:textColor">@color/lighter_gray</item>
-    </style>
-
-    <style name="CalendarCell">
-        <item name="android:id">@android:id/text1</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:gravity">center_horizontal|top</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:lines">1</item>
     </style>
 
     <style name="RightAlignedSpinner">

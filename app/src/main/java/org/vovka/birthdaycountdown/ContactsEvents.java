@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.09.2026, 14:31
+ *  * Created by Vladimir Belov on 15.09.2026, 20:37
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 08.09.2026, 14:31
+ *  * Last modified 09.09.2026, 21:31
  *
  */
 
@@ -7971,7 +7971,7 @@ public class ContactsEvents {
                         intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                         intentClose.putExtra(Constants.EXTRA_NOTIFICATION_DATA, notificationDetails);
                         PendingIntent pendingClose = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
-                        NotificationCompat.Action actionClose = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
+                        NotificationCompat.Action actionClose = new NotificationCompat.Action(0, resources.getString(R.string.button_close), pendingClose);
                         builder.addAction(actionClose);
                     }
 
@@ -7982,7 +7982,7 @@ public class ContactsEvents {
 
                         intentShare.putExtra(Constants.EXTRA_NOTIFICATION_DATA, notificationDetails);
                         PendingIntent pendingShare = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentShare, PendingIntentImmutable);
-                        NotificationCompat.Action actionShare = new NotificationCompat.Action(0, context.getString(R.string.button_share), pendingShare);
+                        NotificationCompat.Action actionShare = new NotificationCompat.Action(0, resources.getString(R.string.button_share), pendingShare);
                         builder.addAction(actionShare);
                     }
 
@@ -8084,7 +8084,7 @@ public class ContactsEvents {
                             intentDial.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentDial.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
                             PendingIntent pendingDial = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentDial, PendingIntentImmutable);
-                            NotificationCompat.Action actionDial = new NotificationCompat.Action(0, context.getString(R.string.button_dial), pendingDial);
+                            NotificationCompat.Action actionDial = new NotificationCompat.Action(0, resources.getString(R.string.button_dial), pendingDial);
                             builder.addAction(actionDial);
 
                         }
@@ -8096,7 +8096,7 @@ public class ContactsEvents {
                             intentSilent.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentSilent.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
                             PendingIntent pendingSilent = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentSilent, PendingIntentImmutable);
-                            NotificationCompat.Action actionSilent = new NotificationCompat.Action(0, context.getString(R.string.button_silent), pendingSilent);
+                            NotificationCompat.Action actionSilent = new NotificationCompat.Action(0, resources.getString(R.string.button_silent), pendingSilent);
                             builder.addAction(actionSilent);
                         }
 
@@ -8106,7 +8106,7 @@ public class ContactsEvents {
                             intentHide.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentHide.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
                             PendingIntent pendingHide = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentHide, PendingIntentImmutable);
-                            NotificationCompat.Action actionHide = new NotificationCompat.Action(0, context.getString(R.string.button_hide), pendingHide);
+                            NotificationCompat.Action actionHide = new NotificationCompat.Action(0, resources.getString(R.string.button_hide), pendingHide);
                             builder.addAction(actionHide);
                         }
 
@@ -8118,7 +8118,7 @@ public class ContactsEvents {
                             intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, prefEventDetails.toArray(new String[0]));
                             intentSnooze.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, prefQuickActions.toArray(new String[0]));
                             PendingIntent pendingSnooze = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentSnooze, PendingIntentImmutable);
-                            NotificationCompat.Action actionSnooze = new NotificationCompat.Action(0, context.getString(R.string.button_snooze), pendingSnooze);
+                            NotificationCompat.Action actionSnooze = new NotificationCompat.Action(0, resources.getString(R.string.button_snooze), pendingSnooze);
                             builder.addAction(actionSnooze);
                         }
 
@@ -8128,7 +8128,7 @@ public class ContactsEvents {
                             intentShare.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentShare.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventTitle.concat(Constants.STRING_EOL).concat(eventDetails));
                             PendingIntent pendingShare = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentShare, PendingIntentImmutable);
-                            NotificationCompat.Action actionShare = new NotificationCompat.Action(0, context.getString(R.string.button_share), pendingShare);
+                            NotificationCompat.Action actionShare = new NotificationCompat.Action(0, resources.getString(R.string.button_share), pendingShare);
                             builder.addAction(actionShare);
                         }
 
@@ -8140,7 +8140,7 @@ public class ContactsEvents {
                             intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_DETAILS, prefEventDetails.toArray(new String[0]));
                             intentAttach.putExtra(Constants.EXTRA_NOTIFICATION_ACTIONS, prefQuickActions.toArray(new String[0]));
                             PendingIntent pendingAttach = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentAttach, PendingIntentImmutable);
-                            NotificationCompat.Action actionAttach = new NotificationCompat.Action(0, context.getString(R.string.button_attach), pendingAttach);
+                            NotificationCompat.Action actionAttach = new NotificationCompat.Action(0, resources.getString(R.string.button_attach), pendingAttach);
                             builder.addAction(actionAttach);
                         }
 
@@ -8150,7 +8150,7 @@ public class ContactsEvents {
                             intentClose.putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationID);
                             intentClose.putExtra(Constants.EXTRA_NOTIFICATION_DATA, eventAsString);
                             PendingIntent pendingClose = PendingIntent.getBroadcast(context, Constants.defaultNotificationID + generator.nextInt(100), intentClose, PendingIntentImmutable);
-                            NotificationCompat.Action actionClose = new NotificationCompat.Action(0, context.getString(R.string.button_close), pendingClose);
+                            NotificationCompat.Action actionClose = new NotificationCompat.Action(0, resources.getString(R.string.button_close), pendingClose);
                             builder.addAction(actionClose);
                         }
 

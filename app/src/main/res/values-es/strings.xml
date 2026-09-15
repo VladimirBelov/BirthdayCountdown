@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.09.2026, 23:14
+  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 07.09.2026, 23:12
+  ~  * Last modified 15.09.2026, 17:47
   ~  */
   -->
 
@@ -971,6 +971,9 @@
     <string name="widget_config_color_border_label">Color del borde del widget</string>
     <string name="widget_config_color_border_description">Color del borde del widget</string>
 
+    <string name="widget_config_color_grid_label">Color de la cuadrícula</string>
+    <string name="widget_config_color_grid_description">Color de la cuadrícula para los días</string>
+
     <string name="widget_config_layout_title">Diseño de meses</string>
     <string name="widget_config_layout_description">Cuántos meses mostrar</string>
     <string name="widget_config_month_events_sources_label">Fuentes de días festivos y eventos</string>
@@ -1003,6 +1006,9 @@ Haga clic largo en el elemento para seleccionar el color"</string>
     <string name="widget_config_month_color_arrows_description">Color de las flechas selectoras de mes</string>
     <string name="widget_config_month_color_weeks_label">Color de días laborables</string>
     <string name="widget_config_month_color_weeks_description">Color de los días laborables</string>
+
+    <string name="widget_config_color_dots_label">Marcador de eventos:</string>
+    <string name="widget_config_color_dots_description">Los marcadores de eventos se muestran debajo de la fecha y se colorean según la fuente del evento</string>
 
     <string-array name="widget_config_layout_entries">
         <item>Automáticamente (por tamaño del widget)</item>
@@ -1046,8 +1052,11 @@ Haga clic largo en el elemento para seleccionar el color"</string>
         <item>Etiquetas de días laborables</item>
         <item>Días antes y después del mes</item>
         <item>Márgenes laterales externos</item>
+        <item>Fecha con color según el evento</item>
         <item>@string/pref_EventInfo_Border</item>
         <item>Resaltar el día de la semana</item>
+        <item>Cuadrícula diaria</item>
+        <item>Marcadores de eventos en color</item>
     </string-array>
 
     <string-array name="pref_widget_month_onclick_holidays_entries">
