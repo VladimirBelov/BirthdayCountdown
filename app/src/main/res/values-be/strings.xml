@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
+  ~  * Created by Vladimir Belov on 17.09.2026, 00:15
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.09.2026, 17:46
+  ~  * Last modified 17.09.2026, 00:12
   ~  */
   -->
 
@@ -241,6 +241,8 @@
     <string name="hint_Prev">Папярэдні супадзенне</string>
     <string name="hint_Next">Наступнае супадзенне</string>
     <string name="hint_Description">Разгарнуць апісанне падзеі</string>
+    <string name="hint_Less">Less</string>
+    <string name="hint_More">More</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Так</string>

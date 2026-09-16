@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 14.07.2026, 01:17
+ *  * Created by Vladimir Belov on 17.09.2026, 00:15
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 13.07.2026, 22:45
+ *  * Last modified 17.09.2026, 00:08
  *
  */
 package org.vovka.birthdaycountdown;
@@ -44,6 +44,7 @@ import androidx.appcompat.view.ContextThemeWrapper;
 
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
+import org.vovka.birthdaycountdown.utils.UiTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -329,29 +330,29 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
             TextView seek1_label = view.findViewById(R.id.seek1_label);
             seek1_label.setText(res.getString(R.string.pref_Red_title));
-            SeekBar seek1 = view.findViewById(R.id.seek1);
-            seek1.setProgress(Color.red(colorValue[0]));
+            SeekBar seekRedColor = view.findViewById(R.id.seekRedColor);
+            seekRedColor.setProgress(Color.red(colorValue[0]));
             TextView seek1_progress = view.findViewById(R.id.seek1_progress);
-            seek1_progress.setText(String.valueOf(seek1.getProgress()));
+            seek1_progress.setText(String.valueOf(seekRedColor.getProgress()));
 
             TextView seek2_label = view.findViewById(R.id.seek2_label);
             seek2_label.setText(res.getString(R.string.pref_Green_title));
-            SeekBar seek2 = view.findViewById(R.id.seek2);
-            seek2.setProgress(Color.green(colorValue[0]));
+            SeekBar seekGreenColor = view.findViewById(R.id.seekGreenColor);
+            seekGreenColor.setProgress(Color.green(colorValue[0]));
             TextView seek2_progress = view.findViewById(R.id.seek2_progress);
             seek2_progress.setText(String.valueOf(Color.green(colorValue[0])));
 
             TextView seek3_label = view.findViewById(R.id.seek3_label);
             seek3_label.setText(res.getString(R.string.pref_Blue_title));
-            SeekBar seek3 = view.findViewById(R.id.seek3);
-            seek3.setProgress(Color.blue(colorValue[0]));
+            SeekBar seekBlueColor = view.findViewById(R.id.seekBlueColor);
+            seekBlueColor.setProgress(Color.blue(colorValue[0]));
             TextView seek3_progress = view.findViewById(R.id.seek3_progress);
             seek3_progress.setText(String.valueOf(Color.blue(colorValue[0])));
 
             TextView seek4_label = view.findViewById(R.id.seek4_label);
             seek4_label.setText(res.getString(R.string.pref_Alpha_title));
-            SeekBar seek4 = view.findViewById(R.id.seek4);
-            seek4.setProgress(255 - Color.alpha(colorValue[0]));
+            SeekBar seekTransparency = view.findViewById(R.id.seekTransparency);
+            seekTransparency.setProgress(255 - Color.alpha(colorValue[0]));
             TextView seek4_progress = view.findViewById(R.id.seek4_progress);
             seek4_progress.setText(String.valueOf(255 - Color.alpha(colorValue[0])));
 
@@ -439,9 +440,9 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
                         colorValue[0] = newColor;
 
-                        seek1.setProgress(Color.red(newColor));
-                        seek2.setProgress(Color.green(newColor));
-                        seek3.setProgress(Color.blue(newColor));
+                        seekRedColor.setProgress(Color.red(newColor));
+                        seekGreenColor.setProgress(Color.green(newColor));
+                        seekBlueColor.setProgress(Color.blue(newColor));
 
                         seek1_progress.setText(String.valueOf(Color.red(newColor)));
                         seek2_progress.setText(String.valueOf(Color.green(newColor)));
@@ -471,20 +472,20 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                             colorString = Constants.STRING_HASH + colorString;
                         int colorInt = Color.parseColor(colorString);
                         colorValue[0] = colorInt;
-                        seek1.setProgress(Color.red(colorInt));
-                        seek2.setProgress(Color.green(colorInt));
-                        seek3.setProgress(Color.blue(colorInt));
-                        seek4.setProgress(255 - Color.alpha(colorInt));
+                        seekRedColor.setProgress(Color.red(colorInt));
+                        seekGreenColor.setProgress(Color.green(colorInt));
+                        seekBlueColor.setProgress(Color.blue(colorInt));
+                        seekTransparency.setProgress(255 - Color.alpha(colorInt));
                         setColorViewValue(color_preview, colorInt);
                         colorSpectrum.post(updateMarkerPosition);
                     } catch (Exception e) { /**/ }
                 }
             });
 
-            seek1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            seekRedColor.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     seek1_progress.setText(String.valueOf(progress));
-                    colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
+                    colorValue[0] = Color.argb(255 - seekTransparency.getProgress(), seekRedColor.getProgress(), seekGreenColor.getProgress(), seekBlueColor.getProgress());
                     setColorViewValue(color_preview, colorValue[0]);
                     colorSpectrum.post(updateMarkerPosition);
                 }
@@ -495,11 +496,12 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                 }
             });
+            UiTools.setupSeekBarButtons(view, seekRedColor, R.id.btnRedColorMinus, R.id.btnRedColorPlus);
 
-            seek2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            seekGreenColor.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     seek2_progress.setText(String.valueOf(progress));
-                    colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
+                    colorValue[0] = Color.argb(255 - seekTransparency.getProgress(), seekRedColor.getProgress(), seekGreenColor.getProgress(), seekBlueColor.getProgress());
                     setColorViewValue(color_preview, colorValue[0]);
                     colorSpectrum.post(updateMarkerPosition);
                 }
@@ -510,11 +512,12 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                 }
             });
+            UiTools.setupSeekBarButtons(view, seekGreenColor, R.id.btnGreenColorMinus, R.id.btnGreenColorPlus);
 
-            seek3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            seekBlueColor.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     seek3_progress.setText(String.valueOf(progress));
-                    colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
+                    colorValue[0] = Color.argb(255 - seekTransparency.getProgress(), seekRedColor.getProgress(), seekGreenColor.getProgress(), seekBlueColor.getProgress());
                     setColorViewValue(color_preview, colorValue[0]);
                     colorSpectrum.post(updateMarkerPosition);
                 }
@@ -525,11 +528,12 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                 }
             });
+            UiTools.setupSeekBarButtons(view, seekBlueColor, R.id.btnBlueColorMinus, R.id.btnBlueColorPlus);
 
-            seek4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            seekTransparency.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     seek4_progress.setText(String.valueOf(progress));
-                    colorValue[0] = Color.argb(255 - seek4.getProgress(), seek1.getProgress(), seek2.getProgress(), seek3.getProgress());
+                    colorValue[0] = Color.argb(255 - seekTransparency.getProgress(), seekRedColor.getProgress(), seekGreenColor.getProgress(), seekBlueColor.getProgress());
                     color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
                     setColorViewValue(color_preview, colorValue[0]);
                 }
@@ -538,6 +542,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
+            UiTools.setupSeekBarButtons(view, seekTransparency, R.id.btnTransparencyMinus, R.id.btnTransparencyPlus);
 
             dialog.setOnShowListener(arg0 -> {
                 final Button buttonPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
@@ -563,10 +568,10 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                     buttonNeutral.setOnClickListener(v -> {
                         colorValue[0] = defaultValue;
                         color_edit.setText(ImageUtils.toARGBString(colorValue[0]));
-                        seek1.setProgress(Color.red(colorValue[0]));
-                        seek2.setProgress(Color.green(colorValue[0]));
-                        seek3.setProgress(Color.blue(colorValue[0]));
-                        seek4.setProgress(255 - Color.alpha(colorValue[0]));
+                        seekRedColor.setProgress(Color.red(colorValue[0]));
+                        seekGreenColor.setProgress(Color.green(colorValue[0]));
+                        seekBlueColor.setProgress(Color.blue(colorValue[0]));
+                        seekTransparency.setProgress(255 - Color.alpha(colorValue[0]));
                         setColorViewValue(color_preview, colorValue[0]);
                         colorSpectrum.post(updateMarkerPosition);
                     });

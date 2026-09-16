@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.07.2026, 23:43
+  ~  * Created by Vladimir Belov on 17.09.2026, 00:15
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 07.07.2026, 22:27
+  ~  * Last modified 16.09.2026, 22:19
   ~  */
   -->
 
@@ -739,14 +739,43 @@
 
                     </LinearLayout>
 
-                    <SeekBar
-                        android:id="@+id/seekFontMagnifyText"
+                    <LinearLayout
+                        android:id="@+id/containerFontMagnifyText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/widget_config_font_magnify_label"
-                        android:maxHeight="50dp"
-                        android:minHeight="50dp"
-                        android:thumbTintMode="src_in" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageButton
+                            android:id="@+id/btnFontMagnifyTextMinus"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/hint_Less"
+                            android:src="@drawable/ic_menu_sub"
+                            app:tint="?attr/colorAccent" />
+
+                        <SeekBar
+                            android:id="@+id/seekFontMagnifyText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="-8dp"
+                            android:layout_marginEnd="-8dp"
+                            android:contentDescription="@string/widget_config_font_magnify_label"
+                            android:maxHeight="50dp"
+                            android:minHeight="50dp"
+                            android:thumbTintMode="src_in" />
+
+                        <ImageButton
+                            android:id="@+id/btnFontMagnifyTextPlus"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/hint_More"
+                            android:src="@android:drawable/ic_menu_add"
+                            app:tint="?attr/colorAccent" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -781,14 +810,44 @@
 
                     </LinearLayout>
 
-                    <SeekBar
-                        android:id="@+id/seekFontMagnifyPhoto"
+                    <LinearLayout
+                        android:id="@+id/containerFontMagnifyPhoto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/widget_config_font_magnify_label"
-                        android:maxHeight="50dp"
-                        android:minHeight="50dp"
-                        android:thumbTintMode="src_in" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageButton
+                            android:id="@+id/btnFontMagnifyPhotoMinus"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/hint_Less"
+                            android:src="@drawable/ic_menu_sub"
+                            app:tint="?attr/colorAccent" />
+
+                        <SeekBar
+                            android:id="@+id/seekFontMagnifyPhoto"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="-8dp"
+                            android:layout_marginEnd="-8dp"
+                            android:contentDescription="@string/widget_config_font_magnify_label"
+                            android:maxHeight="50dp"
+                            android:minHeight="50dp"
+                            android:thumbTintMode="src_in" />
+
+
+                        <ImageButton
+                            android:id="@+id/btnFontMagnifyPhotoPlus"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/hint_More"
+                            android:src="@android:drawable/ic_menu_add"
+                            app:tint="?attr/colorAccent" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -1026,33 +1085,33 @@
             android:orientation="vertical"
             android:layout_above="@id/layout_buttons" >
 
-        <View
-            android:id="@+id/hints_divider"
-            android:layout_width="100dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:background="?attr/colorAccent" />
+            <View
+                android:id="@+id/hints_divider"
+                android:layout_width="100dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:background="?attr/colorAccent" />
 
-        <TextView
-            android:id="@+id/adv_hint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:textStyle="bold"
-            android:text="@string/adv_hint"
-            android:textColor="?android:attr/textColorSecondary" />
+            <TextView
+                android:id="@+id/adv_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:textStyle="bold"
+                android:text="@string/adv_hint"
+                android:textColor="?android:attr/textColorSecondary" />
 
-        <TextView
-            android:id="@+id/widget_hint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:text="@string/widget_hint"
-            android:textColor="?android:attr/textColorSecondary"
-            app:drawableBottomCompat="@drawable/pref_widget" />
+            <TextView
+                android:id="@+id/widget_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:text="@string/widget_hint"
+                android:textColor="?android:attr/textColorSecondary"
+                app:drawableBottomCompat="@drawable/pref_widget" />
 
         </LinearLayout>
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.09.2026, 20:37
+ *  * Created by Vladimir Belov on 17.09.2026, 00:15
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.09.2026, 19:09
+ *  * Last modified 16.09.2026, 21:51
  *
  */
 package org.vovka.birthdaycountdown;
@@ -60,6 +60,7 @@ import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
+import org.vovka.birthdaycountdown.utils.UiTools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -233,6 +234,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             checkFontMagnifyManual = findViewById(R.id.checkFontMagnifyManual);
             blockFontMagnifyManual = findViewById(R.id.blockFontMagnifyManual);
 
+            //Общее масштабирование
             seekFontMagnify = findViewById(R.id.seekFontMagnify);
             seekFontMagnify.setMax(25);
             valueFontMagnify = findViewById(R.id.valueFontMagnify);
@@ -245,6 +247,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
+            UiTools.setupSeekBarButtons(this, seekFontMagnify, R.id.btnFontMagnifyMinus, R.id.btnFontMagnifyPlus);
 
             seekFontMagnifyMonth = findViewById(R.id.seekFontMagnifyMonth);
             seekFontMagnifyMonth.setMax(25);
@@ -258,6 +261,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
+            UiTools.setupSeekBarButtons(this, seekFontMagnifyMonth, R.id.btnFontMagnifyMonthMinus, R.id.btnFontMagnifyMonthPlus);
 
             seekFontMagnifyWeek = findViewById(R.id.seekFontMagnifyWeek);
             seekFontMagnifyWeek.setMax(25);
@@ -271,6 +275,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
+            UiTools.setupSeekBarButtons(this, seekFontMagnifyWeek, R.id.btnFontMagnifyWeekMinus, R.id.btnFontMagnifyWeekPlus);
 
             seekFontMagnifyDay = findViewById(R.id.seekFontMagnifyDay);
             seekFontMagnifyDay.setMax(25);
@@ -284,6 +289,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
+            UiTools.setupSeekBarButtons(this, seekFontMagnifyDay, R.id.btnFontMagnifyDayMinus, R.id.btnFontMagnifyDayPlus);
 
             checkFontMagnifyManual.setOnCheckedChangeListener((buttonView, isChecked) -> updateVisibility());
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.09.2026, 23:14
+ *  * Created by Vladimir Belov on 17.09.2026, 00:15
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.09.2026, 17:37
+ *  * Last modified 16.09.2026, 23:44
  *
  */
 
@@ -116,6 +116,7 @@ import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
+import org.vovka.birthdaycountdown.utils.UiTools;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -3408,141 +3409,145 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             TextView seek1_label = view.findViewById(R.id.seek1_label);
             seek1_label.setText(getString(R.string.pref_List_FontMagnify_seek_distance));
 
-            SeekBar seek1 = view.findViewById(R.id.seek1);
-            seek1.setProgress(eventsData.preferences_list_magnify_distance + 5);
+            SeekBar seekDistance = view.findViewById(R.id.seekDistance);
+            seekDistance.setProgress(eventsData.preferences_list_magnify_distance + 5);
 
             TextView seek1_progress = view.findViewById(R.id.seek1_progress);
-            seek1_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek1.getProgress() - 5) * 10)));
+            seek1_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekDistance.getProgress() - 5) * 10)));
 
             TextView event_distance = view.findViewById(R.id.entryDayDistanceTextView);
-            event_distance.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seek1.getProgress() - 5) * 0.1)));
+            event_distance.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seekDistance.getProgress() - 5) * 0.1)));
 
-            seek1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            seekDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    seek1_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek1.getProgress() - 5) * 10)));
-                    event_distance.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seek1.getProgress() - 5) * 0.1)));
+                    seek1_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekDistance.getProgress() - 5) * 10)));
+                    event_distance.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seekDistance.getProgress() - 5) * 0.1)));
                 }
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
+            UiTools.setupSeekBarButtons(view, seekDistance, R.id.btnDistanceMinus, R.id.btnDistancePlus);
 
             //Размер: ФИО
             TextView seek2_label = view.findViewById(R.id.seek2_label);
             seek2_label.setText(getString(R.string.pref_List_FontMagnify_seek_name));
 
-            SeekBar seek2 = view.findViewById(R.id.seek2);
-            seek2.setProgress(eventsData.preferences_list_magnify_name + 5);
+            SeekBar seekName = view.findViewById(R.id.seekName);
+            seekName.setProgress(eventsData.preferences_list_magnify_name + 5);
 
             TextView seek2_progress = view.findViewById(R.id.seek2_progress);
-            seek2_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek2.getProgress() - 5) * 10)));
+            seek2_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekName.getProgress() - 5) * 10)));
 
             TextView event_title = view.findViewById(R.id.entryNameTextView);
-            event_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seek2.getProgress() - 5) * 0.1)));
+            event_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seekName.getProgress() - 5) * 0.1)));
 
-            seek2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            seekName.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    seek2_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek2.getProgress() - 5) * 10)));
-                    event_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seek2.getProgress() - 5) * 0.1)));
+                    seek2_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekName.getProgress() - 5) * 10)));
+                    event_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seekName.getProgress() - 5) * 0.1)));
                 }
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
+            UiTools.setupSeekBarButtons(view, seekName, R.id.btnNameMinus, R.id.btnNamePlus);
 
             //Размер: Детали
             TextView seek3_label = view.findViewById(R.id.seek3_label);
             seek3_label.setText(getString(R.string.pref_List_FontMagnify_seek_details));
 
-            SeekBar seek3 = view.findViewById(R.id.seek3);
-            seek3.setProgress(eventsData.preferences_list_magnify_details + 5);
+            SeekBar seekLabel = view.findViewById(R.id.seekLabel);
+            seekLabel.setProgress(eventsData.preferences_list_magnify_details + 5);
 
             TextView seek3_progress = view.findViewById(R.id.seek3_progress);
-            seek3_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek3.getProgress() - 5) * 10)));
+            seek3_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekLabel.getProgress() - 5) * 10)));
 
             TextView event_details = view.findViewById(R.id.entryEventDetailsTextView);
-            event_details.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seek3.getProgress() - 5) * 0.1)));
+            event_details.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seekLabel.getProgress() - 5) * 0.1)));
 
-            seek3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            seekLabel.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    seek3_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek3.getProgress() - 5) * 10)));
-                    event_details.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seek3.getProgress() - 5) * 0.1)));
+                    seek3_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekLabel.getProgress() - 5) * 10)));
+                    event_details.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + (seekLabel.getProgress() - 5) * 0.1)));
                 }
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
-
+            UiTools.setupSeekBarButtons(view, seekLabel, R.id.btnLabelMinus, R.id.btnLabelPlus);
 
             //Размер: Дата события
             TextView seek4_label = view.findViewById(R.id.seek4_label);
             seek4_label.setText(getString(R.string.pref_List_FontMagnify_seek_date));
 
-            SeekBar seek4 = view.findViewById(R.id.seek4);
-            seek4.setProgress(eventsData.preferences_list_magnify_date + 5);
+            SeekBar seekDate = view.findViewById(R.id.seekDate);
+            seekDate.setProgress(eventsData.preferences_list_magnify_date + 5);
 
             TextView seek4_progress = view.findViewById(R.id.seek4_progress);
-            seek4_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek4.getProgress() - 5) * 10)));
+            seek4_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekDate.getProgress() - 5) * 10)));
 
             TextView event_date = view.findViewById(R.id.entryDateTextView);
-            event_date.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_date * (1 + (seek4.getProgress() - 5) * 0.1)));
+            event_date.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_date * (1 + (seekDate.getProgress() - 5) * 0.1)));
 
-            seek4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            seekDate.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    seek4_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek4.getProgress() - 5) * 10)));
-                    event_date.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_date * (1 + (seek4.getProgress() - 5) * 0.1)));
+                    seek4_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekDate.getProgress() - 5) * 10)));
+                    event_date.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_date * (1 + (seekDate.getProgress() - 5) * 0.1)));
                 }
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
+            UiTools.setupSeekBarButtons(view, seekDate, R.id.btnDateMinus, R.id.btnDatePlus);
 
             //Размер: Возраст
             TextView seek5_label = view.findViewById(R.id.seek5_label);
             seek5_label.setText(getString(R.string.pref_List_FontMagnify_seek_age));
 
-            SeekBar seek5 = view.findViewById(R.id.seek5);
-            seek5.setProgress(eventsData.preferences_list_magnify_age + 5);
+            SeekBar seekAge = view.findViewById(R.id.seekAge);
+            seekAge.setProgress(eventsData.preferences_list_magnify_age + 5);
 
             TextView seek5_progress = view.findViewById(R.id.seek5_progress);
-            seek5_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek5.getProgress() - 5) * 10)));
+            seek5_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekAge.getProgress() - 5) * 10)));
 
             TextView event_age = view.findViewById(R.id.entryDetailsCounter);
-            event_age.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seek5.getProgress() - 5) * 0.1)));
+            event_age.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seekAge.getProgress() - 5) * 0.1)));
 
-            seek5.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            seekAge.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    seek5_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seek5.getProgress() - 5) * 10)));
-                    event_age.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seek5.getProgress() - 5) * 0.1)));
+                    seek5_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekAge.getProgress() - 5) * 10)));
+                    event_age.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + (seekAge.getProgress() - 5) * 0.1)));
                 }
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
+            UiTools.setupSeekBarButtons(view, seekAge, R.id.btnAgeMinus, R.id.btnAgePlus);
 
             dialog.setOnShowListener(arg0 -> {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
                     eventsData.setPreferences_List_FontMagnify(
-                            seek1.getProgress() - 5,
-                            seek2.getProgress() - 5,
-                            seek3.getProgress() - 5,
-                            seek4.getProgress() - 5,
-                            seek5.getProgress() - 5
+                            seekDistance.getProgress() - 5,
+                            seekName.getProgress() - 5,
+                            seekLabel.getProgress() - 5,
+                            seekDate.getProgress() - 5,
+                            seekAge.getProgress() - 5
                     );
                     eventsData.savePreferences();
                     dialog.dismiss();
                 });
                 dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> {
-                    seek1.setProgress(5);
-                    seek2.setProgress(5);
-                    seek3.setProgress(5);
-                    seek4.setProgress(5);
-                    seek5.setProgress(5);
+                    seekDistance.setProgress(5);
+                    seekName.setProgress(5);
+                    seekLabel.setProgress(5);
+                    seekDate.setProgress(5);
+                    seekAge.setProgress(5);
                 });
 
             });

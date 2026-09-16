@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 04.12.2022, 12:46
+  ~  * Created by Vladimir Belov on 17.09.2026, 00:15
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 16.09.2026, 23:44
   ~  */
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_vertical|start"
     android:orientation="vertical"
     android:padding="?attr/dialogPreferredPadding">
@@ -38,7 +39,6 @@
             android:textAlignment="viewStart" />
     </LinearLayout>
 
-
     <include layout="@layout/entry_main"/>
 
     <LinearLayout
@@ -62,11 +62,42 @@
 
     </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/seek1"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="20"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnDistanceMinus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/hint_Less"
+            android:src="@drawable/ic_menu_sub"
+            app:tint="?attr/colorAccent" />
+
+        <SeekBar
+            android:id="@+id/seekDistance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="-8dp"
+            android:layout_marginEnd="-8dp"
+            android:maxHeight="50dp"
+            android:minHeight="50dp"
+            android:thumbTintMode="src_in"
+            android:max="20"/>
+
+        <ImageButton
+            android:id="@+id/btnDistancePlus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/hint_More"
+            android:src="@android:drawable/ic_menu_add"
+            app:tint="?attr/colorAccent" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -89,11 +120,42 @@
 
     </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/seek2"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="20"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnNameMinus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/hint_Less"
+            android:src="@drawable/ic_menu_sub"
+            app:tint="?attr/colorAccent" />
+
+        <SeekBar
+            android:id="@+id/seekName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="-8dp"
+            android:layout_marginEnd="-8dp"
+            android:maxHeight="50dp"
+            android:minHeight="50dp"
+            android:thumbTintMode="src_in"
+            android:max="20"/>
+
+        <ImageButton
+            android:id="@+id/btnNamePlus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/hint_More"
+            android:src="@android:drawable/ic_menu_add"
+            app:tint="?attr/colorAccent" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -116,11 +178,42 @@
 
     </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/seek3"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="20"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnLabelMinus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/hint_Less"
+            android:src="@drawable/ic_menu_sub"
+            app:tint="?attr/colorAccent" />
+
+        <SeekBar
+            android:id="@+id/seekLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="-8dp"
+            android:layout_marginEnd="-8dp"
+            android:maxHeight="50dp"
+            android:minHeight="50dp"
+            android:thumbTintMode="src_in"
+            android:max="20"/>
+
+        <ImageButton
+            android:id="@+id/btnLabelPlus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/hint_More"
+            android:src="@android:drawable/ic_menu_add"
+            app:tint="?attr/colorAccent" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -143,11 +236,42 @@
 
     </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/seek4"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="20"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnDateMinus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/hint_Less"
+            android:src="@drawable/ic_menu_sub"
+            app:tint="?attr/colorAccent" />
+
+        <SeekBar
+            android:id="@+id/seekDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="-8dp"
+            android:layout_marginEnd="-8dp"
+            android:maxHeight="50dp"
+            android:minHeight="50dp"
+            android:thumbTintMode="src_in"
+            android:max="20"/>
+
+        <ImageButton
+            android:id="@+id/btnDatePlus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/hint_More"
+            android:src="@android:drawable/ic_menu_add"
+            app:tint="?attr/colorAccent" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -170,10 +294,41 @@
 
     </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/seek5"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="20"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnAgeMinus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/hint_Less"
+            android:src="@drawable/ic_menu_sub"
+            app:tint="?attr/colorAccent" />
+
+        <SeekBar
+            android:id="@+id/seekAge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="-8dp"
+            android:layout_marginEnd="-8dp"
+            android:maxHeight="50dp"
+            android:minHeight="50dp"
+            android:thumbTintMode="src_in"
+            android:max="20"/>
+
+        <ImageButton
+            android:id="@+id/btnAgePlus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/hint_More"
+            android:src="@android:drawable/ic_menu_add"
+            app:tint="?attr/colorAccent" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
+  ~  * Created by Vladimir Belov on 17.09.2026, 00:15
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.09.2026, 17:50
+  ~  * Last modified 17.09.2026, 00:14
   ~  */
   -->
 
@@ -241,6 +241,8 @@
     <string name="hint_Prev">Попередній збіг</string>
     <string name="hint_Next">Наступний збіг</string>
     <string name="hint_Description">Розгорнути опис події</string>
+    <string name="hint_Less">Менше</string>
+    <string name="hint_More">Більше</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Так</string>

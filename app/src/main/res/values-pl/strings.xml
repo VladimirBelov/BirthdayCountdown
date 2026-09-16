@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
+  ~  * Created by Vladimir Belov on 17.09.2026, 00:15
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.09.2026, 17:48
+  ~  * Last modified 17.09.2026, 00:13
   ~  */
   -->
 
@@ -241,6 +241,8 @@
     <string name="hint_Prev">Poprzednie dopasowanie</string>
     <string name="hint_Next">Następne dopasowanie</string>
     <string name="hint_Description">Rozwiń opis wydarzenia</string>
+    <string name="hint_Less">Mniej</string>
+    <string name="hint_More">Więcej</string>
 
     <string name="button_ok">OK</string>
     <string name="button_yes">Tak</string>

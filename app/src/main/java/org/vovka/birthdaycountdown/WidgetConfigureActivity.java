@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.09.2026, 15:55
+ *  * Created by Vladimir Belov on 17.09.2026, 00:15
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.09.2026, 15:22
+ *  * Last modified 16.09.2026, 22:19
  *
  */
 
@@ -51,6 +51,7 @@ import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
+import org.vovka.birthdaycountdown.utils.UiTools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -246,6 +247,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 @Override public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override public void onStopTrackingTouch(SeekBar seekBar) {}
             });
+            UiTools.setupSeekBarButtons(this, seekFontMagnifyText, R.id.btnFontMagnifyTextMinus, R.id.btnFontMagnifyTextPlus);
 
             seekFontMagnifyPhoto = findViewById(R.id.seekFontMagnifyPhoto);
             seekFontMagnifyPhoto.setMax(maxValueSeek - minValueSeekOffset);
@@ -260,6 +262,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 @Override public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override public void onStopTrackingTouch(SeekBar seekBar) {}
             });
+            UiTools.setupSeekBarButtons(this, seekFontMagnifyPhoto, R.id.btnFontMagnifyPhotoMinus, R.id.btnFontMagnifyPhotoPlus);
 
             spinnerEventShift = findViewById(R.id.spinnerEventShift);
             spinnerEventsCount = findViewById(R.id.spinnerScopeEventsCount);

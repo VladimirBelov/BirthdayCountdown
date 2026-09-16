@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
+  ~  * Created by Vladimir Belov on 17.09.2026, 00:15
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.09.2026, 20:36
+  ~  * Last modified 16.09.2026, 22:12
   ~  */
   -->
 
@@ -15,7 +15,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/windowStatusbarColor"
-    tools:context=".WidgetConfigureActivity">
+    tools:context=".WidgetConfigureActivity"
+    tools:ignore="TooManyViews">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -248,14 +249,44 @@
 
                 </LinearLayout>
 
-                <SeekBar
-                    android:id="@+id/seekFontMagnify"
+                <!-- 1. Контейнер для ОБЩЕГО масштабирования -->
+                <LinearLayout
+                    android:id="@+id/containerFontMagnify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/widget_config_font_magnify_label"
-                    android:maxHeight="50dp"
-                    android:minHeight="50dp"
-                    android:thumbTintMode="src_in" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageButton
+                        android:id="@+id/btnFontMagnifyMinus"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/hint_Less"
+                        android:src="@drawable/ic_menu_sub"
+                        app:tint="?attr/colorAccent" />
+
+                    <SeekBar
+                        android:id="@+id/seekFontMagnify"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="-8dp"
+                        android:layout_marginEnd="-8dp"
+                        android:contentDescription="@string/widget_config_font_magnify_label"
+                        android:maxHeight="50dp"
+                        android:minHeight="50dp"
+                        android:thumbTintMode="src_in" />
+
+                    <ImageButton
+                        android:id="@+id/btnFontMagnifyPlus"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/hint_More"
+                        android:src="@android:drawable/ic_menu_add"
+                        app:tint="?attr/colorAccent" />
+                </LinearLayout>
 
                 <CheckBox
                     android:id="@+id/checkFontMagnifyManual"
@@ -297,14 +328,44 @@
 
                     </LinearLayout>
 
-                    <SeekBar
-                        android:id="@+id/seekFontMagnifyMonth"
+                    <!-- 2. Контейнер для масштабирования МЕСЯЦЕВ -->
+                    <LinearLayout
+                        android:id="@+id/containerFontMagnifyMonth"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/widget_config_font_magnify_label"
-                        android:maxHeight="50dp"
-                        android:minHeight="50dp"
-                        android:thumbTintMode="src_in" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageButton
+                            android:id="@+id/btnFontMagnifyMonthMinus"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/hint_Less"
+                            android:src="@drawable/ic_menu_sub"
+                            app:tint="?attr/colorAccent" />
+
+                        <SeekBar
+                            android:id="@+id/seekFontMagnifyMonth"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="-8dp"
+                            android:layout_marginEnd="-8dp"
+                            android:contentDescription="@string/widget_config_font_magnify_label"
+                            android:maxHeight="50dp"
+                            android:minHeight="50dp"
+                            android:thumbTintMode="src_in" />
+
+                        <ImageButton
+                            android:id="@+id/btnFontMagnifyMonthPlus"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/hint_More"
+                            android:src="@android:drawable/ic_menu_add"
+                            app:tint="?attr/colorAccent" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -331,14 +392,44 @@
 
                     </LinearLayout>
 
-                    <SeekBar
-                        android:id="@+id/seekFontMagnifyWeek"
+                    <!-- 3. Контейнер для масштабирования ДНЕЙ НЕДЕЛИ -->
+                    <LinearLayout
+                        android:id="@+id/containerFontMagnifyWeek"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/widget_config_font_magnify_label"
-                        android:maxHeight="50dp"
-                        android:minHeight="50dp"
-                        android:thumbTintMode="src_in" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageButton
+                            android:id="@+id/btnFontMagnifyWeekMinus"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/hint_Less"
+                            android:src="@drawable/ic_menu_sub"
+                            app:tint="?attr/colorAccent" />
+
+                        <SeekBar
+                            android:id="@+id/seekFontMagnifyWeek"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="-8dp"
+                            android:layout_marginEnd="-8dp"
+                            android:contentDescription="@string/widget_config_font_magnify_label"
+                            android:maxHeight="50dp"
+                            android:minHeight="50dp"
+                            android:thumbTintMode="src_in" />
+
+                        <ImageButton
+                            android:id="@+id/btnFontMagnifyWeekPlus"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/hint_More"
+                            android:src="@android:drawable/ic_menu_add"
+                            app:tint="?attr/colorAccent" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -365,14 +456,44 @@
 
                     </LinearLayout>
 
-                    <SeekBar
-                        android:id="@+id/seekFontMagnifyDay"
+                    <!-- 4. Контейнер для масштабирования ДНЕЙ -->
+                    <LinearLayout
+                        android:id="@+id/containerFontMagnifyDay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/widget_config_font_magnify_label"
-                        android:maxHeight="50dp"
-                        android:minHeight="50dp"
-                        android:thumbTintMode="src_in" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageButton
+                            android:id="@+id/btnFontMagnifyDayMinus"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/hint_Less"
+                            android:src="@drawable/ic_menu_sub"
+                            app:tint="?attr/colorAccent" />
+
+                        <SeekBar
+                            android:id="@+id/seekFontMagnifyDay"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="-8dp"
+                            android:layout_marginEnd="-8dp"
+                            android:contentDescription="@string/widget_config_font_magnify_label"
+                            android:maxHeight="50dp"
+                            android:minHeight="50dp"
+                            android:thumbTintMode="src_in" />
+
+                        <ImageButton
+                            android:id="@+id/btnFontMagnifyDayPlus"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/hint_More"
+                            android:src="@android:drawable/ic_menu_add"
+                            app:tint="?attr/colorAccent" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -636,7 +757,7 @@
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"
                     android:background="?attr/listDividerColor"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <org.vovka.birthdaycountdown.ColorPicker
                     android:id="@+id/colorHeaderBack"
@@ -778,7 +899,7 @@
                 android:layout_weight="1.0"
                 android:text="@string/button_cancel"
                 android:textColor="?attr/windowStatusbarColor"
-                tools:ignore="ButtonStyle,TooManyViews,VisualLintButtonSize" />
+                tools:ignore="ButtonStyle,VisualLintButtonSize" />
 
             <Button
                 android:id="@+id/button_ok"
