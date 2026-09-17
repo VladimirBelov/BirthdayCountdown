@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.09.2026, 23:14
+ *  * Created by Vladimir Belov on 17.09.2026, 19:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.09.2026, 22:45
+ *  * Last modified 17.09.2026, 18:58
  *
  */
 
@@ -131,10 +131,24 @@ public class ImageUtils {
     public static String encodeImageToBase64(Context context, Uri imageUri, int maxSize) {
         try {
             InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            //Явно указываем ARGB_8888 при декодировании, чтобы сохранить альфа-канал
+            BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
+            decodeOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, decodeOptions);
+            if (inputStream != null) inputStream.close();
+            if (bitmap == null) return null;
+
             bitmap = scaleDownBitmap(bitmap, maxSize); // уменьшаем изображение
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+
+            //Определяем формат по наличию альфа-канала
+            boolean hasAlpha = bitmap.hasAlpha();
+            Bitmap.CompressFormat format = hasAlpha
+                    ? Bitmap.CompressFormat.PNG
+                    : Bitmap.CompressFormat.JPEG;
+            int quality = hasAlpha ? 100 : 80;
+            bitmap.compress(format, quality, byteArrayOutputStream);
+
             byte[] byteArray = byteArrayOutputStream.toByteArray();
             bitmap.recycle();
             return Base64.encodeToString(byteArray, Base64.DEFAULT);

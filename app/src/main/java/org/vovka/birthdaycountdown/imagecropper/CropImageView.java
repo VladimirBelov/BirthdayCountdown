@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 22:04
+ *  * Created by Vladimir Belov on 17.09.2026, 19:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 20:14
+ *  * Last modified 17.09.2026, 18:54
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -16,6 +16,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
@@ -135,7 +136,7 @@ class CropImageView extends View implements TouchEventListener {
             cropMatrix.setRectToRect(new RectF(cropRect), dstRect, Matrix.ScaleToFit.FILL);
             cropMatrix.preConcat(mCropBitmap.getRotateMatrix());
 
-            Bitmap cropped = Bitmap.createBitmap((int) cropWidth, (int) cropHeight, Bitmap.Config.RGB_565);
+            Bitmap cropped = Bitmap.createBitmap((int) cropWidth, (int) cropHeight, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(cropped);
             canvas.drawBitmap(mCropBitmap.getBitmap(), cropMatrix, null);
 
@@ -172,8 +173,9 @@ class CropImageView extends View implements TouchEventListener {
             cropMatrix.setRectToRect(new RectF(cropRect), dstRect, Matrix.ScaleToFit.FILL);
             cropMatrix.preConcat(mCropBitmap.getRotateMatrix());
 
-            Bitmap cropped = Bitmap.createBitmap((int) cropWidth, (int) cropHeight, Bitmap.Config.RGB_565);
+            Bitmap cropped = Bitmap.createBitmap((int) cropWidth, (int) cropHeight, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(cropped);
+            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
             canvas.drawBitmap(mCropBitmap.getBitmap(), cropMatrix, null);
             if (mCropBitmap != null) {
                 mCropBitmap.recycle();

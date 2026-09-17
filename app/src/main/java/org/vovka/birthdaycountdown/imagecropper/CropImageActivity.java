@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 17.09.2026, 19:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 17.09.2026, 18:52
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -235,7 +235,15 @@ public class CropImageActivity extends Activity {
                 if (activity != null) {
                     outputStream = activity.getContentResolver().openOutputStream(mOutputPath);
                     if (outputStream != null) {
-                        params[0].compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
+                        Bitmap bitmap = params[0];
+                        // Определяем формат по наличию альфа-канала:
+                        // PNG сохраняет прозрачность, JPEG — нет (и даёт чёрный фон)
+                        boolean hasAlpha = bitmap.hasAlpha();
+                        Bitmap.CompressFormat format = hasAlpha
+                                ? Bitmap.CompressFormat.PNG
+                                : Bitmap.CompressFormat.JPEG;
+                        int quality = hasAlpha ? 100 : 90; // для PNG quality игнорируется, но не мешает
+                        bitmap.compress(format, quality, outputStream);
                     }
                 }
             } catch (IOException ignored) { /**/

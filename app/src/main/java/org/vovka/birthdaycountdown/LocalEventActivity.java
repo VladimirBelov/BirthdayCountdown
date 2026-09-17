@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.09.2026, 18:08
+ *  * Created by Vladimir Belov on 17.09.2026, 19:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 17.09.2026, 18:05
+ *  * Last modified 17.09.2026, 18:24
  *
  */
 
@@ -713,7 +713,7 @@ public class LocalEventActivity extends AppCompatActivity {
             updateCaptionsAndVisibility(this);
             updateEventDate(editDate, day, month, year, useYear, isBC);
             updateEventPhoto();
-            this.eventDataSaved = eventsData.getEventData(eventData);
+            eventDataSaved = eventsData.getEventData(eventData);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -1053,9 +1053,8 @@ public class LocalEventActivity extends AppCompatActivity {
             }
 
             prepareEventData(this);
-
             List<String> similarEventIds;
-            if (!eventsData.getEventData(eventData).equals(this.eventDataSaved)) {
+            if (haveSyncableFieldsChanged()) {
                 similarEventIds = eventsData.getSimilarLocalEventIds(this.eventDataSaved, EnumSet.of(
                         ContactsEvents.getSimilarFields.PERSON_FULL_NAME,
                         ContactsEvents.getSimilarFields.ORGANIZATION
@@ -1063,7 +1062,6 @@ public class LocalEventActivity extends AppCompatActivity {
             } else {
                 similarEventIds = null;
             }
-            //todo: добавить проверку, что были изменены поля, которые имеет смысл обновлять в других событиях
             if (similarEventIds == null) {
                 saveEvent();
                 return;
@@ -1098,6 +1096,44 @@ public class LocalEventActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Проверяет, изменились ли поля, которые синхронизируются с похожими событиями
+     * в {@link #updateSimilarEvents(List)}.
+     * Синхронизируемые поля: имя, имя (альт), должность, организация, фото.
+     *
+     * @return true, если хотя бы одно из синхронизируемых полей изменилось
+     */
+    private boolean haveSyncableFieldsChanged() {
+        try {
+            if (this.eventDataSaved == null) return false;
+            TreeMap<Integer, String> savedData = eventsData.getEventData(this.eventDataSaved);
+            if (savedData.isEmpty()) return false;
+            try {
+                // Поля, которые реально пишутся в updateSimilarEvents()
+                final int[] syncFields = {
+                        ContactsEvents.Position_personFullName,
+                        ContactsEvents.Position_personFullNameAlt,
+                        ContactsEvents.Position_title,
+                        ContactsEvents.Position_organization,
+                        ContactsEvents.Position_photo
+                };
+                for (int field : syncFields) {
+                    String currentValue = eventData.get(field);
+                    String savedValue = savedData.get(field);
+                    if (!Objects.equals(currentValue, savedValue)) {
+                        return true;
+                    }
+                }
+                return false;
+            } finally {
+                savedData.clear();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            return false;
         }
     }
 
