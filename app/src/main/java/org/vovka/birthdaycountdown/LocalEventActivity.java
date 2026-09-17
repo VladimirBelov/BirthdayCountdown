@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.09.2026, 01:33
+ *  * Created by Vladimir Belov on 17.09.2026, 18:08
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.09.2026, 00:26
+ *  * Last modified 17.09.2026, 18:05
  *
  */
 
@@ -1063,6 +1063,7 @@ public class LocalEventActivity extends AppCompatActivity {
             } else {
                 similarEventIds = null;
             }
+            //todo: добавить проверку, что были изменены поля, которые имеет смысл обновлять в других событиях
             if (similarEventIds == null) {
                 saveEvent();
                 return;
@@ -1232,6 +1233,26 @@ public class LocalEventActivity extends AppCompatActivity {
         String eventSubType = eventDataForPhoto.get(ContactsEvents.Position_eventSubType);
         if (eventSubType != null) {
             eventDataForPhoto.put(ContactsEvents.Position_eventSubType, ContactsEvents.getEventType(Integer.parseInt(eventSubType)));
+        }
+
+        // Вычисляем Position_eventDateNextTime — она используется в getEventPhoto()
+        // для подбора силуэта по возрасту
+        try {
+            final Calendar todayCal = eventsData.getToday();
+            final int nowYear = todayCal.get(Calendar.YEAR);
+            Calendar nextDate = Calendar.getInstance();
+            nextDate.set(Calendar.YEAR, nowYear);
+            nextDate.set(Calendar.MONTH, eventMonth);
+            nextDate.set(Calendar.DAY_OF_MONTH, eventDay);
+            AppDateUtils.clearTime(nextDate);
+            // Если дата уже прошла в этом году — переносим на следующий
+            if (nextDate.before(todayCal)) {
+                nextDate.add(Calendar.YEAR, 1);
+            }
+            String nextDateStr = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(nextDate.getTime());
+            eventDataForPhoto.put(ContactsEvents.Position_eventDateNextTime, nextDateStr);
+        } catch (Exception e) {
+            Log.e(TAG, "updateEventPhoto: failed to compute eventDateNextTime", e);
         }
 
         final String eventDataString = eventsData.getEventData(eventDataForPhoto);

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.09.2026, 00:15
+  ~  * Created by Vladimir Belov on 17.09.2026, 18:08
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 16.09.2026, 22:12
+  ~  * Last modified 17.09.2026, 09:09
   ~  */
   -->
 
@@ -2603,7 +2603,7 @@ Long click on item to select color"</string>
     <string name="pref_Quiz_EventSources_key" translatable="false">QuizEventSources</string>
 
     <string name="pref_Quiz_AutoNext_key" translatable="false">QuizAutoNext</string>
-    <integer name="pref_Quiz_AutoNext_default" translatable="false">2</integer>
+    <integer name="pref_Quiz_AutoNext_default" translatable="false">3</integer>
     <string-array name="pref_Quiz_AutoNext_values" translatable="false">
         <item>0</item>
         <item>2</item>

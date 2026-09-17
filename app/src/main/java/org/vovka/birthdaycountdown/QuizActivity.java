@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 01.09.2026, 03:49
+ *  * Created by Vladimir Belov on 17.09.2026, 18:08
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 03:04
+ *  * Last modified 17.09.2026, 08:56
  *
  */
 
@@ -460,7 +460,7 @@ public class QuizActivity extends Activity {
      * @param durationMs длительность анимации в миллисекундах (3000-5000)
      */
     private void startAutoNextTransition(int durationMs) {
-        buttonNextQuestion.setEnabled(false);
+        //buttonNextQuestion.setEnabled(false);
 
         if (buttonNextProgress != null) {
             buttonNextProgress.setVisibility(View.VISIBLE);
