@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.09.2026, 23:22
+  ~  * Created by Vladimir Belov on 19.09.2026, 23:36
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 19.09.2026, 22:48
+  ~  * Last modified 19.09.2026, 23:35
   ~  */
   -->
 
@@ -987,7 +987,7 @@ Pressione prolungata sull\'elemento per scegliere il colore"</string>
     <string name="widget_config_starting_month_position_label">Posizione:</string>
     <string name="widget_config_month_sources_empty">-Non selezionato-</string>
     <string name="widget_config_font_magnify_label">Dimensione carattere</string>
-    <string name="widget_config_font_magnify_description">Modifica dimensione carattere per tutti gli elementi</string>
+    <string name="widget_config_month_font_magnify_description">Modifica dimensione carattere per tutti gli elementi</string>
     <string name="widget_config_font_magnify_month_label">Nome del mese</string>
     <string name="widget_config_font_magnify_weekday_label">Giorni della settimana</string>
     <string name="widget_config_font_magnify_day_label">Giorni</string>
