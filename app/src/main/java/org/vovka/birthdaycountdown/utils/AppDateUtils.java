@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 31.07.2026, 00:26
+ *  * Created by Vladimir Belov on 19.09.2026, 23:22
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.07.2026, 19:24
+ *  * Last modified 19.09.2026, 21:26
  *
  */
 
@@ -394,15 +394,30 @@ public class AppDateUtils {
                     Period p = Period.between(dateStart, dateEnd);
 
                     if (p.getYears() > 0) {
-                        eventDistance.append(StringUtils.getAgeString(p.getYears(), R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20, locale, res)).append(Constants.STRING_SPACE);
+                        eventDistance.append(StringUtils.getAgeString(p.getYears(),
+                                R.string.msg_after_year_prefix_1,
+                                R.string.msg_after_year_prefix_1_,
+                                R.string.msg_after_year_prefix_2_3_4,
+                                R.string.msg_after_year_prefix_5_20,
+                                locale, res)).append(Constants.STRING_SPACE);
                         diffOnlyDays = false;
                     }
                     if (p.getMonths() > 0) {
-                        eventDistance.append(StringUtils.getAgeString(p.getMonths(), R.string.msg_after_month_prefix_1, R.string.msg_after_month_prefix_1_, R.string.msg_after_month_prefix_2_3_4, R.string.msg_after_month_prefix_5_20, locale, res)).append(Constants.STRING_SPACE);
+                        eventDistance.append(StringUtils.getAgeString(p.getMonths(),
+                                R.string.msg_after_month_prefix_1,
+                                R.string.msg_after_month_prefix_1_,
+                                R.string.msg_after_month_prefix_2_3_4,
+                                R.string.msg_after_month_prefix_5_20,
+                                locale, res)).append(Constants.STRING_SPACE);
                         diffOnlyDays = false;
                     }
                     if (p.getDays() > 0) {
-                        eventDistance.append(StringUtils.getAgeString(p.getDays(), R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20, locale, res)).append(Constants.STRING_SPACE);
+                        eventDistance.append(StringUtils.getAgeString(p.getDays(),
+                                R.string.msg_after_day_prefix_1,
+                                R.string.msg_after_day_prefix_1_,
+                                R.string.msg_after_day_prefix_2_3_4,
+                                R.string.msg_after_day_prefix_5_20,
+                                locale, res)).append(Constants.STRING_SPACE);
                     }
                 }
 
@@ -432,7 +447,12 @@ public class AppDateUtils {
 
                     long delta = yearTo - yearFrom - (daysFromNYTo < daysFromNYFrom ? 1 : 0);
                     if (delta > 0) {
-                        eventDistance.append(StringUtils.getAgeString(delta, R.string.msg_after_year_prefix_1, R.string.msg_after_year_prefix_1_, R.string.msg_after_year_prefix_2_3_4, R.string.msg_after_year_prefix_5_20, locale, res)).append(Constants.STRING_SPACE);
+                        eventDistance.append(StringUtils.getAgeString(delta,
+                                R.string.msg_after_year_prefix_1,
+                                R.string.msg_after_year_prefix_1_,
+                                R.string.msg_after_year_prefix_2_3_4,
+                                R.string.msg_after_year_prefix_5_20,
+                                locale, res)).append(Constants.STRING_SPACE);
                         diffOnlyDays = false;
                     }
                     final int dayOfMonthTo = calendarDateTo.get(Calendar.DAY_OF_MONTH);
@@ -443,7 +463,12 @@ public class AppDateUtils {
                         delta = calendarDateTo.get(Calendar.MONTH) - calendarDateFrom.get(Calendar.MONTH);
                     }
                     if (delta > 0) {
-                        eventDistance.append(StringUtils.getAgeString(delta, R.string.msg_after_month_prefix_1, R.string.msg_after_month_prefix_1_, R.string.msg_after_month_prefix_2_3_4, R.string.msg_after_month_prefix_5_20, locale, res)).append(Constants.STRING_SPACE);
+                        eventDistance.append(StringUtils.getAgeString(delta,
+                                R.string.msg_after_month_prefix_1,
+                                R.string.msg_after_month_prefix_1_,
+                                R.string.msg_after_month_prefix_2_3_4,
+                                R.string.msg_after_month_prefix_5_20,
+                                locale, res)).append(Constants.STRING_SPACE);
                         diffOnlyDays = false;
                     }
 
@@ -457,7 +482,12 @@ public class AppDateUtils {
                         delta = numDays - dayOfMonthFrom + dayOfMonthTo - 1;
                     }
                     if (delta > 0) {
-                        eventDistance.append(StringUtils.getAgeString(delta, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20, locale, res)).append(Constants.STRING_SPACE);
+                        eventDistance.append(StringUtils.getAgeString(delta,
+                                R.string.msg_after_day_prefix_1,
+                                R.string.msg_after_day_prefix_1_,
+                                R.string.msg_after_day_prefix_2_3_4,
+                                R.string.msg_after_day_prefix_5_20,
+                                locale, res)).append(Constants.STRING_SPACE);
                     }
                 }
             }
@@ -468,7 +498,12 @@ public class AppDateUtils {
                     eventDistance.append(Constants.STRING_PARENTHESIS_START);
                 }
                 if (components == 2 || components == 3) {
-                    eventDistance.append(StringUtils.getAgeString(daysDiff, R.string.msg_after_day_prefix_1, R.string.msg_after_day_prefix_1_, R.string.msg_after_day_prefix_2_3_4, R.string.msg_after_day_prefix_5_20, locale, res));
+                    eventDistance.append(StringUtils.getAgeString(daysDiff,
+                            R.string.msg_after_day_prefix_1,
+                            R.string.msg_after_day_prefix_1_,
+                            R.string.msg_after_day_prefix_2_3_4,
+                            R.string.msg_after_day_prefix_5_20,
+                            locale, res));
                 }
                 if (components == 3) {
                     eventDistance.append(Constants.STRING_PARENTHESIS_CLOSE);

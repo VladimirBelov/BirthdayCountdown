@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 19.09.2026, 23:22
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 19.09.2026, 23:20
+  ~  */
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string-array name="faq" tools:ignore="InconsistentArrays">
+
+        <item>###Generale</item>
+        <item>"Questa sezione non è disponibile nella lingua selezionata nelle impostazioni. Imposta l'interfaccia dell'app in inglese e utilizza Google Traduttore."</item>
+
+        <item>#Cerca</item>
+        <item><![CDATA[Per cercare più parametri, separali con virgole (uno qualsiasi dei valori) o con "+" (tutti i valori); ad esempio:<ul>
+<li>"Antoni, Zofia" – mostra gli eventi per i contatti di nome Antoni o Zofia
+<li>"Antoni+Gemini" – mostra gli eventi per i contatti di nome Antoni con segno zodiacale Gemelli
+</ul>]]></item>
+        <item>"La ricerca utilizza tutti i dati dell'evento (per verificarli: abilita "Debug messaggi" nelle impostazioni dell'app, tieni premuto a lungo su un evento e seleziona "Dati evento")"</item>
+        <item> </item>
+
+        <item>"#Lingue dell'app"</item>
+        <item>"Se desideri contribuire alla traduzione di questa app in una lingua che conosci, o se riscontri imprecisioni nella traduzione, invia un'email (pulsante qui sotto)."</item>
+    </string-array>
+
+</resources>

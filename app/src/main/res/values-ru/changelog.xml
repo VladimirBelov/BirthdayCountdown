@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
+  ~  * Created by Vladimir Belov on 19.09.2026, 23:22
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.09.2026, 20:27
+  ~  * Last modified 19.09.2026, 23:06
   ~  */
   -->
 
@@ -15,6 +15,7 @@
         <item>🎂 Выбор иконок и символов для типов событий</item>
         <item>💾 Шаблоны настроек виджетов</item>
         <item>В календарный виджет добавлена сетка дней и 🟢 цветные маркеры событий</item>
+        <item>Добавлен 🇮🇹 итальянский язык интерфейса</item>
         <item>Исправление ошибок</item>
 
         <item>#1.9.1</item>

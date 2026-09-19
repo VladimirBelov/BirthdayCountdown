@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.09.2026, 01:33
+ *  * Created by Vladimir Belov on 19.09.2026, 23:22
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 20:55
+ *  * Last modified 19.09.2026, 22:58
  *
  */
 
@@ -205,42 +205,85 @@ public class StringUtils {
         return sb.toString();
     }
 
+    /**
+     * Формирует строку вида "{число} {слово в правильной форме}" с учётом правил
+     * склонения для разных языков.
+     * <p>
+     * Метод решает задачу плюрализации — выбора правильной формы слова
+     * (единственное/множественное число, родительный падеж и т.д.) в зависимости
+     * от числового значения и текущей локали приложения.
+     * <p>
+     * <b>Поддерживаемые группы языков:</b>
+     * <ul>
+     *   <li><b>Славянские</b> (русский, украинский и др.) — 4 формы склонения:
+     *     <ul>
+     *       <li>{@code id_prefix_1} — 1, 21, 31, 101, … (единственное число: "1 год")</li>
+     *       <li>{@code id_prefix_1_} — числа, оканчивающиеся на 1, кроме 11: 31, 41, … ("31 год")</li>
+     *       <li>{@code id_prefix_2_3_4} — оканчивающиеся на 2, 3, 4, кроме 12–14: 2, 23, 104, … ("2 года")</li>
+     *       <li>{@code id_prefix_5_20} — 5–20, а также оканчивающиеся на 0 и 5–9: 5, 11, 100, … ("5 лет")</li>
+     *     </ul>
+     *   </li>
+     *   <li><b>Французский</b> — 3 формы:
+     *     <ul>
+     *       <li>{@code id_prefix_1} — 1, 21, 31, … ("1 an")</li>
+     *       <li>{@code id_prefix_1_} — 3–5, 8–10 и их комбинации ("3 ans", "8 ans")</li>
+     *       <li>{@code id_prefix_5_20} — всё остальное ("2 ans", "6 ans", "20 ans")</li>
+     *     </ul>
+     *   </li>
+     *   <li><b>Итальянский</b> — 2 формы (планируется):
+     *     <ul>
+     *       <li>{@code id_prefix_1} — 1, 21, 101, … ("1 anno")</li>
+     *       <li>{@code id_prefix_5_20} — всё остальное ("2 anni", "5 anni")</li>
+     *     </ul>
+     *   </li>
+     * </ul>
+     */
     @NonNull
     public static String getAgeString(long age, int id_prefix_1, int id_prefix_1_, int id_prefix_2_3_4, int id_prefix_5_20, @NonNull String locale, @NonNull Resources resources) {
-
         try {
-
             StringBuilder result = new StringBuilder();
             String count_str = Long.toString(age);
             String count_end = count_str.substring(count_str.length() - 1);
             boolean isEnd234 = count_end.equals(Constants.STRING_2) || count_end.equals(Constants.STRING_3) || count_end.equals(Constants.STRING_4);
             long ageMinus100 = age % 100;
-
             result.append(age);
 
-            if (!resources.getString(R.string.pref_Language_fr).equalsIgnoreCase(locale)) {
-                if (ageMinus100 == 1) { //Единственное число
-                    result.append(resources.getString(id_prefix_1));
-                } else if (ageMinus100 > 4 && ageMinus100 < 21) { //Больше 4, но меньше 21
-                    result.append(resources.getString(id_prefix_5_20));
-                } else if (count_end.equals(Constants.STRING_1)) { //Если заканчивается на 1, но не между 5-20
-                    result.append(resources.getString(id_prefix_1_));
-                } else if (isEnd234) { //Если заканчивается на 2, 3, 4
-                    result.append(resources.getString(id_prefix_2_3_4));
-                } else {
-                    result.append(resources.getString(id_prefix_5_20));
-                }
-            } else { //Французский
-                if (ageMinus100 == 1) { //Единственное число
-                    result.append(resources.getString(id_prefix_1));
-                } else if ((ageMinus100 >= 3 && ageMinus100 <= 5) || (ageMinus100 >= 8 && ageMinus100 <= 10)) { //3-5,8-10
-                    result.append(resources.getString(id_prefix_1_));
-                } else {
-                    result.append(resources.getString(id_prefix_5_20));
-                }
-            }
-            return result.toString();
+            final String localeLower = locale.toLowerCase(Locale.ROOT);
+            switch (localeLower) {
+                case "fr": // Французский
+                    if (ageMinus100 == 1) {
+                        result.append(resources.getString(id_prefix_1));
+                    } else if ((ageMinus100 >= 3 && ageMinus100 <= 5) || (ageMinus100 >= 8 && ageMinus100 <= 10)) {
+                        result.append(resources.getString(id_prefix_1_));
+                    } else {
+                        result.append(resources.getString(id_prefix_5_20));
+                    }
+                    break;
 
+                case "it": // Итальянский
+                    if (ageMinus100 == 1) {
+                        result.append(resources.getString(id_prefix_1));
+                    } else {
+                        result.append(resources.getString(id_prefix_5_20));
+                    }
+                    break;
+
+                default: // Славянские языки (русский, украинский и др.) — самый частый случай
+                    if (ageMinus100 == 1) {
+                        result.append(resources.getString(id_prefix_1));
+                    } else if (ageMinus100 > 4 && ageMinus100 < 21) {
+                        result.append(resources.getString(id_prefix_5_20));
+                    } else if (count_end.equals(Constants.STRING_1)) {
+                        result.append(resources.getString(id_prefix_1_));
+                    } else if (isEnd234) {
+                        result.append(resources.getString(id_prefix_2_3_4));
+                    } else {
+                        result.append(resources.getString(id_prefix_5_20));
+                    }
+                    break;
+            }
+
+            return result.toString();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             return Constants.STRING_EMPTY;

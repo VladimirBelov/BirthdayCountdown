@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
+  ~  * Created by Vladimir Belov on 19.09.2026, 23:22
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.09.2026, 20:30
+  ~  * Last modified 19.09.2026, 23:08
   ~  */
   -->
 
@@ -15,6 +15,7 @@
         <item>🎂 Selección de iconos y símbolos para tipos de eventos</item>
         <item>💾 Plantillas de configuración de widgets</item>
         <item>Se ha añadido una cuadrícula de días y marcadores de eventos de color 🟢 al widget del calendario</item>
+        <item>Se ha añadido el idioma de interfaz 🇮🇹 italiano</item>
         <item>Corrección de errores</item>
 
         <item>#1.9.1</item>

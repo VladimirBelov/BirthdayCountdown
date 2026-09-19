@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.09.2026, 18:08
+  ~  * Created by Vladimir Belov on 19.09.2026, 23:22
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 17.09.2026, 09:09
+  ~  * Last modified 19.09.2026, 21:41
   ~  */
   -->
 
@@ -1663,6 +1663,7 @@ Long click on item to select color"</string>
     <string name="pref_Language_pt" translatable="false">pt</string>
     <string name="pref_Language_pl" translatable="false">pl</string>
     <string name="pref_Language_cs" translatable="false">cs</string>
+    <string name="pref_Language_it" translatable="false">it</string>
 
     <string-array name="pref_Language_values" translatable="false">
         <item>@string/pref_Language_default</item>
@@ -1676,6 +1677,7 @@ Long click on item to select color"</string>
         <item>@string/pref_Language_be</item>
         <item>@string/pref_Language_pl</item>
         <item>@string/pref_Language_cs</item>
+        <item>@string/pref_Language_it</item>
     </string-array>
 
     <!-- https://en.wikipedia.org/wiki/Regional_indicator_symbol -->
@@ -1691,6 +1693,7 @@ Long click on item to select color"</string>
         <item>🇧🇾 Беларускі</item>
         <item>🇵🇱 Polski</item>
         <item>🇨🇿 Čeština</item>
+        <item>🇮🇹 Italiano</item>
     </string-array>
 
     <string name="pref_Icon_key" translatable="false">Icon</string>
