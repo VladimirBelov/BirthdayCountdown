@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.05.2026, 01:57
+  ~  * Created by Vladimir Belov on 21.09.2026, 20:24
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 25.05.2026, 23:59
+  ~  * Last modified 21.09.2026, 20:16
   ~  */
   -->
+
+<!-- 🗓️ Фиксированные даты: ДД.ММ.ГГГГ Название праздника [| Описание] [WEB ССЫЛКА: строка без пробелов, начинающаяся с http:// или https:// ] -->
+<!-- 🔄 Плавающие даты: NWW[+-СМЕЩЕНИЕ].ММ.ГГГГ Название праздника [| Описание] [WEB ССЫЛКА: строка без пробелов, начинающаяся с http:// или https:// ] -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
@@ -558,4 +561,24 @@
         06.04.2026,!1 Velikonoční pondělí"</item>
     </string-array>
 
+    <string-array name="holidays16" translatable="false" tools:ignore="UnusedResources">
+        <item>🇮🇹 Giorni festivi</item>
+        <item>"//Annuale (festività nazionali)
+        01.01.0000,! Capodanno
+        06.01.0000,! Epifania
+        25.04.0000,! Festa della Liberazione
+        01.05.0000,! Festa del Lavoro
+        02.06.0000,! Festa della Repubblica
+        15.08.0000,! Assunzione di Maria (Ferragosto)
+        01.11.0000,! Tutti i Santi
+        08.12.0000,! Immacolata Concezione
+        25.12.0000,! Natale
+        26.12.0000,! Santo Stefano"</item>
+        <item>"//2025 https://www.calendario-365.it/festivita-2025.html
+        20.04.2025,!1 Pasqua
+        21.04.2025,!1 Lunedì dell'Angelo (Pasquetta)"</item>
+        <item>"//2026
+        05.04.2026,!1 Pasqua
+        06.04.2026,!1 Lunedì dell'Angelo (Pasquetta)"</item>
+    </string-array>
 </resources>
