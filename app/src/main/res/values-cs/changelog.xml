@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.09.2026, 23:22
+  ~  * Created by Vladimir Belov on 22.09.2026, 14:09
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 19.09.2026, 23:07
+  ~  * Last modified 22.09.2026, 14:03
   ~  */
   -->
 
@@ -15,7 +15,7 @@
         <item>🎂 Výběr ikon a symbolů pro typy událostí</item>
         <item>💾 Šablony nastavení widgetů</item>
         <item>Do widgetu kalendáře byla přidána mřížka dnů a 🟢 barevné značky událostí</item>
-        <item>Přidán 🇮🇹 italský jazyk rozhraní</item>
+        <item>Přidána 🇮🇹 italština jako jazyk rozhraní a státní svátky Itálie</item>
         <item>Opravy chyb</item>
 
         <item>#1.9.1</item>

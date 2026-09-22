@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.01.2024, 23:29
-  ~  * Copyright (c) 2018 - 2024. All rights reserved.
-  ~  * Last modified 26.11.2023, 20:05
+  ~  * Created by Vladimir Belov on 22.09.2026, 14:09
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 22.09.2026, 14:06
   ~  */
   -->
 
@@ -14,6 +14,7 @@
     <locale android:name="fr"/>
     <locale android:name="de"/>
     <locale android:name="es"/>
+    <locale android:name="it"/>
     <locale android:name="pt"/>
     <locale android:name="ru"/>
     <locale android:name="uk"/>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.09.2026, 23:22
+  ~  * Created by Vladimir Belov on 22.09.2026, 14:09
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 19.09.2026, 23:06
+  ~  * Last modified 22.09.2026, 14:01
   ~  */
   -->
 
@@ -15,7 +15,7 @@
         <item>🎂 Selecting icons and symbols for event types</item>
         <item>💾 Widget settings templates</item>
         <item>A day grid and 🟢 colored event markers have been added to the calendar widget</item>
-        <item>Added 🇮🇹 Italian interface language</item>
+        <item>Added 🇮🇹 Italian interface language and public holidays of Italy</item>
         <item>Bug fixes</item>
 
         <item>#1.9.1</item>

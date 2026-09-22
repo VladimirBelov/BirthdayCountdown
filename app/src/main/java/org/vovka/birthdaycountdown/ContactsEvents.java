@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.09.2026, 20:37
+ *  * Created by Vladimir Belov on 22.09.2026, 14:09
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.09.2026, 21:31
+ *  * Last modified 22.09.2026, 12:56
  *
  */
 
@@ -712,7 +712,21 @@ public class ContactsEvents {
     /** Список id справочников фактов */
     Set<String> preferences_FactEvent_ids = new HashSet<>();
     final private Set<String> preferences_eventsWithoutYear = new HashSet<>();
-    /** Выбранный набор иконок для силуэтов персон */
+    /**
+     * Выбранный набор иконок для силуэтов персон.
+     * Соответствует значениям из {@code R.array.pref_IconPack_values}:
+     * <ul>
+     *   <li><b>0</b> — Стандартные</li>
+     *   <li><b>1</b> — Цветные</li>
+     *   <li><b>2</b> — Чёрно-белые</li>
+     *   <li><b>3</b> — Озорные</li>
+     *   <li><b>4</b> — Стандартные (без возраста)</li>
+     *   <li><b>99</b> ({@code R.string.pref_IconPack_event}) — <b>Иконка типа события</b>
+     *       (вместо силуэтов по возрасту и полу). При выборе этого набора в списке событий,
+     *       виджетах и уведомлениях вместо силуэта контакта отображается иконка,
+     *       заданная для типа события (с учётом кастомных настроек пользователя).</li>
+     * </ul>
+     */
     private int preferences_IconPackNumber;
     /** Список недавно использовавшихся цветов */
     final List<Integer> preferences_RecentColors = new ArrayList<>();
@@ -6208,6 +6222,21 @@ public class ContactsEvents {
             if (bm != null) return new BitmapLoadResult(bm, PhotoType.ICON, false);
         }
 
+        // 2.x Пользовательские события (Custom) с file-иконкой и без контакта
+        if ((eventSubType.equals(Constants.EventType_Custom1)
+                || eventSubType.equals(Constants.EventType_Custom2)
+                || eventSubType.equals(Constants.EventType_Custom3)
+                || eventSubType.equals(Constants.EventType_Custom4)
+                || eventSubType.equals(Constants.EventType_Custom5))
+                && TextUtils.isEmpty(singleEventArray[Position_contactID])) {
+            String iconValue = singleEventArray[Position_eventIcon];
+            if (iconValue != null && iconValue.startsWith(Constants.ICON_PREFIX_FILE)) {
+                String path = iconValue.substring(Constants.ICON_PREFIX_FILE.length());
+                Bitmap bm = decodeSampledIconFile(path, 256);
+                if (bm != null) return new BitmapLoadResult(bm, PhotoType.ICON, false);
+            }
+        }
+
         // 3. Пытаемся получить фото контакта
         @NonNull String contactID = StringUtils.getNotNullString(singleEventArray[Position_contactID]);
         String personFullName = singleEventArray[Position_personFullName];
@@ -6267,13 +6296,7 @@ public class ContactsEvents {
         }
 
         // 5. Пытаемся получить иконку типа события
-        int resIconPack_event = -1;
-        try {
-            resIconPack_event = Integer.parseInt(this.resources.getString(R.string.pref_IconPack_event));
-        } catch (NumberFormatException ignored) { /**/ }
-
-        if (preferences_IconPackNumber == resIconPack_event) {
-            // 5. Пытаемся получить иконку типа события (включая file-based)
+        if (preferences_IconPackNumber == 99) {
             Bitmap iconBm = getEventIconBitmap(eventType, 256);
             if (iconBm != null) {
                 return new BitmapLoadResult(iconBm, PhotoType.ICON, addMourningTape);
@@ -11966,7 +11989,11 @@ public class ContactsEvents {
             String path = value.substring(Constants.ICON_PREFIX_FILE.length());
             File f = new File(path);
             if (f.exists()) {
-                Bitmap bm = BitmapFactory.decodeFile(path);
+                // Явно указываем ARGB_8888
+                BitmapFactory.Options opts = new BitmapFactory.Options();
+                opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                opts.inPremultiplied = true;
+                Bitmap bm = BitmapFactory.decodeFile(path, opts);
                 if (bm != null) return new BitmapDrawable(context.getResources(), bm);
             }
         }
@@ -11987,6 +12014,11 @@ public class ContactsEvents {
             // 2. Вычисляем inSampleSize
             opts.inSampleSize = ImageUtils.calculateInSampleSize(opts.outWidth, opts.outHeight, targetSizePx, targetSizePx);
             opts.inJustDecodeBounds = false;
+            // 3. Явно указываем конфигурацию с поддержкой прозрачности
+            opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            // 4. Сохраняем premultiplied alpha (стандартное поведение для корректного смешивания)
+            opts.inPremultiplied = true;
+
             return BitmapFactory.decodeFile(path, opts);
         } catch (Exception e) {
             Log.e(TAG, "decodeSampledIconFile: " + path, e);

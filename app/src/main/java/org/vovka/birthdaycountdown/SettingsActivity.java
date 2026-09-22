@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.09.2026, 00:15
+ *  * Created by Vladimir Belov on 22.09.2026, 14:09
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.09.2026, 23:44
+ *  * Last modified 22.09.2026, 13:57
  *
  */
 
@@ -3879,6 +3879,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 int countSuccess = 0;
                 int countErrors = 0;
+                ArrayList<String> errors = new ArrayList<>();
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor editor = preferences.edit();
@@ -4072,7 +4073,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 valInt = Integer.parseInt(pref[1]);
                             } catch (NumberFormatException e) {
                                 countErrors++;
-                                ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
+                                errors.add(getString(R.string.msg_prefs_import_error, prefLine));
                             }
                             if (valInt != null) {
                                 editor.putInt(pref[0], valInt);
@@ -4086,7 +4087,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 valBoolean = Boolean.parseBoolean(pref[1]);
                             } catch (NumberFormatException e) {
                                 countErrors++;
-                                ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
+                                errors.add(getString(R.string.msg_prefs_import_error, prefLine));
                             }
                             if (valBoolean != null) {
                                 editor.putBoolean(pref[0], valBoolean);
@@ -4114,7 +4115,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                             if (valSet == null) {
                                 countErrors++;
-                                ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
+                                errors.add(getString(R.string.msg_prefs_import_error, prefLine));
                             } else {
                                 editor.putStringSet(pref[0], valSet);
                                 countSuccess++;
@@ -4132,7 +4133,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 valLong = Long.parseLong(pref[1]);
                             } catch (NumberFormatException e) {
                                 countErrors++;
-                                ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine));
+                                errors.add(getString(R.string.msg_prefs_import_error, prefLine));
                             }
                             if (valLong != null) {
                                 editor.putLong(pref[0], valLong);
@@ -4142,20 +4143,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         } else {
 
                             countErrors++;
-                            ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_unknown, prefLine));
+                            errors.add(getString(R.string.msg_prefs_import_unknown, prefLine));
 
                         }
                     } catch (Exception e) {
                         countErrors++;
-                        ToastExpander.showDebugMsg(this, getString(R.string.msg_prefs_import_error, prefLine + Constants.STRING_EOL + e));
+                        errors.add(getString(R.string.msg_prefs_import_error, prefLine + Constants.STRING_EOL + e));
                     }
                 }
 
-                android.widget.Toast.makeText(
-                        getApplicationContext(),
-                        getString(R.string.pref_Tools_Preferences_Import_result, countSuccess, countErrors),
-                        android.widget.Toast.LENGTH_LONG
-                ).show();
                 if (countSuccess > 0) {
                     if (editor.commit()) {
                         eventsData.setAppIcon();
@@ -4163,9 +4159,38 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
                 }
 
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
+                if (!errors.isEmpty()) {
+                    StringBuilder errorMessage = new StringBuilder();
+                    for (String error : errors) {
+                        errorMessage.append(error).append("\n");
+                    }
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
+                    builder.setTitle(getString(R.string.pref_Tools_Preferences_Import_result, countSuccess, countErrors));
+                    builder.setIcon(android.R.drawable.ic_menu_info_details);
+                    builder.setMessage(errorMessage.toString());
+                    builder.setPositiveButton(R.string.button_ok, (dialog, which) -> {
+                        dialog.dismiss();
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    });
+                    builder.setCancelable(false);
+                    AlertDialog alertToShow = builder.create();
+                    alertToShow.setOnShowListener(arg0 -> alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
+                    alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    alertToShow.show();
+                } else {
+                    android.widget.Toast.makeText(
+                            getApplicationContext(),
+                            getString(R.string.pref_Tools_Preferences_Import_result, countSuccess, countErrors),
+                            android.widget.Toast.LENGTH_LONG
+                    ).show();
+
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+                }
             }
 
         } catch (Exception e) {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.09.2026, 23:22
+  ~  * Created by Vladimir Belov on 22.09.2026, 14:09
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 19.09.2026, 23:07
+  ~  * Last modified 22.09.2026, 14:01
   ~  */
   -->
 
@@ -15,7 +15,7 @@
         <item>🎂 Auswahl von Symbolen für Ereignistypen</item>
         <item>💾 Widget-Einstellungen-Vorlagen</item>
         <item>Dem Kalender-Widget wurde ein Raster mit Tagen und 🟢 farbigen Ereignismarkierungen hinzugefügt</item>
-        <item>🇮🇹 Italienische Benutzeroberfläche hinzugefügt</item>
+        <item>🇮🇹 Italienische Benutzeroberfläche und gesetzliche Feiertage in Italien hinzugefügt</item>
         <item>Fehlerbehebungen</item>
 
         <item>#1.9.1</item>

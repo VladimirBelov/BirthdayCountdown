@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 19.09.2026, 23:22
+  ~  * Created by Vladimir Belov on 22.09.2026, 14:09
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 19.09.2026, 23:17
+  ~  * Last modified 22.09.2026, 14:04
   ~  */
   -->
 
@@ -15,7 +15,7 @@
         <item>🎂 Selezione di icone e simboli per le tipologie di evento</item>
         <item>💾 Modelli di impostazioni per i widget</item>
         <item>Aggiunti una griglia giornaliera e indicatori di evento colorati 🟢 al widget calendario</item>
-        <item>"Aggiunta la lingua 🇮🇹 italiana per l'interfaccia"</item>
+        <item>"Aggiunta la lingua dell'interfaccia 🇮🇹 italiana e i giorni festivi in Italia"</item>
         <item>Correzione di bug</item>
 
         <item>"##Per consultare la cronologia delle versioni precedenti, passa all'inglese nelle impostazioni dell'applicazione"</item>
