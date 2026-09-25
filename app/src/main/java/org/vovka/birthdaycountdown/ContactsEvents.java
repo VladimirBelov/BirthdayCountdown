@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.09.2026, 14:09
+ *  * Created by Vladimir Belov on 25.09.2026, 12:00
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.09.2026, 12:56
+ *  * Last modified 25.09.2026, 11:34
  *
  */
 
@@ -6297,7 +6297,7 @@ public class ContactsEvents {
 
         // 5. Пытаемся получить иконку типа события
         if (preferences_IconPackNumber == 99) {
-            Bitmap iconBm = getEventIconBitmap(eventType, 256);
+            Bitmap iconBm = getEventIconBitmap(eventSubType, 256);
             if (iconBm != null) {
                 return new BitmapLoadResult(iconBm, PhotoType.ICON, addMourningTape);
             }

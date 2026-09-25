@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.09.2026, 23:14
+ *  * Created by Vladimir Belov on 25.09.2026, 12:00
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.09.2026, 17:40
+ *  * Last modified 25.09.2026, 11:20
  *
  */
 
@@ -95,10 +95,12 @@ class ImageSelectAdapter extends BaseAdapter {
 
             Bitmap bmp;
             int targetBitmapSize = 130;
+            boolean bmpIsExternal = false; // флаг: Bitmap пришёл из списка
             if (position < images.size() && images.get(position) != null) {
                 Object imageObj = images.get(position);
                 if (imageObj instanceof Bitmap) {
                     bmp = (Bitmap) imageObj;
+                    bmpIsExternal = true; // помечаем
                 } else if (imageObj instanceof Integer) {
                     bmp = ImageUtils.getBitmap(this.context, (Integer) imageObj);
                 } else {
@@ -136,7 +138,10 @@ class ImageSelectAdapter extends BaseAdapter {
                     bitmapResized = Bitmap.createScaledBitmap(bmp, (int) (bmWidth * scale), (int) (bmHeight * scale), true);
 
                  }
-                bmp.recycle();
+                // Очищаем только если Bitmap создан внутри getView (из Integer)
+                if (!bmpIsExternal) {
+                    bmp.recycle();
+                }
             holder.icon.setImageDrawable(new BitmapDrawable(this.context.getResources(), bitmapResized));
             }
             if (parent instanceof ListView) {

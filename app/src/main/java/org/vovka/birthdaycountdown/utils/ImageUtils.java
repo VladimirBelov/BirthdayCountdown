@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.09.2026, 19:05
+ *  * Created by Vladimir Belov on 25.09.2026, 12:00
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 17.09.2026, 18:58
+ *  * Last modified 25.09.2026, 10:30
  *
  */
 
@@ -77,10 +77,8 @@ public class ImageUtils {
             if (drawable == null) return null;
             if (drawable instanceof BitmapDrawable) {
                 return BitmapFactory.decodeResource(context.getResources(), drawableId);
-            } else { //if (drawable instanceof VectorDrawable || drawable instanceof AdaptiveIconDrawable) {
+            } else {
                 return getBitmap(drawable);
-                //} else {
-                //    return null;
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

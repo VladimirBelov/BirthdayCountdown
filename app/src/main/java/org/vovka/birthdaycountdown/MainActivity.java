@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.09.2026, 20:37
+ *  * Created by Vladimir Belov on 25.09.2026, 12:00
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.09.2026, 23:07
+ *  * Last modified 25.09.2026, 11:54
  *
  */
 
@@ -1006,67 +1006,107 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private void selectEventTypeForEvent() {
         try {
-
             List<String> eventNames = new ArrayList<>();
-            List<Integer> eventIcons = new ArrayList<>();
+            List<Object> eventIcons = new ArrayList<>(); // Bitmap или Integer
+            List<String> eventTypes = new ArrayList<>(); // для маппинга позиции на тип события
 
+            // Birthday
             eventNames.add(getString(R.string.event_type_birthday));
-            eventIcons.add(R.drawable.ic_event_birthday);
+            eventTypes.add(Constants.EventType_BirthDay);
+            eventIcons.add(eventsData.getEventIconBitmap(Constants.EventType_BirthDay, 256));
+
+            // Anniversary
             eventNames.add(getString(R.string.event_type_anniversary));
-            eventIcons.add(R.drawable.ic_event_wedding);
+            eventTypes.add(Constants.EventType_Anniversary);
+            eventIcons.add(eventsData.getEventIconBitmap(Constants.EventType_Anniversary, 256));
+
+            // Nameday
             eventNames.add(getString(R.string.event_type_nameday));
-            eventIcons.add(R.drawable.ic_event_nameday);
+            eventTypes.add(Constants.EventType_NameDay);
+            eventIcons.add(eventsData.getEventIconBitmap(Constants.EventType_NameDay, 256));
+
+            // Crowning
             eventNames.add(getString(R.string.event_type_crowning));
-            eventIcons.add(R.drawable.ic_event_crowning);
+            eventTypes.add(Constants.EventType_Crowning);
+            eventIcons.add(eventsData.getEventIconBitmap(Constants.EventType_Crowning, 256));
+
+            // Death
             eventNames.add(getString(R.string.event_type_death));
-            eventIcons.add(R.drawable.ic_event_death);
+            eventTypes.add(Constants.EventType_Death);
+            eventIcons.add(eventsData.getEventIconBitmap(Constants.EventType_Death, 256));
+
+            // Other
             eventNames.add(getString(R.string.event_type_other));
-            eventIcons.add(R.drawable.ic_event_other);
+            eventTypes.add(Constants.EventType_Other);
+            eventIcons.add(eventsData.getEventIconBitmap(Constants.EventType_Other, 256));
+
+            // Holiday
             eventNames.add(getString(R.string.event_type_holiday));
-            eventIcons.add(R.drawable.ic_event_holiday);
-            eventNames.add(eventsData.preferences_customevent1_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent1_caption);
-            eventIcons.add(R.drawable.ic_event_custom1);
-            eventNames.add(eventsData.preferences_customevent2_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent2_caption);
-            eventIcons.add(R.drawable.ic_event_custom2);
-            eventNames.add(eventsData.preferences_customevent3_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent3_caption);
-            eventIcons.add(R.drawable.ic_event_custom3);
-            eventNames.add(eventsData.preferences_customevent4_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent4_caption);
-            eventIcons.add(R.drawable.ic_event_custom4);
-            eventNames.add(eventsData.preferences_customevent5_caption.isEmpty() ? getString(R.string.event_type_custom) : eventsData.preferences_customevent5_caption);
-            eventIcons.add(R.drawable.ic_event_custom5);
+            eventTypes.add(Constants.EventType_Holiday);
+            eventIcons.add(eventsData.getEventIconBitmap(Constants.EventType_Holiday, 256));
 
-            ListAdapter adapter = new ImageSelectAdapter(this, eventNames, eventIcons, ImageSelectAdapter.Scale.SQUARED, ta);
+            // Custom1
+            eventNames.add(eventsData.preferences_customevent1_caption.isEmpty()
+                    ? getString(R.string.event_type_custom) : eventsData.preferences_customevent1_caption);
+            eventTypes.add(Constants.EventType_Custom1);
+            eventIcons.add(eventsData.getEventIconBitmap(Constants.EventType_Custom1, 256));
 
-            AlertDialog.Builder builderForEventTypeDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
-                    .setTitle(R.string.msg_event_type_select_title)
+            // Custom2
+            eventNames.add(eventsData.preferences_customevent2_caption.isEmpty()
+                    ? getString(R.string.event_type_custom) : eventsData.preferences_customevent2_caption);
+            eventTypes.add(Constants.EventType_Custom2);
+            eventIcons.add(eventsData.getEventIconBitmap(Constants.EventType_Custom2, 256));
+
+            // Custom3
+            eventNames.add(eventsData.preferences_customevent3_caption.isEmpty()
+                    ? getString(R.string.event_type_custom) : eventsData.preferences_customevent3_caption);
+            eventTypes.add(Constants.EventType_Custom3);
+            eventIcons.add(eventsData.getEventIconBitmap(Constants.EventType_Custom3, 256));
+
+            // Custom4
+            eventNames.add(eventsData.preferences_customevent4_caption.isEmpty()
+                    ? getString(R.string.event_type_custom) : eventsData.preferences_customevent4_caption);
+            eventTypes.add(Constants.EventType_Custom4);
+            eventIcons.add(eventsData.getEventIconBitmap(Constants.EventType_Custom4, 256));
+
+            // Custom5
+            eventNames.add(eventsData.preferences_customevent5_caption.isEmpty()
+                    ? getString(R.string.event_type_custom) : eventsData.preferences_customevent5_caption);
+            eventTypes.add(Constants.EventType_Custom5);
+            eventIcons.add(eventsData.getEventIconBitmap(Constants.EventType_Custom5, 256));
+
+            ListAdapter adapter = new ImageSelectAdapter(this, eventNames, eventIcons,
+                    ImageSelectAdapter.Scale.SQUARED, ta);
+            AlertDialog.Builder builderForEventTypeDialog = new AlertDialog.Builder(
+                    new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(getString(R.string.msg_event_type_select_title)
+                            + Constants.STRING_PARENTHESIS_OPEN
+                            + selectedEvent[ContactsEvents.Position_eventLabel]
+                            + Constants.STRING_PARENTHESIS_CLOSE)
                     .setAdapter(adapter, null)
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                     .setCancelable(true);
-
             AlertDialog alertForEventTypeDialog = builderForEventTypeDialog.create();
-
             ListView eventList = alertForEventTypeDialog.getListView();
             eventList.setItemsCanFocus(false);
             eventList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
             eventList.setOnItemClickListener((parent, view, position, id) -> {
-
                 final String[] result = {null};
-                if (position > 5) {
-                    int needConfirmEventTitleIcon = 0;
-                    if (position == 7 && eventsData.preferences_customevent1_caption.isEmpty()) {
-                        needConfirmEventTitleIcon = R.drawable.ic_event_custom1;
-                    } else if (position == 8 && eventsData.preferences_customevent2_caption.isEmpty()) {
-                        needConfirmEventTitleIcon = R.drawable.ic_event_custom2;
-                    } else if (position == 9 && eventsData.preferences_customevent3_caption.isEmpty()) {
-                        needConfirmEventTitleIcon = R.drawable.ic_event_custom3;
-                    } else if (position == 10 && eventsData.preferences_customevent4_caption.isEmpty()) {
-                        needConfirmEventTitleIcon = R.drawable.ic_event_custom4;
-                    } else if (position == 11 && eventsData.preferences_customevent5_caption.isEmpty()) {
-                        needConfirmEventTitleIcon = R.drawable.ic_event_custom5;
-                    }
-                    if (needConfirmEventTitleIcon > 0) {
+                String selectedEventType = eventTypes.get(position);
 
+                // Проверяем, нужно ли запросить заголовок для пользовательского события
+                if (position >= 7) { // Custom1-Custom5
+                    String caption = "";
+                    switch (position) {
+                        case 7:  caption = eventsData.preferences_customevent1_caption; break;
+                        case 8:  caption = eventsData.preferences_customevent2_caption; break;
+                        case 9:  caption = eventsData.preferences_customevent3_caption; break;
+                        case 10: caption = eventsData.preferences_customevent4_caption; break;
+                        case 11: caption = eventsData.preferences_customevent5_caption; break;
+                    }
+
+                    if (caption.isEmpty()) {
+                        // Запрашиваем заголовок
                         final EditText editText = new EditText(MainActivity.this);
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -1077,18 +1117,23 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         editText.setHintTextColor(ta.getColor(R.styleable.Theme_dialogHintColor, 0));
                         editText.setMinimumHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, displayMetrics));
 
-                        AlertDialog.Builder builderForEventTitleDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                        // Получаем иконку для диалога
+                        Drawable dialogIcon = eventsData.getEventIconDrawable(selectedEventType);
+
+                        AlertDialog.Builder builderForEventTitleDialog = new AlertDialog.Builder(
+                                new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
                                 .setTitle(R.string.pref_CustomEvents_Custom_Caption_title)
-                                .setIcon(needConfirmEventTitleIcon)
+                                .setIcon(dialogIcon)
                                 .setView(editText)
                                 .setPositiveButton(R.string.button_ok, (dialog, which) -> {
-                                    result[0] = eventsData.addLabelToEventType((int) id, selectedEvent[ContactsEvents.Position_eventLabel], editText.getText().toString());
+                                    result[0] = eventsData.addLabelToEventType(position,
+                                            selectedEvent[ContactsEvents.Position_eventLabel],
+                                            editText.getText().toString());
                                     dialog.dismiss();
                                 })
                                 .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                                 .setCancelable(true);
 
-                        //Без этого цвет подложки действий при выделении текста становится непрозрачным
                         if (eventsData.preferences_theme.themeEditText != 0) {
                             builderForEventTitleDialog.getContext().setTheme(eventsData.preferences_theme.themeEditText);
                         } else {
@@ -1096,7 +1141,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
 
                         AlertDialog alertForEventTitleDialog = builderForEventTitleDialog.create();
-
                         alertForEventTitleDialog.setOnDismissListener(listener -> {
                             if (result[0] != null) {
                                 ToastExpander.showInfoMsg(MainActivity.this, result[0]);
@@ -1104,16 +1148,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 updateList(true);
                             }
                         });
-
                         alertForEventTitleDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         alertForEventTitleDialog.show();
-
                     } else {
-                        result[0] = eventsData.addLabelToEventType((int) id, selectedEvent[ContactsEvents.Position_eventLabel], null);
+                        result[0] = eventsData.addLabelToEventType(position,
+                                selectedEvent[ContactsEvents.Position_eventLabel], null);
                     }
-
                 } else {
-                    result[0] = eventsData.addLabelToEventType((int) id, selectedEvent[ContactsEvents.Position_eventLabel], null);
+                    result[0] = eventsData.addLabelToEventType(position,
+                            selectedEvent[ContactsEvents.Position_eventLabel], null);
                 }
 
                 alertForEventTypeDialog.dismiss();
@@ -1123,12 +1166,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     updateList(true);
                 }
             });
-
-            alertForEventTypeDialog.setOnShowListener(arg0 -> alertForEventTypeDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
-
+            alertForEventTypeDialog.setOnShowListener(arg0 ->
+                    alertForEventTypeDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                            .setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0)));
             alertForEventTypeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertForEventTypeDialog.show();
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
