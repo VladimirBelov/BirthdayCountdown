@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.09.2026, 00:15
+ *  * Created by Vladimir Belov on 25.09.2026, 17:36
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.09.2026, 21:51
+ *  * Last modified 25.09.2026, 16:50
  *
  */
 package org.vovka.birthdaycountdown;
@@ -1087,6 +1087,9 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             //События избранных контактов
             eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceFavoritePrefix));
             eventSourcesTitles.add(getString(R.string.widget_config_events_favorites));
+            //Локальные события
+            eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceLocalPrefix));
+            eventSourcesTitles.add(getString(R.string.widget_config_events_local_events));
             //Справочники праздников и выходных
             final ArrayList<Source> sources = new ArrayList<>();
             sources.add(new Source(Constants.STRING_TYPE_HOLIDAY, eventsData.preferences_HolidayEvent_ids));
@@ -1107,9 +1110,6 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                     packId = getResources().getIdentifier(source.packPrefix + eventsPackCount, Constants.RES_TYPE_STRING_ARRAY, getPackageName());
                 }
             }
-            //Локальные события
-            eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceLocalPrefix));
-            eventSourcesTitles.add(getString(R.string.widget_config_events_local_events));
             //Календари
             if (!DeviceTools.checkNoCalendarAccess(eventsData.getContext())){
                 if (eventsData.map_calendars.isEmpty()) AppDateUtils.fillCalendarList(eventsData.getContext(), eventsData.map_calendars, eventsData.map_calendars_colors);

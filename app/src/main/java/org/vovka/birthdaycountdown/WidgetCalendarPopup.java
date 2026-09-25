@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.07.2026, 11:42
+ *  * Created by Vladimir Belov on 25.09.2026, 17:36
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 27.07.2026, 08:33
+ *  * Last modified 25.09.2026, 16:31
  *
  */
 package org.vovka.birthdaycountdown;
@@ -449,6 +449,13 @@ public class WidgetCalendarPopup extends Activity {
             if (executorService != null && !executorService.isShutdown()) {
                 executorService.execute(() -> {
                     try {
+
+                        if (eventsData.isEmptyEventList()) {
+                            eventsData.getEvents();
+                        }
+                        //Заполнение типов дней для избранных событий и локальных праздников
+                        eventsData.fillDayTypesForCalendarWidget();
+
                         if (intent != null) {
                             //Заполнение типов дней из календарей по периоду
                             Calendar calFirstDay = null;
@@ -460,16 +467,14 @@ public class WidgetCalendarPopup extends Activity {
                             if (calFirstDay != null && calLastDay != null) {
                                 eventsData.fillDaysTypesFromCalendars(listEventsPacks, calFirstDay, calLastDay);
                             }
-                            //Заполнение типов дней из справочников
-                            eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
-                            eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
-                            //Заполнение типов дней из файлов
-                            eventsData.fillDaysTypesFromFiles(listEventsPacks);
                         }
 
-                        if (eventsData.isEmptyEventList()) {
-                            eventsData.getEvents();
-                        }
+                        //Заполнение типов дней из справочников
+                        eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
+                        eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
+                        //Заполнение типов дней из файлов
+                        eventsData.fillDaysTypesFromFiles(listEventsPacks);
+
                         // Обновляем UI в главном потоке
                         mainHandler.post(() -> {
                             if (dayMills != null) {

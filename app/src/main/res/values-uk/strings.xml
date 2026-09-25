@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.09.2026, 00:15
+  ~  * Created by Vladimir Belov on 25.09.2026, 17:36
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 17.09.2026, 00:14
+  ~  * Last modified 25.09.2026, 17:35
   ~  */
   -->
 
@@ -1081,7 +1081,7 @@
     </string-array>
 
     <string name="widget_config_events_favorites">🌟 Вибране</string>
-    <string name="widget_config_events_local_events">📅 Місцеві події</string>
+    <string name="widget_config_events_local_events">📅 Місцеві події (свята)</string>
 
     <string name="menu_save_template">Зберегти шаблон</string>
     <string name="menu_load_template">Завантажити шаблон</string>

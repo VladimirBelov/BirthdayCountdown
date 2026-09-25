@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.09.2026, 00:15
+  ~  * Created by Vladimir Belov on 25.09.2026, 17:36
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 17.09.2026, 00:12
+  ~  * Last modified 25.09.2026, 17:32
   ~  */
   -->
 
@@ -1081,7 +1081,7 @@ Dlouhým kliknutím na položku vyberte barvu"</string>
     </string-array>
 
     <string name="widget_config_events_favorites">🌟 Oblíbené</string>
-    <string name="widget_config_events_local_events">📅 Místní události</string>
+    <string name="widget_config_events_local_events">📅 Místní události (svátky)</string>
 
     <string name="menu_save_template">Uložit šablonu</string>
     <string name="menu_load_template">Načíst šablonu</string>

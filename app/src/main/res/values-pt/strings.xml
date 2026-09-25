@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.09.2026, 00:15
+  ~  * Created by Vladimir Belov on 25.09.2026, 17:36
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 17.09.2026, 00:14
+  ~  * Last modified 25.09.2026, 17:34
   ~  */
   -->
 
@@ -1081,7 +1081,7 @@ Clique longamente no item para selecionar a cor"</string>
     </string-array>
 
     <string name="widget_config_events_favorites">🌟 Favoritos</string>
-    <string name="widget_config_events_local_events">📅 Eventos locais</string>
+    <string name="widget_config_events_local_events">📅 Eventos locais (feriados)</string>
 
     <string name="menu_save_template">Salvar modelo</string>
     <string name="menu_load_template">Carregar modelo</string>

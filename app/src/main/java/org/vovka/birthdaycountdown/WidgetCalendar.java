@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.09.2026, 20:37
+ *  * Created by Vladimir Belov on 25.09.2026, 17:36
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.09.2026, 18:41
+ *  * Last modified 25.09.2026, 16:19
  *
  */
 
@@ -637,6 +637,8 @@ public class WidgetCalendar extends AppWidgetProvider {
                         + " : " + Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(calLastDay.getTime()));
             }
 
+            //Заполнение типов дней для избранных событий и локальных праздников
+            eventsData.fillDayTypesForCalendarWidget();
             //Заполнение типов дней из календарей по периоду
             eventsData.fillDaysTypesFromCalendars(prefOtherEvents, calFirstDay, calLastDay);
             //Заполнение типов дней из справочников

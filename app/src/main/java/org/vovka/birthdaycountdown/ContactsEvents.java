@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2026, 12:00
+ *  * Created by Vladimir Belov on 25.09.2026, 17:36
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.09.2026, 11:34
+ *  * Last modified 25.09.2026, 17:30
  *
  */
 
@@ -6632,7 +6632,6 @@ public class ContactsEvents {
             }
 
             final String eventKey = getEventKey(singleEventArray);
-            final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
 
             if (eventDateThisTime != null) {
                 dayDiff = AppDateUtils.countDaysDiff(currentDay, eventDateThisTime);
@@ -6715,45 +6714,6 @@ public class ContactsEvents {
             singleEventArray[Position_eventDate_sorted] = getSortKey(singleEventArray);
 
             eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleEventArray));
-
-            if (checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])) {
-                //Избранные для календарного виджета
-                final String packHash = StringUtils.getHash(Constants.eventSourceFavoritePrefix);
-
-                String anCaption = singleEventArray[Position_eventCaption];
-                // Если это годовщина свадьбы - убираем название свадьбы. Оно будет вычислено
-                // для конкретного дня в {@link WidgetCalendar}
-                if (eventType.equals(Constants.EventType_Anniversary)) {
-                    anCaption = eventCaption;
-                }
-                String eventTitle = Constants.eventTitleFavoritePrefix
-                        .concat(anCaption)
-                        .concat(Constants.STRING_COLON_SPACE)
-                        .concat(StringUtils.getFullName(singleEventArray, preferences_name_format));
-                if (age > 0) {
-                    String strDateFirstTime = singleEventArray[Position_eventDateFirstTime];
-                    eventTitle += Constants.STRING_PARENTHESIS_OPEN
-                            + strDateFirstTime.substring(strDateFirstTime.lastIndexOf(Constants.STRING_PERIOD) + 1)
-                            + Constants.STRING_PARENTHESIS_CLOSE;
-                }
-                final DayType.Type dayType = DayType.Type.Holiday;
-                final String key = packHash.concat(Constants.STRING_COLON).concat(Objects.requireNonNull(sdf_java_no_year.get()).format(eventDateThisTime));
-                fillDayTypeAndInfo(key, dayType, eventTitle);
-            } else if (Constants.EventType_Holiday.equals(singleEventArray[Position_eventSubType])
-                    && singleEventArray[Position_dates].contains(Constants.eventSourceLocalPrefix)) {
-                //Праздники в локальном событии для календарного виджета
-                String[] dates = singleEventArray[Position_dates].split(Constants.STRING_2TILDA, -1);
-                for (String date : dates) {
-                    String[] dateElements = date.split(Constants.STRING_COLON_SPACE, -1);
-                    if (dateElements.length == 3 && dateElements[0].equals(Constants.EVENT_PREFIX_LOCAL_EVENT)) {
-                        String key = dateElements[2].concat(Constants.STRING_COLON).concat(dateElements[1]);
-                        String eventTitle = Constants.eventTitleLocalPrefix
-                                .concat(singleEventArray[Position_personFullName]);
-                        fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
-                        break;
-                    }
-                }
-            }
 
             if (age > 0) {
 
@@ -10718,6 +10678,152 @@ public class ContactsEvents {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Заполняет типы дней и информацию о событиях для календарного виджета.
+     * Обрабатывает избранные события и локальные праздники.
+     * Вызывается из WidgetCalendar после getEvents().
+     */
+    void fillDayTypesForCalendarWidget() {
+        try {
+            for (String event : eventList) {
+                String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
+                if (singleEventArray.length < Position_attrAmount) continue;
+
+                final String eventKey = getEventKey(singleEventArray);
+                final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
+                final String eventType = singleEventArray[Position_eventType];
+                final String eventSubType = singleEventArray[Position_eventSubType];
+                final String eventCaption = singleEventArray[Position_eventCaption];
+                final String notAnnualEvent = singleEventArray[Position_notAnnualEvent];
+                boolean isAnnual = !Constants.STRING_1.equals(notAnnualEvent);
+
+                boolean showAsFav = false;
+
+                // Избранные события
+                if (checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])) {
+                    String anCaption = eventCaption;
+                    if (eventType.equals(Constants.EventType_Anniversary)) {
+                        anCaption = eventCaption;
+                    }
+                    String eventTitle = Constants.eventTitleFavoritePrefix
+                            .concat(anCaption)
+                            .concat(Constants.STRING_COLON_SPACE)
+                            .concat(StringUtils.getFullName(singleEventArray, preferences_name_format));
+
+                    String ageStr = singleEventArray[Position_age];
+                    if (!ageStr.isEmpty() && !ageStr.equals(Constants.STRING_MINUS1)) {
+                        try {
+                            int age = Integer.parseInt(ageStr);
+                            if (age > 0) {
+                                String strDateFirstTime = singleEventArray[Position_eventDateFirstTime];
+                                int lastDotIndex = strDateFirstTime.lastIndexOf(Constants.STRING_PERIOD);
+                                if (lastDotIndex > -1 && lastDotIndex < strDateFirstTime.length() - 1) {
+                                    eventTitle += Constants.STRING_PARENTHESIS_OPEN
+                                            + strDateFirstTime.substring(lastDotIndex + 1)
+                                            + Constants.STRING_PARENTHESIS_CLOSE;
+                                }
+                            }
+                        } catch (NumberFormatException ignored) {}
+                    }
+
+                    String dateNextTime = singleEventArray[Position_eventDateNextTime];
+                    if (!dateNextTime.isEmpty()) {
+                        try {
+                            Date eventDateThisTime = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(dateNextTime);
+                            if (eventDateThisTime != null) {
+                                final String packHash = StringUtils.getHash(Constants.eventSourceFavoritePrefix);
+
+                                // Для ежегодных событий добавляем для всех годов от первого возникновения до следующего
+                                if (isAnnual) {
+                                    String dateFirstTime = singleEventArray[Position_eventDateFirstTime];
+                                    if (!dateFirstTime.isEmpty()) {
+                                        try {
+                                            Date eventDateFirst = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(dateFirstTime);
+                                            if (eventDateFirst != null) {
+                                                int yearFirst = eventDateFirst.getYear() + 1900;
+                                                int yearNext = eventDateThisTime.getYear() + 1900;
+
+                                                // Добавляем для всех годов от yearFirst до yearNext
+                                                for (int year = yearFirst; year <= yearNext; year++) {
+                                                    Calendar cal = Calendar.getInstance();
+                                                    cal.setTime(eventDateThisTime);
+                                                    cal.set(Calendar.YEAR, year);
+                                                    String key = packHash.concat(Constants.STRING_COLON)
+                                                            .concat(Objects.requireNonNull(sdf_java_no_year.get()).format(cal.getTime()));
+                                                    fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
+                                                }
+                                            }
+                                        } catch (ParseException ignored) {}
+                                    }
+                                } else {
+                                    // Для не ежегодных - только одна дата
+                                    final String key = packHash.concat(Constants.STRING_COLON)
+                                            .concat(Objects.requireNonNull(sdf_java_no_year.get()).format(eventDateThisTime));
+                                    fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
+                                }
+                                showAsFav = true;
+                            }
+                        } catch (ParseException ignored) {}
+                    }
+                }
+
+                // Локальные праздники
+                if (!showAsFav && Constants.EventType_Holiday.equals(eventSubType)
+                        && singleEventArray[Position_dates].contains(Constants.eventSourceLocalPrefix)) {
+                    String[] dates = singleEventArray[Position_dates].split(Constants.STRING_2TILDA, -1);
+                    for (String date : dates) {
+                        String[] dateElements = date.split(Constants.STRING_COLON_SPACE, -1);
+                        if (dateElements.length == 3 && dateElements[0].equals(Constants.EVENT_PREFIX_LOCAL_EVENT)) {
+                            String packHash = dateElements[2];
+                            String dateStr = dateElements[1]; // yyyy-MM-dd
+
+                            try {
+                                Date eventDateFirst = Objects.requireNonNull(sdf_java.get()).parse(dateStr);
+                                if (eventDateFirst != null) {
+                                    String eventTitle = Constants.eventTitleLocalPrefix
+                                            .concat(singleEventArray[Position_personFullName]);
+
+                                    // Для ежегодных событий добавляем для всех годов от первого возникновения до следующего
+                                    if (isAnnual) {
+                                        String dateNextTime = singleEventArray[Position_eventDateNextTime];
+                                        if (!dateNextTime.isEmpty()) {
+                                            try {
+                                                Date eventDateNext = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(dateNextTime);
+                                                if (eventDateNext != null) {
+                                                    int yearFirst = eventDateFirst.getYear() + 1900;
+                                                    int yearNext = eventDateNext.getYear() + 1900;
+
+                                                    // Добавляем для всех годов от yearFirst до yearNext
+                                                    for (int year = yearFirst; year <= yearNext; year++) {
+                                                        Calendar cal = Calendar.getInstance();
+                                                        cal.setTime(eventDateFirst);
+                                                        cal.set(Calendar.YEAR, year);
+                                                        String key = packHash.concat(Constants.STRING_COLON)
+                                                                .concat(Objects.requireNonNull(sdf_java_no_year.get()).format(cal.getTime()));
+                                                        fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
+                                                    }
+                                                }
+                                            } catch (ParseException ignored) {}
+                                        }
+                                    } else {
+                                        // Для не ежегодных - только одна дата
+                                        String key = packHash.concat(Constants.STRING_COLON)
+                                                .concat(Objects.requireNonNull(sdf_java_no_year.get()).format(eventDateFirst));
+                                        fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
+                                    }
+                                }
+                            } catch (ParseException ignored) {}
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 
