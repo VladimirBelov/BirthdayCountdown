@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.09.2026, 13:29
+ *  * Created by Vladimir Belov on 28.09.2026, 18:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.09.2026, 13:22
+ *  * Last modified 28.09.2026, 17:52
  *
  */
 
@@ -10706,8 +10706,9 @@ public class ContactsEvents {
                 // Избранные события
                 if (checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[Position_starred])) {
                     String anCaption = eventCaption;
-                    if (eventType.equals(Constants.EventType_Anniversary)) {
-                        anCaption = eventCaption;
+                    if (eventType.equals(Constants.EventType_Anniversary) && eventCaption.contains(Constants.STRING_PARENTHESIS_OPEN)) {
+                        //У годовщин свадеб формат eventCaption: тип события (название свадьбы)
+                        anCaption = StringUtils.substringBefore(eventCaption, Constants.STRING_PARENTHESIS_OPEN);
                     }
                     String eventTitle = Constants.eventTitleFavoritePrefix
                             .concat(anCaption)
@@ -10736,6 +10737,7 @@ public class ContactsEvents {
                             Date eventDateThisTime = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(dateNextTime);
                             if (eventDateThisTime != null) {
                                 final String packHash = StringUtils.getHash(Constants.eventSourceFavoritePrefix);
+                                boolean added = false;
 
                                 // Для ежегодных событий добавляем для всех годов от первого возникновения до следующего
                                 if (isAnnual) {
@@ -10756,15 +10758,20 @@ public class ContactsEvents {
                                                             .concat(Objects.requireNonNull(sdf_java_no_year.get()).format(cal.getTime()));
                                                     fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
                                                 }
+                                                added = true;
                                             }
                                         } catch (ParseException ignored) {}
                                     }
-                                } else {
-                                    // Для не ежегодных - только одна дата
+                                }
+
+                                // Если не добавили (событие не ежегодное ИЛИ не удалось получить/распарсить год первого события),
+                                // добавляем только для следующей даты
+                                if (!added) {
                                     final String key = packHash.concat(Constants.STRING_COLON)
                                             .concat(Objects.requireNonNull(sdf_java_no_year.get()).format(eventDateThisTime));
                                     fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
                                 }
+
                                 showAsFav = true;
                             }
                         } catch (ParseException ignored) {}
@@ -10786,6 +10793,7 @@ public class ContactsEvents {
                                 if (eventDateFirst != null) {
                                     String eventTitle = Constants.eventTitleLocalPrefix
                                             .concat(singleEventArray[Position_personFullName]);
+                                    boolean addedLocal = false;
 
                                     // Для ежегодных событий добавляем для всех годов от первого возникновения до следующего
                                     if (isAnnual) {
@@ -10806,11 +10814,15 @@ public class ContactsEvents {
                                                                 .concat(Objects.requireNonNull(sdf_java_no_year.get()).format(cal.getTime()));
                                                         fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
                                                     }
+                                                    addedLocal = true;
                                                 }
                                             } catch (ParseException ignored) {}
                                         }
-                                    } else {
-                                        // Для не ежегодных - только одна дата
+                                    }
+
+                                    // Если не добавили (событие не ежегодное ИЛИ не удалось получить/распарсить год первого события),
+                                    // добавляем только для следующей даты
+                                    if (!addedLocal) {
                                         String key = packHash.concat(Constants.STRING_COLON)
                                                 .concat(Objects.requireNonNull(sdf_java_no_year.get()).format(eventDateFirst));
                                         fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);

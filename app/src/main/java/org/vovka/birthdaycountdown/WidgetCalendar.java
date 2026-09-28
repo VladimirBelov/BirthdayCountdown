@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2026, 17:36
+ *  * Created by Vladimir Belov on 28.09.2026, 18:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.09.2026, 16:19
+ *  * Last modified 28.09.2026, 17:27
  *
  */
 
@@ -1115,6 +1115,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                     //Подставляем в годовщину свадьбы её название
                     final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(eventsData.getResources().getString(R.string.event_type_anniversary));
                     final String birthdayPrefix = Constants.eventTitleFavoritePrefix.concat(eventsData.getResources().getString(R.string.event_type_birthday));
+                    //todo: если в один день и один год больше одной свадьбы - сцепляем такие события в одно (фио через запятую)
                     for (int i = 0; i < allEventsThisDay.size(); i++) {
                         String event = allEventsThisDay.get(i);
                         int indParOpen = event.lastIndexOf(Constants.STRING_PARENTHESIS_OPEN);
