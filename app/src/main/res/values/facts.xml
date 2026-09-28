@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 18.06.2026, 01:09
+  ~  * Created by Vladimir Belov on 28.09.2026, 13:29
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 16.06.2026, 23:43
+  ~  * Last modified 28.09.2026, 12:22
   ~  */
   -->
 
@@ -351,7 +351,8 @@
 Трудно искать чёрную кошку в чёрной комнате. Особенно, если её там нет
 Тот, кто избегает искушения, сильнее того, кто его побеждает (Сенека)
 Никто не запомнит насколько ты был занят. Все запомнят что ты построил
-Не говори что нет времени. У тебя столько же часов в сутках, сколько было у Да Винчи"</item>
+Не говори что нет времени. У тебя столько же часов в сутках, сколько было у Да Винчи
+Знать путь и пройти его — не одно и тоже (Матрица)"</item>
     </string-array>
 
     <string-array name="facts2" translatable="false" tools:ignore="UnusedResources">
@@ -697,7 +698,8 @@ Wealth is what you accumulate, not what you spend (Thomas J. Stanley, William D.
 The fear will never go away as long as you continue to grow. The only way to get rid of the fear of doing something is to go out and do it (Susan Jeffers)
 The bitterness of poor quality remains long after the sweetness of low price is forgotten (Thomas B. Lehon)
 People usually overestimate what they can achieve in a year and underestimate what they can achieve in ten years (Bodo Schäfer)
-Worry does not empty tomorrow of its sorrow. It empties today of its strength (Corrie ten Boom)
+Worry does not empty tomorrow of its sorrow. It empties today of its strength (Corrie ten Boom)"</item>
+    <item>"
 Compare yourself to who you were yesterday, not to who someone else is today (Jordan B. Peterson)
 Motivation is fickle. Discipline is reliable (Jocko Willink)
 Never make a decision when you are angry, never make a promise when you are happy (Benjamin Franklin)
@@ -705,7 +707,8 @@ Pressure doesn’t build character. Pressure reveals character (Julius Erving)
 Use envy as a compass, not a cage
 Courage is resistance to fear, mastery of fear — not absence of fear (Mark Twain)
 Luck is what happens when preparation meets opportunity (Seneca)
-It’s like looking for a black cat in a dark room — especially when there’s no cat"</item>
+It’s like looking for a black cat in a dark room — especially when there’s no cat
+There's a difference between knowing the path and walking the path (Matrix)"</item>
     </string-array>
 
     <string-array name="facts4" translatable="false" tools:ignore="UnusedResources">

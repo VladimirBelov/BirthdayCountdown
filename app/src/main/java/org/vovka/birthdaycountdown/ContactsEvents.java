@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2026, 17:36
+ *  * Created by Vladimir Belov on 28.09.2026, 13:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.09.2026, 17:30
+ *  * Last modified 28.09.2026, 13:22
  *
  */
 
@@ -1146,7 +1146,7 @@ public class ContactsEvents {
                             dotColor = ta.getColor(R.styleable.Theme_dialogBackgroundColor, dotColor);
                         textView.setText(HtmlCompat.fromHtml(
                                 Constants.FONT_COLOR_DOT_START
-                                        + Integer.toHexString(dotColor & 0x00ffffff)
+                                        + String.format("%06x", (dotColor & 0x00ffffff))
                                         + Constants.FONT_COLOR_DOT_END
                                         + textView.getText().toString()
                                 , HtmlCompat.FROM_HTML_MODE_LEGACY));
@@ -1244,29 +1244,30 @@ public class ContactsEvents {
         /**
          * Получает наименование знака зодиака по дате рождения.
          *
-         * @param context     Контекст
+         * @param resources   Локализованные ресурсы
          * @param strBirthday Дата рождения в формате "ДД.ММ.ГГГГ" (например, "21.03.1990").
          * @return Иконка и наименование знака зодиака или пустая строка в случае ошибки или некорректной даты.
          */
         @NonNull
-        public static String getZodiacSignTitle(@NonNull Context context, @NonNull String strBirthday) {
+        public static String getZodiacSignTitle(@NonNull Resources resources, @NonNull String strBirthday) {
             String zodiacSign = getZodiacSign(strBirthday);
             Integer stringResourceId = zodiacSignStrings.get(zodiacSign);
-            if (stringResourceId != null) return zodiacSign + context.getString(stringResourceId);
+            if (stringResourceId != null) return zodiacSign + resources.getString(stringResourceId);
             return Constants.STRING_EMPTY;
         }
 
         /**
          * Получает начало года по китайскому календарю
          *
+         * @param resources Локализованные ресурсы
          * @param year Год
          * @return Дата начала года по китайскому календарю
          */
         @Nullable
-        private static Date getLunarNewYear(@NonNull Context context, int year) {
+        private static Date getLunarNewYear(@NonNull Resources resources, int year) {
             try {
 
-                if (chineseZodiacNewYearsDates.isEmpty()) initChineseZodiacNewYears(context);
+                if (chineseZodiacNewYearsDates.isEmpty()) initChineseZodiacNewYears(resources);
 
                 return chineseZodiacNewYearsDates.get(year);
 
@@ -1279,12 +1280,12 @@ public class ContactsEvents {
         /**
          * Инициализирует данные начала годов в китайском календаре
          */
-        private static void initChineseZodiacNewYears(@NonNull Context context) {
+        private static void initChineseZodiacNewYears(@NonNull Resources resources) {
             try {
 
                 chineseZodiacNewYearsDates.clear();
 
-                String[] dateParts = context.getString(R.string.chinese_years_info).split(",", -1);
+                String[] dateParts = resources.getString(R.string.chinese_years_info).split(",", -1);
                 for (String datePart : dateParts) {
                     try {
                         Date date = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(datePart.trim());
@@ -1308,7 +1309,7 @@ public class ContactsEvents {
          * @param strBirthday Дата рождения в формате "ДД.ММ.ГГГГ" (например, "21.03.1990").
          * @return Номер года по китайскому календарю (от 0 до 11) или -1 в случае ошибки или некорректной даты.
          */
-        private static int getChineseZodiacYearNumber(@NonNull Context context, @NonNull String strBirthday) {
+        private static int getChineseZodiacYearNumber(@NonNull Resources resources, @NonNull String strBirthday) {
             try {
                 if (strBirthday.length() != 10 || strBirthday.charAt(2) != '.' || strBirthday.charAt(5) != '.') {
                     return -1; //Некорректный формат даты
@@ -1321,7 +1322,7 @@ public class ContactsEvents {
                     eventDate = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(strBirthday.trim());
                     if (eventDate != null) {
                         eventYear = Integer.parseInt(Objects.requireNonNull(sdf_YYYY.get()).format(eventDate));
-                        lunarNewYear = getLunarNewYear(context, eventYear);
+                        lunarNewYear = getLunarNewYear(resources, eventYear);
                     }
                 } catch (ParseException | NumberFormatException e) {
                     Log.e(TAG, e.getMessage() != null ? e.getMessage() : e.toString());
@@ -1351,8 +1352,8 @@ public class ContactsEvents {
          * @return Символ года по китайскому календарю или пустая строка в случае ошибки или некорректной даты.
          */
         @NonNull
-        public static String getChineseZodiacYearSymbol(@NonNull Context context, @NonNull String strBirthday) {
-            int yearNumber = getChineseZodiacYearNumber(context, strBirthday);
+        public static String getChineseZodiacYearSymbol(@NonNull Resources resources, @NonNull String strBirthday) {
+            int yearNumber = getChineseZodiacYearNumber(resources, strBirthday);
 
             switch (yearNumber) {
                 case 0:
@@ -1391,12 +1392,12 @@ public class ContactsEvents {
          * @return Символ и наименование года по китайскому календарю или пустая строка в случае ошибки или некорректной даты.
          */
         @NonNull
-        public static String getChineseZodiacYear(@NonNull Context context, @NonNull String strBirthday) {
-            int yearNumber = getChineseZodiacYearNumber(context, strBirthday);
-            String yearSymbol = getChineseZodiacYearSymbol(context, strBirthday);
+        public static String getChineseZodiacYear(@NonNull Resources resources, @NonNull String strBirthday) {
+            int yearNumber = getChineseZodiacYearNumber(resources, strBirthday);
+            String yearSymbol = getChineseZodiacYearSymbol(resources, strBirthday);
             Integer stringResourceId = chineseZodiacYearStrings.get(yearNumber);
             if (stringResourceId != null)
-                return yearSymbol.concat(context.getString(stringResourceId));
+                return yearSymbol.concat(resources.getString(stringResourceId));
             return Constants.STRING_EMPTY;
         }
     }
@@ -6706,8 +6707,8 @@ public class ContactsEvents {
             }
 
             if (eventSubType.equals(Constants.EventType_BirthDay)) {
-                singleEventArray[Position_zodiacSign] = ZodiacHelper.getZodiacSignTitle(context, singleEventArray[Position_eventDateFirstTime]);
-                singleEventArray[Position_zodiacYear] = ZodiacHelper.getChineseZodiacYear(context, singleEventArray[Position_eventDateFirstTime]);
+                singleEventArray[Position_zodiacSign] = ZodiacHelper.getZodiacSignTitle(resources, singleEventArray[Position_eventDateFirstTime]);
+                singleEventArray[Position_zodiacYear] = ZodiacHelper.getChineseZodiacYear(resources, singleEventArray[Position_eventDateFirstTime]);
             }
 
             //Сортировка: дней до даты + (с уведомлением, не скрыт, скрыт)
@@ -10397,7 +10398,7 @@ public class ContactsEvents {
                     }
                 }
 
-                String colorRGB = colorValue != null ? Integer.toHexString(colorValue & 0x00ffffff) : Constants.TRANSPARENT;
+                String colorRGB = colorValue != null ? String.format("%06x", (colorValue & 0x00ffffff)) : Constants.TRANSPARENT;
                 if (preferences_DaysInfo.containsKey(key) && preferences_DaysInfo.get(key) != null) {
                     String[] eventsList = StringUtils.getNotNullString(preferences_DaysInfo.get(key)).split(Constants.STRING_EOT, -1);
                     for (String eventInfo : eventsList) {

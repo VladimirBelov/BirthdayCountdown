@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.09.2026, 00:15
+ *  * Created by Vladimir Belov on 28.09.2026, 13:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.09.2026, 22:19
+ *  * Last modified 28.09.2026, 13:22
  *
  */
 
@@ -1231,14 +1231,14 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             TextView captionCaptionsUpperColor = findViewById(R.id.captionCaptionsUpperColor);
             captionCaptionsUpperColor.setText(HtmlCompat.fromHtml(
                     (Constants.FONT_COLOR_DOT_START
-                            + Integer.toHexString(colorCaptionUpper & 0x00ffffff)
+                            + String.format("%06x", (colorCaptionUpper & 0x00ffffff))
                             + Constants.FONT_COLOR_DOT_END).trim(),
                     HtmlCompat.FROM_HTML_MODE_LEGACY));
 
             TextView captionCaptionsBottomColor = findViewById(R.id.captionCaptionsBottomColor);
             captionCaptionsBottomColor.setText(HtmlCompat.fromHtml(
                     (Constants.FONT_COLOR_DOT_START
-                            + Integer.toHexString(colorCaptionBottom & 0x00ffffff)
+                            + String.format("%06x", (colorCaptionBottom & 0x00ffffff))
                             + Constants.FONT_COLOR_DOT_END).trim(),
                     HtmlCompat.FROM_HTML_MODE_LEGACY));
         } catch (final Exception e) {
@@ -1251,18 +1251,18 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         try {
 
             if (!colorId.isEmpty()) {
-                ToastExpander.showDebugMsg(getApplicationContext(), getString(R.string.msg_event_color_selected, Integer.toHexString(colorValue & 0x00ffffff), colorId));
+                ToastExpander.showDebugMsg(getApplicationContext(), getString(R.string.msg_event_color_selected, String.format("%06x", (colorValue & 0x00ffffff)), colorId));
 
                 if (colorId.equals(UPPER_ROW)) {
                     colorCaptionUpper = colorValue;
                     TextView captionCaptionsUpperColor = findViewById(R.id.captionCaptionsUpperColor);
                     captionCaptionsUpperColor.setText(HtmlCompat.fromHtml(
-                            (Constants.FONT_COLOR_DOT_START + Integer.toHexString(colorCaptionUpper & 0x00ffffff) + Constants.FONT_COLOR_DOT_END).trim(), HtmlCompat.FROM_HTML_MODE_LEGACY));
+                            (Constants.FONT_COLOR_DOT_START + String.format("%06x", (colorCaptionUpper & 0x00ffffff)) + Constants.FONT_COLOR_DOT_END).trim(), HtmlCompat.FROM_HTML_MODE_LEGACY));
                 } else if (colorId.equals(BOTTOM_ROW)) {
                     colorCaptionBottom = colorValue;
                     TextView captionCaptionsBottomColor = findViewById(R.id.captionCaptionsBottomColor);
                     captionCaptionsBottomColor.setText(HtmlCompat.fromHtml(
-                            (Constants.FONT_COLOR_DOT_START + Integer.toHexString(colorCaptionBottom & 0x00ffffff) + Constants.FONT_COLOR_DOT_END).trim(), HtmlCompat.FROM_HTML_MODE_LEGACY));
+                            (Constants.FONT_COLOR_DOT_START + String.format("%06x", (colorCaptionBottom & 0x00ffffff)) + Constants.FONT_COLOR_DOT_END).trim(), HtmlCompat.FROM_HTML_MODE_LEGACY));
                 }
             }
 

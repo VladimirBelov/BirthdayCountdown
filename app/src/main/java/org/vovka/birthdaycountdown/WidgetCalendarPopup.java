@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2026, 17:36
+ *  * Created by Vladimir Belov on 28.09.2026, 13:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.09.2026, 16:31
+ *  * Last modified 28.09.2026, 13:22
  *
  */
 package org.vovka.birthdaycountdown;
@@ -342,7 +342,7 @@ public class WidgetCalendarPopup extends Activity {
                         picker.selectColor(colorValue, colorDefaultValue, true, date, (id, color) -> {
                             if (StringUtils.hasContent(id)) {
                                 ToastExpander.showDebugMsg(getApplicationContext(),
-                                        getString(R.string.msg_event_color_selected, Integer.toHexString(color & 0x00ffffff), id));
+                                        getString(R.string.msg_event_color_selected, String.format("%06x", (color & 0x00ffffff)), id));
                                 int colorDefaultValue1 = ContextCompat.getColor(WidgetCalendarPopup.this, android.R.color.transparent);
                                 eventsData.setDayInfo(id, color != colorDefaultValue1 ? String.valueOf(color) : null);
                                 eventsData.updateWidgets(appWidgetId, null);
@@ -514,7 +514,7 @@ public class WidgetCalendarPopup extends Activity {
             if (dayInfo.contains(Constants.TRANSPARENT)) {
                 try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
                     dayInfo = dayInfo.replace(Constants.TRANSPARENT,
-                            Integer.toHexString(ta.getColor(R.styleable.Theme_backgroundColor, 0) & 0x00ffffff));
+                            String.format("%06x", (ta.getColor(R.styleable.Theme_backgroundColor, 0) & 0x00ffffff)));
                 }
             }
             viewInfo.setText(HtmlCompat.fromHtml(dayInfo, HtmlCompat.FROM_HTML_MODE_LEGACY));
@@ -548,7 +548,7 @@ public class WidgetCalendarPopup extends Activity {
                 if (colorValue != colorDefaultValue) {
                     buttonSelectColor.setText(HtmlCompat.fromHtml(
                             Constants.FONT_COLOR_DOT_START
-                                    + Integer.toHexString(colorValue & 0x00ffffff)
+                                    + String.format("%06x", (colorValue & 0x00ffffff))
                                     + Constants.FONT_COLOR_DOT_END
                                     + getString(R.string.popup_action_color),
                             HtmlCompat.FROM_HTML_MODE_LEGACY

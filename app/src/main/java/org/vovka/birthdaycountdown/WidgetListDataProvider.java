@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.09.2026, 01:33
+ *  * Created by Vladimir Belov on 28.09.2026, 13:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 20:55
+ *  * Last modified 28.09.2026, 13:17
  *
  */
 
@@ -282,7 +282,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
             String eventInfo = eventListView.get(position);
             String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
             final AtomicBoolean colorizeEntireRow = new AtomicBoolean(false);
-            String colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_far & 0x00ffffff);
+            String colorDate = String.format("%06x", (eventsData.preferences_widgets_color_event_far & 0x00ffffff));
 
             views.setImageViewBitmap(R.id.eventPhoto, null);
             views.setViewVisibility(R.id.eventPhoto, View.GONE);
@@ -307,12 +307,12 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
                 try {
                     if (eventDistance_Days == 0) { //Сегодня
 
-                        colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_today & 0x00ffffff);
+                        colorDate = String.format("%06x", (eventsData.preferences_widgets_color_event_today & 0x00ffffff));
                         dateColorId = 1;
 
                     } else if (eventDistance_Days >= 1 && eventDistance_Days <= eventsData.preferences_widgets_days_event_soon) { //Скоро
 
-                        colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_soon & 0x00ffffff);
+                        colorDate = String.format("%06x", (eventsData.preferences_widgets_color_event_soon & 0x00ffffff));
                         dateColorId = 2;
 
                     }

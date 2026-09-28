@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.07.2026, 14:22
+ *  * Created by Vladimir Belov on 28.09.2026, 13:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 23.07.2026, 14:22
+ *  * Last modified 28.09.2026, 13:17
  *
  */
 
@@ -103,7 +103,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
             //Информация о событии
             String eventInfo = eventListView.get(position);
             String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
-            String colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_far & 0x00ffffff);
+            String colorDate = String.format("%06x", (eventsData.preferences_widgets_color_event_far & 0x00ffffff));
 
             if (singleEventArray.length < ContactsEvents.Position_attrAmount) {
 
@@ -123,11 +123,11 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                 try {
                     if (eventDistance_Days == 0) { //Сегодня
 
-                        colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_today & 0x00ffffff);
+                        colorDate = String.format("%06x", (eventsData.preferences_widgets_color_event_today & 0x00ffffff));
 
                     } else if (eventDistance_Days >= 1 && eventDistance_Days <= eventsData.preferences_widgets_days_event_soon) { //Скоро
 
-                        colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_soon & 0x00ffffff);
+                        colorDate = String.format("%06x", (eventsData.preferences_widgets_color_event_soon & 0x00ffffff));
 
                     }
                 } catch (Resources.NotFoundException nfe) { /**/ }

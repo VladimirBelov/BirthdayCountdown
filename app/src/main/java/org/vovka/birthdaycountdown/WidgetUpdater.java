@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 08.09.2026, 11:18
+ *  * Created by Vladimir Belov on 28.09.2026, 13:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 08.09.2026, 10:26
+ *  * Last modified 28.09.2026, 13:17
  *
  */
 
@@ -821,7 +821,7 @@ class WidgetUpdater {
 
                 if (isBirthdayEvent) {
 
-                    strZodiacYearInfo = ContactsEvents.ZodiacHelper.getChineseZodiacYearSymbol(context, singleEventArray[ContactsEvents.Position_eventDateFirstTime]); //нам нужна только иконка
+                    strZodiacYearInfo = ContactsEvents.ZodiacHelper.getChineseZodiacYearSymbol(res, singleEventArray[ContactsEvents.Position_eventDateFirstTime]); //нам нужна только иконка
 
                 } else if (eventsData.birthdayDatesForIds.containsKey(contactID)) {
 
@@ -829,7 +829,7 @@ class WidgetUpdater {
                     if (birthDate != null) {
                         Locale locale_en = new Locale(Constants.LANG_EN);
                         SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
-                        strZodiacYearInfo = ContactsEvents.ZodiacHelper.getChineseZodiacYearSymbol(context, sdfYear.format(birthDate));
+                        strZodiacYearInfo = ContactsEvents.ZodiacHelper.getChineseZodiacYearSymbol(res, sdfYear.format(birthDate));
                     }
                 }
             }
@@ -881,7 +881,7 @@ class WidgetUpdater {
                 eventDistance_Days = 365;
             }
 
-            String colorDate = Integer.toHexString(eventsData.preferences_widgets_color_event_far & 0x00ffffff);
+            String colorDate = String.format("%06x", (eventsData.preferences_widgets_color_event_far & 0x00ffffff));
             if (eventDistance_Days == 0) { //Сегодня
 
                 if (colorEventToday != 0) {
@@ -896,14 +896,14 @@ class WidgetUpdater {
                     }
                 }
                 views.setTextViewText(id_widget_Distance, Constants.STRING_EMPTY);
-                colorDate = Integer.toHexString(colorEventToday & 0x00ffffff);
+                colorDate = String.format("%06x", (colorEventToday & 0x00ffffff));
 
             } else if (eventDistance_Days >= 1 && eventDistance_Days <= eventsData.preferences_widgets_days_event_soon) { //Скоро
 
                 views.setTextColor(id_widget_Distance, colorEventSoon);
                 views.setTextViewText(id_widget_Distance, eventDistance);
                 views.setTextViewTextSize(id_widget_Distance, COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_BIG * fontMagnify));
-                colorDate = Integer.toHexString(colorEventSoon & 0x00ffffff);
+                colorDate = String.format("%06x", (colorEventSoon & 0x00ffffff));
 
             } else { //Попозже
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.09.2026, 23:22
+ *  * Created by Vladimir Belov on 28.09.2026, 13:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.09.2026, 22:58
+ *  * Last modified 28.09.2026, 13:22
  *
  */
 
@@ -528,7 +528,7 @@ public class StringUtils {
                 default:
                     return msg;
             }
-            return Constants.HTML_COLOR_START + Integer.toHexString(ContextCompat.getColor(context, colorId) & 0x00ffffff)
+            return Constants.HTML_COLOR_START + String.format("%06x", (ContextCompat.getColor(context, colorId) & 0x00ffffff))
                     + Constants.HTML_COLOR_MIDDLE + msg + Constants.HTML_COLOR_END;
 
         } catch (Exception e) {

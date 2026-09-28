@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2026, 17:36
+ *  * Created by Vladimir Belov on 28.09.2026, 13:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.09.2026, 16:50
+ *  * Last modified 28.09.2026, 13:22
  *
  */
 package org.vovka.birthdaycountdown;
@@ -1157,7 +1157,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         if (Color.alpha(colorValue) == 0) {
                             colorValue = ta.getColor(R.styleable.Theme_backgroundColor, colorValue);
                         }
-                        sb.append(Constants.FONT_COLOR_DOT_START).append(Integer.toHexString(colorValue & 0x00ffffff)).append(Constants.FONT_COLOR_DOT_END);
+                        sb.append(Constants.FONT_COLOR_DOT_START).append(String.format("%06x", (colorValue & 0x00ffffff))).append(Constants.FONT_COLOR_DOT_END);
                     }
                     sb.append(eventSourcesTitles.get(ind));
                 }
@@ -1265,7 +1265,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                         picker.setDialogIcon(R.drawable.ic_menu_paste);
                         picker.selectColor(colorValue, colorDefault, true, sourceId, (sourceIdToSave, newColorValue) -> {
                             if (!TextUtils.isEmpty(sourceIdToSave)) {
-                                ToastExpander.showDebugMsg(getApplicationContext(), getString(R.string.msg_event_color_selected, Integer.toHexString(newColorValue & 0x00ffffff), sourceIdToSave));
+                                ToastExpander.showDebugMsg(getApplicationContext(), getString(R.string.msg_event_color_selected, String.format("%06x", (newColorValue & 0x00ffffff)), sourceIdToSave));
                                 eventSourcesColors.put(sourceIdToSave, newColorValue);
                             }
                             selectEventSources();
