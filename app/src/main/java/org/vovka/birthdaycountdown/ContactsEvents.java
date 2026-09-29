@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.09.2026, 18:02
+ *  * Created by Vladimir Belov on 29.09.2026, 14:15
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.09.2026, 17:52
+ *  * Last modified 29.09.2026, 14:15
  *
  */
 
@@ -10737,41 +10737,43 @@ public class ContactsEvents {
                             Date eventDateThisTime = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(dateNextTime);
                             if (eventDateThisTime != null) {
                                 final String packHash = StringUtils.getHash(Constants.eventSourceFavoritePrefix);
-                                boolean added = false;
 
-                                // Для ежегодных событий добавляем для всех годов от первого возникновения до следующего
+                                // Проверяем, есть ли год в дате первого события (формат dd.MM.yyyy)
+                                String dateFirstTime = singleEventArray[Position_eventDateFirstTime];
+                                boolean hasYearInFirstDate = dateFirstTime.length() >= 10
+                                        && dateFirstTime.charAt(2) == Constants.STRING_PERIOD.charAt(0)
+                                        && dateFirstTime.charAt(5) == Constants.STRING_PERIOD.charAt(0);
+
+                                int yearNext = eventDateThisTime.getYear() + 1900;
+                                int yearFirst = yearNext;
+                                int yearLast = yearNext;
+
                                 if (isAnnual) {
-                                    String dateFirstTime = singleEventArray[Position_eventDateFirstTime];
-                                    if (!dateFirstTime.isEmpty()) {
+                                    yearLast = yearNext + 1; // +1 год для прокрутки вперёд
+                                    if (hasYearInFirstDate) {
+                                        // Событие с годом — добавляем от года начала
                                         try {
                                             Date eventDateFirst = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(dateFirstTime);
                                             if (eventDateFirst != null) {
-                                                int yearFirst = eventDateFirst.getYear() + 1900;
-                                                int yearNext = eventDateThisTime.getYear() + 1900;
-
-                                                // Добавляем для всех годов от yearFirst до yearNext
-                                                for (int year = yearFirst; year <= yearNext; year++) {
-                                                    Calendar cal = Calendar.getInstance();
-                                                    cal.setTime(eventDateThisTime);
-                                                    cal.set(Calendar.YEAR, year);
-                                                    String key = packHash.concat(Constants.STRING_COLON)
-                                                            .concat(Objects.requireNonNull(sdf_java_no_year.get()).format(cal.getTime()));
-                                                    fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
-                                                }
-                                                added = true;
+                                                yearFirst = eventDateFirst.getYear() + 1900;
                                             }
                                         } catch (ParseException ignored) {}
+                                    } else {
+                                        // Событие без года — добавляем на 10 предыдущих лет
+                                        yearFirst = yearNext - 10;
                                     }
                                 }
 
-                                // Если не добавили (событие не ежегодное ИЛИ не удалось получить/распарсить год первого события),
-                                // добавляем только для следующей даты
-                                if (!added) {
-                                    final String key = packHash.concat(Constants.STRING_COLON)
-                                            .concat(Objects.requireNonNull(sdf_java_no_year.get()).format(eventDateThisTime));
+                                // ЕДИНЫЙ цикл по годам
+                                for (int year = yearFirst; year <= yearLast; year++) {
+                                    Calendar cal = Calendar.getInstance();
+                                    cal.setTime(eventDateThisTime);
+                                    cal.set(Calendar.YEAR, year);
+                                    String key = packHash.concat(Constants.STRING_COLON)
+                                            .concat(Objects.requireNonNull(sdf_java.get()).format(cal.getTime()));
                                     fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
+                                    //Log.i("add fav", key);
                                 }
-
                                 showAsFav = true;
                             }
                         } catch (ParseException ignored) {}
@@ -10786,49 +10788,71 @@ public class ContactsEvents {
                         String[] dateElements = date.split(Constants.STRING_COLON_SPACE, -1);
                         if (dateElements.length == 3 && dateElements[0].equals(Constants.EVENT_PREFIX_LOCAL_EVENT)) {
                             String packHash = dateElements[2];
-                            String dateStr = dateElements[1]; // yyyy-MM-dd
+                            String dateStr = dateElements[1]; // yyyy-MM-dd или --MM-dd
 
+                            // Проверяем, есть ли год в дате
+                            boolean hasYearInDate = !dateStr.startsWith(Constants.STRING_2MINUS)
+                                    && !dateStr.startsWith(Constants.STRING_0000_MINUS);
+
+                            Date eventDateFirst = null;
                             try {
-                                Date eventDateFirst = Objects.requireNonNull(sdf_java.get()).parse(dateStr);
-                                if (eventDateFirst != null) {
-                                    String eventTitle = Constants.eventTitleLocalPrefix
-                                            .concat(singleEventArray[Position_personFullName]);
-                                    boolean addedLocal = false;
-
-                                    // Для ежегодных событий добавляем для всех годов от первого возникновения до следующего
-                                    if (isAnnual) {
-                                        String dateNextTime = singleEventArray[Position_eventDateNextTime];
-                                        if (!dateNextTime.isEmpty()) {
-                                            try {
-                                                Date eventDateNext = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(dateNextTime);
-                                                if (eventDateNext != null) {
-                                                    int yearFirst = eventDateFirst.getYear() + 1900;
-                                                    int yearNext = eventDateNext.getYear() + 1900;
-
-                                                    // Добавляем для всех годов от yearFirst до yearNext
-                                                    for (int year = yearFirst; year <= yearNext; year++) {
-                                                        Calendar cal = Calendar.getInstance();
-                                                        cal.setTime(eventDateFirst);
-                                                        cal.set(Calendar.YEAR, year);
-                                                        String key = packHash.concat(Constants.STRING_COLON)
-                                                                .concat(Objects.requireNonNull(sdf_java_no_year.get()).format(cal.getTime()));
-                                                        fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
-                                                    }
-                                                    addedLocal = true;
-                                                }
-                                            } catch (ParseException ignored) {}
-                                        }
-                                    }
-
-                                    // Если не добавили (событие не ежегодное ИЛИ не удалось получить/распарсить год первого события),
-                                    // добавляем только для следующей даты
-                                    if (!addedLocal) {
-                                        String key = packHash.concat(Constants.STRING_COLON)
-                                                .concat(Objects.requireNonNull(sdf_java_no_year.get()).format(eventDateFirst));
-                                        fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
+                                if (hasYearInDate) {
+                                    eventDateFirst = Objects.requireNonNull(sdf_java.get()).parse(dateStr);
+                                } else {
+                                    // Fallback: если года нет, подставляем текущий год
+                                    if (dateStr.startsWith(Constants.STRING_2MINUS) && dateStr.length() >= 6) {
+                                        // "--MM-dd" -> "yyyy-MM-dd"
+                                        String dateWithYear = getToday().get(Calendar.YEAR) + dateStr.substring(1);
+                                        eventDateFirst = Objects.requireNonNull(sdf_java.get()).parse(dateWithYear);
+                                    } else if (dateStr.startsWith(Constants.STRING_0000_MINUS) && dateStr.length() >= 10) {
+                                        // "0000-MM-dd" -> "yyyy-MM-dd"
+                                        String dateWithYear = getToday().get(Calendar.YEAR) + dateStr.substring(4);
+                                        eventDateFirst = Objects.requireNonNull(sdf_java.get()).parse(dateWithYear);
                                     }
                                 }
                             } catch (ParseException ignored) {}
+
+                            if (eventDateFirst != null) {
+                                String eventTitle = Constants.eventTitleLocalPrefix
+                                        .concat(singleEventArray[Position_personFullName]);
+
+                                String dateNextTime = singleEventArray[Position_eventDateNextTime];
+                                int yearNext = eventDateFirst.getYear() + 1900;
+
+                                if (!dateNextTime.isEmpty()) {
+                                    try {
+                                        Date eventDateNext = Objects.requireNonNull(sdf_DDMMYYYY.get()).parse(dateNextTime);
+                                        if (eventDateNext != null) {
+                                            yearNext = eventDateNext.getYear() + 1900;
+                                        }
+                                    } catch (ParseException ignored) {}
+                                }
+
+                                int yearFirst = yearNext;
+                                int yearLast = yearNext;
+
+                                if (isAnnual) {
+                                    yearLast = yearNext + 1; // +1 год для прокрутки вперёд
+                                    if (hasYearInDate) {
+                                        // Событие с годом — добавляем от года начала
+                                        yearFirst = eventDateFirst.getYear() + 1900;
+                                    } else {
+                                        // Событие без года — добавляем на 10 предыдущих лет
+                                        yearFirst = yearNext - 10;
+                                    }
+                                }
+
+                                // ЕДИНЫЙ цикл по годам
+                                for (int year = yearFirst; year <= yearLast; year++) {
+                                    Calendar cal = Calendar.getInstance();
+                                    cal.setTime(eventDateFirst);
+                                    cal.set(Calendar.YEAR, year);
+                                    String key = packHash.concat(Constants.STRING_COLON)
+                                            .concat(Objects.requireNonNull(sdf_java.get()).format(cal.getTime()));
+                                    fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
+                                    //Log.i("add hol", key);
+                                }
+                            }
                             break;
                         }
                     }
