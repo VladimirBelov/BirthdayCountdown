@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.09.2026, 23:22
+ *  * Created by Vladimir Belov on 29.09.2026, 14:54
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.09.2026, 21:26
+ *  * Last modified 29.09.2026, 14:52
  *
  */
 
@@ -113,10 +113,6 @@ public class AppDateUtils {
     public static Calendar getWithoutTime(@NonNull Calendar c) {
         clearTime(c);
         return c;
-    }
-
-    public static boolean isLeapYear(int year) {
-        return year % 400 == 0 || (year % 100 != 0 && (year % 4 == 0));
     }
 
     /**

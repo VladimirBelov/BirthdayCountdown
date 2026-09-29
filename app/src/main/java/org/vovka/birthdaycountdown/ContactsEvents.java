@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.09.2026, 14:15
+ *  * Created by Vladimir Belov on 29.09.2026, 14:54
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.09.2026, 14:15
+ *  * Last modified 29.09.2026, 14:49
  *
  */
 
@@ -6571,25 +6571,29 @@ public class ContactsEvents {
                     }
 
                     if (isYear) { //в eventDateFirstTime - оригинальное событие
-
                         Calendar cal = AppDateUtils.getCalendarFromDate(eventDateFirstTime);
-                        try {
-                            eventDateThisTime = Objects.requireNonNull(sdf_java.get()).parse(nowYear + Constants.STRING_MINUS + (cal.get(Calendar.MONTH) + 1) + Constants.STRING_MINUS + cal.get(Calendar.DAY_OF_MONTH));
-                            if (eventDateThisTime != null) {
-                                long dayDiff_tmp = AppDateUtils.countDaysDiff(currentDay, eventDateThisTime);
-                                if (dayDiff_tmp < 0)
-                                    eventDateThisTime = AppDateUtils.addYear(eventDateThisTime, 1);
-                            }
-                        } catch (ParseException e) {
-                            if (cal.get(Calendar.MONTH) == Calendar.FEBRUARY && cal.get(Calendar.DAY_OF_MONTH) == 29) {
-                                try {
-                                    eventDateThisTime = Objects.requireNonNull(sdf_java.get()).parse(nowYear + "-03-01");
-                                    if (eventDateThisTime != null) {
-                                        long dayDiff_tmp = AppDateUtils.countDaysDiff(currentDay, eventDateThisTime);
-                                        if (dayDiff_tmp < 0)
-                                            eventDateThisTime = AppDateUtils.addYear(eventDateThisTime, 1);
-                                    }
-                                } catch (ParseException ignored) { /**/ }
+                        // Если событие в будущем — следующая дата = первая дата
+                        if (eventDateFirstTime.after(currentDay)) {
+                            eventDateThisTime = (Date) eventDateFirstTime.clone();
+                        } else {
+                            try {
+                                eventDateThisTime = Objects.requireNonNull(sdf_java.get()).parse(nowYear + Constants.STRING_MINUS + (cal.get(Calendar.MONTH) + 1) + Constants.STRING_MINUS + cal.get(Calendar.DAY_OF_MONTH));
+                                if (eventDateThisTime != null) {
+                                    long dayDiff_tmp = AppDateUtils.countDaysDiff(currentDay, eventDateThisTime);
+                                    if (dayDiff_tmp < 0)
+                                        eventDateThisTime = AppDateUtils.addYear(eventDateThisTime, 1);
+                                }
+                            } catch (ParseException e) {
+                                if (cal.get(Calendar.MONTH) == Calendar.FEBRUARY && cal.get(Calendar.DAY_OF_MONTH) == 29) {
+                                    try {
+                                        eventDateThisTime = Objects.requireNonNull(sdf_java.get()).parse(nowYear + "-03-01");
+                                        if (eventDateThisTime != null) {
+                                            long dayDiff_tmp = AppDateUtils.countDaysDiff(currentDay, eventDateThisTime);
+                                            if (dayDiff_tmp < 0)
+                                                eventDateThisTime = AppDateUtils.addYear(eventDateThisTime, 1);
+                                        }
+                                    } catch (ParseException ignored) { /**/ }
+                                }
                             }
                         }
                     }
@@ -6629,18 +6633,12 @@ public class ContactsEvents {
                 if (!dayArray[0].isEmpty() && Constants.STRING_STORAGE_CALENDAR.equals(singleEventArray[Position_eventStorage])) {
                     increaseStatForEventSources(StringUtils.substringBefore(dayArray[0], Constants.STRING_COLON_SPACE));
                 }
-
             }
 
             final String eventKey = getEventKey(singleEventArray);
 
             if (eventDateThisTime != null) {
                 dayDiff = AppDateUtils.countDaysDiff(currentDay, eventDateThisTime);
-                //Если до события больше года - убираем его
-                if (dayDiff > 365 + (AppDateUtils.isLeapYear(eventDateThisTime.getYear()) ? 1 : 0)) {
-                    eventList.set(eventIndex, Constants.STRING_EMPTY);
-                    return;
-                }
 
                 if (eventDateFirstTime != null && isYear) {
                     age = AppDateUtils.countYearsDiff(eventDateFirstTime, eventDateThisTime); //Считаем, сколько будет лет
@@ -6831,9 +6829,10 @@ public class ContactsEvents {
             if (distStr.startsWith(Constants.STRING_MINUS)) {
                 distStr = distStr.substring(1);
             }
-            // Обрезаем до 3 символов, если длиннее
+            // Ограничиваем сверху: всё, что больше 999 дней, считаем "999"
+            // (иначе для 1000 дней получим "000" и событие уедет в начало списка)
             if (distStr.length() > 3) {
-                distStr = distStr.substring(distStr.length() - 3);
+                distStr = "999";
             }
             // Дополняем слева нулями до 3
             String textDistancePart;
