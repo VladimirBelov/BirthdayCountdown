@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 29.09.2026, 08:52
+  ~  * Created by Vladimir Belov on 29.09.2026, 10:24
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 29.09.2026, 08:51
+  ~  * Last modified 29.09.2026, 10:16
   ~  */
   -->
 
@@ -11,7 +11,7 @@
     android:id="@+id/eventEntry"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="4dp"
+    android:paddingVertical="3dp"
     android:orientation="horizontal">
 
     <ImageView
@@ -26,15 +26,16 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingStart="2dp">
+        android:paddingStart="5dp">
 
         <TextView
             android:id="@+id/eventCaption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:includeFontPadding="false"
+            android:textStyle="bold"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/eventDetails"
