@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.09.2026, 00:15
+  ~  * Created by Vladimir Belov on 29.09.2026, 08:52
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 17.09.2026, 00:08
+  ~  * Last modified 29.09.2026, 08:47
   ~  */
   -->
 
@@ -59,7 +59,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="2dp">
 
             <TextView
                 android:id="@+id/color_label"
@@ -74,7 +75,10 @@
                 android:hint="@string/hint_Color"
                 android:inputType="textNoSuggestions"
                 android:maxLines="1"
-                android:minHeight="48dp"
+                android:minHeight="32dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="2dp"
+                android:gravity="center_vertical"
                 android:importantForAutofill="no"
                 android:textColor="?attr/dialogTextColor" />
 
@@ -84,7 +88,7 @@
     <!-- Цветовой спектр HSV -->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="180dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp">
 
