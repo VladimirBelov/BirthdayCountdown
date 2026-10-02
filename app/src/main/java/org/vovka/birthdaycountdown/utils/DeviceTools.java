@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.10.2026, 11:57
+ *  * Created by Vladimir Belov on 02.10.2026, 13:32
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.10.2026, 11:13
+ *  * Last modified 02.10.2026, 13:29
  *
  */
 
@@ -34,6 +34,7 @@ import androidx.core.content.ContextCompat;
 import org.vovka.birthdaycountdown.Constants;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 
@@ -289,29 +290,39 @@ public class DeviceTools {
         try {
             Uri uri = Uri.parse(ringtoneUri);
 
-            // Универсальная проверка для ЛЮБОГО content:// URI
-            // (это покрывает и .fileprovider, и content://media/...)
+            // 1. Специальная обработка для системных URI (content://settings/...)
+            // Android намеренно блокирует openInputStream для таких URI, выбрасывая FileNotFoundException.
+            // Поэтому мы просто считаем их валидными, так как это системные настройки.
+            if ("content".equals(uri.getScheme()) && uri.getAuthority() != null && uri.getAuthority().startsWith("settings")) {
+                return ringtoneUri;
+            }
+
+            // 2. Для всех остальных content:// URI (MediaStore, FileProvider)
             if ("content".equals(uri.getScheme())) {
-                // Пытаемся открыть поток. Если система может это сделать, значит URI валиден и доступен.
                 try (InputStream is = context.getContentResolver().openInputStream(uri)) {
                     if (is != null) {
-                        return ringtoneUri; // Всё отлично, URI рабочий
+                        return ringtoneUri; // Файл существует и доступен для чтения
                     }
+                } catch (FileNotFoundException e) {
+                    // Файл не найден или был удалён пользователем
+                    Log.w(TAG, "Ringtone file not found: " + ringtoneUri);
+                } catch (SecurityException e) {
+                    // Нет прав на чтение (актуально для FileProvider, если приложение убито в фоне)
+                    Log.w(TAG, "No permission to read ringtone: " + ringtoneUri);
                 }
             }
-            // На всякий случай, если вдруг где-то в старых настройках закрался file://
+            // 3. На всякий случай, для устаревших file:// URI
             else if ("file".equals(uri.getScheme())) {
                 String path = uri.getPath();
-                File file;
                 if (path != null) {
-                    file = new File(path);
+                    File file = new File(path);
                     if (file.exists() && file.canRead()) {
                         return ringtoneUri;
                     }
                 }
             }
 
-            // Если дошли сюда, значит URI не content/file, или открыть поток не удалось
+            // Если мы дошли сюда, значит URI не прошел проверки (файл удален или недоступен)
             Log.w(TAG, "Invalid or inaccessible ringtone URI, using default: " + ringtoneUri);
             return Settings.System.DEFAULT_NOTIFICATION_URI.toString();
 
