@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
+  ~  * Created by Vladimir Belov on 02.10.2026, 11:57
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.07.2026, 13:49
+  ~  * Last modified 02.10.2026, 11:55
   ~  */
   -->
 
@@ -15,6 +15,8 @@
 
         <item>#No notifications appear</item>
         <item>The first step is to make sure that the setting \"Notification period\" has any period selected. After that try to select item \"Test notification\". If after all of the above, the notification still does not appear, then the matter is in the Android settings: either the \"Do not disturb\" mode is turned on, or all notifications are turned off in the notification manager, or the battery saving mode is turned on in the smartphone.</item>
+
+        <item>#If the notification sound is missing after transferring the app to a new phone, re-select the 🎵 melody in the settings</item>
 
         <item>#Multiple notifications per event</item>
         <item>Setting \"Notification period\" in the main application settings allows you to select several separate periods for notification of an event. For example, you can set up receiving notifications for the week and day of the event.</item>

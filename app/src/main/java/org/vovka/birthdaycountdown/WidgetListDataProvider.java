@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.09.2026, 13:29
+ *  * Created by Vladimir Belov on 02.10.2026, 11:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.09.2026, 13:17
+ *  * Last modified 01.10.2026, 12:17
  *
  */
 
@@ -36,7 +36,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -70,18 +69,20 @@ import java.util.regex.Pattern;
 public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFactory {
 
     private static final String TAG = "ListDataProvider";
-    final List<String> eventListView = new ArrayList<>();
-    final Context context;
-    Resources localizedResources;
-    final int widgetID;
-    int widgetWidth;
-    float floatDensity;
-    List<String> widgetPref;
+    private final List<String> eventListView = new ArrayList<>();
+    private final Context context;
+    private Resources localizedResources;
+    private final int widgetID;
+    private int widgetWidth;
+    private float floatDensity;
+    private List<String> widgetPref;
     private List<String> widgetPref_eventInfo = new ArrayList<>();
-    int widgetPref_onClick = 0;
-    int columnToExpand = 0;
-    ContactsEvents eventsData;
-    long lastUpdated = 0;
+    private int widgetPref_onClick = 0;
+    private int columnToExpand = 0;
+    private ContactsEvents eventsData;
+    /** Подсвечивать цветом события всю строку */
+    private boolean colorizeEntireRow = false;
+    private long lastUpdated = 0;
 
     public WidgetListDataProvider(Context context, Intent intent) {
         this.context = context;
@@ -281,7 +282,6 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
             //Информация о событии
             String eventInfo = eventListView.get(position);
             String[] singleEventArray = eventInfo.split(Constants.STRING_EOT, -1);
-            final AtomicBoolean colorizeEntireRow = new AtomicBoolean(false);
             String colorDate = String.format("%06x", (eventsData.preferences_widgets_color_event_far & 0x00ffffff));
 
             views.setImageViewBitmap(R.id.eventPhoto, null);
@@ -320,7 +320,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
 
                 //Составление события
                 eventDetails.addAll(getEventDetails(singleEventArray, eventInfo, views,
-                        colorDate, eventDistance_Days, eventDistance, dateColorId, colorizeEntireRow));
+                        colorDate, eventDistance_Days, eventDistance, dateColorId));
 
             }
 
@@ -331,7 +331,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
             for (String column: eventDetails) {
                 colNum++;
                 String columnText;
-                if (colorizeEntireRow.get()) {
+                if (colorizeEntireRow) {
                     columnText = Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + column + Constants.HTML_COLOR_END;
                 } else {
                     columnText = column;
@@ -378,11 +378,10 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
      * @param eventDistance_Days Дней до события
      * @param eventDistance Дней до события строкой
      * @param dateColorId Id цвета дня (1 - сегодня, 2 - скоро, 3 - подальше)
-     * @param colorizeEntireRow Подсвечивать цветом события всю строку
      * @return Детали события
      */
     private List<String> getEventDetails(String[] singleEventArray, String eventInfo, RemoteViews views, String colorDate,
-                                          int eventDistance_Days, String eventDistance, int dateColorId, AtomicBoolean colorizeEntireRow) {
+                                          int eventDistance_Days, String eventDistance, int dateColorId) {
 
         List<String> detailsList = new ArrayList<>();
         StringBuilder eventDetails = new StringBuilder();
@@ -648,7 +647,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_ColorizeEntireRow_ID))) {
 
-                    colorizeEntireRow.set(true);
+                    colorizeEntireRow = true;
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_BoldStart_ID))) {
 

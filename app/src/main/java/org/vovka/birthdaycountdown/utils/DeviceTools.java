@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 00:32
+ *  * Created by Vladimir Belov on 02.10.2026, 11:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.06.2026, 20:09
+ *  * Last modified 02.10.2026, 11:13
  *
  */
 
@@ -22,6 +22,8 @@ import android.os.PowerManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -31,6 +33,8 @@ import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.Constants;
 
+import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 
 public class DeviceTools {
@@ -270,6 +274,51 @@ public class DeviceTools {
             canExact = true;
         }
         return canExact;
+    }
+
+    /**
+     * Проверяет валидность URI мелодии. Если URI недоступен — возвращает дефолтный звук.
+     * Это защищает от проблем при переносе данных между устройствами или если файл был удалён.
+     */
+    @NonNull
+    public static String validateRingtoneUri(@Nullable String ringtoneUri, @NonNull Context context) {
+        if (TextUtils.isEmpty(ringtoneUri)) {
+            return Settings.System.DEFAULT_NOTIFICATION_URI.toString();
+        }
+
+        try {
+            Uri uri = Uri.parse(ringtoneUri);
+
+            // Универсальная проверка для ЛЮБОГО content:// URI
+            // (это покрывает и .fileprovider, и content://media/...)
+            if ("content".equals(uri.getScheme())) {
+                // Пытаемся открыть поток. Если система может это сделать, значит URI валиден и доступен.
+                try (InputStream is = context.getContentResolver().openInputStream(uri)) {
+                    if (is != null) {
+                        return ringtoneUri; // Всё отлично, URI рабочий
+                    }
+                }
+            }
+            // На всякий случай, если вдруг где-то в старых настройках закрался file://
+            else if ("file".equals(uri.getScheme())) {
+                String path = uri.getPath();
+                File file;
+                if (path != null) {
+                    file = new File(path);
+                    if (file.exists() && file.canRead()) {
+                        return ringtoneUri;
+                    }
+                }
+            }
+
+            // Если дошли сюда, значит URI не content/file, или открыть поток не удалось
+            Log.w(TAG, "Invalid or inaccessible ringtone URI, using default: " + ringtoneUri);
+            return Settings.System.DEFAULT_NOTIFICATION_URI.toString();
+
+        } catch (Exception e) {
+            Log.w(TAG, "Error validating ringtone URI: " + ringtoneUri, e);
+            return Settings.System.DEFAULT_NOTIFICATION_URI.toString();
+        }
     }
 
     public enum MIUIAutoStartState {

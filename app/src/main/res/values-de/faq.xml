@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.07.2026, 11:41
+  ~  * Created by Vladimir Belov on 02.10.2026, 11:57
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.07.2026, 16:13
+  ~  * Last modified 02.10.2026, 11:55
   ~  */
   -->
 
@@ -15,6 +15,8 @@
 
                 <item>#Es erscheinen keine Benachrichtigungen</item>
                 <item>Der erste Schritt ist sicherzustellen, dass in der Einstellung \"Benachrichtigungsintervall\" ein beliebiger Zeitraum ausgewählt ist. Danach versuchen Sie, das Element \"Testbenachrichtigungen\" auszuwählen. Wenn nach all den oben genannten Einstellungen die Benachrichtigung immer noch nicht angezeigt wird, dann ist in den Android-Einstellungen entweder der \"Nicht stören\"-Modus eingeschaltet, alle Benachrichtigungen im Benachrichtigungs-Manager deaktiviert oder der Batteriesparmodus auf dem Smartphone aktiviert.</item>
+
+                <item>#Falls der Benachrichtigungston nach der Übertragung der App auf ein neues Telefon nicht mehr funktioniert, wählen Sie den Klingelton 🎵 in den Einstellungen erneut aus.</item>
 
                 <item>#Mehrere Benachrichtigungen pro Ereignis</item>
                 <item>Durch Festlegen von \"Benachrichtigungsintervall\" in den Einstellungen können Sie mehrere separate Zeiträume der Benachrichtigung für ein Ereignis auswählen. Sie können beispielsweise festlegen, dass Benachrichtigungen eine Woche vorher und am Tag des Ereignisses empfangen werden.</item>

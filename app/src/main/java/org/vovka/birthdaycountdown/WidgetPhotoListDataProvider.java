@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.09.2026, 13:29
+ *  * Created by Vladimir Belov on 02.10.2026, 11:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.09.2026, 13:17
+ *  * Last modified 01.10.2026, 12:23
  *
  */
 
@@ -95,9 +95,6 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
             views.setTextViewTextSize(R.id.eventDetails, TypedValue.COMPLEX_UNIT_SP,
                     ImageUtils.getSizeForWidgetElement(widgetPref, 1, Constants.WIDGET_TEXT_SIZE_TINY, 1.2));
 
-            views.setTextColor(R.id.eventCaption, eventsData.preferences_widgets_color_default);
-            views.setTextColor(R.id.eventDetails, eventsData.preferences_widgets_color_default);
-
             if (eventListView.size() < position + 1) return views;
 
             //Информация о событии
@@ -137,6 +134,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                 final String eventKey = eventsData.getEventKey(singleEventArray);
                 final String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
                 String eventCaption = StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format);
+
                 //Иконка избранного
                 if (widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_FavIcon_ID))) {
                     if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
@@ -152,6 +150,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                 } else {
                     views.setTextViewText(R.id.eventCaption, eventCaption);
                 }
+                views.setTextColor(R.id.eventCaption, eventsData.preferences_widgets_color_default);
 
                 StringBuilder sbDetails = new StringBuilder();
 
@@ -311,6 +310,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                 }
 
                 views.setTextViewText(R.id.eventDetails, HtmlCompat.fromHtml(eventDetails, HtmlCompat.FROM_HTML_MODE_LEGACY));
+                views.setTextColor(R.id.eventDetails, eventsData.preferences_widgets_color_default);
 
                 //Фото
                 views.setImageViewBitmap(R.id.eventPhoto, null);
@@ -318,7 +318,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                 Bitmap photo = null;
                 if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(localizedResources.getString(R.string.pref_EventInfo_Photo_ID))
                         : widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_Photo_ID))) {
-                    int roundingFactor = getRoundingFactor();
+                    int roundingFactor = ImageUtils.getRoundingFactor(widgetPref);
                     photo = eventsData.getEventPhoto(eventInfo, true, true, false, roundingFactor);
                 }
                 if (photo != null) {
@@ -370,19 +370,6 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
 
         return views;
 
-    }
-
-    private int getRoundingFactor() {
-        int roundingFactor = 1;
-        if (widgetPref != null && widgetPref.size() > 6) {
-            switch (widgetPref.get(6)) {
-                case Constants.STRING_1: roundingFactor = 2; break;
-                case Constants.STRING_2: roundingFactor = 3; break;
-                case Constants.STRING_3: roundingFactor = 4; break;
-                case Constants.STRING_4: roundingFactor = 9; break;
-            }
-        }
-        return roundingFactor;
     }
 
     @Nullable

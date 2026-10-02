@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.09.2026, 14:09
+ *  * Created by Vladimir Belov on 02.10.2026, 11:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.09.2026, 13:57
+ *  * Last modified 01.10.2026, 15:22
  *
  */
 
@@ -24,6 +24,7 @@ import android.content.ClipDescription;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -4734,10 +4735,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 } else if (requestCode == Constants.RESULT_PICK_RINGTONE) {
 
-                    // Это выбор системной мелодии (через RingtoneManager)
+                    // Выбрана системная мелодия (через RingtoneManager)
                     Uri pickedUri = resultData.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
                     if (pickedUri == null) {
                        pickedUri = Settings.System.DEFAULT_NOTIFICATION_URI;
+                    } else {
+                        // Убираем query-параметры для стабильного сравнения
+                        pickedUri = pickedUri.buildUpon().clearQuery().build();
                     }
 
                     // Сохраняем новый URI
@@ -4765,25 +4769,66 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     String displayName = getDisplayNameFromUri(sourceUri);
                     String safeName = sanitizeFileName(displayName);
                     if (!safeName.contains(".")) safeName += ".mp3";
+                    Uri newUri;
 
-                    //Копируем файл в папку приложения
-                    File targetFile = new File(getFilesDir(), safeName);
-                    try (InputStream in = getContentResolver().openInputStream(sourceUri);
-                         OutputStream out = new FileOutputStream(targetFile)) {
-                        if (in == null) {
-                            ToastExpander.showInfoMsg(this, getString(R.string.msg_file_open_error) + sourceUri);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+
+                        // MediaStore
+                        ContentValues values = new ContentValues();
+                        values.put(MediaStore.Audio.Media.DISPLAY_NAME, safeName);
+                        values.put(MediaStore.Audio.Media.MIME_TYPE, "audio/mpeg");
+                        values.put(MediaStore.Audio.Media.RELATIVE_PATH, android.os.Environment.DIRECTORY_NOTIFICATIONS);
+                        values.put(MediaStore.Audio.Media.IS_NOTIFICATION, 1);
+                        values.put(MediaStore.Audio.Media.IS_RINGTONE, 0);
+                        values.put(MediaStore.Audio.Media.IS_ALARM, 0);
+                        values.put(MediaStore.Audio.Media.IS_MUSIC, 0);
+
+                        newUri = getContentResolver().insert(
+                                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values);
+                        if (newUri != null) {
+                            try (InputStream in = getContentResolver().openInputStream(sourceUri);
+                                 OutputStream out = getContentResolver().openOutputStream(newUri)) {
+                                if (in == null || out == null) {
+                                    Log.e(TAG, "Failed to open streams for MediaStore copy");
+                                    newUri = null; // Сбрасываем, чтобы не сохранить битую ссылку
+                                } else {
+                                    byte[] buf = new byte[8192];
+                                    int n;
+                                    while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
+                                }
+                            } catch (IOException e) {
+                                Log.e(TAG, "Error copying to MediaStore", e);
+                                newUri = null; // Сбрасываем при ошибке
+                            }
+                        }
+
+                    } else {
+
+                        //Копируем файл в папку приложения
+                        File targetFile = new File(getFilesDir(), safeName);
+                        try (InputStream in = getContentResolver().openInputStream(sourceUri);
+                             OutputStream out = new FileOutputStream(targetFile)) {
+                            if (in == null) {
+                                ToastExpander.showInfoMsg(this, getString(R.string.msg_file_open_error) + sourceUri);
+                                return;
+                            }
+                            byte[] buf = new byte[8192];
+                            int n;
+                            while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
+                        } catch (IOException e) {
+                            ToastExpander.showDebugMsg(this, getString(R.string.msg_ringtone_copy_error));
                             return;
                         }
-                        byte[] buf = new byte[8192];
-                        int n;
-                        while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
-                    } catch (IOException e) {
-                        ToastExpander.showDebugMsg(this, getString(R.string.msg_ringtone_copy_error));
-                        return;
+
+                        // Сохраняем путь до новой мелодии в настройку
+                        newUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", targetFile);
                     }
 
-                    // Сохраняем путь до новой мелодии в настройку
-                    Uri newUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", targetFile);
+                    if (newUri == null) {
+                        newUri = Settings.System.DEFAULT_NOTIFICATION_URI;
+                        ToastExpander.showInfoMsg(this, getString(R.string.msg_ringtone_copy_error));
+                    }
+
                     Uri oldUri;
                     if (runningQueue == 1) {
                         oldUri = TextUtils.isEmpty(eventsData.preferences_notifications_ringtone) ? null : Uri.parse(eventsData.preferences_notifications_ringtone);
@@ -4918,27 +4963,49 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         return dot > 0 ? name.substring(dot + 1).toLowerCase() : "";
     }
 
+    /** Удаление неиспользуемой мелодии
+     * @param oldUri Uri мелодии
+     */
     private void removeUselessMelody(Uri oldUri) {
+        try {
 
-        if (oldUri == null) return;
+            if (oldUri == null) return;
 
-        boolean isUsed = false;
-        Uri savedUri;
+            // 1. Проверяем, не используется ли этот файл сейчас в одной из очередей
+            boolean isUsed = false;
+            Uri savedUri1 = TextUtils.isEmpty(eventsData.preferences_notifications_ringtone) ? null : Uri.parse(eventsData.preferences_notifications_ringtone);
+            if (oldUri.equals(savedUri1)) isUsed = true;
 
-        savedUri = TextUtils.isEmpty(eventsData.preferences_notifications_ringtone) ? null : Uri.parse(eventsData.preferences_notifications_ringtone);
-        if (oldUri.equals(savedUri)) isUsed = true;
+            Uri savedUri2 = TextUtils.isEmpty(eventsData.preferences_notifications2_ringtone) ? null : Uri.parse(eventsData.preferences_notifications2_ringtone);
+            if (oldUri.equals(savedUri2)) isUsed = true;
 
-        savedUri = TextUtils.isEmpty(eventsData.preferences_notifications2_ringtone) ? null : Uri.parse(eventsData.preferences_notifications2_ringtone);
-        if (oldUri.equals(savedUri)) isUsed = true;
+            if (isUsed) return; // Не удаляем, если мелодия всё ещё назначена
 
-        if (!isUsed) {
-            String oldName = getFileNameFromFileProviderUri(oldUri);
-            if (oldName != null) {
-                File oldFile = new File(getFilesDir(), oldName);
-                if (oldFile.exists() && !oldFile.delete()) {
-                    Log.w(TAG, "Failed to delete old ringtone: " + oldFile);
+            // 2. Если это старый FileProvider URI -> удаляем физический файл из getFilesDir()
+            if (isFileProviderUri(oldUri)) {
+                String oldName = getFileNameFromFileProviderUri(oldUri);
+                if (oldName != null) {
+                    File oldFile = new File(getFilesDir(), oldName);
+                    if (oldFile.exists() && !oldFile.delete()) {
+                        Log.w(TAG, "Failed to delete old ringtone file: " + oldFile);
+                    }
                 }
             }
+            // 3. Если это MediaStore URI (Android 10+) -> удаляем через ContentResolver
+            else if ("content".equals(oldUri.getScheme()) && oldUri.getAuthority() != null && oldUri.getAuthority().contains("media")) {
+                try {
+                    int deletedRows = getContentResolver().delete(oldUri, null, null);
+                    if (deletedRows == 0) {
+                        Log.w(TAG, "Failed to delete MediaStore ringtone: " + oldUri);
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Error deleting MediaStore ringtone", e);
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
     }
 

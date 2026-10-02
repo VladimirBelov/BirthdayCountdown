@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.09.2026, 14:54
+ *  * Created by Vladimir Belov on 02.10.2026, 11:57
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.09.2026, 14:49
+ *  * Last modified 02.10.2026, 11:47
  *
  */
 
@@ -1702,7 +1702,6 @@ public class ContactsEvents {
 
         try {
 
-            boolean needResaveIcons = false;
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             //https://medium.com/@anupamchugh/a-nightmare-with-shared-preferences-and-stringset-c53f39f1ef52
             //https://stackoverflow.com/questions/19949182/android-sharedpreferences-string-set-some-items-are-removed-after-app-restart
@@ -1787,8 +1786,25 @@ public class ContactsEvents {
             preferences_notifications2_alarm_minute = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications2_AlarmMinute_key), context.getString(R.string.pref_Notifications_AlarmMinute_default));
             if (preferences_notifications2_alarm_minute < 0)
                 preferences_notifications2_alarm_minute = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmMinute_default));
-            preferences_notifications_ringtone = getPreferenceString(preferences, context.getString(R.string.pref_Notifications_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
-            preferences_notifications2_ringtone = getPreferenceString(preferences, context.getString(R.string.pref_Notifications2_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
+
+            //Мелодии уведомлений
+            // 1. Читаем "сырые" значения из SharedPreferences
+            String savedRingtone1 = getPreferenceString(preferences, context.getString(R.string.pref_Notifications_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
+            String savedRingtone2 = getPreferenceString(preferences, context.getString(R.string.pref_Notifications2_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
+
+            // 2. Валидируем их (здесь "битый" URI заменится на дефолтный в памяти)
+            preferences_notifications_ringtone = DeviceTools.validateRingtoneUri(savedRingtone1, context);
+            preferences_notifications2_ringtone = DeviceTools.validateRingtoneUri(savedRingtone2, context);
+
+            // 3. Проверяем, изменилось ли значение после валидации
+            boolean needResaveRingtone = false;
+            if (!preferences_notifications_ringtone.equals(savedRingtone1)) {
+                needResaveRingtone = true;
+            }
+            if (!preferences_notifications2_ringtone.equals(savedRingtone2)) {
+                needResaveRingtone = true;
+            }
+
             preferences_notifications_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_Events_key), preferences_list_event_types); //По-умолчанию берём из списка событий
             preferences_notifications2_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications2_Events_key), preferences_list_event_types); //По-умолчанию берём из списка событий
             preferences_notifications_quick_actions = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_QuickActions_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_QuickActions_values_default))));
@@ -2017,6 +2033,7 @@ public class ContactsEvents {
             preferences_customevent5_useyear = getPreferenceBoolean(preferences, context.getString(R.string.pref_CustomEvents_Custom5_UseYear_key), Boolean.parseBoolean(context.getString(R.string.pref_CustomEvents_UseYear_default)));
 
             // Иконки и символы событий
+            boolean needResaveIcons = false;
             preferences_event_icons.clear();
             preferences_event_emojis.clear();
             // формат: "eventType: res:drawableResName" или "eventType: file:drawableFilePath"
@@ -2198,8 +2215,9 @@ public class ContactsEvents {
             dimen_List_name = resources.getDimension(R.dimen.event_name);
             dimen_list_date = resources.getDimension(R.dimen.event_date);
 
-            if (needResaveIcons) {
-                // Пересохраняем в новом формате, чтобы миграция сработала один раз
+            // В настройках была указана невалидная мелодия. Она заменена на дефолтную
+            // Была переконвертация иконок и символов событий. Пересохраняем в новом формате
+            if (needResaveIcons || needResaveRingtone) {
                 savePreferences();
             }
 
@@ -7483,10 +7501,21 @@ public class ContactsEvents {
                     //After you create a notification channel, you cannot change the notification behaviors—the user has complete control at that point. Though you can still change a channel's name and description
                     //https://stackoverflow.com/questions/46234254/android-oreo-notification-keep-making-sound-even-if-i-do-not-set-sound-on-older
 
-                    if (channel != null && !channel.getSound().toString().equals(prefRingtone)) {
-                        notificationManager.deleteNotificationChannel(channelId);
-                        channel = null;
-                        log.append(resources.getString(R.string.msg_deleted_channel, channelId));
+                    if (channel != null) {
+                        Uri channelSound = channel.getSound();
+                        Uri prefSound = Uri.parse(prefRingtone);
+
+                        // Сравниваем только path (без query-параметров)
+                        boolean soundMatches = channelSound != null &&
+                                Objects.equals(channelSound.getScheme(), prefSound.getScheme()) &&
+                                Objects.equals(channelSound.getAuthority(), prefSound.getAuthority()) &&
+                                Objects.equals(channelSound.getPath(), prefSound.getPath());
+
+                        if (!soundMatches) {
+                            notificationManager.deleteNotificationChannel(channelId);
+                            channel = null;
+                            log.append(resources.getString(R.string.msg_deleted_channel, channelId));
+                        }
                     }
 
                     if (channel == null) {
@@ -7497,27 +7526,40 @@ public class ContactsEvents {
                             preferences_notifications2_channel_id = prefChannelId;
                         }
                         channelId = Integer.toString(prefChannelId);
-
                         channel = new NotificationChannel(channelId, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
                         channel.setDescription(context.getString(R.string.pref_Notifications_Notification_Channel_Description));
-                        if (prefRingtone != null)
-                            channel.setSound(
-                                    Uri.parse(prefRingtone),
-                                    new AudioAttributes.Builder()
-                                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                                            .build()
-                            );
-                        channel.enableVibration(true);
-                        notificationManager.createNotificationChannel(channel);
+                        if (prefRingtone != null) {
+                            Uri ringtoneUri = Uri.parse(prefRingtone);
+                            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                                    .build();
 
-                        log.append(resources.getString(R.string.msg_created_channel, channelId));
-                        if (prefRingtone != null)
+                            if (ringtoneUri != null) {
+                                try {
+                                    InputStream inputStream = context.getContentResolver().openInputStream(ringtoneUri);
+                                    if (inputStream != null) {
+                                        inputStream.close();
+                                    }
+                                    channel.setSound(ringtoneUri, audioAttributes);
+                                } catch (Exception e) {
+                                    prefRingtone = Settings.System.DEFAULT_NOTIFICATION_URI.toString();
+                                    channel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI, audioAttributes);
+                                }
+                            } else {
+                                prefRingtone = Settings.System.DEFAULT_NOTIFICATION_URI.toString();
+                                channel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI, audioAttributes);
+                            }
+                            channel.enableVibration(true);
+                            notificationManager.createNotificationChannel(channel);
+
                             log
+                                    .append(resources.getString(R.string.msg_created_channel, channelId))
                                     .append(resources.getString(R.string.msg_ringtone))
-                                    .append(Uri.parse(prefRingtone))
-                                    .append(Constants.STRING_EOL);
-                        savePreferences();
+                                    .append(prefRingtone).append(Constants.STRING_EOL);
+
+                            savePreferences();
+                        }
                     }
 
                 } else if (channel != null) {
@@ -10687,6 +10729,12 @@ public class ContactsEvents {
      * Вызывается из WidgetCalendar после getEvents().
      */
     void fillDayTypesForCalendarWidget() {
+        synchronized (preferences_DaysTypes) {
+            fillDayTypesForCalendarWidgetInternal();
+        }
+    }
+
+    private void fillDayTypesForCalendarWidgetInternal() {
         try {
             for (String event : eventList) {
                 String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
