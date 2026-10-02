@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.10.2026, 13:32
+ *  * Created by Vladimir Belov on 02.10.2026, 15:37
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.10.2026, 13:29
+ *  * Last modified 02.10.2026, 15:29
  *
  */
 
@@ -330,6 +330,27 @@ public class DeviceTools {
             Log.w(TAG, "Error validating ringtone URI: " + ringtoneUri, e);
             return Settings.System.DEFAULT_NOTIFICATION_URI.toString();
         }
+    }
+
+    /**
+     * Проверяет, используется ли навигация кнопками (3 или 2 кнопки).
+     * На Android 10+ считывается из системных настроек.
+     * На более старых версиях по умолчанию считаем, что используются кнопки.
+     */
+    public static boolean isButtonNavigation(Context context) {
+        // Строковая константа, так как в старых версиях SDK её может не быть напрямую в Settings.Secure
+        final String NAVIGATION_MODE = "navigation_mode";
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            int mode = Settings.Secure.getInt(
+                    context.getContentResolver(),
+                    NAVIGATION_MODE,
+                    1 // Безопасный фолбэк: если настройка не найдена, считаем, что это кнопки
+            );
+            // 0 = 3 кнопки, 1 = 2 кнопки. Оба варианта требуют классической обработки цвета.
+            return mode == 0 || mode == 1;
+        }
+        return true; // До Android 10 жестовой навигации в системном понимании не было
     }
 
     public enum MIUIAutoStartState {

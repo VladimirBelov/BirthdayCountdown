@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.10.2026, 11:57
+ *  * Created by Vladimir Belov on 02.10.2026, 15:37
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.10.2026, 15:22
+ *  * Last modified 02.10.2026, 15:35
  *
  */
 
@@ -181,10 +181,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
 
             // Устанавливаем цвет панели навигации
+            int barColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
             // https://developer.android.com/about/versions/15/behavior-changes-15#window-insets says that "This API is deprecated but continues to affect 3-button navigation."
+
+            // Проверяем: если версия < 35 ИЛИ включена навигация кнопками
+            boolean useLegacyColors = Build.VERSION.SDK_INT < 35 || DeviceTools.isButtonNavigation(this);
+
             Window w = getWindow();
-            w.setStatusBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0)); //почему-то сама из темы не ставится
-            w.setNavigationBarColor(ta.getColor(R.styleable.Theme_windowStatusbarColor, 0));
+            if (useLegacyColors) {
+                // Для Android < 35 или при 3-кнопочной навигации используем классический метод.
+                // Он гарантирует корректный цвет нижней панели.
+                //noinspection deprecation
+                w.setStatusBarColor(barColor);
+                //noinspection deprecation
+                w.setNavigationBarColor(barColor);
+            }
 
             if (DeviceTools.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
