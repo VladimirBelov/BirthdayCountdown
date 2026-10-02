@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.10.2026, 11:57
+ *  * Created by Vladimir Belov on 02.10.2026, 13:13
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.10.2026, 11:47
+ *  * Last modified 02.10.2026, 12:33
  *
  */
 
@@ -6218,7 +6218,18 @@ public class ContactsEvents {
                 }
                 if (eventPhoto != null && !eventPhoto.isEmpty()) {
                     byte[] decodedBytes = Base64.decode(eventPhoto, Base64.DEFAULT);
-                    Bitmap bm = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length, options);
+
+                    final int TARGET_SIZE = 512;
+                    options.inSampleSize = ImageUtils.calculateInSampleSize(
+                            options.outWidth, options.outHeight, TARGET_SIZE, TARGET_SIZE);
+                    options.inJustDecodeBounds = false;
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+                    Bitmap bm = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length, options);
                     if (bm != null) return new BitmapLoadResult(bm, PhotoType.EVENT_PHOTO, false);
                 }
             } catch (Exception ignored) { /**/ }
@@ -6276,10 +6287,26 @@ public class ContactsEvents {
                 InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(contentResolver, contactUri, true);
                 if (photo_stream != null) {
                     BufferedInputStream buf = new BufferedInputStream(photo_stream);
-                    Bitmap bm = BitmapFactory.decodeStream(buf);
+
+                    // 1-й проход — размеры
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeStream(buf, null, options);
                     buf.close();
-                    photo_stream.close();
-                    if (bm != null) return new BitmapLoadResult(bm, PhotoType.CONTACT_PHOTO, addMourningTape);
+
+                    // 2-й проход — загрузка с даунсемплингом
+                    photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(contentResolver, contactUri, true);
+                    if (photo_stream != null) {
+                        buf = new BufferedInputStream(photo_stream);
+                        final int TARGET_SIZE = 512;
+                        options.inSampleSize = ImageUtils.calculateInSampleSize(
+                                options.outWidth, options.outHeight, TARGET_SIZE, TARGET_SIZE);
+                        options.inJustDecodeBounds = false;
+
+                        Bitmap bm = BitmapFactory.decodeStream(buf, null, options);
+                        buf.close();
+                        if (bm != null) return new BitmapLoadResult(bm, PhotoType.CONTACT_PHOTO, addMourningTape);
+                    }
                 }
             } catch (SecurityException | IOException ignored) { /**/ }
         }

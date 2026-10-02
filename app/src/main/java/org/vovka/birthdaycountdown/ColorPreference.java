@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.09.2026, 00:15
+ *  * Created by Vladimir Belov on 02.10.2026, 13:13
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 17.09.2026, 00:08
+ *  * Last modified 02.10.2026, 13:02
  *
  */
 
@@ -712,7 +712,9 @@ class ColorPreference extends Preference {
             int radius = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, res.getDisplayMetrics());
 
             if (Color.alpha(color) == 0) {
-                Bitmap bm = BitmapFactory.decodeResource(res, R.drawable.transparent);
+                BitmapFactory.Options opts = new BitmapFactory.Options();
+                opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                Bitmap bm = BitmapFactory.decodeResource(res, R.drawable.transparent, opts);
                 imageView.setImageBitmap(Bitmap.createScaledBitmap(bm, radius, radius, false));
                 bm.recycle();
                 return;

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.09.2026, 19:05
+ *  * Created by Vladimir Belov on 02.10.2026, 13:13
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 17.09.2026, 18:52
+ *  * Last modified 02.10.2026, 12:51
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -256,28 +256,41 @@ public class CropImageActivity extends Activity {
     }
 
     protected Bitmap loadBitmap(Uri uri) {
-
         Bitmap bitmap = null;
         try {
+            // === 1-й проход: только читаем размеры ===
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
             InputStream in = getContentResolver().openInputStream(uri);
-            bitmap = BitmapFactory.decodeStream(in);
-            if (in != null) {
-                in.close();
+            BitmapFactory.decodeStream(in, null, options);
+            closeSilently(in);
+
+            // === Вычисляем inSampleSize ===
+            // Для кроппера берём большой потолок, чтобы не терять качество
+            final int MAX_DIMENSION = 4096;
+            int sampleSize = 1;
+            if (options.outWidth > MAX_DIMENSION || options.outHeight > MAX_DIMENSION) {
+                float ratio = Math.max(options.outWidth, options.outHeight) / (float) MAX_DIMENSION;
+                sampleSize = Integer.highestOneBit((int) Math.ceil(ratio));
+                if (sampleSize < 1) sampleSize = 1;
             }
+
+            // === 2-й проход: реальная загрузка с даунсемплингом ===
+            options.inJustDecodeBounds = false;
+            options.inSampleSize = sampleSize;
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            in = getContentResolver().openInputStream(uri);
+            bitmap = BitmapFactory.decodeStream(in, null, options);
+            closeSilently(in);
         } catch (FileNotFoundException e) {
             Toast.makeText(this, "Can't found image file !", Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
-            Toast.makeText(this, "Can't load source image !", Toast.LENGTH_LONG).show();
         }
         return bitmap;
     }
 
     protected static void closeSilently(Closeable c) {
         if (c == null) return;
-        try {
-            c.close();
-        } catch (Throwable t) { /**/
-        }
+        try { c.close(); } catch (Throwable ignored) { }
     }
 
     public static CropParam getCropParam(Intent intent) {

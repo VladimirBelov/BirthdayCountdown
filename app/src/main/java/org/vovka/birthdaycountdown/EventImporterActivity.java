@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.09.2026, 23:14
+ *  * Created by Vladimir Belov on 02.10.2026, 13:13
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.09.2026, 21:53
+ *  * Last modified 02.10.2026, 13:00
  *
  */
 
@@ -1231,12 +1231,35 @@ public class EventImporterActivity extends AppCompatActivity {
         }
 
         public int getIconResId() { return iconResId; }
+
         public String getTitle() { return title; }
+
         public String getSubtitle() { return subtitle; }
+
         public String getPhotoData() { return photoData; }
+
         public Bitmap getPhoto() {
-            byte[] decodedBytes = Base64.decode(photoData, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+            try {
+                byte[] decodedBytes = Base64.decode(photoData, Base64.DEFAULT);
+                if (decodedBytes == null) return null;
+
+                // 1-й проход: размеры
+                BitmapFactory.Options boundsOptions = new BitmapFactory.Options();
+                boundsOptions.inJustDecodeBounds = true;
+                BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length, boundsOptions);
+                if (boundsOptions.outWidth <= 0) return null;
+
+                // 2-й проход: с даунсемплингом до размера превью
+                final int PREVIEW_SIZE = 128;
+                BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
+                decodeOptions.inSampleSize = ImageUtils.calculateInSampleSize(
+                        boundsOptions.outWidth, boundsOptions.outHeight, PREVIEW_SIZE, PREVIEW_SIZE);
+                decodeOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length, decodeOptions);
+            } catch (Exception e) {
+                Log.w(TAG, "Failed to decode photo preview", e);
+                return null;
+            }
         }
     }
 

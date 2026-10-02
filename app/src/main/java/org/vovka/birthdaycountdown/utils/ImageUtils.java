@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2026, 12:00
+ *  * Created by Vladimir Belov on 02.10.2026, 13:13
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.09.2026, 10:30
+ *  * Last modified 02.10.2026, 13:01
  *
  */
 
@@ -76,7 +76,9 @@ public class ImageUtils {
             Drawable drawable = ContextCompat.getDrawable(context, drawableId);
             if (drawable == null) return null;
             if (drawable instanceof BitmapDrawable) {
-                return BitmapFactory.decodeResource(context.getResources(), drawableId);
+                BitmapFactory.Options opts = new BitmapFactory.Options();
+                opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                return BitmapFactory.decodeResource(context.getResources(), drawableId, opts);
             } else {
                 return getBitmap(drawable);
             }
@@ -128,25 +130,39 @@ public class ImageUtils {
     @Nullable
     public static String encodeImageToBase64(Context context, Uri imageUri, int maxSize) {
         try {
-            InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
-            //Явно указываем ARGB_8888 при декодировании, чтобы сохранить альфа-канал
+            // === 1-й проход: только размеры ===
+            BitmapFactory.Options boundsOptions = new BitmapFactory.Options();
+            boundsOptions.inJustDecodeBounds = true;
+            InputStream in = context.getContentResolver().openInputStream(imageUri);
+            BitmapFactory.decodeStream(in, null, boundsOptions);
+            closeSilently(in);
+
+            if (boundsOptions.outWidth <= 0 || boundsOptions.outHeight <= 0) return null;
+
+            // === Вычисляем inSampleSize ===
+            int sampleSize = calculateInSampleSize(
+                    boundsOptions.outWidth, boundsOptions.outHeight, maxSize, maxSize);
+
+            // === 2-й проход: реальная загрузка с даунсемплингом ===
             BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
+            decodeOptions.inSampleSize = sampleSize;
             decodeOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, decodeOptions);
-            if (inputStream != null) inputStream.close();
+            in = context.getContentResolver().openInputStream(imageUri);
+            Bitmap bitmap = BitmapFactory.decodeStream(in, null, decodeOptions);
+            closeSilently(in);
+
             if (bitmap == null) return null;
 
-            bitmap = scaleDownBitmap(bitmap, maxSize); // уменьшаем изображение
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            // Финальная подгонка (если inSampleSize дал чуть больше, чем нужно)
+            bitmap = scaleDownBitmap(bitmap, maxSize);
 
-            //Определяем формат по наличию альфа-канала
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             boolean hasAlpha = bitmap.hasAlpha();
             Bitmap.CompressFormat format = hasAlpha
                     ? Bitmap.CompressFormat.PNG
                     : Bitmap.CompressFormat.JPEG;
             int quality = hasAlpha ? 100 : 80;
             bitmap.compress(format, quality, byteArrayOutputStream);
-
             byte[] byteArray = byteArrayOutputStream.toByteArray();
             bitmap.recycle();
             return Base64.encodeToString(byteArray, Base64.DEFAULT);
@@ -154,6 +170,11 @@ public class ImageUtils {
             Log.e(TAG, e.getMessage(), e);
             return null;
         }
+    }
+
+    private static void closeSilently(java.io.Closeable c) {
+        if (c == null) return;
+        try { c.close(); } catch (Throwable ignored) { }
     }
 
     // Функция уменьшения размера изображения
@@ -501,7 +522,10 @@ public class ImageUtils {
             Canvas canvas = new Canvas(bmOverlay);
             canvas.drawBitmap(bm, new Matrix(), null);
             bm.recycle();
-            Bitmap bmStar = BitmapFactory.decodeResource(res, R.drawable.fav_star);
+
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bmStar = BitmapFactory.decodeResource(res, R.drawable.fav_star, opts);
             final Bitmap bmStarScaled = Bitmap.createScaledBitmap(bmStar,
                     bmOverlay.getWidth() / 4 - (bmOverlay.getWidth() - bmOverlay.getHeight()) / 4, bmOverlay.getHeight() / 4, true);
 
