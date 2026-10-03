@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 25.09.2026, 12:00
+ *  * Created by Vladimir Belov on 03.10.2026, 10:40
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.09.2026, 11:54
+ *  * Last modified 02.10.2026, 16:39
  *
  */
 
@@ -2724,7 +2724,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             boolean needLoad = eventsData.needUpdateEventList || eventsData.isEmptyEventList();
             if (needLoad) {
-                // Всегда используем асинхронную загрузку — UI не фризит
+                // Всегда используем асинхронную загрузку
                 eventsData.getEventsAsync(() -> {
                     if (!isFinishing() && !isDestroyed()) {
                         // Убираем программный ProgressBar, если он был показан

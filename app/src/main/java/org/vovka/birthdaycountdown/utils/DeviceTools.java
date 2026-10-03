@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.10.2026, 15:37
+ *  * Created by Vladimir Belov on 03.10.2026, 10:40
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.10.2026, 15:29
+ *  * Last modified 03.10.2026, 10:16
  *
  */
 
@@ -23,7 +23,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -33,9 +32,6 @@ import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.Constants;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 
 public class DeviceTools {
@@ -275,61 +271,6 @@ public class DeviceTools {
             canExact = true;
         }
         return canExact;
-    }
-
-    /**
-     * Проверяет валидность URI мелодии. Если URI недоступен — возвращает дефолтный звук.
-     * Это защищает от проблем при переносе данных между устройствами или если файл был удалён.
-     */
-    @NonNull
-    public static String validateRingtoneUri(@Nullable String ringtoneUri, @NonNull Context context) {
-        if (TextUtils.isEmpty(ringtoneUri)) {
-            return Settings.System.DEFAULT_NOTIFICATION_URI.toString();
-        }
-
-        try {
-            Uri uri = Uri.parse(ringtoneUri);
-
-            // 1. Специальная обработка для системных URI (content://settings/...)
-            // Android намеренно блокирует openInputStream для таких URI, выбрасывая FileNotFoundException.
-            // Поэтому мы просто считаем их валидными, так как это системные настройки.
-            if ("content".equals(uri.getScheme()) && uri.getAuthority() != null && uri.getAuthority().startsWith("settings")) {
-                return ringtoneUri;
-            }
-
-            // 2. Для всех остальных content:// URI (MediaStore, FileProvider)
-            if ("content".equals(uri.getScheme())) {
-                try (InputStream is = context.getContentResolver().openInputStream(uri)) {
-                    if (is != null) {
-                        return ringtoneUri; // Файл существует и доступен для чтения
-                    }
-                } catch (FileNotFoundException e) {
-                    // Файл не найден или был удалён пользователем
-                    Log.w(TAG, "Ringtone file not found: " + ringtoneUri);
-                } catch (SecurityException e) {
-                    // Нет прав на чтение (актуально для FileProvider, если приложение убито в фоне)
-                    Log.w(TAG, "No permission to read ringtone: " + ringtoneUri);
-                }
-            }
-            // 3. На всякий случай, для устаревших file:// URI
-            else if ("file".equals(uri.getScheme())) {
-                String path = uri.getPath();
-                if (path != null) {
-                    File file = new File(path);
-                    if (file.exists() && file.canRead()) {
-                        return ringtoneUri;
-                    }
-                }
-            }
-
-            // Если мы дошли сюда, значит URI не прошел проверки (файл удален или недоступен)
-            Log.w(TAG, "Invalid or inaccessible ringtone URI, using default: " + ringtoneUri);
-            return Settings.System.DEFAULT_NOTIFICATION_URI.toString();
-
-        } catch (Exception e) {
-            Log.w(TAG, "Error validating ringtone URI: " + ringtoneUri, e);
-            return Settings.System.DEFAULT_NOTIFICATION_URI.toString();
-        }
     }
 
     /**

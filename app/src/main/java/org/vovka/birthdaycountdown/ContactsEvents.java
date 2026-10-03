@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.10.2026, 13:13
+ *  * Created by Vladimir Belov on 03.10.2026, 10:40
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.10.2026, 12:33
+ *  * Last modified 03.10.2026, 10:26
  *
  */
 
@@ -1786,25 +1786,8 @@ public class ContactsEvents {
             preferences_notifications2_alarm_minute = getPreferenceInt(preferences, context.getString(R.string.pref_Notifications2_AlarmMinute_key), context.getString(R.string.pref_Notifications_AlarmMinute_default));
             if (preferences_notifications2_alarm_minute < 0)
                 preferences_notifications2_alarm_minute = Integer.parseInt(context.getString(R.string.pref_Notifications_AlarmMinute_default));
-
-            //Мелодии уведомлений
-            // 1. Читаем "сырые" значения из SharedPreferences
-            String savedRingtone1 = getPreferenceString(preferences, context.getString(R.string.pref_Notifications_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
-            String savedRingtone2 = getPreferenceString(preferences, context.getString(R.string.pref_Notifications2_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
-
-            // 2. Валидируем их (здесь "битый" URI заменится на дефолтный в памяти)
-            preferences_notifications_ringtone = DeviceTools.validateRingtoneUri(savedRingtone1, context);
-            preferences_notifications2_ringtone = DeviceTools.validateRingtoneUri(savedRingtone2, context);
-
-            // 3. Проверяем, изменилось ли значение после валидации
-            boolean needResaveRingtone = false;
-            if (!preferences_notifications_ringtone.equals(savedRingtone1)) {
-                needResaveRingtone = true;
-            }
-            if (!preferences_notifications2_ringtone.equals(savedRingtone2)) {
-                needResaveRingtone = true;
-            }
-
+            preferences_notifications_ringtone = getPreferenceString(preferences, context.getString(R.string.pref_Notifications_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
+            preferences_notifications2_ringtone = getPreferenceString(preferences, context.getString(R.string.pref_Notifications2_Ringtone_key), Settings.System.DEFAULT_NOTIFICATION_URI.toString());
             preferences_notifications_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_Events_key), preferences_list_event_types); //По-умолчанию берём из списка событий
             preferences_notifications2_types = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications2_Events_key), preferences_list_event_types); //По-умолчанию берём из списка событий
             preferences_notifications_quick_actions = getPreferenceStringSet(preferences, context.getString(R.string.pref_Notifications_QuickActions_key), new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.pref_Notifications_QuickActions_values_default))));
@@ -2215,9 +2198,8 @@ public class ContactsEvents {
             dimen_List_name = resources.getDimension(R.dimen.event_name);
             dimen_list_date = resources.getDimension(R.dimen.event_date);
 
-            // В настройках была указана невалидная мелодия. Она заменена на дефолтную
             // Была переконвертация иконок и символов событий. Пересохраняем в новом формате
-            if (needResaveIcons || needResaveRingtone) {
+            if (needResaveIcons) {
                 savePreferences();
             }
 
@@ -7528,21 +7510,10 @@ public class ContactsEvents {
                     //After you create a notification channel, you cannot change the notification behaviors—the user has complete control at that point. Though you can still change a channel's name and description
                     //https://stackoverflow.com/questions/46234254/android-oreo-notification-keep-making-sound-even-if-i-do-not-set-sound-on-older
 
-                    if (channel != null) {
-                        Uri channelSound = channel.getSound();
-                        Uri prefSound = Uri.parse(prefRingtone);
-
-                        // Сравниваем только path (без query-параметров)
-                        boolean soundMatches = channelSound != null &&
-                                Objects.equals(channelSound.getScheme(), prefSound.getScheme()) &&
-                                Objects.equals(channelSound.getAuthority(), prefSound.getAuthority()) &&
-                                Objects.equals(channelSound.getPath(), prefSound.getPath());
-
-                        if (!soundMatches) {
-                            notificationManager.deleteNotificationChannel(channelId);
-                            channel = null;
-                            log.append(resources.getString(R.string.msg_deleted_channel, channelId));
-                        }
+                    if (channel != null && !channel.getSound().toString().equals(prefRingtone)) {
+                        notificationManager.deleteNotificationChannel(channelId);
+                        channel = null;
+                        log.append(resources.getString(R.string.msg_deleted_channel, channelId));
                     }
 
                     if (channel == null) {
@@ -7555,38 +7526,24 @@ public class ContactsEvents {
                         channelId = Integer.toString(prefChannelId);
                         channel = new NotificationChannel(channelId, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
                         channel.setDescription(context.getString(R.string.pref_Notifications_Notification_Channel_Description));
-                        if (prefRingtone != null) {
-                            Uri ringtoneUri = Uri.parse(prefRingtone);
-                            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                                    .build();
+                        if (prefRingtone != null)
+                            channel.setSound(
+                                    Uri.parse(prefRingtone),
+                                    new AudioAttributes.Builder()
+                                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                                            .build()
+                            );
+                        channel.enableVibration(true);
+                        notificationManager.createNotificationChannel(channel);
 
-                            if (ringtoneUri != null) {
-                                try {
-                                    InputStream inputStream = context.getContentResolver().openInputStream(ringtoneUri);
-                                    if (inputStream != null) {
-                                        inputStream.close();
-                                    }
-                                    channel.setSound(ringtoneUri, audioAttributes);
-                                } catch (Exception e) {
-                                    prefRingtone = Settings.System.DEFAULT_NOTIFICATION_URI.toString();
-                                    channel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI, audioAttributes);
-                                }
-                            } else {
-                                prefRingtone = Settings.System.DEFAULT_NOTIFICATION_URI.toString();
-                                channel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI, audioAttributes);
-                            }
-                            channel.enableVibration(true);
-                            notificationManager.createNotificationChannel(channel);
-
+                        log.append(resources.getString(R.string.msg_created_channel, channelId));
+                        if (prefRingtone != null)
                             log
-                                    .append(resources.getString(R.string.msg_created_channel, channelId))
                                     .append(resources.getString(R.string.msg_ringtone))
-                                    .append(prefRingtone).append(Constants.STRING_EOL);
-
-                            savePreferences();
-                        }
+                                    .append(Uri.parse(prefRingtone))
+                                    .append(Constants.STRING_EOL);
+                        savePreferences();
                     }
 
                 } else if (channel != null) {
