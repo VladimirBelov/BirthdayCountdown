@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.10.2026, 10:40
+ *  * Created by Vladimir Belov on 03.10.2026, 11:08
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 03.10.2026, 10:26
+ *  * Last modified 03.10.2026, 11:01
  *
  */
 
@@ -7510,7 +7510,7 @@ public class ContactsEvents {
                     //After you create a notification channel, you cannot change the notification behaviors—the user has complete control at that point. Though you can still change a channel's name and description
                     //https://stackoverflow.com/questions/46234254/android-oreo-notification-keep-making-sound-even-if-i-do-not-set-sound-on-older
 
-                    if (channel != null && !channel.getSound().toString().equals(prefRingtone)) {
+                    if (channel != null && !java.util.Objects.equals(channel.getSound(), Uri.parse(prefRingtone))) {
                         notificationManager.deleteNotificationChannel(channelId);
                         channel = null;
                         log.append(resources.getString(R.string.msg_deleted_channel, channelId));
