@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 17.09.2026, 00:15
+  ~  * Created by Vladimir Belov on 05.10.2026, 23:07
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 16.09.2026, 23:44
+  ~  * Last modified 05.10.2026, 22:59
   ~  */
   -->
 
@@ -15,30 +15,6 @@
     android:orientation="vertical"
     android:padding="?attr/dialogPreferredPadding">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="8dp">
-
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="32dip"
-            android:layout_height="32dip"
-            android:layout_marginEnd="8dip"
-            android:contentDescription="@string/hint_AlertDialogIcon"
-            android:scaleType="fitCenter" />
-
-        <TextView
-            android:id="@+id/title"
-            style="?android:attr/windowTitleStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAlignment="viewStart" />
-    </LinearLayout>
-
     <include layout="@layout/entry_main"/>
 
     <LinearLayout
@@ -49,13 +25,14 @@
 
         <TextView
             android:id="@+id/seek1_label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textColor="?android:attr/textColorSecondary"/>
 
         <TextView
             android:id="@+id/seek1_progress"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"
             android:textColor="?android:attr/textColorSecondary"/>
@@ -107,13 +84,14 @@
 
         <TextView
             android:id="@+id/seek2_label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textColor="?android:attr/textColorSecondary"/>
 
         <TextView
             android:id="@+id/seek2_progress"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"
             android:textColor="?android:attr/textColorSecondary"/>
@@ -165,13 +143,14 @@
 
         <TextView
             android:id="@+id/seek3_label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textColor="?android:attr/textColorSecondary"/>
 
         <TextView
             android:id="@+id/seek3_progress"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"
             android:textColor="?android:attr/textColorSecondary"/>
@@ -223,13 +202,14 @@
 
         <TextView
             android:id="@+id/seek4_label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textColor="?android:attr/textColorSecondary"/>
 
         <TextView
             android:id="@+id/seek4_progress"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"
             android:textColor="?android:attr/textColorSecondary"/>
@@ -281,13 +261,14 @@
 
         <TextView
             android:id="@+id/seek5_label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textColor="?android:attr/textColorSecondary"/>
 
         <TextView
             android:id="@+id/seek5_progress"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"
             android:textColor="?android:attr/textColorSecondary"/>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.10.2026, 22:03
+ *  * Created by Vladimir Belov on 05.10.2026, 23:07
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.10.2026, 21:57
+ *  * Last modified 05.10.2026, 22:44
  *
  */
 
@@ -88,6 +88,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -3399,19 +3400,35 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             int dimen_name = (int) (eventsData.dimen_List_name / eventsData.displayMetrics_density);
             int dimen_date = (int) (eventsData.dimen_list_date / eventsData.displayMetrics_density);
 
-            final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+            final AlertDialog.Builder builder = new AlertDialog.Builder(
+                    new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
+                    .setTitle(R.string.pref_List_FontMagnify_title)
+                    .setIcon(R.drawable.ic_menu_find)
                     .setPositiveButton(R.string.button_ok, null)
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                     .setNeutralButton(R.string.button_reset, null);
 
             AlertDialog dialog = builder.create();
-            View view = View.inflate(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog), R.layout.dialog_fontmagnify, null);
-            dialog.setCustomTitle(view);
+            View view = View.inflate(
+                    new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog),
+                    R.layout.dialog_fontmagnify, null);
 
-            ImageView icon = view.findViewById(R.id.icon);
-            if (icon != null) icon.setImageBitmap(ImageUtils.getBitmap(this, R.drawable.ic_menu_find));
-            TextView title = view.findViewById(R.id.title);
-            if (title != null) title.setText(R.string.pref_List_FontMagnify_title);
+            // Создаём ScrollView с ограниченной высотой
+            ScrollView scrollView = new ScrollView(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog)) {
+                @Override
+                protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+                    // Ограничиваем высоту ScrollView 70% от высоты экрана
+                    int maxHeight = (int) (getResources().getDisplayMetrics().heightPixels * 0.7);
+                    heightMeasureSpec = MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.AT_MOST);
+                    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+                }
+            };
+            scrollView.addView(view, new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            dialog.setView(scrollView);
+
 
             //Данные события
             ImageView iconEvent = view.findViewById(R.id.entryEventIcon);
