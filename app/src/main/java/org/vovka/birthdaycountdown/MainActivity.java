@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.10.2026, 10:40
+ *  * Created by Vladimir Belov on 05.10.2026, 22:03
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.10.2026, 16:39
+ *  * Last modified 05.10.2026, 20:45
  *
  */
 
@@ -1863,7 +1863,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         eventsData.needUpdateEventList = true;
                         eventsData.clearDaysTypesAndInfo();
                         updateList(true);
-                        eventsData.updateWidgets(0, null);
                     }, 300);
                 }
                 return true;
@@ -2440,21 +2439,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //Тему не меняли, просто обновляем данные
             if (eventsData.needUpdateEventList || this.dataList.isEmpty() != eventsData.isEmptyEventList()
                     || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
-
-                    updateList(true);
-
-                if (!scrolledToToday && eventsData.statEventsPrevEventsFound > 0 &&
-                        eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_NotHidden
-                        && listView.getFirstVisiblePosition() == 0) {
-                    listView.post(() -> {
-                        listView.setSelectionFromTop(eventsData.statEventsPrevEventsFound, 0);
-                        scrolledToToday = true;
-                    });
-                }
-
+                updateList(true);
                 eventsData.initNotifications();
-                eventsData.updateWidgets(0, null);
-
             }
             this.invalidateOptionsMenu();
             eventsData.updateShortcuts();
@@ -2690,10 +2676,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void updateUIAfterEventsLoad() {
         filterEventsList();
         drawList();
-
         swipeRefresh.setRefreshing(false);
-
         invalidateOptionsMenu();
+
+        // Скролл к ближайшему событию при первом запуске
+        if (!scrolledToToday && eventsData.statEventsPrevEventsFound > 0 &&
+                eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_NotHidden
+                && listView.getFirstVisiblePosition() == 0) {
+            listView.post(() -> {
+                listView.setSelectionFromTop(eventsData.statEventsPrevEventsFound, 0);
+                scrolledToToday = true;
+            });
+        }
+
+        // Обновляем виджеты после загрузки данных
+        eventsData.updateWidgets(0, null);
 
         if (eventsData.isEmptyEventList()) {
             showZeroEventsHints();

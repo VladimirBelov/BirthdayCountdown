@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.10.2026, 15:37
+ *  * Created by Vladimir Belov on 05.10.2026, 22:03
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.10.2026, 15:35
+ *  * Last modified 05.10.2026, 21:57
  *
  */
 
@@ -874,6 +874,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (title != null && !title.isEmpty()) return title;
         } catch (Exception e) {
             Log.w(TAG, "getTitle() failed for " + ringtoneUri, e);
+        } finally {
+            ringtone.stop();
         }
 
         // 3. Фолбэк
@@ -2429,18 +2431,26 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 Random r = new Random();
                 testChannelId = Integer.toString(r.nextInt(1000));
-
-                NotificationChannel channel = new NotificationChannel(testChannelId, getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
-                channel.setDescription(getString(R.string.pref_Notifications_Notification_Channel_Description));
-                if (queueNumber == 1) {
-                    channel.setSound(Uri.parse(eventsData.preferences_notifications_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
-                } else if (queueNumber == 2) {
-                    channel.setSound(Uri.parse(eventsData.preferences_notifications2_ringtone), new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
+                NotificationChannel channel;
+                final String prefRingtone = queueNumber == 1 ? eventsData.preferences_notifications_ringtone : eventsData.preferences_notifications2_ringtone;
+                if (!TextUtils.isEmpty(prefRingtone)) {
+                    channel = new NotificationChannel(testChannelId, getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
+                    Uri uri = Uri.parse(prefRingtone);
+                    if (uri != null) {
+                        channel.setSound(uri, new AudioAttributes.Builder()
+                                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                                .build());
+                    }
+                    channel.enableVibration(true);
+                } else {
+                    channel = new NotificationChannel(testChannelId, getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_LOW);
+                    channel.setSound(null, null);
+                    channel.enableVibration(false);
+                    channel.setVibrationPattern(null);
                 }
-                channel.enableVibration(true);
-
+                channel.setDescription(getString(R.string.pref_Notifications_Notification_Channel_Description));
                 notificationManager.createNotificationChannel(channel);
-
             }
         }
         eventsData.showNotifications(queueNumber, true, testChannelId);
@@ -2878,7 +2888,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             getString(R.string.pref_Notifications_Ringtone_choice_system),     // → открывает RingtoneManager без Default/Silent
                             getString(R.string.pref_Notifications_Ringtone_choice_file),          // → ACTION_OPEN_DOCUMENT
                             getString(R.string.pref_Notifications_Ringtone_choice_default), // → Settings.System.DEFAULT_NOTIFICATION_URI
-                            getString(R.string.pref_Notifications_Ringtone_choice_silent)              // → null
+                            getString(R.string.pref_Notifications_Ringtone_choice_silent)              // → ""
                     }, (dialog, which) -> {
 
                         runningQueue = queueNumber;
@@ -2963,10 +2973,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             Uri oldUri;
                             if (runningQueue == 1) {
                                 oldUri = TextUtils.isEmpty(eventsData.preferences_notifications_ringtone) ? null : Uri.parse(eventsData.preferences_notifications_ringtone);
-                                eventsData.preferences_notifications_ringtone = "";
+                                eventsData.preferences_notifications_ringtone = Constants.STRING_EMPTY;
                             } else {
                                 oldUri = TextUtils.isEmpty(eventsData.preferences_notifications2_ringtone) ? null : Uri.parse(eventsData.preferences_notifications2_ringtone);
-                                eventsData.preferences_notifications2_ringtone = "";
+                                eventsData.preferences_notifications2_ringtone = Constants.STRING_EMPTY;
                             }
                             eventsData.savePreferences();
 
@@ -3055,12 +3065,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private String getFallbackRingtoneName(Uri uri) {
         if (uri == null) return getString(R.string.msg_unknown);
 
-        // 1. Попробуем получить имя из query-параметров (как в твоём getDisplayNameFromUri)
+        // 1. Попробуем получить имя из query-параметров (как в getDisplayNameFromUri)
         if (uri.getQueryParameter(Constants.EXTRA_TITLE) != null) {
             return uri.getQueryParameter(Constants.EXTRA_TITLE);
         }
 
-        // 2. Попробуем DISPLAY_NAME через ContentResolver (безопасно, не пишет в настройки)
+        // 2. Попробуем DISPLAY_NAME через ContentResolver
         if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
             try (Cursor cursor = getContentResolver().query(uri, new String[]{OpenableColumns.DISPLAY_NAME}, null, null, null)) {
                 if (cursor != null && cursor.moveToFirst()) {
@@ -4759,10 +4769,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     Uri oldUri;
                     if (runningQueue == 1) {
                         oldUri = TextUtils.isEmpty(eventsData.preferences_notifications_ringtone) ? null : Uri.parse(eventsData.preferences_notifications_ringtone);
-                        eventsData.preferences_notifications_ringtone = (pickedUri != null) ? pickedUri.toString() : "";
+                        eventsData.preferences_notifications_ringtone = (pickedUri != null) ? pickedUri.toString() : Constants.STRING_EMPTY;
                     } else {
                         oldUri = TextUtils.isEmpty(eventsData.preferences_notifications2_ringtone) ? null : Uri.parse(eventsData.preferences_notifications2_ringtone);
-                        eventsData.preferences_notifications2_ringtone = (pickedUri != null) ? pickedUri.toString() : "";
+                        eventsData.preferences_notifications2_ringtone = (pickedUri != null) ? pickedUri.toString() : Constants.STRING_EMPTY;
                     }
                     eventsData.savePreferences();
 

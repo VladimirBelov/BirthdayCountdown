@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.10.2026, 11:08
+ *  * Created by Vladimir Belov on 05.10.2026, 22:03
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 03.10.2026, 11:01
+ *  * Last modified 05.10.2026, 21:57
  *
  */
 
@@ -7492,7 +7492,7 @@ public class ContactsEvents {
         }
     }
 
-    void initNotificationChannel(StringBuilder log, int queueNumber, @NonNull Set<String> prefDays, String prefRingtone) {
+    void initNotificationChannel(@NonNull StringBuilder log, int queueNumber, @NonNull Set<String> prefDays, @NonNull String prefRingtone) {
 
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //для Android 8+
@@ -7510,10 +7510,14 @@ public class ContactsEvents {
                     //After you create a notification channel, you cannot change the notification behaviors—the user has complete control at that point. Though you can still change a channel's name and description
                     //https://stackoverflow.com/questions/46234254/android-oreo-notification-keep-making-sound-even-if-i-do-not-set-sound-on-older
 
-                    if (channel != null && !java.util.Objects.equals(channel.getSound(), Uri.parse(prefRingtone))) {
-                        notificationManager.deleteNotificationChannel(channelId);
-                        channel = null;
-                        log.append(resources.getString(R.string.msg_deleted_channel, channelId));
+                    if (channel != null) {
+                        final Uri channelSound = channel.getSound();
+                        final String channelRingtone = channelSound != null ? channelSound.toString() : Constants.STRING_EMPTY;
+                        if (!Objects.equals(channelRingtone, prefRingtone)) {
+                            notificationManager.deleteNotificationChannel(channelId);
+                            channel = null;
+                            log.append(resources.getString(R.string.msg_deleted_channel, channelId));
+                        }
                     }
 
                     if (channel == null) {
@@ -7524,21 +7528,31 @@ public class ContactsEvents {
                             preferences_notifications2_channel_id = prefChannelId;
                         }
                         channelId = Integer.toString(prefChannelId);
-                        channel = new NotificationChannel(channelId, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
+
+                        if (!TextUtils.isEmpty(prefRingtone)) {
+                            channel = new NotificationChannel(channelId, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
+                            final Uri uri = Uri.parse(prefRingtone);
+                            if (uri != null) {
+                                channel.setSound(
+                                        Uri.parse(prefRingtone),
+                                        new AudioAttributes.Builder()
+                                                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                                                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                                                .build()
+                                );
+                            }
+                            channel.enableVibration(true);
+                        } else {
+                            channel = new NotificationChannel(channelId, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_LOW);
+                            channel.setSound(null, null);
+                            channel.enableVibration(false);
+                            channel.setVibrationPattern(null);
+                        }
                         channel.setDescription(context.getString(R.string.pref_Notifications_Notification_Channel_Description));
-                        if (prefRingtone != null)
-                            channel.setSound(
-                                    Uri.parse(prefRingtone),
-                                    new AudioAttributes.Builder()
-                                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                                            .build()
-                            );
-                        channel.enableVibration(true);
                         notificationManager.createNotificationChannel(channel);
 
                         log.append(resources.getString(R.string.msg_created_channel, channelId));
-                        if (prefRingtone != null)
+                        if (!TextUtils.isEmpty(prefRingtone))
                             log
                                     .append(resources.getString(R.string.msg_ringtone))
                                     .append(Uri.parse(prefRingtone))
@@ -7996,8 +8010,12 @@ public class ContactsEvents {
                     }
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                        if (prefRingtone != null)
-                            builder.setSound(Uri.parse(prefRingtone));
+                        if (!TextUtils.isEmpty(prefRingtone)) {
+                            Uri uri = Uri.parse(prefRingtone);
+                            if (uri != null) builder.setSound(uri);
+                        } else {
+                            builder.setSound(null);
+                        }
                     }
 
                     if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -8164,8 +8182,12 @@ public class ContactsEvents {
                         }
 
                         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                            if (prefRingtone != null)
-                                builder.setSound(Uri.parse(prefRingtone));
+                            if (!TextUtils.isEmpty(prefRingtone)) {
+                                Uri uri = Uri.parse(prefRingtone);
+                                if (uri != null) builder.setSound(uri);
+                            } else {
+                                builder.setSound(null);
+                            }
                         }
 
                         String eventSubType = event.singleEventArray[Position_eventSubType];
@@ -8513,8 +8535,10 @@ public class ContactsEvents {
             }
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                if (preferences_notifications_ringtone != null)
-                    builder.setSound(Uri.parse(preferences_notifications_ringtone));
+                if (!TextUtils.isEmpty(preferences_notifications_ringtone)) {
+                    final Uri uri = Uri.parse(preferences_notifications_ringtone);
+                    if (uri != null) builder.setSound(uri);
+                }
             }
 
             String eventSubType = singleEventArray[Position_eventSubType];
@@ -10720,7 +10744,12 @@ public class ContactsEvents {
 
     private void fillDayTypesForCalendarWidgetInternal() {
         try {
-            for (String event : eventList) {
+            final List<String> eventListCopy;
+            synchronized (eventList) {
+                eventListCopy = new ArrayList<>(eventList);
+            }
+
+            for (String event : eventListCopy) {
                 String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                 if (singleEventArray.length < Position_attrAmount) continue;
 
