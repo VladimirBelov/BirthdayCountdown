@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.10.2026, 11:14
+ *  * Created by Vladimir Belov on 06.10.2026, 14:28
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.10.2026, 11:06
+ *  * Last modified 06.10.2026, 14:18
  *
  */
 
@@ -1863,6 +1863,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         eventsData.needUpdateEventList = true;
                         eventsData.clearDaysTypesAndInfo();
                         updateList(true);
+
+                        // Откладываем инициализацию уведомлений, чтобы дать время
+                        // на завершение всех обновлений
+                        new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+                            if (eventsData != null) {
+                                eventsData.initNotifications();
+                            }
+                        });
                     }, 300);
                 }
                 return true;
@@ -2446,7 +2454,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 updateList(true);
             }
-            eventsData.initNotifications();
+
+            // Откладываем инициализацию уведомлений, чтобы дать время
+            // на завершение всех onSharedPreferenceChanged и синхронизацию настроек
+            new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+                if (eventsData != null) {
+                    eventsData.initNotifications();
+                }
+            });
+
             this.invalidateOptionsMenu();
             eventsData.updateShortcuts();
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.10.2026, 11:14
+ *  * Created by Vladimir Belov on 06.10.2026, 14:28
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.10.2026, 10:45
+ *  * Last modified 06.10.2026, 14:27
  *
  */
 
@@ -2400,8 +2400,7 @@ public class ContactsEvents {
             SharedPreferences.Editor editor = preferences.edit();
 
             editor.putInt(context.getString(R.string.pref_Events_Scope), preferences_list_events_scope);
-            editor.putInt(context.getString(R.string.pref_Notifications_ChannelID), preferences_notifications_channel_id);
-            editor.putInt(context.getString(R.string.pref_Notifications2_ChannelID), preferences_notifications2_channel_id);
+            savePreferences_NotifyChannel(0);
             editor.putString(context.getString(R.string.pref_Notifications_AlarmHour_key), Integer.toString(preferences_notifications_alarm_hour));
             editor.putString(context.getString(R.string.pref_Notifications2_AlarmHour_key), Integer.toString(preferences_notifications2_alarm_hour));
             editor.putString(context.getString(R.string.pref_Notifications_AlarmMinute_key), Integer.toString(preferences_notifications_alarm_minute));
@@ -2468,6 +2467,32 @@ public class ContactsEvents {
             if (preferences.contains(context.getString(R.string.pref_List_SearchDepth_pre186_key))) {
                 editor.putString(context.getString(R.string.pref_List_SearchDepth_key), preferences.getString(context.getString(R.string.pref_List_SearchDepth_pre186_key), context.getString(R.string.pref_List_SearchDepth_default)));
                 editor.putString(context.getString(R.string.pref_List_SearchDepth_pre186_key), null);
+            }
+
+            editor.commit();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+
+    /** Сохранение настроек канала уведомлений
+     * @param id id канала (0 - для всех)
+     */
+    @SuppressLint("ApplySharedPref")
+   private void savePreferences_NotifyChannel(int id) {
+        try {
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = preferences.edit();
+
+            if (id == 0 || id == 1) {
+                editor.putInt(context.getString(R.string.pref_Notifications_ChannelID), preferences_notifications_channel_id);
+            }
+            if (id == 0 || id == 2) {
+                editor.putInt(context.getString(R.string.pref_Notifications2_ChannelID), preferences_notifications2_channel_id);
             }
 
             editor.commit();
@@ -7491,81 +7516,121 @@ public class ContactsEvents {
     }
 
     void initNotificationChannel(@NonNull StringBuilder log, int queueNumber, @NonNull Set<String> prefDays, @NonNull String prefRingtone) {
-
         try {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return; //для Android 8+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
 
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            if (notificationManager == null) return;
 
-            //Находим канал. Если канала нет или рингтон там другой - пересоздаём канал
-            int prefChannelId = queueNumber == 1 ? preferences_notifications_channel_id : preferences_notifications2_channel_id;
-            String channelId = Integer.toString(prefChannelId);
-            @Nullable NotificationChannel channel = notificationManager.getNotificationChannel(channelId);
+            // Используем локальную копию ID, чтобы избежать гонок
+            int currentPrefChannelId = queueNumber == 1 ? preferences_notifications_channel_id : preferences_notifications2_channel_id;
+            String channelId = Integer.toString(currentPrefChannelId);
 
-            if (!prefDays.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+            boolean notificationsAllowed = NotificationManagerCompat.from(context).areNotificationsEnabled();
+            boolean hasDays = !prefDays.isEmpty();
 
-                //https://developer.android.com/training/notify-user/channels.html
-                //After you create a notification channel, you cannot change the notification behaviors—the user has complete control at that point. Though you can still change a channel's name and description
-                //https://stackoverflow.com/questions/46234254/android-oreo-notification-keep-making-sound-even-if-i-do-not-set-sound-on-older
+            NotificationChannel channel = notificationManager.getNotificationChannel(channelId);
+
+            if (hasDays && notificationsAllowed) {
+                boolean needRecreate = false;
 
                 if (channel != null) {
-                    final Uri channelSound = channel.getSound();
-                    final String channelRingtone = channelSound != null ? channelSound.toString() : Constants.STRING_EMPTY;
-                    if (!Objects.equals(channelRingtone, prefRingtone)) {
+                    final Uri channelSoundUri = channel.getSound();
+                    final String channelRingtoneStr = channelSoundUri != null ? channelSoundUri.toString() : Constants.STRING_EMPTY;
+
+                    // Сравниваем нормализованные URI
+                    if (!isSameRingtoneUri(channelRingtoneStr, prefRingtone)) {
                         notificationManager.deleteNotificationChannel(channelId);
                         channel = null;
                         log.append(resources.getString(R.string.msg_deleted_channel, channelId));
+                        needRecreate = true;
                     }
+                } else {
+                    needRecreate = true;
                 }
 
-                if (channel == null) {
-                    prefChannelId = generator.nextInt(1000);
+                if (needRecreate || channel == null) {
+                    // Генерируем НОВЫЙ уникальный ID
+                    int newChannelId = generator.nextInt(9000) + 1000;
+
                     if (queueNumber == 1) {
-                        preferences_notifications_channel_id = prefChannelId;
+                        preferences_notifications_channel_id = newChannelId;
                     } else if (queueNumber == 2) {
-                        preferences_notifications2_channel_id = prefChannelId;
+                        preferences_notifications2_channel_id = newChannelId;
                     }
-                    channelId = Integer.toString(prefChannelId);
+
+                    channelId = Integer.toString(newChannelId);
+
+                    int importance = TextUtils.isEmpty(prefRingtone) ? NotificationManager.IMPORTANCE_LOW : NotificationManager.IMPORTANCE_HIGH;
+                    channel = new NotificationChannel(channelId, context.getString(R.string.pref_Notifications_Notification_Channel_Name), importance);
 
                     if (!TextUtils.isEmpty(prefRingtone)) {
-                        channel = new NotificationChannel(channelId, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
-                        final Uri uri = Uri.parse(prefRingtone);
-                        if (uri != null) {
-                            channel.setSound(
-                                    Uri.parse(prefRingtone),
-                                    new AudioAttributes.Builder()
-                                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                                            .build()
-                            );
+                        try {
+                            Uri uri = Uri.parse(prefRingtone);
+                            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                                    .build();
+                            channel.setSound(uri, audioAttributes);
+                            channel.enableVibration(true);
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error setting sound for channel " + channelId, e);
                         }
-                        channel.enableVibration(true);
                     } else {
-                        channel = new NotificationChannel(channelId, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_LOW);
                         channel.setSound(null, null);
                         channel.enableVibration(false);
-                        channel.setVibrationPattern(null);
                     }
+
                     channel.setDescription(context.getString(R.string.pref_Notifications_Notification_Channel_Description));
                     notificationManager.createNotificationChannel(channel);
 
                     log.append(resources.getString(R.string.msg_created_channel, channelId));
-                    if (!TextUtils.isEmpty(prefRingtone))
-                        log
-                                .append(resources.getString(R.string.msg_ringtone))
-                                .append(Uri.parse(prefRingtone))
-                                .append(Constants.STRING_EOL);
-                    savePreferences();
-                }
+                    if (!TextUtils.isEmpty(prefRingtone)) {
+                        log.append(resources.getString(R.string.msg_ringtone)).append(prefRingtone).append(Constants.STRING_EOL);
+                    }
 
-            } else if (channel != null) {
-                notificationManager.deleteNotificationChannel(channelId);
-                log.append(resources.getString(R.string.msg_deleted_channel, channelId));
+                    // Принудительно сохраняем настройки ПЕРЕД выходом из метода
+                    savePreferences_NotifyChannel(queueNumber);
+
+                }
+            } else {
+                // Уведомления выключены или дней нет
+                if (channel != null) {
+                    notificationManager.deleteNotificationChannel(channelId);
+                    log.append(resources.getString(R.string.msg_deleted_channel, channelId));
+                }
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
         }
+    }
+
+    /**
+     * Сравнение URI рингтонов.
+     */
+    private boolean isSameRingtoneUri(String storedUriStr, String currentPrefUriStr) {
+        if (storedUriStr == null) storedUriStr = "";
+        if (currentPrefUriStr == null) currentPrefUriStr = "";
+
+        if (storedUriStr.equals(currentPrefUriStr)) return true;
+
+        try {
+            Uri uri1 = Uri.parse(storedUriStr);
+            Uri uri2 = Uri.parse(currentPrefUriStr);
+
+            // Сравниваем схему, authority и path. Игнорируем query params (title=...)
+            if (uri1.getScheme() != null && uri1.getScheme().equals(uri2.getScheme())) {
+                if (uri1.getAuthority() != null && uri1.getAuthority().equals(uri2.getAuthority())) {
+                    if (uri1.getPath() != null && uri1.getPath().equals(uri2.getPath())) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+            // ignore parse errors
+        }
+        return false;
     }
 
     /**
