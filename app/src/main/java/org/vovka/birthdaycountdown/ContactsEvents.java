@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.10.2026, 22:03
+ *  * Created by Vladimir Belov on 06.10.2026, 11:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.10.2026, 21:57
+ *  * Last modified 06.10.2026, 10:45
  *
  */
 
@@ -4410,12 +4410,10 @@ public class ContactsEvents {
             } else {
 
                 Set<String> daysQ2 = isFeatureEnabled(Constants.FEATURE_NOTIFY_Q2) ? preferences_notifications2_days : new HashSet<>();
-
                 initNotificationChannel(log, 1, preferences_notifications_days, preferences_notifications_ringtone); //для Android 8+
                 initNotificationChannel(log, 2, daysQ2, preferences_notifications2_ringtone); //для Android 8+
-
+                cleanupOldNotificationChannels(log);
                 initBootReceiver(log);
-
                 initNotificationSchedule(log, 1, preferences_notifications_days, preferences_notifications_alarm_hour, preferences_notifications_alarm_minute);
                 initNotificationSchedule(log, 2, daysQ2, preferences_notifications2_alarm_hour, preferences_notifications2_alarm_minute);
             }
@@ -7495,74 +7493,103 @@ public class ContactsEvents {
     void initNotificationChannel(@NonNull StringBuilder log, int queueNumber, @NonNull Set<String> prefDays, @NonNull String prefRingtone) {
 
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //для Android 8+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return; //для Android 8+
 
-                NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
 
-                //Находим канал. Если канала нет или рингтон там другой - пересоздаём канал
-                int prefChannelId = queueNumber == 1 ? preferences_notifications_channel_id : preferences_notifications2_channel_id;
-                String channelId = Integer.toString(prefChannelId);
-                @Nullable NotificationChannel channel = notificationManager.getNotificationChannel(channelId);
+            //Находим канал. Если канала нет или рингтон там другой - пересоздаём канал
+            int prefChannelId = queueNumber == 1 ? preferences_notifications_channel_id : preferences_notifications2_channel_id;
+            String channelId = Integer.toString(prefChannelId);
+            @Nullable NotificationChannel channel = notificationManager.getNotificationChannel(channelId);
 
-                if (!prefDays.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+            if (!prefDays.isEmpty() && NotificationManagerCompat.from(context).areNotificationsEnabled()) {
 
-                    //https://developer.android.com/training/notify-user/channels.html
-                    //After you create a notification channel, you cannot change the notification behaviors—the user has complete control at that point. Though you can still change a channel's name and description
-                    //https://stackoverflow.com/questions/46234254/android-oreo-notification-keep-making-sound-even-if-i-do-not-set-sound-on-older
+                //https://developer.android.com/training/notify-user/channels.html
+                //After you create a notification channel, you cannot change the notification behaviors—the user has complete control at that point. Though you can still change a channel's name and description
+                //https://stackoverflow.com/questions/46234254/android-oreo-notification-keep-making-sound-even-if-i-do-not-set-sound-on-older
 
-                    if (channel != null) {
-                        final Uri channelSound = channel.getSound();
-                        final String channelRingtone = channelSound != null ? channelSound.toString() : Constants.STRING_EMPTY;
-                        if (!Objects.equals(channelRingtone, prefRingtone)) {
-                            notificationManager.deleteNotificationChannel(channelId);
-                            channel = null;
-                            log.append(resources.getString(R.string.msg_deleted_channel, channelId));
-                        }
+                if (channel != null) {
+                    final Uri channelSound = channel.getSound();
+                    final String channelRingtone = channelSound != null ? channelSound.toString() : Constants.STRING_EMPTY;
+                    if (!Objects.equals(channelRingtone, prefRingtone)) {
+                        notificationManager.deleteNotificationChannel(channelId);
+                        channel = null;
+                        log.append(resources.getString(R.string.msg_deleted_channel, channelId));
                     }
+                }
 
-                    if (channel == null) {
-                        prefChannelId = generator.nextInt(1000);
-                        if (queueNumber == 1) {
-                            preferences_notifications_channel_id = prefChannelId;
-                        } else if (queueNumber == 2) {
-                            preferences_notifications2_channel_id = prefChannelId;
-                        }
-                        channelId = Integer.toString(prefChannelId);
-
-                        if (!TextUtils.isEmpty(prefRingtone)) {
-                            channel = new NotificationChannel(channelId, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
-                            final Uri uri = Uri.parse(prefRingtone);
-                            if (uri != null) {
-                                channel.setSound(
-                                        Uri.parse(prefRingtone),
-                                        new AudioAttributes.Builder()
-                                                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                                                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                                                .build()
-                                );
-                            }
-                            channel.enableVibration(true);
-                        } else {
-                            channel = new NotificationChannel(channelId, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_LOW);
-                            channel.setSound(null, null);
-                            channel.enableVibration(false);
-                            channel.setVibrationPattern(null);
-                        }
-                        channel.setDescription(context.getString(R.string.pref_Notifications_Notification_Channel_Description));
-                        notificationManager.createNotificationChannel(channel);
-
-                        log.append(resources.getString(R.string.msg_created_channel, channelId));
-                        if (!TextUtils.isEmpty(prefRingtone))
-                            log
-                                    .append(resources.getString(R.string.msg_ringtone))
-                                    .append(Uri.parse(prefRingtone))
-                                    .append(Constants.STRING_EOL);
-                        savePreferences();
+                if (channel == null) {
+                    prefChannelId = generator.nextInt(1000);
+                    if (queueNumber == 1) {
+                        preferences_notifications_channel_id = prefChannelId;
+                    } else if (queueNumber == 2) {
+                        preferences_notifications2_channel_id = prefChannelId;
                     }
+                    channelId = Integer.toString(prefChannelId);
 
-                } else if (channel != null) {
-                    notificationManager.deleteNotificationChannel(channelId);
-                    log.append(resources.getString(R.string.msg_deleted_channel, channelId));
+                    if (!TextUtils.isEmpty(prefRingtone)) {
+                        channel = new NotificationChannel(channelId, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_HIGH);
+                        final Uri uri = Uri.parse(prefRingtone);
+                        if (uri != null) {
+                            channel.setSound(
+                                    Uri.parse(prefRingtone),
+                                    new AudioAttributes.Builder()
+                                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                                            .build()
+                            );
+                        }
+                        channel.enableVibration(true);
+                    } else {
+                        channel = new NotificationChannel(channelId, context.getString(R.string.pref_Notifications_Notification_Channel_Name), NotificationManager.IMPORTANCE_LOW);
+                        channel.setSound(null, null);
+                        channel.enableVibration(false);
+                        channel.setVibrationPattern(null);
+                    }
+                    channel.setDescription(context.getString(R.string.pref_Notifications_Notification_Channel_Description));
+                    notificationManager.createNotificationChannel(channel);
+
+                    log.append(resources.getString(R.string.msg_created_channel, channelId));
+                    if (!TextUtils.isEmpty(prefRingtone))
+                        log
+                                .append(resources.getString(R.string.msg_ringtone))
+                                .append(Uri.parse(prefRingtone))
+                                .append(Constants.STRING_EOL);
+                    savePreferences();
+                }
+
+            } else if (channel != null) {
+                notificationManager.deleteNotificationChannel(channelId);
+                log.append(resources.getString(R.string.msg_deleted_channel, channelId));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+        }
+    }
+
+    /**
+     * Удаляет все каналы уведомлений, кроме актуальных (для queue 1 и queue 2).
+     * Это предотвращает накопление "мусорных" каналов.
+     */
+    private void cleanupOldNotificationChannels(@NonNull StringBuilder log) {
+        try {
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return; //для Android 8+
+
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            List<NotificationChannel> allChannels = notificationManager.getNotificationChannels();
+
+            // Актуальные ID каналов
+            String activeChannelId1 = Integer.toString(preferences_notifications_channel_id);
+            String activeChannelId2 = Integer.toString(preferences_notifications2_channel_id);
+
+            for (NotificationChannel channel : allChannels) {
+                String id = channel.getId();
+                // Удаляем все каналы, кроме двух актуальных
+                if (!id.equals(activeChannelId1) && !id.equals(activeChannelId2)) {
+                    notificationManager.deleteNotificationChannel(id);
+                    log.append(resources.getString(R.string.msg_deleted_channel, id));
                 }
             }
         } catch (Exception e) {
@@ -7571,7 +7598,7 @@ public class ContactsEvents {
         }
     }
 
-    void initBootReceiver(StringBuilder log) {
+    void initBootReceiver(@NonNull StringBuilder log) {
 
         try {
 
@@ -7589,15 +7616,6 @@ public class ContactsEvents {
             } else { //Disable Daily Notifications
                 if (pm.getComponentEnabledSetting(receiver) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
                     pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //для Android 8+
-                    NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-                    List<NotificationChannel> listChannels = notificationManager.getNotificationChannels();
-                    for (NotificationChannel channel : listChannels) {
-                        String id = channel.getId();
-                        notificationManager.deleteNotificationChannel(id);
-                        log.append(resources.getString(R.string.msg_deleted_channel, id));
-                    }
                 }
                 log.append(resources.getString(R.string.msg_notifications_were_disabled)).append(Constants.STRING_EOL);
             }

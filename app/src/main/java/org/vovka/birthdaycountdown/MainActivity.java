@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.10.2026, 22:03
+ *  * Created by Vladimir Belov on 06.10.2026, 11:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.10.2026, 20:45
+ *  * Last modified 06.10.2026, 11:06
  *
  */
 
@@ -2335,6 +2335,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             if (eventsData == null) eventsData = ContactsEvents.getInstance();
 
+            if (!eventsData.isUIOpen) {
+                eventsData.isUIOpen = true;
+                eventsData.coordinator = this.findViewById(R.id.coordinator);
+            }
+
             //если "выходили" посмотреть карточку контакта или события на 5 сек
             if (eventsData.statLastPausedForOtherActivity > 0 && !this.dataList.isEmpty()
                     && System.currentTimeMillis() - eventsData.statLastPausedForOtherActivity < Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates
@@ -2440,8 +2445,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (eventsData.needUpdateEventList || this.dataList.isEmpty() != eventsData.isEmptyEventList()
                     || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 updateList(true);
-                eventsData.initNotifications();
             }
+            eventsData.initNotifications();
             this.invalidateOptionsMenu();
             eventsData.updateShortcuts();
 
