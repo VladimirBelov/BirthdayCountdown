@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.10.2026, 11:57
+  ~  * Created by Vladimir Belov on 07.10.2026, 16:02
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.10.2026, 11:55
+  ~  * Last modified 07.10.2026, 16:02
   ~  */
   -->
 
@@ -67,7 +67,7 @@
 
         <item>#Contact events</item>
         <item>By default, events (birthdays, anniversaries, user events, other events) from all accounts on the device are shown.</item>
-        <item>To restrict the choice of accounts for scanning events, it need to select the necessary ones in Settings-> Events setup-> Events sources-> Accounts.</item>
+        <item>To restrict the choice of accounts for scanning events, it needs to select the necessary ones in Settings-> Events setup-> Events sources-> Accounts.</item>
         <item>To display events from all accounts click button \"All\".</item>
 
         <item>#<![CDATA[<a id="events_calendar">Calendar events]]></item>
@@ -88,7 +88,7 @@
          <li>If the event type is not defined as Other event, a contact search will be performed by the name of the calendar event (similar to the contact search for birthdays described above).
          <li>Calendar events can be created both in the standard calendar application (simply specifying the required type in the event description) and in third-party applications. For example, when creating events in the <a href="https://play.google.com/store/apps/details?id=org.withouthat.acalendar">aCalendar</a> application, you can select the event type (anniversary , wedding, birthday, etc.) and the corresponding type will be added to the Description field automatically.
          </ul>]]></item>
-        <item><![CDATA[How to setup the display of events:<ol>
+        <item><![CDATA[How to set up the display of events:<ol>
         <li>In the standard calendar application, create a calendar (or choose to display the calendar for national or religious holidays)
         <li>If the calendar is empty, create or import the required events
         <li>A link to instructions on how to upload friends\' birthdays from social networks is below
@@ -103,14 +103,14 @@
 
         <item>#<![CDATA[<a id="events_files">Events from local files]]></item>
         <item><![CDATA[Events and birthdays by these formats are supported: <a href="https://4pda.to/forum/index.php?showtopic=203976">DarkBirthday Widget</a>, <a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a>, <b>iCalendar (ICS)</b> and <b>vCard (VCF)</b>. Extra notes:<ul>
-        <li>event date can be of any format without spaces (DD.MM.YYYY, MM/DD/YYYY, YYYY-MM-DD etc)
+        <li>event date can be of any format without spaces (DD.MM.YYYY, MM/DD/YYYY, YYYY-MM-DD etc.)
         <li>if the year is unknown set 0000 (1900 for Birthdays)
         <li>the file must be saved in UTF-8 encoding
         <li>if there are several pairs of brackets after the name, then if the pairs of brackets follow each other - the content inside the last pair will be moved to contacts job title, if one pair is inside the other - the content inside the outer brackets will be moved to contacts job title
         <li>if the file only lists events of a certain type (<img src="ic_event_birthday.webp" style="vertical-align:middle"> Birthday, <img src="ic_event_other.webp" width=5 % style="vertical-align:middle"> Other event), such files must be specified in the settings section corresponding to their type
          <li>files with different types of events are specified in the section <img src="btn_zoom_page_press.webp" style="vertical-align:middle"> Event Sources. The event type is determined by the flag (below is the format and examples)
          <li>for all event types except <img src="ic_event_other.webp" style="vertical-align:middle"> Other event and <img src="ic_event_holiday.webp" style="vertical-align:middle"> Holiday, app searches for a contact in the address book to merge with duplicate events or add web links
-         <li>If extra features are on it is possible to setup how to deal with events whose type could not be determined: Settings-> Events setup-> Import settings  (by default: Set as <img src="ic_event_other.webp" style=" vertical-align:middle"> Other event)
+         <li>If extra features are on it is possible to set up how to deal with events whose type could not be determined: Settings→ Events setup→ Import settings  (by default: Set as <img src="ic_event_other.webp" style=" vertical-align:middle"> Other event)
          <li>If an event lasts for several days, you can specify the period separated by "-"
          <li>To use events from Birthdays, they must be exported to a file: Synchronization-> Save to SD card
         </ul>]]></item>
@@ -159,7 +159,7 @@
 
         <item><![CDATA[<b><a href="https://play.google.com/store/apps/details?id=com.marcow.birthdaylist">Birthdays</a> event format</b>:<br>]]></item>
         <item><![CDATA[❙YYYY-MM-DD❙Name❙Event type (Birthday, Anniversary, Custom)❙Event label or null❚<br><br>for example:<br> ❙1900–02–04❙John Doe❙Birthday❙null❚<br>❙2009–03–09❙John Doe❙Custom❙Death❚<br>]]></item>
-        <item><![CDATA[<br>How to setup the display of events:<ol>
+        <item><![CDATA[<br>How to set up the display of events:<ol>
         <li>Download or create file with events
         <li>Select file in settings (in only one!): <ul>
                         <li>Settings-> Events setup-> Event Sources-> Files

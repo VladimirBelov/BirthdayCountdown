@@ -11,7 +11,7 @@ Permissions that the application receives after installation or that may be requ
 
 Permission android.permission.READ_CONTACTS is required to obtain data from the Android address book. Information is not copied anywhere and does not change in any way.
 Permission android.permission.WAKE_LOCK (prevent device from sleeping) is necessary to automatically update widgets on Android 8+.
-Permission android.permission.RECEIVE_BOOT_COMPLETED (run at startup) is necessary to adjust the time of upcoming events notification.
+Permission android.permission.RECEIVE_BOOT_COMPLETED (run at startup) is necessary to adjust the time of upcoming events notifications.
 Permission android.permission.GET_ACCOUNTS is required to obtain data about user accounts. Information is not copied anywhere and does not change in any way.
 Permission android.permission.READ_EXTERNAL_STORAGE is necessary for playing notifications with a melody from external storage.
 Permission android.permission.READ_CALENDAR is required to read calendar events. Information is not copied anywhere else and does not change in any way.
@@ -75,7 +75,7 @@ UKR:
 Дозвіл android.permission.READ_CONTACTS необхідно для отримання даних з адресної книги Android. Інформація більше нікуди не копіюється і ніяк не змінюється.
 Дозвіл android.permission.WAKE_LOCK (prevent device from sleeping) необхідно для автоматичного оновлення віджетів на Android 8+.
 Дозвіл android.permission.RECEIVE_BOOT_COMPLETED (run at startup) необхідно для коригування часу появи повідомлення про майбутні події.
-Дозвіл android.permission.GET_ACCOUNTS необхідно для отримання даних про користувача облікових записах Android. Інформація більше нікуди не копіюється і ніяк не змінюється.
+Дозвіл android.permission.GET_ACCOUNTS необхідно для отримання даних про користувача облікових записів Android. Інформація більше нікуди не копіюється і ніяк не змінюється.
 Дозвіл android.permission.READ_EXTERNAL_STORAGE необхідно для програвання повідомлень з мелодією з зовнішнього сховища.
 Дозвіл android.permission.READ_CALENDAR необхідно для отримання календарних подій. Інформація більше нікуди не копіюється і ніяк не змінюється.
 Дозвіл android.permission.ACCESS_NOTIFICATION_POLICY потрібен для встановлення високого пріоритету для повідомлень про вікторини на Android 7 і старіших версіях.

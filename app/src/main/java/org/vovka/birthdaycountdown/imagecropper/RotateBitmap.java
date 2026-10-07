@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 09.03.2026, 13:24
+ *  * Created by Vladimir Belov on 07.10.2026, 16:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 09.03.2026, 12:55
+ *  * Last modified 07.10.2026, 15:36
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -33,7 +33,7 @@ class RotateBitmap {
     }
 
     public Matrix getRotateMatrix() {
-        // By default this is an identity matrix
+        // By default, this is an identity matrix
         Matrix matrix = new Matrix();
         if (bitmap != null && rotation != 0) {
             // We want to do the rotation at origin, but since the bounding

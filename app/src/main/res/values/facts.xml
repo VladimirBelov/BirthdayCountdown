@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.09.2026, 13:29
+  ~  * Created by Vladimir Belov on 07.10.2026, 16:02
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.09.2026, 12:22
+  ~  * Last modified 07.10.2026, 15:06
   ~  */
   -->
 
@@ -543,7 +543,7 @@
 Что посеешь, то и пожнешь
 Шито-крыто, а узелок-то тут
 Яблоко от яблоньки недалеко падает
-Язык мой — враг мой, прежде ума глаголет"</item>
+Если неизвестно, в чём дело, значит, дело в деньгах (Польская народная пословица)"</item>
     </string-array>
 
     <string-array name="facts3" translatable="false" tools:ignore="UnusedResources">

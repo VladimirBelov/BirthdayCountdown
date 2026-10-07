@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.10.2026, 14:28
+ *  * Created by Vladimir Belov on 07.10.2026, 16:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.10.2026, 14:27
+ *  * Last modified 07.10.2026, 15:06
  *
  */
 
@@ -7541,7 +7541,6 @@ public class ContactsEvents {
                     // Сравниваем нормализованные URI
                     if (!isSameRingtoneUri(channelRingtoneStr, prefRingtone)) {
                         notificationManager.deleteNotificationChannel(channelId);
-                        channel = null;
                         log.append(resources.getString(R.string.msg_deleted_channel, channelId));
                         needRecreate = true;
                     }
@@ -7549,7 +7548,7 @@ public class ContactsEvents {
                     needRecreate = true;
                 }
 
-                if (needRecreate || channel == null) {
+                if (needRecreate) {
                     // Генерируем НОВЫЙ уникальный ID
                     int newChannelId = generator.nextInt(9000) + 1000;
 

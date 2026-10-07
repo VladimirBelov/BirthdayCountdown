@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.09.2026, 14:09
+  ~  * Created by Vladimir Belov on 07.10.2026, 16:02
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.09.2026, 14:01
+  ~  * Last modified 07.10.2026, 15:36
   ~  */
   -->
 
@@ -331,7 +331,7 @@
         <item>Added separate birthday calendar support with contact name recognition rules</item>
         <item>Added calendar title display in event details</item>
         <item>Search results are not reset when opening a contact card and returning back</item>
-        <item>Fixed non scrolling widget setting dialog for small screens</item>
+        <item>Fixed non-scrolling widget setting dialog for small screens</item>
         <item>Fixed recurring calendar events support</item>
 
         <item>#1.5.0</item>
@@ -452,7 +452,7 @@
         <item>#1.2.9</item>
         <item>Added layout for 6 and 7 events</item>
         <item>Increased font size magnification for widget 2x2</item>
-        <item>Added 4x1 unresizable widget for 5 events (for devices with non standard screens)</item>
+        <item>Added 4x1 unresizable widget for 5 events (for devices with non-standard screens)</item>
         <item>Name-days always parse w/o year</item>
         <item>Some bugs fixed</item>
 
@@ -469,7 +469,7 @@
         <item>Contacts photos in high resolution</item>
         <item>Widget 1x1 became 2x2 (this is new default widget size, it\'s resizable)</item>
         <item>Widget 4x1 became resizable (for 1, 2, 4 or 5 events)</item>
-        <item>Contacts photos in event list cropped by center (for compatibility with non square photos)</item>
+        <item>Contacts photos in event list cropped by center (for compatibility with non-square photos)</item>
         <item>Turned on fast scrolling for event list</item>
 
         <item>#1.2.5</item>
