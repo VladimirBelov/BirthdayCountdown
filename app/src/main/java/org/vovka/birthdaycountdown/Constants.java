@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.09.2026, 20:37
+ *  * Created by Vladimir Belov on 11.10.2026, 02:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.09.2026, 18:34
+ *  * Last modified 11.10.2026, 00:52
  *
  */
 
@@ -283,12 +283,6 @@ public final class Constants {
     static final String EXTRA_DAY1 = "day1";
     static final String EXTRA_DAY2 = "day2";
     static final String EXTRA_URL = "url";
-
-    static final int HTML_COLOR_DEFAULT = 0;
-    public static final int HTML_COLOR_RED = 1;
-    public static final int HTML_COLOR_YELLOW = 2;
-    public static final int HTML_COLOR_BROWN = 3;
-    public static final int HTML_COLOR_GREEN = 4;
 
     static final String HTML_BOLD_START = "<b>";
     static final String HTML_BOLD_END = "</b>";

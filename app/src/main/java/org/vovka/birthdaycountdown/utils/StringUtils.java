@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.09.2026, 13:29
+ *  * Created by Vladimir Belov on 11.10.2026, 02:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.09.2026, 13:22
+ *  * Last modified 11.10.2026, 00:46
  *
  */
 
@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -502,35 +503,19 @@ public class StringUtils {
         return -1;
     }
 
-    /** Возвращает исходный текст, обрамлённый в цвет в формате HTML (<font color="">текст</font>)
-     * @param msg Исходный текст
-     * @param color Цвет
+    /**
+     * Окрашивает текст в указанный цвет
+     * @param msg Текст
+     * @param colorResId ID цветового ресурса (например, R.color.dark_yellow), -1 = не окрашивать
      * @param context Контекст
-     * @return Результирующий текст
+     * @return HTML-строка с окрашенным текстом
      */
-    public static String getHTMLColor(String msg, int color, Context context) {
+    public static String getHTMLColor(String msg, @ColorRes int colorResId, Context context) {
         try {
-
-            int colorId;
-            switch (color) {
-                case Constants.HTML_COLOR_RED:
-                    colorId = R.color.dark_red;
-                    break;
-                case Constants.HTML_COLOR_YELLOW:
-                    colorId = R.color.yellow;
-                    break;
-                case Constants.HTML_COLOR_BROWN:
-                    colorId = R.color.brown;
-                    break;
-                case Constants.HTML_COLOR_GREEN:
-                    colorId = R.color.green;
-                    break;
-                default:
-                    return msg;
-            }
-            return Constants.HTML_COLOR_START + String.format("%06x", (ContextCompat.getColor(context, colorId) & 0x00ffffff))
+            if (colorResId == -1) return msg;
+            int color = ContextCompat.getColor(context, colorResId);
+            return Constants.HTML_COLOR_START + String.format("%06x", (color & 0x00ffffff))
                     + Constants.HTML_COLOR_MIDDLE + msg + Constants.HTML_COLOR_END;
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             return msg;

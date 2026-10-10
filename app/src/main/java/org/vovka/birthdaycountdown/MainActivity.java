@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.10.2026, 14:28
+ *  * Created by Vladimir Belov on 11.10.2026, 02:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.10.2026, 14:18
+ *  * Last modified 11.10.2026, 02:40
  *
  */
 
@@ -65,6 +65,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -1531,7 +1532,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             //https://developer.android.com/training/permissions/requesting.html#java
                             swipeRefresh.setEnabled(false);
                             swipeRefresh.setRefreshing(false);
-                            setHint(StringUtils.getHTMLColor(getString(R.string.msg_no_access_contacts).toLowerCase(), Constants.HTML_COLOR_RED, eventsData.getContext()));
+                            setHint(StringUtils.getHTMLColor(getString(R.string.msg_no_access_contacts).toLowerCase(), R.color.dark_red, eventsData.getContext()));
                             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS}, Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
                         }
                     });
@@ -2450,7 +2451,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             mainLayout.setLayoutParams(marginParams);
 
             //Тему не меняли, просто обновляем данные
-            if (eventsData.needUpdateEventList || this.dataList.isEmpty() != eventsData.isEmptyEventList()
+            if (eventsData.needUpdateEventList || this.dataList.isEmpty() //!= eventsData.isEmptyEventList()
                     || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 updateList(true);
             }
@@ -2595,7 +2596,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     emptyView.setMovementMethod(new ScrollingMovementMethod());
                 }
 
-                setHint(StringUtils.getHTMLColor(getString(R.string.msg_no_events).toLowerCase(), Constants.HTML_COLOR_YELLOW, eventsData.getContext()));
+                @ColorRes int hintColor = eventsData.preferences_theme.prefNumber == 10
+                        ? R.color.brown  // Коричневый для белой темы
+                        : R.color.yellow;       // Ярко-жёлтый для остальных
+
+                setHint(StringUtils.getHTMLColor(getString(R.string.msg_no_events).toLowerCase(), hintColor, eventsData.getContext()));
 
             } else {
 
@@ -3172,11 +3177,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Hidden && eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    eventDetails.append(StringUtils.getHTMLColor(getString(R.string.msg_label_hidden), Constants.HTML_COLOR_RED, eventsData.getContext()));
+                    eventDetails.append(StringUtils.getHTMLColor(getString(R.string.msg_label_hidden), R.color.dark_red, eventsData.getContext()));
                 }
                 if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Silenced && eventsData.getSilencedEventsCount() > 0 && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
                     if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    eventDetails.append(StringUtils.getHTMLColor(getString(R.string.msg_label_silenced), Constants.HTML_COLOR_BROWN, eventsData.getContext()));
+                    eventDetails.append(StringUtils.getHTMLColor(getString(R.string.msg_label_silenced), R.color.brown, eventsData.getContext()));
                 }
 
                 if (eventDetails.length() == 0) {
@@ -3486,6 +3491,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
                     }
 
+                    @ColorRes int hintColor = eventsData.preferences_theme.prefNumber == 10
+                            ? R.color.brown  // Коричневый для белой темы
+                            : R.color.yellow;       // Ярко-жёлтый для остальных
+
                     if (!dataList.isEmpty()) {
                         boolean isSearchAllTypesAndSources = eventsData.preferences_list_search_depth == ContactsEvents.SearchDepth.AllEvents;
                         String hintPrefix;
@@ -3510,12 +3519,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
 
                         setHint(hintPrefix
-                                .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : StringUtils.getHTMLColor(String.valueOf(dataList.size()), Constants.HTML_COLOR_YELLOW, eventsData.getContext()))
+                                .concat(filterNames.isEmpty() ? String.valueOf(dataList.size()) : StringUtils.getHTMLColor(String.valueOf(dataList.size()), hintColor, eventsData.getContext()))
                                 .concat(Constants.STRING_SPACE)
                         );
 
                     } else {
-                        setHint(StringUtils.getHTMLColor(getString(R.string.msg_no_events).toLowerCase(), Constants.HTML_COLOR_YELLOW, eventsData.getContext()).concat(Constants.STRING_SPACE));
+                        setHint(StringUtils.getHTMLColor(getString(R.string.msg_no_events).toLowerCase(), hintColor, eventsData.getContext()).concat(Constants.STRING_SPACE));
                     }
 
                     drawList();

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.10.2026, 16:02
+  ~  * Created by Vladimir Belov on 11.10.2026, 02:50
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 07.10.2026, 16:02
+  ~  * Last modified 10.10.2026, 21:01
   ~  */
   -->
 
@@ -514,6 +514,7 @@
         <item>Blue-Grey</item>
         <item>Dark grey</item>
         <item>Black</item>
+        <item>White</item>
     </string-array>
 
     <string name="pref_List_EventTypes_title">Event types</string>
@@ -1734,6 +1735,7 @@ Long click on item to select color"</string>
         <item>5</item>
         <item>2</item>
         <item>3</item>
+        <item>10</item>
     </string-array>
     <string name="pref_Theme_default" translatable="false">5</string>
     <array name="pref_Theme_colors">
@@ -1746,6 +1748,7 @@ Long click on item to select color"</string>
         <item>@color/theme_blue_gray_primary</item>
         <item>@color/theme_grey_primary</item>
         <item>@color/theme_black_primary</item>
+        <item>@color/theme_white_primary</item>
     </array>
 
     <string name="pref_Accounts_key" translatable="false">Accounts</string>

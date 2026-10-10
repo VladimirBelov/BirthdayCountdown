@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 05.10.2026, 23:07
+ *  * Created by Vladimir Belov on 11.10.2026, 02:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 05.10.2026, 22:44
+ *  * Last modified 10.10.2026, 22:38
  *
  */
 
@@ -103,6 +103,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -113,6 +114,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.DeviceTools;
@@ -161,6 +163,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     private CustomTextPreference prefEnabledFeatures;
     private String localeAtCreate = "";
     private String eventTypeForIconPick;
+    private Drawable backIcon;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -213,17 +216,39 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
             setSupportActionBar(toolbar);
 
+            backIcon = AppCompatResources.getDrawable(this, R.drawable.abc_ic_ab_back);
+            if (backIcon != null) {
+                backIcon = backIcon.mutate();
+                int iconColor = ta.getColor(R.styleable.Theme_windowTitleColor,
+                        ContextCompat.getColor(this, R.color.white));
+                backIcon.setTint(iconColor);
+            }
+
             ActionBar bar = getSupportActionBar();
             if (bar != null) {
                 bar.setHomeButtonEnabled(true);
                 bar.setDisplayHomeAsUpEnabled(true);
                 bar.setDisplayShowTitleEnabled(true);
-                bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back);
+                bar.setHomeAsUpIndicator(backIcon);
                 bar.setTitle(R.string.window_settings);
             }
 
             //Цвет CutoutAppearance на повёрнутом экране
             getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
+
+            //Цвет иконок statusbar
+            try (TypedArray ta2 = getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                int statusBarColor = ta2.getColor(R.styleable.Theme_windowStatusbarColor, 0);
+                // Если статус-бар светлый (белый или близкий к белому) — делаем иконки тёмными
+                if (Color.red(statusBarColor) > 200 && Color.green(statusBarColor) > 200 && Color.blue(statusBarColor) > 200) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        WindowInsetsControllerCompat controller = ViewCompat.getWindowInsetsController(getWindow().getDecorView());
+                        if (controller != null) controller.setAppearanceLightStatusBars(true);
+                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    }
+                }
+            }
 
             if (eventsData.preferences_menustyle_compact) {
                 addPreferencesFromResource(R.xml.settings_compact);
@@ -2331,6 +2356,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 ViewGroup.MarginLayoutParams marginBar = (ViewGroup.MarginLayoutParams) bar.getLayoutParams();
                 marginBar.setMargins(0, this.statusBarInsets.top, 0, 0);
                 bar.setBackgroundColor(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white)));
+                bar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.black)));
 
                 root.addView(bar, 0); // insert at top
                 bar.setTitle(preferenceScreen.getTitle());
@@ -2345,6 +2371,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 list.setPadding(0, (int) (10 * displayMetrics.density + 0.5f), 0, 0);
                 ViewGroup root = (ViewGroup) list.getParent();
                 bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
+                bar.setBackgroundColor(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white)));
+                bar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.black)));
 
                 root.addView(bar, 0); // insert at top
                 bar.setTitle(preferenceScreen.getTitle());
@@ -2362,6 +2390,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 root.setBackgroundColor(ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(this, R.color.white)));
 
             }
+
+            // Устанавливаем иконку "назад" с цветом заголовка текущей темы
+            bar.setNavigationIcon(backIcon);
+
+            bar.setNavigationOnClickListener(v -> dialog.dismiss());
+
             list.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, ContextCompat.getColor(this, R.color.light_gray_transp))));
             list.setDividerHeight((int) (1 * displayMetrics.density));
 

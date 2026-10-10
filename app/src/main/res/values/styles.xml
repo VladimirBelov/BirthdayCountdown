@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
+  ~  * Created by Vladimir Belov on 11.10.2026, 02:50
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.09.2026, 20:36
+  ~  * Last modified 11.10.2026, 02:03
   ~  */
   -->
 
@@ -291,6 +291,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- Меню главной активности -->
     <style name="AppTheme.Blue.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
         <item name="colorAccent">@color/theme_blue_secondary</item>
         <item name="android:textCursorDrawable">@null</item>
@@ -303,6 +304,7 @@
         <item name="popupMenuStyle">@style/PopupWindowStyle</item>
     </style>
 
+    <!-- Темы диалогов -->
     <style name="AlertDialog.Blue" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:background">@color/theme_blue_secondary</item>
         <item name="android:textColor">@color/theme_black_primary</item>
@@ -719,6 +721,93 @@
         <item name="windowTitleTextColor">@color/theme_indigo_secondary</item>
     </style>
 
+    <!-- Белая тема ===========================================================================-->
+
+    <style name="AppTheme.White" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarSize">48dp</item>
+        <item name="actionButtonStyle">@style/ActionButtonCustomStyle</item>
+        <item name="actionOverflowMenuStyle">@style/OptionsMenuCustomStyle</item>
+        <item name="android:actionButtonStyle">@style/ActionButtonCustomStyle</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:itemBackground">@color/theme_white_primary</item>
+        <item name="android:itemTextAppearance">@style/itemTextStyle.AppTheme.White</item>
+        <item name="android:listDivider">@color/theme_white_list_divider</item>
+        <item name="android:navigationBarColor">?attr/windowStatusbarColor</item>
+        <item name="android:textColorPrimary">@color/text_color_primary_light</item>
+        <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="backgroundColor">@color/theme_white_primary</item>
+        <item name="borderCardColor">@color/theme_white_list_divider</item>
+        <item name="borderWindowColor">?attr/windowStatusbarColor</item>
+        <item name="colorAccent">@color/theme_white_accent</item>
+        <item name="colorPrimary">@color/theme_white_primary</item>
+        <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
+        <item name="dialogBackgroundColor">@color/theme_white_primary</item>
+        <item name="dialogButtonBackgroundColor">@color/theme_white_primary</item>
+        <item name="dialogButtonColor">@color/theme_black_primary</item>
+        <item name="dialogHintColor">@color/light_gray_darker</item>
+        <item name="dialogPanelsBackgroundColor">@color/theme_white_panels</item>
+        <item name="dialogTextColor">@color/theme_black_primary</item>
+        <item name="editTextBackgroundCustom">@color/theme_white_primary</item>
+        <item name="eventAgeColor">@color/theme_grey_primary</item>
+        <item name="eventDateColor">@color/light_gray_darker</item>
+        <item name="eventDetailsColor">@color/light_gray_darker</item>
+        <item name="eventDistanceColor">@color/light_gray_darker</item>
+        <item name="eventFullNameColor">@color/theme_grey_primary</item>
+        <item name="gradientEndColor">@color/lighter_gray</item>
+        <item name="gradientStartColor">@color/theme_white_primary</item>
+        <item name="listDividerColor">@color/theme_white_list_divider</item>
+        <item name="windowEditHintColor">@color/lighter_gray</item>
+        <item name="windowStatusbarColor">@color/theme_white_status</item>
+        <item name="windowTitleColor">@color/black</item>
+    </style>
+
+    <style name="itemTextStyle.AppTheme.White" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textColor">@color/theme_black_primary</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AppTheme.White.NoActionBar" parent="AppTheme.White">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Меню главной активности -->
+    <style name="AppTheme.White.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/theme_white_accent</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:colorBackground">@color/theme_white_primary</item>
+        <item name="android:listDivider">@color/theme_white_list_divider</item>
+        <item name="android:textColor">@color/theme_white_primary</item>
+        <item name="android:textColorHint">@color/theme_white_secondary</item>
+        <item name="android:textColorPrimary">@color/theme_white_secondary</item>
+        <item name="android:textColorSecondary">@color/theme_white_secondary</item>
+        <item name="popupMenuStyle">@style/PopupWindowStyle</item>
+        <item name="android:dropDownListViewStyle">@style/PopupListView.White</item>
+    </style>
+
+    <!-- Стиль ListView для popup-меню белой темы -->
+    <style name="PopupListView.White" parent="Widget.AppCompat.ListView.DropDown">
+        <item name="android:divider">@color/theme_white_list_divider</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+    <!-- Темы диалогов -->
+    <style name="AlertDialog.White" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/theme_white_primary</item>
+        <item name="android:textColor">@color/theme_white_secondary</item>
+        <item name="android:textColorPrimary">@color/theme_white_secondary</item>
+        <item name="android:textColorSecondary">@color/theme_white_secondary</item>
+        <item name="backgroundColor">@color/theme_white_primary</item>
+        <item name="borderCardColor">@color/theme_white_button_border</item>
+        <item name="colorAccent">@color/theme_white_accent</item>
+        <item name="contentDescription">@string/hint_AlertDialog</item>
+        <item name="listDividerColor">@color/theme_white_list_divider</item>
+        <item name="textColorAlertDialogListItem">@color/theme_white_secondary</item>
+        <item name="windowTitleColor">@color/theme_white_primary</item>
+        <item name="windowTitleTextColor">@color/theme_white_secondary</item>
+    </style>
+
     <!-- Кнопки и UI ===========================================================================-->
 
     <style name="ActivityTitleStyle" parent="@style/Base.TextAppearance.AppCompat.Title">
@@ -758,6 +847,7 @@
     <!-- Меню действий -->
     <style name="AppTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">@color/theme_secondary</item>
+        <item name="colorControlNormal">?attr/windowTitleColor</item>
     </style>
 
     <!-- Начальный экран -->

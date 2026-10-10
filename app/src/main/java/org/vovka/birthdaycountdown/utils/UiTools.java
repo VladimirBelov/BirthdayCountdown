@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.09.2026, 00:15
+ *  * Created by Vladimir Belov on 11.10.2026, 02:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 16.09.2026, 23:18
+ *  * Last modified 11.10.2026, 01:57
  *
  */
 
@@ -23,7 +23,7 @@ public class UiTools {
     private static final int TAG_ORIGINAL_DRAWABLE = R.id.tag_original_drawable;
     public static void addClickEffect(@NonNull View view) {
 
-        // 👇 Получаем оригинальный drawable из Tag или из текущего фона
+        // Получаем оригинальный drawable из Tag или из текущего фона
         Drawable originalDrawable;
         if (view.getTag(TAG_ORIGINAL_DRAWABLE) instanceof Drawable) {
             originalDrawable = (Drawable) view.getTag(TAG_ORIGINAL_DRAWABLE);

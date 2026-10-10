@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.10.2026, 16:02
+ *  * Created by Vladimir Belov on 11.10.2026, 02:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.10.2026, 15:06
+ *  * Last modified 10.10.2026, 21:01
  *
  */
 
@@ -2124,6 +2124,11 @@ public class ContactsEvents {
                     preferences_theme.themeMain = R.style.AppTheme_Indigo_NoActionBar;
                     preferences_theme.themePopup = R.style.AppTheme_Indigo_PopupOverlay;
                     preferences_theme.themeDialog = R.style.AlertDialog_Indigo;
+                    break;
+                case 10:
+                    preferences_theme.themeMain = R.style.AppTheme_White_NoActionBar;
+                    preferences_theme.themePopup = R.style.AppTheme_White_PopupOverlay;
+                    preferences_theme.themeDialog = R.style.AlertDialog_White;
                     break;
                 default:
                     preferences_theme.themeMain = R.style.AppTheme_Green_NoActionBar;

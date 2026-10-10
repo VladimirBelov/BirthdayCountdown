@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.08.2026, 16:53
+ *  * Created by Vladimir Belov on 11.10.2026, 02:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 03.08.2026, 16:51
+ *  * Last modified 10.10.2026, 22:42
  *
  */
 
@@ -15,6 +15,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -32,6 +33,7 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -105,7 +107,17 @@ public class FAQActivity extends AppCompatActivity {
                 bar.setHomeButtonEnabled(true);
                 bar.setDisplayHomeAsUpEnabled(true);
                 bar.setDisplayShowTitleEnabled(true);
-                bar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back);
+
+                // Устанавливаем иконку "назад" с правильным цветом
+                Drawable backIcon = AppCompatResources.getDrawable(this, R.drawable.abc_ic_ab_back);
+                if (backIcon != null) {
+                    backIcon = backIcon.mutate();
+                    // Берём цвет заголовка из темы — для белой темы это чёрный, для тёмных — белый
+                    int iconColor = ta.getColor(R.styleable.Theme_windowTitleColor,
+                            ContextCompat.getColor(this, R.color.white));
+                    backIcon.setTint(iconColor);
+                    bar.setHomeAsUpIndicator(backIcon);
+                }
             }
 
             //Цвет CutoutAppearance на повёрнутом экране

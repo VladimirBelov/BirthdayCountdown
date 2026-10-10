@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 25.09.2026, 17:36
+  ~  * Created by Vladimir Belov on 11.10.2026, 02:50
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 25.09.2026, 17:32
+  ~  * Last modified 10.10.2026, 21:01
   ~  */
   -->
 
@@ -514,6 +514,7 @@
         <item>Modrošedá</item>
         <item>Tmavě šedá</item>
         <item>Černá</item>
+        <item>Bílá</item>
     </string-array>
 
     <string name="pref_List_EventTypes_title">Typy událostí</string>

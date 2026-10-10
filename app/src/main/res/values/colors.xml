@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.09.2026, 20:37
+  ~  * Created by Vladimir Belov on 11.10.2026, 02:50
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 15.09.2026, 01:29
+  ~  * Last modified 11.10.2026, 02:05
   ~  */
   -->
 
@@ -72,6 +72,14 @@
     <color name="theme_indigo_status">#001970</color>
     <color name="theme_indigo_status_transp">#32001970</color>
     <color name="theme_indigo_panels">#33303F9F</color>
+
+    <color name="theme_white_primary">@color/white</color>
+    <color name="theme_white_secondary">@color/black</color>
+    <color name="theme_white_accent">#99000000</color>
+    <color name="theme_white_list_divider">#80969696</color>
+    <color name="theme_white_button_border">#5A5A5A</color>
+    <color name="theme_white_status">@color/white</color>
+    <color name="theme_white_panels">@color/theme_black_panels</color>
 
     <color name="light_green">#BE16801C</color>
     <color name="dark_green">#FF1B5E20</color>
