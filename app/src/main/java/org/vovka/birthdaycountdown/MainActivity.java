@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.10.2026, 02:50
+ *  * Created by Vladimir Belov on 15.10.2026, 16:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 11.10.2026, 02:40
+ *  * Last modified 13.10.2026, 13:43
  *
  */
 
@@ -199,8 +199,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);
 
-            //Цвет заголовка окна https://github.com/neokree/MaterialNavigationDrawer/issues/5
-            toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
+            //Цвет заголовка окна
+            toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleTextColor, ContextCompat.getColor(this, R.color.white)));
             setSupportActionBar(toolbar);
 
             swipeRefresh = findViewById(R.id.swiperefresh);
@@ -1746,6 +1746,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     || statsUnrecognizedEvents > 0
                                     || eventsData.statFavoriteEventsCount > 0
                                     || eventsData.getXDaysEventsCount() > 0
+                                    || Constants.MainMenu_Filter == eventsData.preferences_list_quick_action
                     );
             final boolean isItemSourcesVisible = eventsData != null
                     && (eventsData.isFeatureEnabled(Constants.FEATURE_SELECT_SOURCES) || eventsData.preferences_list_quick_action == Constants.MainMenu_EventsSources);

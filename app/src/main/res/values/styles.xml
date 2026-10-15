@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.10.2026, 02:50
+  ~  * Created by Vladimir Belov on 15.10.2026, 16:49
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 11.10.2026, 02:03
+  ~  * Last modified 13.10.2026, 16:36
   ~  */
   -->
 
@@ -49,7 +49,8 @@
         <item name="listDividerColor">@color/theme_green_status_transp</item>
         <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_green_status</item>
-        <item name="windowTitleColor">@color/white</item>
+        <item name="windowTitleColor">@color/theme_green_primary</item>
+        <item name="windowTitleTextColor">@color/white</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.Green" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -70,7 +71,7 @@
         <item name="android:colorBackground">@color/theme_green_secondary</item>
         <item name="android:textColor">@color/theme_green_primary</item>
         <item name="android:textColorHint">@color/theme_green_secondary</item>
-        <item name="android:textColorPrimary">@color/theme_green_secondary</item>
+        <item name="android:textColorPrimary">@color/theme_green_primary</item>
         <item name="android:textColorSecondary">@color/theme_green_secondary</item>
         <item name="popupMenuStyle">@style/PopupWindowStyle</item>
     </style>
@@ -89,7 +90,7 @@
         <item name="listDividerColor">@color/theme_green_status_transp</item>
         <item name="textColorAlertDialogListItem">@color/theme_black_primary</item>
         <item name="windowTitleColor">@color/theme_green_primary</item>
-        <item name="windowTitleTextColor">@color/theme_green_secondary</item>
+        <item name="windowTitleTextColor">@color/white</item>
     </style>
 
     <!-- Тёмно-серая тема ===========================================================================-->
@@ -114,11 +115,11 @@
         <item name="colorPrimary">@color/theme_grey_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
         <item name="dialogBackgroundColor">@color/theme_grey_primary</item>
-        <item name="dialogButtonBackgroundColor">@color/medium_dark_gray_trans_25</item>
-        <item name="dialogButtonColor">@color/lighter_gray</item>
+        <item name="dialogButtonBackgroundColor">@color/theme_grey_primary</item>
+        <item name="dialogButtonColor">@color/theme_grey_secondary</item>
         <item name="dialogHintColor">@color/light_gray</item>
         <item name="dialogPanelsBackgroundColor">@color/theme_grey_panels</item>
-        <item name="dialogTextColor">@color/lighter_gray</item>
+        <item name="dialogTextColor">@color/theme_grey_secondary</item>
         <item name="editTextBackgroundCustom">@color/theme_grey_primary</item>
         <item name="eventAgeColor">@color/theme_grey_primary</item>
         <item name="eventDateColor">@color/light_gray_darker</item>
@@ -126,16 +127,17 @@
         <item name="eventDistanceColor">@color/light_gray_darker</item>
         <item name="eventFullNameColor">@color/theme_grey_primary</item>
         <item name="gradientEndColor">@color/light_gray</item>
-        <item name="gradientStartColor">@color/lighter_gray</item>
+        <item name="gradientStartColor">@color/theme_grey_secondary</item>
         <item name="listDividerColor">@color/light_gray_transp</item>
         <item name="windowEditHintColor">@color/light_gray</item>
-        <item name="windowStatusbarColor">@color/medium_dark_gray</item>
-        <item name="windowTitleColor">@color/lighter_gray</item>
+        <item name="windowStatusbarColor">@color/theme_grey_primary</item>
+        <item name="windowTitleColor">@color/theme_grey_primary</item>
+        <item name="windowTitleTextColor">@color/theme_grey_secondary</item>
     </style>
 
     <!--https://stackoverflow.com/questions/24652964/android-popup-menu-text-color-appcompat-->
     <style name="itemTextStyle.AppTheme.DarkGray" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
-        <item name="android:textColor">@color/lighter_gray</item>
+        <item name="android:textColor">@color/theme_grey_secondary</item>
         <item name="android:textSize">16sp</item>
     </style>
 
@@ -147,24 +149,24 @@
 
     <style name="AppTheme.DarkGray.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark">
         <item name="android:colorBackground">@color/theme_grey_primary</item>
-        <item name="android:textColor">@color/lighter_gray</item>
+        <item name="android:textColor">@color/theme_grey_secondary</item>
         <item name="popupMenuStyle">@style/PopupWindowStyle</item>
     </style>
 
     <style name="AlertDialog.DarkGray" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:background">@color/theme_grey_primary</item>
-        <item name="android:textColor">@color/lighter_gray</item>
-        <item name="android:textColorPrimary">@color/lighter_gray</item>
+        <item name="android:textColor">@color/theme_grey_secondary</item>
+        <item name="android:textColorPrimary">@color/theme_grey_secondary</item>
         <item name="backgroundColor">@color/theme_grey_primary</item>
         <item name="borderCardColor">@color/light_gray</item>
-        <item name="colorAccent">@color/lighter_gray</item>
+        <item name="colorAccent">@color/theme_grey_secondary</item>
         <item name="contentDescription">@string/hint_AlertDialog</item>
         <item name="eventAgeColor">@color/light_gray_darker</item>
         <item name="eventFullNameColor">@color/light_gray_darker</item>
         <item name="listDividerColor">@color/light_gray_transp</item>
         <item name="textColorAlertDialogListItem">@color/light_gray</item>
         <item name="windowTitleColor">@color/theme_grey_primary</item>
-        <item name="windowTitleTextColor">@color/lighter_gray</item>
+        <item name="windowTitleTextColor">@color/theme_grey_secondary</item>
     </style>
 
     <!-- Чёрная тема ===========================================================================-->
@@ -184,29 +186,30 @@
         <item name="android:textColorSecondary">@color/text_color_secondary_dark</item>
         <item name="backgroundColor">@color/theme_black_primary</item>
         <item name="borderCardColor">@color/light_gray</item>
-        <item name="borderWindowColor">@color/lighter_gray</item>
-        <item name="colorAccent">@color/lighter_gray</item>
+        <item name="borderWindowColor">@color/theme_black_secondary</item>
+        <item name="colorAccent">@color/theme_black_secondary</item>
         <item name="colorPrimary">@color/theme_black_primary</item>
         <item name="colorPrimaryDark">?attr/windowStatusbarColor</item>
         <item name="dialogBackgroundColor">@color/theme_black_primary</item>
         <item name="dialogButtonBackgroundColor">@color/theme_black_primary</item>
-        <item name="dialogButtonColor">@color/lighter_gray</item>
+        <item name="dialogButtonColor">@color/theme_black_secondary</item>
         <item name="dialogHintColor">@color/light_gray</item>
         <item name="dialogPanelsBackgroundColor">@color/theme_black_panels</item>
         <item name="dialogTextColor">@color/lighter_gray</item>
         <item name="editTextBackgroundCustom">@color/theme_black_primary</item>
-        <item name="eventAgeColor">@color/lighter_gray</item>
+        <item name="eventAgeColor">@color/theme_black_secondary</item>
         <item name="eventDateColor">@color/light_gray</item>
         <item name="eventDetailsColor">@color/light_gray_darker</item>
         <item name="eventDistanceColor">@color/light_gray</item>
-        <item name="eventFullNameColor">@color/lighter_gray</item>
+        <item name="eventFullNameColor">@color/theme_black_secondary</item>
         <item name="gradientEndColor">@color/theme_black_primary</item>
         <item name="gradientStartColor">@color/medium_dark_gray</item>
         <item name="listDividerColor">@color/light_gray_transp</item>
         <item name="windowEditHintColor">@color/light_gray</item>
         <item name="windowNavbarDividerColor">@color/medium_dark_gray_trans_25</item>
         <item name="windowStatusbarColor">@color/theme_black_primary</item>
-        <item name="windowTitleColor">@color/lighter_gray</item>
+        <item name="windowTitleColor">@color/theme_black_primary</item>
+        <item name="windowTitleTextColor">@color/theme_black_secondary</item>
     </style>
 
     <!-- Чёрная тема без панели действий -->
@@ -221,7 +224,7 @@
 
     <style name="AppTheme.Black.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark">
         <item name="android:colorBackground">@color/theme_black_primary</item>
-        <item name="android:textColor">@color/light_gray</item>
+        <item name="android:textColor">@color/theme_black_secondary</item>
         <item name="popupMenuStyle">@style/PopupWindowStyle</item>
     </style>
 
@@ -238,7 +241,7 @@
         <item name="listDividerColor">@color/light_gray_transp</item>
         <item name="textColorAlertDialogListItem">@color/light_gray</item>
         <item name="windowTitleColor">@color/theme_black_primary</item>
-        <item name="windowTitleTextColor">@color/lighter_gray</item>
+        <item name="windowTitleTextColor">@color/theme_black_secondary</item>
     </style>
 
     <!-- Голубая тема ===========================================================================-->
@@ -278,7 +281,8 @@
         <item name="listDividerColor">@color/medium_dark_gray_trans_25</item>
         <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_blue_status</item>
-        <item name="windowTitleColor">@color/white</item>
+        <item name="windowTitleColor">@color/theme_blue_primary</item>
+        <item name="windowTitleTextColor">@color/white</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.Blue" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -317,7 +321,7 @@
         <item name="listDividerColor">@color/medium_dark_gray_trans_25</item>
         <item name="textColorAlertDialogListItem">@color/theme_black_primary</item>
         <item name="windowTitleColor">@color/theme_blue_primary</item>
-        <item name="windowTitleTextColor">@color/theme_blue_secondary</item>
+        <item name="windowTitleTextColor">@color/white</item>
     </style>
 
     <!-- Blue-Grey тема ===========================================================================-->
@@ -358,7 +362,8 @@
         <item name="listDividerColor">@color/theme_blue_gray_status_transp</item>
         <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_blue_gray_status</item>
-        <item name="windowTitleColor">@color/white</item>
+        <item name="windowTitleColor">@color/theme_blue_gray_primary</item>
+        <item name="windowTitleTextColor">@color/theme_blue_gray_secondary</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.BlueGrey" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -434,7 +439,8 @@
         <item name="listDividerColor">@color/theme_orange_status_transp</item>
         <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_orange_status</item>
-        <item name="windowTitleColor">@color/white</item>
+        <item name="windowTitleColor">@color/theme_orange_primary</item>
+        <item name="windowTitleTextColor">@color/white</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.Orange" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -515,7 +521,8 @@
         <item name="listDividerColor">@color/theme_teal_status_transp</item>
         <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_teal_status</item>
-        <item name="windowTitleColor">@color/white</item>
+        <item name="windowTitleColor">@color/theme_teal_primary</item>
+        <item name="windowTitleTextColor">@color/white</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.Teal" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -596,7 +603,8 @@
         <item name="listDividerColor">@color/theme_brown_status_transp</item>
         <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_brown_status</item>
-        <item name="windowTitleColor">@color/white</item>
+        <item name="windowTitleColor">@color/theme_brown_primary</item>
+        <item name="windowTitleTextColor">@color/white</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.Brown" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -677,7 +685,8 @@
         <item name="listDividerColor">@color/theme_indigo_status_transp</item>
         <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_indigo_status</item>
-        <item name="windowTitleColor">@color/white</item>
+        <item name="windowTitleColor">@color/theme_indigo_primary</item>
+        <item name="windowTitleTextColor">@color/white</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.Indigo" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -759,7 +768,8 @@
         <item name="listDividerColor">@color/theme_white_list_divider</item>
         <item name="windowEditHintColor">@color/lighter_gray</item>
         <item name="windowStatusbarColor">@color/theme_white_status</item>
-        <item name="windowTitleColor">@color/black</item>
+        <item name="windowTitleColor">@color/theme_white_primary</item>
+        <item name="windowTitleTextColor">@color/theme_white_secondary</item>
     </style>
 
     <style name="itemTextStyle.AppTheme.White" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
@@ -778,7 +788,7 @@
         <item name="android:textCursorDrawable">@null</item>
         <item name="android:colorBackground">@color/theme_white_primary</item>
         <item name="android:listDivider">@color/theme_white_list_divider</item>
-        <item name="android:textColor">@color/theme_white_primary</item>
+        <item name="android:textColor">@color/theme_white_secondary</item>
         <item name="android:textColorHint">@color/theme_white_secondary</item>
         <item name="android:textColorPrimary">@color/theme_white_secondary</item>
         <item name="android:textColorSecondary">@color/theme_white_secondary</item>
@@ -804,8 +814,8 @@
         <item name="contentDescription">@string/hint_AlertDialog</item>
         <item name="listDividerColor">@color/theme_white_list_divider</item>
         <item name="textColorAlertDialogListItem">@color/theme_white_secondary</item>
-        <item name="windowTitleColor">@color/theme_white_primary</item>
-        <item name="windowTitleTextColor">@color/theme_white_secondary</item>
+        <item name="windowTitleColor">@color/theme_white_secondary</item>
+        <item name="windowTitleTextColor">@color/theme_white_primary</item>
     </style>
 
     <!-- Кнопки и UI ===========================================================================-->
@@ -847,7 +857,7 @@
     <!-- Меню действий -->
     <style name="AppTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">@color/theme_secondary</item>
-        <item name="colorControlNormal">?attr/windowTitleColor</item>
+        <item name="colorControlNormal">?attr/windowTitleTextColor</item>
     </style>
 
     <!-- Начальный экран -->

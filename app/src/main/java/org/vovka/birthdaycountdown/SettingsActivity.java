@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.10.2026, 02:50
+ *  * Created by Vladimir Belov on 15.10.2026, 16:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.10.2026, 22:38
+ *  * Last modified 13.10.2026, 16:31
  *
  */
 
@@ -181,13 +181,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             setDisplayMetrics(this.getResources().getDisplayMetrics());
             setContentView(R.layout.activity_settings);
 
-            //Цвет заголовка окна
+            // https://developer.android.com/about/versions/15/behavior-changes-15#window-insets says that
+            // "This API is deprecated but continues to affect 3-button navigation."
+
+            //Цвет панели навигации
             ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-
-            // Устанавливаем цвет панели навигации
             int barColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
-            // https://developer.android.com/about/versions/15/behavior-changes-15#window-insets says that "This API is deprecated but continues to affect 3-button navigation."
-
             // Проверяем: если версия < 35 ИЛИ включена навигация кнопками
             boolean useLegacyColors = Build.VERSION.SDK_INT < 35 || DeviceTools.isButtonNavigation(this);
 
@@ -213,13 +212,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);
-            toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
+            toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleTextColor, ContextCompat.getColor(this, R.color.white)));
             setSupportActionBar(toolbar);
 
             backIcon = AppCompatResources.getDrawable(this, R.drawable.abc_ic_ab_back);
             if (backIcon != null) {
                 backIcon = backIcon.mutate();
-                int iconColor = ta.getColor(R.styleable.Theme_windowTitleColor,
+                int iconColor = ta.getColor(R.styleable.Theme_windowTitleTextColor,
                         ContextCompat.getColor(this, R.color.white));
                 backIcon.setTint(iconColor);
             }
@@ -236,14 +235,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             //Цвет CutoutAppearance на повёрнутом экране
             getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
 
-            //Цвет иконок statusbar
+            //Цвет иконок statusbar, navigation
             try (TypedArray ta2 = getTheme().obtainStyledAttributes(R.styleable.Theme)) {
                 int statusBarColor = ta2.getColor(R.styleable.Theme_windowStatusbarColor, 0);
                 // Если статус-бар светлый (белый или близкий к белому) — делаем иконки тёмными
                 if (Color.red(statusBarColor) > 200 && Color.green(statusBarColor) > 200 && Color.blue(statusBarColor) > 200) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                         WindowInsetsControllerCompat controller = ViewCompat.getWindowInsetsController(getWindow().getDecorView());
-                        if (controller != null) controller.setAppearanceLightStatusBars(true);
+                        if (controller != null) {
+                            controller.setAppearanceLightStatusBars(true);
+                            controller.setAppearanceLightNavigationBars(true);
+                        }
                     } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                     }
@@ -2356,7 +2358,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 ViewGroup.MarginLayoutParams marginBar = (ViewGroup.MarginLayoutParams) bar.getLayoutParams();
                 marginBar.setMargins(0, this.statusBarInsets.top, 0, 0);
                 bar.setBackgroundColor(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white)));
-                bar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.black)));
+                bar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleTextColor, ContextCompat.getColor(this, R.color.black)));
 
                 root.addView(bar, 0); // insert at top
                 bar.setTitle(preferenceScreen.getTitle());
@@ -2372,7 +2374,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 ViewGroup root = (ViewGroup) list.getParent();
                 bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
                 bar.setBackgroundColor(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white)));
-                bar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.black)));
+                bar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleTextColor, ContextCompat.getColor(this, R.color.black)));
 
                 root.addView(bar, 0); // insert at top
                 bar.setTitle(preferenceScreen.getTitle());
@@ -2449,7 +2451,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         eventsData.getPreferences(); //перечитываем настройки, если их меняли для показа уведомлений
 
         if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
-            ToastExpander.showInfoMsg(this, getString(R.string.msg_notifications_disabled));
+            ToastExpander.showMsg(this, getString(R.string.msg_notifications_disabled));
             return;
         }
 

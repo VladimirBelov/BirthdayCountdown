@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.06.2026, 00:18
+ *  * Created by Vladimir Belov on 15.10.2026, 16:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.06.2026, 23:47
+ *  * Last modified 11.10.2026, 13:48
  *
  */
 
@@ -22,6 +22,10 @@ import org.vovka.birthdaycountdown.utils.UiTools;
 
 import java.util.List;
 
+/**
+ * Активность служит для показа листаемого списка событий, присланного в параметре {@link Constants#EXTRA_LIST}
+ * Используется для ежедневных уведомлений, состоящих из большого количества событий {@link ContactsEvents#showNotificationsForParams}
+ */
 public class EventsPopupActivity extends Activity {
     private static final String TAG = "EventsPopupActivity";
     ContactsEvents eventsData;

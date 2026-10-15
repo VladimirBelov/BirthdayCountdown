@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.09.2026, 19:05
+ *  * Created by Vladimir Belov on 15.10.2026, 16:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 17.09.2026, 18:24
+ *  * Last modified 13.10.2026, 14:41
  *
  */
 
@@ -132,6 +132,7 @@ public class LocalEventActivity extends AppCompatActivity {
     Button buttonPickContactData;
     Button buttonPickPhoto;
     Button buttonClearPhoto;
+    int alphaForButtons = 200;
 
     static {
         eventsData = ContactsEvents.getInstance();
@@ -596,7 +597,7 @@ public class LocalEventActivity extends AppCompatActivity {
                 TextView buttonEdit = findViewById(R.id.button2);
                 buttonEdit.setText(R.string.button_edit);
                 UiTools.addClickEffect(buttonEdit);
-                buttonEdit.getBackground().setAlpha(50);
+                buttonEdit.getBackground().setAlpha(alphaForButtons);
                 buttonEdit.setVisibility(View.VISIBLE);
                 buttonEdit.setOnClickListener(this::buttonSwitchToEdit);
 
@@ -609,7 +610,7 @@ public class LocalEventActivity extends AppCompatActivity {
                         buttonClose.getPaddingBottom()
                 );
                 UiTools.addClickEffect(buttonClose);
-                buttonClose.getBackground().setAlpha(50);
+                buttonClose.getBackground().setAlpha(alphaForButtons);
                 buttonClose.setVisibility(View.VISIBLE);
                 buttonClose.setOnClickListener(view -> finish());
 
@@ -667,7 +668,7 @@ public class LocalEventActivity extends AppCompatActivity {
                     TextView buttonRemove = findViewById(R.id.button1);
                     buttonRemove.setText(R.string.button_remove);
                     UiTools.addClickEffect(buttonRemove);
-                    buttonRemove.getBackground().setAlpha(50);
+                    buttonRemove.getBackground().setAlpha(alphaForButtons);
                     buttonRemove.setVisibility(View.VISIBLE);
                     buttonRemove.setOnClickListener(this::buttonRemoveOnClick);
                 }
@@ -675,14 +676,14 @@ public class LocalEventActivity extends AppCompatActivity {
                 TextView buttonCancel = findViewById(R.id.button2);
                 buttonCancel.setText(R.string.button_cancel);
                 UiTools.addClickEffect(buttonCancel);
-                buttonCancel.getBackground().setAlpha(50);
+                buttonCancel.getBackground().setAlpha(alphaForButtons);
                 buttonCancel.setVisibility(View.VISIBLE);
                 buttonCancel.setOnClickListener(this::buttonCancelOnClick);
 
                 TextView buttonSave = findViewById(R.id.button3);
                 buttonSave.setText(R.string.button_save);
                 UiTools.addClickEffect(buttonSave);
-                buttonSave.getBackground().setAlpha(50);
+                buttonSave.getBackground().setAlpha(alphaForButtons);
                 buttonSave.setVisibility(View.VISIBLE);
                 buttonSave.setOnClickListener(this::buttonSaveOnClick);
 

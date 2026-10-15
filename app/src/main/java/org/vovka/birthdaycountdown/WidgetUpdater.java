@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.09.2026, 13:29
+ *  * Created by Vladimir Belov on 15.10.2026, 16:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.09.2026, 13:17
+ *  * Last modified 12.10.2026, 21:23
  *
  */
 
@@ -890,9 +890,7 @@ class WidgetUpdater {
                     } else {
                         //Если возраста нет и событие уже сегодня - ставим цвет для ФИО
                         views.setTextColor(textCaptionUpper, colorEventToday);
-                        //views.setTextColor(id_widget_Caption_centered, colorEventToday);
                         views.setTextColor(textCaptionBottom, colorEventToday);
-                        //views.setTextColor(id_widget_Caption2nd_centered, colorEventToday);
                     }
                 }
                 views.setTextViewText(id_widget_Distance, Constants.STRING_EMPTY);
@@ -909,7 +907,9 @@ class WidgetUpdater {
 
                 views.setTextColor(id_widget_Distance, eventsData.preferences_widgets_days_event_soon != 0 ? colorEventFar : colorDefault);
                 views.setTextViewText(id_widget_Distance, eventDistance);
-                views.setTextViewTextSize(id_widget_Distance, COMPLEX_UNIT_SP, (float) ((Integer.parseInt(eventDistance) < Constants.WIDGET_TEXT_SIZE_TINY ? Constants.WIDGET_TEXT_SIZE_BIG : Constants.WIDGET_TEXT_SIZE_SMALL) * fontMagnify));
+                float sizeForDistance = (float) ((Integer.parseInt(eventDistance) < Constants.WIDGET_TEXT_SIZE_TINY
+                        ? Constants.WIDGET_TEXT_SIZE_BIG : Constants.WIDGET_TEXT_SIZE_SMALL) * fontMagnify);
+                views.setTextViewTextSize(id_widget_Distance, COMPLEX_UNIT_SP, sizeForDistance);
 
             }
 

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.10.2026, 02:50
+ *  * Created by Vladimir Belov on 15.10.2026, 16:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.10.2026, 21:01
+ *  * Last modified 15.10.2026, 16:33
  *
  */
 
@@ -818,16 +818,22 @@ public class ContactsEvents {
     String preferences_widgets_bottom_info;
     String preferences_widgets_bottom_info_2nd;
     int preferences_widgets_days_event_soon;
+    /** Основной цвет элементов виджета */
     @ColorInt
     int preferences_widgets_color_default;
+    /** Цвет заголовка спискового виджета */
     @ColorInt
     int preferences_widgets_color_widget_caption;
+    /** Цвет возраста или дат для событий сегодня */
     @ColorInt
     int preferences_widgets_color_event_today;
+    /** Цвет счётчика дней или дат для ближайших событий */
     @ColorInt
     int preferences_widgets_color_event_soon;
+    /** Цвет счётчика дней или дат для далёких событий */
     @ColorInt
     int preferences_widgets_color_event_far;
+    /** Действие по нажатию на событие в виджетах (по-умолчанию) */
     int preferences_widgets_on_click_action;
     int pinnedWidgetId;
 
@@ -2345,6 +2351,10 @@ public class ContactsEvents {
             Bitmap originalBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
             int colorToReplace = context.getResources().getColor(R.color.dark_green);
             int newColor = getThemeBackColor();
+            // Если статус-бар светлый (белый или близкий к белому) — делаем иконки цвета заголовка
+            if (Color.red(newColor) > 200 && Color.green(newColor) > 200 && Color.blue(newColor) > 200) {
+                newColor = getThemeWindowTitleTextColor();
+            }
             int colorTolerance = 10; // Допуск для "похожих" цветов (0 для точного совпадения)
             if (newColor != 0) {
                 modifiedBitmap = ImageUtils.replaceColorInBitmap(originalBitmap, colorToReplace, newColor, colorTolerance);
@@ -2387,6 +2397,22 @@ public class ContactsEvents {
         theme.applyStyle(preferences_theme.themeMain, true);
         try (TypedArray ta = theme.obtainStyledAttributes(R.styleable.Theme)) {
             int resId = ta.getResourceId(R.styleable.Theme_windowTitleColor, 0);
+            return ResourcesCompat.getColor(getResources(), resId, theme);
+        }
+    }
+
+    /**
+     * Возвращает цвет текста заголовка окна текущей темы
+     *
+     * @return Цвет
+     */
+    @ColorInt
+    int getThemeWindowTitleTextColor() {
+        if (context == null) return 0;
+        Resources.Theme theme = context.getResources().newTheme();
+        theme.applyStyle(preferences_theme.themeMain, true);
+        try (TypedArray ta = theme.obtainStyledAttributes(R.styleable.Theme)) {
+            int resId = ta.getResourceId(R.styleable.Theme_windowTitleTextColor, 0);
             return ResourcesCompat.getColor(getResources(), resId, theme);
         }
     }
@@ -3017,21 +3043,14 @@ public class ContactsEvents {
 
             if (contentResolver == null) contentResolver = context.getContentResolver();
 
+            // Здесь нет работы с зонами — Instances API сам корректно работает с часовыми поясами
+
             Calendar startPeriod = Calendar.getInstance();
-            startPeriod.set(Calendar.HOUR_OF_DAY, 0);
-            startPeriod.set(Calendar.MINUTE, 0);
-            startPeriod.set(Calendar.SECOND, 0);
-            startPeriod.set(Calendar.MILLISECOND, 0);
-            final int zoneOffset = TimeZone.getDefault().getOffset(startPeriod.getTimeInMillis()); //событие на весь день начинается в 00:00:00 UTC, надо скорректировать часовую зону
-            startPeriod.add(Calendar.MILLISECOND, zoneOffset);
+            AppDateUtils.clearTime(startPeriod);
 
             Calendar endPeriod = (Calendar) startPeriod.clone();
             endPeriod.set(Calendar.YEAR, startPeriod.get(Calendar.YEAR) + 1);
-            endPeriod.set(Calendar.HOUR_OF_DAY, 0);
-            endPeriod.set(Calendar.MINUTE, 0);
-            endPeriod.set(Calendar.SECOND, 0);
-            endPeriod.set(Calendar.MILLISECOND, 0);
-            endPeriod.add(Calendar.MILLISECOND, zoneOffset);
+            AppDateUtils.clearTime(endPeriod);
             endPeriod.add(Calendar.SECOND, -1);
 
             String[] projection = {CalendarContract.Instances.EVENT_ID};
@@ -3539,11 +3558,7 @@ public class ContactsEvents {
                     CalendarContract.Events.ALL_DAY
             };
 
-
             Calendar startPeriod = AppDateUtils.getWithoutTime(Calendar.getInstance());
-
-            //событие на весь день начинается в 00:00:00 UTC, надо скорректировать часовую зону
-            final int zoneOffset = TimeZone.getDefault().getOffset(startPeriod.getTimeInMillis());
 
             Calendar endPeriod = (Calendar) startPeriod.clone();
             endPeriod.add(Calendar.YEAR, 1);
@@ -3628,7 +3643,7 @@ public class ContactsEvents {
                 if (cursor.getCount() > 0) {
                     while (cursor.moveToNext()) {
                         Event eventToCompose = event.clone();
-                        counterTotalAddedEvents += addCalendarEventsFromCursor(cursor, cache, zoneOffset, dateRubicon, endPeriod,
+                        counterTotalAddedEvents += addCalendarEventsFromCursor(cursor, cache, dateRubicon, endPeriod,
                                 useEventYear, isMultiTypeSource, eventToCompose, matcherNameAndTypes, matcherTypes, matcherTypeAndNames, matcherNames);
                     }
                 }
@@ -3655,7 +3670,6 @@ public class ContactsEvents {
      *
      * @param cursor              Курсор с данными события
      * @param cache               Кэш номеров колонок в курсоре
-     * @param zoneOffset          Смещение текущей временной зоны от зоны startPeriod в мс
      * @param dateRubicon         Дата начала периода минус количество предыдущих дней для показа из настроек
      * @param endPeriod           Дата конца периода (обычно - +1 год от сегодня)
      * @param useEventYear        Использовать год в датах
@@ -3667,7 +3681,7 @@ public class ContactsEvents {
      * @param matcherNames        Правила распознавания ИМЯ
      * @return Количество добавленных событий
      */
-    private int addCalendarEventsFromCursor(@NonNull Cursor cursor, @NonNull ColumnIndexCache cache, int zoneOffset,
+    private int addCalendarEventsFromCursor(@NonNull Cursor cursor, @NonNull ColumnIndexCache cache,
                                             @NonNull Calendar dateRubicon, @NonNull Calendar endPeriod,
                                             boolean useEventYear, boolean isMultiTypeSource, Event event,
                                             List<Matcher> matcherNameAndTypes, List<Matcher> matcherTypes,
@@ -3695,12 +3709,16 @@ public class ContactsEvents {
             boolean isAllDayEvent = false;
             if (cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Events.ALL_DAY)) == 1) {
                 isAllDayEvent = true;
+                //У AllDay событий зона всегда UTC.
+                // ВАЖНО: смещение берём для каждой даты отдельно, т.к.
+                // исторические часовые пояса могут отличаться от текущего!
+                int offsetFirstTime = TimeZone.getDefault().getOffset(dateFirstTime.getTimeInMillis());
+                int offsetStartNext = TimeZone.getDefault().getOffset(dateStartNextTime.getTimeInMillis());
+                int offsetEndNext = TimeZone.getDefault().getOffset(dateEndNextTime.getTimeInMillis());
 
-                //У AllDay событий зона всегда UTC
-                dateFirstTime.add(Calendar.MILLISECOND, -zoneOffset);
-                dateStartNextTime.add(Calendar.MILLISECOND, -zoneOffset);
-                dateEndNextTime.add(Calendar.MILLISECOND, -zoneOffset);
-
+                dateFirstTime.add(Calendar.MILLISECOND, -offsetFirstTime);
+                dateStartNextTime.add(Calendar.MILLISECOND, -offsetStartNext);
+                dateEndNextTime.add(Calendar.MILLISECOND, -offsetEndNext);
                 //Событие на весь день заканчивается на следующий день, а не в 23:59:59
                 dateEndNextTime.add(Calendar.SECOND, -1);
             }

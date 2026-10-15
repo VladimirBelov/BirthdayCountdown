@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.09.2026, 13:29
+ *  * Created by Vladimir Belov on 15.10.2026, 16:49
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.09.2026, 13:22
+ *  * Last modified 13.10.2026, 16:20
  *
  */
 package org.vovka.birthdaycountdown;
@@ -20,6 +20,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -54,6 +55,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.transition.TransitionManager;
 
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
@@ -130,6 +132,40 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             localeAtCreate = eventsData.currentLocale;
             this.setTheme(eventsData.preferences_theme.themeMain);
             setContentView(R.layout.widget_calendar_config);
+
+            //Цвет панели навигации
+            ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+            int barColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
+            // Проверяем: если версия < 35 ИЛИ включена навигация кнопками
+            boolean useLegacyColors = Build.VERSION.SDK_INT < 35 || DeviceTools.isButtonNavigation(this);
+
+            Window w = getWindow();
+            if (useLegacyColors) {
+                // Для Android < 35 или при 3-кнопочной навигации используем классический метод.
+                // Он гарантирует корректный цвет нижней панели.
+                //noinspection deprecation
+                w.setStatusBarColor(barColor);
+                //noinspection deprecation
+                w.setNavigationBarColor(barColor);
+            }
+
+            //Цвет иконок statusbar, navigation
+            try (TypedArray ta2 = getTheme().obtainStyledAttributes(R.styleable.Theme)) {
+                int statusBarColor = ta2.getColor(R.styleable.Theme_windowStatusbarColor, 0);
+                // Если статус-бар светлый (белый или близкий к белому) — делаем иконки тёмными
+                if (Color.red(statusBarColor) > 200 && Color.green(statusBarColor) > 200 && Color.blue(statusBarColor) > 200) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        WindowInsetsControllerCompat controller = ViewCompat.getWindowInsetsController(getWindow().getDecorView());
+                        if (controller != null) {
+                            controller.setAppearanceLightStatusBars(true);
+                            controller.setAppearanceLightNavigationBars(true);
+                        }
+                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    }
+                }
+            }
+
             View layoutMain = findViewById(R.id.layout_main);
             if (DeviceTools.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
@@ -158,7 +194,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
             //Цвет заголовка окна
             ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-            toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleColor, ContextCompat.getColor(this, R.color.white)));
+            toolbar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleTextColor, ContextCompat.getColor(this, R.color.white)));
             setSupportActionBar(toolbar);
 
             setResult(RESULT_CANCELED);
