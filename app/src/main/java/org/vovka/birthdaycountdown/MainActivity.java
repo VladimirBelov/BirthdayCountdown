@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.10.2026, 16:49
+ *  * Created by Vladimir Belov on 19.10.2026, 22:34
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 13.10.2026, 13:43
+ *  * Last modified 19.10.2026, 22:30
  *
  */
 
@@ -2711,7 +2711,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 eventsData.preferences_list_events_scope == Constants.pref_Events_Scope_NotHidden
                 && listView.getFirstVisiblePosition() == 0) {
             listView.post(() -> {
-                listView.setSelectionFromTop(eventsData.statEventsPrevEventsFound, 0);
+                listView.setSelectionFromTop(eventsData.statEventsPrevEventsFound, listView.getTop() + listView.getPaddingTop());
                 scrolledToToday = true;
             });
         }
