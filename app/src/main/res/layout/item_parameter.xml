@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 21.10.2026, 01:35
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 20.10.2026, 03:52
+  ~  */
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:descendantFocusability="blocksDescendants"
+    android:paddingStart="8dp"
+    android:paddingEnd="4dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/parameter_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="4dp"
+        android:textSize="14sp"
+        android:textColor="?attr/dialogTextColor" />
+
+    <ImageView
+        android:id="@+id/icon_settings"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="4dp"
+        android:src="@android:drawable/ic_menu_preferences"
+        android:contentDescription="@string/button_prefs"
+        android:visibility="gone"
+        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+    <ImageView
+        android:id="@+id/icon_color"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="4dp"
+        android:src="@android:drawable/ic_menu_edit"
+        android:contentDescription="@string/hint_Color"
+        android:visibility="gone"
+        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+    <ImageView
+        android:id="@+id/drag_handle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="4dp"
+        android:src="@android:drawable/ic_menu_sort_by_size"
+        android:contentDescription="@string/hint_DragItem"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+</LinearLayout>

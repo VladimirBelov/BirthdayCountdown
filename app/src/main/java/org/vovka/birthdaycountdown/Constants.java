@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.10.2026, 02:50
+ *  * Created by Vladimir Belov on 21.10.2026, 01:35
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 11.10.2026, 00:52
+ *  * Last modified 20.10.2026, 00:46
  *
  */
 
@@ -382,6 +382,7 @@ public final class Constants {
     static final int MainMenu_EventsSources = 7;
     static final int MainMenu_EventsTypes = 8;
     static final int MainMenu_Hints = 9;
+    static final int MainMenu_EventDisplayConfig = 10;
 
     static final int ContextMenu_EditContact = 1;
     static final int ContextMenu_CreateContact = 2;

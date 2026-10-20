@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 19.10.2026, 22:34
+ *  * Created by Vladimir Belov on 21.10.2026, 01:35
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.10.2026, 22:30
+ *  * Last modified 20.10.2026, 22:19
  *
  */
 
@@ -821,6 +821,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.dismiss());
             AlertDialog alertToShow = builder.create();
 
+            //Этот блок для того, чтобы границы выделения текста были с прозрачным фоном
             Window window = alertToShow.getWindow();
             Context themeContext = new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog);
             int textColor = ImageUtils.resolveThemeColor(themeContext, android.R.attr.textColor);
@@ -832,7 +833,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             alertToShow.setOnShowListener(arg0 -> {
-
                 customTitle.setTextColor(textColor);
                 TextView messageView = alertToShow.findViewById(android.R.id.message);
                 if (messageView != null) {
@@ -1723,6 +1723,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             menu.add(Menu.NONE, Constants.MainMenu_Settings, Menu.NONE, R.string.menu_settings).setIcon(R.drawable.ic_sysbar_quicksettings);
             menu.add(Menu.NONE, Constants.MainMenu_Quiz, Menu.NONE, R.string.menu_quiz).setIcon(android.R.drawable.ic_menu_compass);
             menu.add(Menu.NONE, Constants.MainMenu_Filter, Menu.NONE, R.string.menu_filter_events).setIcon(android.R.drawable.ic_menu_view);
+            menu.add(Menu.NONE, Constants.MainMenu_EventDisplayConfig, Menu.NONE, R.string.menu_event_display_config).setIcon(android.R.drawable.ic_menu_manage);
             menu.add(Menu.NONE, Constants.MainMenu_EventsSources, Menu.NONE, R.string.menu_events_sources).setIcon(android.R.drawable.ic_menu_agenda);
             menu.add(Menu.NONE, Constants.MainMenu_EventsTypes, Menu.NONE, R.string.menu_events_types).setIcon(R.drawable.ic_menu_copy);
             menu.add(Menu.NONE, Constants.MainMenu_Hints, Menu.NONE, R.string.menu_hints).setIcon(android.R.drawable.ic_menu_info_details);
@@ -1752,6 +1753,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     && (eventsData.isFeatureEnabled(Constants.FEATURE_SELECT_SOURCES) || eventsData.preferences_list_quick_action == Constants.MainMenu_EventsSources);
             final boolean isItemTypesVisible = eventsData != null
                     && (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS) || eventsData.preferences_list_quick_action == Constants.MainMenu_EventsTypes);
+            final boolean isItemCustomizeVisible = eventsData != null
+                    && eventsData.isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS);
+
 
             MenuItem searchItem = menu.findItem(Constants.MainMenu_Search);
             if (searchItem != null) {
@@ -1782,6 +1786,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             menu.findItem(Constants.MainMenu_Settings).setVisible(false);
                             menu.findItem(Constants.MainMenu_Quiz).setVisible(false);
                             menu.findItem(Constants.MainMenu_Filter).setVisible(false);
+                            menu.findItem(Constants.MainMenu_EventDisplayConfig).setVisible(false);
                             menu.findItem(Constants.MainMenu_EventsSources).setVisible(false);
                             menu.findItem(Constants.MainMenu_EventsTypes).setVisible(false);
                             menu.findItem(Constants.MainMenu_Hints).setVisible(true).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -1801,6 +1806,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             menu.findItem(Constants.MainMenu_Settings).setVisible(true);
                             menu.findItem(Constants.MainMenu_Quiz).setVisible(isItemQuizVisible);
                             menu.findItem(Constants.MainMenu_Filter).setVisible(isItemFilterVisible);
+                            menu.findItem(Constants.MainMenu_EventDisplayConfig).setVisible(isItemCustomizeVisible);
                             menu.findItem(Constants.MainMenu_EventsSources).setVisible(isItemSourcesVisible);
                             menu.findItem(Constants.MainMenu_EventsTypes).setVisible(isItemTypesVisible);
                             menu.findItem(Constants.MainMenu_Hints).setVisible(false).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
@@ -1838,6 +1844,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             menu.findItem(Constants.MainMenu_Quiz).setVisible(isItemQuizVisible);
             menu.findItem(Constants.MainMenu_Filter).setVisible(isItemFilterVisible);
+            menu.findItem(Constants.MainMenu_EventDisplayConfig).setVisible(isItemCustomizeVisible);
             menu.findItem(Constants.MainMenu_EventsSources).setVisible(isItemSourcesVisible);
             menu.findItem(Constants.MainMenu_EventsTypes).setVisible(isItemTypesVisible);
             menu.findItem(Constants.MainMenu_Hints).setVisible(false);
@@ -1887,7 +1894,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             } else if (itemId == Constants.MainMenu_Quiz) {
 
-                //eventsData.quizCheckAndGo(null, null, MainActivity.this);
                 Intent intent = new Intent(this, QuizActivity.class);
                 try {
                     startActivity(intent);
@@ -1897,6 +1903,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else if (itemId == Constants.MainMenu_Filter) {
 
                 setFilter();
+                return true;
+
+            } else if (itemId == Constants.MainMenu_EventDisplayConfig) {
+
+                Intent intent = new Intent(this, EventDisplayConfigActivity.class);
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
             } else if (itemId == Constants.MainMenu_EventsSources) {

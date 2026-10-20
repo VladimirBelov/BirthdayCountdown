@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.10.2026, 16:49
+ *  * Created by Vladimir Belov on 21.10.2026, 01:35
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 13.10.2026, 16:31
+ *  * Last modified 20.10.2026, 22:25
  *
  */
 
@@ -3734,21 +3734,38 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         .append(Constants.HTML_BR);
             }
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog));
-            builder.setTitle(R.string.msg_title_settings);
-            builder.setIcon(android.R.drawable.ic_menu_info_details);
-            builder.setMessage(HtmlCompat.fromHtml(sb.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY));
-            builder.setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .setTitle(R.string.msg_title_settings)
+                    .setIcon(android.R.drawable.ic_menu_info_details)
+                    .setMessage(HtmlCompat.fromHtml(sb.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY))
+                    .setPositiveButton(R.string.button_ok, (dialog, which) -> dialog.cancel());
             AlertDialog alertToShow = builder.create();
+
+            //Этот блок для того, чтобы границы выделения текста были с прозрачным фоном
+            Window window = alertToShow.getWindow();
+            Context themeContext = new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog);
+            int textColor = ImageUtils.resolveThemeColor(themeContext, android.R.attr.textColor);
+            if (window != null) {
+                int dialogBgColor = ImageUtils.resolveThemeColor(themeContext, android.R.attr.background);
+                if (dialogBgColor != 0) {
+                    window.setBackgroundDrawable(new ColorDrawable(dialogBgColor));
+                }
+            }
+
             alertToShow.setOnShowListener(arg0 -> {
+                TextView messageView = alertToShow.findViewById(android.R.id.message);
+                if (messageView != null) {
+                    messageView.setTextSize(14);
+                    messageView.setTextColor(textColor);
+                    messageView.setTextIsSelectable(true);
+                }
+
                 try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
                     alertToShow.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                 }
             });
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();
-            TextView textView = alertToShow.findViewById(android.R.id.message);
-            if (textView != null) textView.setTextSize(11);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

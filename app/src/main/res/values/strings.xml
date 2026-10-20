@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.10.2026, 02:50
+  ~  * Created by Vladimir Belov on 21.10.2026, 01:35
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.10.2026, 21:01
+  ~  * Last modified 21.10.2026, 01:11
   ~  */
   -->
 
@@ -38,6 +38,7 @@
     <string name="menu_filter_events">Filter…</string>
     <string name="menu_events_sources">Sources…</string>
     <string name="menu_events_types">Events types…</string>
+    <string name="menu_event_display_config">Customize…</string>
     <string name="menu_hints">Search hints…</string>
     <string name="menu_context_edit_contact">Edit contact</string>
     <string name="menu_context_open_contact">Open contact</string>
@@ -784,6 +785,7 @@
     <string name="pref_EventInfo_EventDayOfWeekFar">Event day of week (not near event)</string>
     <string name="pref_EventInfo_Organization">Organization</string>
     <string name="pref_EventInfo_JobTitle">Title</string>
+    <string name="pref_EventInfo_Nickname">Nickname</string>
     <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Event source icon</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Web link available</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Colorize all event by date color</string>
@@ -1490,6 +1492,35 @@ Long click on item to select color"</string>
     <string name="pref_Feature_Adv_Info_description">Show more detailed information inside interface elements: statistics, events count, settings values summary, etc.</string>
     <string name="pref_Feature_Adv_Actions_title">More actions</string>
     <string name="pref_Feature_Adv_Actions_description">Enable more actions for events handling</string>
+
+    <string name="event_display_config_title">Display constructor</string>
+    <string name="section_general">General</string>
+    <string name="section_before_event">Before event</string>
+    <string name="section_name">Name / Event title</string>
+    <string name="section_event_details">Event details</string>
+    <string name="section_dates">Dates</string>
+
+    <string name="param_dates_pos">Dates position</string>
+    <string name="param_when">When (Today/Tomorrow/…)</string>
+    <string name="param_day_of_week">Day of week</string>
+    <string name="param_date_before">Event date</string>
+    <string name="param_newline">- newline -</string>
+    <string name="param_event_source">Event source</string>
+    <string name="param_event_emoji">Event emoji</string>
+    <string name="param_event_type">Event type</string>
+    <string name="param_favorite_icon">Favorite icon</string>
+    <string name="param_web_link">Web link</string>
+    <string name="param_description">Notes or description</string>
+    <string name="param_debug_info">Account type and raw date</string>
+    <string name="param_date_original">Original event date</string>
+    <string name="param_age_next">Next age</string>
+    <string name="param_date_event">Event date</string>
+
+    <string name="zodiac_settings_title">Zodiac settings</string>
+    <string name="age_next_settings_title">Next age settings</string>
+    <string name="age_next_show_full">With full description ("years", "months", etc.)</string>
+    <string name="msg_saved">Saved</string>
+    <string name="msg_reset_config_confirmation">Reset display configuration to defaults?</string>
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
     <!--https://en.wikipedia.org/wiki/Wedding_anniversary -->
