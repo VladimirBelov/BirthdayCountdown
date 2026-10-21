@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.10.2026, 01:35
+ *  * Created by Vladimir Belov on 21.10.2026, 11:24
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.10.2026, 22:25
+ *  * Last modified 21.10.2026, 11:14
  *
  */
 
@@ -5157,21 +5157,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     /**
-     * Показывает диалог выбора доп. функций
-     * @param onConfirmed коллбэк, который выполнится при нажатии "ОК"
+     Показывает диалог выбора доп. функций
+     @param onConfirmed коллбэк, который выполнится при нажатии "ОК"
      */
     void selectEnabledFeatures(@Nullable Runnable onConfirmed) {
         try {
-
             TypedArray ta = getTheme().obtainStyledAttributes(R.styleable.Theme);
-
             List<String> featTitles = new ArrayList<>();
             List<String> featDescriptions = new ArrayList<>();
             List<String> featIds = new ArrayList<>();
             List<Integer> featIcons = new ArrayList<>();
             List<String> featIconsPackages = new ArrayList<>();
             String packageName = this.getPackageName();
-
+            final int totalFeatures = ContactsEvents.EnabledFeatures.values().length;
             for (ContactsEvents.EnabledFeatures feature: ContactsEvents.EnabledFeatures.values()) {
                 featTitles.add(feature.getName(this));
                 featDescriptions.add(feature.getDescription(this));
@@ -5179,16 +5177,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 featIcons.add(feature.getIcon());
                 featIconsPackages.add(packageName);
             }
-
             ListAdapter adapter = new ContactsEvents.MultiCheckboxesAdapter(this, featTitles,
                     featDescriptions, featIcons, featIconsPackages, null, ta);
-
+            final String baseTitle = getString(R.string.pref_EnabledFeatures_title);
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, eventsData.preferences_theme.themeDialog))
-                    .setTitle(R.string.pref_EnabledFeatures_title)
+                    .setTitle(baseTitle)
                     .setIcon(android.R.drawable.ic_menu_manage)
                     .setAdapter(adapter, null)
                     .setPositiveButton(R.string.button_ok, (dialog, which) -> {
-
                         Set<String> featIdsSelected = new HashSet<>();
                         SparseBooleanArray checked = ((AlertDialog) dialog).getListView().getCheckedItemPositions();
                         for (int i = 0; i < checked.size(); i++) {
@@ -5198,8 +5194,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         }
                         eventsData.setEnabledFeatures(featIdsSelected);
                         eventsData.savePreferences();
-
-                        // 👇 Вызываем коллбэк, если передан
+                        // Вызываем коллбэк, если передан
                         if (onConfirmed != null) {
                             onConfirmed.run();
                         }
@@ -5207,14 +5202,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
                     .setNeutralButton(R.string.msg_all, null)
                     .setCancelable(true);
-
             AlertDialog alertToShow = builder.create();
-
             ListView listView = alertToShow.getListView();
             listView.setItemsCanFocus(false);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-            // 👇 Создаем InsetDrawable с отступами по бокам (5% с каждой стороны = 90% ширина)
+            // Лямбда для обновления заголовка со счётчиком
+            final Runnable updateTitle = () -> {
+                alertToShow.setTitle(baseTitle + " (" + listView.getCheckedItemCount() + "/" + totalFeatures + ")");
+            };
+
+            listView.setOnItemClickListener((parent, view, position, id) -> updateTitle.run());
+
+            // Создаем InsetDrawable с отступами по бокам (5% с каждой стороны = 90% ширина)
             int dividerHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
             int insetWidth = (int) (getResources().getDisplayMetrics().widthPixels * 0.05); // 5% с каждой стороны
             Drawable divider = new InsetDrawable(
@@ -5222,9 +5222,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     insetWidth, 0, insetWidth, 0);
             listView.setDivider(divider);
             listView.setDividerHeight(dividerHeight);
-
             alertToShow.setOnShowListener(arg0 -> {
-
                 //Только здесь работает
                 int i = 0;
                 for (ContactsEvents.EnabledFeatures feature: ContactsEvents.EnabledFeatures.values()) {
@@ -5233,6 +5231,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     }
                     i++;
                 }
+                updateTitle.run();
 
                 alertToShow.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> listView.post(() -> {
                     if (listView.getCheckedItemCount() < listView.getCount()) {
@@ -5243,14 +5242,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         listView.clearChoices();
                     }
                     listView.invalidateViews();
+                    updateTitle.run();
                 }));
-
             });
-
             alertToShow.setOnDismissListener(dialog -> ta.recycle());
             alertToShow.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alertToShow.show();
-
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
