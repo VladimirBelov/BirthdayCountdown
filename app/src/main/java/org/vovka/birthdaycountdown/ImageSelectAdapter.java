@@ -150,7 +150,7 @@ class ImageSelectAdapter extends BaseAdapter {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this.context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this.context, StringUtils.getMethodName(3) + ": " + e);
         }
 
         return view;

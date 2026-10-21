@@ -59,7 +59,7 @@ public class StringUtils {
      */
     @NonNull
     public static String getNotNullString(String strIn) {
-        return strIn == null || strIn.isEmpty() ? Constants.STRING_EMPTY : strIn;
+        return strIn == null || strIn.isEmpty() ? "" : strIn;
     }
 
     @NonNull
@@ -87,7 +87,7 @@ public class StringUtils {
      */
     @NonNull
     public static String substringBefore(String text, String sep) {
-        if (text == null) return Constants.STRING_EMPTY;
+        if (text == null) return "";
         if (sep == null) return text;
         return text.contains(sep) ? text.substring(0, text.indexOf(sep)) : text;
     }
@@ -113,7 +113,7 @@ public class StringUtils {
      */
     @NonNull
     public static String substringAfter(String text, String sep) {
-        if (text == null) return Constants.STRING_EMPTY;
+        if (text == null) return "";
         if (sep == null) return text;
         return text.contains(sep) ? text.substring(text.indexOf(sep) + sep.length()) : text;
     }
@@ -126,7 +126,7 @@ public class StringUtils {
      */
     @NonNull
     public static String substringBetween(String text, String sep1, String sep2) {
-        if (text == null) return Constants.STRING_EMPTY;
+        if (text == null) return "";
         return substringBefore(substringAfter(text, sep1), sep2);
     }
 
@@ -162,10 +162,10 @@ public class StringUtils {
 
         // Шаг 5: очистка от нежелательных символов
         normalized = normalized
-                .replace(Constants.STRING_COMMA, Constants.STRING_EMPTY)
-                .replace(Constants.STRING_EOL, Constants.STRING_EMPTY)
-                .replace("\r", Constants.STRING_EMPTY)
-                .replace("\t", Constants.STRING_SPACE);
+                .replace(",", "")
+                .replace("\n", "")
+                .replace("\r", "")
+                .replace("\t", " ");
 
         return normalized;
     }
@@ -191,12 +191,12 @@ public class StringUtils {
         try {
 
             for(String id: setIDs){
-                if (sb.length() > 0) sb.append(Constants.STRING_COMMA_SPACE);
+                if (sb.length() > 0) sb.append(", ");
                 String calData = mapTitles.get(id);
                 if (calData != null) {
                     String[] calInfo = getKeyParts(calData);
                     sb.append(calInfo[0]);
-                    if (calInfo.length > 1) sb.append(Constants.STRING_PARENTHESIS_OPEN).append(calInfo[1]).append(Constants.STRING_PARENTHESIS_CLOSE);
+                    if (calInfo.length > 1) sb.append(" (").append(calInfo[1]).append(")");
                 } else sb.append(id);
             }
 
@@ -245,7 +245,7 @@ public class StringUtils {
             StringBuilder result = new StringBuilder();
             String count_str = Long.toString(age);
             String count_end = count_str.substring(count_str.length() - 1);
-            boolean isEnd234 = count_end.equals(Constants.STRING_2) || count_end.equals(Constants.STRING_3) || count_end.equals(Constants.STRING_4);
+            boolean isEnd234 = count_end.equals("2") || count_end.equals("3") || count_end.equals("4");
             long ageMinus100 = age % 100;
             result.append(age);
 
@@ -274,7 +274,7 @@ public class StringUtils {
                         result.append(resources.getString(id_prefix_1));
                     } else if (ageMinus100 > 4 && ageMinus100 < 21) {
                         result.append(resources.getString(id_prefix_5_20));
-                    } else if (count_end.equals(Constants.STRING_1)) {
+                    } else if (count_end.equals("1")) {
                         result.append(resources.getString(id_prefix_1_));
                     } else if (isEnd234) {
                         result.append(resources.getString(id_prefix_2_3_4));
@@ -287,14 +287,14 @@ public class StringUtils {
             return result.toString();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            return Constants.STRING_EMPTY;
+            return "";
         }
     }
 
     @NonNull
     public static String getFullName(@NonNull String[] singleEventArray, ContactsEvents.FormatName preferences_name_format) {
         if (singleEventArray.length < Math.min(ContactsEvents.Position_personFullNameAlt, ContactsEvents.Position_personFullName)) {
-            return Constants.STRING_EMPTY;
+            return "";
         }
 
         if (preferences_name_format == ContactsEvents.FormatName.LastnameFirst && !TextUtils.isEmpty(singleEventArray[ContactsEvents.Position_personFullNameAlt])) {
@@ -341,19 +341,19 @@ public class StringUtils {
      * @return Эмоджи
      */
     public static @NonNull String extractLeadingEmoji(String text) {
-        if (text == null || text.isEmpty()) return Constants.STRING_EMPTY;
+        if (text == null || text.isEmpty()) return "";
 
         // 1. Отделяем часть до первого пробела
         int spaceIndex = text.indexOf(' ');
         String part = (spaceIndex > 0) ? text.substring(0, spaceIndex) : text.trim();
-        if (part.isEmpty()) return Constants.STRING_EMPTY;
+        if (part.isEmpty()) return "";
 
         // 2. Читаем первый Unicode code point
         int cp1 = part.codePointAt(0);
 
         // Проверка на эмодзи (если не эмодзи — выход)
         if (!isEmoji(cp1)) {
-            return Constants.STRING_EMPTY;
+            return "";
         }
 
         // 3. Считаем длину в char (1 для BMP, 2 для суррогатных пар)
@@ -375,7 +375,7 @@ public class StringUtils {
             }
         }
 
-        return totalLength > 0 ? part.substring(0, totalLength) : Constants.STRING_EMPTY;
+        return totalLength > 0 ? part.substring(0, totalLength) : "";
     }
 
     /**
@@ -410,7 +410,7 @@ public class StringUtils {
      * Очищает строку от экранирующих слэшей (\; -> ; и \\ -> \)
      */
     public static String cleanValue(String val) {
-        if (val == null) return Constants.STRING_EMPTY;
+        if (val == null) return "";
         return val.replace("\\;", ";")
                 .replace("\\,", ",")
                 .replace("\\\\", "\\")
@@ -433,9 +433,9 @@ public class StringUtils {
      */
     public static String decodeQuotedPrintable(String input, Charset charset) {
         if (input == null || input.isEmpty()) {
-            return Constants.STRING_EMPTY;
+            return "";
         }
-        if (!input.contains(Constants.STRING_EQ)) {
+        if (!input.contains("=")) {
             return input;
         }
 
@@ -476,11 +476,11 @@ public class StringUtils {
      * Возвращает null, если строка не начинается с указанного тега.
      */
     public static String getTagValue(String line, String tag) {
-        if (line.startsWith(tag + Constants.STRING_COLON)) {
+        if (line.startsWith(tag + ":")) {
             return line.substring(tag.length() + 1);
         }
-        if (line.startsWith(tag + Constants.STRING_SEMICOLON)) {
-            int colonIndex = line.indexOf(Constants.STRING_COLON);
+        if (line.startsWith(tag + ';')) {
+            int colonIndex = line.indexOf(":");
             if (colonIndex != -1) {
                 return line.substring(colonIndex + 1);
             }
@@ -527,12 +527,12 @@ public class StringUtils {
         try {
 
             String result = strAge;
-            final String replacementXK = Constants.STRING_000 + Constants.STRING_SPACE;
+            final String replacementXK = "000" + " ";
             if (ageFormat.contains(res.getString(R.string.pref_List_AgeFormat_Convert000toK)) && result.contains(replacementXK)) {
                 result = result.replace(replacementXK, "K ");
             } else if (ageFormat.contains(res.getString(R.string.pref_List_AgeFormat_SeparateThousands))) {
-                int indFirstSpace = result.indexOf(Constants.STRING_SPACE);
-                int indLastSpace = result.lastIndexOf(Constants.STRING_SPACE);
+                int indFirstSpace = result.indexOf(" ");
+                int indLastSpace = result.lastIndexOf(" ");
 
                 if (indFirstSpace > -1 && indFirstSpace == indLastSpace) {
                     //https://stackoverflow.com/questions/5323502/how-to-set-thousands-separator-in-java
@@ -546,7 +546,7 @@ public class StringUtils {
                 }
             }
             if (!ageFormat.contains(res.getString(R.string.pref_List_AgeFormat_AddPostfix))) {
-                result = result.substring(0, result.indexOf(Constants.STRING_SPACE));
+                result = result.substring(0, result.indexOf(" "));
             }
             return result;
 
@@ -568,13 +568,13 @@ public class StringUtils {
             int eventRows = event.length;
             for (int i = 0; i < eventRows; i++) {
                 String row = event[i];
-                if (i == ContactsEvents.Position_photo && !TextUtils.isEmpty(row) & !row.startsWith(Constants.STRING_BRACKETS_START)) {
+                if (i == ContactsEvents.Position_photo && !TextUtils.isEmpty(row) & !row.startsWith("[")) {
                     eventInfo.append(i)
-                            .append(Constants.STRING_COLON_SPACE)
+                            .append(": ")
                             .append(res.getString(R.string.event_photo_details, row.length()))
-                            .append(Constants.STRING_EOL);
+                            .append("\n");
                 } else {
-                    eventInfo.append(i).append(Constants.STRING_COLON_SPACE).append(row).append(Constants.STRING_EOL);
+                    eventInfo.append(i).append(": ").append(row).append("\n");
                 }
             }
         } catch (Exception e) {
@@ -595,10 +595,10 @@ public class StringUtils {
 
             for (String fact : listFacts) {
                 if (eventDetails.length() > 0) {
-                    eventDetails.append(Constants.STRING_EOL);
+                    eventDetails.append("\n");
                 }
                 eventDetails.append(eventsData.getEventEmojiForType(Constants.EventType_Fact));
-                eventDetails.append(Constants.STRING_SPACE);
+                eventDetails.append(" ");
                 eventDetails.append(fact);
             }
 
@@ -640,7 +640,7 @@ public class StringUtils {
 
                     String line = reader.readLine();
                     while (line != null) {
-                        if (hasContent(line) && !line.startsWith(Constants.STRING_HASH) && !line.startsWith(Constants.STRING_DSLASH)) {
+                        if (hasContent(line) && !line.startsWith(Constants.STRING_HASH) && !line.startsWith("//")) {
                             sb.append(line);
                             if (delimiter != null) sb.append(delimiter);
                         }
@@ -648,17 +648,17 @@ public class StringUtils {
                     }
                     if (inputStream != null) inputStream.close();
                 } catch (SecurityException se) {
-                    ToastExpander.showDebugMsg(context, res.getString(R.string.msg_file_open_error) + fileDetails[0] + Constants.STRING_COMMA_SPACE +
+                    ToastExpander.showDebugMsg(context, res.getString(R.string.msg_file_open_error) + fileDetails[0] + ", " +
                             se.getMessage());
                 } catch (Exception e) {
-                    ToastExpander.showDebugMsg(context, res.getString(R.string.msg_file_access_read_error, fileDetails[0]) + Constants.STRING_COMMA_SPACE +
+                    ToastExpander.showDebugMsg(context, res.getString(R.string.msg_file_access_read_error, fileDetails[0]) + ", " +
                             e.getMessage());
                 }
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, getMethodName(3) + ": " + e);
         }
         return sb.toString();
     }
@@ -674,7 +674,7 @@ public class StringUtils {
         try {
             ste = Thread.currentThread().getStackTrace();
         } catch (SecurityException se) { /**/ }
-        return depth >= 0 && ste != null ? ste[depth].getClassName() + "->" + ste[depth].getMethodName() : Constants.STRING_EMPTY;
+        return depth >= 0 && ste != null ? ste[depth].getClassName() + "->" + ste[depth].getMethodName() : "";
     }
 
     /** Возвращает название годовщины свадьбы

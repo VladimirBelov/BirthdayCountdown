@@ -103,25 +103,25 @@ public class SuggestionProvider extends ContentProvider{
                 }
                 final String primaryLine = StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format);
                 String secondaryLine = singleEventArray[ContactsEvents.Position_eventEmoji]
-                        .concat(Constants.STRING_SPACE)
+                        .concat(" ")
                         .concat(singleEventArray[ContactsEvents.Position_eventCaption])
-                        .concat(Constants.STRING_COLON)
+                        .concat(":")
                         .concat(StringUtils.hasContent(singleEventArray[ContactsEvents.Position_age_caption]) ?
-                                Constants.STRING_SPACE.concat(singleEventArray[ContactsEvents.Position_age_caption]) :
-                                Constants.STRING_EMPTY
+                                " ".concat(singleEventArray[ContactsEvents.Position_age_caption]) :
+                                ""
                         );
                 final String eventDistanceText = singleEventArray[ContactsEvents.Position_eventDistanceText];
-                if (eventDistanceText != null && eventDistanceText.contains(Constants.STRING_BAR)) {
-                    final String eventDistance = StringUtils.substringBefore(eventDistanceText, Constants.STRING_BAR);
+                if (eventDistanceText != null && eventDistanceText.contains("|")) {
+                    final String eventDistance = StringUtils.substringBefore(eventDistanceText, "|");
                     if (!eventDistance.isEmpty()) {
-                        secondaryLine = secondaryLine.concat(Constants.STRING_SPACE)
+                        secondaryLine = secondaryLine.concat(" ")
                                 .concat(eventDistance.toLowerCase());
                     }
                 }
                 final String icon = !(StringUtils.hasContent(singleEventArray[ContactsEvents.Position_photo_uri])
-                        || singleEventArray[ContactsEvents.Position_photo_uri].equals(Constants.STRING_NULL)) ?
+                        || singleEventArray[ContactsEvents.Position_photo_uri].equals("null")) ?
                         singleEventArray[ContactsEvents.Position_photo_uri] :
-                        Constants.STRING_EMPTY;
+                        "";
 
                 matrixCursor.addRow(new Object[]{
                         (long) eventNum,

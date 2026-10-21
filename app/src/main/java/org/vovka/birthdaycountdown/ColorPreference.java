@@ -257,9 +257,7 @@ class ColorPreference extends Preference {
 
                 mColorGrid.setOnItemLongClickListener((parent, view, position, id) -> {
                     Toast.makeText(getActivity(),
-                            getActivity().getString(R.string.pref_Color_title) +
-                                    Constants.STRING_SPACE +
-                                    ImageUtils.toARGBString(mAdapter.getItem(position))
+                            getActivity().getString(R.string.pref_Color_title) + " " + ImageUtils.toARGBString(mAdapter.getItem(position))
                             , Toast.LENGTH_SHORT).show();
                     return true;
                 });
@@ -278,7 +276,7 @@ class ColorPreference extends Preference {
 
             } catch (final Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getActivity(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getActivity(), StringUtils.getMethodName(3) + ": " + e);
             }
 
             return colorDialogBuilder.create();
@@ -579,7 +577,7 @@ class ColorPreference extends Preference {
 
             } catch (final Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + ": " + e);
             }
         }
 
@@ -625,7 +623,7 @@ class ColorPreference extends Preference {
 
                 } catch (final Exception e) {
                     Log.e(TAG, e.getMessage(), e);
-                    ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                    ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + ": " + e);
                 }
             }
 

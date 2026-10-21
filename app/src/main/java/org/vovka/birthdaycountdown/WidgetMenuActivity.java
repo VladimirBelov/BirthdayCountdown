@@ -166,7 +166,7 @@ public class WidgetMenuActivity extends Activity {
                     menuActions.add(Constants.ContextMenu_OpenURL);
                 }
 
-                if (!Constants.STRING_1.equals(singleEventArray[ContactsEvents.Position_starred])) {
+                if (!"1".equals(singleEventArray[ContactsEvents.Position_starred])) {
                     if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
                         menuItems.add(getString(R.string.menu_context_favorites_remove));
                         menuIcons.add(AppCompatResources.getDrawable(this, R.drawable.ic_menu_unstar));
@@ -274,7 +274,7 @@ public class WidgetMenuActivity extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
             finish();
         }
     }
@@ -470,7 +470,7 @@ public class WidgetMenuActivity extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
             finish();
         }
         finish();
@@ -486,7 +486,7 @@ public class WidgetMenuActivity extends Activity {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
         finish();
     }
@@ -494,7 +494,7 @@ public class WidgetMenuActivity extends Activity {
     @NonNull
     private String getFactText(String factValue) {
         return eventsData.getEventEmojiForType(Constants.EventType_Fact)
-                .concat(Constants.STRING_SPACE)
+                .concat(" ")
                 .concat(factValue);
     }
 
@@ -542,12 +542,12 @@ public class WidgetMenuActivity extends Activity {
             }
             try {
                 TextView textView = listItemView.findViewById(android.R.id.text1);
-                textView.setText(Constants.STRING_SPACE.concat(items.get(position)));
+                textView.setText(" ".concat(items.get(position)));
                 textView.setPadding(ImageUtils.Dip2Px(context.getResources(), 6), 0, 0, 0);
                 textView.setCompoundDrawablesRelativeWithIntrinsicBounds(icons.get(position), null, null, null);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
             }
             return listItemView;
         }

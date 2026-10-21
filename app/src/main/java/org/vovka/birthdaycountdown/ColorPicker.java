@@ -150,7 +150,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + ": " + e);
         } finally {
             ta.recycle();
         }
@@ -178,7 +178,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             selectColor(0, 0, mEnableCustomColors, null, null);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -243,7 +243,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
                 mColorGrid.setOnItemLongClickListener((parent, view, position, id) -> {
                     Toast.makeText(context,
                             res.getString(R.string.pref_Color_title) +
-                                    Constants.STRING_SPACE +
+                                    " " +
                                     ImageUtils.toARGBString(mAdapter.getItem(position))
                             , Toast.LENGTH_SHORT).show();
                     return true;
@@ -260,7 +260,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -583,7 +583,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -669,7 +669,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -705,7 +705,7 @@ class ColorPicker extends FrameLayout implements View.OnClickListener {
 
             } catch (final Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + ": " + e);
             }
         }
 

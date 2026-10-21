@@ -151,7 +151,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     //https://stackoverflow.com/questions/26564400/creating-a-preference-screen-with-support-v21-toolbar
 
     private static final String TAG = "SettingsActivity";
-    private String testChannelId = Constants.STRING_EMPTY;
+    private String testChannelId = "";
     private TypedArray ta = null;
     private static DisplayMetrics displayMetrics;
     private ContactsEvents eventsData;
@@ -323,7 +323,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
             showPreferences();
         }
 
@@ -462,7 +462,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -589,7 +589,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             PreferenceScreen prefScreen;
             PreferenceCategory prefCat;
             Preference pref;
-            eventsData.preferences_notifications_days.removeAll(new HashSet<String>() {{add(Constants.STRING_EMPTY);}});
+            eventsData.preferences_notifications_days.removeAll(new HashSet<String>() {{add("");}});
             boolean isNotifyEnabled = !eventsData.preferences_notifications_days.isEmpty();
             boolean isNotify2Enabled = enabledNotifyQ2 && !eventsData.preferences_notifications2_days.isEmpty();
 
@@ -665,7 +665,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -757,7 +757,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (!StringUtils.hasContent(storedValue)) {
                 storedValue = getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_default);
             }
-            storedValue = storedValue.replace(Constants.STRING_BAR, Constants.STRING_EOL);
+            storedValue = storedValue.replace("|", "\n");
             updateSummary(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key,
                     storedValue, getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_summary), 0, 0);
 
@@ -822,7 +822,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -925,12 +925,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 boolean first = true;
 
                 for (String account : eventsData.preferences_Accounts) {
-                    int indexParen = account.indexOf(Constants.STRING_PARENTHESIS_OPEN);
+                    int indexParen = account.indexOf(" (");
                     String name = account;
                     if (indexParen != -1) {
                         name = account.substring(0, indexParen);
                     }
-                    if (!first) result.append(Constants.STRING_EOL);
+                    if (!first) result.append("\n");
                     first = false;
                     result.append(name);
                 }
@@ -940,7 +940,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -984,7 +984,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     for (String id : calendars) {
                         String calData = eventsData.map_calendars.get(id);
                         if (calData != null) {
-                            if (valueBuilder.length() > 0) valueBuilder.append(Constants.STRING_EOL);
+                            if (valueBuilder.length() > 0) valueBuilder.append("\n");
                             String[] calInfo = StringUtils.getKeyParts(calData);
                             valueBuilder.append(calInfo[0]);
                         } else valueBuilder.append(id);
@@ -995,7 +995,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1036,9 +1036,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     valueBuilder.append(getString(R.string.msg_no_files_selected).trim());
                 } else {
                     for (String file : files) {
-                        String filePath = StringUtils.substringBefore(file, Constants.STRING_BAR);
-                        int indexFilename = filePath.lastIndexOf(Constants.STRING_SLASH);
-                        if (valueBuilder.length() != 0) valueBuilder.append(Constants.STRING_EOL);
+                        String filePath = StringUtils.substringBefore(file, "|");
+                        int indexFilename = filePath.lastIndexOf("/");
+                        if (valueBuilder.length() != 0) valueBuilder.append("\n");
                         valueBuilder.append(indexFilename > -1 ? filePath.substring(indexFilename + 1) : filePath);
                     }
                 }
@@ -1047,7 +1047,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1077,12 +1077,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (pref != null) {
                 pref.setOnPreferenceChangeListener((preference, newValue) ->
                         updateSummary(prefKey, newValue.toString(), getString(prefSummaryKey), 0, 0));
-                updateSummary(prefKey, preferences.getString(getString(prefKey), Constants.STRING_EMPTY), getString(prefSummaryKey), 0, 0);
+                updateSummary(prefKey, preferences.getString(getString(prefKey), ""), getString(prefSummaryKey), 0, 0);
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1113,7 +1113,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1143,7 +1143,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     if (newValues.contains(valuesArr[i])) displayNames.add(entriesArr[i]);
                 }
 
-                String summary = TextUtils.join(Constants.STRING_EOL, displayNames);
+                String summary = TextUtils.join("\n", displayNames);
                 return updateSummary(prefKey, summary, getString(prefSummaryKey), 0, 0);
             });
 
@@ -1154,12 +1154,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 if (currentValue.contains(valuesArr[i])) displayNames.add(entriesArr[i]);
             }
 
-            String summary = TextUtils.join(Constants.STRING_EOL, displayNames);
+            String summary = TextUtils.join("\n", displayNames);
             updateSummary(prefKey, summary, getString(prefSummaryKey), 0, 0);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1189,7 +1189,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     if (newValues.contains(valuesArr[i])) displayNames.add(entriesArr[i]);
                 }
 
-                String summary = TextUtils.join(Constants.STRING_EOL, displayNames);
+                String summary = TextUtils.join("\n", displayNames);
                 return updateSummary(prefKey, summary, getString(prefSummaryKey), 0, 0);
             });
 
@@ -1200,12 +1200,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 if (currentValue.contains(valuesArr[i])) displayNames.add(entriesArr[i]);
             }
 
-            String summary = TextUtils.join(Constants.STRING_EOL, displayNames);
+            String summary = TextUtils.join("\n", displayNames);
             updateSummary(prefKey, summary, getString(prefSummaryKey), 0, 0);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1228,15 +1228,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             for (int i = 0; i < eventSourcesHashes.size(); i++) {
                 String hash = eventSourcesHashes.get(i);
                 if (currentValue.contains(hash)) {
-                    displayNames.add(StringUtils.substringBefore(eventSources.getTitles().get(i), Constants.STRING_BRACKETS_OPEN));
+                    displayNames.add(StringUtils.substringBefore(eventSources.getTitles().get(i), " ["));
                 }
             }
-            String summary = displayNames.isEmpty() ? getString(R.string.msg_all) : TextUtils.join(Constants.STRING_EOL, displayNames);
+            String summary = displayNames.isEmpty() ? getString(R.string.msg_all) : TextUtils.join("\n", displayNames);
             updateSummary(prefKey, summary, getString(prefSummaryKey), 0, 0);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
 
     }
@@ -1247,13 +1247,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             List<String> selectedSources = getEmbeddedPacksTitles(preferences, packPrefix, eventIdHashPrefix);
 
             if (prefKey != 0 && prefSummaryKey != 0) {
-                final String summary = selectedSources.isEmpty() ? getString(R.string.msg_no_files_selected).trim() : TextUtils.join(Constants.STRING_EOL, selectedSources);
+                final String summary = selectedSources.isEmpty() ? getString(R.string.msg_no_files_selected).trim() : TextUtils.join("\n", selectedSources);
                 updateSummary(prefKey, summary, getString(prefSummaryKey), 0, 0);
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1285,12 +1285,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     selectedQuestions.add(type.getDisplayName(this));
                 }
             }
-            String summary = selectedQuestions.isEmpty() ? getString(R.string.msg_all) : TextUtils.join(Constants.STRING_EOL, selectedQuestions);
+            String summary = selectedQuestions.isEmpty() ? getString(R.string.msg_all) : TextUtils.join("\n", selectedQuestions);
             updateSummary(R.string.pref_Quiz_Questions_key, summary, getString(R.string.pref_Quiz_Questions_summary), 0, 0);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1406,7 +1406,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
             return false;
         }
     }
@@ -1453,7 +1453,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1480,7 +1480,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
         return false;
     }
@@ -1528,7 +1528,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1903,7 +1903,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
 
         return false;
@@ -1979,7 +1979,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -2050,7 +2050,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -2128,7 +2128,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -2143,7 +2143,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -2168,7 +2168,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         } finally {
             super.onStop();
         }
@@ -2279,7 +2279,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
 
     }
@@ -2441,7 +2441,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
 
     }
@@ -2513,12 +2513,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 for (Account account : accounts) {
                     for (AuthenticatorDescription desc : descriptions) {
                         if (account.type.equals(desc.type)) {
-                            final String accountName = account.name + Constants.STRING_PARENTHESIS_OPEN + account.type + Constants.STRING_PARENTHESIS_CLOSE;
+                            final String accountName = account.name + " (" + account.type + ")";
                             accountNames.add(accountName);
                             choiceList.add(accountName
-                                    + Constants.STRING_BRACKETS_OPEN
+                                    + " ["
                                     + eventsData.getContactsEventsCount(account.type, account.name)
-                                    + Constants.STRING_BRACKETS_CLOSE
+                                    + "]"
                             );
                             accountIcons.add(desc.iconId > 0 ? desc.iconId : desc.smallIconId);
                             accountPackages.add(desc.packageName);
@@ -2546,9 +2546,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                             accountsList.add(
                                     accountName
-                                    + Constants.STRING_PARENTHESIS_OPEN
+                                    + " ("
                                     + cursor.getString(indexTypeColumn)
-                                    + Constants.STRING_PARENTHESIS_CLOSE
+                                    + ")"
                             );
 
                         } while (cursor.moveToNext());
@@ -2558,13 +2558,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 for (String accountString: accountsList) {
                     if (!accountNames.contains(accountString)) {
                         accountNames.add(accountString);
-                        final String accountType = StringUtils.substringBetween(accountString, Constants.STRING_PARENTHESIS_OPEN, Constants.STRING_PARENTHESIS_CLOSE);
+                        final String accountType = StringUtils.substringBetween(accountString, " (", ")");
                         int accountEventsCount = eventsData.getContactsEventsCount(accountType, null);
 
                         choiceList.add(accountString
-                                + Constants.STRING_BRACKETS_OPEN
+                                + " ["
                                 + accountEventsCount
-                                + Constants.STRING_BRACKETS_CLOSE
+                                + "]"
                         );
                         if (accountString.toLowerCase().contains(Constants.account_sim)) {
                             accountIcons.add(R.drawable.sim_card);
@@ -2608,15 +2608,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             setSummaryForAccounts();
                         })
                         .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
-                        .setNeutralButton(getString(R.string.button_all) + Constants.STRING_BRACKETS_OPEN
+                        .setNeutralButton(getString(R.string.button_all) + " ["
                                 + contactsEventsCount
-                                + Constants.STRING_BRACKETS_CLOSE, (dialog, which) -> {
+                                + "]", (dialog, which) -> {
                             eventsData.setPreferences_Accounts(new HashSet<>());
                             eventsData.savePreferences();
 
                             String value = eventsData.preferences_Accounts.isEmpty() ? getString(R.string.msg_all) :
                                     eventsData.preferences_Accounts.contains(Constants.account_none) ? getString(R.string.msg_none) :
-                                            TextUtils.join(Constants.STRING_EOL, eventsData.preferences_Accounts);
+                                            TextUtils.join("\n", eventsData.preferences_Accounts);
                             updateSummary(R.string.pref_Accounts_key, value, getString(R.string.pref_Accounts_summary), 0, 0);
                         })
                         .setCancelable(true);
@@ -2674,7 +2674,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -2716,7 +2716,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
        } catch (Exception e) {
            Log.e(TAG, e.getMessage(), e);
-           ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+           ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
        }
     }
 
@@ -2764,7 +2764,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -2807,7 +2807,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -2841,18 +2841,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             for (Map.Entry<String,String> entry: eventsData.map_calendars.entrySet()) {
                 calIDs.add(entry.getKey());
                 String[] calendarInfo = StringUtils.getKeyParts(entry.getValue());
-                String calTitle = calendarInfo[0].concat(Constants.STRING_SPACE);
+                String calTitle = calendarInfo[0].concat(" ");
                 if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) {
-                    if (calendarInfo.length > 2 && calendarInfo[2].equals(Constants.STRING_0))
+                    if (calendarInfo.length > 2 && calendarInfo[2].equals("0"))
                         calTitle = calTitle + "🙈"; // Невидимый календарь
-                    if (calendarInfo.length > 3 && calendarInfo[3].equals(Constants.STRING_1))
+                    if (calendarInfo.length > 3 && calendarInfo[3].equals("1"))
                         calTitle = calTitle + "🔒"; // Только для чтения
                 }
                 calTitles.add(
                         calTitle
-                                + Constants.STRING_BRACKETS_START
+                                + "["
                                 + eventsData.getCalendarEventsCount(entry.getKey())
-                                + Constants.STRING_BRACKETS_CLOSE
+                                + "]"
                 );
                 String calId = StringUtils.getHash(Constants.eventSourceCalendarPrefix + entry.getKey());
                 if (eventsData.map_calendars_colors.containsKey(calId)) {
@@ -2910,7 +2910,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -3010,10 +3010,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             Uri oldUri;
                             if (runningQueue == 1) {
                                 oldUri = TextUtils.isEmpty(eventsData.preferences_notifications_ringtone) ? null : Uri.parse(eventsData.preferences_notifications_ringtone);
-                                eventsData.preferences_notifications_ringtone = Constants.STRING_EMPTY;
+                                eventsData.preferences_notifications_ringtone = "";
                             } else {
                                 oldUri = TextUtils.isEmpty(eventsData.preferences_notifications2_ringtone) ? null : Uri.parse(eventsData.preferences_notifications2_ringtone);
-                                eventsData.preferences_notifications2_ringtone = Constants.STRING_EMPTY;
+                                eventsData.preferences_notifications2_ringtone = "";
                             }
                             eventsData.savePreferences();
 
@@ -3028,7 +3028,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -3143,7 +3143,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         if (uri == null || !ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) return null;
         String path = uri.getPath();
         if (path == null || path.isEmpty()) return null;
-        int lastSlash = path.lastIndexOf(Constants.STRING_SLASH);
+        int lastSlash = path.lastIndexOf("/");
         return (lastSlash >= 0) ? path.substring(lastSlash + 1) : path;
     }
 
@@ -3232,7 +3232,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     if (rStartIndex == -1) {
                         ToastExpander.showInfoMsg(this, getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_msg_no_tags));
                         return;
-                    } else if (rules.indexOf(Constants.RULE_TAG_NAME, rStartIndex + 1) > -1 && rules.indexOf(Constants.STRING_BAR, rStartIndex) == -1) {
+                    } else if (rules.indexOf(Constants.RULE_TAG_NAME, rStartIndex + 1) > -1 && rules.indexOf("|", rStartIndex) == -1) {
                         ToastExpander.showInfoMsg(this, getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_msg_tags_error));
                         return;
                     }
@@ -3242,7 +3242,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 eventsData.savePreferences();
                 alertToShow.dismiss();
 
-                String storedValue = (rules.isEmpty() ? getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_default) : rules).replace(Constants.STRING_BAR, Constants.STRING_EOL);
+                String storedValue = (rules.isEmpty() ? getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_default) : rules).replace("|", "\n");
                 updateSummary(R.string.pref_CustomEvents_Birthday_Calendars_Rules_key,
                         storedValue, getString(R.string.pref_CustomEvents_Birthday_Calendars_Rules_summary), 0, 0);
 
@@ -3250,7 +3250,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
 
     }
@@ -3271,9 +3271,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 for (String file : filesList) {
                     filesPaths.add(
                             file.split(Constants.REGEX_BAR)[0]
-                                + Constants.STRING_BRACKETS_OPEN
+                                + " ["
                                 + eventsData.getFileEventsCount(file, eventType, eventType.equals(Constants.Type_MultiEvent))
-                                + Constants.STRING_BRACKETS_CLOSE
+                                + "]"
                     );
                     filesFullData.add(file);
                     filesSelected.add(true);
@@ -3394,7 +3394,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
 
     }
@@ -3424,7 +3424,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -3631,7 +3631,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -3702,7 +3702,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
        } catch (Exception e) {
            Log.e(TAG, e.getMessage(), e);
-           ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+           ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
        }
     }
 
@@ -3714,7 +3714,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Map<String, ?> prefs = PreferenceManager.getDefaultSharedPreferences(this).getAll();
             SortedSet<String> keys = new TreeSet<>(prefs.keySet());
             for (String key : keys) {
-                String prefType = Constants.STRING_EMPTY;
+                String prefType = "";
                 if (eventsData.preferences_debug_on) {
                     if (prefs.get(key) instanceof String) {
                         prefType = Constants.PREF_TYPE_STRING;
@@ -3729,7 +3729,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 sb.append(key)
                         .append(prefType)
-                        .append(Constants.STRING_COLON_SPACE)
+                        .append(": ")
                         .append(prefs.get(key))
                         .append(Constants.HTML_BR);
             }
@@ -3769,7 +3769,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -3788,7 +3788,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                 intent.putExtra(Intent.EXTRA_TITLE,
                         getText(R.string.app_name)
-                                + Constants.STRING_SPACE
+                                + " "
                                 + Objects.requireNonNull(eventsData.sdf_DDMMYYYYHHMM.get()).format(Calendar.getInstance().getTime())
                                 + ".txt");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
@@ -3805,10 +3805,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 ) {
 
                     final String prefix = "# ";
-                    String sb = prefix + getText(R.string.app_name) + Constants.STRING_EOL
-                            + prefix + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE + Constants.STRING_EOL
-                            + prefix + AppDateUtils.getDateTimePreferable(Calendar.getInstance().getTime(), eventsData.preferences_date_format, eventsData.getContext(), eventsData.currentLocale) + Constants.STRING_EOL
-                            + Constants.STRING_EOL;
+                    String sb = prefix + getText(R.string.app_name) + "\n"
+                            + prefix + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")" + "\n"
+                            + prefix + AppDateUtils.getDateTimePreferable(Calendar.getInstance().getTime(), eventsData.preferences_date_format, eventsData.getContext(), eventsData.currentLocale) + "\n"
+                            + "\n";
                     int countExported = 0;
 
                     if (outputStream != null) {
@@ -3824,14 +3824,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                 String valueStr;
                                 if (key.startsWith(Constants.WIDGET_TEMPLATES_PREFIX) && pref instanceof Set) {
                                     Set<?> stringSet = (Set<?>) pref;
-                                    valueStr = Constants.STRING_BRACKETS_START
+                                    valueStr = "["
                                             + android.text.TextUtils.join(Constants.STRING_ETX, stringSet)
-                                            + Constants.STRING_BRACKETS_CLOSE;
+                                            + "]";
                                 } else {
                                     valueStr = pref.toString();
                                 }
 
-                                String line = key + Constants.STRING_COLON_SPACE + valueStr + Constants.STRING_EOL;
+                                String line = key + ": " + valueStr + "\n";
                                 outputStream.write(line.getBytes(StandardCharsets.UTF_8));
                                 countExported++;
                             }
@@ -3893,7 +3893,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -3913,7 +3913,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (stage == ImportStage.doClean) {
 
-                String[] prefsArray = StringUtils.readFileToString(uri.toString(), Constants.STRING_EOL, eventsData.getContext(), eventsData.getResources()).split(Constants.STRING_EOL);
+                String[] prefsArray = StringUtils.readFileToString(uri.toString(), "\n", eventsData.getContext(), eventsData.getResources()).split("\n");
                 if (prefsArray[0].isEmpty()) {
                     ToastExpander.showDebugMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
                     return;
@@ -3921,7 +3921,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 int countPreferencesToImport = 0;
                 for (String prefLine: prefsArray) {
-                    String[] pref = prefLine.trim().split(Constants.STRING_COLON_SPACE, -1);
+                    String[] pref = prefLine.trim().split(": ", -1);
                     if (!pref[0].isEmpty() && !pref[0].startsWith(Constants.STRING_HASH) && pref.length == 2)  countPreferencesToImport++;
                 }
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -3963,7 +3963,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (stage == ImportStage.doImport && uri != null) {
 
-                String[] prefsArray = StringUtils.readFileToString(uri.toString(), Constants.STRING_EOL, eventsData.getContext(), eventsData.getResources()).split(Constants.STRING_EOL);
+                String[] prefsArray = StringUtils.readFileToString(uri.toString(), "\n", eventsData.getContext(), eventsData.getResources()).split("\n");
                 if (prefsArray[0].isEmpty()) {
                     ToastExpander.showDebugMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
                     return;
@@ -4151,7 +4151,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
                 for (String prefLine: prefsArray) {
                     try {
-                        int indColon = prefLine.indexOf(Constants.STRING_COLON);
+                        int indColon = prefLine.indexOf(":");
                         if (indColon == -1) continue;
                         String[] pref = new String[2];
                         pref[0] = prefLine.substring(0, indColon).trim();
@@ -4189,14 +4189,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         } else if (listSets.contains(pref[0])) { // Sets
 
                             Set<String> valSet = null;
-                            int brake1 = pref[1].indexOf(Constants.STRING_BRACKETS_START);
-                            int brake2 = pref[1].lastIndexOf(Constants.STRING_BRACKETS_CLOSE);
+                            int brake1 = pref[1].indexOf("[");
+                            int brake2 = pref[1].lastIndexOf("]");
                             if (brake1 != -1 && brake2 != -1) {
                                 String[] values;
                                 if (pref[1].contains(Constants.STRING_ETX)) {
                                     values = pref[1].substring(brake1 + 1, brake2).split(Constants.STRING_ETX, -1);
                                 } else {
-                                    values = pref[1].substring(brake1 + 1, brake2).split(Constants.STRING_COMMA_SPACE, -1);
+                                    values = pref[1].substring(brake1 + 1, brake2).split(", ", -1);
                                 }
                                 valSet = new HashSet<>();
                                 for (String value : values) {
@@ -4240,7 +4240,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         }
                     } catch (Exception e) {
                         countErrors++;
-                        errors.add(getString(R.string.msg_prefs_import_error, prefLine + Constants.STRING_EOL + e));
+                        errors.add(getString(R.string.msg_prefs_import_error, prefLine + "\n" + e));
                     }
                 }
 
@@ -4287,7 +4287,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         } finally {
             skipSharedPreferenceChangedEvent = false;
         }
@@ -4320,10 +4320,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 ) {
 
                     final String prefix = "# ";
-                    String sb = prefix + getText(R.string.app_name) + Constants.STRING_EOL
-                            + prefix + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + Constants.STRING_PARENTHESIS_CLOSE + Constants.STRING_EOL
-                            + prefix + AppDateUtils.getDateTimePreferable(eventsData.getToday().getTime(), eventsData.preferences_date_format, eventsData.getContext(), eventsData.currentLocale) + Constants.STRING_EOL
-                            + Constants.STRING_EOL;
+                    String sb = prefix + getText(R.string.app_name) + "\n"
+                            + prefix + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")" + "\n"
+                            + prefix + AppDateUtils.getDateTimePreferable(eventsData.getToday().getTime(), eventsData.preferences_date_format, eventsData.getContext(), eventsData.currentLocale) + "\n"
+                            + "\n";
                     int countExported = 0;
 
                     if (outputStream != null) {
@@ -4336,9 +4336,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             Object pref = prefs.get(eventId);
                             if (pref != null) {
                                 outputStream.write(pref.toString()
-                                        .replace(Constants.STRING_EOL, Constants.STRING_TAB)
-                                        .replace(Constants.STRING_EOT, Constants.STRING_BAR)
-                                        .concat(Constants.STRING_EOL)
+                                        .replace("\n", "\t")
+                                        .replace(Constants.STRING_EOT, "|")
+                                        .concat("\n")
                                         .getBytes(StandardCharsets.UTF_8)
                                 );
                                 countExported++;
@@ -4401,7 +4401,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -4426,7 +4426,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (stage == ImportStage.doClean) {
 
-                String[] prefsArray = StringUtils.readFileToString(uri.toString(), Constants.STRING_EOL, eventsData.getContext(), eventsData.getResources()).split(Constants.STRING_EOL);
+                String[] prefsArray = StringUtils.readFileToString(uri.toString(), "\n", eventsData.getContext(), eventsData.getResources()).split("\n");
                 if (prefsArray[0].isEmpty()) {
                     ToastExpander.showDebugMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
                     return;
@@ -4462,7 +4462,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } else if (stage == ImportStage.doImport && uri != null) {
 
-                String[] eventsArray = StringUtils.readFileToString(uri.toString(), Constants.STRING_EOL, eventsData.getContext(), eventsData.getResources()).split(Constants.STRING_EOL);
+                String[] eventsArray = StringUtils.readFileToString(uri.toString(), "\n", eventsData.getContext(), eventsData.getResources()).split("\n");
                 if (eventsArray[0].isEmpty()) {
                     ToastExpander.showDebugMsg(this, getString(R.string.msg_file_open_error) + uri.getPath());
                     return;
@@ -4479,10 +4479,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     if (eventLine != null) {
                         //String eventString = eventLine.replaceAll(Constants.REGEX_BAR, Constants.STRING_EOT);
                         String eventString = eventLine
-                                .replace(Constants.STRING_TAB, Constants.STRING_EOL)
-                                .replace(Constants.STRING_BAR, Constants.STRING_EOT);
+                                .replace("\t", "\n")
+                                .replace("|", Constants.STRING_EOT);
 
-                        if (!eventString.isEmpty() && !eventString.startsWith(Constants.STRING_HASH) && !eventLine.startsWith(Constants.STRING_DSLASH)) {
+                        if (!eventString.isEmpty() && !eventString.startsWith(Constants.STRING_HASH) && !eventLine.startsWith("//")) {
                             String[] singleEventArray = eventString.split(Constants.STRING_EOT, -1);
                             if (singleEventArray.length == ContactsEvents.Position_attrAmount) {
                                 String eventId = null;
@@ -4519,7 +4519,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         } finally {
             skipSharedPreferenceChangedEvent = false;
         }
@@ -4552,7 +4552,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
 
     }
@@ -4576,8 +4576,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         }
                         eventDataString = eventsData.getEventData(eventData);
                         sb.append(Constants.HTML_BOLD_START).append(eventId).append(Constants.HTML_BOLD_END)
-                                .append(Constants.STRING_COLON_SPACE)
-                                .append(eventDataString.replace(Constants.STRING_EOT, Constants.STRING_COMMA_SPACE))
+                                .append(": ")
+                                .append(eventDataString.replace(Constants.STRING_EOT, ", "))
                                 .append(Constants.HTML_BR).append(Constants.HTML_BR);
                     }
                 }
@@ -4608,7 +4608,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -4654,7 +4654,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -4709,7 +4709,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -4731,7 +4731,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -4759,7 +4759,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -4787,7 +4787,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -4811,7 +4811,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                                         try {
                                             this.grantUriPermission(this.getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION | android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                                             this.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                                            filesList.add(filename.concat(Constants.STRING_BAR).concat(uri.toString()));
+                                            filesList.add(filename.concat("|").concat(uri.toString()));
                                             selectFiles(this.eventTypeForSelect);
                                         } catch (Exception e) {
                                             ToastExpander.showDebugMsg(this, getString(R.string.msg_file_access_read_error, uri.getPath()));
@@ -4839,10 +4839,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     Uri oldUri;
                     if (runningQueue == 1) {
                         oldUri = TextUtils.isEmpty(eventsData.preferences_notifications_ringtone) ? null : Uri.parse(eventsData.preferences_notifications_ringtone);
-                        eventsData.preferences_notifications_ringtone = (pickedUri != null) ? pickedUri.toString() : Constants.STRING_EMPTY;
+                        eventsData.preferences_notifications_ringtone = (pickedUri != null) ? pickedUri.toString() : "";
                     } else {
                         oldUri = TextUtils.isEmpty(eventsData.preferences_notifications2_ringtone) ? null : Uri.parse(eventsData.preferences_notifications2_ringtone);
-                        eventsData.preferences_notifications2_ringtone = (pickedUri != null) ? pickedUri.toString() : Constants.STRING_EMPTY;
+                        eventsData.preferences_notifications2_ringtone = (pickedUri != null) ? pickedUri.toString() : "";
                     }
                     eventsData.savePreferences();
 
@@ -5025,7 +5025,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -5096,7 +5096,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -5151,7 +5151,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
         return eventSourcesTitles;
     }
@@ -5208,9 +5208,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
             // Лямбда для обновления заголовка со счётчиком
-            final Runnable updateTitle = () -> {
-                alertToShow.setTitle(baseTitle + " (" + listView.getCheckedItemCount() + "/" + totalFeatures + ")");
-            };
+            final Runnable updateTitle = () -> alertToShow.setTitle(baseTitle + " (" + listView.getCheckedItemCount() + "/" + totalFeatures + ")");
 
             listView.setOnItemClickListener((parent, view, position, id) -> updateTitle.run());
 
@@ -5250,7 +5248,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             alertToShow.show();
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -5315,7 +5313,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -5424,7 +5422,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             alertToShow.show();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -5451,7 +5449,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -5641,7 +5639,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             alertToShow.show();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -5742,7 +5740,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -5795,7 +5793,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + ": " + e);
             }
 
             return view;
@@ -5845,7 +5843,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + ": " + e);
             }
 
             return view;
@@ -5878,7 +5876,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
-                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+                ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + ": " + e);
             }
 
             return view;

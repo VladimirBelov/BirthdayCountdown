@@ -177,7 +177,7 @@ public class EventImporterActivity extends AppCompatActivity {
                                     TreeMap<Integer, String> eventData = eventsData.getEventData(eventStr);
 
                                     String details = StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventCaption))
-                                            .concat(Constants.STRING_COLON_SPACE)
+                                            .concat(": ")
                                             .concat(StringUtils.getNotNullString(eventData.get(ContactsEvents.Position_eventDateFirstTime)));
                                     events.add(new EventItem(
                                             eventData.get(ContactsEvents.Position_eventIcon),
@@ -230,7 +230,7 @@ public class EventImporterActivity extends AppCompatActivity {
                                     viewEventType.setVisibility(View.VISIBLE);
 
                                     eventsData.initEventTypes(eventTypesValues, eventTypesIds, eventSubTypesIds);
-                                    eventTypesValues.add(0, getResources().getString(R.string.event_type_unknown_emoji) + Constants.STRING_SPACE + getResources().getString(R.string.pref_Tools_Events_Import_Unrecognized_type));
+                                    eventTypesValues.add(0, getResources().getString(R.string.event_type_unknown_emoji) + " " + getResources().getString(R.string.pref_Tools_Events_Import_Unrecognized_type));
                                     eventTypesIds.add(0, Constants.Type_Unrecognized);
                                     eventSubTypesIds.add(0, Constants.Type_Unrecognized);
 
@@ -272,7 +272,7 @@ public class EventImporterActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ContextThemeWrapper context = new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -306,7 +306,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
             final String fileName = DeviceTools.getPath(this, uri);
             details.add(getString(R.string.pref_Tools_Events_Import_result_Filename, fileName));
-            String fileContent = Constants.STRING_EMPTY;
+            String fileContent = "";
 
             if (fileName.toLowerCase().endsWith(".vcf") || fileName.toLowerCase().endsWith(".vcard")) {
 
@@ -315,14 +315,14 @@ public class EventImporterActivity extends AppCompatActivity {
             } else {
 
                 if (uri != null)
-                    fileContent = StringUtils.readFileToString(uri.toString(), Constants.STRING_EOL, eventsData.getContext(), eventsData.getResources());
+                    fileContent = StringUtils.readFileToString(uri.toString(), "\n", eventsData.getContext(), eventsData.getResources());
 
                 if (fileContent.isEmpty()) {
                     details.add(getString(R.string.pref_Tools_Events_Import_result_noAccess));
                     return eventsList;
                 }
 
-                String[] fileLines = fileContent.split(Constants.STRING_EOL, -1);
+                String[] fileLines = fileContent.split("\n", -1);
 
                 if (fileContent.startsWith(Constants.iCal_CalendarBegin)) {
 
@@ -339,7 +339,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
             details.add(getString(R.string.pref_Tools_Events_Import_result_Error, e.getMessage()));
         } finally {
             if (!eventsList.isEmpty()) {
@@ -357,7 +357,7 @@ public class EventImporterActivity extends AppCompatActivity {
             if (details.size() <= 1) {
                 details.add(getString(R.string.pref_Tools_Events_Import_result_noEvents));
             }
-            eventsList.add(0, String.join(Constants.STRING_EOL, details));
+            eventsList.add(0, String.join("\n", details));
         }
         return eventsList;
     }
@@ -376,8 +376,8 @@ public class EventImporterActivity extends AppCompatActivity {
             @Nullable ContactsEvents.Event event = null;
             @Nullable Date eventDateFirstTime = null;
             @Nullable String eventTitle = null;
-            String eventDescription = Constants.STRING_EMPTY;
-            String eventURL = Constants.STRING_EMPTY;
+            String eventDescription = "";
+            String eventURL = "";
             boolean useEventYear = true;
             StringBuilder eventLines = new StringBuilder(); //todo: удалить
             String emptyEventYear = null;
@@ -391,38 +391,38 @@ public class EventImporterActivity extends AppCompatActivity {
 
                 } else if (line.startsWith(Constants.iCal_EventBegin)) {
 
-                    event = eventsData.createTypedEvent(Constants.Type_Unrecognized, Constants.STRING_EMPTY);
+                    event = eventsData.createTypedEvent(Constants.Type_Unrecognized, "");
                     useEventYear = true;
 
                     eventData.clear();
                     eventDateFirstTime = null;
                     eventTitle = null;
-                    eventDescription = Constants.STRING_EMPTY;
-                    eventURL = Constants.STRING_EMPTY;
+                    eventDescription = "";
+                    eventURL = "";
                     eventLines.setLength(0);
 
                 } else if (line.startsWith(Constants.iCal_Summary)) {
 
                     eventTitle = StringUtils.substringAfter(line, Constants.iCal_Summary);
-                    eventLines.append(line).append(Constants.STRING_EOL);
+                    eventLines.append(line).append("\n");
 
                 } else if (line.startsWith(Constants.iCal_Description)) {
 
                     eventDescription = StringUtils.substringAfter(line, Constants.iCal_Description);
-                    eventLines.append(line).append(Constants.STRING_EOL);
+                    eventLines.append(line).append("\n");
 
-                } else if (line.startsWith(Constants.STRING_SPACE)) {
+                } else if (line.startsWith(" ")) {
 
-                    eventDescription = eventDescription.concat(StringUtils.substringAfter(line, Constants.STRING_SPACE));
+                    eventDescription = eventDescription.concat(StringUtils.substringAfter(line, " "));
 
                 } else if (line.startsWith(Constants.iCal_Url)) {
 
                     eventURL = StringUtils.substringAfter(line, Constants.iCal_Url);
-                    eventLines.append(line).append(Constants.STRING_EOL);
+                    eventLines.append(line).append("\n");
 
                 } else if (line.startsWith(Constants.iCal_Date)) {
 
-                    String storedDate = StringUtils.substringAfter(line, Constants.STRING_COLON);
+                    String storedDate = StringUtils.substringAfter(line, ":");
                     try {
                         eventDateFirstTime = Objects.requireNonNull(ContactsEvents.sdf_YYYYMMDD_noDiv.get()).parse(storedDate);
 
@@ -430,7 +430,7 @@ public class EventImporterActivity extends AppCompatActivity {
                             useEventYear = false;
                         }
                     } catch (ParseException ignored) { /**/ }
-                    eventLines.append(line).append(Constants.STRING_EOL);
+                    eventLines.append(line).append("\n");
 
                 } else if (line.startsWith(Constants.iCal_EventEnd) && event != null) {
 
@@ -439,10 +439,10 @@ public class EventImporterActivity extends AppCompatActivity {
                         continue;
                     }
 
-                    eventDescription = eventDescription.replace(eventURL, Constants.STRING_EMPTY);
+                    eventDescription = eventDescription.replace(eventURL, "");
 
                     eventData.put(ContactsEvents.Position_personFullName, eventTitle);
-                    eventData.put(ContactsEvents.Position_eventDescription, eventDescription.replace(Constants.REGEX_BS, Constants.STRING_EMPTY));
+                    eventData.put(ContactsEvents.Position_eventDescription, eventDescription.replace(Constants.REGEX_BS, ""));
                     eventData.put(ContactsEvents.Position_eventCaption, event.caption);
                     eventData.put(ContactsEvents.Position_eventURL, eventURL);
                     eventData.put(ContactsEvents.Position_eventType, event.type);
@@ -479,7 +479,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -497,24 +497,24 @@ public class EventImporterActivity extends AppCompatActivity {
     private void getSingleLineEvent(String eventString, List<String> eventsList, Calendar today, AtomicInteger statEventsSkipped, AtomicInteger statEventsDoubles, AtomicInteger statEventsUnRecognized) {
         try {
 
-            String eventLine = eventString.trim().replace("\uFEFF", Constants.STRING_EMPTY);
-            if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith(Constants.STRING_DSLASH))
+            String eventLine = eventString.trim().replace("\uFEFF", "");
+            if (eventLine.isEmpty() || eventLine.startsWith(Constants.STRING_HASH) || eventLine.startsWith("//"))
                 return;
-            int indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
+            int indexFirstSpace = eventLine.indexOf(" ");
             if (indexFirstSpace == -1) return;
 
             String eventDateString;
-            String eventLabel_forSearch = Constants.STRING_EMPTY;
+            String eventLabel_forSearch = "";
             String eventTitle;
             boolean isEndless = true;
             boolean isAD = true;
 
-            final int indexComma = eventLine.indexOf(Constants.STRING_COMMA);
+            final int indexComma = eventLine.indexOf(",");
             if (indexComma > -1 && indexComma < indexFirstSpace) { //Есть флаги
 
                 if (indexFirstSpace - indexComma == 1) { //После запятой пробел - убираем
                     eventLine = eventLine.substring(0, indexComma + 1) + eventLine.substring(indexFirstSpace + 1);
-                    indexFirstSpace = eventLine.indexOf(Constants.STRING_SPACE);
+                    indexFirstSpace = eventLine.indexOf(" ");
                     if (indexFirstSpace == -1) {
                         statEventsSkipped.getAndIncrement();
                         return;
@@ -526,15 +526,15 @@ public class EventImporterActivity extends AppCompatActivity {
                 eventTitle = eventLine.substring(indexFirstSpace + 1).trim();
 
                 if (!flags.isEmpty()) {
-                    if (flags.contains(Constants.STRING_1)) {
+                    if (flags.contains("1")) {
                         isEndless = false;
-                        flags = flags.replace(Constants.STRING_1, Constants.STRING_EMPTY);
+                        flags = flags.replace("1", "");
                     }
                     if (flags.contains(Constants.STRING_BC)) {
                         isAD = false;
-                        flags = flags.replace(Constants.STRING_BC, Constants.STRING_EMPTY);
+                        flags = flags.replace(Constants.STRING_BC, "");
                     }
-                    eventLabel_forSearch = flags.replace(Constants.STRING_UNDERSCORE, Constants.STRING_SPACE);
+                    eventLabel_forSearch = flags.replace("_", " ");
                 }
 
             } else {
@@ -550,7 +550,7 @@ public class EventImporterActivity extends AppCompatActivity {
             }
 
             boolean useEventYear = true;
-            int indexDateNoYear = eventDateString.indexOf(Constants.STRING_0000);
+            int indexDateNoYear = eventDateString.indexOf("0000");
             if (indexDateNoYear != -1) useEventYear = false;
 
             ContactsEvents.ComputedDateForFileEvent result = eventsData.getComputedDateForFileEvent(today, indexDateNoYear, isAD, false, eventDateString, null, isEndless);
@@ -577,14 +577,14 @@ public class EventImporterActivity extends AppCompatActivity {
                         }
                         dateEvent = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).parse(eventDateString);
                     } else {
-                        dateEvent = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY_G.get()).parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                        dateEvent = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY_G.get()).parse(eventDateString.concat(" ").concat(Constants.STRING_BC));
                     }
                 } catch (ParseException e1) {
                     try {
                         if (isAD) {
                             dateEvent = Objects.requireNonNull(ContactsEvents.sdf_india.get()).parse(eventDateString);
                         } else {
-                            dateEvent = Objects.requireNonNull(ContactsEvents.sdf_india_G.get()).parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                            dateEvent = Objects.requireNonNull(ContactsEvents.sdf_india_G.get()).parse(eventDateString.concat(" ").concat(Constants.STRING_BC));
                         }
                     } catch (ParseException e2) {
                         try {
@@ -592,14 +592,14 @@ public class EventImporterActivity extends AppCompatActivity {
                                 //noinspection DataFlowIssue
                                 dateEvent = ContactsEvents.sdf_uk.get().parse(eventDateString);
                             } else {
-                                dateEvent = Objects.requireNonNull(ContactsEvents.sdf_uk_G.get()).parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                                dateEvent = Objects.requireNonNull(ContactsEvents.sdf_uk_G.get()).parse(eventDateString.concat(" ").concat(Constants.STRING_BC));
                             }
                         } catch (ParseException e3) {
                             try {
                                 if (isAD) {
                                     dateEvent = Objects.requireNonNull(ContactsEvents.sdf_java.get()).parse(eventDateString);
                                 } else {
-                                    dateEvent = Objects.requireNonNull(ContactsEvents.sdf_java_G.get()).parse(eventDateString.concat(Constants.STRING_SPACE).concat(Constants.STRING_BC));
+                                    dateEvent = Objects.requireNonNull(ContactsEvents.sdf_java_G.get()).parse(eventDateString.concat(" ").concat(Constants.STRING_BC));
                                 }
                             } catch (ParseException e4) {
                                 //Не получилось распознать
@@ -610,7 +610,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
             } else { //Без года
 
-                String dateNextEvent = eventDateString.replace(Constants.STRING_0000, String.valueOf(today.get(Calendar.YEAR)));
+                String dateNextEvent = eventDateString.replace("0000", String.valueOf(today.get(Calendar.YEAR)));
                 try {
                     String dateNextFloatingEvent = AppDateUtils.computeFloatingDate(dateNextEvent, 0, eventsData.weekDaysShort);
                     if (!dateNextEvent.equals(dateNextFloatingEvent)) {
@@ -648,7 +648,7 @@ public class EventImporterActivity extends AppCompatActivity {
             TreeMap<Integer, String> eventData = new TreeMap<>();
 
             //URLs
-            String eventURL = Constants.STRING_EMPTY;
+            String eventURL = "";
             int urlOffset = StringUtils.indexOfIgnoreCase(eventTitle, Constants.STRING_HTTP);
             if (urlOffset > -1) {
                 eventURL = eventTitle.substring(urlOffset);
@@ -659,53 +659,53 @@ public class EventImporterActivity extends AppCompatActivity {
                 }
             }
             if (urlOffset > -1) {
-                eventURL = StringUtils.substringBefore(eventURL, Constants.STRING_SPACE);
+                eventURL = StringUtils.substringBefore(eventURL, " ");
                 eventData.put(ContactsEvents.Position_eventURL, eventURL);
-                eventTitle = eventTitle.replace(eventURL, Constants.STRING_EMPTY).trim();
+                eventTitle = eventTitle.replace(eventURL, "").trim();
             }
 
             //Описание события
-            int indStartDescription = eventTitle.indexOf(Constants.STRING_BAR);
+            int indStartDescription = eventTitle.indexOf("|");
             if (indStartDescription > -1) {
-                int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
+                int pStartFirst = eventTitle.indexOf("(");
                 if (pStartFirst > -1) {
                     if (indStartDescription < pStartFirst) { //"|" до "("
                         String eventDescription = eventTitle.substring(indStartDescription + 1, pStartFirst);
                         if (!eventDescription.isEmpty()) {
                             eventData.put(ContactsEvents.Position_eventDescription, eventDescription.trim());
-                            eventTitle = eventTitle.replace(eventDescription.concat(Constants.STRING_BAR), Constants.STRING_EMPTY).trim();
+                            eventTitle = eventTitle.replace(eventDescription.concat("|"), "").trim();
                         }
                     }
                 } else {
                     String eventDescription = eventTitle.substring(indStartDescription + 1);
                     if (!eventDescription.isEmpty()) {
                         eventData.put(ContactsEvents.Position_eventDescription, eventDescription.trim());
-                        eventTitle = eventTitle.replace(eventDescription, Constants.STRING_EMPTY).trim();
+                        eventTitle = eventTitle.replace(eventDescription, "").trim();
                     }
                 }
             }
 
             if (event.needScanContacts) {
                 //всё, что внутри скобок в имени - в должность и организацию
-                int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
-                int pStartLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_START);
-                int pEndFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_CLOSE);
-                int pEndLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                int pStartFirst = eventTitle.indexOf("(");
+                int pStartLast = eventTitle.lastIndexOf("(");
+                int pEndFirst = eventTitle.indexOf(")");
+                int pEndLast = eventTitle.lastIndexOf(")");
                 String contactTitle = null;
 
                 if (pStartFirst > -1 && pEndFirst > pStartFirst) { //хотя бы пара скобок
                     if (pStartFirst == pStartLast && pEndFirst == pEndLast) { //одна пара скобок
                         contactTitle = eventTitle.substring(pStartFirst + 1, pEndFirst);
-                        eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                        eventTitle = eventTitle.replace("(" + contactTitle + ")", "").trim();
                     } else if (pStartLast < pEndFirst && pStartLast < pEndLast) { //скобки внутри скобок
                         contactTitle = eventTitle.substring(pStartFirst + 1, pEndLast);
-                        eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                        eventTitle = eventTitle.replace("(" + contactTitle + ")", "").trim();
                     } else if (pEndFirst < pStartLast) { //пара скобок за другой парой
                         contactTitle = eventTitle.substring(pStartLast + 1, pEndLast);
-                        eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                        eventTitle = eventTitle.replace("(" + contactTitle + ")", "").trim();
                     }
                     if (contactTitle != null) {
-                        int cStart = contactTitle.indexOf(Constants.STRING_COMMA);
+                        int cStart = contactTitle.indexOf(",");
                         if (cStart > 0) {
                             eventData.put(ContactsEvents.Position_organization, contactTitle.substring(0, cStart).trim());
                             eventData.put(ContactsEvents.Position_title, contactTitle.substring(cStart + 1).trim());
@@ -718,7 +718,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
             if (!event.needScanContacts) {
                 eventData.put(ContactsEvents.Position_personFullName, eventTitle);
-                eventData.put(ContactsEvents.Position_personFullNameAlt, Constants.STRING_EMPTY);
+                eventData.put(ContactsEvents.Position_personFullNameAlt, "");
             } else if (eventsData.preferences_rules_files_name_format == ContactsEvents.FormatName.LastnameFirst) {
                 eventData.put(ContactsEvents.Position_personFullNameAlt, eventTitle);
                 String personFullNameAlt = Person.getAltName(eventTitle, ContactsEvents.FormatName.LastnameFirst);
@@ -771,7 +771,7 @@ public class EventImporterActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -864,7 +864,7 @@ public class EventImporterActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             Log.e(TAG, "Error streaming vCard: " + uri, e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -879,14 +879,14 @@ public class EventImporterActivity extends AppCompatActivity {
 
             ContactsEvents.Event event = null;
             Date eventDateFirstTime = null;
-            String url = Constants.STRING_EMPTY;
-            String lastName = Constants.STRING_EMPTY;
-            String firstName = Constants.STRING_EMPTY;
-            String middleName = Constants.STRING_EMPTY;
-            String fullName = Constants.STRING_EMPTY;
-            String organization = Constants.STRING_EMPTY;
-            String title = Constants.STRING_EMPTY;
-            String photo = Constants.STRING_EMPTY;
+            String url = "";
+            String lastName = "";
+            String firstName = "";
+            String middleName = "";
+            String fullName = "";
+            String organization = "";
+            String title = "";
+            String photo = "";
             boolean useEventYear = true;
 
             String[] lines = vCardString.split("\n", -1);
@@ -894,7 +894,7 @@ public class EventImporterActivity extends AppCompatActivity {
             for (String line : lines) {
                 if (line.startsWith(Constants.vCard_EventBegin)) {
 
-                    event = eventsData.createTypedEvent(Constants.Type_BirthDay, Constants.STRING_EMPTY);
+                    event = eventsData.createTypedEvent(Constants.Type_BirthDay, "");
 
                 } else if (line.startsWith(Constants.vCard_EventEnd) && event != null) {
 
@@ -916,12 +916,12 @@ public class EventImporterActivity extends AppCompatActivity {
 
                     if (!firstName.isEmpty()) {
                         if (!middleName.isEmpty()) {
-                            personFullName = firstName + Constants.STRING_SPACE + middleName;
+                            personFullName = firstName + " " + middleName;
                         } else {
                             personFullName = firstName;
                         }
                         if (!lastName.isEmpty()) {
-                            personFullName += Constants.STRING_SPACE + lastName;
+                            personFullName += " " + lastName;
                         }
                     } else if (!lastName.isEmpty()) {
                         personFullName = lastName;
@@ -968,7 +968,7 @@ public class EventImporterActivity extends AppCompatActivity {
                     String nValue = StringUtils.getTagValue(line, Constants.vCard_Name);
                     if (nValue != null) {
                         if (StringUtils.isQuotedPrintable(line)) nValue = StringUtils.decodeQuotedPrintable(nValue, StandardCharsets.UTF_8);
-                        List<String> nameParts = StringUtils.splitWithEscape(nValue, Constants.STRING_SEMICOLON);
+                        List<String> nameParts = StringUtils.splitWithEscape(nValue, ';');
                         if (nameParts.size() > 2) {
                             lastName = StringUtils.cleanValue(nameParts.get(0));
                             firstName = StringUtils.cleanValue(nameParts.get(1));
@@ -984,7 +984,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
                     String bdayValue = StringUtils.getTagValue(line, Constants.vCard_Birthday);
                     if (bdayValue != null) {
-                        boolean hasYear = !bdayValue.startsWith(Constants.STRING_MINUS);
+                        boolean hasYear = !bdayValue.startsWith("-");
                         String dateToParse = hasYear ? bdayValue : eventsData.getToday().get(Calendar.YEAR) + bdayValue.substring(1);
                         eventDateFirstTime = AppDateUtils.parseDateWithFormats(dateToParse,
                                 Objects.requireNonNull(ContactsEvents.sdf_YYYYMMDD_noDiv.get()),
@@ -999,7 +999,7 @@ public class EventImporterActivity extends AppCompatActivity {
                     String orgValue = StringUtils.getTagValue(line, Constants.vCard_Org);
                     if (orgValue != null) {
                         if (StringUtils.isQuotedPrintable(line)) orgValue = StringUtils.decodeQuotedPrintable(orgValue, StandardCharsets.UTF_8);
-                        List<String> orgParts = StringUtils.splitWithEscape(orgValue, Constants.STRING_SEMICOLON);
+                        List<String> orgParts = StringUtils.splitWithEscape(orgValue, ';');
                         if (!orgParts.isEmpty()) organization = StringUtils.cleanValue(orgParts.get(0));
                     }
 
@@ -1066,7 +1066,7 @@ public class EventImporterActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             Log.e(TAG, "Error processing single vCard", e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1113,25 +1113,25 @@ public class EventImporterActivity extends AppCompatActivity {
                             String eventTitle = eventData.get(ContactsEvents.Position_personFullName);
                             if (eventTitle != null) {
                                 //всё, что внутри скобок в имени - в должность и организацию
-                                int pStartFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_START);
-                                int pStartLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_START);
-                                int pEndFirst = eventTitle.indexOf(Constants.STRING_PARENTHESIS_CLOSE);
-                                int pEndLast = eventTitle.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                                int pStartFirst = eventTitle.indexOf("(");
+                                int pStartLast = eventTitle.lastIndexOf("(");
+                                int pEndFirst = eventTitle.indexOf(")");
+                                int pEndLast = eventTitle.lastIndexOf(")");
                                 String contactTitle = null;
 
                                 if (pStartFirst > -1 && pEndFirst > pStartFirst) { //хотя бы пара скобок
                                     if (pStartFirst == pStartLast && pEndFirst == pEndLast) { //одна пара скобок
                                         contactTitle = eventTitle.substring(pStartFirst + 1, pEndFirst);
-                                        eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                                        eventTitle = eventTitle.replace("(" + contactTitle + ")", "").trim();
                                     } else if (pStartLast < pEndFirst && pStartLast < pEndLast) { //скобки внутри скобок
                                         contactTitle = eventTitle.substring(pStartFirst + 1, pEndLast);
-                                        eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                                        eventTitle = eventTitle.replace("(" + contactTitle + ")", "").trim();
                                     } else if (pEndFirst < pStartLast) { //пара скобок за другой парой
                                         contactTitle = eventTitle.substring(pStartLast + 1, pEndLast);
-                                        eventTitle = eventTitle.replace(Constants.STRING_PARENTHESIS_START + contactTitle + Constants.STRING_PARENTHESIS_CLOSE, Constants.STRING_EMPTY).trim();
+                                        eventTitle = eventTitle.replace("(" + contactTitle + ")", "").trim();
                                     }
                                     if (contactTitle != null) {
-                                        int cStart = contactTitle.indexOf(Constants.STRING_COMMA);
+                                        int cStart = contactTitle.indexOf(",");
                                         if (cStart > 0) {
                                             eventData.put(ContactsEvents.Position_organization, contactTitle.substring(0, cStart).trim());
                                             eventData.put(ContactsEvents.Position_title, contactTitle.substring(cStart + 1).trim());
@@ -1165,9 +1165,9 @@ public class EventImporterActivity extends AppCompatActivity {
                         }
                     }
                     eventData.put(ContactsEvents.Position_eventID, StringUtils.getHash(String.valueOf(System.currentTimeMillis())));
-                    eventData.put(ContactsEvents.Position_eventCaption, Constants.STRING_EMPTY);
-                    eventData.put(ContactsEvents.Position_eventIcon, Constants.STRING_EMPTY);
-                    eventData.put(ContactsEvents.Position_eventEmoji, Constants.STRING_EMPTY);
+                    eventData.put(ContactsEvents.Position_eventCaption, "");
+                    eventData.put(ContactsEvents.Position_eventIcon, "");
+                    eventData.put(ContactsEvents.Position_eventEmoji, "");
 
                     //Если не надо использовать год, обрезаем дату
                     if (!useYear) {
@@ -1204,7 +1204,7 @@ public class EventImporterActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 

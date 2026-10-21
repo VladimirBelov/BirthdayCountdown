@@ -20,7 +20,7 @@ public class CustomTextPreference extends Preference {
         String getCurrentValue();
     }
 
-    private ValueProvider mValueProvider = () -> Constants.STRING_EMPTY;
+    private ValueProvider mValueProvider = () -> "";
 
     public CustomTextPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -53,7 +53,7 @@ public class CustomTextPreference extends Preference {
         TextView widgetText = view.findViewById(R.id.widget_text);
         if (widgetText != null) {
             String value = mValueProvider.getCurrentValue();
-            widgetText.setText(value != null ? value : Constants.STRING_EMPTY);
+            widgetText.setText(value != null ? value : "");
         }
     }
 

@@ -179,12 +179,12 @@ public class WidgetCalendar extends AppWidgetProvider {
 
             if (needSavePref) {
                 widgetPref.set(3, Integer.toString(customMonthShift));
-                eventsData.setWidgetPreference(appWidgetId, TextUtils.join(Constants.STRING_COMMA, widgetPref));
+                eventsData.setWidgetPreference(appWidgetId, TextUtils.join(",", widgetPref));
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         } finally {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -506,7 +506,7 @@ public class WidgetCalendar extends AppWidgetProvider {
                 if (widgetPref.size() > 14) prefEventsColors = Arrays.asList(widgetPref.get(14).split(Constants.REGEX_PLUS, -1));
 
                 for (String color: prefEventsColors) {
-                    String[] colors = color.split(Constants.STRING_COLON, -1);
+                    String[] colors = color.split(":", -1);
                     if (colors.length == 2) {
                         String eventId = colors[0];
                         if (prefEvents.contains(eventId)) {
@@ -547,8 +547,8 @@ public class WidgetCalendar extends AppWidgetProvider {
             //Убираем точки (pt, fr)
             for (int i = 0, weekdaysLength = weekdays.length; i < weekdaysLength; i++) {
                 String day = weekdays[i];
-                if (day.contains(Constants.STRING_PERIOD)) {
-                    weekdays[i] = day.replace(Constants.STRING_PERIOD, Constants.STRING_EMPTY);
+                if (day.contains(".")) {
+                    weekdays[i] = day.replace(".", "");
                 }
             }
 
@@ -673,14 +673,14 @@ public class WidgetCalendar extends AppWidgetProvider {
                 rv.setViewVisibility(R.id.info, View.GONE);
             }
 
-            ToastExpander.showDebugMsg(context, widgetType + Constants.STRING_COLON + appWidgetId + Constants.STRING_EOL + widgetPref);
+            ToastExpander.showDebugMsg(context, widgetType + ":" + appWidgetId + "\n" + widgetPref);
 
             rv.setViewVisibility(R.id.progressUpdate, View.GONE);
             appWidgetManager.updateAppWidget(appWidgetId, rv);
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         } finally {
             eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
             eventsData.statActiveWidgets++;
@@ -871,7 +871,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1076,7 +1076,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
         return cellRv;
     }
@@ -1118,19 +1118,19 @@ public class WidgetCalendar extends AppWidgetProvider {
                     //todo: если в один день и один год больше одной свадьбы - сцепляем такие события в одно (фио через запятую)
                     for (int i = 0; i < allEventsThisDay.size(); i++) {
                         String event = allEventsThisDay.get(i);
-                        int indParOpen = event.lastIndexOf(Constants.STRING_PARENTHESIS_OPEN);
-                        int indParClose = event.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                        int indParOpen = event.lastIndexOf(" (");
+                        int indParClose = event.lastIndexOf(")");
                         if (indParOpen > -1 && indParClose > -1) {
-                            int indMinus = event.indexOf(Constants.STRING_MINUS, indParOpen);
+                            int indMinus = event.indexOf("-", indParOpen);
                             if (event.contains(weddingPrefix)) {
                                 //Подставляем в годовщину свадьбы её название
-                                String strYear = event.substring(indParOpen + Constants.STRING_PARENTHESIS_OPEN.length(), indParClose);
+                                String strYear = event.substring(indParOpen + " (".length(), indParClose);
                                 try {
                                     int year = Integer.parseInt(strYear);
                                     String anCaption = StringUtils.getWeddingName(cal.get(Calendar.YEAR) - year, eventsData.getContext(), eventsData.getResources());
                                     if (StringUtils.hasContent(anCaption)) {
-                                        allEventsThisDay.set(i, event.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption)
-                                                .concat(Constants.STRING_PARENTHESIS_CLOSE));
+                                        allEventsThisDay.set(i, event.concat(" (").concat(anCaption)
+                                                .concat(")"));
                                     }
                                 } catch (NumberFormatException ignored) { /**/ }
                             } else if (indMinus == -1 && !event.contains(birthdayPrefix)) {
@@ -1191,7 +1191,7 @@ public class WidgetCalendar extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
         return pendingIntent;
     }

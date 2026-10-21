@@ -138,7 +138,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
 
             widgetPref_onClick = eventsData.preferences_widgets_on_click_action;
             //Если = Constants.STRING_1, значит используем общие настройки
-            if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty() && !widgetPref.get(12).equals(Constants.STRING_1)) {
+            if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty() && !widgetPref.get(12).equals("1")) {
                 try {
                     widgetPref_onClick = Integer.parseInt(widgetPref.get(12));
                 } catch (NumberFormatException ignored) { /**/ }
@@ -151,7 +151,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
             int maxEvents = 100;
             int maxDays = 0;
             int maxFacts = 0;
-            String prefScope = Constants.STRING_EMPTY;
+            String prefScope = "";
             if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
 
             if (StringUtils.hasContent(prefScope)) {
@@ -164,8 +164,8 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
                 if (found) {
                     final String scopeEvents = matchScopes.group(1);
                     if (scopeEvents != null) {
-                        List<String> scopeEventsItems = new ArrayList<>(Arrays.asList(localizedResources.getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
-                        if (!scopeEvents.equals(Constants.STRING_0) && scopeEventsItems.contains(scopeEvents)) {
+                        List<String> scopeEventsItems = new ArrayList<>(Arrays.asList(localizedResources.getString(R.string.widget_config_scope_events_items).split(",", -1)));
+                        if (!scopeEvents.equals("0") && scopeEventsItems.contains(scopeEvents)) {
                             try {
                                 maxEvents = Integer.parseInt(scopeEvents);
                             } catch (NumberFormatException e) { /**/ }
@@ -173,8 +173,8 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
                     }
                     final String scopeDays = matchScopes.group(2);
                     if (scopeDays != null) {
-                        List<String> scopeDaysItems = new ArrayList<>(Arrays.asList(localizedResources.getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
-                        if (!scopeDays.equals(Constants.STRING_0) && scopeDaysItems.contains(scopeDays)) {
+                        List<String> scopeDaysItems = new ArrayList<>(Arrays.asList(localizedResources.getString(R.string.widget_config_scope_days_items).split(",", -1)));
+                        if (!scopeDays.equals("0") && scopeDaysItems.contains(scopeDays)) {
                             try {
                                 maxDays = Integer.parseInt(scopeDays);
                             } catch (NumberFormatException e) { /**/ }
@@ -200,7 +200,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
                 }
                 List<String> listFacts = eventsData.getNextRandomFacts(maxFacts, new HashSet<>(sourcesPrefList));
                 for (String fact: listFacts) {
-                    String factDecorated = eventsData.getEventEmojiForType(Constants.EventType_Fact) + Constants.STRING_SPACE + fact;
+                    String factDecorated = eventsData.getEventEmojiForType(Constants.EventType_Fact) + " " + fact;
                     eventListView.add(factDecorated);
                     eventsData.saveRecentFact(factDecorated);
                 }
@@ -232,7 +232,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
 
     }
@@ -337,7 +337,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
                     columnText = column;
                 }
                 if (eventText.length() > 0) {
-                    eventText.append(Constants.STRING_SPACE);
+                    eventText.append(" ");
                 }
                 eventText.append(columnText);
 
@@ -363,7 +363,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
 
         return views;
@@ -395,8 +395,8 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
             for (String eventItem : widgetPref_eventInfo) {
 
                 final boolean notEndWithBR = !eventDetails.toString().isEmpty() && !eventDetails.toString().endsWith(Constants.HTML_BR);
-                final boolean notEndWithBRorBracket = notEndWithBR && !eventDetails.toString().endsWith(Constants.STRING_PARENTHESIS_START);
-                final boolean notEndWithSpace = notEndWithBR && !eventDetails.toString().endsWith(Constants.STRING_SPACE);
+                final boolean notEndWithBRorBracket = notEndWithBR && !eventDetails.toString().endsWith("(");
+                final boolean notEndWithSpace = notEndWithBR && !eventDetails.toString().endsWith(" ");
                 boolean isBirthdayEvent = eventSubType.equals(Constants.EventType_BirthDay) || eventSubType.equals(Constants.EventType_5K);
 
                 if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Photo_ID))) {
@@ -431,47 +431,47 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
 
                     String eventEmoji = singleEventArray[ContactsEvents.Position_eventEmoji];
                     if (StringUtils.hasContent(eventEmoji)) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        eventDetails.append(eventEmoji).append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
+                        eventDetails.append(eventEmoji).append(" ");
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_FavIcon_ID))) {
 
                     if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         eventDetails.append(Constants.eventTitleFavoritePrefix);
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
 
                     if (isBirthdayEvent) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         final String zodiacSign = singleEventArray[ContactsEvents.Position_zodiacSign];
-                        int indexSpace = zodiacSign.indexOf(Constants.STRING_SPACE);
+                        int indexSpace = zodiacSign.indexOf(" ");
                         if (indexSpace > -1) {
-                            eventDetails.append(zodiacSign.substring(0, indexSpace)).append(Constants.STRING_SPACE);
+                            eventDetails.append(zodiacSign.substring(0, indexSpace)).append(" ");
                         } else {
-                            eventDetails.append(zodiacSign).append(Constants.STRING_SPACE);
+                            eventDetails.append(zodiacSign).append(" ");
                         }
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_ZodiacYear_ID))) {
 
                     if (isBirthdayEvent) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         final String zodiacYear = singleEventArray[ContactsEvents.Position_zodiacYear];
-                        int indexSpace = zodiacYear.indexOf(Constants.STRING_SPACE);
+                        int indexSpace = zodiacYear.indexOf(" ");
                         if (indexSpace > -1) {
-                            eventDetails.append(zodiacYear.substring(0, indexSpace)).append(Constants.STRING_SPACE);
+                            eventDetails.append(zodiacYear.substring(0, indexSpace)).append(" ");
                         } else {
-                            eventDetails.append(zodiacYear).append(Constants.STRING_SPACE);
+                            eventDetails.append(zodiacYear).append(" ");
                         }
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventCaption_ID))) {
 
                     if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_eventCaption])) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         eventDetails.append(singleEventArray[ContactsEvents.Position_eventCaption]);
                     }
 
@@ -481,7 +481,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
                             ContactsEvents.FormatDate.WithoutYear, eventsData.preferences_date_format, eventsData.getContext(),
                             eventsData.getResources(), eventsData.currentLocale);
                     if (StringUtils.hasContent(eventDay)) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
                     }
 
@@ -491,7 +491,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
                             ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
                             eventsData.getResources(), eventsData.currentLocale);
                     if (StringUtils.hasContent(eventDay)) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
                     }
 
@@ -501,7 +501,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
                             ContactsEvents.FormatDate.WithoutYear, eventsData.preferences_date_format, eventsData.getContext(),
                             eventsData.getResources(), eventsData.currentLocale);
                     if (StringUtils.hasContent(eventDay)) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
                     }
 
@@ -511,13 +511,13 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
                             ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
                             eventsData.getResources(), eventsData.currentLocale);
                     if (StringUtils.hasContent(eventDay)) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE).append(eventDay).append(Constants.HTML_COLOR_END);
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_DaysBeforeEventShort_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    if (notEndWithBR) eventDetails.append(" ");
                     if (eventDistance_Days < 2) {
                         eventDetails.append(eventDistanceInfo[0]);
                     } else {
@@ -528,7 +528,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
 
                     String fullName = StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format);
                     if (StringUtils.hasContent(fullName)) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         eventDetails.append(fullName);
                     }
 
@@ -536,7 +536,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
 
                     if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_age_caption])) {
                         if (notEndWithBRorBracket)
-                            eventDetails.append(Constants.STRING_COLON_SPACE);
+                            eventDetails.append(": ");
                         eventDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
                     }
 
@@ -548,59 +548,59 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
                     }
 
                     if (StringUtils.hasContent(eventLabel)) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         eventDetails.append(eventLabel);
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_AgeShort_ID))) {
 
                     String age = singleEventArray[ContactsEvents.Position_age].trim();
-                    if (!age.isEmpty() && !Constants.STRING_MINUS1.equals(age)) {
+                    if (!age.isEmpty() && !"-1".equals(age)) {
                         if (notEndWithBRorBracket && notEndWithSpace)
-                            eventDetails.append(Constants.STRING_COLON_SPACE);
+                            eventDetails.append(": ");
                         eventDetails.append(singleEventArray[ContactsEvents.Position_age]);
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_WeddingName_ID))) {
 
                     if (eventSubType.equals(Constants.EventType_Anniversary)) {
-                        int ind1 = singleEventArray[ContactsEvents.Position_eventCaption].indexOf(Constants.STRING_PARENTHESIS_OPEN);
+                        int ind1 = singleEventArray[ContactsEvents.Position_eventCaption].indexOf(" (");
                         if (ind1 > -1) {
-                            if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                            if (notEndWithBR) eventDetails.append(" ");
                             eventDetails.append(singleEventArray[ContactsEvents.Position_eventCaption].substring(ind1));
                         }
                     }
 
                 } else if (dateColorId > 2 && eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_DaysBeforeEventFar_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    if (notEndWithBR) eventDetails.append(" ");
                     eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE)
                             .append(eventDistanceInfo[0]).append(Constants.HTML_COLOR_END);
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_DaysBeforeEvent_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                    if (notEndWithBR) eventDetails.append(" ");
                     eventDetails.append(Constants.HTML_COLOR_START).append(colorDate).append(Constants.HTML_COLOR_MIDDLE)
                             .append(eventDistanceInfo[0]).append(Constants.HTML_COLOR_END);
 
                 } else if (dateColorId > 2 && eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDayOfWeekFar_ID))) {
 
                     if (eventDistanceInfo.length >= 1) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         eventDetails.append(eventDistanceInfo[1]);
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDayOfWeek_ID))) {
 
                     if (eventDistanceInfo.length >= 1) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         eventDetails.append(eventDistanceInfo[1]);
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventDayOfWeekShort_ID))) {
 
                     if (eventDistanceInfo.length >= 3) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         eventDetails.append(eventDistanceInfo[3]);
                     }
 
@@ -608,14 +608,14 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
 
                     String[] dates = singleEventArray[ContactsEvents.Position_dates].split(Constants.STRING_2TILDA, -1);
                     if (dates.length > 0) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         eventDetails.append(eventsData.getEventSourceIcon(singleEventArray));
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_LinkIcon_ID))) {
 
                     if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_eventURL])) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
+                        if (notEndWithBR) eventDetails.append(" ");
                         eventDetails.append("🔗");
                     }
 
@@ -623,26 +623,26 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
 
                     eventDetails.append(Constants.HTML_BR);
 
-                } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_CurrentAge_ID)) && !singleEventArray[ContactsEvents.Position_eventDistance].equals(Constants.STRING_0)) {
+                } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_CurrentAge_ID)) && !singleEventArray[ContactsEvents.Position_eventDistance].equals("0")) {
 
                     final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
                     if (StringUtils.hasContent(currentAge)) {
-                        if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                        int ind = currentAge.indexOf(Constants.STRING_PARENTHESIS_OPEN);
+                        if (notEndWithBR) eventDetails.append(" ");
+                        int ind = currentAge.indexOf(" (");
                         eventDetails.append(ind != -1 ? currentAge.substring(0, ind) : currentAge);
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_LeftBracket_ID)) || eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_LeftBracket2_ID))) {
 
-                    if (notEndWithBR) eventDetails.append(Constants.STRING_SPACE);
-                    eventDetails.append(Constants.STRING_PARENTHESIS_START);
+                    if (notEndWithBR) eventDetails.append(" ");
+                    eventDetails.append("(");
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_RightBracket_ID)) || eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_RightBracket2_ID))) {
 
-                    if (eventDetails.toString().endsWith(Constants.STRING_PARENTHESIS_START)) {
-                        eventDetails.setLength(eventDetails.length() - Constants.STRING_PARENTHESIS_START.length());
+                    if (eventDetails.toString().endsWith("(")) {
+                        eventDetails.setLength(eventDetails.length() - "(".length());
                     } else {
-                        eventDetails.append(Constants.STRING_PARENTHESIS_CLOSE);
+                        eventDetails.append(")");
                     }
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_ColorizeEntireRow_ID))) {
@@ -664,7 +664,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
 
                 } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_Colon_ID))) {
 
-                    eventDetails.append(Constants.STRING_COLON_SPACE);
+                    eventDetails.append(": ");
 
                 }
             }
@@ -677,7 +677,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
         detailsList.add(eventDetails.toString());
         return detailsList;

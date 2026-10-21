@@ -244,10 +244,10 @@ public class ImageUtils {
         int roundingFactor = 1;
         if (widgetPref != null && widgetPref.size() > 6) {
             switch (widgetPref.get(6)) {
-                case Constants.STRING_1: roundingFactor = 2; break;
-                case Constants.STRING_2: roundingFactor = 3; break;
-                case Constants.STRING_3: roundingFactor = 4; break;
-                case Constants.STRING_4: roundingFactor = 9; break;
+                case "1": roundingFactor = 2; break;
+                case "2": roundingFactor = 3; break;
+                case "3": roundingFactor = 4; break;
+                case "4": roundingFactor = 9; break;
             }
         }
         return roundingFactor;
@@ -269,7 +269,7 @@ public class ImageUtils {
                 if (prefArrayMagnify.length >= elementNumber) {
                     String prefMagnify = prefArrayMagnify[elementNumber - 1];
 
-                    if (prefMagnify.contains(Constants.STRING_PERIOD)) { //В настройке - сам мультипликатор
+                    if (prefMagnify.contains(".")) { //В настройке - сам мультипликатор
 
                         try {
                             double value = Double.parseDouble(prefMagnify);
@@ -279,43 +279,43 @@ public class ImageUtils {
                     } else { //В настройке - индекс из списка выбора
 
                         switch (prefMagnify) {
-                            case Constants.STRING_1:
+                            case "1":
                                 magnify *= 0.5;
                                 break;
-                            case Constants.STRING_2:
+                            case "2":
                                 magnify *= 0.65;
                                 break;
-                            case Constants.STRING_3:
+                            case "3":
                                 magnify *= 0.75;
                                 break;
-                            case Constants.STRING_4:
+                            case "4":
                                 magnify *= 0.85;
                                 break;
-                            case Constants.STRING_5:
+                            case "5":
                                 magnify *= 1; //То же, что и "Авто"
                                 break;
-                            case Constants.STRING_6:
+                            case "6":
                                 magnify *= 1.1;
                                 break;
-                            case Constants.STRING_7:
+                            case "7":
                                 magnify *= 1.2;
                                 break;
-                            case Constants.STRING_8:
+                            case "8":
                                 magnify *= 1.3;
                                 break;
-                            case Constants.STRING_9:
+                            case "9":
                                 magnify *= 1.4;
                                 break;
-                            case Constants.STRING_10:
+                            case "10":
                                 magnify *= 1.5;
                                 break;
-                            case Constants.STRING_11:
+                            case "11":
                                 magnify *= 1.6;
                                 break;
-                            case Constants.STRING_12:
+                            case "12":
                                 magnify *= 1.75;
                                 break;
-                            case Constants.STRING_13:
+                            case "13":
                                 magnify *= 2.0;
                                 break;
                         }

@@ -212,7 +212,7 @@ public class FAQActivity extends AppCompatActivity {
                 Bundle extras = intent.getExtras();
                 if (extras != null) {
                     String anchor;
-                    anchor = extras.getString(Constants.EXTRA_ANCHOR, Constants.STRING_EMPTY);
+                    anchor = extras.getString(Constants.EXTRA_ANCHOR, "");
                     if (!anchor.isEmpty()) {
                         // https://stackoverflow.com/questions/14062901/webview-jump-to-anchor-using-loaddatawithbaseurl
                         sb.append(Constants.ANCHOR_LINK_START).append(anchor).append(Constants.ANCHOR_LINK_END);
@@ -267,14 +267,14 @@ public class FAQActivity extends AppCompatActivity {
             buttonMail.setOnClickListener(view -> {
                 try {
                     startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(Constants.MAILTO_TEMPLATE + getString(R.string.app_name) + "%20"
-                            + BuildConfig.VERSION_NAME + Constants.STRING_PARENTHESIS_OPEN + BuildConfig.VERSION_CODE + ")")));
+                            + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")")));
                 } catch (android.content.ActivityNotFoundException e) { /**/ }
                 finish();
             });
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         } finally {
             if (ta != null) ta.recycle();
         }

@@ -27,8 +27,8 @@ public class Person {
 
     private static final String TAG = "Person";
     private String LastName;
-    private String FirstName = Constants.STRING_EMPTY;
-    private String SecondName = Constants.STRING_EMPTY;
+    private String FirstName = "";
+    private String SecondName = "";
     public int Age = -1;
     String FIO_str;
     private Context context;
@@ -40,7 +40,7 @@ public class Person {
             this.context = context;
 
             FIO_str = eventArray[ContactsEvents.Position_personFullNameAlt].trim();
-            int spaceFirst = FIO_str.indexOf(Constants.STRING_SPACE);
+            int spaceFirst = FIO_str.indexOf(" ");
             if (spaceFirst == -1) { //Имя из одного слова
                 final ContactsEvents contactsEvents = ContactsEvents.getInstance();
                 final String normalizedName = StringUtils.normalizeString(FIO_str);
@@ -49,14 +49,14 @@ public class Person {
                 } else if (contactsEvents.preferences_first_names_male.reset(normalizedName).find()
                         ||contactsEvents.preferences_first_names_female.reset(normalizedName).find()) { //Это имя
                     FirstName = FIO_str;
-                    LastName = Constants.STRING_EMPTY;
+                    LastName = "";
                 } else { //Это фамилия
-                    FirstName = Constants.STRING_EMPTY;
+                    FirstName = "";
                     LastName = FIO_str;
                 }
-                SecondName = Constants.STRING_EMPTY;
+                SecondName = "";
             } else {
-                int spaceLast = FIO_str.lastIndexOf(Constants.STRING_SPACE);
+                int spaceLast = FIO_str.lastIndexOf(" ");
                 if (spaceFirst != spaceLast && spaceLast != -1) { //Есть отчество
                     LastName = FIO_str.substring(0, spaceFirst);
                     FirstName = FIO_str.substring(spaceFirst + 1, spaceLast);
@@ -64,7 +64,7 @@ public class Person {
                 } else {
                     LastName = FIO_str.substring(0, spaceFirst);
                     FirstName = FIO_str.substring(spaceFirst + 1);
-                    SecondName = Constants.STRING_EMPTY;
+                    SecondName = "";
                 }
             }
 
@@ -74,7 +74,7 @@ public class Person {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -88,23 +88,23 @@ public class Person {
 
         try{
 
-            final int spaceFirst = fullName.indexOf(Constants.STRING_SPACE);
+            final int spaceFirst = fullName.indexOf(" ");
             if (spaceFirst == -1) { //Имя из одного слова
                 return fullName;
             } else {
-                final int spaceLast = fullName.lastIndexOf(Constants.STRING_SPACE);
+                final int spaceLast = fullName.lastIndexOf(" ");
 
                 if (nameFormat == ContactsEvents.FormatName.NameFirst) {
-                    return fullName.substring(spaceLast + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceLast);
+                    return fullName.substring(spaceLast + 1) + " " + fullName.substring(0, spaceLast);
                 } else {
-                    return fullName.substring(spaceFirst + 1) + Constants.STRING_SPACE + fullName.substring(0, spaceFirst);
+                    return fullName.substring(spaceFirst + 1) + " " + fullName.substring(0, spaceFirst);
                 }
 
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            return Constants.STRING_EMPTY;
+            return "";
         }
     }
 
@@ -113,11 +113,11 @@ public class Person {
 
         try{
 
-            final int spaceFirst = fullName.indexOf(Constants.STRING_SPACE);
+            final int spaceFirst = fullName.indexOf(" ");
             if (spaceFirst == -1) { //Имя из одного слова
                 return fullName;
             } else {
-                final int spaceLast = fullName.lastIndexOf(Constants.STRING_SPACE);
+                final int spaceLast = fullName.lastIndexOf(" ");
 
                 if (spaceFirst == spaceLast) return fullName; //Уже короткое
 
@@ -131,7 +131,7 @@ public class Person {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            return Constants.STRING_EMPTY;
+            return "";
         }
     }
 
@@ -145,21 +145,21 @@ public class Person {
         try {
             if (!LastName.isEmpty()) {
                 return LastName
-                        + (!FirstName.isEmpty() ? Constants.STRING_SPACE + FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY)
-                        + (!SecondName.isEmpty() ? Constants.STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD : Constants.STRING_EMPTY);
+                        + (!FirstName.isEmpty() ? " " + FirstName.substring(0, 1).toUpperCase() + "." : "")
+                        + (!SecondName.isEmpty() ? " " + SecondName.substring(0, 1).toUpperCase() + "." : "");
             } else if (!FirstName.isEmpty()) {
                 if (!SecondName.isEmpty()) {
-                    return FirstName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD + Constants.STRING_SPACE + SecondName.substring(0, 1).toUpperCase() + Constants.STRING_PERIOD;
+                    return FirstName.substring(0, 1).toUpperCase() + "." + " " + SecondName.substring(0, 1).toUpperCase() + ".";
                 } else {
                     return FirstName;
                 }
             } else {
-                return Constants.STRING_EMPTY;
+                return "";
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
-            return Constants.STRING_EMPTY;
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
+            return "";
         }
     }
 
@@ -211,7 +211,7 @@ public class Person {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
             return -1;
         }
 

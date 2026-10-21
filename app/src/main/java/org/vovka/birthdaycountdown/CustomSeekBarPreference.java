@@ -199,12 +199,12 @@ public class CustomSeekBarPreference extends DialogPreference {
     public void updateSummary(int newValue) {
 
         if (!isEnabled()) {
-            setSummary(Constants.STRING_EMPTY);
+            setSummary("");
             return;
         }
         ContactsEvents eventsData = ContactsEvents.getInstance();
         if (!eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) {
-            setSummary(Constants.STRING_EMPTY);
+            setSummary("");
             return;
         }
 

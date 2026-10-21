@@ -109,13 +109,13 @@ public class WidgetPhotoList extends AppWidgetProvider {
             if (eventsData.preferences_debug_on) {
                 views.setTextViewText(R.id.info, res.getString(R.string.widget_msg_updated)
                         + Objects.requireNonNull(eventsData.sdf_DDMMYYYYHHMM.get()).format(Calendar.getInstance().getTime())
-                        + Constants.STRING_EOL + res.getString(R.string.widget_msg_events) + eventsToShow + Constants.STRING_SLASH + eventsData.eventList.size());
+                        + "\n" + res.getString(R.string.widget_msg_events) + eventsToShow + "/" + eventsData.eventList.size());
             } else {
-                views.setTextViewText(R.id.info, Constants.STRING_EMPTY);
+                views.setTextViewText(R.id.info, "");
             }
 
             //Заголовок виджета (с макросами)
-            String prefWidgetCaption = Constants.STRING_EMPTY;
+            String prefWidgetCaption = "";
             if (widgetPref.size() > 9) {
                 prefWidgetCaption = widgetPref.get(9);
                 if (prefWidgetCaption.contains("##")) { // День недели
@@ -169,8 +169,8 @@ public class WidgetPhotoList extends AppWidgetProvider {
             views.setPendingIntentTemplate(R.id.widget_list, listClickPIntent);
 
             //Сообщение при отсутствии событий
-            String prefZeroEventsMessage = Constants.STRING_EMPTY;
-            if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
+            String prefZeroEventsMessage = "";
+            if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, ",");
             views.setTextViewText(R.id.empty_view, TextUtils.isEmpty(prefZeroEventsMessage) ? res.getString(R.string.msg_no_events) : prefZeroEventsMessage);
 
             //Цвет подложки и бордюра
@@ -207,10 +207,10 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
             ToastExpander.showDebugMsg(context, Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
                     res.getString(R.string.msg_debug_widget_list_config, widgetType, appWidgetId,
-                            res.getResourceEntryName(views.getLayoutId()), TextUtils.join(Constants.STRING_COMMA, widgetPref))
-                    : widgetType.concat(Constants.STRING_COLON)
-                    .concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL)
-                    .concat(TextUtils.join(Constants.STRING_COMMA, widgetPref))
+                            res.getResourceEntryName(views.getLayoutId()), TextUtils.join(",", widgetPref))
+                    : widgetType.concat(":")
+                    .concat(String.valueOf(appWidgetId)).concat("\n")
+                    .concat(TextUtils.join(",", widgetPref))
             );
 
             //Запуск обновления
@@ -219,7 +219,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         } finally {
             eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
             eventsData.statActiveWidgets++;
@@ -252,7 +252,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -284,7 +284,7 @@ public class WidgetPhotoList extends AppWidgetProvider {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 

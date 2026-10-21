@@ -70,7 +70,7 @@ public class FactsPopupActivity extends Activity {
             TextView txtInfo = findViewById(R.id.textInfo);
             List<String> facts = eventsData.getNextRandomFacts(1, eventSources);
             if (!facts.isEmpty()) {
-                txtInfo.setText(eventsData.getEventEmojiForType(Constants.EventType_Fact).concat(Constants.STRING_SPACE).concat(facts.get(0)));
+                txtInfo.setText(eventsData.getEventEmojiForType(Constants.EventType_Fact).concat(" ").concat(facts.get(0)));
             } else {
                 txtInfo.setText(R.string.facts_popup_empty);
                 return;
@@ -108,7 +108,7 @@ public class FactsPopupActivity extends Activity {
                 List<String> factsNext = eventsData.getNextRandomFacts(1, eventSources);
                 if (!factsNext.isEmpty()) {
                     listPrevFacts.add(txtInfo.getText().toString());
-                    txtInfo.setText(eventsData.getEventEmojiForType(Constants.EventType_Fact).concat(Constants.STRING_SPACE).concat(factsNext.get(0)));
+                    txtInfo.setText(eventsData.getEventEmojiForType(Constants.EventType_Fact).concat(" ").concat(factsNext.get(0)));
                     buttonPrev.setVisibility(View.VISIBLE);
                 }
             });
@@ -124,7 +124,7 @@ public class FactsPopupActivity extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 

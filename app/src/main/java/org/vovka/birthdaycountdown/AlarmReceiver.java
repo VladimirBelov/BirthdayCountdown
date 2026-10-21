@@ -49,7 +49,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                     long today = System.currentTimeMillis();
 
-                    if (isNeedNotify && intent.getIntExtra(Constants.QUEUE, 0) == 1) {
+                    if (isNeedNotify && intent.getIntExtra(Constants.EXTRA_QUEUE, 0) == 1) {
                         long lastNotify = eventsData.getLastNotifyForQueue(1);
                         if (lastNotify == 0 || today - lastNotify > Constants.TIME_NOTIFY_COOLDOWN) {
                             eventsData.showNotifications(1, false, Integer.toString(eventsData.preferences_notifications_channel_id));
@@ -67,7 +67,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                         }
                     }
 
-                    if (isNeedNotify2 && intent.getIntExtra(Constants.QUEUE, 0) == 2) {
+                    if (isNeedNotify2 && intent.getIntExtra(Constants.EXTRA_QUEUE, 0) == 2) {
                         long lastNotify = eventsData.getLastNotifyForQueue(2);
                         if (lastNotify == 0 || today - lastNotify > Constants.TIME_NOTIFY_COOLDOWN) {
                             eventsData.showNotifications(2, false, Integer.toString(eventsData.preferences_notifications2_channel_id));
@@ -97,7 +97,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 }

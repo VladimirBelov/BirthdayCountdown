@@ -169,7 +169,7 @@ public class QuizActivity extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
             finish();
         }
     }
@@ -185,7 +185,7 @@ public class QuizActivity extends Activity {
             showNextQuestion();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -304,7 +304,7 @@ public class QuizActivity extends Activity {
         for (String action : q.actions) {
             String[] parts = action.split(Constants.STRING_EOT, -1);
             if (parts.length >= 3) {
-                boolean isCorrect = Constants.STRING_1.equals(parts[0]);
+                boolean isCorrect = "1".equals(parts[0]);
                 String displayText = parts[1];
                 String feedbackText = parts[2];
                 answers.add(new QuizAnswerData(isCorrect, displayText, feedbackText, action));
@@ -534,7 +534,7 @@ public class QuizActivity extends Activity {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -551,7 +551,7 @@ public class QuizActivity extends Activity {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -634,7 +634,7 @@ public class QuizActivity extends Activity {
 
         @NonNull
         public String toString() {
-            return this.question + Constants.STRING_COMMA + this.eventDetails + Constants.STRING_COMMA + this.actions.toString();
+            return this.question + "," + this.eventDetails + "," + this.actions.toString();
         }
     }
 
@@ -852,17 +852,17 @@ public class QuizActivity extends Activity {
                 final boolean isOrg = StringUtils.hasContent(eventInfo[ContactsEvents.Position_organization]);
                 final boolean isTitle = StringUtils.hasContent(eventInfo[ContactsEvents.Position_title]);
                 if (isOrg || isTitle) {
-                    personInfo.append(Constants.STRING_PARENTHESIS_OPEN);
+                    personInfo.append(" (");
                     if (isOrg) {
                         personInfo.append(eventInfo[ContactsEvents.Position_organization].trim());
                         if (isTitle) {
-                            personInfo.append(Constants.STRING_COMMA_SPACE)
+                            personInfo.append(", ")
                                     .append(eventInfo[ContactsEvents.Position_title].trim());
                         }
                     } else {
                         personInfo.append(eventInfo[ContactsEvents.Position_title].trim());
                     }
-                    personInfo.append(Constants.STRING_PARENTHESIS_CLOSE);
+                    personInfo.append(")");
                 }
                 return personInfo.toString();
             }
@@ -937,7 +937,7 @@ public class QuizActivity extends Activity {
                     Calendar calAns = Calendar.getInstance();
                     for (Integer m : answerMonths) {
                         boolean isCorrect = m.equals(correctMonth);
-                        StringBuilder sb = new StringBuilder(isCorrect ? Constants.STRING_1 : Constants.STRING_0)
+                        StringBuilder sb = new StringBuilder(isCorrect ? "1" : "0")
                                 .append(Constants.STRING_EOT);
                         calAns.set(Calendar.DATE, 1);
                         calAns.set(Calendar.MONTH, m);
@@ -1005,7 +1005,7 @@ public class QuizActivity extends Activity {
                     String correctYearStr = Integer.toString(correctYear);
                     for (Integer year : answerYears) {
                         boolean isCorrect = year.equals(correctYear);
-                        StringBuilder sb = new StringBuilder(isCorrect ? Constants.STRING_1 : Constants.STRING_0)
+                        StringBuilder sb = new StringBuilder(isCorrect ? "1" : "0")
                                 .append(Constants.STRING_EOT)
                                 .append(year)
                                 .append(Constants.STRING_EOT);
@@ -1101,7 +1101,7 @@ public class QuizActivity extends Activity {
                                 currentLocale,
                                 res).toUpperCase();
 
-                        StringBuilder sb = new StringBuilder(isCorrect ? Constants.STRING_1 : Constants.STRING_0)
+                        StringBuilder sb = new StringBuilder(isCorrect ? "1" : "0")
                                 .append(Constants.STRING_EOT)
                                 .append(ageStr)
                                 .append(Constants.STRING_EOT);
@@ -1196,16 +1196,16 @@ public class QuizActivity extends Activity {
                         // Если для этого возраста нет названия - пропускаем
                         if (TextUtils.isEmpty(title)) continue;
 
-                        StringBuilder sb = new StringBuilder(isCorrect ? Constants.STRING_1 : Constants.STRING_0)
+                        StringBuilder sb = new StringBuilder(isCorrect ? "1" : "0")
                                 .append(Constants.STRING_EOT).
                                 append(title.toUpperCase()).
-                                append(Constants.STRING_PARENTHESIS_OPEN)
+                                append(" (")
                                 .append(age)
-                                .append(Constants.STRING_PARENTHESIS_CLOSE)
+                                .append(")")
                                 .append(Constants.STRING_EOT);
 
                         String eventDetails = eventInfo[ContactsEvents.Position_age_caption]
-                                + Constants.STRING_COMMA_SPACE
+                                + ", "
                                 + eventInfo[ContactsEvents.Position_eventDateNextTime];
                         if (isCorrect) {
                             sb.append(res.getString(R.string.quiz_answer_true,
@@ -1316,9 +1316,9 @@ public class QuizActivity extends Activity {
                     final String eventCaption = eventInfo[ContactsEvents.Position_eventCaption];
                     final String eventLabel = eventInfo[ContactsEvents.Position_eventLabel];
                     if (!TextUtils.isEmpty(eventCaption) && !eventCaption.equalsIgnoreCase(res.getString(R.string.event_type_other))) {
-                        personInfo += Constants.STRING_EOL + eventInfo[ContactsEvents.Position_eventEmoji] + eventCaption;
+                        personInfo += "\n" + eventInfo[ContactsEvents.Position_eventEmoji] + eventCaption;
                         if (!TextUtils.isEmpty(eventLabel) && !eventCaption.equalsIgnoreCase(eventLabel)) {
-                            personInfo += Constants.STRING_PARENTHESIS_OPEN + eventLabel + Constants.STRING_PARENTHESIS_CLOSE;
+                            personInfo += " (" + eventLabel + ")";
                         }
                     }
                     QuizQuestion result = new QuizQuestion(
@@ -1343,7 +1343,7 @@ public class QuizActivity extends Activity {
                     );
 
                     // Формируем строку года с постфиксом BC если нужно
-                    String bcSuffix = isBC ? bcPostfix : Constants.STRING_EMPTY;
+                    String bcSuffix = isBC ? bcPostfix : "";
                     String correctYearStr = (isBC ? Math.abs(correctYear) : correctYear) + bcSuffix;
 
                     for (Integer year : answerYears) {
@@ -1352,7 +1352,7 @@ public class QuizActivity extends Activity {
                         // Добавляем постфикс BC ко всем вариантам ответа
                         String yearStr = (isBC ? Math.abs(year) : year) + bcSuffix;
 
-                        StringBuilder sb = new StringBuilder(isCorrect ? Constants.STRING_1 : Constants.STRING_0)
+                        StringBuilder sb = new StringBuilder(isCorrect ? "1" : "0")
                                 .append(Constants.STRING_EOT)
                                 .append(yearStr)
                                 .append(Constants.STRING_EOT);
@@ -1387,7 +1387,7 @@ public class QuizActivity extends Activity {
          */
         private class HolidayDayGenerator extends BaseQuestionGenerator {
 
-            final Matcher skipHolidays = Pattern.compile(res.getString(R.string.quiz_holiday_day_ignore_titles), Pattern.CASE_INSENSITIVE).matcher(Constants.STRING_EMPTY);
+            final Matcher skipHolidays = Pattern.compile(res.getString(R.string.quiz_holiday_day_ignore_titles), Pattern.CASE_INSENSITIVE).matcher("");
 
             @Override
             public QuestionType getType() {
@@ -1438,7 +1438,7 @@ public class QuizActivity extends Activity {
 
                     for (String dateStr : answerDates) {
                         boolean isCorrect = dateStr.equals(correctDateStr);
-                        StringBuilder sb = new StringBuilder(isCorrect ? Constants.STRING_1 : Constants.STRING_0)
+                        StringBuilder sb = new StringBuilder(isCorrect ? "1" : "0")
                                 .append(Constants.STRING_EOT)
                                 .append(dateStr)
                                 .append(Constants.STRING_EOT);

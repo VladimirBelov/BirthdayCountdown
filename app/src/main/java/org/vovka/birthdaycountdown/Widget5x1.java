@@ -89,7 +89,7 @@ public class Widget5x1 extends AppWidgetProvider {
 
             //Объём событий
 
-            String prefScope = Constants.STRING_EMPTY;
+            String prefScope = "";
             boolean fixedEventsCount = false;
             if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
             if (!TextUtils.isEmpty(prefScope)) {
@@ -97,7 +97,7 @@ public class Widget5x1 extends AppWidgetProvider {
                 if (matchScopes.find()) {
                     final String scopeEvents = matchScopes.group(1);
                     if(scopeEvents != null) {
-                        if (!scopeEvents.equals(Constants.STRING_0)){
+                        if (!scopeEvents.equals("0")){
                             try {
                                 eventsCount = Integer.parseInt(scopeEvents);
                                 fixedEventsCount = true;
@@ -133,8 +133,8 @@ public class Widget5x1 extends AppWidgetProvider {
 
             ToastExpander.showDebugMsg(eventsData.getContext(), Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
                     eventsData.getResources().getString(R.string.msg_debug_widget_photo_config, widgetType, appWidgetId,
-                            eventsData.getResources().getResourceEntryName(views.getLayoutId()), minWidth, minHeight, TextUtils.join(Constants.STRING_COMMA, widgetPref))
-                    : widgetType.concat(Constants.STRING_COLON).concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL).concat(TextUtils.join(Constants.STRING_COMMA, widgetPref))
+                            eventsData.getResources().getResourceEntryName(views.getLayoutId()), minWidth, minHeight, TextUtils.join(",", widgetPref))
+                    : widgetType.concat(":").concat(String.valueOf(appWidgetId)).concat("\n").concat(TextUtils.join(",", widgetPref))
             );
 
             new WidgetUpdater(eventsData.getContext(), eventsData, views, eventsCount, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
@@ -142,7 +142,7 @@ public class Widget5x1 extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + ": " + e);
         } finally {
             eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
             eventsData.statActiveWidgets++;
@@ -176,7 +176,7 @@ public class Widget5x1 extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 

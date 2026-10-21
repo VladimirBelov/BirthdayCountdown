@@ -212,11 +212,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             if (widgetId > 0 && eventsData.preferences_debug_on) {
                 toolbar.setTitle(getString(R.string.window_widget_settings)
-                        .concat(Constants.STRING_PARENTHESIS_OPEN)
+                        .concat(" (")
                         .concat(Constants.RES_TYPE_ID)
-                        .concat(Constants.STRING_COLON_SPACE)
+                        .concat(": ")
                         .concat(String.valueOf(widgetId))
-                        .concat(Constants.STRING_PARENTHESIS_CLOSE)
+                        .concat(")")
                 );
             }
 
@@ -238,23 +238,23 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
                 eventTypesIDs.remove(getString(R.string.pref_EventTypes_Other));
                 eventTypesValues.remove(eventsData.getEventEmojiForType(Constants.EventType_Other)
-                        .concat(Constants.STRING_SPACE).concat(getString(R.string.pref_List_EventTypes_Other)));
+                        .concat(" ").concat(getString(R.string.pref_List_EventTypes_Other)));
                 eventTypesIDs.remove(getString(R.string.pref_EventTypes_Holiday));
                 eventTypesValues.remove(eventsData.getEventEmojiForType(Constants.EventType_Holiday)
-                        .concat(Constants.STRING_SPACE).concat(getString(R.string.pref_List_EventTypes_Holidays)));
+                        .concat(" ").concat(getString(R.string.pref_List_EventTypes_Holidays)));
             }
             if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                 eventTypesIDs.add(getString(R.string.pref_EventTypes_Facts));
                 eventTypesValues.add(eventsData.getEventEmojiForType(Constants.EventType_Fact)
-                        .concat(Constants.STRING_SPACE).concat(getString(R.string.pref_List_EventTypes_Facts)));
+                        .concat(" ").concat(getString(R.string.pref_List_EventTypes_Facts)));
             }
             if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_INFO)) {
                 for (int i = 0; i < eventTypesValues.size(); i++) {
                     if (eventsData.statEventTypes.containsKey(eventTypesIDs.get(i))) {
                         eventTypesValues.set(i, eventTypesValues.get(i)
-                                + Constants.STRING_BRACKETS_OPEN
+                                + " ["
                                 + eventsData.statEventTypes.get(eventTypesIDs.get(i))
-                                + Constants.STRING_BRACKETS_CLOSE);
+                                + "]");
                     }
                 }
             }
@@ -328,9 +328,9 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             //Ограничения объёма
             List<String> spinnerScopeEventsItems;
             if (isListWidget) {
-                spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
+                spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_events_items).split(",", -1)));
             } else {
-                spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_photo_scope_events_items).split(Constants.STRING_COMMA, -1)));
+                spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_photo_scope_events_items).split(",", -1)));
             }
             spinnerScopeEvents = findViewById(R.id.spinnerScopeEvents);
             ArrayAdapter<String> spinnerScopeEventsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerScopeEventsItems);
@@ -345,20 +345,20 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             });
 
             spinnerScopeDays = findViewById(R.id.spinnerScopeDays);
-            List<String> spinnerScopeDaysItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
+            List<String> spinnerScopeDaysItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_days_items).split(",", -1)));
             ArrayAdapter<String> spinnerScopeDaysAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerScopeDaysItems);
             spinnerScopeDays.setAdapter(spinnerScopeDaysAdapter);
 
             Spinner spinnerLayout = findViewById(R.id.spinnerLayout);
             if (Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
                     || Constants.WIDGET_TYPE_2X2.equals(widgetType)) {
-                List<String> spinnerLayoutItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_layout_items).split(Constants.STRING_COMMA, -1)));
+                List<String> spinnerLayoutItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_layout_items).split(",", -1)));
                 ArrayAdapter<String> spinnerLayoutAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerLayoutItems);
                 spinnerLayout.setAdapter(spinnerLayoutAdapter);
             }
 
             Spinner spinnerFacts = findViewById(R.id.spinnerFacts);
-            List<String> spinnerFactsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_facts_items).split(Constants.STRING_COMMA, -1)));
+            List<String> spinnerFactsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_facts_items).split(",", -1)));
             ArrayAdapter<String> spinnerFactsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerFactsItems);
             spinnerFacts.setAdapter(spinnerFactsAdapter);
 
@@ -453,7 +453,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         } finally {
             if (ta != null) ta.recycle();
         }
@@ -556,7 +556,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             }
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -567,7 +567,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             for (String source: eventSourcesSelected) {
                 int ind = eventSources.getHashes().indexOf(source);
                 if (ind > -1) {
-                    if (sb.length() > 0) sb.append(Constants.STRING_EOL);
+                    if (sb.length() > 0) sb.append("\n");
 
                     String sourceId = StringUtils.getNotNullString(eventSources.getIds().get(ind));
                     if (sourceId.startsWith(Constants.eventSourceCalendarPrefix)) {
@@ -589,7 +589,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -725,12 +725,12 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             //Факты
             List<String> selectedEventTypes = new ArrayList<>();
             for (String eventType: spinnerEventTypes.getSelectedStrings()) {
-                selectedEventTypes.add(StringUtils.substringBefore(eventType, Constants.STRING_BRACKETS_OPEN));
+                selectedEventTypes.add(StringUtils.substringBefore(eventType, " ["));
             }
             findViewById(R.id.blockFacts).setVisibility(
                     Constants.WIDGET_TYPE_LIST.equals(widgetType)
                             && selectedEventTypes.contains(eventsData.getEventEmojiForType(Constants.EventType_Fact)
-                            .concat(Constants.STRING_SPACE)
+                            .concat(" ")
                             .concat(getString(R.string.pref_List_EventTypes_Facts))) ? View.VISIBLE : View.GONE
             );
 
@@ -740,7 +740,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -761,7 +761,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             finish();
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -786,25 +786,25 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             StringBuilder eventInfo = new StringBuilder();
             for(final String item: spinnerEventInfo.getSelectedStrings()) {
-                if (eventInfo.length() > 0) eventInfo.append(Constants.STRING_PLUS);
+                if (eventInfo.length() > 0) eventInfo.append("+");
                 eventInfo.append(this.eventInfoIDs.get(this.eventInfoValues.indexOf(item)));
             }
 
             //Объём событий
             final StringBuilder scopeInfo = new StringBuilder();
-            scopeInfo.append(spinnerScopeEvents.getSelectedItemPosition() == 0 ? Constants.STRING_0 : spinnerScopeEvents.getSelectedItem()).append("e");
-            scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? Constants.STRING_0 : spinnerScopeDays.getSelectedItem()).append("d");
+            scopeInfo.append(spinnerScopeEvents.getSelectedItemPosition() == 0 ? "0" : spinnerScopeEvents.getSelectedItem()).append("e");
+            scopeInfo.append(spinnerScopeDays.getSelectedItemPosition() == 0 ? "0" : spinnerScopeDays.getSelectedItem()).append("d");
 
             Spinner spinnerLayout = findViewById(R.id.spinnerLayout);
             boolean isPhotoWidget = Constants.WIDGET_TYPE_5X1.equals(widgetType) || Constants.WIDGET_TYPE_4X1.equals(widgetType)
                     || Constants.WIDGET_TYPE_2X2.equals(widgetType);
             if (isPhotoWidget) {
 
-                List<String> spinnerLayoutItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_layout_items).split(Constants.STRING_COMMA, -1)));
+                List<String> spinnerLayoutItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_layout_items).split(",", -1)));
                 if (spinnerLayout.getSelectedItem().equals(spinnerLayoutItems.get(0))) {
-                    scopeInfo.append(Constants.STRING_PLUS);
+                    scopeInfo.append("+");
                 } else if (spinnerLayout.getSelectedItem().equals(spinnerLayoutItems.get(1))) {
-                    scopeInfo.append(Constants.STRING_MINUS);
+                    scopeInfo.append("-");
                 }
 
             } else if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
@@ -870,13 +870,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 }
             }
 
-            final String eventSources = TextUtils.join(Constants.STRING_PLUS, eventSourcesSelected);
+            final String eventSources = TextUtils.join("+", eventSourcesSelected);
 
             //Реакция на нажатие
             String[] prefActionsEntries = getResources().getStringArray(R.array.pref_widget_list_onclick_entries);
             String[] prefActionsValues = getResources().getStringArray(R.array.pref_widget_list_onclick_values);
             Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
-            StringBuilder spinnerOnClickCommonValue = new StringBuilder(Constants.STRING_EMPTY);
+            StringBuilder spinnerOnClickCommonValue = new StringBuilder("");
 
             if (spinnerOnClickCommon.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
                 int ind = -1;
@@ -900,7 +900,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                         ind++;
                         if (value.equals(selectedValue)) {
                             try {
-                                spinnerOnClickCommonValue.append(Constants.STRING_PLUS
+                                spinnerOnClickCommonValue.append("+"
                                         .concat(prefActionsValues[ind]));
                             } catch (IndexOutOfBoundsException ignored) { /**/ }
                             break;
@@ -911,11 +911,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             final int colorWidgetBackground = pickerColorWidgetBackground.getColor();
             final String selectedWidgetBackground = colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBackground_default)
-                    ? ImageUtils.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorWidgetBackground) : "";
 
             final int colorWidgetBorder = pickerColorWidgetBorder.getColor();
             final String selectedWidgetBorder = colorWidgetBorder != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBorder_default)
-                    ? ImageUtils.toARGBString(colorWidgetBorder) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorWidgetBorder) : "";
 
             //Сохранение настроек
             List<String> prefsToStore = new ArrayList<>();
@@ -925,20 +925,20 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             prefsToStore.add(String.valueOf(spinnerEventsCount.getSelectedItemPosition())); //Количество событий (позиция в списке выбора)
             prefsToStore.add(eventTypes.toString()); //Типы событий (через +)
             prefsToStore.add(eventInfo.toString()); //Детали события (через +)
-            prefsToStore.add(selectedWidgetBackground + Constants.STRING_PLUS + selectedWidgetBorder); //Цвет подложки + бордюра
+            prefsToStore.add(selectedWidgetBackground + "+" + selectedWidgetBorder); //Цвет подложки + бордюра
             prefsToStore.add(String.valueOf(spinnerPhotoStyle.getSelectedItemPosition())); //Стиль фото
-            prefsToStore.add(editCustomZeroEvents.getText().toString().replace(Constants.STRING_COMMA, Constants.STRING_EOT)); //Сообщение, когда нет событий
+            prefsToStore.add(editCustomZeroEvents.getText().toString().replace(",", Constants.STRING_EOT)); //Сообщение, когда нет событий
             prefsToStore.add(scopeInfo.toString()); //Объём событий
-            prefsToStore.add(editCustomWidgetCaption.getText().toString().replace(Constants.STRING_COMMA, Constants.STRING_EOT)); //Заголовок виджета
+            prefsToStore.add(editCustomWidgetCaption.getText().toString().replace(",", Constants.STRING_EOT)); //Заголовок виджета
             prefsToStore.add(eventSources); //Источники событий (через +)
-            prefsToStore.add(TextUtils.join(Constants.STRING_PLUS, selectedCaptionsDetails)); //Параметры заголовков (через +)
+            prefsToStore.add(TextUtils.join("+", selectedCaptionsDetails)); //Параметры заголовков (через +)
             prefsToStore.add(spinnerOnClickCommonValue.toString()); //Реакция на нажатие
 
-            return TextUtils.join(Constants.STRING_COMMA, prefsToStore);
+            return TextUtils.join(",", prefsToStore);
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
             return null;
         }
     }
@@ -1110,7 +1110,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1226,7 +1226,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1278,7 +1278,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     HtmlCompat.FROM_HTML_MODE_LEGACY));
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1303,7 +1303,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1324,7 +1324,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             } catch (NumberFormatException ignored) { /**/ }
 
             // 1: Масштабирование
-            populateMagnifyFromPref(widgetPref.size() > 1 ? widgetPref.get(1) : Constants.STRING_EMPTY);
+            populateMagnifyFromPref(widgetPref.size() > 1 ? widgetPref.get(1) : "");
 
             // 2: Количество событий в ширину
             try {
@@ -1335,13 +1335,13 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             } catch (NumberFormatException ignored) { /**/ }
 
             // 3: Типы событий
-            populateEventTypesFromPref(widgetPref.size() > 3 ? widgetPref.get(3) : Constants.STRING_EMPTY);
+            populateEventTypesFromPref(widgetPref.size() > 3 ? widgetPref.get(3) : "");
 
             // 4: Детали события
-            populateEventInfoFromPref(widgetPref.size() > 4 ? widgetPref.get(4) : Constants.STRING_EMPTY);
+            populateEventInfoFromPref(widgetPref.size() > 4 ? widgetPref.get(4) : "");
 
             // 5: Цвета (подложка + бордюр)
-            populateColorsFromPref(widgetPref.size() > 5 ? widgetPref.get(5) : Constants.STRING_EMPTY);
+            populateColorsFromPref(widgetPref.size() > 5 ? widgetPref.get(5) : "");
 
             // 6: Стиль фото
             try {
@@ -1352,15 +1352,15 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             } catch (NumberFormatException ignored) { /**/ }
 
             // 7: Сообщение при отсутствии событий
-            String prefZeroEventsMessage = widgetPref.size() > 7 ? widgetPref.get(7) : Constants.STRING_EMPTY;
-            editCustomZeroEvents.setText(prefZeroEventsMessage.replace(Constants.STRING_EOT, Constants.STRING_COMMA));
+            String prefZeroEventsMessage = widgetPref.size() > 7 ? widgetPref.get(7) : "";
+            editCustomZeroEvents.setText(prefZeroEventsMessage.replace(Constants.STRING_EOT, ","));
 
             // 8: Ограничения объёма
-            populateScopeFromPref(widgetPref.size() > 8 ? widgetPref.get(8) : Constants.STRING_EMPTY);
+            populateScopeFromPref(widgetPref.size() > 8 ? widgetPref.get(8) : "");
 
             // 9: Заголовок виджета
-            String prefWidgetCaption = widgetPref.size() > 9 ? widgetPref.get(9) : Constants.STRING_EMPTY;
-            editCustomWidgetCaption.setText(prefWidgetCaption.replace(Constants.STRING_EOT, Constants.STRING_COMMA));
+            String prefWidgetCaption = widgetPref.size() > 9 ? widgetPref.get(9) : "";
+            editCustomWidgetCaption.setText(prefWidgetCaption.replace(Constants.STRING_EOT, ","));
 
             // 10: Источники событий
             if (widgetPref.size() > 10 && !widgetPref.get(10).isEmpty()) {
@@ -1371,17 +1371,17 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             updateEventSources();
 
             // 11: Параметры заголовков (для фото-виджетов)
-            populateCaptionsFromPref(widgetPref.size() > 11 ? widgetPref.get(11) : Constants.STRING_EMPTY);
+            populateCaptionsFromPref(widgetPref.size() > 11 ? widgetPref.get(11) : "");
 
             // 12: Реакция на нажатие
-            populateOnClickFromPref(widgetPref.size() > 12 ? widgetPref.get(12) : Constants.STRING_EMPTY);
+            populateOnClickFromPref(widgetPref.size() > 12 ? widgetPref.get(12) : "");
 
             // Обновляем видимость элементов
             updateVisibility();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1396,7 +1396,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             if (!magnifyStr.isEmpty()) {
                 String[] prefMagnify = magnifyStr.split(Constants.REGEX_PLUS);
-                if (magnifyStr.contains(Constants.STRING_PERIOD)) { //В настройках - мультипликатор
+                if (magnifyStr.contains(".")) { //В настройках - мультипликатор
                     prefMagnifyText = Math.min((int) Math.round(Double.parseDouble(prefMagnify[0]) * 100), maxValueSeek);
                     if (prefMagnifyText > 0) prefMagnifyText -= minValueSeekOffset;
                     if (prefMagnify.length > 1) {
@@ -1521,11 +1521,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
             List<String> spinnerScopeEventsItems;
             if (isListWidget) {
-                spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
+                spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_events_items).split(",", -1)));
             } else {
-                spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_photo_scope_events_items).split(Constants.STRING_COMMA, -1)));
+                spinnerScopeEventsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_photo_scope_events_items).split(",", -1)));
             }
-            List<String> spinnerScopeDaysItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
+            List<String> spinnerScopeDaysItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_days_items).split(",", -1)));
 
             Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_PLUS).matcher(scopeStr);
             boolean found = matchScopes.find();
@@ -1540,7 +1540,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             if (found) {
                 final String scopeEvents = matchScopes.group(1);
                 if (scopeEvents != null) {
-                    if (scopeEvents.equals(Constants.STRING_0)) {
+                    if (scopeEvents.equals("0")) {
                         spinnerScopeEvents.setSelection(0, true);
                     } else if (spinnerScopeEventsItems.contains(scopeEvents)) {
                         spinnerScopeEvents.setSelection(spinnerScopeEventsItems.indexOf(scopeEvents), true);
@@ -1548,7 +1548,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                 }
                 final String scopeDays = matchScopes.group(2);
                 if (scopeDays != null) {
-                    if (scopeDays.equals(Constants.STRING_0)) {
+                    if (scopeDays.equals("0")) {
                         spinnerScopeDays.setSelection(0, true);
                     } else if (spinnerScopeDaysItems.contains(scopeDays)) {
                         spinnerScopeDays.setSelection(spinnerScopeDaysItems.indexOf(scopeDays), true);
@@ -1560,16 +1560,16 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     Spinner spinnerLayout = findViewById(R.id.spinnerLayout);
                     final String scopeLayout = matchScopes.group(3);
                     if (scopeLayout != null) {
-                        if (scopeLayout.equals(Constants.STRING_PLUS)) {
+                        if (scopeLayout.equals("+")) {
                             spinnerLayout.setSelection(0, true);
-                        } else if (scopeLayout.equals(Constants.STRING_MINUS)) {
+                        } else if (scopeLayout.equals("-")) {
                             spinnerLayout.setSelection(1, true);
                         }
                     }
                 } else if (Constants.WIDGET_TYPE_LIST.equals(widgetType)) {
                     try {
                         Spinner spinnerFacts = findViewById(R.id.spinnerFacts);
-                        List<String> spinnerFactsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_facts_items).split(Constants.STRING_COMMA, -1)));
+                        List<String> spinnerFactsItems = new ArrayList<>(Arrays.asList(getString(R.string.widget_config_scope_facts_items).split(",", -1)));
                         final String scopeFacts = matchScopes.group(3);
                         if (scopeFacts != null && spinnerFactsItems.contains(scopeFacts)) {
                             spinnerFacts.setSelection(spinnerFactsItems.indexOf(scopeFacts), true);
@@ -1742,11 +1742,11 @@ public class WidgetConfigureActivity extends AppCompatActivity {
      */
     private void applyTemplateConfig(@NonNull String config) {
         try {
-            String[] parts = config.split(Constants.STRING_COMMA, -1);
+            String[] parts = config.split(",", -1);
             List<String> prefList = new ArrayList<>(Arrays.asList(parts));
             // Дополняем до нужного размера (13 полей)
             while (prefList.size() < 13) {
-                prefList.add(Constants.STRING_EMPTY);
+                prefList.add("");
             }
             widgetPref = prefList;
 
@@ -1755,7 +1755,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 

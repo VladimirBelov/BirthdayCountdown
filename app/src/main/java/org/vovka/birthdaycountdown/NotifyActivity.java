@@ -54,7 +54,7 @@ public final class NotifyActivity extends Activity {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(getApplicationContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(getApplicationContext(), StringUtils.getMethodName(3) + ": " + e);
         }
 
         // ВАЖНО: finish() должен вызываться синхронно в конце onCreate(),

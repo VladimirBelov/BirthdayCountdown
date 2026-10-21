@@ -67,16 +67,16 @@ public class NotifyActionReceiver extends BroadcastReceiver {
             //Получаем входные параметры
             Bundle extras = intent.getExtras();
             int notificationID = 0;
-            String notificationData = Constants.STRING_EMPTY;
+            String notificationData = "";
             String[] notificationActions = null;
             String[] notificationDetails = null;
             String[] singleEventArray = null;
-            String eventKey = Constants.STRING_EMPTY;
-            String eventKeyWithRawId = Constants.STRING_EMPTY;
+            String eventKey = "";
+            String eventKeyWithRawId = "";
 
             if (extras != null) {
                 notificationID = extras.getInt(Constants.EXTRA_NOTIFICATION_ID, 0);
-                notificationData = extras.getString(Constants.EXTRA_NOTIFICATION_DATA, Constants.STRING_EMPTY);
+                notificationData = extras.getString(Constants.EXTRA_NOTIFICATION_DATA, "");
 
                 if (!notificationData.isEmpty()) {
                     singleEventArray = notificationData.split(Constants.STRING_EOT, -1);
@@ -177,7 +177,7 @@ public class NotifyActionReceiver extends BroadcastReceiver {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 

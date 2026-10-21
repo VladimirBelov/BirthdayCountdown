@@ -81,10 +81,10 @@ public class Widget4x1 extends AppWidgetProvider {
 
             ToastExpander.showDebugMsg(eventsData.getContext(), Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
                     eventsData.getResources().getString(R.string.msg_debug_widget_photo_config, widgetType, appWidgetId,
-                            eventsData.getResources().getResourceEntryName(views.getLayoutId()), minWidth, minHeight, TextUtils.join(Constants.STRING_COMMA, widgetPref))
-                    : widgetType.concat(Constants.STRING_COLON)
-                    .concat(String.valueOf(appWidgetId)).concat(Constants.STRING_EOL)
-                    .concat(TextUtils.join(Constants.STRING_COMMA, widgetPref))
+                            eventsData.getResources().getResourceEntryName(views.getLayoutId()), minWidth, minHeight, TextUtils.join(",", widgetPref))
+                    : widgetType.concat(":")
+                    .concat(String.valueOf(appWidgetId)).concat("\n")
+                    .concat(TextUtils.join(",", widgetPref))
             );
 
             new WidgetUpdater(eventsData.getContext(), ContactsEvents.getInstance(), views, 5, minWidth, minHeight, appWidgetId).invokePhotoEventsUpdate();
@@ -92,7 +92,7 @@ public class Widget4x1 extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + ": " + e);
         } finally {
             eventsData.statTimeUpdateWidgets += System.currentTimeMillis() - statCurrentModuleStart;
             eventsData.statActiveWidgets++;
@@ -125,7 +125,7 @@ public class Widget4x1 extends AppWidgetProvider {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 

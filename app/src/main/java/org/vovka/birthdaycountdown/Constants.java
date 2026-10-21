@@ -28,68 +28,17 @@ public final class Constants {
     public static final String REGEX_PERIOD = "\\.";
     static final String REGEX_BS = "\\";
     public static final String REGEX_BAR = "\\|";
-    static final String STRING_00 = "00";
-    public static final String STRING_000 = "000";
-    public static final String STRING_0000 = "0000";
-    static final String STRING_0000_MINUS = "0000-";
     public static final String STRING_HASH = "#";
     public static final String STRING_2HASH = "##";
-    static final String STRING_2MINUS = "--";
-    public static final String STRING_MINUS = "-";
-    public static final String STRING_PLUS = "+";
     static final String STRING_2TILDA = "~~";
-    public static final String STRING_0 = "0";
-    public static final String STRING_1 = "1";
-    public static final String STRING_2 = "2";
-    public static final String STRING_3 = "3";
-    public static final String STRING_4 = "4";
-    public static final String STRING_5 = "5";
-    public static final String STRING_6 = "6";
-    public static final String STRING_7 = "7";
-    public static final String STRING_8 = "8";
-    public static final String STRING_9 = "9";
-    public static final String STRING_10 = "10";
-    public static final String STRING_11 = "11";
-    public static final String STRING_12 = "12";
-    public static final String STRING_13 = "13";
-    static final String STRING_BAR = "|";
-    public static final String STRING_COLON = ":";
-    public static final String STRING_COLON_SPACE = ": ";
-    public static final String STRING_COMMA = ",";
-    public static final char STRING_SEMICOLON = ';';
-    public static final String STRING_COMMA_SPACE = ", ";
-    public static final String STRING_EMPTY = "";
-    public static final String STRING_EOL = "\n";
-    static final String STRING_TAB = "\t";
     static final String STRING_EOL_RN = "\\r?\\n";
     public static final String STRING_EOT = "\u0004";
     public static final String STRING_ETX = "\u0003";
-    static final String STRING_EQ_Q = "=?";
-    public static final String STRING_EQ = "=";
-    static final String STRING_MINUS1 = "-1";
-    static final String STRING_NULL = "null";
-    public static final String STRING_PARENTHESIS_CLOSE = ")";
-    public static final String STRING_PARENTHESIS_OPEN = " (";
-    public static final String STRING_PARENTHESIS_START = "(";
-    static final String STRING_BRACKETS_OPEN = " [";
-    public static final String STRING_BRACKETS_START = "[";
-    static final String STRING_BRACKETS_CLOSE = "]";
-    public static final String STRING_PERIOD = ".";
-    public static final String STRING_SLASH = "/";
-    public static final String STRING_DSLASH = "//";
-    public static final String STRING_SPACE = " ";
     static final String STRING_BC = "BC";
-    public static final String STRING_UNDERSCORE = "_";
     static final String STRING_BDP_DIV = "❙"; //Birthdays Plus: |ДДДД-ММ-ДД|ИОФ|тип (Birthday, Anniversary, Custom)|наименование события или null|
     static final String STRING_BDP_EOL = "❚";
     static final String STRING_BDP_NO_YEAR = "1900";
     static final String STRING_BDP_CUSTOM = "Custom";
-
-    public static final String STRING_Z = "Z";
-    public static final String STRING_Y = "Y";
-
-    static final String LANG_EN = "en";
-    static final String LANG_RU = "ru";
 
     //https://en.wikipedia.org/wiki/Date_format_by_country
     static final String DATETIME_DD_MM_YYYY_HH_MM = "dd.MM.yyyy HH:mm";
@@ -283,6 +232,7 @@ public final class Constants {
     static final String EXTRA_DAY1 = "day1";
     static final String EXTRA_DAY2 = "day2";
     static final String EXTRA_URL = "url";
+    public static final String EXTRA_QUEUE = "queue";
 
     static final String HTML_BOLD_START = "<b>";
     static final String HTML_BOLD_END = "</b>";
@@ -441,8 +391,6 @@ public final class Constants {
     static final int onClick_Popup = 1;
     static final int onClick_Calendar = 2;
 
-    public static final String QUEUE = "queue";
-
     static final int PhotoWidget_Upper_Caption = 0;
     static final int PhotoWidget_Upper_Aligning = 1;
     static final int PhotoWidget_Upper_Rows = 2;
@@ -500,10 +448,6 @@ public final class Constants {
     static final String MIME_IMAGE_WEBP = "image/webp";
     static final String MIME_IMAGE_GIF = "image/gif";
 
-    public static final String SQL_SORT_ASC = " ASC";
-    public static final String SQL_SORT_ASC_CONT = " ASC, ";
-    public static final String SQL_EQUAL = " = ";
-
     public static final String LocalEventsFilename = "Events";
 
     public static final String iCal_CalendarBegin = "BEGIN:VCALENDAR";
@@ -545,8 +489,6 @@ public final class Constants {
     public static final String FEATURE_ADV_ACTIONS = "show_adv_actions";
     /** Максимальное количество шаблонов на один тип виджета */
     static final int MAX_WIDGET_TEMPLATES = 10;
-    /** Если в элементах календарного виджета нет этого пункта
-     *
-     */
+    /** Маркер миграции на версию 1.9.2 */
     static final String migration192 = "m192";
 }

@@ -315,9 +315,9 @@ public class AppDateUtils {
                     for (int i = 0; i < cursor.getCount(); i++) {
                         String calId = cursor.getString(cache.getColumnIndex(cursor, android.provider.BaseColumns._ID));
                         int columnAccessLevelIndex = cache.getColumnIndex(cursor, CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL);
-                        String isReadOnly = Constants.STRING_EMPTY;
+                        String isReadOnly = "";
                         if (columnAccessLevelIndex > 0) {
-                            isReadOnly = cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL)) < CalendarContract.Calendars.CAL_ACCESS_CONTRIBUTOR ? Constants.STRING_1 : Constants.STRING_0;
+                            isReadOnly = cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL)) < CalendarContract.Calendars.CAL_ACCESS_CONTRIBUTOR ? "1" : "0";
                         }
                         mapCalendars.put(calId, cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME))
                                 .concat(Constants.STRING_EOT)
@@ -381,7 +381,7 @@ public class AppDateUtils {
                 LocalDate dateStart = dateFrom.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 LocalDate dateEnd = dateTo.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-                if (dateEnd.isBefore(dateStart)) return Constants.STRING_EMPTY;
+                if (dateEnd.isBefore(dateStart)) return "";
 
                 daysDiff = ChronoUnit.DAYS.between(dateStart, dateEnd);
 
@@ -395,7 +395,7 @@ public class AppDateUtils {
                                 R.string.msg_after_year_prefix_1_,
                                 R.string.msg_after_year_prefix_2_3_4,
                                 R.string.msg_after_year_prefix_5_20,
-                                locale, res)).append(Constants.STRING_SPACE);
+                                locale, res)).append(" ");
                         diffOnlyDays = false;
                     }
                     if (p.getMonths() > 0) {
@@ -404,7 +404,7 @@ public class AppDateUtils {
                                 R.string.msg_after_month_prefix_1_,
                                 R.string.msg_after_month_prefix_2_3_4,
                                 R.string.msg_after_month_prefix_5_20,
-                                locale, res)).append(Constants.STRING_SPACE);
+                                locale, res)).append(" ");
                         diffOnlyDays = false;
                     }
                     if (p.getDays() > 0) {
@@ -413,7 +413,7 @@ public class AppDateUtils {
                                 R.string.msg_after_day_prefix_1_,
                                 R.string.msg_after_day_prefix_2_3_4,
                                 R.string.msg_after_day_prefix_5_20,
-                                locale, res)).append(Constants.STRING_SPACE);
+                                locale, res)).append(" ");
                     }
                 }
 
@@ -422,7 +422,7 @@ public class AppDateUtils {
                 Calendar calendarDateFrom;
                 Calendar calendarDateTo;
 
-                if (dateTo.before(dateFrom)) return Constants.STRING_EMPTY;
+                if (dateTo.before(dateFrom)) return "";
 
                 calendarDateFrom = getWithoutTime(getCalendarFromDate(dateFrom));
                 calendarDateTo = getWithoutTime(getCalendarFromDate(dateTo));
@@ -448,7 +448,7 @@ public class AppDateUtils {
                                 R.string.msg_after_year_prefix_1_,
                                 R.string.msg_after_year_prefix_2_3_4,
                                 R.string.msg_after_year_prefix_5_20,
-                                locale, res)).append(Constants.STRING_SPACE);
+                                locale, res)).append(" ");
                         diffOnlyDays = false;
                     }
                     final int dayOfMonthTo = calendarDateTo.get(Calendar.DAY_OF_MONTH);
@@ -464,7 +464,7 @@ public class AppDateUtils {
                                 R.string.msg_after_month_prefix_1_,
                                 R.string.msg_after_month_prefix_2_3_4,
                                 R.string.msg_after_month_prefix_5_20,
-                                locale, res)).append(Constants.STRING_SPACE);
+                                locale, res)).append(" ");
                         diffOnlyDays = false;
                     }
 
@@ -483,7 +483,7 @@ public class AppDateUtils {
                                 R.string.msg_after_day_prefix_1_,
                                 R.string.msg_after_day_prefix_2_3_4,
                                 R.string.msg_after_day_prefix_5_20,
-                                locale, res)).append(Constants.STRING_SPACE);
+                                locale, res)).append(" ");
                     }
                 }
             }
@@ -491,7 +491,7 @@ public class AppDateUtils {
             //(X days)
             if (!diffOnlyDays || components == 2) {
                 if (components == 3) {
-                    eventDistance.append(Constants.STRING_PARENTHESIS_START);
+                    eventDistance.append("(");
                 }
                 if (components == 2 || components == 3) {
                     eventDistance.append(StringUtils.getAgeString(daysDiff,
@@ -502,7 +502,7 @@ public class AppDateUtils {
                             locale, res));
                 }
                 if (components == 3) {
-                    eventDistance.append(Constants.STRING_PARENTHESIS_CLOSE);
+                    eventDistance.append(")");
                 }
             }
 
@@ -510,7 +510,7 @@ public class AppDateUtils {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            return Constants.STRING_EMPTY;
+            return "";
         }
     }
 
@@ -559,13 +559,13 @@ public class AppDateUtils {
     public static String getDateFormatted(String dateIn, ContactsEvents.FormatDate dateFormat, int preferencesDateFormat,
                                           @NonNull Context context, @NonNull Resources res, String lang) {
 
-        String resultString = Constants.STRING_EMPTY;
+        String resultString = "";
         if (TextUtils.isEmpty(dateIn)) return resultString;
         if (preferencesDateFormat == 2 && dateFormat == ContactsEvents.FormatDate.WithYear)
             return dateIn; // DD.MM.YYYY
 
         String postfixBC = res.getString(R.string.msg_after_year_bc);
-        if (!dateIn.endsWith(postfixBC)) postfixBC = Constants.STRING_EMPTY;
+        if (!dateIn.endsWith(postfixBC)) postfixBC = "";
 
         try {
 
@@ -733,7 +733,7 @@ public class AppDateUtils {
     @NonNull
     public static String getDateTimePreferable(@NonNull Date dateIn, int preferencesDateFormat, Context context, String lang) {
 
-        String resultString = Constants.STRING_EMPTY;
+        String resultString = "";
 
         try {
 
@@ -824,13 +824,13 @@ public class AppDateUtils {
                     int daysShift = 0;
                     final String strAfterEventName = eventDayString.substring(EventAliases.getMatchedAlias(eventDayString,
                             EventAliases.CANONICAL_EASTER).length());
-                    if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
+                    if (strAfterEventName.startsWith("+")) {
                         try {
-                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
+                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf("+") + 1));
                         } catch (NumberFormatException ignored) { /**/ }
-                    } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
+                    } else if (strAfterEventName.startsWith("-")) {
                         try {
-                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
+                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf("-") + 1));
                         } catch (NumberFormatException ignored) { /**/ }
                     }
 
@@ -856,13 +856,13 @@ public class AppDateUtils {
                     int daysShift = 0;
                     final String strAfterEventName = eventDayString.substring(EventAliases.getMatchedAlias(eventDayString,
                             EventAliases.CANONICAL_CATHOLIC_EASTER).length());
-                    if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
+                    if (strAfterEventName.startsWith("+")) {
                         try {
-                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
+                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf("+") + 1));
                         } catch (NumberFormatException ignored) { /**/ }
-                    } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
+                    } else if (strAfterEventName.startsWith("-")) {
                         try {
-                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
+                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf("-") + 1));
                         } catch (NumberFormatException ignored) { /**/ }
                     }
 
@@ -887,13 +887,13 @@ public class AppDateUtils {
                     //Определяем смещение в днях
                     int daysShift = 0;
                     final String strAfterEventName = eventDayString.substring(EventAliases.getMatchedAlias(eventDayString, EventAliases.CANONICAL_NY).length());
-                    if (strAfterEventName.startsWith(Constants.STRING_PLUS)) {
+                    if (strAfterEventName.startsWith("+")) {
                         try {
-                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_PLUS) + 1));
+                            daysShift = Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf("+") + 1));
                         } catch (NumberFormatException ignored) { /**/ }
-                    } else if (strAfterEventName.startsWith(Constants.STRING_MINUS)) {
+                    } else if (strAfterEventName.startsWith("-")) {
                         try {
-                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf(Constants.STRING_MINUS) + 1));
+                            daysShift = -Integer.parseInt(strAfterEventName.substring(strAfterEventName.indexOf("-") + 1));
                         } catch (NumberFormatException ignored) { /**/ }
                     }
 
@@ -943,19 +943,19 @@ public class AppDateUtils {
             //Определяем смещение в днях
             int daysShift = 0;
             String strAfterWeekName = eventDayString.substring(indexWeekDay + 2);
-            if (strAfterWeekName.startsWith(Constants.STRING_PLUS)) {
+            if (strAfterWeekName.startsWith("+")) {
                 try {
-                    daysShift = Integer.parseInt(strAfterWeekName.substring(strAfterWeekName.indexOf(Constants.STRING_PLUS) + 1));
+                    daysShift = Integer.parseInt(strAfterWeekName.substring(strAfterWeekName.indexOf("+") + 1));
                 } catch (NumberFormatException ignored) { /**/ }
-            } else if (strAfterWeekName.startsWith(Constants.STRING_MINUS)) {
+            } else if (strAfterWeekName.startsWith("-")) {
                 try {
-                    daysShift = -Integer.parseInt(strAfterWeekName.substring(strAfterWeekName.indexOf(Constants.STRING_MINUS) + 1));
+                    daysShift = -Integer.parseInt(strAfterWeekName.substring(strAfterWeekName.indexOf("-") + 1));
                 } catch (NumberFormatException ignored) { /**/ }
             }
 
             String weekDayNumberString = eventDayString.substring(0, indexWeekDay);
 
-            if (weekDayNumberString.equalsIgnoreCase(Constants.STRING_Z)) { //Последняя неделя
+            if (weekDayNumberString.equalsIgnoreCase("Z")) { //Последняя неделя
 
                 cal = (Calendar) dateRubicon.clone();
                 cal.set(eventYear, eventMonth, 1);
@@ -972,7 +972,7 @@ public class AppDateUtils {
                     cal.add(Calendar.DAY_OF_MONTH, -daysToSub + daysShift);
                 }
 
-            } else if (weekDayNumberString.equalsIgnoreCase(Constants.STRING_Y)) { //Предпоследняя неделя
+            } else if (weekDayNumberString.equalsIgnoreCase("Y")) { //Предпоследняя неделя
 
                 cal = (Calendar) dateRubicon.clone();
                 cal.set(eventYear, eventMonth, 1);
@@ -1046,14 +1046,14 @@ public class AppDateUtils {
         final String year = String.valueOf(today.get(Calendar.YEAR));
 
         for (String line : eventsArray) {
-            int indexMinus = line.indexOf(Constants.STRING_MINUS);
+            int indexMinus = line.indexOf("-");
             if (indexMinus == -1) {
                 result.add(line);
                 continue;
             }
 
-            int indexSpace = line.indexOf(Constants.STRING_SPACE);
-            int indexComma = line.indexOf(Constants.STRING_COMMA);
+            int indexSpace = line.indexOf(" ");
+            int indexComma = line.indexOf(",");
 
             if (indexSpace == -1 && indexComma == -1) {
                 result.add(line);
@@ -1065,7 +1065,7 @@ public class AppDateUtils {
                     : (indexSpace != -1 ? indexSpace : indexComma);
 
             String dates = line.substring(0, indexEndDate);
-            int rangeMinus = dates.indexOf(Constants.STRING_MINUS);
+            int rangeMinus = dates.indexOf("-");
             if (rangeMinus == -1) {
                 result.add(line);
                 continue;
@@ -1073,10 +1073,10 @@ public class AppDateUtils {
 
             String strDateStart = dates.substring(0, rangeMinus);
             String strDateEnd = dates.substring(rangeMinus + 1);
-            int indexNoYear = strDateStart.indexOf(Constants.STRING_0000);
+            int indexNoYear = strDateStart.indexOf("0000");
             if (indexNoYear != -1) {
-                strDateStart = strDateStart.replace(Constants.STRING_0000, year);
-                strDateEnd = strDateEnd.replace(Constants.STRING_0000, year);
+                strDateStart = strDateStart.replace("0000", year);
+                strDateEnd = strDateEnd.replace("0000", year);
             }
 
             Date dateStart = parseDateWithFormats(strDateStart, dateFormats);
@@ -1099,8 +1099,8 @@ public class AppDateUtils {
                     sb.append(Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(calStart.getTime()));
                 } else {
                     sb.append(Objects.requireNonNull(ContactsEvents.sdf_DDMM.get()).format(calStart.getTime()));
-                    sb.append(Constants.STRING_PERIOD);
-                    sb.append(Constants.STRING_0000);
+                    sb.append(".");
+                    sb.append("0000");
                 }
                 sb.append(eventBody);
                 result.add(sb.toString());
@@ -1152,7 +1152,7 @@ public class AppDateUtils {
             if (aliases == null) return false;
 
             // Подготовка строки для поиска
-            String properInput = inputString.toLowerCase().replace(Constants.STRING_SPACE, Constants.STRING_UNDERSCORE);
+            String properInput = inputString.toLowerCase().replace(" ", "_");
 
             for (String alias : aliases) {
                 if (properInput.startsWith(alias)) {
@@ -1169,17 +1169,17 @@ public class AppDateUtils {
          */
         // Метод, если нужно получить именно совпавший алиас (например, чтобы знать его длину и откусить его от строки)
         @NonNull public static String getMatchedAlias(String inputString, String canonicalName) {
-            if (inputString == null || inputString.isEmpty()) return Constants.STRING_EMPTY;
+            if (inputString == null || inputString.isEmpty()) return "";
             Set<String> aliases = aliasesMap.get(canonicalName);
-            if (aliases == null) return Constants.STRING_EMPTY;
+            if (aliases == null) return "";
 
-            String properInput = inputString.toLowerCase().replace(Constants.STRING_SPACE, Constants.STRING_UNDERSCORE);
+            String properInput = inputString.toLowerCase().replace(" ", "_");
             for (String alias : aliases) {
                 if (properInput.startsWith(alias)) {
                     return alias; // Возвращаем оригинальный алиас из сета
                 }
             }
-            return Constants.STRING_EMPTY;
+            return "";
         }
     }
 }

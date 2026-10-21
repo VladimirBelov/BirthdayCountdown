@@ -128,7 +128,7 @@ public class ToastExpander {
 
     private static String removeDuplicateLines(String inputString) {
         if (inputString == null || inputString.isEmpty()) {
-            return Constants.STRING_EMPTY;
+            return "";
         }
 
         String[] lines = inputString.split(Constants.STRING_EOL_RN, -1);
@@ -138,12 +138,12 @@ public class ToastExpander {
         for (String line : lines) {
             String trimmedLine = line.trim();
             if (uniqueLines.add(trimmedLine)) {
-                result.append(trimmedLine).append(Constants.STRING_EOL);
+                result.append(trimmedLine).append("\n");
             }
         }
 
-        if (result.length() > 0 && result.lastIndexOf(Constants.STRING_EOL) == result.length() - Constants.STRING_EOL.length()) {
-            result.delete(result.length() - Constants.STRING_EOL.length(), result.length());
+        if (result.length() > 0 && result.lastIndexOf("\n") == result.length() - "\n".length()) {
+            result.delete(result.length() - "\n".length(), result.length());
         }
 
         return result.toString();

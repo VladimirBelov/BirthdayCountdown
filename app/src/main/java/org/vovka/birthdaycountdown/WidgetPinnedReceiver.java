@@ -57,7 +57,7 @@ public class WidgetPinnedReceiver extends BroadcastReceiver {
                     WidgetCalendarConfigureActivity.class : WidgetConfigureActivity.class);
             intentConfig.setAction(Constants.ACTION_LAUNCH);
             intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-            intentConfig.putExtra(Constants.EXTRA_NEW_WIDGET, Constants.STRING_1);
+            intentConfig.putExtra(Constants.EXTRA_NEW_WIDGET, "1");
             intentConfig.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 context.startActivity(intentConfig);
@@ -67,7 +67,7 @@ public class WidgetPinnedReceiver extends BroadcastReceiver {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 }

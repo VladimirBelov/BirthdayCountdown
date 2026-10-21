@@ -46,7 +46,7 @@ class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSpinner i
     String[] _items = null;
     boolean[] mSelection = null;
     private boolean isSortable = false;
-    private String zeroSelectedTitle = Constants.STRING_EMPTY;
+    private String zeroSelectedTitle = "";
     private int zeroSelectedIndex = -1;
     private AlertDialog.Builder dialogBuilder;
     final ArrayAdapter<String> adapter;

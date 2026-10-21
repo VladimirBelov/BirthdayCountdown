@@ -150,7 +150,7 @@ public class WidgetCalendarPopup extends Activity {
                     }
 
                     // Текст: пробел + название из ресурсов (иконка уже стоит слева)
-                    buttonCalendar.setText(Constants.STRING_SPACE.concat(getString(R.string.appwidget_label_Calendar)));
+                    buttonCalendar.setText(" ".concat(getString(R.string.appwidget_label_Calendar)));
 
                     UiTools.addClickEffect(buttonCalendar);
                     buttonCalendar.getBackground().setAlpha(50);
@@ -231,7 +231,7 @@ public class WidgetCalendarPopup extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -283,7 +283,7 @@ public class WidgetCalendarPopup extends Activity {
                         Intent intentShare = new Intent(Intent.ACTION_SEND);
                         intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                         intentShare.putExtra(Intent.EXTRA_TEXT,
-                                viewCaption.getText().toString().concat(Constants.STRING_EOL)
+                                viewCaption.getText().toString().concat("\n")
                                         .concat(viewInfo.getText().toString()));
                         try {
                             startActivity(Intent.createChooser(intentShare, " "));
@@ -384,7 +384,7 @@ public class WidgetCalendarPopup extends Activity {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -402,19 +402,19 @@ public class WidgetCalendarPopup extends Activity {
                 final String birthdayPrefix = Constants.eventTitleFavoritePrefix.concat(getString(R.string.event_type_birthday));
                 for (int i = 0; i < allEventsThisDay.size(); i++) {
                     String event = allEventsThisDay.get(i);
-                    int indParOpen = event.lastIndexOf(Constants.STRING_PARENTHESIS_OPEN);
-                    int indParClose = event.lastIndexOf(Constants.STRING_PARENTHESIS_CLOSE);
+                    int indParOpen = event.lastIndexOf(" (");
+                    int indParClose = event.lastIndexOf(")");
                     if (indParOpen > -1 && indParClose > -1) {
-                        int indMinus = event.indexOf(Constants.STRING_MINUS, indParOpen);
+                        int indMinus = event.indexOf("-", indParOpen);
                         if (event.contains(weddingPrefix)) {
                             //Подставляем в годовщину свадьбы её название
-                            String strYear = event.substring(indParOpen + Constants.STRING_PARENTHESIS_OPEN.length(), indParClose);
+                            String strYear = event.substring(indParOpen + " (".length(), indParClose);
                             try {
                                 int year = Integer.parseInt(strYear);
                                 String anCaption = StringUtils.getWeddingName(cal.get(Calendar.YEAR) - year, eventsData.getContext(), eventsData.getResources());
                                 if (StringUtils.hasContent(anCaption)) {
-                                    allEventsThisDay.set(i, event.concat(Constants.STRING_PARENTHESIS_OPEN).concat(anCaption)
-                                            .concat(Constants.STRING_PARENTHESIS_CLOSE));
+                                    allEventsThisDay.set(i, event.concat(" (").concat(anCaption)
+                                            .concat(")"));
                                 }
                             } catch (NumberFormatException ignored) { /**/ }
                         } else if (indMinus == -1 && !event.contains(birthdayPrefix)) {
@@ -437,7 +437,7 @@ public class WidgetCalendarPopup extends Activity {
             dayMills = Long.toString(cal.getTimeInMillis());
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -497,7 +497,7 @@ public class WidgetCalendarPopup extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -560,7 +560,7 @@ public class WidgetCalendarPopup extends Activity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
     /**

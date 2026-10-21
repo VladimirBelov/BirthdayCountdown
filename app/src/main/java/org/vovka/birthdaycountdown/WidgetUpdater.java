@@ -134,7 +134,7 @@ class WidgetUpdater {
             if (eventsData.isEmptyEventList() || eventsData.eventList.size() < startingIndex) {
 
                 String prefZeroEventsMessage = null;
-                if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
+                if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, ",");
                 if (TextUtils.isEmpty(prefZeroEventsMessage)) prefZeroEventsMessage = res.getString(R.string.msg_no_events);
                 views.setTextViewText(R.id.appwidget_text, prefZeroEventsMessage);
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
@@ -155,7 +155,7 @@ class WidgetUpdater {
             }
 
             //Объём событий
-            String prefScope = Constants.STRING_EMPTY;
+            String prefScope = "";
             if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
             if (!TextUtils.isEmpty(prefScope)) {
                 Matcher matchScopes = Pattern.compile(Constants.REGEX_EVENTS_SCOPE_PLUS).matcher(prefScope);
@@ -167,7 +167,7 @@ class WidgetUpdater {
                 if (found) {
                     final String scopeDays = matchScopes.group(2);
                     if (scopeDays != null) {
-                        if (!scopeDays.equals(Constants.STRING_0)){ //Дни
+                        if (!scopeDays.equals("0")){ //Дни
                             try {
                                 this.daysCount = Integer.parseInt(scopeDays);
                             } catch (NumberFormatException ignored) { /**/ }
@@ -180,7 +180,7 @@ class WidgetUpdater {
                             scopeLayout = matchScopes.group(3);
                         } catch (IllegalStateException | IndexOutOfBoundsException ignored) { /**/ }
                         if (scopeLayout != null) {
-                            if (scopeLayout.equals(Constants.STRING_MINUS)) { //Оставить пустоту
+                            if (scopeLayout.equals("-")) { //Оставить пустоту
                                 for (int e = 0; e < Constants.WIDGET_EVENTS_MAX; e++) {
                                     views.setViewVisibility(res.getIdentifier(Constants.WIDGET_EVENT_INFO + e, Constants.RES_TYPE_ID, packageName), View.INVISIBLE);
                                 }
@@ -320,7 +320,7 @@ class WidgetUpdater {
             if (eventsDisplayed == 0) { //вообще ничего не нашли
 
                 String prefZeroEventsMessage = null;
-                if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, Constants.STRING_COMMA);
+                if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, ",");
                 if (TextUtils.isEmpty(prefZeroEventsMessage)) prefZeroEventsMessage = res.getString(R.string.msg_no_events);
                 views.setTextViewText(R.id.appwidget_text, prefZeroEventsMessage);
                 views.setViewVisibility(R.id.appwidget_text, View.VISIBLE);
@@ -362,16 +362,16 @@ class WidgetUpdater {
 
             if (eventsData.preferences_debug_on) {
                 views.setTextViewText(R.id.info, (width > 70 ? res.getString(R.string.widget_msg_updated)
-                        : Constants.STRING_EMPTY) + Objects.requireNonNull(eventsData.sdf_DDMMYYYYHHMM.get()).format(Calendar.getInstance().getTime()));
+                        : "") + Objects.requireNonNull(eventsData.sdf_DDMMYYYYHHMM.get()).format(Calendar.getInstance().getTime()));
                 views.setViewVisibility(R.id.info, View.VISIBLE);
             } else {
-                views.setTextViewText(R.id.info, Constants.STRING_EMPTY);
+                views.setTextViewText(R.id.info, "");
                 views.setViewVisibility(R.id.info, View.INVISIBLE);
             }
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -468,9 +468,9 @@ class WidgetUpdater {
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                     if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = rowValue
-                                .concat(Constants.STRING_PARENTHESIS_OPEN)
+                                .concat(" (")
                                 .concat(singleEventArray[ContactsEvents.Position_nickname])
-                                .concat(Constants.STRING_PARENTHESIS_CLOSE);
+                                .concat(")");
                     }
                 } else if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_EventDate))) { //Дата события
                     rowValue = AppDateUtils.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime],
@@ -482,13 +482,13 @@ class WidgetUpdater {
                     rowValue = personFullName;
                 } else if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_First))) { //Имя
                     rowValue = personFullName;
-                    indSpace = rowValue.indexOf(Constants.STRING_SPACE);
+                    indSpace = rowValue.indexOf(" ");
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }
                 } else if (captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_Last))) { //Фамилия
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
-                    indSpace = rowValue.indexOf(Constants.STRING_SPACE);
+                    indSpace = rowValue.indexOf(" ");
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }
@@ -501,7 +501,7 @@ class WidgetUpdater {
                             && !captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))
                             && !captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_First))) {
                         rowValue = personFullName;
-                        indSpace = rowValue.indexOf(Constants.STRING_SPACE);
+                        indSpace = rowValue.indexOf(" ");
                         if (indSpace > -1) {
                             rowValue = rowValue.substring(0, indSpace);
                         }
@@ -587,9 +587,9 @@ class WidgetUpdater {
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
                     if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
                         rowValue = rowValue
-                                .concat(Constants.STRING_PARENTHESIS_OPEN)
+                                .concat(" (")
                                 .concat(singleEventArray[ContactsEvents.Position_nickname])
-                                .concat(Constants.STRING_PARENTHESIS_CLOSE);
+                                .concat(")");
                     }
                 } else if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_EventDate))) { //Дата события
                     rowValue = AppDateUtils.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime],
@@ -601,13 +601,13 @@ class WidgetUpdater {
                     rowValue = personFullName;
                 } else if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_First))) { //Имя
                     rowValue = personFullName;
-                    indSpace = rowValue.indexOf(Constants.STRING_SPACE);
+                    indSpace = rowValue.indexOf(" ");
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }
                 } else if (captionBottom.equals(res.getString(R.string.pref_Widgets_BottomInfo_Last))) { //Фамилия
                     rowValue = singleEventArray[ContactsEvents.Position_personFullNameAlt];
-                    indSpace = rowValue.indexOf(Constants.STRING_SPACE);
+                    indSpace = rowValue.indexOf(" ");
                     if (indSpace > -1) {
                         rowValue = rowValue.substring(0, indSpace);
                     }
@@ -620,7 +620,7 @@ class WidgetUpdater {
                             && !captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_FirstSecondLast))
                             && !captionUpper.equals(res.getString(R.string.pref_Widgets_BottomInfo_First))) {
                         rowValue = personFullName;
-                        indSpace = rowValue.indexOf(Constants.STRING_SPACE);
+                        indSpace = rowValue.indexOf(" ");
                         if (indSpace > -1) {
                             rowValue = rowValue.substring(0, indSpace);
                         }
@@ -685,10 +685,10 @@ class WidgetUpdater {
             int roundingFactor = 0;
             if (widgetPref != null && widgetPref.size() > 6) {
                 switch (widgetPref.get(6)) {
-                    case Constants.STRING_1: roundingFactor = 2; break;
-                    case Constants.STRING_2: roundingFactor = 3; break;
-                    case Constants.STRING_3: roundingFactor = 4; break;
-                    case Constants.STRING_4: roundingFactor = 9; break;
+                    case "1": roundingFactor = 2; break;
+                    case "2": roundingFactor = 3; break;
+                    case "3": roundingFactor = 4; break;
+                    case "4": roundingFactor = 9; break;
                 }
             }
 
@@ -777,7 +777,7 @@ class WidgetUpdater {
 
             //Иконка знака зодиака
             //https://emojipedia.org/microsoft/windows-10-may-2019-update/aquarius/
-            String strZodiacInfo = Constants.STRING_EMPTY;
+            String strZodiacInfo = "";
             int id_widget_ZodiacIcon = res.getIdentifier(Constants.WIDGET_ICON_ZODIAC + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
             String contactID = singleEventArray[ContactsEvents.Position_contactID];
@@ -813,7 +813,7 @@ class WidgetUpdater {
             }
 
             //Иконка зодиакального года
-            String strZodiacYearInfo = Constants.STRING_EMPTY;
+            String strZodiacYearInfo = "";
             int id_widget_ZodiacYearIcon = res.getIdentifier(Constants.WIDGET_ICON_ZODIAC_YEAR + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
 
             if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(res.getString(R.string.pref_EventInfo_ZodiacYear_ID))
@@ -827,7 +827,7 @@ class WidgetUpdater {
 
                     Date birthDate = eventsData.birthdayDatesForIds.get(contactID);
                     if (birthDate != null) {
-                        Locale locale_en = new Locale(Constants.LANG_EN);
+                        Locale locale_en = new Locale("en");
                         SimpleDateFormat sdfYear = new SimpleDateFormat(Constants.DATE_DD_MM_YYYY, locale_en);
                         strZodiacYearInfo = ContactsEvents.ZodiacHelper.getChineseZodiacYearSymbol(res, sdfYear.format(birthDate));
                     }
@@ -893,7 +893,7 @@ class WidgetUpdater {
                         views.setTextColor(textCaptionBottom, colorEventToday);
                     }
                 }
-                views.setTextViewText(id_widget_Distance, Constants.STRING_EMPTY);
+                views.setTextViewText(id_widget_Distance, "");
                 colorDate = String.format("%06x", (colorEventToday & 0x00ffffff));
 
             } else if (eventDistance_Days >= 1 && eventDistance_Days <= eventsData.preferences_widgets_days_event_soon) { //Скоро
@@ -918,8 +918,8 @@ class WidgetUpdater {
                     : widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_Age_ID))) {
 
                 String ageCaption = singleEventArray[ContactsEvents.Position_age_caption];
-                if (ageCaption.contains(Constants.STRING_SPACE)) {
-                    views.setTextViewText(id_widget_Age, ageCaption.substring(0, ageCaption.lastIndexOf(Constants.STRING_SPACE)));
+                if (ageCaption.contains(" ")) {
+                    views.setTextViewText(id_widget_Age, ageCaption.substring(0, ageCaption.lastIndexOf(" ")));
                 } else {
                     views.setTextViewText(id_widget_Age, ageCaption);
                 }
@@ -962,11 +962,11 @@ class WidgetUpdater {
                     ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
                     res, eventsData.currentLocale);
             String eventText = singleEventArray[ContactsEvents.Position_eventEmoji] +
-                    Constants.STRING_SPACE +
+                    " " +
                     Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + eventDay + Constants.HTML_COLOR_END +
-                    Constants.STRING_SPACE +
+                    " " +
                     singleEventArray[ContactsEvents.Position_eventCaption] +
-                    Constants.STRING_COLON_SPACE +
+                    ": " +
                     StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format);
             if (pref_onClick == 1) { //Из общих настроек
                 intentAction = ContactsEvents.getViewActionIntent(event, eventText, singleEventArray, eventsData.preferences_widgets_on_click_action, context);
@@ -988,7 +988,7 @@ class WidgetUpdater {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 

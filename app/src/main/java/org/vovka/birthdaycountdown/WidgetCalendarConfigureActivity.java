@@ -215,11 +215,11 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             widgetPref = eventsData.getWidgetPreference(widgetId, widgetType);
             if (widgetId > 0 && eventsData.preferences_debug_on) {
                 toolbar.setTitle(getString(R.string.window_widget_settings)
-                        .concat(Constants.STRING_PARENTHESIS_OPEN)
+                        .concat(" (")
                         .concat(Constants.RES_TYPE_ID)
-                        .concat(Constants.STRING_COLON_SPACE)
+                        .concat(": ")
                         .concat(String.valueOf(widgetId))
-                        .concat(Constants.STRING_PARENTHESIS_CLOSE)
+                        .concat(")")
                 );
             }
             Button buttonCancel = findViewById(R.id.button_cancel);
@@ -358,7 +358,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         } finally {
             updateVisibility();
             if (ta != null) ta.recycle();
@@ -447,7 +447,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                     if (!pref.isEmpty()) {
                         List<String> prefEventsColors = new ArrayList<>(Arrays.asList(pref.split(Constants.REGEX_PLUS, -1)));
                         for (String color : prefEventsColors) {
-                            String[] colors = color.split(Constants.STRING_COLON, -1);
+                            String[] colors = color.split(":", -1);
                             if (colors.length == 2) {
                                 try {
                                     Integer colorValue = Integer.parseInt(colors[1]);
@@ -633,7 +633,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -651,7 +651,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             finish();
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
     /** Возвращает текущую конфигурацию виджета в виде строки
@@ -677,58 +677,58 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             List<String> elementsValues = Arrays.asList(getResources().getStringArray(R.array.widget_config_elements_entries));
             final StringBuilder selectedElements = new StringBuilder();
             for(final String item: spinnerElements.getSelectedStrings()) {
-                if (selectedElements.length() > 0) selectedElements.append(Constants.STRING_PLUS);
+                if (selectedElements.length() > 0) selectedElements.append("+");
                 selectedElements.append(elementsIDs.get(elementsValues.indexOf(item)));
             }
             if (includeMigration) {
-                if (selectedElements.length() > 0) selectedElements.append(Constants.STRING_PLUS);
+                if (selectedElements.length() > 0) selectedElements.append("+");
                 selectedElements.append(Constants.migration192);
             }
 
-            final String eventSources = TextUtils.join(Constants.STRING_PLUS, eventSourcesSelected);
+            final String eventSources = TextUtils.join("+", eventSourcesSelected);
             String fontMagnify;
             if (this.checkFontMagnifyManual.isChecked()) {
                 fontMagnify = String.valueOf(seekFontMagnify.getProgress() - 5);
             } else {
                 fontMagnify =  String.valueOf(seekFontMagnify.getProgress() - 5)
-                        .concat(Constants.STRING_PLUS)
+                        .concat("+")
                         .concat(String.valueOf(seekFontMagnifyMonth.getProgress() - 5))
-                        .concat(Constants.STRING_PLUS)
+                        .concat("+")
                         .concat(String.valueOf(seekFontMagnifyWeek.getProgress() - 5))
-                        .concat(Constants.STRING_PLUS)
+                        .concat("+")
                         .concat(String.valueOf(seekFontMagnifyDay.getProgress() - 5));
             }
             List<String> onclickHolidaysIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_holidays_values));
             List<String> onclickCommonIDs = Arrays.asList(getResources().getStringArray(R.array.pref_widget_month_onclick_common_values));
             final String selectedOnClick = onclickCommonIDs.get(spinnerOnClickCommon.getSelectedItemPosition())
-                    .concat(Constants.STRING_PLUS).concat(onclickHolidaysIDs.get(spinnerOnClickHolidays.getSelectedItemPosition()));
+                    .concat("+").concat(onclickHolidaysIDs.get(spinnerOnClickHolidays.getSelectedItemPosition()));
             final int colorWidgetBackground = pickerColorWidgetBackground.getColor();
             final String selectedWidgetBackground = colorWidgetBackground != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Back_default)
-                    ? ImageUtils.toARGBString(colorWidgetBackground) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorWidgetBackground) : "";
             final int colorWidgetBorder = pickerColorWidgetBorder.getColor();
             final String selectedWidgetBorder = colorWidgetBorder != ContextCompat.getColor(this, R.color.pref_Widgets_Color_WidgetBorder_default)
-                    ? ImageUtils.toARGBString(colorWidgetBorder) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorWidgetBorder) : "";
             final int colorGrid = pickerColorGrid.getColor();
             final String selectedGrid = colorGrid != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Grid_default)
-                    ? ImageUtils.toARGBString(colorGrid) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorGrid) : "";
             final int colorCommon = pickerColorCommon.getColor();
             final String selectedCommon = colorCommon != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Common_default)
-                    ? ImageUtils.toARGBString(colorCommon) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorCommon) : "";
             final int colorMonthTitle = pickerColorMonthTitle.getColor();
             final String selectedMonthTitle = colorMonthTitle != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_MonthTitle_default)
-                    ? ImageUtils.toARGBString(colorMonthTitle) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorMonthTitle) : "";
             final int colorHeaderBack = pickerColorHeaderBack.getColor();
             final String selectedHeaderBack = colorHeaderBack != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_HeaderBack_default)
-                    ? ImageUtils.toARGBString(colorHeaderBack) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorHeaderBack) : "";
             final int colorArrows = pickerColorArrows.getColor();
             final String selectedArrows = colorArrows != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Arrows_default)
-                    ? ImageUtils.toARGBString(colorArrows) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorArrows) : "";
             final int colorWeeks = pickerColorWeeks.getColor();
             final String selectedWeeks = colorWeeks != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Weeks_default)
-                    ? ImageUtils.toARGBString(colorWeeks) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorWeeks) : "";
             final int colorToday = pickerColorToday.getColor();
             final String selectedToday = colorToday != ContextCompat.getColor(this, R.color.pref_Widgets_Color_Calendar_Today_default)
-                    ? ImageUtils.toARGBString(colorToday) : Constants.STRING_EMPTY;
+                    ? ImageUtils.toARGBString(colorToday) : "";
             List<String> listColors = new ArrayList<>();
             for (String sourceId : eventSourcesColors.keySet()) {
                 @Nullable Integer colorValue = eventSourcesColors.get(sourceId);
@@ -744,7 +744,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                     } else if (!eventSourcesSelected.contains(sourceId)) {
                         colorValue = null;
                     }
-                    if (colorValue != null) listColors.add(sourceId.concat(Constants.STRING_COLON).concat(String.valueOf(colorValue)));
+                    if (colorValue != null) listColors.add(sourceId.concat(":").concat(String.valueOf(colorValue)));
                 }
             }
             String strColorDot = (String) spinnerColorDots.getSelectedItem();
@@ -758,21 +758,21 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             prefsToStore.add(eventSources); //Источники событий (через +)
             prefsToStore.add(fontMagnify); //Размер шрифта
             prefsToStore.add(selectedWidgetBackground //Цвет подложки
-                    + Constants.STRING_PLUS + selectedWidgetBorder //Цвет бордюра
-                    + Constants.STRING_PLUS + selectedGrid //Цвет сетки
-                    + Constants.STRING_PLUS + strColorDot); //Цветная метка
+                    + "+" + selectedWidgetBorder //Цвет бордюра
+                    + "+" + selectedGrid //Цвет сетки
+                    + "+" + strColorDot); //Цветная метка
             prefsToStore.add(selectedCommon); //Цвет обычных дней
             prefsToStore.add(selectedMonthTitle); //Цвет заголовка
             prefsToStore.add(selectedHeaderBack); //Фон заголовка
             prefsToStore.add(selectedArrows); //Цвет стрелок
             prefsToStore.add(selectedWeeks); //Цвет дней недели
             prefsToStore.add(selectedToday); //Цвет дня сегодня
-            prefsToStore.add(TextUtils.join(Constants.STRING_PLUS, listColors)); //Цвета календарей
+            prefsToStore.add(TextUtils.join("+", listColors)); //Цвета календарей
             prefsToStore.add(selectedOnClick); //Действие на нажатие
-            return TextUtils.join(Constants.STRING_COMMA, prefsToStore);
+            return TextUtils.join(",", prefsToStore);
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
             return null;
         }
     }
@@ -928,7 +928,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             alert.show();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1043,7 +1043,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1081,18 +1081,18 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
      */
     private void applyTemplateConfig(@NonNull String config) {
         try {
-            String[] parts = config.split(Constants.STRING_COMMA, -1);
+            String[] parts = config.split(",", -1);
             List<String> prefList = new ArrayList<>(Arrays.asList(parts));
             // Дополняем до нужного размера (16 полей для календаря)
             while (prefList.size() < 16) {
-                prefList.add(Constants.STRING_EMPTY);
+                prefList.add("");
             }
             widgetPref = prefList;
             // Используем общий метод заполнения
             populateUIFromWidgetPref();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
@@ -1167,12 +1167,12 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             if (!eventsData.preferences_HolidayEvent_files.isEmpty()) {
                 for (String file: eventsData.preferences_HolidayEvent_files) {
                     eventSourcesIds.add(StringUtils.getHash(Constants.eventSourceFilePrefix + file));
-                    eventSourcesTitles.add(Constants.eventTitleFilePrefix.concat(StringUtils.substringBefore(file, Constants.STRING_BAR)));
+                    eventSourcesTitles.add(Constants.eventTitleFilePrefix.concat(StringUtils.substringBefore(file, "|")));
                 }
             }
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
     private void updateEventSources() {
@@ -1206,7 +1206,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             }
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
     private void selectEventSources() {
@@ -1260,7 +1260,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
                 dialogEventsList.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ta.getColor(R.styleable.Theme_dialogButtonColor, 0));
                 //Только здесь работает
                 for (int i = 0; i < sourceChoices.size(); i++) {
-                    String title = StringUtils.substringBefore(sourceChoices.get(i), Constants.STRING_BRACKETS_OPEN);
+                    String title = StringUtils.substringBefore(sourceChoices.get(i), " [");
                     if (eventSourcesTitles.contains(title)) {
                         if (eventSourcesSelected.contains(eventSourcesIds.get(eventSourcesTitles.indexOf(title)))) {
                             listView.setItemChecked(i, true);
@@ -1315,7 +1315,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             dialogEventsList.show();
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
     private void updateVisibility() {
@@ -1390,7 +1390,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             findViewById(R.id.hints).setVisibility(isAdvSettings ? View.GONE : View.VISIBLE);
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 }

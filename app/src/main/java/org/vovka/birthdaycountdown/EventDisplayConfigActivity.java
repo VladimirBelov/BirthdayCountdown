@@ -49,6 +49,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
     private ConfigAdapter adapter;
     private ItemTouchHelper itemTouchHelper;
     private final List<DisplayItem> items = new ArrayList<>();
+    private boolean isModified = false;
 
     enum SECTION {
         general, before, details, dates
@@ -57,39 +58,39 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
     // Описание параметров: id → [название, секция, hasColor, hasSettings]
     private static final String[][] PARAMS = {
             // Общие (не перетаскиваются)
-            {EventDisplayConfig.KEY_PHOTO, SECTION.general.toString(), Constants.STRING_0, Constants.STRING_0},
-            {EventDisplayConfig.KEY_DATES_POS, SECTION.general.toString(), Constants.STRING_0, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_NAME, SECTION.general.toString(), Constants.STRING_1, Constants.STRING_0},
+            {EventDisplayConfig.KEY_PHOTO, SECTION.general.toString(), "0", "0"},
+            {EventDisplayConfig.KEY_DATES_POS, SECTION.general.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NAME, SECTION.general.toString(), "1", "0"},
             // До события
-            {EventDisplayConfig.PARAM_WHEN, SECTION.before.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_DAY_OF_WEEK, SECTION.before.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_DATE_BEFORE, SECTION.before.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_NEWLINE, SECTION.before.toString(), Constants.STRING_0, Constants.STRING_0},
+            {EventDisplayConfig.PARAM_WHEN, SECTION.before.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_DAY_OF_WEEK, SECTION.before.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_DATE_BEFORE, SECTION.before.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE, SECTION.before.toString(), "0", "0"},
             // Детали
-            {EventDisplayConfig.PARAM_JOB_TITLE, SECTION.details.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_ORGANIZATION, SECTION.details.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_NICKNAME, SECTION.details.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_EVENT_CAPTION, SECTION.details.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_EVENT_LABEL, SECTION.details.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_EVENT_SOURCE, SECTION.details.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_EVENT_EMOJI, SECTION.details.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_EVENT_TYPE, SECTION.details.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_FAVORITE_ICON, SECTION.details.toString(), Constants.STRING_0, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_AGE, SECTION.details.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_ZODIAC, SECTION.details.toString(), Constants.STRING_1, Constants.STRING_1},
-            {EventDisplayConfig.PARAM_WEB_LINK, SECTION.details.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_DESCRIPTION, SECTION.details.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_DEBUG_INFO, SECTION.details.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_NEWLINE + "_1", SECTION.details.toString(), Constants.STRING_0, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_NEWLINE + "_2", SECTION.details.toString(), Constants.STRING_0, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_NEWLINE + "_3", SECTION.details.toString(), Constants.STRING_0, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_NEWLINE + "_4", SECTION.details.toString(), Constants.STRING_0, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_NEWLINE + "_5", SECTION.details.toString(), Constants.STRING_0, Constants.STRING_0},
+            {EventDisplayConfig.PARAM_JOB_TITLE, SECTION.details.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_ORGANIZATION, SECTION.details.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_NICKNAME, SECTION.details.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_EVENT_CAPTION, SECTION.details.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_EVENT_LABEL, SECTION.details.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_EVENT_SOURCE, SECTION.details.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_EVENT_EMOJI, SECTION.details.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_EVENT_TYPE, SECTION.details.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_FAVORITE_ICON, SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_AGE, SECTION.details.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_ZODIAC, SECTION.details.toString(), "1", "1"},
+            {EventDisplayConfig.PARAM_WEB_LINK, SECTION.details.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_DESCRIPTION, SECTION.details.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_DEBUG_INFO, SECTION.details.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_1", SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_2", SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_3", SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_4", SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_5", SECTION.details.toString(), "0", "0"},
             // Даты
-            {EventDisplayConfig.PARAM_DATE_ORIGINAL, SECTION.dates.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_EVENT_ICON, SECTION.dates.toString(), Constants.STRING_1, Constants.STRING_0},
-            {EventDisplayConfig.PARAM_AGE_NEXT, SECTION.dates.toString(), Constants.STRING_1, Constants.STRING_1},
-            {EventDisplayConfig.PARAM_DATE_EVENT, SECTION.dates.toString(), Constants.STRING_1, Constants.STRING_0},
+            {EventDisplayConfig.PARAM_DATE_ORIGINAL, SECTION.dates.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_EVENT_ICON, SECTION.dates.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_AGE_NEXT, SECTION.dates.toString(), "1", "1"},
+            {EventDisplayConfig.PARAM_DATE_EVENT, SECTION.dates.toString(), "1", "0"},
     };
 
     static {
@@ -212,8 +213,8 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
 
     private DisplayItem makeParameterItem(String section, String id) {
         String title = getParamTitle(id);
-        boolean hasColor = Constants.STRING_1.equals(getParamProp(id, 2));
-        boolean hasSettings = Constants.STRING_1.equals(getParamProp(id, 3));
+        boolean hasColor = "1".equals(getParamProp(id, 2));
+        boolean hasSettings = "1".equals(getParamProp(id, 3));
         // "newline" параметры всегда включены визуально, но их "включённость" = присутствие в списке
         boolean enabled = isParamEnabled(section, id);
         return new DisplayItem(DisplayItem.TYPE_PARAMETER, section, id, title,
@@ -276,7 +277,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
         for (String[] p : PARAMS) {
             if (p[0].equals(id)) return p[index];
         }
-        return Constants.STRING_0;
+        return "0";
     }
 
     private boolean isParamInSection(String id, String section) {
@@ -360,6 +361,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
     }
 
     private void saveSectionOrder(String section) {
+        setModified();
         List<String> order = new ArrayList<>();
         for (DisplayItem item : items) {
             if (item.type == DisplayItem.TYPE_PARAMETER && section.equals(item.section) && item.enabled) {
@@ -527,6 +529,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
     }
 
     private void toggleParamInSection(String section, String paramId, boolean enabled) {
+        setModified();
         List<String> order;
         if (section.equals(SECTION.before.toString())) {
             order = new ArrayList<>(config.getBeforeOrder());
@@ -565,6 +568,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                 (id, color) -> {
                     if (item.type == DisplayItem.TYPE_PARAMETER || EventDisplayConfig.PARAM_NAME.equals(item.paramId)) {
                         config.setColor(item.paramId, color);
+                        setModified();
                         Toast.makeText(EventDisplayConfigActivity.this,
                                 getString(R.string.msg_event_color_selected,
                                         String.format("#%08X", color),
@@ -584,7 +588,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
 
     private void showZodiacSettings(final DisplayItem item) {
         String current = config.getSetting(item.paramId);
-        Set<String> currentSet = new HashSet<>(Arrays.asList(current.split(Constants.STRING_COMMA)));
+        Set<String> currentSet = new HashSet<>(Arrays.asList(current.split(",")));
 
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_zodiac_settings, null);
         final CheckBox cbSign = view.findViewById(R.id.cb_zodiac_sign);
@@ -601,6 +605,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                     if (cbSign.isChecked()) vals.add(EventDisplayConfig.PARAM_ZODIAC_SIGN);
                     if (cbAnimal.isChecked()) vals.add(EventDisplayConfig.PARAM_ZODIAC_ANIMAL);
                     config.setSetting(item.paramId, joinCsv(vals));
+                    setModified();
                 })
                 .setNegativeButton(R.string.button_cancel, null)
                 .show();
@@ -616,13 +621,16 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                 ContactsEvents.getInstance().preferences_theme.themeDialog))
                 .setTitle(R.string.age_next_settings_title)
                 .setView(view)
-                .setPositiveButton(R.string.button_ok, (dialog, which) ->
-                        config.setSetting(item.paramId, cbFull.isChecked() ? EventDisplayConfig.PARAM_AGE_NEXT_FULL : Constants.STRING_EMPTY))
+                .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+                    config.setSetting(item.paramId, cbFull.isChecked() ? EventDisplayConfig.PARAM_AGE_NEXT_FULL : "");
+                    setModified();
+                })
                 .setNegativeButton(R.string.button_cancel, null)
                 .show();
     }
 
     private void cycleGeneralValue(DisplayItem item) {
+        setModified();
         if (EventDisplayConfig.KEY_PHOTO.equals(item.paramId)) {
             String cur = config.getPhotoPosition();
             String next;
@@ -667,7 +675,8 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_save) {
-            config.save(); // Сохраняем все изменения в SharedPreferences
+            config.save();
+            isModified = false;
             Toast.makeText(this, R.string.msg_saved, Toast.LENGTH_SHORT).show();
             finish();
             return true;
@@ -680,6 +689,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                         config.resetToDefaults();
                         rebuildItems();
                         adapter.notifyDataSetChanged();
+                        setModified();
                     })
                     .setNegativeButton(R.string.button_no, null)
                     .show();
@@ -719,5 +729,29 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             this.hasColor = hasColor;
             this.hasSettings = hasSettings;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isModified) {
+            showUnsavedChangesDialog();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void setModified() {
+        isModified = true;
+    }
+
+    private void showUnsavedChangesDialog() {
+        new AlertDialog.Builder(new ContextThemeWrapper(this,
+                ContactsEvents.getInstance().preferences_theme.themeDialog))
+                .setTitle(R.string.msg_title_confirmation)
+                .setIcon(android.R.drawable.ic_menu_help)
+                .setMessage(R.string.local_event_dialog_confirmation_cancel)
+                .setPositiveButton(R.string.button_yes, (d, w) -> finish())
+                .setNegativeButton(R.string.button_no, null)
+                .show();
     }
 }

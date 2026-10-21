@@ -94,7 +94,7 @@ public class DeviceTools {
     public static String getPath(Context context, Uri uri) {
     //https://stackoverflow.com/questions/13209494/how-to-get-the-full-file-path-from-uri
 
-        if (uri == null) return Constants.STRING_EMPTY;
+        if (uri == null) return "";
         try {
 
             // DocumentProvider
@@ -102,23 +102,23 @@ public class DeviceTools {
                 // ExternalStorageProvider
                 if (isExternalStorageDocument(uri)) {
                     final String docId = DocumentsContract.getDocumentId(uri);
-                    final String[] split = docId.split(Constants.STRING_COLON);
+                    final String[] split = docId.split(":");
                     final String type = split[0];
 
                     if ("primary".equalsIgnoreCase(type)) {
-                        return Environment.getExternalStorageDirectory() + Constants.STRING_SLASH + split[1];
+                        return Environment.getExternalStorageDirectory() + "/" + split[1];
                     } else {
-                        return "/storage/" + split[0] + Constants.STRING_SLASH + split[1];
+                        return "/storage/" + split[0] + "/" + split[1];
                     }
                 }
                 // DownloadsProvider
                 else if (isDownloadsDocument(uri)) {
-                    return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + Constants.STRING_SLASH + getDataColumn(context, uri, null, null);
+                    return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + getDataColumn(context, uri, null, null);
                 }
                 // MediaProvider
                 else if (isMediaDocument(uri)) {
                     final String docId = DocumentsContract.getDocumentId(uri);
-                    final String[] split = docId.split(Constants.STRING_COLON);
+                    final String[] split = docId.split(":");
                     final String type = split[0];
                     Uri contentUri = null;
                     if ("image".equals(type)) {
@@ -154,7 +154,7 @@ public class DeviceTools {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
-        return Constants.STRING_EMPTY;
+        return "";
 
     }
 

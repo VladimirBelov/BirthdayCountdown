@@ -139,8 +139,8 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                 if (widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_FavIcon_ID))) {
                     if (eventsData.checkIsFavoriteEvent(eventKey, eventKeyWithRawId, singleEventArray[ContactsEvents.Position_starred])) {
                         eventCaption = eventCaption
-                                .concat(Constants.STRING_SPACE)
-                                .concat(StringUtils.substringBefore(localizedResources.getString(R.string.pref_EventInfo_FavIcon), Constants.STRING_SPACE));
+                                .concat(" ")
+                                .concat(StringUtils.substringBefore(localizedResources.getString(R.string.pref_EventInfo_FavIcon), " "));
                     }
                 }
                 if (colorizeEntireRow) {
@@ -162,7 +162,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                 if (widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_JobTitle_ID))) {
                     final String positionJobTitle = singleEventArray[ContactsEvents.Position_title];
                     if (!TextUtils.isEmpty(positionJobTitle)) {
-                        if (sbDetails.length() > 0) sbDetails.append(Constants.STRING_COMMA_SPACE);
+                        if (sbDetails.length() > 0) sbDetails.append(", ");
                         sbDetails.append(positionJobTitle.trim());
                     }
                 }
@@ -172,7 +172,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                 if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(localizedResources.getString(R.string.pref_EventInfo_EventIcon_ID))
                         : widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_EventIcon_ID))) {
                     if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
-                    sbDetails.append(singleEventArray[ContactsEvents.Position_eventEmoji]).append(Constants.STRING_SPACE);
+                    sbDetails.append(singleEventArray[ContactsEvents.Position_eventEmoji]).append(" ");
                     isEventTypeIcon = true;
                 }
 
@@ -184,9 +184,9 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                     if (widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_EventLabel_ID))) {
                         if (StringUtils.hasContent(singleEventArray[ContactsEvents.Position_eventLabel])) {
                             sbDetails
-                                    .append(Constants.STRING_PARENTHESIS_OPEN)
+                                    .append(" (")
                                     .append(singleEventArray[ContactsEvents.Position_eventLabel])
-                                    .append(Constants.STRING_PARENTHESIS_CLOSE);
+                                    .append(")");
                             isLabel = true;
                         }
                     }
@@ -200,7 +200,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                     if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(localizedResources.getString(R.string.pref_EventInfo_Age_ID))
                             : widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_Age_ID))) {
                         if ((widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_EventCaption_ID)) || isLabel))
-                            sbDetails.append(Constants.STRING_COLON_SPACE);
+                            sbDetails.append(": ");
                         sbDetails.append(singleEventArray[ContactsEvents.Position_age_caption]);
                     }
                 }
@@ -227,7 +227,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                     if (showOriginalYear) {
                         if (eventDateFirstTime != null && eventDateFirstTime.length() > 6) {
                             if (showOriginalDate) {
-                                sbDetails.append(Constants.STRING_SPACE).append(eventDateFirstTime.substring(6));
+                                sbDetails.append(" ").append(eventDateFirstTime.substring(6));
                             } else {
                                 if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
                                 sbDetails.append(eventDateFirstTime.substring(6));
@@ -236,11 +236,11 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                     }
                 }
                 //Текущий возраст
-                if (widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_CurrentAge_ID)) && !singleEventArray[ContactsEvents.Position_eventDistance].equals(Constants.STRING_0)) {
+                if (widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_CurrentAge_ID)) && !singleEventArray[ContactsEvents.Position_eventDistance].equals("0")) {
                     final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
                     if (!TextUtils.isEmpty(currentAge)) {
                         if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
-                        int ind = currentAge.indexOf(Constants.STRING_PARENTHESIS_OPEN);
+                        int ind = currentAge.indexOf(" (");
                         sbDetails.append(ind != -1 ? currentAge.substring(0, ind) : currentAge);
                     }
                 }
@@ -250,13 +250,13 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
 
                 if (eventSubType.equals(Constants.EventType_BirthDay) || eventSubType.equals(Constants.EventType_5K)) {
 
-                    String strZodiacInfo = Constants.STRING_EMPTY;
+                    String strZodiacInfo = "";
                     if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(localizedResources.getString(R.string.pref_EventInfo_ZodiacSign_ID))
                             : widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_ZodiacSign_ID))) {
                         strZodiacInfo = singleEventArray[ContactsEvents.Position_zodiacSign].trim();
                     }
 
-                    String strZodiacYearInfo = Constants.STRING_EMPTY;
+                    String strZodiacYearInfo = "";
                     if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(localizedResources.getString(R.string.pref_EventInfo_ZodiacYear_ID))
                             : widgetPref_eventInfo.contains(localizedResources.getString(R.string.pref_EventInfo_ZodiacYear_ID))) {
                         strZodiacYearInfo = singleEventArray[ContactsEvents.Position_zodiacYear].trim();
@@ -264,7 +264,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
 
                     if (!strZodiacInfo.isEmpty() || !strZodiacYearInfo.isEmpty()) {
                         if (sbDetails.length() > 0) sbDetails.append(Constants.HTML_BR);
-                        sbDetails.append((strZodiacInfo.concat(Constants.STRING_SPACE).concat(strZodiacYearInfo)).trim());
+                        sbDetails.append((strZodiacInfo.concat(" ").concat(strZodiacYearInfo)).trim());
                     }
                 }
 
@@ -280,20 +280,20 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
 
                     StringBuilder textDistance = new StringBuilder();
                     if (showDistance) textDistance.append(eventDistanceText[0]);
-                    if (!singleEventArray[ContactsEvents.Position_eventDistance].equals(Constants.STRING_0)) {
+                    if (!singleEventArray[ContactsEvents.Position_eventDistance].equals("0")) {
                         if (showDayOfWeek) {
-                            if (textDistance.length() > 0) textDistance.append(Constants.STRING_SPACE);
+                            if (textDistance.length() > 0) textDistance.append(" ");
                             textDistance.append(eventDistanceText[1]);
                         }
                         if (showEventDate) {
-                            if (textDistance.length() > 0) textDistance.append(Constants.STRING_COMMA_SPACE);
+                            if (textDistance.length() > 0) textDistance.append(", ");
                             textDistance.append(eventDistanceText[2]);
                         }
                         if (showEventYear) {
                             if (showEventDate) {
-                                textDistance.append(Constants.STRING_SPACE).append(eventDistanceText[4]);
+                                textDistance.append(" ").append(eventDistanceText[4]);
                             } else {
-                                if (textDistance.length() > 0) textDistance.append(Constants.STRING_COMMA_SPACE);
+                                if (textDistance.length() > 0) textDistance.append(", ");
                                 textDistance.append(eventDistanceText[4]);
                             }
                         }
@@ -349,11 +349,11 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                     ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
                     eventsData.getResources(), eventsData.currentLocale);
             String eventText = singleEventArray[ContactsEvents.Position_eventEmoji] +
-                    Constants.STRING_SPACE +
+                    " " +
                     Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + eventDay + Constants.HTML_COLOR_END +
-                    Constants.STRING_SPACE +
+                    " " +
                     singleEventArray[ContactsEvents.Position_eventCaption] +
-                    Constants.STRING_COLON_SPACE +
+                    ": " +
                     StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format);
 
             Intent clickIntent = new Intent();
@@ -365,7 +365,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
 
         return views;
@@ -426,7 +426,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
 
             widgetPref_onClick = eventsData.preferences_widgets_on_click_action;
             //Если = Constants.STRING_1, значит используем общие настройки
-            if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty() && !widgetPref.get(12).equals(Constants.STRING_1)) {
+            if (widgetPref.size() > 12 && !widgetPref.get(12).isEmpty() && !widgetPref.get(12).equals("1")) {
                 try {
                     widgetPref_onClick = Integer.parseInt(widgetPref.get(12));
                 } catch (NumberFormatException ignored) { /**/ }
@@ -438,7 +438,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
             //Ограничения объёма
             int maxEvents = 50;
             int maxDays = 0;
-            String prefScope = Constants.STRING_EMPTY;
+            String prefScope = "";
             if (widgetPref.size() > 8) prefScope = widgetPref.get(8);
 
             if (StringUtils.hasContent(prefScope)) {
@@ -446,8 +446,8 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                 if (matchScopes.find()) {
                     final String scopeEvents = matchScopes.group(1);
                     if (scopeEvents != null) {
-                        List<String> scopeEventsItems = new ArrayList<>(Arrays.asList(localizedResources.getString(R.string.widget_config_scope_events_items).split(Constants.STRING_COMMA, -1)));
-                        if (!scopeEvents.equals(Constants.STRING_0) && scopeEventsItems.contains(scopeEvents)) {
+                        List<String> scopeEventsItems = new ArrayList<>(Arrays.asList(localizedResources.getString(R.string.widget_config_scope_events_items).split(",", -1)));
+                        if (!scopeEvents.equals("0") && scopeEventsItems.contains(scopeEvents)) {
                             try {
                                 maxEvents = Integer.parseInt(scopeEvents);
                             } catch (NumberFormatException e) { /**/ }
@@ -455,8 +455,8 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
                     }
                     final String scopeDays = matchScopes.group(2);
                     if (scopeDays != null) {
-                        List<String> scopeDaysItems = new ArrayList<>(Arrays.asList(localizedResources.getString(R.string.widget_config_scope_days_items).split(Constants.STRING_COMMA, -1)));
-                        if (!scopeDays.equals(Constants.STRING_0) && scopeDaysItems.contains(scopeDays)) {
+                        List<String> scopeDaysItems = new ArrayList<>(Arrays.asList(localizedResources.getString(R.string.widget_config_scope_days_items).split(",", -1)));
+                        if (!scopeDays.equals("0") && scopeDaysItems.contains(scopeDays)) {
                             try {
                                 maxDays = Integer.parseInt(scopeDays);
                             } catch (NumberFormatException e) { /**/ }
@@ -491,7 +491,7 @@ public class WidgetPhotoListDataProvider implements RemoteViewsService.RemoteVie
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + Constants.STRING_COLON_SPACE + e);
+            ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         }
 
     }
