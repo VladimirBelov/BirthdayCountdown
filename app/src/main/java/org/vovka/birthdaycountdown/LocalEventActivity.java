@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.10.2026, 16:49
+ *  * Created by Vladimir Belov on 22.10.2026, 15:38
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 13.10.2026, 14:41
+ *  * Last modified 22.10.2026, 14:33
  *
  */
 
@@ -132,7 +132,7 @@ public class LocalEventActivity extends AppCompatActivity {
     Button buttonPickContactData;
     Button buttonPickPhoto;
     Button buttonClearPhoto;
-    int alphaForButtons = 200;
+    final int alphaForButtons = 200;
 
     static {
         eventsData = ContactsEvents.getInstance();

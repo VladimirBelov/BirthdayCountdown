@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.10.2026, 01:35
+  ~  * Created by Vladimir Belov on 22.10.2026, 15:38
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.10.2026, 00:26
+  ~  * Last modified 22.10.2026, 13:04
   ~  */
   -->
 
@@ -17,5 +17,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/age_next_show_full" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/age_next_style_title"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+
+    <RadioGroup
+        android:id="@+id/rg_age_next_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/rb_age_next_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_next_style_normal" />
+
+        <RadioButton
+            android:id="@+id/rb_age_next_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_next_style_bold" />
+
+        <RadioButton
+            android:id="@+id/rb_age_next_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_next_style_shadow" />
+
+    </RadioGroup>
 
 </LinearLayout>

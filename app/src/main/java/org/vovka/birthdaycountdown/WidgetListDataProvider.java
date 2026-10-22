@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.10.2026, 11:57
+ *  * Created by Vladimir Belov on 22.10.2026, 15:38
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.10.2026, 12:17
+ *  * Last modified 22.10.2026, 14:08
  *
  */
 
@@ -427,7 +427,7 @@ public class WidgetListDataProvider implements RemoteViewsService.RemoteViewsFac
                         }
                     }
 
-                } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventIcon_ID))) {
+                } else if (eventItem.equals(localizedResources.getString(R.string.pref_EventInfo_EventEmoji_ID))) {
 
                     String eventEmoji = singleEventArray[ContactsEvents.Position_eventEmoji];
                     if (StringUtils.hasContent(eventEmoji)) {

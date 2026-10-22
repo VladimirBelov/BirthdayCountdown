@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.10.2026, 01:35
+  ~  * Created by Vladimir Belov on 22.10.2026, 15:38
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 21.10.2026, 00:03
+  ~  * Last modified 22.10.2026, 15:11
   ~  */
   -->
 
@@ -38,6 +38,7 @@
     <string name="menu_filter_events">Фильтр…</string>
     <string name="menu_events_sources">Источники…</string>
     <string name="menu_events_types">Типы событий…</string>
+    <string name="menu_event_display_config">Изменить макет…</string>
     <string name="menu_hints">Подсказки для поиска…</string>
     <string name="menu_context_edit_contact">Редактировать контакт</string>
     <string name="menu_context_open_contact">Открыть контакт</string>
@@ -757,7 +758,9 @@
     <string name="pref_EventInfo_Dividers">Разделитель событий</string>
     <string name="pref_EventInfo_ButtonConfig">Кнопка конфигурации</string>
     <string name="pref_EventInfo_Photo">Фото контакта</string>
-    <string name="pref_EventInfo_EventIcon">🎂 Иконка типа события</string>
+    <string name="pref_EventInfo_EventType">Тип события</string>
+    <string name="pref_EventInfo_EventIcon">🖼️ Иконка типа события</string>
+    <string name="pref_EventInfo_EventEmoji">🎂 Символ типа события</string>
     <string name="pref_EventInfo_EventCaption">Наименование события</string>
     <string name="pref_EventInfo_EventLabel">Исходное наименование события</string>
     <string name="pref_EventInfo_FavIcon">🌟 Иконка избранного события</string>
@@ -786,6 +789,7 @@
     <string name="pref_EventInfo_JobTitle">Должность</string>
     <string name="pref_EventInfo_Nickname">Псевдоним</string>
     <string name="pref_EventInfo_SourceIcon">👨‍💼‍📆📁 Иконка источника события</string>
+    <string name="pref_EventInfo_WebLink">🌐 Web ссылка</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Есть web ссылка</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Окрашивать цветом даты всё событие</string>
     <string name="pref_EventInfo_ShowNearestEventPhoto">Показать фото контакта для ближайшего события</string>
@@ -1491,6 +1495,12 @@
     <string name="pref_Feature_Adv_Info_description">Показывать больше подробностей в элементах интерфейса: количество событий, статистика, значения настроек, и.т.д.</string>
     <string name="pref_Feature_Adv_Actions_title">Больше действий</string>
     <string name="pref_Feature_Adv_Actions_description">Включить больше действий для обработки событий</string>
+
+    <string name="event_display_config_title">Макет события</string>
+    <string name="section_common">Общее</string>
+    <string name="section_before_event">До события</string>
+    <string name="section_event_details">Детали события</string>
+    <string name="section_dates">Даты</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Ситцевая</string>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /**
+  ~  * Created by Vladimir Belov on 22.10.2026, 15:38
+  ~  * Copyright (c) 2018 - 2026. All rights reserved.
+  ~  * Last modified 22.10.2026, 12:56
+  ~  */
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <CheckBox
+        android:id="@+id/cb_name_split"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/name_setting_split" />
+
+</LinearLayout>

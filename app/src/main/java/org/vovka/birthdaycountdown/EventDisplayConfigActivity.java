@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.10.2026, 01:35
+ *  * Created by Vladimir Belov on 22.10.2026, 15:38
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.10.2026, 01:28
+ *  * Last modified 22.10.2026, 15:11
  *
  */
 
@@ -10,6 +10,7 @@ package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,15 +54,15 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
     private boolean isModified = false;
 
     enum SECTION {
-        general, before, details, dates
+        common, before, details, dates
     }
 
     // Описание параметров: id → [название, секция, hasColor, hasSettings]
     private static final String[][] PARAMS = {
             // Общие (не перетаскиваются)
-            {EventDisplayConfig.KEY_PHOTO, SECTION.general.toString(), "0", "0"},
-            {EventDisplayConfig.KEY_DATES_POS, SECTION.general.toString(), "0", "0"},
-            {EventDisplayConfig.PARAM_NAME, SECTION.general.toString(), "1", "0"},
+            {EventDisplayConfig.KEY_PHOTO, SECTION.common.toString(), "0", "0"},
+            {EventDisplayConfig.KEY_DATES_POS, SECTION.common.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NAME, SECTION.common.toString(), "1", "1"},
             // До события
             {EventDisplayConfig.PARAM_WHEN, SECTION.before.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_DAY_OF_WEEK, SECTION.before.toString(), "1", "0"},
@@ -151,13 +153,13 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
         items.clear();
 
         // --- Секция "Общие параметры" ---
-        items.add(new DisplayItem(DisplayItem.TYPE_HEADER, SECTION.general.toString(), null,
-                getString(R.string.section_general)));
-        items.add(new DisplayItem(DisplayItem.TYPE_GENERAL, SECTION.general.toString(),
+        items.add(new DisplayItem(DisplayItem.TYPE_HEADER, SECTION.common.toString(), null,
+                getString(R.string.section_common)));
+        items.add(new DisplayItem(DisplayItem.TYPE_COMMON, SECTION.common.toString(),
                 EventDisplayConfig.KEY_PHOTO, getString(R.string.pref_EventInfo_Photo)));
-        items.add(new DisplayItem(DisplayItem.TYPE_GENERAL, SECTION.general.toString(),
+        items.add(new DisplayItem(DisplayItem.TYPE_COMMON, SECTION.common.toString(),
                 EventDisplayConfig.KEY_DATES_POS, getString(R.string.param_dates_pos)));
-        items.add(new DisplayItem(DisplayItem.TYPE_GENERAL, SECTION.general.toString(),
+        items.add(new DisplayItem(DisplayItem.TYPE_COMMON, SECTION.common.toString(),
                 EventDisplayConfig.PARAM_NAME, getString(R.string.pref_EventInfo_EventTitle)));
 
         // --- Секция "До события" ---
@@ -242,7 +244,9 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             case EventDisplayConfig.KEY_DATES_POS: return getString(R.string.param_dates_pos);
             case EventDisplayConfig.PARAM_WHEN: return getString(R.string.param_when);
             case EventDisplayConfig.PARAM_DAY_OF_WEEK: return getString(R.string.param_day_of_week);
-            case EventDisplayConfig.PARAM_DATE_BEFORE: return getString(R.string.pref_EventInfo_EventDate);
+            case EventDisplayConfig.PARAM_DATE_BEFORE:
+            case EventDisplayConfig.PARAM_DATE_EVENT:
+                return getString(R.string.pref_EventInfo_EventDate);
             case EventDisplayConfig.PARAM_NEWLINE:
             case EventDisplayConfig.PARAM_NEWLINE + "_1":
             case EventDisplayConfig.PARAM_NEWLINE + "_2":
@@ -257,18 +261,17 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             case EventDisplayConfig.PARAM_EVENT_CAPTION: return getString(R.string.pref_EventInfo_EventCaption);
             case EventDisplayConfig.PARAM_EVENT_LABEL: return getString(R.string.pref_EventInfo_EventLabel);
             case EventDisplayConfig.PARAM_EVENT_SOURCE: return getString(R.string.param_event_source);
-            case EventDisplayConfig.PARAM_EVENT_EMOJI: return getString(R.string.param_event_emoji);
-            case EventDisplayConfig.PARAM_EVENT_TYPE: return getString(R.string.param_event_type);
+            case EventDisplayConfig.PARAM_EVENT_EMOJI: return getString(R.string.pref_EventInfo_EventEmoji);
+            case EventDisplayConfig.PARAM_EVENT_TYPE: return getString(R.string.pref_EventInfo_EventType);
             case EventDisplayConfig.PARAM_FAVORITE_ICON: return getString(R.string.pref_EventInfo_FavIcon);
             case EventDisplayConfig.PARAM_AGE: return getString(R.string.pref_EventInfo_CurrentAge);
             case EventDisplayConfig.PARAM_ZODIAC: return getString(R.string.pref_EventInfo_ZodiacSign);
-            case EventDisplayConfig.PARAM_WEB_LINK: return getString(R.string.param_web_link);
+            case EventDisplayConfig.PARAM_WEB_LINK: return getString(R.string.pref_EventInfo_WebLink);
             case EventDisplayConfig.PARAM_DESCRIPTION: return getString(R.string.param_description);
             case EventDisplayConfig.PARAM_DEBUG_INFO: return getString(R.string.param_debug_info);
             case EventDisplayConfig.PARAM_DATE_ORIGINAL: return getString(R.string.pref_EventInfo_EventDate_Original);
             case EventDisplayConfig.PARAM_EVENT_ICON: return getString(R.string.pref_EventInfo_EventIcon);
-            case EventDisplayConfig.PARAM_AGE_NEXT: return getString(R.string.param_age_next);
-            case EventDisplayConfig.PARAM_DATE_EVENT: return getString(R.string.param_date_event);
+            case EventDisplayConfig.PARAM_AGE_NEXT: return getString(R.string.pref_EventInfo_Age);
             default: return id;
         }
     }
@@ -312,8 +315,6 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                 if (toItem.type != DisplayItem.TYPE_PARAMETER) return false;
                 if (!fromItem.section.equals(toItem.section)) return false;
 
-                // ИСПРАВЛЕНИЕ: используем swap вместо remove/add
-                // ItemTouchHelper вызывает onMove последовательно для соседних позиций
                 java.util.Collections.swap(items, fromPosition, toPosition);
                 adapter.notifyItemMoved(fromPosition, toPosition);
 
@@ -379,8 +380,11 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
 
     // ===== Адаптер =====
     private class ConfigAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        /** Заголовок секции */
         private static final int TYPE_HEADER = 0;
-        private static final int TYPE_GENERAL = 1;
+        /** Общий для всего события параметр */
+        private static final int TYPE_COMMON = 1;
+        /** Параметр события для секции. Может перетаскиваться для изменения порядка отображения в секции */
         private static final int TYPE_PARAMETER = 2;
         private final List<DisplayItem> data;
 
@@ -397,8 +401,8 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             LayoutInflater li = LayoutInflater.from(parent.getContext());
             if (viewType == TYPE_HEADER) {
                 return new HeaderHolder(li.inflate(R.layout.item_section_header, parent, false));
-            } else if (viewType == TYPE_GENERAL) {
-                return new GeneralHolder(li.inflate(R.layout.item_general_param, parent, false));
+            } else if (viewType == TYPE_COMMON) {
+                return new CommonHolder(li.inflate(R.layout.item_common_param, parent, false));
             } else if (viewType == TYPE_PARAMETER) {
                 return new ParamHolder(li.inflate(R.layout.item_parameter, parent, false));
             }
@@ -410,8 +414,8 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             DisplayItem item = data.get(position);
             if (holder instanceof HeaderHolder) {
                 ((HeaderHolder) holder).bind(item.title);
-            } else if (holder instanceof GeneralHolder) {
-                ((GeneralHolder) holder).bind(item);
+            } else if (holder instanceof CommonHolder) {
+                ((CommonHolder) holder).bind(item);
             } else if (holder instanceof ParamHolder) {
                 ((ParamHolder) holder).bind(item);
             }
@@ -430,26 +434,37 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
         void bind(String text) { title.setText(text); }
     }
 
-    class GeneralHolder extends RecyclerView.ViewHolder {
+    class CommonHolder extends RecyclerView.ViewHolder {
         final TextView name;
         final ImageView colorIcon;
+        final ImageView settingsIcon;
         final TextView valueLabel;
-        GeneralHolder(@NonNull View v) {
+
+        CommonHolder(@NonNull View v) {
             super(v);
-            name = v.findViewById(R.id.general_name);
-            colorIcon = v.findViewById(R.id.general_color_icon);
-            valueLabel = v.findViewById(R.id.general_value);
+            name = v.findViewById(R.id.common_name);
+            colorIcon = v.findViewById(R.id.common_color_icon);
+            settingsIcon = v.findViewById(R.id.common_settings_icon);
+            valueLabel = v.findViewById(R.id.common_value);
         }
+
         void bind(final DisplayItem item) {
             name.setText(item.title);
+
             if (EventDisplayConfig.PARAM_NAME.equals(item.paramId)) {
-                // Для Name только выбор цвета, без переключателя значения
+                // Для Name: только выбор цвета + кнопка настроек, без переключателя значения
                 colorIcon.setVisibility(View.VISIBLE);
                 colorIcon.setOnClickListener(v -> showColorPicker(item));
+
+                settingsIcon.setVisibility(View.VISIBLE);
+                settingsIcon.setOnClickListener(v -> showSettings(item));
+
                 valueLabel.setVisibility(View.GONE);
             } else {
-                // Для Photo и Dates position - только переключатель значения, без цвета
+                // Для Photo и Dates position: только переключатель значения, без цвета и настроек
                 colorIcon.setVisibility(View.GONE);
+                settingsIcon.setVisibility(View.GONE);
+
                 String val;
                 if (EventDisplayConfig.KEY_PHOTO.equals(item.paramId)) {
                     val = config.getPhotoPosition();
@@ -458,7 +473,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                 }
                 valueLabel.setText(val);
                 valueLabel.setVisibility(View.VISIBLE);
-                valueLabel.setOnClickListener(v -> cycleGeneralValue(item));
+                valueLabel.setOnClickListener(v -> cycleCommonValue(item));
             }
         }
     }
@@ -479,7 +494,6 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             dragHandle = v.findViewById(R.id.drag_handle);
         }
 
-        @SuppressLint("ClickableViewAccessibility")
         void bind(final DisplayItem item) {
             checkBox.setChecked(item.enabled);
             name.setText(item.title);
@@ -489,19 +503,24 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
 
             if (item.hasColor) {
                 colorIcon.setOnClickListener(v -> showColorPicker(item));
+                colorIcon.setOnLongClickListener(v -> {
+                    Toast.makeText(v.getContext(), R.string.msg_hint_select_color, Toast.LENGTH_SHORT).show();
+                    return true;
+                });
             }
             if (item.hasSettings) {
                 settingsIcon.setOnClickListener(v -> showSettings(item));
+                settingsIcon.setOnLongClickListener(v -> {
+                    Toast.makeText(v.getContext(), R.string.msg_hint_additional_settings, Toast.LENGTH_SHORT).show();
+                    return true;
+                });
             }
 
-            // ИСПРАВЛЕНИЕ: Возвращаем OnTouchListener с ACTION_DOWN.
-            // Это единственный надёжный способ инициировать перетаскивание для ItemTouchHelper.
-            // Аннотация @SuppressLint подавляет предупреждение Lint, так как для drag-handle
-            // это стандартная и рекомендованная практика.
+            // noinspection ClickableViewAccessibility
             dragHandle.setOnTouchListener((v, event) -> {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     if (itemTouchHelper != null) {
-                        // ВАЖНО: используем getAdapterPosition() вместо захваченного position,
+                        // используем getAdapterPosition() вместо захваченного position,
                         // чтобы получить актуальную позицию после анимации перемещения!
                         int currentPosition = getAdapterPosition();
                         if (currentPosition != RecyclerView.NO_POSITION) {
@@ -517,7 +536,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                 return false;
             });
 
-            // ИСПРАВЛЕНИЕ: используем setOnClickListener вместо setOnCheckedChangeListener,
+            // используем setOnClickListener вместо setOnCheckedChangeListener,
             // чтобы обработчик не срабатывал при программной установке состояния через setChecked()
             checkBox.setOnClickListener(v -> {
                 boolean isChecked = !item.enabled;
@@ -557,7 +576,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
     // ===== Диалоги =====
     private void showColorPicker(final DisplayItem item) {
         int currentColor;
-        if (item.type == DisplayItem.TYPE_GENERAL && !EventDisplayConfig.PARAM_NAME.equals(item.paramId)) {
+        if (item.type == DisplayItem.TYPE_COMMON && !EventDisplayConfig.PARAM_NAME.equals(item.paramId)) {
             // Для общих параметров (кроме Name) цвет не хранится
             currentColor = 0;
         } else {
@@ -579,11 +598,31 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
     }
 
     private void showSettings(DisplayItem item) {
-        if (EventDisplayConfig.PARAM_ZODIAC.equals(item.paramId)) {
+        if (EventDisplayConfig.PARAM_NAME.equals(item.paramId)) {
+            showNameSettings(item);
+        } else if (EventDisplayConfig.PARAM_ZODIAC.equals(item.paramId)) {
             showZodiacSettings(item);
         } else if (EventDisplayConfig.PARAM_AGE_NEXT.equals(item.paramId)) {
             showAgeNextSettings(item);
         }
+    }
+
+    private void showNameSettings(final DisplayItem item) {
+        String current = config.getSetting(item.paramId);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_name_settings, null);
+        final CheckBox cbSplit = view.findViewById(R.id.cb_name_split);
+        cbSplit.setChecked(EventDisplayConfig.PARAM_NAME_SPLIT.equals(current));
+
+        new AlertDialog.Builder(new ContextThemeWrapper(this,
+                ContactsEvents.getInstance().preferences_theme.themeDialog))
+                .setTitle(R.string.name_settings_title)
+                .setView(view)
+                .setPositiveButton(R.string.button_ok, (dialog, which) -> {
+                    config.setSetting(item.paramId, cbSplit.isChecked() ? EventDisplayConfig.PARAM_NAME_SPLIT : "");
+                    setModified();
+                })
+                .setNegativeButton(R.string.button_cancel, null)
+                .show();
     }
 
     private void showZodiacSettings(final DisplayItem item) {
@@ -613,23 +652,56 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
 
     private void showAgeNextSettings(final DisplayItem item) {
         String current = config.getSetting(item.paramId);
+        Set<String> currentSet = new HashSet<>(Arrays.asList(current.split(",")));
+
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_age_next_settings, null);
         final CheckBox cbFull = view.findViewById(R.id.cb_age_next_full);
-        cbFull.setChecked(EventDisplayConfig.PARAM_AGE_NEXT_FULL.equals(current));
+        final RadioButton rbNormal = view.findViewById(R.id.rb_age_next_normal);
+        final RadioButton rbBold = view.findViewById(R.id.rb_age_next_bold);
+        final RadioButton rbShadow = view.findViewById(R.id.rb_age_next_shadow);
+
+        cbFull.setChecked(currentSet.contains(EventDisplayConfig.PARAM_AGE_NEXT_FULL));
+
+        // Применяем стили к RadioButton для наглядности
+        rbBold.setTypeface(null, android.graphics.Typeface.BOLD);
+        rbShadow.setShadowLayer(4, 2, 2, Color.DKGRAY);
+
+        // Устанавливаем выбранный стиль
+        if (currentSet.contains(EventDisplayConfig.PARAM_AGE_NEXT_BOLD)) {
+            rbBold.setChecked(true);
+        } else if (currentSet.contains(EventDisplayConfig.PARAM_AGE_NEXT_SHADOW)) {
+            rbShadow.setChecked(true);
+        } else {
+            rbNormal.setChecked(true);
+        }
 
         new AlertDialog.Builder(new ContextThemeWrapper(this,
                 ContactsEvents.getInstance().preferences_theme.themeDialog))
                 .setTitle(R.string.age_next_settings_title)
                 .setView(view)
                 .setPositiveButton(R.string.button_ok, (dialog, which) -> {
-                    config.setSetting(item.paramId, cbFull.isChecked() ? EventDisplayConfig.PARAM_AGE_NEXT_FULL : "");
+                    List<String> vals = new ArrayList<>();
+                    if (cbFull.isChecked()) vals.add(EventDisplayConfig.PARAM_AGE_NEXT_FULL);
+
+                    // Добавляем выбранный стиль
+                    if (rbBold.isChecked()) {
+                        vals.add(EventDisplayConfig.PARAM_AGE_NEXT_BOLD);
+                    } else if (rbShadow.isChecked()) {
+                        vals.add(EventDisplayConfig.PARAM_AGE_NEXT_SHADOW);
+                    }
+                    // Если выбран Normal - ничего не добавляем (это дефолт)
+
+                    config.setSetting(item.paramId, joinCsv(vals));
                     setModified();
                 })
                 .setNegativeButton(R.string.button_cancel, null)
                 .show();
     }
 
-    private void cycleGeneralValue(DisplayItem item) {
+    /** Переключает значение параметра в секции "Общие"
+     * @param item Параметр
+     */
+    private void cycleCommonValue(DisplayItem item) {
         setModified();
         if (EventDisplayConfig.KEY_PHOTO.equals(item.paramId)) {
             String cur = config.getPhotoPosition();
@@ -703,12 +775,15 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
 
     // ===== Модель элемента списка =====
     static class DisplayItem {
+        /** Секция */
         static final int TYPE_HEADER = 0;
-        static final int TYPE_GENERAL = 1;
+        /** Общий параметр */
+        static final int TYPE_COMMON = 1;
+        /** Параметр в секции */
         static final int TYPE_PARAMETER = 2;
 
         final int type;
-        final String section;       // "general", "before", "details", "dates"
+        final String section;       // "common", "before", "details", "dates"
         final String paramId;       // null для header
         final String title;
         boolean enabled;            // для parameter

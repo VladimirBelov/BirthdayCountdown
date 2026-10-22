@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.10.2026, 16:49
+ *  * Created by Vladimir Belov on 22.10.2026, 15:38
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.10.2026, 16:33
+ *  * Last modified 22.10.2026, 14:08
  *
  */
 
@@ -8392,7 +8392,7 @@ public class ContactsEvents {
         StringBuilder eventDetails = new StringBuilder();
         try {
 
-            if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_EventIcon_ID))) {
+            if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_EventEmoji_ID))) {
                 eventDetails.append(event.singleEventArray[Position_eventEmoji]);
             }
             if (prefEventInfo.contains(resources.getString(R.string.pref_EventInfo_SourceIcon_ID))) {

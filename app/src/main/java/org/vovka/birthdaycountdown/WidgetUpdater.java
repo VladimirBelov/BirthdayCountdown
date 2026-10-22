@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.10.2026, 16:49
+ *  * Created by Vladimir Belov on 22.10.2026, 15:38
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.10.2026, 21:23
+ *  * Last modified 22.10.2026, 14:08
  *
  */
 
@@ -737,8 +737,8 @@ class WidgetUpdater {
 
             //Иконка события
             int id_widget_EventIcon = res.getIdentifier(Constants.WIDGET_ICON_EVENT_TYPE + eventsDisplayed, Constants.RES_TYPE_ID, packageName);
-            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(res.getString(R.string.pref_EventInfo_EventIcon_ID))
-                    : widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_EventIcon_ID))) {
+            if (widgetPref_eventInfo.isEmpty() ? eventsData.preferences_widgets_event_info.contains(res.getString(R.string.pref_EventInfo_EventEmoji_ID))
+                    : widgetPref_eventInfo.contains(res.getString(R.string.pref_EventInfo_EventEmoji_ID))) {
                 String iconValue = singleEventArray[ContactsEvents.Position_eventIcon];
                 boolean iconSet = false;
                 if (iconValue != null && !iconValue.isEmpty()) {

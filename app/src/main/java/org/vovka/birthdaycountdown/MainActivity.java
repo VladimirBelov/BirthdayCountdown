@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.10.2026, 01:35
+ *  * Created by Vladimir Belov on 22.10.2026, 15:38
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.10.2026, 22:19
+ *  * Last modified 22.10.2026, 15:30
  *
  */
 
@@ -1584,7 +1584,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         try {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             final String pref_LastRunVersion = preferences.getString(getString(R.string.pref_VersionCode_LastRun), "");
-            if ("".equals(pref_LastRunVersion)) {
+            if (pref_LastRunVersion.isEmpty()) {
                 return 0;
             } else if (Integer.toString(BuildConfig.VERSION_CODE).equals(pref_LastRunVersion)) {
                 return -1;
@@ -1723,7 +1723,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             menu.add(Menu.NONE, Constants.MainMenu_Settings, Menu.NONE, R.string.menu_settings).setIcon(R.drawable.ic_sysbar_quicksettings);
             menu.add(Menu.NONE, Constants.MainMenu_Quiz, Menu.NONE, R.string.menu_quiz).setIcon(android.R.drawable.ic_menu_compass);
             menu.add(Menu.NONE, Constants.MainMenu_Filter, Menu.NONE, R.string.menu_filter_events).setIcon(android.R.drawable.ic_menu_view);
-            menu.add(Menu.NONE, Constants.MainMenu_EventDisplayConfig, Menu.NONE, R.string.menu_event_display_config).setIcon(android.R.drawable.ic_menu_manage);
+            menu.add(Menu.NONE, Constants.MainMenu_EventDisplayConfig, Menu.NONE, R.string.menu_event_display_config).setIcon(R.drawable.ic_menu_friendslist);
             menu.add(Menu.NONE, Constants.MainMenu_EventsSources, Menu.NONE, R.string.menu_events_sources).setIcon(android.R.drawable.ic_menu_agenda);
             menu.add(Menu.NONE, Constants.MainMenu_EventsTypes, Menu.NONE, R.string.menu_events_types).setIcon(R.drawable.ic_menu_copy);
             menu.add(Menu.NONE, Constants.MainMenu_Hints, Menu.NONE, R.string.menu_hints).setIcon(android.R.drawable.ic_menu_info_details);

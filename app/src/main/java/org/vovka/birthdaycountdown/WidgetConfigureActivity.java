@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.10.2026, 16:49
+ *  * Created by Vladimir Belov on 22.10.2026, 15:38
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 13.10.2026, 16:42
+ *  * Last modified 22.10.2026, 14:09
  *
  */
 
@@ -475,7 +475,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ColorizeEntireRow_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ColorizeEntireRow));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ShowNearestEventPhoto_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ShowNearestEventPhoto));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Photo_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Photo));
-                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventEmoji_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventEmoji));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_Original_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate_Original));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_Original_WithYear_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate_Original_WithYear));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventDate_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventDate));
@@ -526,7 +526,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Photo_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Photo));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Organization_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Organization));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_JobTitle_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_JobTitle));
-                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventEmoji_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventEmoji));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_FavIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_FavIcon));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventCaption_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventCaption));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_EventLabel_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventLabel));
@@ -548,7 +548,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Border_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Border));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Age_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Age));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_Photo_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_Photo));
-                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));
+                    eventInfoIDs.add(getString(R.string.pref_EventInfo_EventEmoji_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_EventIcon));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_FavIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_FavIcon));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_SilencedIcon_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_SilentedIcon));
                     eventInfoIDs.add(getString(R.string.pref_EventInfo_ZodiacSign_ID)); eventInfoValues.add(getString(R.string.pref_EventInfo_ZodiacSign));
@@ -876,7 +876,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
             String[] prefActionsEntries = getResources().getStringArray(R.array.pref_widget_list_onclick_entries);
             String[] prefActionsValues = getResources().getStringArray(R.array.pref_widget_list_onclick_values);
             Spinner spinnerOnClickCommon = findViewById(R.id.spinnerOnClickCommon);
-            StringBuilder spinnerOnClickCommonValue = new StringBuilder("");
+            StringBuilder spinnerOnClickCommonValue = new StringBuilder();
 
             if (spinnerOnClickCommon.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
                 int ind = -1;

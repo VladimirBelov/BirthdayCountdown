@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.10.2026, 01:35
+  ~  * Created by Vladimir Belov on 22.10.2026, 15:38
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 21.10.2026, 01:11
+  ~  * Last modified 22.10.2026, 15:11
   ~  */
   -->
 
@@ -38,7 +38,7 @@
     <string name="menu_filter_events">Filter…</string>
     <string name="menu_events_sources">Sources…</string>
     <string name="menu_events_types">Events types…</string>
-    <string name="menu_event_display_config">Customize…</string>
+    <string name="menu_event_display_config">Edit layout…</string>
     <string name="menu_hints">Search hints…</string>
     <string name="menu_context_edit_contact">Edit contact</string>
     <string name="menu_context_open_contact">Open contact</string>
@@ -158,6 +158,8 @@
     <string name="msg_hint_search_all">Search everywhere</string>
     <string name="msg_hint_global_search">Search birthdays and events</string>
     <string name="msg_hint_faq_search">Search in text…</string>
+    <string name="msg_hint_select_color">Select color…</string>
+    <string name="msg_hint_additional_settings">Additional settings…</string>
     <string name="msg_notifications_soon_no_events">No events for chosen days</string>
     <string name="msg_notifications_soon">"Events soon - "</string>
     <string name="msg_notifications_all">"Events - "</string>
@@ -758,7 +760,9 @@
     <string name="pref_EventInfo_Dividers">Events dividers</string>
     <string name="pref_EventInfo_ButtonConfig">Config button</string>
     <string name="pref_EventInfo_Photo">Contact photo</string>
-    <string name="pref_EventInfo_EventIcon">🎂 Event type icon</string>
+    <string name="pref_EventInfo_EventType">Event type</string>
+    <string name="pref_EventInfo_EventIcon">🖼️ Event type icon</string>
+    <string name="pref_EventInfo_EventEmoji">🎂 Event type emoji</string>
     <string name="pref_EventInfo_EventCaption">Event caption</string>
     <string name="pref_EventInfo_EventLabel">Original event label</string>
     <string name="pref_EventInfo_FavIcon">🌟 Favorite event icon</string>
@@ -787,6 +791,7 @@
     <string name="pref_EventInfo_JobTitle">Title</string>
     <string name="pref_EventInfo_Nickname">Nickname</string>
     <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Event source icon</string>
+    <string name="pref_EventInfo_WebLink">🌐 Web link</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Web link available</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Colorize all event by date color</string>
     <string name="pref_EventInfo_ShowNearestEventPhoto">Show contact photo for the nearest event</string>
@@ -1493,32 +1498,30 @@ Long click on item to select color"</string>
     <string name="pref_Feature_Adv_Actions_title">More actions</string>
     <string name="pref_Feature_Adv_Actions_description">Enable more actions for events handling</string>
 
-    <string name="event_display_config_title">Display constructor</string>
-    <string name="section_general">General</string>
+    <string name="event_display_config_title">Event Layout</string>
+    <string name="section_common">Common</string>
     <string name="section_before_event">Before event</string>
-    <string name="section_name">Name / Event title</string>
     <string name="section_event_details">Event details</string>
     <string name="section_dates">Dates</string>
 
     <string name="param_dates_pos">Dates position</string>
     <string name="param_when">When (Today/Tomorrow/…)</string>
     <string name="param_day_of_week">Day of week</string>
-    <string name="param_date_before">Event date</string>
-    <string name="param_newline">- newline -</string>
     <string name="param_event_source">Event source</string>
-    <string name="param_event_emoji">Event emoji</string>
-    <string name="param_event_type">Event type</string>
-    <string name="param_favorite_icon">Favorite icon</string>
-    <string name="param_web_link">Web link</string>
     <string name="param_description">Notes or description</string>
     <string name="param_debug_info">Account type and raw date</string>
     <string name="param_date_original">Original event date</string>
     <string name="param_age_next">Next age</string>
-    <string name="param_date_event">Event date</string>
 
+    <string name="name_settings_title">Name settings</string>
+    <string name="name_setting_split">Split name into lines (for contact events)</string>
     <string name="zodiac_settings_title">Zodiac settings</string>
     <string name="age_next_settings_title">Next age settings</string>
     <string name="age_next_show_full">With full description ("years", "months", etc.)</string>
+    <string name="age_next_style_title">Display style:</string>
+    <string name="age_next_style_normal">Normal</string>
+    <string name="age_next_style_bold">Bold</string>
+    <string name="age_next_style_shadow">Shadow</string>
     <string name="msg_saved">Saved</string>
     <string name="msg_reset_config_confirmation">Reset display configuration to defaults?</string>
 
@@ -1671,7 +1674,7 @@ Long click on item to select color"</string>
     <string name="event_source_contact" translatable="false">👨‍💼</string>
     <string name="event_source_calendar" translatable="false">📆</string>
     <string name="event_source_file" translatable="false">📁</string>
-    <string name="event_source_internal" translatable="false">🌐</string>
+    <string name="event_source_internal" translatable="false">🗃️</string>
     <string name="event_source_local" translatable="false">📱</string>🗂
 
     <string name="popup_action_prev" translatable="false">⏪</string>
@@ -2235,7 +2238,7 @@ Long click on item to select color"</string>
 
     <string name="pref_EventInfo_None_ID" translatable="false">0</string>
     <string name="pref_EventInfo_Photo_ID" translatable="false">1</string>
-    <string name="pref_EventInfo_EventIcon_ID" translatable="false">2</string>
+    <string name="pref_EventInfo_EventEmoji_ID" translatable="false">2</string>
     <string name="pref_EventInfo_FavIcon_ID" translatable="false">3</string>
     <string name="pref_EventInfo_ZodiacSign_ID" translatable="false">4</string>
     <string name="pref_EventInfo_ZodiacYear_ID" translatable="false">5</string>
@@ -2286,7 +2289,7 @@ Long click on item to select color"</string>
         <item>@string/pref_EventInfo_Border_ID</item>
         <item>@string/pref_EventInfo_Photo_ID</item>
         <item>@string/pref_EventInfo_Age_ID</item>
-        <item>@string/pref_EventInfo_EventIcon_ID</item>
+        <item>@string/pref_EventInfo_EventEmoji_ID</item>
         <item>@string/pref_EventInfo_FavIcon_ID</item>
         <item>@string/pref_EventInfo_SilencedIcon_ID</item>
         <item>@string/pref_EventInfo_ZodiacSign_ID</item>
@@ -2532,7 +2535,7 @@ Long click on item to select color"</string>
     <string name="pref_Notifications_EventInfo_key" translatable="false">Notifications_EventInfo</string>
     <string name="pref_Notifications2_EventInfo_key" translatable="false">Notifications2_EventInfo</string>
     <string-array name="pref_Notifications_EventInfo_values_default" translatable="false">
-        <item>@string/pref_EventInfo_EventIcon_ID</item>
+        <item>@string/pref_EventInfo_EventEmoji_ID</item>
         <item>@string/pref_EventInfo_EventDate_ID</item>
         <item>@string/pref_EventInfo_EventTitle_ID</item>
         <item>@string/pref_EventInfo_Age_ID</item>
@@ -2540,7 +2543,7 @@ Long click on item to select color"</string>
     </string-array>
 
     <string-array name="pref_Notifications_EventInfo_values" translatable="false">
-        <item>@string/pref_EventInfo_EventIcon_ID</item>
+        <item>@string/pref_EventInfo_EventEmoji_ID</item>
         <item>@string/pref_EventInfo_SourceIcon_ID</item>
         <item>@string/pref_EventInfo_FavIcon_ID</item>
         <item>@string/pref_EventInfo_ZodiacSign_ID</item>

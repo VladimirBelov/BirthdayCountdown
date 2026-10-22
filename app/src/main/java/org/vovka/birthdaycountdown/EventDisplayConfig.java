@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.10.2026, 01:35
+ *  * Created by Vladimir Belov on 22.10.2026, 15:38
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.10.2026, 01:21
+ *  * Last modified 22.10.2026, 13:03
  *
  */
 
@@ -25,15 +25,15 @@ import java.util.Set;
 /**
  * Конфигурация отображения события.
  * Хранится в одном StringSet ключа "List_EventInfo_Config" в формате "ключ=значение". *
- * Формат элементов:
- *   photo=top|center|hidden       — положение фото
- *   dates_pos=top|center          — положение блока дат
- *   before=when,date_before       — порядок параметров секции "До события"
- *   details=job_title,age,zodiac  — порядок параметров секции "Детали"
- *   dates=age_next,date_event     — порядок параметров секции "Даты"
- *   color.age_next=#FFFF0000      — цвет параметра
- *   setting.zodiac=sign,animal    — доп. настройки параметра
- *   version=1                     — версия формата
+ * <p></p>Формат элементов:
+ *   <br>photo=top|center|hidden       — положение фото
+ *   <br>dates_pos=top|center          — положение блока дат
+ *   <br>before=when,date_before       — порядок параметров секции "До события"
+ *   <br>details=job_title,age,zodiac  — порядок параметров секции "Детали"
+ *   <br>dates=age_next,date_event     — порядок параметров секции "Даты"
+ *   <br>color.age_next=#FFFF0000      — цвет параметра
+ *   <br>setting.zodiac=sign,animal    — доп. настройки параметра
+ *   <br>version=1                     — версия формата
  */
 public class EventDisplayConfig {
     private static final String TAG = "EventDisplayConfig";
@@ -44,7 +44,7 @@ public class EventDisplayConfig {
     public static final String KEY_PHOTO = "photo";
     public static final String KEY_DATES_POS = "dates_pos";
 
-    // Ключи секций (CSV список ID параметров в порядке отображения)
+    // Ключи секций
     public static final String KEY_BEFORE = "before";
     public static final String KEY_DETAILS = "details";
     public static final String KEY_DATES = "dates";
@@ -79,7 +79,10 @@ public class EventDisplayConfig {
     public static final String PARAM_EVENT_ICON = "event_icon";
     public static final String PARAM_AGE_NEXT = "age_next";
     public static final String PARAM_AGE_NEXT_FULL = "full";
+    public static final String PARAM_AGE_NEXT_BOLD = "bold";
+    public static final String PARAM_AGE_NEXT_SHADOW = "shadow";
     public static final String PARAM_DATE_EVENT = "date_event";
+    public static final String PARAM_NAME_SPLIT = "split";
 
     // Значения общих параметров
     public static final String PHOTO_TOP = "top";
@@ -115,6 +118,8 @@ public class EventDisplayConfig {
     private static final List<String> DEFAULT_SETTING_AGE_NEXT = Collections.singletonList(
             PARAM_AGE_NEXT_FULL
     );
+
+    private static final String DEFAULT_SETTING_NAME = "";
 
     private final SharedPreferences prefs;
     private final Map<String, String> cache = new HashMap<>();
@@ -272,6 +277,8 @@ public class EventDisplayConfig {
      */
     public String getDefaultSetting(String paramId) {
         switch (paramId) {
+            case PARAM_NAME:
+                return DEFAULT_SETTING_NAME;
             case PARAM_ZODIAC:
                 return joinCsv(DEFAULT_SETTING_ZODIAC);
             case PARAM_AGE_NEXT:

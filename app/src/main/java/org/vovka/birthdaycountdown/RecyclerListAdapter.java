@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 12.02.2026, 11:24
+ *  * Created by Vladimir Belov on 22.10.2026, 15:38
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 12.02.2026, 09:23
+ *  * Last modified 22.10.2026, 12:35
  *
  */
 
@@ -127,7 +127,7 @@ class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemV
         holder.checkBoxView.setOnClickListener(toggleListener);
         holder.textView.setOnClickListener(toggleListener);
 
-        // Логика перетаскивания (без изменений)
+        // Логика перетаскивания
         if (!mNonSortableItems.isEmpty() && mNonSortableItems.contains(mItems.get(position))) {
             holder.handleView.setVisibility(View.GONE);
         } else {

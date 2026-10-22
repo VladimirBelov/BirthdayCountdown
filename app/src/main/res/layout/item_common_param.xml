@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.10.2026, 01:35
+  ~  * Created by Vladimir Belov on 22.10.2026, 15:38
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.10.2026, 03:10
+  ~  * Last modified 22.10.2026, 15:11
   ~  */
   -->
 
@@ -15,7 +15,7 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/general_name"
+        android:id="@+id/common_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -23,7 +23,7 @@
         android:textColor="?attr/dialogTextColor" />
 
     <TextView
-        android:id="@+id/general_value"
+        android:id="@+id/common_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -34,7 +34,17 @@
         android:textColor="?attr/dialogTextColor" />
 
     <ImageView
-        android:id="@+id/general_color_icon"
+        android:id="@+id/common_settings_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="4dp"
+        android:src="@android:drawable/ic_menu_preferences"
+        android:contentDescription="@string/button_prefs"
+        android:visibility="gone"
+        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+    <ImageView
+        android:id="@+id/common_color_icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:src="@android:drawable/ic_menu_edit"
