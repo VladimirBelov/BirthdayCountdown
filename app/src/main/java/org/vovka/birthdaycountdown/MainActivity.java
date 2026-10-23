@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.10.2026, 15:38
+ *  * Created by Vladimir Belov on 23.10.2026, 23:46
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.10.2026, 15:30
+ *  * Last modified 23.10.2026, 23:01
  *
  */
 
@@ -1723,7 +1723,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             menu.add(Menu.NONE, Constants.MainMenu_Settings, Menu.NONE, R.string.menu_settings).setIcon(R.drawable.ic_sysbar_quicksettings);
             menu.add(Menu.NONE, Constants.MainMenu_Quiz, Menu.NONE, R.string.menu_quiz).setIcon(android.R.drawable.ic_menu_compass);
             menu.add(Menu.NONE, Constants.MainMenu_Filter, Menu.NONE, R.string.menu_filter_events).setIcon(android.R.drawable.ic_menu_view);
-            menu.add(Menu.NONE, Constants.MainMenu_EventDisplayConfig, Menu.NONE, R.string.menu_event_display_config).setIcon(R.drawable.ic_menu_friendslist);
+            menu.add(Menu.NONE, Constants.MainMenu_CustomizeEventlayout, Menu.NONE, R.string.menu_event_display_config).setIcon(R.drawable.ic_menu_friendslist);
             menu.add(Menu.NONE, Constants.MainMenu_EventsSources, Menu.NONE, R.string.menu_events_sources).setIcon(android.R.drawable.ic_menu_agenda);
             menu.add(Menu.NONE, Constants.MainMenu_EventsTypes, Menu.NONE, R.string.menu_events_types).setIcon(R.drawable.ic_menu_copy);
             menu.add(Menu.NONE, Constants.MainMenu_Hints, Menu.NONE, R.string.menu_hints).setIcon(android.R.drawable.ic_menu_info_details);
@@ -1754,7 +1754,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             final boolean isItemTypesVisible = eventsData != null
                     && (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS) || eventsData.preferences_list_quick_action == Constants.MainMenu_EventsTypes);
             final boolean isItemCustomizeVisible = eventsData != null
-                    && eventsData.isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS);
+                    && eventsData.isFeatureEnabled(Constants.FEATURE_EDIT_LAYOUT);
 
 
             MenuItem searchItem = menu.findItem(Constants.MainMenu_Search);
@@ -1786,7 +1786,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             menu.findItem(Constants.MainMenu_Settings).setVisible(false);
                             menu.findItem(Constants.MainMenu_Quiz).setVisible(false);
                             menu.findItem(Constants.MainMenu_Filter).setVisible(false);
-                            menu.findItem(Constants.MainMenu_EventDisplayConfig).setVisible(false);
+                            menu.findItem(Constants.MainMenu_CustomizeEventlayout).setVisible(false);
                             menu.findItem(Constants.MainMenu_EventsSources).setVisible(false);
                             menu.findItem(Constants.MainMenu_EventsTypes).setVisible(false);
                             menu.findItem(Constants.MainMenu_Hints).setVisible(true).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -1806,7 +1806,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             menu.findItem(Constants.MainMenu_Settings).setVisible(true);
                             menu.findItem(Constants.MainMenu_Quiz).setVisible(isItemQuizVisible);
                             menu.findItem(Constants.MainMenu_Filter).setVisible(isItemFilterVisible);
-                            menu.findItem(Constants.MainMenu_EventDisplayConfig).setVisible(isItemCustomizeVisible);
+                            menu.findItem(Constants.MainMenu_CustomizeEventlayout).setVisible(isItemCustomizeVisible);
                             menu.findItem(Constants.MainMenu_EventsSources).setVisible(isItemSourcesVisible);
                             menu.findItem(Constants.MainMenu_EventsTypes).setVisible(isItemTypesVisible);
                             menu.findItem(Constants.MainMenu_Hints).setVisible(false).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
@@ -1844,7 +1844,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             menu.findItem(Constants.MainMenu_Quiz).setVisible(isItemQuizVisible);
             menu.findItem(Constants.MainMenu_Filter).setVisible(isItemFilterVisible);
-            menu.findItem(Constants.MainMenu_EventDisplayConfig).setVisible(isItemCustomizeVisible);
+            menu.findItem(Constants.MainMenu_CustomizeEventlayout).setVisible(isItemCustomizeVisible);
             menu.findItem(Constants.MainMenu_EventsSources).setVisible(isItemSourcesVisible);
             menu.findItem(Constants.MainMenu_EventsTypes).setVisible(isItemTypesVisible);
             menu.findItem(Constants.MainMenu_Hints).setVisible(false);
@@ -1905,7 +1905,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 setFilter();
                 return true;
 
-            } else if (itemId == Constants.MainMenu_EventDisplayConfig) {
+            } else if (itemId == Constants.MainMenu_CustomizeEventlayout) {
 
                 Intent intent = new Intent(this, EventDisplayConfigActivity.class);
                 try {

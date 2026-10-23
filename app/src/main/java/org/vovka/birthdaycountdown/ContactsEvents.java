@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.10.2026, 15:38
+ *  * Created by Vladimir Belov on 23.10.2026, 23:46
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.10.2026, 14:08
+ *  * Last modified 23.10.2026, 22:20
  *
  */
 
@@ -1037,7 +1037,9 @@ public class ContactsEvents {
         ADV_INFO(Constants.FEATURE_ADV_INFO, R.string.pref_Feature_Adv_Info_title,
                 R.string.pref_Feature_Adv_Info_description, android.R.drawable.ic_menu_info_details),
         ADV_ACTIONS(Constants.FEATURE_ADV_ACTIONS, R.string.pref_Feature_Adv_Actions_title,
-                R.string.pref_Feature_Adv_Actions_description, android.R.drawable.ic_menu_add);
+                R.string.pref_Feature_Adv_Actions_description, android.R.drawable.ic_menu_add),
+        EDIT_LAYOUT(Constants.FEATURE_EDIT_LAYOUT, R.string.pref_Feature_Edit_Layout_title,
+                    R.string.pref_Feature_Edit_Layout_description, R.drawable.ic_menu_friendslist);
 
         private final String code;
         private final int nameResId;

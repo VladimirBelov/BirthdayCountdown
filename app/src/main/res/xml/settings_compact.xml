@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.09.2026, 01:33
+  ~  * Created by Vladimir Belov on 23.10.2026, 23:46
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.09.2026, 00:18
+  ~  * Last modified 23.10.2026, 22:54
   ~  */
   -->
 
@@ -689,6 +689,12 @@
             android:icon="@drawable/ic_menu_friendslist"
             android:dialogIcon="@drawable/ic_menu_friendslist"
             android:negativeButtonText="@string/button_cancel"/>
+
+        <Preference
+            android:key="@string/pref_List_EventInfo_Config_key"
+            android:title="@string/pref_List_EventInfo_Config_title"
+            android:summary="@string/pref_List_EventInfo_Config_summary"
+            android:icon="@drawable/ic_menu_friendslist"/>
 
         <org.vovka.birthdaycountdown.CustomListPreference
             android:key="@string/pref_List_PrevEvents_key"

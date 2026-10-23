@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.10.2026, 15:38
+ *  * Created by Vladimir Belov on 23.10.2026, 23:46
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.10.2026, 13:03
+ *  * Last modified 23.10.2026, 22:20
  *
  */
 
@@ -36,7 +36,6 @@ import java.util.Set;
  *   <br>version=1                     — версия формата
  */
 public class EventDisplayConfig {
-    private static final String TAG = "EventDisplayConfig";
     private static final String PREF_KEY = "List_EventInfo_Config";
     private static final String VERSION = "1";
 

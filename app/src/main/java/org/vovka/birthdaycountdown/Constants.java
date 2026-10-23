@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.10.2026, 01:35
+ *  * Created by Vladimir Belov on 23.10.2026, 23:46
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.10.2026, 00:46
+ *  * Last modified 23.10.2026, 23:01
  *
  */
 
@@ -332,7 +332,7 @@ public final class Constants {
     static final int MainMenu_EventsSources = 7;
     static final int MainMenu_EventsTypes = 8;
     static final int MainMenu_Hints = 9;
-    static final int MainMenu_EventDisplayConfig = 10;
+    static final int MainMenu_CustomizeEventlayout = 10;
 
     static final int ContextMenu_EditContact = 1;
     static final int ContextMenu_CreateContact = 2;
@@ -487,6 +487,9 @@ public final class Constants {
     public static final String FEATURE_ADV_INFO = "show_adv_info";
     /** Включить больше действий */
     public static final String FEATURE_ADV_ACTIONS = "show_adv_actions";
+    /** Включить изменение макета */
+    public static final String FEATURE_EDIT_LAYOUT = "enable_edit_layout";
+
     /** Максимальное количество шаблонов на один тип виджета */
     static final int MAX_WIDGET_TEMPLATES = 10;
     /** Маркер миграции на версию 1.9.2 */

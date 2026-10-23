@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.10.2026, 15:38
+  ~  * Created by Vladimir Belov on 23.10.2026, 23:46
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.10.2026, 15:11
+  ~  * Last modified 23.10.2026, 22:52
   ~  */
   -->
 
@@ -690,6 +690,9 @@
         <item>Заметки или описание</item>
         <item>Тип аккаунта и хранимая дата</item>
     </string-array>
+
+    <string name="pref_List_EventInfo_Config_title">Макет события</string>
+    <string name="pref_List_EventInfo_Config_summary">Настроить макет отображения события</string>
 
     <string name="pref_List_OnClick_title">Действие на нажатие</string>
     <string name="pref_List_OnClick_summary">Что делать при нажатии на событие</string>
@@ -1495,6 +1498,8 @@
     <string name="pref_Feature_Adv_Info_description">Показывать больше подробностей в элементах интерфейса: количество событий, статистика, значения настроек, и.т.д.</string>
     <string name="pref_Feature_Adv_Actions_title">Больше действий</string>
     <string name="pref_Feature_Adv_Actions_description">Включить больше действий для обработки событий</string>
+    <string name="pref_Feature_Edit_Layout_title">Макет события</string>
+    <string name="pref_Feature_Edit_Layout_description">Включить возможность гибкой настройки макета отображения событий</string>
 
     <string name="event_display_config_title">Макет события</string>
     <string name="section_common">Общее</string>

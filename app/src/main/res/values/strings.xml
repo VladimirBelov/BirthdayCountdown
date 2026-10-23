@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.10.2026, 15:38
+  ~  * Created by Vladimir Belov on 23.10.2026, 23:46
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.10.2026, 15:11
+  ~  * Last modified 23.10.2026, 22:52
   ~  */
   -->
 
@@ -692,6 +692,9 @@
         <item>Notes or Description</item>
         <item>Event account and raw date</item>
     </string-array>
+
+    <string name="pref_List_EventInfo_Config_title">Event layout</string>
+    <string name="pref_List_EventInfo_Config_summary">Customize event layout</string>
 
     <string name="pref_List_OnClick_title">On click action</string>
     <string name="pref_List_OnClick_summary">What to do on event click</string>
@@ -1497,6 +1500,8 @@ Long click on item to select color"</string>
     <string name="pref_Feature_Adv_Info_description">Show more detailed information inside interface elements: statistics, events count, settings values summary, etc.</string>
     <string name="pref_Feature_Adv_Actions_title">More actions</string>
     <string name="pref_Feature_Adv_Actions_description">Enable more actions for events handling</string>
+    <string name="pref_Feature_Edit_Layout_title">Event layout</string>
+    <string name="pref_Feature_Edit_Layout_description">Enable edit of event layout</string>
 
     <string name="event_display_config_title">Event Layout</string>
     <string name="section_common">Common</string>
@@ -2058,6 +2063,7 @@ Long click on item to select color"</string>
     <color name="pref_List_Color_EventJubilee_default" translatable="false">@color/dark_red</color>
 
     <string name="pref_List_EventInfo_key" translatable="false">List_EventInfo</string>
+    <string name="pref_List_EventInfo_Config_key" translatable="false">List_EventInfo_Config</string>
 
     <string name="pref_List_EventInfo_Photo" translatable="false">6</string>
     <string name="pref_List_EventInfo_JobTitle" translatable="false">1</string>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 21.10.2026, 11:24
+ *  * Created by Vladimir Belov on 23.10.2026, 23:46
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 21.10.2026, 11:14
+ *  * Last modified 23.10.2026, 23:06
  *
  */
 
@@ -479,6 +479,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             final boolean disabledMoreWidgetsSettings = !eventsData.isFeatureEnabled(Constants.FEATURE_WIDGETS_MORE_SETTINGS);
             final boolean enabledNotifyQ2 = eventsData.isFeatureEnabled(Constants.FEATURE_NOTIFY_Q2);
             final boolean disabledTools = !eventsData.isFeatureEnabled(Constants.FEATURE_TOOLS);
+            final boolean enabledEditLayout = eventsData.isFeatureEnabled(Constants.FEATURE_EDIT_LAYOUT);
 
             hidePreference(disabledMoreSettings, R.string.pref_Common_key, R.string.pref_Icon_key);
             hidePreference(disabledMoreSettings, R.string.pref_Common_key, R.string.pref_List_DateFormat_key);
@@ -498,6 +499,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             hidePreference(disabledMoreSettings, R.string.pref_CustomEvents_Custom5_key, R.string.pref_CustomEvents_Custom5_UseYear_key);
 
             hidePreference(disabledSelectSources, R.string.pref_EventList_key, R.string.pref_List_EventSources_key);
+            hidePreference(enabledEditLayout, R.string.pref_EventList_key, R.string.pref_List_EventInfo_key);
+            hidePreference(!enabledEditLayout, R.string.pref_EventList_key, R.string.pref_List_EventInfo_Config_key);
             hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_CustomCaption_key);
             hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_CustomTodayEventCaption_key);
             hidePreference(disabledMoreSettings, R.string.pref_EventList_key, R.string.pref_List_OnClick_key);
@@ -1426,6 +1429,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         return bitmap;
     }
 
+    /** Скрыть настройку по условию
+     * @param condition Условие скрытия настройки
+     * @param parentId ID родителя, где находится настройка. Может быть PreferenceScreen или PreferenceCategory
+     * @param resId ID настройки
+     */
     void hidePreference(boolean condition, @StringRes int parentId, @StringRes int resId) {
 
         try {
@@ -1899,6 +1907,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 eventsData.selectQuizQuestions(this, this::setSummaryForQuizQuestions);
                 return true;
 
+            } else if (getString(R.string.pref_List_EventInfo_Config_key).equals(key)) {
+
+                Intent intent = new Intent(this, EventDisplayConfigActivity.class);
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) { /**/ }
+                return true;
             }
 
         } catch (Exception e) {
@@ -3663,13 +3678,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
            menuIds.add(Constants.MainMenu_Filter);
            menuImages.add(android.R.drawable.ic_menu_view);
 
-           menuTitles.add(getString(R.string.menu_events_sources));
-           menuIds.add(Constants.MainMenu_EventsSources);
-           menuImages.add(android.R.drawable.ic_menu_agenda);
+           if (eventsData.isFeatureEnabled(Constants.FEATURE_SELECT_SOURCES)) {
+               menuTitles.add(getString(R.string.menu_events_sources));
+               menuIds.add(Constants.MainMenu_EventsSources);
+               menuImages.add(android.R.drawable.ic_menu_agenda);
+           }
 
            menuTitles.add(getString(R.string.menu_events_types));
            menuIds.add(Constants.MainMenu_EventsTypes);
            menuImages.add(R.drawable.ic_menu_copy);
+
+           if (eventsData.isFeatureEnabled(Constants.FEATURE_EDIT_LAYOUT)) {
+               menuTitles.add(getString(R.string.menu_event_display_config));
+               menuIds.add(Constants.MainMenu_CustomizeEventlayout);
+               menuImages.add(R.drawable.ic_menu_friendslist);
+           }
+
+           if (eventsData.isFeatureEnabled(Constants.FEATURE_QUIZ)) {
+               menuTitles.add(getString(R.string.menu_quiz));
+               menuIds.add(Constants.MainMenu_Quiz);
+               menuImages.add(android.R.drawable.ic_menu_compass);
+           }
 
            ListAdapter adapter = new ImageSelectAdapter(this, menuTitles, menuImages, ImageSelectAdapter.Scale.SQUARED, ta);
 

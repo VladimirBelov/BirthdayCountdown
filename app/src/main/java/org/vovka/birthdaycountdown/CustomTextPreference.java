@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.03.2026, 21:39
+ *  * Created by Vladimir Belov on 23.10.2026, 23:46
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.03.2026, 21:09
+ *  * Last modified 23.10.2026, 22:20
  *
  */
 
@@ -22,21 +22,25 @@ public class CustomTextPreference extends Preference {
 
     private ValueProvider mValueProvider = () -> "";
 
+    @SuppressWarnings("unused")
     public CustomTextPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
 
+    @SuppressWarnings("unused")
     public CustomTextPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
+    @SuppressWarnings("unused")
     public CustomTextPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+    @SuppressWarnings("unused")
     public CustomTextPreference(Context context) {
         super(context);
         init();
