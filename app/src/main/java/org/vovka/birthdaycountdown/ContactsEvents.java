@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.10.2026, 23:46
+ *  * Created by Vladimir Belov on 27.10.2026, 01:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 23.10.2026, 22:20
+ *  * Last modified 26.10.2026, 17:59
  *
  */
 
@@ -870,8 +870,11 @@ public class ContactsEvents {
     private static DisplayMetrics displayMetrics;
     float displayMetrics_density;
     boolean isUIOpen = false;
+    /** Стартовый размер для деталей события и описания (в SP) */
     float dimen_List_details;
+    /** Стартовый размер для имени и возраста  (в SP) */
     float dimen_List_name;
+    /** Стартовый размер для дат события  (в SP) */
     float dimen_list_date;
     String currentLocale = "";
 

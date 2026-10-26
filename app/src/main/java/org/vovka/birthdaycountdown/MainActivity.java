@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.10.2026, 16:14
+ *  * Created by Vladimir Belov on 27.10.2026, 01:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.10.2026, 14:47
+ *  * Last modified 27.10.2026, 00:53
  *
  */
 
@@ -2968,10 +2968,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             dimen_name = (int) (eventsData.dimen_List_name / eventsData.displayMetrics_density);
             dimen_date = (int) (eventsData.dimen_list_date / eventsData.displayMetrics_density);
 
-            // Инициализируем рендерер
-            this.renderer = new EventLayoutRenderer(context, ta);
             // Определяем, какой макет использовать
             this.useCustomLayout = eventsData.isFeatureEnabled(Constants.FEATURE_EDIT_LAYOUT);
+            // Инициализируем рендерер
+            this.renderer = new EventLayoutRenderer(context, ta);
+
         }
 
         @Override
@@ -3023,12 +3024,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     // Загружаем само фото
                     holder.PhotoImageView.setImageBitmap(eventsData.getEventPhoto(event, true, false, true, roundingFactor));
 
-                    // Устанавливаем гравитацию фото из конфига
-                    LinearLayout.LayoutParams photoParams = (LinearLayout.LayoutParams) holder.PhotoImageView.getLayoutParams();
-                    photoParams.gravity = result.photoPosition.equals(EventDisplayConfig.PHOTO_CENTER)
-                            ? Gravity.CENTER_VERTICAL
-                            : Gravity.TOP;
-                    holder.PhotoImageView.setLayoutParams(photoParams);
+                    if (this.useCustomLayout) {
+                        // Устанавливаем гравитацию фото из конфига
+                        LinearLayout.LayoutParams photoParams = (LinearLayout.LayoutParams) holder.PhotoImageView.getLayoutParams();
+                        photoParams.gravity = result.photoPosition.equals(EventDisplayConfig.PHOTO_CENTER)
+                                ? Gravity.CENTER_VERTICAL
+                                : Gravity.TOP;
+                        holder.PhotoImageView.setLayoutParams(photoParams);
+                    }
                 } else {
                     holder.PhotoImageView.setImageDrawable(null);
                 }
@@ -3037,6 +3040,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 // 2. "До события"
                 holder.DayDistanceTextView.setText(result.beforeEventText);
                 holder.DayDistanceTextView.setTypeface(null, result.beforeEventStyle);
+                holder.DayDistanceTextView.setTextColor(result.beforeEventColor);
 
                 // 3. Имя
                 holder.NameTextView.setText(result.nameText);
@@ -3047,91 +3051,172 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 // 4. Детали
                 holder.DetailsTextView.setText(result.detailsText);
 
-                // 5. Дата
-                holder.DateTextView.setText(result.dateText);
+                // Сбрасываем тени по умолчанию, чтобы они не "протекали" при переиспользовании View
+                holder.DateTextView.setShadowLayer(0, 0, 0, 0);
+                holder.CounterTextView.setShadowLayer(0, 0, 0, 0);
 
-                // 6. Возраст (Counter)
-                holder.CounterTextView.setText(result.counterText);
-                if (result.counterColor != 0) {
-                    holder.CounterTextView.setTextColor(result.counterColor);
-                }
-                // Устанавливаем гравитацию возраста из конфига
-                LinearLayout.LayoutParams ageParams = (LinearLayout.LayoutParams) holder.CounterTextView.getLayoutParams();
-                ageParams.gravity = result.datesPosition.equals(EventDisplayConfig.AGE_CENTER)
-                        ? (Gravity.CENTER_VERTICAL | Gravity.END)
-                        : (Gravity.TOP | Gravity.END);
-                holder.CounterTextView.setLayoutParams(ageParams);
+                if (this.useCustomLayout) {
 
-                holder.CounterTextView.setTypeface(null, result.counterStyle);
-                if (result.counterShadowColor != 0) {
-                    holder.CounterTextView.setShadowLayer(8, result.counterShadowDx, result.counterShadowDy, result.counterShadowColor);
-                } else {
-                    holder.CounterTextView.setShadowLayer(0, 0, 0, 0);
-                }
+                    // === РЕЖИМ МАКЕТА ===
 
-                // 7. Иконка события
-                final String eventIconStr = singleEventArray[ContactsEvents.Position_eventIcon];
-                if (!eventIconStr.isEmpty() && result.eventIconVisible) {
-                    Drawable iconDrawable = ContactsEvents.resolveIconString(MainActivity.this, eventIconStr, 0);
-                    holder.EventIconImageView.setImageDrawable(iconDrawable);
-
-                    // Программно перемещаем иконку в зависимости от позиции
-                    LinearLayout parentColumn = (LinearLayout) holder.EventIconImageView.getParent();
-                    parentColumn.removeView(holder.EventIconImageView);
-
-                    if ("after_age".equals(result.eventIconPosition)) {
-                        // Добавляем после возраста
-                        parentColumn.addView(holder.EventIconImageView, parentColumn.getChildCount());
+                    // === ВЕРХНЯЯ ЧАСТЬ ===
+                    if (!result.isDateTextTopEmpty) {
+                        holder.DateTextView.setText(result.dateTextTop);
+                        holder.DateTextView.setVisibility(View.VISIBLE);
                     } else {
-                        // Добавляем перед возрастом (после даты)
-                        int insertIndex = 1; // после entryDateTextView
-                        parentColumn.addView(holder.EventIconImageView, insertIndex);
+                        holder.DateTextView.setVisibility(View.GONE);
                     }
 
-                    holder.EventIconImageView.setVisibility(View.VISIBLE);
-                } else {
-                    holder.EventIconImageView.setImageDrawable(null);
-                    holder.EventIconImageView.setVisibility(View.GONE);
-                }
-
-                // 8. Логика описания (треугольник vs инлайн)
-                String eventDescription = singleEventArray[ContactsEvents.Position_eventDescription].trim();
-                if (!eventDescription.isEmpty()) {
-                    String descSetting = renderer.getConfig().getSetting(EventDisplayConfig.PARAM_DESCRIPTION);
-                    if ("inline".equals(descSetting) || descSetting.isEmpty()) {
-                        holder.DescriptionTextView.setVisibility(View.VISIBLE);
-                        holder.DescriptionTextView.setText(eventDescription);
-                        holder.ShowDescriptionImageView.setVisibility(View.GONE);
+                    // === НИЖНЯЯ ЧАСТЬ ===
+                    if (!result.isDateTextBottomEmpty) {
+                        holder.CounterTextView.setText(result.dateTextBottom);
+                        holder.CounterTextView.setVisibility(View.VISIBLE);
                     } else {
-                        holder.ShowDescriptionImageView.setVisibility(View.VISIBLE);
-                        holder.DescriptionTextView.setText(eventDescription);
+                        holder.CounterTextView.setVisibility(View.GONE);
+                    }
 
-                        if (expandedDescriptions.contains(eventKey)) {
-                            holder.DescriptionTextView.setVisibility(View.VISIBLE);
-                            holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_up_float));
-                        } else {
-                            holder.DescriptionTextView.setVisibility(View.GONE);
-                            holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_down_float));
+                    // Применяем тень к тому TextView, который виден и содержит возраст (если флаг установлен)
+                    boolean isShadow = false;
+                    if (result.hasAgeShadow) {
+                        TextView targetTv = null;
+                        if (result.isAgeIsTop && !result.isDateTextTopEmpty) {
+                            targetTv = holder.DateTextView;
+                        } else if (!result.isDateTextBottomEmpty) {
+                            targetTv = holder.CounterTextView;
                         }
+                        if (targetTv != null) {
+                            targetTv.setShadowLayer(8, 2f, 2f, 0x80000000);
+                            isShadow = true;
+                        }
+                    }
+                    if (!isShadow) {
+                        // Очищаем тень у обоих View, чтобы она не оставалась от предыдущих элементов при скролле
+                        holder.DateTextView.setShadowLayer(0, 0, 0, 0);
+                        holder.CounterTextView.setShadowLayer(0, 0, 0, 0);
+                    }
 
-                        View.OnClickListener listener = v -> {
+                    // Иконка события
+                    if (result.showEventIcon) {
+                        Drawable iconDrawable = ContactsEvents.resolveIconString(MainActivity.this,
+                                singleEventArray[ContactsEvents.Position_eventIcon], 0);
+                        holder.EventIconImageView.setImageDrawable(iconDrawable);
+                        holder.EventIconImageView.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.EventIconImageView.setImageDrawable(null);
+                        holder.EventIconImageView.setVisibility(View.GONE);
+                    }
+
+                    // Устанавливаем гравитацию возраста из конфига
+                    LinearLayout parentLayout = (LinearLayout) holder.CounterTextView.getParent();
+                    if (parentLayout != null) {
+                        LinearLayout.LayoutParams ageParams = (LinearLayout.LayoutParams) parentLayout.getLayoutParams();
+                        ageParams.gravity = result.datesPosition.equals(EventDisplayConfig.AGE_CENTER)
+                                ? Gravity.CENTER
+                                : (Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+                        parentLayout.setLayoutParams(ageParams);
+                    }
+
+                    // 8. Логика описания (треугольник vs инлайн)
+                    String eventDescription = singleEventArray[ContactsEvents.Position_eventDescription].trim();
+                    if (!eventDescription.isEmpty()) {
+                        String descSetting = renderer.getConfig().getSetting(EventDisplayConfig.PARAM_DESCRIPTION);
+                        if (EventDisplayConfig.DESC_INLINE.equals(descSetting) || descSetting.isEmpty()) {
+                            holder.DescriptionTextView.setVisibility(View.VISIBLE);
+                            holder.DescriptionTextView.setText(eventDescription);
+                            holder.ShowDescriptionImageView.setVisibility(View.GONE);
+                        } else {
+                            holder.ShowDescriptionImageView.setVisibility(View.VISIBLE);
+                            holder.DescriptionTextView.setText(eventDescription);
+
                             if (expandedDescriptions.contains(eventKey)) {
-                                expandedDescriptions.remove(eventKey);
-                                holder.DescriptionTextView.setVisibility(View.GONE);
-                                holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_down_float));
-                            } else {
-                                expandedDescriptions.add(eventKey);
                                 holder.DescriptionTextView.setVisibility(View.VISIBLE);
                                 holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_up_float));
+                            } else {
+                                holder.DescriptionTextView.setVisibility(View.GONE);
+                                holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_down_float));
                             }
-                        };
-                        holder.ShowDescriptionImageView.setOnClickListener(listener);
-                        holder.DescriptionTextView.setOnClickListener(listener);
+
+                            View.OnClickListener listener = v -> {
+                                if (expandedDescriptions.contains(eventKey)) {
+                                    expandedDescriptions.remove(eventKey);
+                                    holder.DescriptionTextView.setVisibility(View.GONE);
+                                    holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_down_float));
+                                } else {
+                                    expandedDescriptions.add(eventKey);
+                                    holder.DescriptionTextView.setVisibility(View.VISIBLE);
+                                    holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_up_float));
+                                }
+                            };
+                            holder.ShowDescriptionImageView.setOnClickListener(listener);
+                            holder.DescriptionTextView.setOnClickListener(listener);
+                        }
+                    } else {
+                        holder.ShowDescriptionImageView.setVisibility(View.GONE);
+                        holder.DescriptionTextView.setVisibility(View.GONE);
                     }
+
                 } else {
-                    holder.ShowDescriptionImageView.setVisibility(View.GONE);
-                    holder.DescriptionTextView.setVisibility(View.GONE);
+
+                    // === ЛЕГАСИ РЕЖИМ ===
+                    holder.DateTextView.setText(result.dateText);
+                    holder.DateTextView.setTextColor(result.dateColor);
+                    holder.DateTextView.setVisibility(View.VISIBLE);
+
+                    holder.CounterTextView.setText(result.counterText);
+                    holder.CounterTextView.setTextColor(result.counterColor);
+                    holder.CounterTextView.setTypeface(null, result.counterStyle);
+                    holder.CounterTextView.setVisibility(View.VISIBLE);
+
+                    if (result.eventIconVisible) {
+                        Drawable iconDrawable = ContactsEvents.resolveIconString(MainActivity.this,
+                                singleEventArray[ContactsEvents.Position_eventIcon], 0);
+                        holder.EventIconImageView.setImageDrawable(iconDrawable);
+                        holder.EventIconImageView.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.EventIconImageView.setImageDrawable(null);
+                        holder.EventIconImageView.setVisibility(View.GONE);
+                    }
+
+                    String eventDescription = singleEventArray[ContactsEvents.Position_eventDescription].trim();
+                    if (!eventDescription.isEmpty()) {
+                        if (result.inlineDescription != null) {
+                            holder.DescriptionTextView.setVisibility(View.VISIBLE);
+                            holder.DescriptionTextView.setText(eventDescription);
+                            holder.ShowDescriptionImageView.setVisibility(View.GONE);
+                        } else {
+                            holder.ShowDescriptionImageView.setVisibility(View.VISIBLE);
+                            holder.DescriptionTextView.setText(eventDescription);
+
+                            if (expandedDescriptions.contains(eventKey)) {
+                                holder.DescriptionTextView.setVisibility(View.VISIBLE);
+                                holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_up_float));
+                            } else {
+                                holder.DescriptionTextView.setVisibility(View.GONE);
+                                holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_down_float));
+                            }
+
+                            View.OnClickListener listener = v -> {
+                                if (expandedDescriptions.contains(eventKey)) {
+                                    expandedDescriptions.remove(eventKey);
+                                    holder.DescriptionTextView.setVisibility(View.GONE);
+                                    holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_down_float));
+                                } else {
+                                    expandedDescriptions.add(eventKey);
+                                    holder.DescriptionTextView.setVisibility(View.VISIBLE);
+                                    holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_up_float));
+                                }
+                            };
+                            holder.ShowDescriptionImageView.setOnClickListener(listener);
+                            holder.DescriptionTextView.setOnClickListener(listener);
+                        }
+
+                    } else {
+                        holder.ShowDescriptionImageView.setVisibility(View.GONE);
+                        holder.DescriptionTextView.setVisibility(View.GONE);
+                    }
                 }
+
+
 
                 //Фон
                 GradientDrawable drawableBack = new GradientDrawable();
@@ -3265,8 +3350,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             NameTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + eventsData.preferences_list_magnify_name * 0.1)));
             DetailsTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + eventsData.preferences_list_magnify_details * 0.1)));
             DescriptionTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_details * (1 + eventsData.preferences_list_magnify_details * 0.1)));
-            DateTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_date * (1 + eventsData.preferences_list_magnify_date * 0.1)));
-            CounterTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + eventsData.preferences_list_magnify_age * 0.1)));
+            if (!useCustomLayout) {
+                DateTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_date * (1 + eventsData.preferences_list_magnify_date * 0.1)));
+                CounterTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + eventsData.preferences_list_magnify_age * 0.1)));
+            }
 
             return new ViewHolder(NameTextView, DayDistanceTextView, DateTextView, DetailsTextView, DescriptionTextView,
                     PhotoImageView, CounterTextView, EventIconImageView, ShowDescriptionImageView);

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.10.2026, 16:14
+ *  * Created by Vladimir Belov on 27.10.2026, 01:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.10.2026, 16:07
+ *  * Last modified 27.10.2026, 00:40
  *
  */
 
@@ -13,6 +13,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,7 +74,6 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             {EventDisplayConfig.PARAM_ORGANIZATION, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_NICKNAME, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_EVENT_CAPTION, SECTION.details.toString(), "1", "0"},
-            //{EventDisplayConfig.PARAM_EVENT_LABEL, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_EVENT_SOURCE, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_EVENT_EMOJI, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_EVENT_TYPE, SECTION.details.toString(), "1", "0"},
@@ -89,18 +88,16 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             {EventDisplayConfig.PARAM_NEWLINE + "_3", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_4", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_5", SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_6", SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_7", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_8", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_9", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_10", SECTION.details.toString(), "0", "0"},
-            {EventDisplayConfig.PARAM_NEWLINE + "_11", SECTION.details.toString(), "0", "0"},
-            {EventDisplayConfig.PARAM_NEWLINE + "_12", SECTION.details.toString(), "0", "0"},
             // Даты
             {EventDisplayConfig.PARAM_DATE_ORIGINAL, SECTION.dates.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_EVENT_ICON, SECTION.dates.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_AGE_NEXT, SECTION.dates.toString(), "1", "1"},
             {EventDisplayConfig.PARAM_DATE_EVENT, SECTION.dates.toString(), "1", "0"},
-            {EventDisplayConfig.PARAM_NEWLINE + "_6", SECTION.dates.toString(), "0", "0"},
-            {EventDisplayConfig.PARAM_NEWLINE + "_7", SECTION.dates.toString(), "0", "0"},
     };
 
     static {
@@ -167,8 +164,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                 EventDisplayConfig.KEY_PHOTO, getString(R.string.pref_EventInfo_Photo)));
         items.add(new DisplayItem(DisplayItem.TYPE_COMMON, SECTION.common.toString(),
                 EventDisplayConfig.KEY_AGE_POS, getString(R.string.param_dates_pos)));
-        items.add(new DisplayItem(DisplayItem.TYPE_COMMON, SECTION.common.toString(),
-                EventDisplayConfig.PARAM_NAME, getString(R.string.pref_EventInfo_EventTitle)));
+        items.add(makeParameterItem(SECTION.common.toString(), DisplayItem.TYPE_COMMON, EventDisplayConfig.PARAM_NAME));
 
         // --- Секция "До события" ---
         items.add(new DisplayItem(DisplayItem.TYPE_HEADER, SECTION.before.toString(), null,
@@ -178,13 +174,13 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
         // Добавляем в порядке из конфига
         for (String id : beforeOrder) {
             if (isParamInSection(id, SECTION.before.toString())) {
-                items.add(makeParameterItem(SECTION.before.toString(), id));
+                items.add(makeParameterItem(SECTION.before.toString(), DisplayItem.TYPE_PARAMETER, id));
             }
         }
         // Добавляем недостающие (включённые по умолчанию, но не сохранённые)
         for (String[] p : PARAMS) {
             if (SECTION.before.toString().equals(p[1]) && !beforeSet.contains(p[0])) {
-                items.add(makeParameterItem(SECTION.before.toString(), p[0]));
+                items.add(makeParameterItem(SECTION.before.toString(), DisplayItem.TYPE_PARAMETER, p[0]));
             }
         }
 
@@ -195,12 +191,12 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
         Set<String> detailsSet = new HashSet<>(detailsOrder);
         for (String id : detailsOrder) {
             if (isParamInSection(id, SECTION.details.toString())) {
-                items.add(makeParameterItem(SECTION.details.toString(), id));
+                items.add(makeParameterItem(SECTION.details.toString(), DisplayItem.TYPE_PARAMETER, id));
             }
         }
         for (String[] p : PARAMS) {
             if (SECTION.details.toString().equals(p[1]) && !detailsSet.contains(p[0])) {
-                items.add(makeParameterItem(SECTION.details.toString(), p[0]));
+                items.add(makeParameterItem(SECTION.details.toString(), DisplayItem.TYPE_PARAMETER, p[0]));
             }
         }
 
@@ -211,23 +207,23 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
         Set<String> datesSet = new HashSet<>(datesOrder);
         for (String id : datesOrder) {
             if (isParamInSection(id, SECTION.dates.toString())) {
-                items.add(makeParameterItem(SECTION.dates.toString(), id));
+                items.add(makeParameterItem(SECTION.dates.toString(), DisplayItem.TYPE_PARAMETER, id));
             }
         }
         for (String[] p : PARAMS) {
             if (SECTION.dates.toString().equals(p[1]) && !datesSet.contains(p[0])) {
-                items.add(makeParameterItem(SECTION.dates.toString(), p[0]));
+                items.add(makeParameterItem(SECTION.dates.toString(), DisplayItem.TYPE_PARAMETER, p[0]));
             }
         }
     }
 
-    private DisplayItem makeParameterItem(String section, String id) {
+    private DisplayItem makeParameterItem(String section, int type, String id) {
         String title = getParamTitle(id);
         boolean hasColor = "1".equals(getParamProp(id, 2));
         boolean hasSettings = "1".equals(getParamProp(id, 3));
         // "newline" параметры всегда включены визуально, но их "включённость" = присутствие в списке
         boolean enabled = isParamEnabled(section, id);
-        return new DisplayItem(DisplayItem.TYPE_PARAMETER, section, id, title,
+        return new DisplayItem(type, section, id, title,
                 enabled, hasColor, hasSettings);
     }
 
@@ -266,8 +262,6 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             case EventDisplayConfig.PARAM_NEWLINE + "_8":
             case EventDisplayConfig.PARAM_NEWLINE + "_9":
             case EventDisplayConfig.PARAM_NEWLINE + "_10":
-            case EventDisplayConfig.PARAM_NEWLINE + "_11":
-            case EventDisplayConfig.PARAM_NEWLINE + "_12":
                 return getString(R.string.pref_EventInfo_NewLine1);
             case EventDisplayConfig.PARAM_NAME: return getString(R.string.pref_EventInfo_EventTitle);
             case EventDisplayConfig.PARAM_JOB_TITLE: return getString(R.string.pref_EventInfo_JobTitle);
@@ -466,20 +460,36 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
         void bind(final DisplayItem item) {
             name.setText(item.title);
 
-            if (EventDisplayConfig.PARAM_NAME.equals(item.paramId)) {
-                // Для Name: только выбор цвета + кнопка настроек, без переключателя значения
-                colorIcon.setVisibility(View.VISIBLE);
+            colorIcon.setVisibility(item.hasColor ? View.VISIBLE : View.GONE);
+            settingsIcon.setVisibility(item.hasSettings ? View.VISIBLE : View.GONE);
+
+            if (item.hasColor) {
+                int color = config.getColor(item.paramId, 0);
+                if (color != 0) {
+                    colorIcon.setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN);
+                } else {
+                    // Если цвет не задан, используем дефолтный (серый)
+                    colorIcon.clearColorFilter();
+                }
+
                 colorIcon.setOnClickListener(v -> showColorPicker(item));
+                colorIcon.setOnLongClickListener(v -> {
+                    Toast.makeText(v.getContext(), R.string.msg_hint_select_color, Toast.LENGTH_SHORT).show();
+                    return true;
+                });
+            }
 
-                settingsIcon.setVisibility(View.VISIBLE);
+            if (item.hasSettings) {
                 settingsIcon.setOnClickListener(v -> showSettings(item));
+                settingsIcon.setOnLongClickListener(v -> {
+                    Toast.makeText(v.getContext(), R.string.msg_hint_additional_settings, Toast.LENGTH_SHORT).show();
+                    return true;
+                });
+            }
 
+            if (EventDisplayConfig.PARAM_NAME.equals(item.paramId)) {
                 valueLabel.setVisibility(View.GONE);
             } else {
-                // Для Photo и Dates position: только переключатель значения, без цвета и настроек
-                colorIcon.setVisibility(View.GONE);
-                settingsIcon.setVisibility(View.GONE);
-
                 String val;
                 if (EventDisplayConfig.KEY_PHOTO.equals(item.paramId)) {
                     val = config.getPhotoPosition();
@@ -517,6 +527,14 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             settingsIcon.setVisibility(item.hasSettings ? View.VISIBLE : View.GONE);
 
             if (item.hasColor) {
+                int color = config.getColor(item.paramId, 0);
+                if (color != 0) {
+                    colorIcon.setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN);
+                } else {
+                    // Если цвет не задан, используем дефолтный (серый)
+                    colorIcon.clearColorFilter();
+                }
+
                 colorIcon.setOnClickListener(v -> showColorPicker(item));
                 colorIcon.setOnLongClickListener(v -> {
                     Toast.makeText(v.getContext(), R.string.msg_hint_select_color, Toast.LENGTH_SHORT).show();
@@ -600,14 +618,29 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
         ColorPicker picker = new ColorPicker(this);
         picker.selectColor(currentColor, 0, true, item.paramId,
                 (id, color) -> {
+                    if (TextUtils.isEmpty(id)) return;
                     if (item.type == DisplayItem.TYPE_PARAMETER || EventDisplayConfig.PARAM_NAME.equals(item.paramId)) {
                         config.setColor(item.paramId, color);
                         setModified();
-                        Toast.makeText(EventDisplayConfigActivity.this,
-                                getString(R.string.msg_event_color_selected,
-                                        String.format("#%08X", color),
-                                        item.title),
-                                Toast.LENGTH_SHORT).show();
+                        if (eventsData.preferences_info_on) {
+                            Toast.makeText(EventDisplayConfigActivity.this,
+                                    getString(R.string.msg_event_color_selected,
+                                            String.format("#%08X", color),
+                                            item.title),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // Обновляем отображение иконки цвета в списке
+                        int pos = -1;
+                        for (int i = 0; i < items.size(); i++) {
+                            if (items.get(i).paramId != null && items.get(i).paramId.equals(item.paramId)) {
+                                pos = i;
+                                break;
+                            }
+                        }
+                        if (pos >= 0) {
+                            adapter.notifyItemChanged(pos);
+                        }
                     }
                 });
     }
@@ -645,7 +678,6 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
     private void showDescriptionSettings(final DisplayItem item) {
         String current = config.getSetting(item.paramId);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_description_settings, null);
-        RadioGroup rg = view.findViewById(R.id.rg_desc_mode);
         RadioButton rbInline = view.findViewById(R.id.rb_desc_inline);
         RadioButton rbTriangle = view.findViewById(R.id.rb_desc_triangle);
 
@@ -747,28 +779,45 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
      * @param item Параметр
      */
     private void cycleCommonValue(DisplayItem item) {
-        setModified();
+        String next = null;
         if (EventDisplayConfig.KEY_PHOTO.equals(item.paramId)) {
+
             String cur = config.getPhotoPosition();
-            String next;
-            if (EventDisplayConfig.PHOTO_TOP.equals(cur)) next = EventDisplayConfig.PHOTO_CENTER;
-            else if (EventDisplayConfig.PHOTO_CENTER.equals(cur)) next = EventDisplayConfig.PHOTO_HIDDEN;
-            else next = EventDisplayConfig.PHOTO_TOP;
+            switch (cur) {
+                case EventDisplayConfig.PHOTO_TOP:
+                    next = EventDisplayConfig.PHOTO_CENTER;
+                    break;
+                case EventDisplayConfig.PHOTO_CENTER:
+                    next = EventDisplayConfig.PHOTO_HIDDEN;
+                    break;
+                default:
+                    next = EventDisplayConfig.PHOTO_TOP;
+                    break;
+            }
             config.setPhotoPosition(next);
-        } else {
+
+        } else  if (EventDisplayConfig.KEY_AGE_POS.equals(item.paramId)) {
+
             String cur = config.getAgePosition();
-            String next = EventDisplayConfig.AGE_TOP.equals(cur)
+            next = EventDisplayConfig.AGE_TOP.equals(cur)
                     ? EventDisplayConfig.AGE_CENTER : EventDisplayConfig.AGE_TOP;
             config.setAgePosition(next);
+
         }
-        // Обновляем только этот элемент
-        int pos = -1;
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).paramId != null && items.get(i).paramId.equals(item.paramId)) {
-                pos = i; break;
+        if (next != null) {
+            // Обновляем только этот элемент
+            int pos = -1;
+            for (int i = 0; i < items.size(); i++) {
+                if (items.get(i).paramId != null && items.get(i).paramId.equals(item.paramId)) {
+                    pos = i;
+                    break;
+                }
+            }
+            if (pos >= 0) {
+                setModified();
+                adapter.notifyItemChanged(pos);
             }
         }
-        if (pos >= 0) adapter.notifyItemChanged(pos);
     }
 
     private String joinCsv(List<String> list) {

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.10.2026, 16:14
+ *  * Created by Vladimir Belov on 27.10.2026, 01:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.10.2026, 16:07
+ *  * Last modified 27.10.2026, 00:39
  *
  */
 
@@ -57,14 +57,11 @@ public class EventDisplayConfig {
     public static final String PARAM_DAY_OF_WEEK = "day_of_week";
     public static final String PARAM_DATE_BEFORE = "date_before";
     public static final String PARAM_NEWLINE = "newline";
-    public static final String PARAM_NEWLINE_6 = "newline_6";
-    public static final String PARAM_NEWLINE_7 = "newline_7";
     public static final String PARAM_NAME = "name";
     public static final String PARAM_JOB_TITLE = "job_title";
     public static final String PARAM_ORGANIZATION = "organization";
     public static final String PARAM_NICKNAME = "nickname";
     public static final String PARAM_EVENT_CAPTION = "event_caption";
-    //public static final String PARAM_EVENT_LABEL = "event_lbel";
     public static final String PARAM_EVENT_SOURCE = "event_source";
     public static final String PARAM_EVENT_EMOJI = "event_emoji";
     public static final String PARAM_EVENT_TYPE = "event_type";
@@ -91,10 +88,6 @@ public class EventDisplayConfig {
     public static final String PHOTO_HIDDEN = "hidden";
     public static final String AGE_TOP = "top";
     public static final String AGE_CENTER = "center";
-
-    // Позиция иконки типа события в секции "Даты"
-    public static final String EVENT_ICON_BEFORE_AGE = "before_age";
-    public static final String EVENT_ICON_AFTER_AGE = "after_age";
 
     // Варианты показа описания
     public static final String DESC_INLINE = "inline";
@@ -291,7 +284,6 @@ public class EventDisplayConfig {
             case PARAM_JOB_TITLE:     return legacy.contains("1");
             case PARAM_ORGANIZATION:  return legacy.contains("2");
             case PARAM_EVENT_CAPTION: return legacy.contains("3");
-            //case PARAM_EVENT_LABEL:   return legacy.contains("4");
             case PARAM_FAVORITE_ICON: return legacy.contains("5");
             case PARAM_NICKNAME:      return legacy.contains("7");
             case PARAM_AGE:           return legacy.contains("8");

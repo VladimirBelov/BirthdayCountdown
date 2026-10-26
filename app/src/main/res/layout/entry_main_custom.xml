@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.10.2026, 16:14
+  ~  * Created by Vladimir Belov on 27.10.2026, 01:02
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.10.2026, 14:07
+  ~  * Last modified 26.10.2026, 22:48
   ~  */
   -->
 
@@ -37,14 +38,14 @@
         android:paddingStart="4dp"
         android:paddingEnd="2dp">
 
-        <!-- Верхний ряд: расстояние/имя (колонка А) и дата/возраст (колонка Б) -->
+        <!-- Верхний ряд: Колонка А (Расстояние и Имя) и Колонка Б (Даты, Иконка, Возраст) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:baselineAligned="false">
 
-            <!-- Колонка А: расстояние и имя -->
+            <!-- Колонка А: занимает всё доступное пространство -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -66,8 +67,10 @@
                     android:id="@+id/entryNameTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:breakStrategy="simple"
                     android:gravity="top|start"
+                    android:maxLines="3"
                     android:text="@string/hint_Name"
                     android:textColor="?attr/eventFullNameColor"
                     android:textSize="@dimen/event_name"
@@ -75,21 +78,19 @@
                     tools:ignore="UnusedAttribute" />
             </LinearLayout>
 
-            <!-- Колонка Б: дата, иконка, возраст -->
+            <!-- Колонка Б: ширина по контенту -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="top|end">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/entryDateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="top|end"
-                    android:maxLines="2"
+                    android:gravity="top|center"
                     android:text="@string/hint_Date"
-                    android:textAlignment="textEnd"
                     android:textColor="?attr/eventDateColor"
                     android:textSize="@dimen/event_date" />
 
@@ -97,38 +98,31 @@
                     android:id="@+id/entryEventIcon"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:layout_gravity="end"
                     android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
                     android:contentDescription="@string/hint_EventIcon"
-                    android:scaleType="fitCenter"
-                    android:visibility="gone" />
+                    android:gravity="top|center"
+                    android:scaleType="fitCenter" />
 
                 <TextView
                     android:id="@+id/entryDetailsCounter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:breakStrategy="simple"
-                    android:gravity="top|end"
-                    android:maxLines="2"
-                    android:maxWidth="120dp"
-                    android:minWidth="60dp"
-                    android:singleLine="false"
+                    android:gravity="top|center"
                     android:text="@string/hint_Age"
                     android:textColor="?attr/eventAgeColor"
                     android:textSize="@dimen/event_name"
-                    android:textStyle="bold"
-                    tools:ignore="UnusedAttribute" />
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Детали события -->
+        <!-- Нижний ряд: Детали события -->
         <LinearLayout
             android:id="@+id/rowDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -161,7 +155,6 @@
                 android:layout_height="20dp"
                 android:layout_gravity="bottom|end"
                 android:contentDescription="@string/hint_Description"
-                android:longClickable="false"
                 android:paddingHorizontal="2dp"
                 android:src="@android:drawable/arrow_down_float"
                 android:visibility="gone" />

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.10.2026, 16:14
+ *  * Created by Vladimir Belov on 27.10.2026, 01:02
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.10.2026, 16:07
+ *  * Last modified 27.10.2026, 00:53
  *
  */
 
@@ -21,6 +21,8 @@ import androidx.core.text.HtmlCompat;
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,34 +33,36 @@ public class EventLayoutRenderer {
     private final EventDisplayConfig config;
 
     public static class RenderResult {
-        public String beforeEventText = "";
-        public int beforeEventColor = 0;
-        public int beforeEventStyle = Typeface.NORMAL;
-
-        public String nameText = "";
-        public int nameColor = 0;
-
-        public CharSequence detailsText = "";
-        public int detailsColor = 0;
-
-        public String dateText = "";
-        public int dateColor = 0;
         public String datesPosition = EventDisplayConfig.AGE_TOP;
         public String photoPosition = EventDisplayConfig.PHOTO_TOP;
+        public String beforeEventText;
+        public int beforeEventColor;
+        public int beforeEventStyle;
+        public String nameText;
+        public int nameColor;
+        public CharSequence detailsText;
+        public int detailsColor;
 
-        public String counterText = "";
-        public int counterColor = 0;
-        public int counterStyle = Typeface.NORMAL;
-        public float counterShadowDx = 0, counterShadowDy = 0;
-        public int counterShadowColor = 0;
+        // Новые поля для режима макета (Layout Mode)
+        public CharSequence dateTextTop;
+        public CharSequence dateTextBottom;
+        public boolean isDateTextTopEmpty;
+        public boolean isDateTextBottomEmpty;
+        public boolean isAgeIsTop;
+        public boolean showEventIcon;
+        public boolean hasAgeShadow; // Флаг для применения тени к нужному TextView
 
-        public boolean photoVisible = true;
-        public boolean eventIconVisible = false;
-        public boolean descriptionButtonVisible = false;
-        public boolean descriptionInlineVisible = false;
-        public String inlineDescription = "";
-        public String eventIconUri = "";
-        public String eventIconPosition = "before_age"; // before_age, after_age, hidden
+        // Поля для легаси-режима (чтобы ничего не сломать)
+        public String dateText;
+        public int dateColor;
+        public String counterText;
+        public int counterColor;
+        public int counterStyle;
+        public boolean eventIconVisible;
+        public boolean photoVisible;
+        public boolean descriptionButtonVisible;
+        public boolean descriptionInlineVisible;
+        public String inlineDescription;
     }
 
     public EventLayoutRenderer(Context ctx, TypedArray themeAttrs) {
@@ -85,7 +89,7 @@ public class EventLayoutRenderer {
 
         renderBeforeSection(singleEventArray, r);
         renderNameSection(singleEventArray, r);
-        renderDetailsSection(singleEventArray, person, eventKey, r);
+        renderDetailsSection(singleEventArray, eventKey, r);
         renderDatesSection(singleEventArray, person, r);
         renderCommonSections(r);
         return r;
@@ -112,15 +116,10 @@ public class EventLayoutRenderer {
         }
 
         boolean hasWhen = order.contains(EventDisplayConfig.PARAM_WHEN);
-        boolean autoNewline = shouldAutoInsertNewlines(order);
 
         for (int i = 0; i < order.size(); i++) {
             String id = order.get(i);
             boolean fromNewLine = i == 0;
-            /*} else if (needsSeparator(order, i, autoNewline)) {
-                sb.append("\n");
-                fromNewLine = true;*/
-
             String text = null;
 
             switch (id) {
@@ -154,11 +153,6 @@ public class EventLayoutRenderer {
                     break;
 
                 case EventDisplayConfig.PARAM_NEWLINE:
-                case EventDisplayConfig.PARAM_NEWLINE + "_1":
-                case EventDisplayConfig.PARAM_NEWLINE + "_2":
-                case EventDisplayConfig.PARAM_NEWLINE + "_3":
-                case EventDisplayConfig.PARAM_NEWLINE + "_4":
-                case EventDisplayConfig.PARAM_NEWLINE + "_5":
                     sb.append("\n");
                     continue;
             }
@@ -199,7 +193,7 @@ public class EventLayoutRenderer {
                         ContextCompat.getColor(context, R.color.theme_grey_primary)));
     }
 
-    private void renderDetailsSection(String[] ev, Person person, String eventKey, RenderResult r) {
+    private void renderDetailsSection(String[] ev, String eventKey, RenderResult r) {
         List<String> order = config.getDetailsOrder();
         SpannableStringBuilder sb = new SpannableStringBuilder();
         boolean autoNewline = shouldAutoInsertNewlines(order);
@@ -223,7 +217,7 @@ public class EventLayoutRenderer {
             if (i > 0 && needsSeparator(order, i, autoNewline) && hasAnyContent) {
                 sb.append("\n");
             }
-            String text = extractDetailText(id, ev, subType, eventLabel, eventCaption, eventKey);
+            String text = extractDetailText(id, ev, subType, eventLabel, eventCaption);
             if (text != null && !text.isEmpty()) {
                 int start = sb.length();
                 sb.append(text);
@@ -249,60 +243,105 @@ public class EventLayoutRenderer {
 
     private void renderDatesSection(String[] ev, Person person, RenderResult r) {
         List<String> order = config.getDatesOrder();
-        StringBuilder sb = new StringBuilder();
-        boolean hasAgeNext = false;
-        boolean hasEventIcon = false;
-        int ageNextIndex = -1;
-        int eventIconIndex = -1;
+        int iconIndex = order.indexOf(EventDisplayConfig.PARAM_EVENT_ICON);
+        int ageIndex = order.indexOf(EventDisplayConfig.PARAM_AGE_NEXT);
+        boolean hasIcon = iconIndex != -1;
+
+        SpannableStringBuilder topBuilder = new SpannableStringBuilder();
+        SpannableStringBuilder bottomBuilder = new SpannableStringBuilder();
+        r.hasAgeShadow = false;
+
+        // Рассчитываем динамические размеры шрифтов на основе настроек пользователя
+        float ageSizeSp = (eventsData.dimen_List_name / eventsData.displayMetrics_density) * (1 + eventsData.preferences_list_magnify_age * 0.1f);
+        int ageSizePx = (int) (ageSizeSp * context.getResources().getDisplayMetrics().scaledDensity);
+        float dateSizeSp = (eventsData.dimen_list_date / eventsData.displayMetrics_density) * (1 + eventsData.preferences_list_magnify_date * 0.1f);
+        int dateSizePx = (int) (dateSizeSp * context.getResources().getDisplayMetrics().scaledDensity);
+
+        // 1. Определяем, должен ли возраст быть в верхнем блоке
+        boolean ageIsTop;
+        if (hasIcon) {
+            // Если есть иконка, возраст сверху, только если он стоит до иконки
+            ageIsTop = (ageIndex != -1) && (ageIndex < iconIndex);
+        } else {
+            // Если иконки нет, возраст считается "верхним", только если он стоит самым первым в списке
+            ageIsTop = (ageIndex == 0);
+        }
+        r.isAgeIsTop = ageIsTop;
 
         for (int i = 0; i < order.size(); i++) {
             String id = order.get(i);
-            if (id.equals(EventDisplayConfig.PARAM_AGE_NEXT)) {
-                hasAgeNext = true;
-                ageNextIndex = i;
-            } else if (id.equals(EventDisplayConfig.PARAM_EVENT_ICON)) {
-                hasEventIcon = true;
-                eventIconIndex = i;
-            } else if (id.startsWith(EventDisplayConfig.PARAM_NEWLINE)) {
-                sb.append("\n");
-                continue;
-            }
-
-            if (i > 0 && !id.startsWith(EventDisplayConfig.PARAM_NEWLINE)) {
-                String prevId = order.get(i - 1);
-                if (!prevId.startsWith(EventDisplayConfig.PARAM_NEWLINE)) {
-                    sb.append("\n");
-                }
+            if (id.equals(EventDisplayConfig.PARAM_EVENT_ICON)) {
+                continue; // Иконку пропускаем, она обрабатывается отдельно
             }
 
             String text = extractDateText(id, ev);
             if (!text.isEmpty()) {
-                sb.append(text);
+
+                // 2. Логика распределения по блокам (верхний/нижний)
+                SpannableStringBuilder target;
+                if (hasIcon) {
+                    target = (i < iconIndex) ? topBuilder : bottomBuilder;
+                } else {
+                    if (ageIsTop) {
+                        // Возраст первый: он идет в верхний, остальные элементы - в нижний
+                        target = (i == 0) ? topBuilder : bottomBuilder;
+                    } else {
+                        // Возраст не первый: всё до него идет в верхний, он и остальное - в нижний
+                        target = (i < ageIndex) ? topBuilder : bottomBuilder;
+                    }
+                }
+
+                if (target.length() > 0) {
+                    target.append("\n");
+                }
+
+                int start = target.length();
+                target.append(text);
+
+                // Применяем цвет
+                int customColor = config.getColor(id, 0);
+                if (customColor == 0 && id.equals(EventDisplayConfig.PARAM_AGE_NEXT)) {
+                    customColor = eventsData.isJubilee(person.Age, ev[ContactsEvents.Position_eventSubType])
+                            ? eventsData.preferences_list_color_eventjubilee
+                            : ta.getColor(R.styleable.Theme_eventAgeColor,
+                            ContextCompat.getColor(context, R.color.theme_grey_primary));
+                }
+                if (customColor != 0) {
+                    target.setSpan(new ForegroundColorSpan(customColor), start, target.length(),
+                            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+
+                // Специальная обработка для возраста (жирный шрифт через Span, тень через флаг)
+                if (id.equals(EventDisplayConfig.PARAM_AGE_NEXT)) {
+
+                    String setting = config.getSetting(EventDisplayConfig.PARAM_AGE_NEXT);
+                    Set<String> opts = new HashSet<>(Arrays.asList(setting.split(",")));
+
+                    if (opts.contains(EventDisplayConfig.PARAM_AGE_NEXT_BOLD)) {
+                        target.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+                                start, target.length(), SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+
+                    // Принудительно задаем крупный размер шрифта для возраста
+                    target.setSpan(new android.text.style.AbsoluteSizeSpan(ageSizePx, false),
+                            start, target.length(), SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                    if (opts.contains(EventDisplayConfig.PARAM_AGE_NEXT_SHADOW)) {
+                        r.hasAgeShadow = true;
+                    }
+                } else if (id.equals(EventDisplayConfig.PARAM_DATE_EVENT) || id.equals(EventDisplayConfig.PARAM_DATE_ORIGINAL)) {
+                    target.setSpan(new android.text.style.AbsoluteSizeSpan(dateSizePx, false),
+                            start, target.length(), SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
             }
         }
 
-        // Определяем позицию иконки
-        if (!hasEventIcon) {
-            r.eventIconPosition = "hidden";
-        } else if (!hasAgeNext) {
-            r.eventIconPosition = "before_age"; // по умолчанию
-        } else if (eventIconIndex < ageNextIndex) {
-            r.eventIconPosition = "before_age";
-        } else {
-            r.eventIconPosition = "after_age";
-        }
-
-        r.dateText = sb.toString();
-        r.dateColor = config.getColor(EventDisplayConfig.PARAM_DATE_EVENT,
-                ta.getColor(R.styleable.Theme_eventDateColor,
-                        ContextCompat.getColor(context, R.color.light_gray_darker)));
-
-        setupAgeNextCounter(ev, person, r);
-
-        // Определяем, должна ли быть видна иконка события в новом режиме
-        r.eventIconVisible = config.getDatesOrder().contains(EventDisplayConfig.PARAM_EVENT_ICON) &&
-                !ev[ContactsEvents.Position_eventIcon].isEmpty();
-
+        // Заполняем результаты для режима макета
+        r.dateTextTop = topBuilder;
+        r.dateTextBottom = bottomBuilder;
+        r.isDateTextTopEmpty = topBuilder.length() == 0;
+        r.isDateTextBottomEmpty = bottomBuilder.length() == 0;
+        r.showEventIcon = hasIcon && !safeTrim(ev[ContactsEvents.Position_eventIcon]).isEmpty();
     }
 
     private void renderCommonSections(RenderResult r) {
@@ -333,7 +372,7 @@ public class EventLayoutRenderer {
     }
 
     private String extractDetailText(String id, String[] ev, String subType,
-                                     String eventLabel, String eventCaption, String eventKey) {
+                                     String eventLabel, String eventCaption) {
         switch (id) {
             case EventDisplayConfig.PARAM_JOB_TITLE:
                 return safeTrim(ev[ContactsEvents.Position_title]);
@@ -351,9 +390,6 @@ public class EventLayoutRenderer {
                     cap += " (" + eventLabel + ")";
                 }
                 return cap;
-
-            /*case EventDisplayConfig.PARAM_EVENT_LABEL:
-                return eventLabel.isEmpty() ? eventCaption : eventLabel;*/
 
             case EventDisplayConfig.PARAM_EVENT_SOURCE:
                 return safeTrim(ev[ContactsEvents.Position_eventSource]).replace("~~", "\n");
@@ -393,13 +429,20 @@ public class EventLayoutRenderer {
         }
     }
 
-    // ИСПРАВЛЕНИЕ: добавлен метод extractDateText
     private String extractDateText(String id, String[] ev) {
         switch (id) {
             case EventDisplayConfig.PARAM_DATE_ORIGINAL:
                 return safeTrim(ev[ContactsEvents.Position_eventDateFirstTime]);
             case EventDisplayConfig.PARAM_DATE_EVENT:
                 return safeTrim(ev[ContactsEvents.Position_eventDateNextTime]);
+            case EventDisplayConfig.PARAM_AGE_NEXT:
+                String setting = config.getSetting(EventDisplayConfig.PARAM_AGE_NEXT);
+                Set<String> opts = new HashSet<>(Arrays.asList(setting.split(",")));
+                if (opts.contains(EventDisplayConfig.PARAM_AGE_NEXT_FULL)) {
+                    return safeTrim(ev[ContactsEvents.Position_age_caption]);
+                } else {
+                    return safeTrim(ev[ContactsEvents.Position_age]);
+                }
             default:
                 return "";
         }
@@ -428,43 +471,6 @@ public class EventLayoutRenderer {
             sb.append(ind > -1 ? dates[i].substring(0, ind).trim() : dates[i].trim());
         }
         return sb.toString();
-    }
-
-    private void setupAgeNextCounter(String[] ev, Person person, RenderResult r) {
-        List<String> datesOrder = config.getDatesOrder();
-        if (!datesOrder.contains(EventDisplayConfig.PARAM_AGE_NEXT)) {
-            r.counterText = "";
-            return;
-        }
-
-        String setting = config.getSetting(EventDisplayConfig.PARAM_AGE_NEXT);
-        Set<String> opts = new java.util.HashSet<>(java.util.Arrays.asList(setting.split(",")));
-
-        String ageStr;
-        if (opts.contains(EventDisplayConfig.PARAM_AGE_NEXT_FULL)) {
-            ageStr = ev[ContactsEvents.Position_age_caption]; // полный формат: "24 года"
-        } else {
-            ageStr = ev[ContactsEvents.Position_age]; // только число: "24"
-        }
-
-        r.counterText = ageStr;
-
-        int defaultColor = eventsData.isJubilee(person.Age, ev[ContactsEvents.Position_eventSubType])
-                ? eventsData.preferences_list_color_eventjubilee
-                : ta.getColor(R.styleable.Theme_eventAgeColor,
-                ContextCompat.getColor(context, R.color.theme_grey_primary));
-        r.counterColor = config.getColor(EventDisplayConfig.PARAM_AGE_NEXT, defaultColor);
-
-        if (opts.contains(EventDisplayConfig.PARAM_AGE_NEXT_BOLD)) {
-            r.counterStyle = Typeface.BOLD;
-        } else {
-            r.counterStyle = Typeface.NORMAL;
-        }
-        if (opts.contains(EventDisplayConfig.PARAM_AGE_NEXT_SHADOW)) {
-            r.counterShadowDx = 4f;
-            r.counterShadowDy = 4f;
-            r.counterShadowColor = 0xCC000000;
-        }
     }
 
     private void appendHiddenSilencedLabels(SpannableStringBuilder sb, String[] ev, String eventKey) {
@@ -600,9 +606,6 @@ public class EventLayoutRenderer {
                 ? HtmlCompat.FROM_HTML_MODE_COMPACT
                 : HtmlCompat.FROM_HTML_MODE_LEGACY;
 
-        //holder.NameTextView.setText(HtmlCompat.fromHtml(result.nameText, htmlMode));
-        //holder.DetailsTextView.setText(HtmlCompat.fromHtml(result.detailsText, htmlMode));
-
         r.detailsText = HtmlCompat.fromHtml(sb.toString(), htmlMode);
         r.detailsColor = ta.getColor(R.styleable.Theme_eventDetailsColor,
                 ContextCompat.getColor(context, R.color.light_gray_darker));
@@ -636,6 +639,7 @@ public class EventLayoutRenderer {
             r.descriptionButtonVisible = false;
         } else {
             r.descriptionButtonVisible = !desc.isEmpty();
+            r.inlineDescription = null;
             r.descriptionInlineVisible = false;
         }
     }
@@ -678,7 +682,4 @@ public class EventLayoutRenderer {
         return sb.toString();
     }
 
-    private boolean isParamEnabledInDetails(String id) {
-        return config.getDetailsOrder().contains(id);
-    }
 }
