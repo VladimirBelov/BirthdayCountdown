@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.10.2026, 23:46
+ *  * Created by Vladimir Belov on 26.10.2026, 16:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 23.10.2026, 23:01
+ *  * Last modified 26.10.2026, 14:47
  *
  */
 
@@ -25,7 +25,6 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -1909,7 +1908,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 Intent intent = new Intent(this, EventDisplayConfigActivity.class);
                 try {
-                    startActivity(intent);
+                    startActivityForResult(intent, Constants.RESULT_EVENT_LAYOUT);
                 } catch (ActivityNotFoundException e) { /**/ }
                 return true;
 
@@ -2334,6 +2333,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
 
                 } else if (requestCode == Constants.RESULT_EDIT_EVENT) {
+
+                    eventsData.needUpdateEventList = true;
+                    updateList(true);
+
+                } else if (requestCode == Constants.RESULT_EVENT_LAYOUT) {
 
                     eventsData.needUpdateEventList = true;
                     updateList(true);
@@ -2952,16 +2956,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         final int dimen_details;
         final int dimen_name;
         final int dimen_date;
+        private final EventLayoutRenderer renderer;
+        private final boolean useCustomLayout;
 
         private EventsAdapter(@NonNull Context context, @NonNull List<String> eventsListFull, @NonNull List<String> eventsList)
         {
             super(context, R.layout.entry_main, eventsList);
 
-                listAll = new ArrayList<>(eventsListFull);
-                dimen_details = (int) (eventsData.dimen_List_details / eventsData.displayMetrics_density);
-                dimen_name = (int) (eventsData.dimen_List_name / eventsData.displayMetrics_density);
-                dimen_date = (int) (eventsData.dimen_list_date / eventsData.displayMetrics_density);
+            listAll = new ArrayList<>(eventsListFull);
+            dimen_details = (int) (eventsData.dimen_List_details / eventsData.displayMetrics_density);
+            dimen_name = (int) (eventsData.dimen_List_name / eventsData.displayMetrics_density);
+            dimen_date = (int) (eventsData.dimen_list_date / eventsData.displayMetrics_density);
 
+            // Инициализируем рендерер
+            this.renderer = new EventLayoutRenderer(context, ta);
+            // Определяем, какой макет использовать
+            this.useCustomLayout = eventsData.isFeatureEnabled(Constants.FEATURE_EDIT_LAYOUT);
         }
 
         @Override
@@ -2978,9 +2988,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 if (convertedView == null) {
                     //https://stackoverflow.com/questions/10641144/difference-between-getcontext-getapplicationcontext-getbasecontext-and
-                    convertedView = LayoutInflater.from(getContext()).inflate(R.layout.entry_main, parent, false);
-                        holder = createViewHolderFrom(convertedView);
-                        convertedView.setTag(holder);
+                    int layoutRes = useCustomLayout ? R.layout.entry_main_custom : R.layout.entry_main;
+                    convertedView = LayoutInflater.from(getContext()).inflate(layoutRes, parent, false);
+                    holder = createViewHolderFrom(convertedView);
+                    convertedView.setTag(holder);
                 } else {
                     holder = (ViewHolder) convertedView.getTag();
                 }
@@ -2992,226 +3003,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (singleEventArray.length < ContactsEvents.Position_attrAmount) return convertedView;
 
                 person = new Person(eventsData.getContext(), event);
-
                 String eventKey = eventsData.getEventKey(singleEventArray);
-                String eventKeyWithRawId = eventsData.getEventKeyWithRawId(singleEventArray);
                 String eventDistance = singleEventArray[ContactsEvents.Position_eventDistance];
-                String[] eventDistanceText = singleEventArray[ContactsEvents.Position_eventDistanceText].split(Constants.REGEX_BAR, -1);
-                switch (eventDistance) {
-
-                    case "0": //Сегодня
-
-                        final String caption = eventsData.preferences_list_custom_todayevent_caption;
-                        if (caption.isEmpty()) {
-                            holder.DayDistanceTextView.setText(eventDistanceText[0]);
-                        } else {
-                            holder.DayDistanceTextView.setText(caption);
-                        }
-                        holder.DayDistanceTextView.setTypeface(null, Typeface.BOLD);
-                        holder.DayDistanceTextView.setTextColor(eventsData.preferences_list_color_eventtoday);
-                        break;
-
-                    case "1": //Завтра и послезавтра
-                    case "2":
-
-                        final String distance_near = eventDistanceText[0] + (eventDistanceText.length > 1 ? " " + eventDistanceText[1] : "");
-                        holder.DayDistanceTextView.setText(distance_near);
-                        holder.DayDistanceTextView.setTypeface(null, Typeface.BOLD);
-                        holder.DayDistanceTextView.setTextColor(eventsData.preferences_list_color_eventsoon);
-                        break;
-
-                    default: //Попозже
-
-                        final String distance_far = eventDistanceText[0] + (eventDistanceText.length > 1 ? " " + eventDistanceText[1] : "");
-                        holder.DayDistanceTextView.setText(distance_far);
-                        holder.DayDistanceTextView.setTypeface(null, Typeface.NORMAL);
-                        holder.DayDistanceTextView.setTextColor(ta.getColor(R.styleable.Theme_eventDistanceColor, ContextCompat.getColor(eventsData.getContext(), R.color.theme_black_primary)));
-
-                }
-
-                //Дата оригинального события или предстоящая дата (для 5K и счётчиков дней)
-                String eventEmoji = singleEventArray[ContactsEvents.Position_eventEmoji];
-                String eventDateFirstTime = singleEventArray[ContactsEvents.Position_eventDateFirstTime];
-                String eventDateNextTime = singleEventArray[ContactsEvents.Position_eventDateNextTime];
-
-                if (resources.getString(R.string.event_type_xdays_emoji).equals(eventEmoji) || resources.getString(R.string.event_type_5k_emoji).equals(eventEmoji)) {
-                    holder.DateTextView.setText(AppDateUtils.getDateFormatted(eventDateNextTime, ContactsEvents.FormatDate.WithYear,
-                            eventsData.preferences_date_format, eventsData.getContext(), eventsData.getResources(), eventsData.currentLocale));
-                } else if (eventDateFirstTime.length() < 10) {
-                    holder.DateTextView.setText(AppDateUtils.getDateFormatted(eventDateNextTime, ContactsEvents.FormatDate.WithoutYear,
-                            eventsData.preferences_date_format, eventsData.getContext(), eventsData.getResources(), eventsData.currentLocale));
-                } else {
-                    holder.DateTextView.setText(AppDateUtils.getDateFormatted(eventDateFirstTime, ContactsEvents.FormatDate.WithYear,
-                            eventsData.preferences_date_format, eventsData.getContext(), eventsData.getResources(), eventsData.currentLocale));
-                }
-
-                //Фамилия Имя Отчество
-                holder.NameTextView.setText(StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format));
-
-                //Информация под именем
-                StringBuilder eventDetails = new StringBuilder();
-
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Organization))) {
-                    final String contactOrganization = StringUtils.getNotNullString(singleEventArray[ContactsEvents.Position_organization]).trim();
-                    if (!contactOrganization.isEmpty()) eventDetails.append(contactOrganization.trim());
-                }
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_JobTitle))) {
-                    final String positionJobTitle = StringUtils.getNotNullString(singleEventArray[ContactsEvents.Position_title]).trim();
-                    if (!positionJobTitle.isEmpty()) {
-                        if (eventDetails.length() > 0) eventDetails.append(", ");
-                        eventDetails.append(positionJobTitle);
-                    }
-                }
-                if (eventDetails.length() > 0) {
-                    eventDetails.insert(0, Constants.HTML_BOLD_START).append(Constants.HTML_BOLD_END);
-                }
-
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Nickname)) && StringUtils.hasContent(singleEventArray[ContactsEvents.Position_nickname])) {
-                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    eventDetails.append(singleEventArray[ContactsEvents.Position_nickname]);
-                }
-
                 String eventSubType = singleEventArray[ContactsEvents.Position_eventSubType];
-                String eventLabel = singleEventArray[ContactsEvents.Position_eventLabel].trim();
-                String eventCaption = singleEventArray[ContactsEvents.Position_eventCaption].trim();
 
-                String strZodiac = "";
-                if (eventSubType.equals(Constants.EventType_BirthDay) || eventSubType.equals(Constants.EventType_5K)) {
-                    final String strZodiacInfo = eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_ZodiacSign)) ?
-                            singleEventArray[ContactsEvents.Position_zodiacSign].trim() : "";
-                    final String strZodiacYearInfo = eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_ZodiacYear)) ?
-                            singleEventArray[ContactsEvents.Position_zodiacYear].trim() : "";
-                    strZodiac = strZodiacInfo.concat(" ").concat(strZodiacYearInfo).trim();
-                }
+                //Получаем отрендеренные данные
+                EventLayoutRenderer.RenderResult result = renderer.render(singleEventArray, person, eventKey);
 
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventCaption))) {
-                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    eventDetails.append(eventCaption);
-                    if (!eventLabel.isEmpty() && eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle)) && !eventCaption.equalsIgnoreCase(eventLabel)) {
-                        eventDetails.append(" (").append(eventLabel).append(")");
-                    }
-                    if (!strZodiac.isEmpty()) {
-                        eventDetails.append(" (").append(strZodiac).append(")");
-                    }
-                } else if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_StoredEventTitle))) {
-                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    if (!eventLabel.isEmpty()) {
-                        eventDetails.append(eventLabel);
-                    } else {
-                        eventDetails.append(eventCaption);
-                    }
-                    if (!strZodiac.isEmpty()) {
-                        eventDetails.append(" (").append(strZodiac).append(")");
-                    }
-                } else if (!strZodiac.isEmpty()) {
-                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    eventDetails.append(strZodiac);
-                }
-
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Age))) {
-                    final String currentAge = singleEventArray[ContactsEvents.Position_age_current];
-                    if (!currentAge.isEmpty() && !currentAge.contains(": 0")) {
-                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                        eventDetails.append(currentAge);
-                    }
-                }
-
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_URL))) {
-                    final String eventURL = singleEventArray[ContactsEvents.Position_eventURL].trim();
-                    if (!eventURL.isEmpty()) {
-                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                        eventDetails.append(eventURL.replace(Constants.STRING_2TILDA, Constants.HTML_BR));
-                    }
-                }
-
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventSource))) {
-                    final String eventSource = singleEventArray[ContactsEvents.Position_eventSource].trim();
-                    if (!eventSource.isEmpty()) {
-                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                        eventDetails.append(eventSource.replace(Constants.STRING_2TILDA, Constants.HTML_BR));
-                    }
-                }
-
-                final String eventDescription = singleEventArray[ContactsEvents.Position_eventDescription].trim();
-                holder.ShowDescriptionImageView.setVisibility(View.GONE);
-                holder.DescriptionTextView.setVisibility(View.GONE);
-
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Description))) {
-                    //Если включено - показываем описание сразу
-                    if (!eventDescription.isEmpty()) {
-                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                        eventDetails.append(eventDescription);
-                    }
-                } else if (!eventDescription.isEmpty()) {
-                    //Если выключено, но описание не пустое - показываем кнопку
-                    holder.ShowDescriptionImageView.setVisibility(View.VISIBLE);
-                    holder.DescriptionTextView.setText(eventDescription);
-
-                    // Восстановление состояния из глобального хранилища
-                    if (expandedDescriptions.contains(eventKey)) {
-                        holder.DescriptionTextView.setVisibility(View.VISIBLE);
-                        holder.ShowDescriptionImageView.setImageDrawable(
-                                AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_up_float));
-                    } else {
-                        holder.DescriptionTextView.setVisibility(View.GONE);
-                        holder.ShowDescriptionImageView.setImageDrawable(
-                                AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_down_float));
-                    }
-
-                    View.OnClickListener listener = v -> {
-                        // Переключаем состояние в глобальном хранилище
-                        if (expandedDescriptions.contains(eventKey)) {
-                            expandedDescriptions.remove(eventKey);
-                            holder.DescriptionTextView.setVisibility(View.GONE);
-                            holder.ShowDescriptionImageView.setImageDrawable(
-                                    AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_down_float));
-                        } else {
-                            expandedDescriptions.add(eventKey);
-                            holder.DescriptionTextView.setVisibility(View.VISIBLE);
-                            holder.ShowDescriptionImageView.setImageDrawable(
-                                    AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_up_float));
-                        }
-                    };
-                    holder.ShowDescriptionImageView.setOnClickListener(listener);
-                    holder.DescriptionTextView.setOnClickListener(listener);
-                }
-
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_DebugInfo))) {
-                    String[] dates = singleEventArray[ContactsEvents.Position_dates].split(Constants.STRING_2TILDA, -1);
-                    int eventDates = dates.length;
-                    if (eventDates > 0) {
-                        if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                        for (int i = 0; i < eventDates; i++) {
-                            if (i > 0) eventDetails.append(Constants.HTML_BR);
-                            String date = dates[i];
-                            int ind = date.lastIndexOf(": ");
-                            eventDetails.append((ind > -1 ? date.substring(0, ind) : date).trim());
-                        }
-                    }
-                }
-
-                if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Hidden && eventsData.getHiddenEventsCount() > 0 && eventsData.checkIsHiddenEvent(eventKey, eventKeyWithRawId)) {
-                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    eventDetails.append(StringUtils.getHTMLColor(getString(R.string.msg_label_hidden), R.color.dark_red, eventsData.getContext()));
-                }
-                if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Silenced && eventsData.getSilencedEventsCount() > 0 && eventsData.checkIsSilencedEvent(eventKey, eventKeyWithRawId)) {
-                    if (eventDetails.length() > 0) eventDetails.append(Constants.HTML_BR);
-                    eventDetails.append(StringUtils.getHTMLColor(getString(R.string.msg_label_silenced), R.color.brown, eventsData.getContext()));
-                }
-
-                if (eventDetails.length() == 0) {
-                    holder.DetailsTextView.setText("");
-                } else {
-                    //https://stackoverflow.com/questions/2116162/how-to-display-html-in-textview
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        holder.DetailsTextView.setText(HtmlCompat.fromHtml(eventDetails.toString(), HtmlCompat.FROM_HTML_MODE_COMPACT));
-                    } else {
-                        holder.DetailsTextView.setText(HtmlCompat.fromHtml(eventDetails.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY));
-                    }
-                }
-
-                //Фото
-                if (eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_Photo))) {
+                // 1. Фото
+                if (result.photoVisible) {
                     int roundingFactor;
                     if (eventSubType.equals(Constants.EventType_Calendar)
                             || eventSubType.equals(Constants.EventType_File)
@@ -3220,29 +3020,117 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     } else {
                         roundingFactor = eventsData.preferences_list_photostyle;
                     }
-
+                    // Загружаем само фото
                     holder.PhotoImageView.setImageBitmap(eventsData.getEventPhoto(event, true, false, true, roundingFactor));
-                    holder.PhotoImageView.setVisibility(View.VISIBLE);
+
+                    // Устанавливаем гравитацию фото из конфига
+                    LinearLayout.LayoutParams photoParams = (LinearLayout.LayoutParams) holder.PhotoImageView.getLayoutParams();
+                    photoParams.gravity = result.photoPosition.equals(EventDisplayConfig.PHOTO_CENTER)
+                            ? Gravity.CENTER_VERTICAL
+                            : Gravity.TOP;
+                    holder.PhotoImageView.setLayoutParams(photoParams);
                 } else {
                     holder.PhotoImageView.setImageDrawable(null);
-                    holder.PhotoImageView.setVisibility(View.GONE);
+                }
+                holder.PhotoImageView.setVisibility(result.photoVisible ? View.VISIBLE : View.GONE);
+
+                // 2. "До события"
+                holder.DayDistanceTextView.setText(result.beforeEventText);
+                holder.DayDistanceTextView.setTypeface(null, result.beforeEventStyle);
+
+                // 3. Имя
+                holder.NameTextView.setText(result.nameText);
+                if (result.nameColor != 0) {
+                    holder.NameTextView.setTextColor(result.nameColor);
                 }
 
-                //Годовщина
-                if (eventsData.isJubilee(person.Age, eventSubType)) {
-                    holder.CounterTextView.setTextColor(eventsData.preferences_list_color_eventjubilee);
+                // 4. Детали
+                holder.DetailsTextView.setText(result.detailsText);
+
+                // 5. Дата
+                holder.DateTextView.setText(result.dateText);
+
+                // 6. Возраст (Counter)
+                holder.CounterTextView.setText(result.counterText);
+                if (result.counterColor != 0) {
+                    holder.CounterTextView.setTextColor(result.counterColor);
+                }
+                // Устанавливаем гравитацию возраста из конфига
+                LinearLayout.LayoutParams ageParams = (LinearLayout.LayoutParams) holder.CounterTextView.getLayoutParams();
+                ageParams.gravity = result.datesPosition.equals(EventDisplayConfig.AGE_CENTER)
+                        ? (Gravity.CENTER_VERTICAL | Gravity.END)
+                        : (Gravity.TOP | Gravity.END);
+                holder.CounterTextView.setLayoutParams(ageParams);
+
+                holder.CounterTextView.setTypeface(null, result.counterStyle);
+                if (result.counterShadowColor != 0) {
+                    holder.CounterTextView.setShadowLayer(8, result.counterShadowDx, result.counterShadowDy, result.counterShadowColor);
                 } else {
-                    holder.CounterTextView.setTextColor(ta.getColor(R.styleable.Theme_eventAgeColor, ContextCompat.getColor(eventsData.getContext(), R.color.theme_grey_primary)));
+                    holder.CounterTextView.setShadowLayer(0, 0, 0, 0);
                 }
-                holder.CounterTextView.setText(singleEventArray[ContactsEvents.Position_age_caption]);
 
-                //Определяем иконку события
+                // 7. Иконка события
                 final String eventIconStr = singleEventArray[ContactsEvents.Position_eventIcon];
-                if (!eventIconStr.isEmpty() && eventsData.preferences_list_event_info.contains(getString(R.string.pref_List_EventInfo_EventIcon))) {
+                if (!eventIconStr.isEmpty() && result.eventIconVisible) {
                     Drawable iconDrawable = ContactsEvents.resolveIconString(MainActivity.this, eventIconStr, 0);
                     holder.EventIconImageView.setImageDrawable(iconDrawable);
+
+                    // Программно перемещаем иконку в зависимости от позиции
+                    LinearLayout parentColumn = (LinearLayout) holder.EventIconImageView.getParent();
+                    parentColumn.removeView(holder.EventIconImageView);
+
+                    if ("after_age".equals(result.eventIconPosition)) {
+                        // Добавляем после возраста
+                        parentColumn.addView(holder.EventIconImageView, parentColumn.getChildCount());
+                    } else {
+                        // Добавляем перед возрастом (после даты)
+                        int insertIndex = 1; // после entryDateTextView
+                        parentColumn.addView(holder.EventIconImageView, insertIndex);
+                    }
+
+                    holder.EventIconImageView.setVisibility(View.VISIBLE);
                 } else {
                     holder.EventIconImageView.setImageDrawable(null);
+                    holder.EventIconImageView.setVisibility(View.GONE);
+                }
+
+                // 8. Логика описания (треугольник vs инлайн)
+                String eventDescription = singleEventArray[ContactsEvents.Position_eventDescription].trim();
+                if (!eventDescription.isEmpty()) {
+                    String descSetting = renderer.getConfig().getSetting(EventDisplayConfig.PARAM_DESCRIPTION);
+                    if ("inline".equals(descSetting) || descSetting.isEmpty()) {
+                        holder.DescriptionTextView.setVisibility(View.VISIBLE);
+                        holder.DescriptionTextView.setText(eventDescription);
+                        holder.ShowDescriptionImageView.setVisibility(View.GONE);
+                    } else {
+                        holder.ShowDescriptionImageView.setVisibility(View.VISIBLE);
+                        holder.DescriptionTextView.setText(eventDescription);
+
+                        if (expandedDescriptions.contains(eventKey)) {
+                            holder.DescriptionTextView.setVisibility(View.VISIBLE);
+                            holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_up_float));
+                        } else {
+                            holder.DescriptionTextView.setVisibility(View.GONE);
+                            holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_down_float));
+                        }
+
+                        View.OnClickListener listener = v -> {
+                            if (expandedDescriptions.contains(eventKey)) {
+                                expandedDescriptions.remove(eventKey);
+                                holder.DescriptionTextView.setVisibility(View.GONE);
+                                holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_down_float));
+                            } else {
+                                expandedDescriptions.add(eventKey);
+                                holder.DescriptionTextView.setVisibility(View.VISIBLE);
+                                holder.ShowDescriptionImageView.setImageDrawable(AppCompatResources.getDrawable(MainActivity.this, android.R.drawable.arrow_up_float));
+                            }
+                        };
+                        holder.ShowDescriptionImageView.setOnClickListener(listener);
+                        holder.DescriptionTextView.setOnClickListener(listener);
+                    }
+                } else {
+                    holder.ShowDescriptionImageView.setVisibility(View.GONE);
+                    holder.DescriptionTextView.setVisibility(View.GONE);
                 }
 
                 //Фон
@@ -3353,6 +3241,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
                 ToastExpander.showDebugMsg(eventsData.getContext(), StringUtils.getMethodName(3) + ": " + e);
+            }
+            // Гарантируем, что никогда не вернем null, чтобы удовлетворить @NonNull и избежать крашей
+            if (convertedView == null) {
+                convertedView = new View(getContext());
             }
             return convertedView;
         }

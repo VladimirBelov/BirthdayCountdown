@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 01.06.2026, 02:42
+  ~  * Created by Vladimir Belov on 26.10.2026, 16:14
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 01.06.2026, 01:37
+  ~  * Last modified 26.10.2026, 13:57
   ~  */
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/entryLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,7 +23,8 @@
         android:layout_height="@dimen/eventlist_photoSize"
         android:layout_gravity="top"
         android:contentDescription="@string/hint_ContactIcon"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        tools:ignore="ImageContrastCheck" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -32,6 +34,7 @@
         android:paddingEnd="2dp">
 
         <LinearLayout
+            android:id="@+id/rowBeforeAndDate"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -40,9 +43,9 @@
                 android:id="@+id/entryDayDistanceTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:gravity="top|start"
                 android:layout_weight="1"
+                android:gravity="top|start"
+                android:maxLines="2"
                 android:text="@string/hint_EventDistance"
                 android:textAlignment="textStart"
                 android:textColor="?attr/eventDistanceColor"
@@ -52,8 +55,8 @@
                 android:id="@+id/entryDateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="top|end"
                 android:layout_weight="2"
+                android:gravity="top|end"
                 android:maxLines="2"
                 android:text="@string/hint_Date"
                 android:textAlignment="textEnd"
@@ -64,12 +67,14 @@
 
 
         <LinearLayout
+            android:id="@+id/rowEventInfo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="9"
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/rowNameIconAge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
@@ -80,11 +85,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:breakStrategy="simple"
                     android:gravity="top|start"
                     android:text="@string/hint_Name"
                     android:textColor="?attr/eventFullNameColor"
                     android:textSize="@dimen/event_name"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="UnusedAttribute" />
 
                 <ImageView
                     android:id="@+id/entryEventIcon"
@@ -101,15 +108,21 @@
                     android:id="@+id/entryDetailsCounter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:breakStrategy="simple"
                     android:gravity="top|center"
-                    android:maxLines="1"
+                    android:maxWidth="110dp"
+                    android:maxLines="2"
+                    android:minWidth="60dp"
+                    android:singleLine="false"
                     android:text="@string/hint_Age"
                     android:textColor="?attr/eventAgeColor"
                     android:textSize="@dimen/event_name"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="UnusedAttribute" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/rowDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -133,10 +146,10 @@
                         android:id="@+id/entryDescriptionTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
+                        android:longClickable="false"
                         android:textColor="?attr/eventDetailsColor"
                         android:textSize="@dimen/event_details"
-                        android:longClickable="false" />
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -146,9 +159,9 @@
                     android:layout_height="20dp"
                     android:layout_gravity="bottom|end"
                     android:contentDescription="@string/hint_Description"
+                    android:longClickable="false"
                     android:paddingHorizontal="2dp"
                     android:src="@android:drawable/arrow_down_float"
-                    android:longClickable="false"
                     android:visibility="gone" />
 
             </LinearLayout>

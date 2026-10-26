@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.10.2026, 15:38
+ *  * Created by Vladimir Belov on 26.10.2026, 16:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.10.2026, 15:11
+ *  * Last modified 26.10.2026, 16:07
  *
  */
 
@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +62,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
     private static final String[][] PARAMS = {
             // Общие (не перетаскиваются)
             {EventDisplayConfig.KEY_PHOTO, SECTION.common.toString(), "0", "0"},
-            {EventDisplayConfig.KEY_DATES_POS, SECTION.common.toString(), "0", "0"},
+            {EventDisplayConfig.KEY_AGE_POS, SECTION.common.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NAME, SECTION.common.toString(), "1", "1"},
             // До события
             {EventDisplayConfig.PARAM_WHEN, SECTION.before.toString(), "1", "0"},
@@ -73,7 +74,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             {EventDisplayConfig.PARAM_ORGANIZATION, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_NICKNAME, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_EVENT_CAPTION, SECTION.details.toString(), "1", "0"},
-            {EventDisplayConfig.PARAM_EVENT_LABEL, SECTION.details.toString(), "1", "0"},
+            //{EventDisplayConfig.PARAM_EVENT_LABEL, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_EVENT_SOURCE, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_EVENT_EMOJI, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_EVENT_TYPE, SECTION.details.toString(), "1", "0"},
@@ -81,18 +82,25 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             {EventDisplayConfig.PARAM_AGE, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_ZODIAC, SECTION.details.toString(), "1", "1"},
             {EventDisplayConfig.PARAM_WEB_LINK, SECTION.details.toString(), "1", "0"},
-            {EventDisplayConfig.PARAM_DESCRIPTION, SECTION.details.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_DESCRIPTION, SECTION.details.toString(), "1", "1"},
             {EventDisplayConfig.PARAM_DEBUG_INFO, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_1", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_2", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_3", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_4", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_5", SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_8", SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_9", SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_10", SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_11", SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_12", SECTION.details.toString(), "0", "0"},
             // Даты
             {EventDisplayConfig.PARAM_DATE_ORIGINAL, SECTION.dates.toString(), "1", "0"},
-            {EventDisplayConfig.PARAM_EVENT_ICON, SECTION.dates.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_EVENT_ICON, SECTION.dates.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_AGE_NEXT, SECTION.dates.toString(), "1", "1"},
             {EventDisplayConfig.PARAM_DATE_EVENT, SECTION.dates.toString(), "1", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_6", SECTION.dates.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_7", SECTION.dates.toString(), "0", "0"},
     };
 
     static {
@@ -158,7 +166,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
         items.add(new DisplayItem(DisplayItem.TYPE_COMMON, SECTION.common.toString(),
                 EventDisplayConfig.KEY_PHOTO, getString(R.string.pref_EventInfo_Photo)));
         items.add(new DisplayItem(DisplayItem.TYPE_COMMON, SECTION.common.toString(),
-                EventDisplayConfig.KEY_DATES_POS, getString(R.string.param_dates_pos)));
+                EventDisplayConfig.KEY_AGE_POS, getString(R.string.param_dates_pos)));
         items.add(new DisplayItem(DisplayItem.TYPE_COMMON, SECTION.common.toString(),
                 EventDisplayConfig.PARAM_NAME, getString(R.string.pref_EventInfo_EventTitle)));
 
@@ -241,7 +249,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
         // Маппинг ID → строковый ресурс
         switch (id) {
             case EventDisplayConfig.KEY_PHOTO: return getString(R.string.pref_EventInfo_Photo);
-            case EventDisplayConfig.KEY_DATES_POS: return getString(R.string.param_dates_pos);
+            case EventDisplayConfig.KEY_AGE_POS: return getString(R.string.param_dates_pos);
             case EventDisplayConfig.PARAM_WHEN: return getString(R.string.param_when);
             case EventDisplayConfig.PARAM_DAY_OF_WEEK: return getString(R.string.param_day_of_week);
             case EventDisplayConfig.PARAM_DATE_BEFORE:
@@ -253,13 +261,20 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             case EventDisplayConfig.PARAM_NEWLINE + "_3":
             case EventDisplayConfig.PARAM_NEWLINE + "_4":
             case EventDisplayConfig.PARAM_NEWLINE + "_5":
+            case EventDisplayConfig.PARAM_NEWLINE + "_6":
+            case EventDisplayConfig.PARAM_NEWLINE + "_7":
+            case EventDisplayConfig.PARAM_NEWLINE + "_8":
+            case EventDisplayConfig.PARAM_NEWLINE + "_9":
+            case EventDisplayConfig.PARAM_NEWLINE + "_10":
+            case EventDisplayConfig.PARAM_NEWLINE + "_11":
+            case EventDisplayConfig.PARAM_NEWLINE + "_12":
                 return getString(R.string.pref_EventInfo_NewLine1);
             case EventDisplayConfig.PARAM_NAME: return getString(R.string.pref_EventInfo_EventTitle);
             case EventDisplayConfig.PARAM_JOB_TITLE: return getString(R.string.pref_EventInfo_JobTitle);
             case EventDisplayConfig.PARAM_ORGANIZATION: return getString(R.string.pref_EventInfo_Organization);
             case EventDisplayConfig.PARAM_NICKNAME: return getString(R.string.pref_EventInfo_Nickname);
             case EventDisplayConfig.PARAM_EVENT_CAPTION: return getString(R.string.pref_EventInfo_EventCaption);
-            case EventDisplayConfig.PARAM_EVENT_LABEL: return getString(R.string.pref_EventInfo_EventLabel);
+            //case EventDisplayConfig.PARAM_EVENT_LABEL: return getString(R.string.pref_EventInfo_EventLabel);
             case EventDisplayConfig.PARAM_EVENT_SOURCE: return getString(R.string.param_event_source);
             case EventDisplayConfig.PARAM_EVENT_EMOJI: return getString(R.string.pref_EventInfo_EventEmoji);
             case EventDisplayConfig.PARAM_EVENT_TYPE: return getString(R.string.pref_EventInfo_EventType);
@@ -469,7 +484,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                 if (EventDisplayConfig.KEY_PHOTO.equals(item.paramId)) {
                     val = config.getPhotoPosition();
                 } else {
-                    val = config.getDatesPosition();
+                    val = config.getAgePosition();
                 }
                 valueLabel.setText(val);
                 valueLabel.setVisibility(View.VISIBLE);
@@ -604,6 +619,8 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             showZodiacSettings(item);
         } else if (EventDisplayConfig.PARAM_AGE_NEXT.equals(item.paramId)) {
             showAgeNextSettings(item);
+        } else if (EventDisplayConfig.PARAM_DESCRIPTION.equals(item.paramId)) {
+            showDescriptionSettings(item);
         }
     }
 
@@ -619,6 +636,34 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                 .setView(view)
                 .setPositiveButton(R.string.button_ok, (dialog, which) -> {
                     config.setSetting(item.paramId, cbSplit.isChecked() ? EventDisplayConfig.PARAM_NAME_SPLIT : "");
+                    setModified();
+                })
+                .setNegativeButton(R.string.button_cancel, null)
+                .show();
+    }
+
+    private void showDescriptionSettings(final DisplayItem item) {
+        String current = config.getSetting(item.paramId);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_description_settings, null);
+        RadioGroup rg = view.findViewById(R.id.rg_desc_mode);
+        RadioButton rbInline = view.findViewById(R.id.rb_desc_inline);
+        RadioButton rbTriangle = view.findViewById(R.id.rb_desc_triangle);
+
+        if (EventDisplayConfig.DESC_TRIANGLE.equals(current)) {
+            rbTriangle.setChecked(true);
+        } else {
+            rbInline.setChecked(true);
+        }
+
+        new AlertDialog.Builder(new ContextThemeWrapper(this,
+                ContactsEvents.getInstance().preferences_theme.themeDialog))
+                .setTitle(R.string.desc_settings_title)
+                .setView(view)
+                .setPositiveButton(R.string.button_ok, (d, w) -> {
+                    String val = rbTriangle.isChecked()
+                            ? EventDisplayConfig.DESC_TRIANGLE
+                            : EventDisplayConfig.DESC_INLINE;
+                    config.setSetting(item.paramId, val);
                     setModified();
                 })
                 .setNegativeButton(R.string.button_cancel, null)
@@ -711,10 +756,10 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             else next = EventDisplayConfig.PHOTO_TOP;
             config.setPhotoPosition(next);
         } else {
-            String cur = config.getDatesPosition();
-            String next = EventDisplayConfig.DATES_TOP.equals(cur)
-                    ? EventDisplayConfig.DATES_CENTER : EventDisplayConfig.DATES_TOP;
-            config.setDatesPosition(next);
+            String cur = config.getAgePosition();
+            String next = EventDisplayConfig.AGE_TOP.equals(cur)
+                    ? EventDisplayConfig.AGE_CENTER : EventDisplayConfig.AGE_TOP;
+            config.setAgePosition(next);
         }
         // Обновляем только этот элемент
         int pos = -1;
@@ -750,6 +795,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             config.save();
             isModified = false;
             Toast.makeText(this, R.string.msg_saved, Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK);
             finish();
             return true;
         } else if (id == R.id.action_reset) {

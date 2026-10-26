@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 23.10.2026, 23:46
+  ~  * Created by Vladimir Belov on 26.10.2026, 16:14
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 23.10.2026, 22:52
+  ~  * Last modified 26.10.2026, 11:14
   ~  */
   -->
 
@@ -1509,7 +1509,7 @@ Long click on item to select color"</string>
     <string name="section_event_details">Event details</string>
     <string name="section_dates">Dates</string>
 
-    <string name="param_dates_pos">Dates position</string>
+    <string name="param_dates_pos">Age position</string>
     <string name="param_when">When (Today/Tomorrow/…)</string>
     <string name="param_day_of_week">Day of week</string>
     <string name="param_event_source">Event source</string>
@@ -1517,6 +1517,9 @@ Long click on item to select color"</string>
     <string name="param_debug_info">Account type and raw date</string>
     <string name="param_date_original">Original event date</string>
     <string name="param_age_next">Next age</string>
+    <string name="desc_settings_title">Description display mode</string>
+    <string name="desc_setting_inline">Show immediately in details</string>
+    <string name="desc_setting_triangle">Show via expand triangle</string>
 
     <string name="name_settings_title">Name settings</string>
     <string name="name_setting_split">Split name into lines (for contact events)</string>

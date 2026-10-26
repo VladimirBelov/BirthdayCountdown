@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.10.2026, 23:46
+ *  * Created by Vladimir Belov on 26.10.2026, 16:14
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 23.10.2026, 22:20
+ *  * Last modified 26.10.2026, 16:07
  *
  */
 
@@ -27,7 +27,7 @@ import java.util.Set;
  * Хранится в одном StringSet ключа "List_EventInfo_Config" в формате "ключ=значение". *
  * <p></p>Формат элементов:
  *   <br>photo=top|center|hidden       — положение фото
- *   <br>dates_pos=top|center          — положение блока дат
+*    <br>age_pos=top|center            — положение возраста
  *   <br>before=when,date_before       — порядок параметров секции "До события"
  *   <br>details=job_title,age,zodiac  — порядок параметров секции "Детали"
  *   <br>dates=age_next,date_event     — порядок параметров секции "Даты"
@@ -41,7 +41,7 @@ public class EventDisplayConfig {
 
     // Ключи общих параметров
     public static final String KEY_PHOTO = "photo";
-    public static final String KEY_DATES_POS = "dates_pos";
+    public static final String KEY_AGE_POS = "age_pos";
 
     // Ключи секций
     public static final String KEY_BEFORE = "before";
@@ -57,12 +57,14 @@ public class EventDisplayConfig {
     public static final String PARAM_DAY_OF_WEEK = "day_of_week";
     public static final String PARAM_DATE_BEFORE = "date_before";
     public static final String PARAM_NEWLINE = "newline";
+    public static final String PARAM_NEWLINE_6 = "newline_6";
+    public static final String PARAM_NEWLINE_7 = "newline_7";
     public static final String PARAM_NAME = "name";
     public static final String PARAM_JOB_TITLE = "job_title";
     public static final String PARAM_ORGANIZATION = "organization";
     public static final String PARAM_NICKNAME = "nickname";
     public static final String PARAM_EVENT_CAPTION = "event_caption";
-    public static final String PARAM_EVENT_LABEL = "event_lbel";
+    //public static final String PARAM_EVENT_LABEL = "event_lbel";
     public static final String PARAM_EVENT_SOURCE = "event_source";
     public static final String PARAM_EVENT_EMOJI = "event_emoji";
     public static final String PARAM_EVENT_TYPE = "event_type";
@@ -87,8 +89,16 @@ public class EventDisplayConfig {
     public static final String PHOTO_TOP = "top";
     public static final String PHOTO_CENTER = "center";
     public static final String PHOTO_HIDDEN = "hidden";
-    public static final String DATES_TOP = "top";
-    public static final String DATES_CENTER = "center";
+    public static final String AGE_TOP = "top";
+    public static final String AGE_CENTER = "center";
+
+    // Позиция иконки типа события в секции "Даты"
+    public static final String EVENT_ICON_BEFORE_AGE = "before_age";
+    public static final String EVENT_ICON_AFTER_AGE = "after_age";
+
+    // Варианты показа описания
+    public static final String DESC_INLINE = "inline";
+    public static final String DESC_TRIANGLE = "triangle";
 
     // Значения по умолчанию
     private static final List<String> DEFAULT_BEFORE = Arrays.asList(
@@ -119,6 +129,8 @@ public class EventDisplayConfig {
     );
 
     private static final String DEFAULT_SETTING_NAME = "";
+
+    private static final String DEFAULT_SETTING_DESCRIPTION = DESC_TRIANGLE;
 
     private final SharedPreferences prefs;
     private final Map<String, String> cache = new HashMap<>();
@@ -162,8 +174,8 @@ public class EventDisplayConfig {
     public String getPhotoPosition() { return get(KEY_PHOTO, PHOTO_TOP); }
     public void setPhotoPosition(String value) { cache.put(KEY_PHOTO, value); }
 
-    public String getDatesPosition() { return get(KEY_DATES_POS, DATES_TOP); }
-    public void setDatesPosition(String value) { cache.put(KEY_DATES_POS, value); }
+    public String getAgePosition() { return get(KEY_AGE_POS, AGE_TOP); }
+    public void setAgePosition(String value) { cache.put(KEY_AGE_POS, value); }
 
     // ===== Порядок секций =====
     public List<String> getBeforeOrder() {
@@ -234,6 +246,65 @@ public class EventDisplayConfig {
         return get(PREFIX_SETTING + paramId, getDefaultSetting(paramId));
     }
 
+    /**
+     * Построить конфигурацию из устаревшего Set<String> preferences_list_event_info.
+     * Используется только когда FEATURE_EDIT_LAYOUT выключен.
+     * НЕ сохраняет в SharedPreferences — только в кэш памяти.
+     */
+    @SuppressWarnings("unused")
+    public void buildFromLegacySet(Set<String> legacyInfoSet) {
+        cache.clear();
+        // Общие параметры из legacy
+        boolean showPhoto = legacyInfoSet.contains("6"); // pref_List_EventInfo_Photo
+        cache.put(KEY_PHOTO, showPhoto ? PHOTO_TOP : PHOTO_HIDDEN);
+        cache.put(KEY_AGE_POS, AGE_TOP); // фиксировано
+
+        // Секция "До события" — всегда when+date_before по умолчанию
+        cache.put(KEY_BEFORE, joinCsv(DEFAULT_BEFORE));
+
+        // Детали — берём порядок из DEFAULT_DETAILS, фильтруем по legacy
+        List<String> detailsOrder = new ArrayList<>();
+        for (String paramId : DEFAULT_DETAILS) {
+            if (legacyContains(legacyInfoSet, paramId)) {
+                detailsOrder.add(paramId);
+            }
+        }
+        // Добавляем то, что есть в legacy, но нет в дефолтном порядке
+        for (String paramId : Arrays.asList(
+                PARAM_EVENT_SOURCE, PARAM_WEB_LINK, //PARAM_EVENT_LABEL,
+                PARAM_DESCRIPTION, PARAM_DEBUG_INFO)) {
+            if (legacyContains(legacyInfoSet, paramId) && !detailsOrder.contains(paramId)) {
+                detailsOrder.add(paramId);
+            }
+        }
+        cache.put(KEY_DETAILS, joinCsv(detailsOrder));
+
+        // Даты
+        List<String> datesOrder = new ArrayList<>();
+        if (legacyContains(legacyInfoSet, PARAM_AGE_NEXT)) datesOrder.add(PARAM_AGE_NEXT);
+        if (legacyContains(legacyInfoSet, PARAM_DATE_EVENT)) datesOrder.add(PARAM_DATE_EVENT);
+        cache.put(KEY_DATES, joinCsv(datesOrder.isEmpty() ? DEFAULT_DATES : datesOrder));
+    }
+
+    private boolean legacyContains(Set<String> legacy, String paramId) {
+        switch (paramId) {
+            case PARAM_JOB_TITLE:     return legacy.contains("1");
+            case PARAM_ORGANIZATION:  return legacy.contains("2");
+            case PARAM_EVENT_CAPTION: return legacy.contains("3");
+            //case PARAM_EVENT_LABEL:   return legacy.contains("4");
+            case PARAM_FAVORITE_ICON: return legacy.contains("5");
+            case PARAM_NICKNAME:      return legacy.contains("7");
+            case PARAM_AGE:           return legacy.contains("8");
+            case PARAM_ZODIAC:        return legacy.contains("9") || legacy.contains("10");
+            case PARAM_WEB_LINK:      return legacy.contains("11");
+            case PARAM_EVENT_ICON:    return legacy.contains("12");
+            case PARAM_EVENT_SOURCE:  return legacy.contains("13");
+            case PARAM_DESCRIPTION:   return legacy.contains("14");
+            case PARAM_DEBUG_INFO:    return legacy.contains("91");
+            default:                  return false;
+        }
+    }
+
     // ===== Утилиты =====
     private List<String> parseCsv(String csv) {
         List<String> result = new ArrayList<>();
@@ -262,12 +333,13 @@ public class EventDisplayConfig {
 
     private void loadDefaults() {
         cache.put(KEY_PHOTO, PHOTO_TOP);
-        cache.put(KEY_DATES_POS, DATES_TOP);
+        cache.put(KEY_AGE_POS, AGE_TOP);
         cache.put(KEY_BEFORE, joinCsv(DEFAULT_BEFORE));
         cache.put(KEY_DETAILS, joinCsv(DEFAULT_DETAILS));
         cache.put(KEY_DATES, joinCsv(DEFAULT_DATES));
         cache.put(PREFIX_SETTING + PARAM_ZODIAC, joinCsv(DEFAULT_SETTING_ZODIAC));
         cache.put(PREFIX_SETTING + PARAM_AGE_NEXT, joinCsv(DEFAULT_SETTING_AGE_NEXT));
+        cache.put(PREFIX_SETTING + PARAM_DESCRIPTION, DEFAULT_SETTING_DESCRIPTION);
     }
 
     /**
@@ -282,6 +354,8 @@ public class EventDisplayConfig {
                 return joinCsv(DEFAULT_SETTING_ZODIAC);
             case PARAM_AGE_NEXT:
                 return joinCsv(DEFAULT_SETTING_AGE_NEXT);
+            case PARAM_DESCRIPTION:
+                return DEFAULT_SETTING_DESCRIPTION;
             default:
                 return "";
         }
