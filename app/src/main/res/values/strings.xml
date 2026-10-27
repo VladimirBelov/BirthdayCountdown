@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 26.10.2026, 16:14
+  ~  * Created by Vladimir Belov on 28.10.2026, 00:50
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 26.10.2026, 11:14
+  ~  * Last modified 28.10.2026, 00:24
   ~  */
   -->
 
@@ -1515,11 +1515,10 @@ Long click on item to select color"</string>
     <string name="param_event_source">Event source</string>
     <string name="param_description">Notes or description</string>
     <string name="param_debug_info">Account type and raw date</string>
-    <string name="param_date_original">Original event date</string>
-    <string name="param_age_next">Next age</string>
     <string name="desc_settings_title">Description display mode</string>
-    <string name="desc_setting_inline">Show immediately in details</string>
+    <string name="desc_setting_inline">Show immediately below details</string>
     <string name="desc_setting_triangle">Show via expand triangle</string>
+    <string name="desc_setting_hidden">Hidden</string>
 
     <string name="name_settings_title">Name settings</string>
     <string name="name_setting_split">Split name into lines (for contact events)</string>
@@ -1532,6 +1531,9 @@ Long click on item to select color"</string>
     <string name="age_next_style_shadow">Shadow</string>
     <string name="msg_saved">Saved</string>
     <string name="msg_reset_config_confirmation">Reset display configuration to defaults?</string>
+    <string name="param_hidden">Hidden</string>
+    <string name="param_top">Top</string>
+    <string name="param_center">Center</string>
 
     <!-- https://www.disabled-world.com/calculators-charts/wedding-Anniversaries.php -->
     <!--https://en.wikipedia.org/wiki/Wedding_anniversary -->

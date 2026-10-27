@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.10.2026, 01:02
+ *  * Created by Vladimir Belov on 28.10.2026, 00:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 27.10.2026, 00:53
+ *  * Last modified 28.10.2026, 00:46
  *
  */
 
@@ -60,9 +60,9 @@ public class EventLayoutRenderer {
         public int counterStyle;
         public boolean eventIconVisible;
         public boolean photoVisible;
-        public boolean descriptionButtonVisible;
-        public boolean descriptionInlineVisible;
+        public String descriptionMode = EventDisplayConfig.DESC_TRIANGLE;
         public String inlineDescription;
+        public int descColor;
     }
 
     public EventLayoutRenderer(Context ctx, TypedArray themeAttrs) {
@@ -72,9 +72,6 @@ public class EventLayoutRenderer {
         this.config = new EventDisplayConfig(ctx);
     }
 
-    public EventDisplayConfig getConfig() {
-        return config;
-    }
 
     public RenderResult render(String[] singleEventArray, Person person, String eventKey) {
         RenderResult r = new RenderResult();
@@ -239,6 +236,7 @@ public class EventLayoutRenderer {
         r.detailsText = sb;
         r.detailsColor = ta.getColor(R.styleable.Theme_eventDetailsColor,
                 ContextCompat.getColor(context, R.color.light_gray_darker));
+        r.descColor = config.getColor(EventDisplayConfig.PARAM_DESCRIPTION, 0);
     }
 
     private void renderDatesSection(String[] ev, Person person, RenderResult r) {
@@ -348,6 +346,7 @@ public class EventLayoutRenderer {
         r.photoPosition = config.getPhotoPosition();
         r.datesPosition = config.getAgePosition();
         r.photoVisible = !EventDisplayConfig.PHOTO_HIDDEN.equals(r.photoPosition);
+        r.descriptionMode = config.getDescriptionMode();
     }
 
     // ===== ХЕЛПЕРЫ =====
@@ -386,7 +385,7 @@ public class EventLayoutRenderer {
             case EventDisplayConfig.PARAM_EVENT_CAPTION:
                 String cap = eventCaption;
                 if (!cap.isEmpty() && !eventLabel.isEmpty()
-                        && !cap.equalsIgnoreCase(eventLabel)) { //&& isParamEnabledInDetails(EventDisplayConfig.PARAM_EVENT_LABEL))
+                        && !cap.equalsIgnoreCase(eventLabel)) {
                     cap += " (" + eventLabel + ")";
                 }
                 return cap;
@@ -412,14 +411,6 @@ public class EventLayoutRenderer {
 
             case EventDisplayConfig.PARAM_WEB_LINK:
                 return safeTrim(ev[ContactsEvents.Position_eventURL]).replace("~~", "\n");
-
-            case EventDisplayConfig.PARAM_DESCRIPTION:
-                String desc = safeTrim(ev[ContactsEvents.Position_eventDescription]);
-                String setting = config.getSetting(id);
-                if (EventDisplayConfig.DESC_INLINE.equals(setting) || setting.isEmpty()) {
-                    return desc;
-                }
-                return "";
 
             case EventDisplayConfig.PARAM_DEBUG_INFO:
                 return buildDebugInfo(ev);
@@ -633,15 +624,7 @@ public class EventLayoutRenderer {
         // Description
         String desc = safeTrim(ev[ContactsEvents.Position_eventDescription]);
         boolean descInInfo = info.contains(context.getString(R.string.pref_List_EventInfo_Description));
-        if (descInInfo) {
-            r.descriptionInlineVisible = !desc.isEmpty();
-            r.inlineDescription = desc;
-            r.descriptionButtonVisible = false;
-        } else {
-            r.descriptionButtonVisible = !desc.isEmpty();
-            r.inlineDescription = null;
-            r.descriptionInlineVisible = false;
-        }
+        r.inlineDescription = descInInfo ? desc : null;
     }
 
     // ===== УТИЛИТЫ =====

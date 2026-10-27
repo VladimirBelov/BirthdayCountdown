@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.10.2026, 01:02
+ *  * Created by Vladimir Belov on 28.10.2026, 00:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 27.10.2026, 00:40
+ *  * Last modified 28.10.2026, 00:46
  *
  */
 
@@ -10,7 +10,6 @@ package org.vovka.birthdaycountdown;
 
 import android.annotation.SuppressLint;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -64,6 +63,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             {EventDisplayConfig.KEY_PHOTO, SECTION.common.toString(), "0", "0"},
             {EventDisplayConfig.KEY_AGE_POS, SECTION.common.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NAME, SECTION.common.toString(), "1", "1"},
+            {EventDisplayConfig.PARAM_DESCRIPTION, SECTION.common.toString(), "1", "1"},
             // До события
             {EventDisplayConfig.PARAM_WHEN, SECTION.before.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_DAY_OF_WEEK, SECTION.before.toString(), "1", "0"},
@@ -81,7 +81,6 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             {EventDisplayConfig.PARAM_AGE, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_ZODIAC, SECTION.details.toString(), "1", "1"},
             {EventDisplayConfig.PARAM_WEB_LINK, SECTION.details.toString(), "1", "0"},
-            {EventDisplayConfig.PARAM_DESCRIPTION, SECTION.details.toString(), "1", "1"},
             {EventDisplayConfig.PARAM_DEBUG_INFO, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_1", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_2", SECTION.details.toString(), "0", "0"},
@@ -165,6 +164,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
         items.add(new DisplayItem(DisplayItem.TYPE_COMMON, SECTION.common.toString(),
                 EventDisplayConfig.KEY_AGE_POS, getString(R.string.param_dates_pos)));
         items.add(makeParameterItem(SECTION.common.toString(), DisplayItem.TYPE_COMMON, EventDisplayConfig.PARAM_NAME));
+        items.add(makeParameterItem(SECTION.common.toString(), DisplayItem.TYPE_COMMON, EventDisplayConfig.PARAM_DESCRIPTION));
 
         // --- Секция "До события" ---
         items.add(new DisplayItem(DisplayItem.TYPE_HEADER, SECTION.before.toString(), null,
@@ -268,7 +268,6 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             case EventDisplayConfig.PARAM_ORGANIZATION: return getString(R.string.pref_EventInfo_Organization);
             case EventDisplayConfig.PARAM_NICKNAME: return getString(R.string.pref_EventInfo_Nickname);
             case EventDisplayConfig.PARAM_EVENT_CAPTION: return getString(R.string.pref_EventInfo_EventCaption);
-            //case EventDisplayConfig.PARAM_EVENT_LABEL: return getString(R.string.pref_EventInfo_EventLabel);
             case EventDisplayConfig.PARAM_EVENT_SOURCE: return getString(R.string.param_event_source);
             case EventDisplayConfig.PARAM_EVENT_EMOJI: return getString(R.string.pref_EventInfo_EventEmoji);
             case EventDisplayConfig.PARAM_EVENT_TYPE: return getString(R.string.pref_EventInfo_EventType);
@@ -281,6 +280,12 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             case EventDisplayConfig.PARAM_DATE_ORIGINAL: return getString(R.string.pref_EventInfo_EventDate_Original);
             case EventDisplayConfig.PARAM_EVENT_ICON: return getString(R.string.pref_EventInfo_EventIcon);
             case EventDisplayConfig.PARAM_AGE_NEXT: return getString(R.string.pref_EventInfo_Age);
+            case EventDisplayConfig.PHOTO_TOP:
+                return getString(R.string.param_top);
+            case EventDisplayConfig.PHOTO_CENTER:
+                return getString(R.string.param_center);
+            case EventDisplayConfig.PHOTO_HIDDEN:
+                return getString(R.string.param_hidden);
             default: return id;
         }
     }
@@ -487,18 +492,18 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                 });
             }
 
-            if (EventDisplayConfig.PARAM_NAME.equals(item.paramId)) {
-                valueLabel.setVisibility(View.GONE);
-            } else {
-                String val;
-                if (EventDisplayConfig.KEY_PHOTO.equals(item.paramId)) {
-                    val = config.getPhotoPosition();
-                } else {
-                    val = config.getAgePosition();
-                }
-                valueLabel.setText(val);
+            String val = null;
+            if (EventDisplayConfig.KEY_PHOTO.equals(item.paramId)) {
+                val = config.getPhotoPosition();
+            } else if (EventDisplayConfig.KEY_AGE_POS.equals(item.paramId)) {
+                val = config.getAgePosition();
+            }
+            if (val != null) {
+                valueLabel.setText(getParamTitle(val));
                 valueLabel.setVisibility(View.VISIBLE);
                 valueLabel.setOnClickListener(v -> cycleCommonValue(item));
+            } else {
+                valueLabel.setVisibility(View.GONE);
             }
         }
     }
@@ -608,39 +613,31 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
 
     // ===== Диалоги =====
     private void showColorPicker(final DisplayItem item) {
-        int currentColor;
-        if (item.type == DisplayItem.TYPE_COMMON && !EventDisplayConfig.PARAM_NAME.equals(item.paramId)) {
-            // Для общих параметров (кроме Name) цвет не хранится
-            currentColor = 0;
-        } else {
-            currentColor = config.getColor(item.paramId, 0);
-        }
+        int currentColor = config.getColor(item.paramId, 0);
         ColorPicker picker = new ColorPicker(this);
         picker.selectColor(currentColor, 0, true, item.paramId,
                 (id, color) -> {
                     if (TextUtils.isEmpty(id)) return;
-                    if (item.type == DisplayItem.TYPE_PARAMETER || EventDisplayConfig.PARAM_NAME.equals(item.paramId)) {
-                        config.setColor(item.paramId, color);
-                        setModified();
-                        if (eventsData.preferences_info_on) {
-                            Toast.makeText(EventDisplayConfigActivity.this,
-                                    getString(R.string.msg_event_color_selected,
-                                            String.format("#%08X", color),
-                                            item.title),
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                    config.setColor(item.paramId, color);
+                    setModified();
+                    if (eventsData.preferences_info_on) {
+                        Toast.makeText(EventDisplayConfigActivity.this,
+                                getString(R.string.msg_event_color_selected,
+                                        String.format("#%08X", color),
+                                        item.title),
+                                Toast.LENGTH_SHORT).show();
+                    }
 
-                        // Обновляем отображение иконки цвета в списке
-                        int pos = -1;
-                        for (int i = 0; i < items.size(); i++) {
-                            if (items.get(i).paramId != null && items.get(i).paramId.equals(item.paramId)) {
-                                pos = i;
-                                break;
-                            }
+                    // Обновляем отображение иконки цвета в списке
+                    int pos = -1;
+                    for (int i = 0; i < items.size(); i++) {
+                        if (items.get(i).paramId != null && items.get(i).paramId.equals(item.paramId)) {
+                            pos = i;
+                            break;
                         }
-                        if (pos >= 0) {
-                            adapter.notifyItemChanged(pos);
-                        }
+                    }
+                    if (pos >= 0) {
+                        adapter.notifyItemChanged(pos);
                     }
                 });
     }
@@ -680,11 +677,14 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_description_settings, null);
         RadioButton rbInline = view.findViewById(R.id.rb_desc_inline);
         RadioButton rbTriangle = view.findViewById(R.id.rb_desc_triangle);
+        RadioButton rbHidden = view.findViewById(R.id.rb_desc_hidden);
 
         if (EventDisplayConfig.DESC_TRIANGLE.equals(current)) {
             rbTriangle.setChecked(true);
-        } else {
+        } else if (EventDisplayConfig.DESC_INLINE.equals(current)) {
             rbInline.setChecked(true);
+        } else {
+            rbHidden.setChecked(true);
         }
 
         new AlertDialog.Builder(new ContextThemeWrapper(this,
@@ -692,9 +692,8 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                 .setTitle(R.string.desc_settings_title)
                 .setView(view)
                 .setPositiveButton(R.string.button_ok, (d, w) -> {
-                    String val = rbTriangle.isChecked()
-                            ? EventDisplayConfig.DESC_TRIANGLE
-                            : EventDisplayConfig.DESC_INLINE;
+                    String val = rbTriangle.isChecked() ? EventDisplayConfig.DESC_TRIANGLE :
+                    rbInline.isChecked() ? EventDisplayConfig.DESC_INLINE : EventDisplayConfig.DESC_HIDDEN;
                     config.setSetting(item.paramId, val);
                     setModified();
                 })
@@ -741,7 +740,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
 
         // Применяем стили к RadioButton для наглядности
         rbBold.setTypeface(null, android.graphics.Typeface.BOLD);
-        rbShadow.setShadowLayer(4, 2, 2, Color.DKGRAY);
+        rbShadow.setShadowLayer(8, 2f, 2f, 0x80000000);
 
         // Устанавливаем выбранный стиль
         if (currentSet.contains(EventDisplayConfig.PARAM_AGE_NEXT_BOLD)) {
@@ -843,7 +842,9 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
         if (id == R.id.action_save) {
             config.save();
             isModified = false;
-            Toast.makeText(this, R.string.msg_saved, Toast.LENGTH_SHORT).show();
+            if (eventsData.preferences_info_on) {
+                Toast.makeText(this, R.string.msg_saved, Toast.LENGTH_SHORT).show();
+            }
             setResult(RESULT_OK);
             finish();
             return true;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 23.10.2026, 23:46
+  ~  * Created by Vladimir Belov on 28.10.2026, 00:50
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 23.10.2026, 22:52
+  ~  * Last modified 28.10.2026, 00:48
   ~  */
   -->
 
@@ -158,6 +158,8 @@
     <string name="msg_hint_search_all">Искать везде</string>
     <string name="msg_hint_global_search">Поиск событий</string>
     <string name="msg_hint_faq_search">Искать в тексте…</string>
+    <string name="msg_hint_select_color">Выбрать цвет…</string>
+    <string name="msg_hint_additional_settings">Дополнительные настройки…</string>
     <string name="msg_notifications_soon_no_events">Нет событий в выбранные дни</string>
     <string name="msg_notifications_soon">"Событий скоро - "</string>
     <string name="msg_notifications_all">"Событий - "</string>
@@ -1506,6 +1508,32 @@
     <string name="section_before_event">До события</string>
     <string name="section_event_details">Детали события</string>
     <string name="section_dates">Даты</string>
+
+    <string name="param_dates_pos">Возраст</string>
+    <string name="param_when">Когда (Сегодня/Завтра/…)</string>
+    <string name="param_day_of_week">День недели</string>
+    <string name="param_event_source">Источник события</string>
+    <string name="param_description">Заметки или описание</string>
+    <string name="param_debug_info">Тип аккаунта и хранимая дата</string>
+    <string name="desc_settings_title">Режим показа заметок</string>
+    <string name="desc_setting_inline">Показвать сразу под деталями события</string>
+    <string name="desc_setting_triangle">Показывать при нажатии на стрелку</string>
+    <string name="desc_setting_hidden">Скрыто</string>
+
+    <string name="name_settings_title">Настройки для имени</string>
+    <string name="name_setting_split">Разбивать имя на строки (для событий контактов)</string>
+    <string name="zodiac_settings_title">Настройки зодиака</string>
+    <string name="age_next_settings_title">Настройки для возраста</string>
+    <string name="age_next_show_full">С постфиксом ("лет", "дней", и.т.д.)</string>
+    <string name="age_next_style_title">Стиль отображения:</string>
+    <string name="age_next_style_normal">Обычный</string>
+    <string name="age_next_style_bold">Жирным</string>
+    <string name="age_next_style_shadow">С тенью</string>
+    <string name="msg_saved">Сохранено</string>
+    <string name="msg_reset_config_confirmation">Сбросить настройки макета на значения по-умоланию?</string>
+    <string name="param_hidden">Скрыто</string>
+    <string name="param_top">Вверху</string>
+    <string name="param_center">По центру</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/   https://ru.wikipedia.org/wiki/Годовщины_свадьбы -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Ситцевая</string>

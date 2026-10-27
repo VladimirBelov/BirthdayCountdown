@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.10.2026, 01:02
+ *  * Created by Vladimir Belov on 28.10.2026, 00:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 27.10.2026, 00:53
+ *  * Last modified 27.10.2026, 23:24
  *
  */
 
@@ -3119,12 +3119,18 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     // 8. Логика описания (треугольник vs инлайн)
                     String eventDescription = singleEventArray[ContactsEvents.Position_eventDescription].trim();
                     if (!eventDescription.isEmpty()) {
-                        String descSetting = renderer.getConfig().getSetting(EventDisplayConfig.PARAM_DESCRIPTION);
-                        if (EventDisplayConfig.DESC_INLINE.equals(descSetting) || descSetting.isEmpty()) {
+                        String descSetting = result.descriptionMode;
+                        if (EventDisplayConfig.DESC_HIDDEN.equals(descSetting)) {
+                            // Описание полностью скрыто
+                            holder.DescriptionTextView.setVisibility(View.GONE);
+                            holder.ShowDescriptionImageView.setVisibility(View.GONE);
+                        } else if (EventDisplayConfig.DESC_INLINE.equals(descSetting) || descSetting.isEmpty()) {
+                            // Описание сразу под деталями события
                             holder.DescriptionTextView.setVisibility(View.VISIBLE);
                             holder.DescriptionTextView.setText(eventDescription);
                             holder.ShowDescriptionImageView.setVisibility(View.GONE);
                         } else {
+                            // Описание раскрывается через треугольник
                             holder.ShowDescriptionImageView.setVisibility(View.VISIBLE);
                             holder.DescriptionTextView.setText(eventDescription);
 
@@ -3150,6 +3156,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             holder.ShowDescriptionImageView.setOnClickListener(listener);
                             holder.DescriptionTextView.setOnClickListener(listener);
                         }
+                        int descColor = result.descColor;
+                        if (descColor != 0) holder.DescriptionTextView.setTextColor(descColor);
                     } else {
                         holder.ShowDescriptionImageView.setVisibility(View.GONE);
                         holder.DescriptionTextView.setVisibility(View.GONE);
