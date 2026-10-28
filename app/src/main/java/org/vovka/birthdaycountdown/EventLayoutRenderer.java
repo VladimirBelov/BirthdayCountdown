@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.10.2026, 00:50
+ *  * Created by Vladimir Belov on 28.10.2026, 17:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.10.2026, 00:46
+ *  * Last modified 28.10.2026, 13:06
  *
  */
 
@@ -42,6 +42,7 @@ public class EventLayoutRenderer {
         public int nameColor;
         public CharSequence detailsText;
         public int detailsColor;
+        public boolean addFavoritesSign;
 
         // Новые поля для режима макета (Layout Mode)
         public CharSequence dateTextTop;
@@ -78,7 +79,7 @@ public class EventLayoutRenderer {
         boolean useLayoutMode = eventsData.isFeatureEnabled(Constants.FEATURE_EDIT_LAYOUT);
 
         if (!useLayoutMode) {
-            renderLegacy(singleEventArray, person, r);
+            renderLegacy(singleEventArray, person, eventKey, r);
             r.photoPosition = EventDisplayConfig.PHOTO_TOP;
             r.datesPosition = EventDisplayConfig.AGE_TOP;
             return r;
@@ -347,6 +348,7 @@ public class EventLayoutRenderer {
         r.datesPosition = config.getAgePosition();
         r.photoVisible = !EventDisplayConfig.PHOTO_HIDDEN.equals(r.photoPosition);
         r.descriptionMode = config.getDescriptionMode();
+        r.addFavoritesSign = !EventDisplayConfig.FAV_HIDDEN.equals(config.getFavIconMode());
     }
 
     // ===== ХЕЛПЕРЫ =====
@@ -470,21 +472,31 @@ public class EventLayoutRenderer {
                 && eventsData.getHiddenEventsCount() > 0
                 && eventsData.checkIsHiddenEvent(eventKey, keyWithRaw)) {
             if (sb.length() > 0) sb.append("\n");
-            sb.append(StringUtils.getHTMLColor(context.getString(R.string.msg_label_hidden),
-                    R.color.dark_red, context));
+            int start = sb.length();
+            sb.append(context.getString(R.string.msg_label_hidden));
+            int customColor = ContextCompat.getColor(context, R.color.dark_red);
+            if (customColor != 0) {
+                sb.setSpan(new ForegroundColorSpan(customColor), start, sb.length(),
+                        SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
         }
         if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Silenced
                 && eventsData.getSilencedEventsCount() > 0
                 && eventsData.checkIsSilencedEvent(eventKey, keyWithRaw)) {
             if (sb.length() > 0) sb.append("\n");
-            sb.append(StringUtils.getHTMLColor(context.getString(R.string.msg_label_silenced),
-                    R.color.brown, context));
+            int start = sb.length();
+            sb.append(context.getString(R.string.msg_label_silenced));
+            int customColor = ContextCompat.getColor(context, R.color.brown);
+            if (customColor != 0) {
+                sb.setSpan(new ForegroundColorSpan(customColor), start, sb.length(),
+                        SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
         }
     }
 
     // ===== LEGACY РЕЖИМ =====
 
-    private void renderLegacy(String[] ev, Person person, RenderResult r) {
+    private void renderLegacy(String[] ev, Person person, String eventKey, RenderResult r) {
         Set<String> info = eventsData.preferences_list_event_info;
 
         // Before section
@@ -511,7 +523,7 @@ public class EventLayoutRenderer {
         r.nameColor = ta.getColor(R.styleable.Theme_eventFullNameColor,
                 ContextCompat.getColor(context, R.color.theme_grey_primary));
 
-        // Details - ВСЕ поля
+        // Details
         StringBuilder sb = new StringBuilder();
         String eventSubType = ev[ContactsEvents.Position_eventSubType];
         String eventLabel = ev[ContactsEvents.Position_eventLabel].trim();
@@ -593,6 +605,8 @@ public class EventLayoutRenderer {
             }
         }
 
+        appendHiddenSilencedLabelsLegacy(sb, ev, eventKey);
+
         int htmlMode = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
                 ? HtmlCompat.FROM_HTML_MODE_COMPACT
                 : HtmlCompat.FROM_HTML_MODE_LEGACY;
@@ -617,6 +631,9 @@ public class EventLayoutRenderer {
         // Photo
         r.photoVisible = info.contains(context.getString(R.string.pref_List_EventInfo_Photo));
 
+        // Fav
+        r.addFavoritesSign = info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon));
+
         // Event Icon
         r.eventIconVisible = info.contains(context.getString(R.string.pref_List_EventInfo_EventIcon)) &&
                 !ev[ContactsEvents.Position_eventIcon].isEmpty();
@@ -625,6 +642,24 @@ public class EventLayoutRenderer {
         String desc = safeTrim(ev[ContactsEvents.Position_eventDescription]);
         boolean descInInfo = info.contains(context.getString(R.string.pref_List_EventInfo_Description));
         r.inlineDescription = descInInfo ? desc : null;
+    }
+
+    private void appendHiddenSilencedLabelsLegacy(StringBuilder sb, String[] ev, String eventKey) {
+        String keyWithRaw = eventsData.getEventKeyWithRawId(ev);
+        if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Hidden
+                && eventsData.getHiddenEventsCount() > 0
+                && eventsData.checkIsHiddenEvent(eventKey, keyWithRaw)) {
+            if (sb.length() > 0) sb.append("<br>");
+            sb.append(StringUtils.getHTMLColor(context.getString(R.string.msg_label_hidden),
+                    R.color.dark_red, context));
+        }
+        if (eventsData.preferences_list_events_scope != Constants.pref_Events_Scope_Silenced
+                && eventsData.getSilencedEventsCount() > 0
+                && eventsData.checkIsSilencedEvent(eventKey, keyWithRaw)) {
+            if (sb.length() > 0) sb.append("<br>");
+            sb.append(StringUtils.getHTMLColor(context.getString(R.string.msg_label_silenced),
+                    R.color.brown, context));
+        }
     }
 
     // ===== УТИЛИТЫ =====

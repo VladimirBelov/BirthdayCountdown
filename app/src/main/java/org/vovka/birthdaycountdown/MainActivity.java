@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.10.2026, 00:50
+ *  * Created by Vladimir Belov on 28.10.2026, 17:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 27.10.2026, 23:24
+ *  * Last modified 28.10.2026, 16:59
  *
  */
 
@@ -3021,8 +3021,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     } else {
                         roundingFactor = eventsData.preferences_list_photostyle;
                     }
+                    boolean addFavoritesSign = result.addFavoritesSign;
+
                     // Загружаем само фото
-                    holder.PhotoImageView.setImageBitmap(eventsData.getEventPhoto(event, true, false, true, roundingFactor));
+                    holder.PhotoImageView.setImageBitmap(eventsData.getEventPhoto(event, true, false, addFavoritesSign, roundingFactor));
 
                     if (this.useCustomLayout) {
                         // Устанавливаем гравитацию фото из конфига
@@ -3107,13 +3109,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
 
                     // Устанавливаем гравитацию возраста из конфига
-                    LinearLayout parentLayout = (LinearLayout) holder.CounterTextView.getParent();
-                    if (parentLayout != null) {
-                        LinearLayout.LayoutParams ageParams = (LinearLayout.LayoutParams) parentLayout.getLayoutParams();
-                        ageParams.gravity = result.datesPosition.equals(EventDisplayConfig.AGE_CENTER)
-                                ? Gravity.CENTER
-                                : (Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-                        parentLayout.setLayoutParams(ageParams);
+                    View parentView = (View) holder.CounterTextView.getParent();
+                    if (parentView instanceof LinearLayout) {
+                        LinearLayout parentLayout = (LinearLayout) parentView;
+                        if (EventDisplayConfig.AGE_CENTER.equals(result.datesPosition)) {
+                            // Центрируем содержимое по вертикали и горизонтали
+                            parentLayout.setGravity(Gravity.CENTER);
+                        } else {
+                            // Прижимаем содержимое к верху и центрируем по горизонтали
+                            parentLayout.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+                        }
                     }
 
                     // 8. Логика описания (треугольник vs инлайн)
@@ -3173,7 +3178,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     holder.CounterTextView.setText(result.counterText);
                     holder.CounterTextView.setTextColor(result.counterColor);
                     holder.CounterTextView.setTypeface(null, result.counterStyle);
-                    holder.CounterTextView.setVisibility(View.VISIBLE);
+                    holder.CounterTextView.setVisibility(!TextUtils.isEmpty(result.counterText) ? View.VISIBLE : View.GONE);
 
                     if (result.eventIconVisible) {
                         Drawable iconDrawable = ContactsEvents.resolveIconString(MainActivity.this,

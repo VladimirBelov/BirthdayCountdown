@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.10.2026, 00:50
+ *  * Created by Vladimir Belov on 28.10.2026, 17:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.10.2026, 00:33
+ *  * Last modified 28.10.2026, 13:24
  *
  */
 
@@ -42,6 +42,7 @@ public class EventDisplayConfig {
     // Ключи общих параметров
     public static final String KEY_PHOTO = "photo";
     public static final String KEY_AGE_POS = "age_pos";
+    public static final String KEY_FAVORITE_ICON = "favorite_icon";
 
     // Ключи секций
     public static final String KEY_BEFORE = "before";
@@ -65,7 +66,6 @@ public class EventDisplayConfig {
     public static final String PARAM_EVENT_SOURCE = "event_source";
     public static final String PARAM_EVENT_EMOJI = "event_emoji";
     public static final String PARAM_EVENT_TYPE = "event_type";
-    public static final String PARAM_FAVORITE_ICON = "favorite_icon";
     public static final String PARAM_AGE = "age";
     public static final String PARAM_ZODIAC = "zodiac";
     public static final String PARAM_ZODIAC_ANIMAL = "animal";
@@ -88,11 +88,14 @@ public class EventDisplayConfig {
     public static final String PHOTO_HIDDEN = "hidden";
     public static final String AGE_TOP = "top";
     public static final String AGE_CENTER = "center";
+    public static final String FAV_HIDDEN = "hidden";
 
     // Варианты показа описания
     public static final String DESC_INLINE = "inline";
     public static final String DESC_TRIANGLE = "triangle";
     public static final String DESC_HIDDEN = "hidden";
+    public static final String VALUE_ON = "on";
+    public static final String VALUE_OFF = "off";
 
     // Значения по умолчанию
     private static final List<String> DEFAULT_BEFORE = Arrays.asList(
@@ -132,8 +135,8 @@ public class EventDisplayConfig {
     );
 
     private static final String DEFAULT_SETTING_NAME = "";
-
     private static final String DEFAULT_SETTING_DESCRIPTION = DESC_TRIANGLE;
+    private static final String DEFAULT_SETTING_FAVORITE_ICON = "";
 
     private final SharedPreferences prefs;
     private final Map<String, String> cache = new HashMap<>();
@@ -183,6 +186,12 @@ public class EventDisplayConfig {
     public String getDescriptionMode() {
         return get(PREFIX_SETTING + PARAM_DESCRIPTION, DEFAULT_SETTING_DESCRIPTION);
     }
+
+    public String getFavIconMode() {
+        return get(KEY_FAVORITE_ICON, DEFAULT_SETTING_FAVORITE_ICON);
+    }
+
+    public void setFavIconMode(String value) { cache.put(KEY_FAVORITE_ICON, value); }
 
     // ===== Порядок секций =====
     public List<String> getBeforeOrder() {
@@ -282,6 +291,7 @@ public class EventDisplayConfig {
     private void loadDefaults() {
         cache.put(KEY_PHOTO, PHOTO_TOP);
         cache.put(KEY_AGE_POS, AGE_TOP);
+        cache.put(KEY_FAVORITE_ICON, DEFAULT_SETTING_FAVORITE_ICON);
         cache.put(KEY_BEFORE, joinCsv(DEFAULT_BEFORE));
         cache.put(KEY_DETAILS, joinCsv(DEFAULT_DETAILS));
         cache.put(KEY_DATES, joinCsv(DEFAULT_DATES));
@@ -304,6 +314,8 @@ public class EventDisplayConfig {
                 return joinCsv(DEFAULT_SETTING_AGE_NEXT);
             case PARAM_DESCRIPTION:
                 return DEFAULT_SETTING_DESCRIPTION;
+            case KEY_FAVORITE_ICON:
+                return DEFAULT_SETTING_FAVORITE_ICON;
             default:
                 return "";
         }

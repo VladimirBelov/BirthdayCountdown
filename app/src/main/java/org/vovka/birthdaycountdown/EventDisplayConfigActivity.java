@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.10.2026, 00:50
+ *  * Created by Vladimir Belov on 28.10.2026, 17:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.10.2026, 00:46
+ *  * Last modified 28.10.2026, 13:31
  *
  */
 
@@ -62,6 +62,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             // Общие (не перетаскиваются)
             {EventDisplayConfig.KEY_PHOTO, SECTION.common.toString(), "0", "0"},
             {EventDisplayConfig.KEY_AGE_POS, SECTION.common.toString(), "0", "0"},
+            {EventDisplayConfig.KEY_FAVORITE_ICON, SECTION.common.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NAME, SECTION.common.toString(), "1", "1"},
             {EventDisplayConfig.PARAM_DESCRIPTION, SECTION.common.toString(), "1", "1"},
             // До события
@@ -77,7 +78,6 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             {EventDisplayConfig.PARAM_EVENT_SOURCE, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_EVENT_EMOJI, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_EVENT_TYPE, SECTION.details.toString(), "1", "0"},
-            {EventDisplayConfig.PARAM_FAVORITE_ICON, SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_AGE, SECTION.details.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_ZODIAC, SECTION.details.toString(), "1", "1"},
             {EventDisplayConfig.PARAM_WEB_LINK, SECTION.details.toString(), "1", "0"},
@@ -90,8 +90,6 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             {EventDisplayConfig.PARAM_NEWLINE + "_6", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_7", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_8", SECTION.details.toString(), "0", "0"},
-            {EventDisplayConfig.PARAM_NEWLINE + "_9", SECTION.details.toString(), "0", "0"},
-            {EventDisplayConfig.PARAM_NEWLINE + "_10", SECTION.details.toString(), "0", "0"},
             // Даты
             {EventDisplayConfig.PARAM_DATE_ORIGINAL, SECTION.dates.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_EVENT_ICON, SECTION.dates.toString(), "0", "0"},
@@ -163,6 +161,8 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                 EventDisplayConfig.KEY_PHOTO, getString(R.string.pref_EventInfo_Photo)));
         items.add(new DisplayItem(DisplayItem.TYPE_COMMON, SECTION.common.toString(),
                 EventDisplayConfig.KEY_AGE_POS, getString(R.string.param_dates_pos)));
+        items.add(new DisplayItem(DisplayItem.TYPE_COMMON, SECTION.common.toString(),
+                EventDisplayConfig.KEY_FAVORITE_ICON, getString(R.string.pref_EventInfo_FavIcon)));
         items.add(makeParameterItem(SECTION.common.toString(), DisplayItem.TYPE_COMMON, EventDisplayConfig.PARAM_NAME));
         items.add(makeParameterItem(SECTION.common.toString(), DisplayItem.TYPE_COMMON, EventDisplayConfig.PARAM_DESCRIPTION));
 
@@ -260,8 +260,6 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             case EventDisplayConfig.PARAM_NEWLINE + "_6":
             case EventDisplayConfig.PARAM_NEWLINE + "_7":
             case EventDisplayConfig.PARAM_NEWLINE + "_8":
-            case EventDisplayConfig.PARAM_NEWLINE + "_9":
-            case EventDisplayConfig.PARAM_NEWLINE + "_10":
                 return getString(R.string.pref_EventInfo_NewLine1);
             case EventDisplayConfig.PARAM_NAME: return getString(R.string.pref_EventInfo_EventTitle);
             case EventDisplayConfig.PARAM_JOB_TITLE: return getString(R.string.pref_EventInfo_JobTitle);
@@ -271,7 +269,7 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             case EventDisplayConfig.PARAM_EVENT_SOURCE: return getString(R.string.param_event_source);
             case EventDisplayConfig.PARAM_EVENT_EMOJI: return getString(R.string.pref_EventInfo_EventEmoji);
             case EventDisplayConfig.PARAM_EVENT_TYPE: return getString(R.string.pref_EventInfo_EventType);
-            case EventDisplayConfig.PARAM_FAVORITE_ICON: return getString(R.string.pref_EventInfo_FavIcon);
+            case EventDisplayConfig.KEY_FAVORITE_ICON: return getString(R.string.pref_EventInfo_FavIcon);
             case EventDisplayConfig.PARAM_AGE: return getString(R.string.pref_EventInfo_CurrentAge);
             case EventDisplayConfig.PARAM_ZODIAC: return getString(R.string.pref_EventInfo_ZodiacSign);
             case EventDisplayConfig.PARAM_WEB_LINK: return getString(R.string.pref_EventInfo_WebLink);
@@ -286,6 +284,10 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                 return getString(R.string.param_center);
             case EventDisplayConfig.PHOTO_HIDDEN:
                 return getString(R.string.param_hidden);
+            case EventDisplayConfig.VALUE_OFF:
+                return getString(R.string.msg_off);
+            case EventDisplayConfig.VALUE_ON:
+                return getString(R.string.msg_on);
             default: return id;
         }
     }
@@ -492,11 +494,18 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
                 });
             }
 
+            // Показ текущего значения
             String val = null;
             if (EventDisplayConfig.KEY_PHOTO.equals(item.paramId)) {
                 val = config.getPhotoPosition();
             } else if (EventDisplayConfig.KEY_AGE_POS.equals(item.paramId)) {
                 val = config.getAgePosition();
+            } else if (EventDisplayConfig.KEY_FAVORITE_ICON.equals(item.paramId)) {
+                if (EventDisplayConfig.FAV_HIDDEN.equals(config.getFavIconMode())) {
+                    val = EventDisplayConfig.VALUE_OFF;
+                } else {
+                    val = EventDisplayConfig.VALUE_ON;
+                }
             }
             if (val != null) {
                 valueLabel.setText(getParamTitle(val));
@@ -779,30 +788,41 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
      */
     private void cycleCommonValue(DisplayItem item) {
         String next = null;
-        if (EventDisplayConfig.KEY_PHOTO.equals(item.paramId)) {
+        switch (item.paramId) {
+            case EventDisplayConfig.KEY_PHOTO: {
 
-            String cur = config.getPhotoPosition();
-            switch (cur) {
-                case EventDisplayConfig.PHOTO_TOP:
-                    next = EventDisplayConfig.PHOTO_CENTER;
-                    break;
-                case EventDisplayConfig.PHOTO_CENTER:
-                    next = EventDisplayConfig.PHOTO_HIDDEN;
-                    break;
-                default:
-                    next = EventDisplayConfig.PHOTO_TOP;
-                    break;
+                String cur = config.getPhotoPosition();
+                switch (cur) {
+                    case EventDisplayConfig.PHOTO_TOP:
+                        next = EventDisplayConfig.PHOTO_CENTER;
+                        break;
+                    case EventDisplayConfig.PHOTO_CENTER:
+                        next = EventDisplayConfig.PHOTO_HIDDEN;
+                        break;
+                    default:
+                        next = EventDisplayConfig.PHOTO_TOP;
+                        break;
+                }
+                config.setPhotoPosition(next);
+                break;
             }
-            config.setPhotoPosition(next);
+            case EventDisplayConfig.KEY_AGE_POS: {
 
-        } else  if (EventDisplayConfig.KEY_AGE_POS.equals(item.paramId)) {
+                String cur = config.getAgePosition();
+                next = EventDisplayConfig.AGE_TOP.equals(cur)
+                        ? EventDisplayConfig.AGE_CENTER : EventDisplayConfig.AGE_TOP;
+                config.setAgePosition(next);
+                break;
+            }
+            case EventDisplayConfig.KEY_FAVORITE_ICON:
 
-            String cur = config.getAgePosition();
-            next = EventDisplayConfig.AGE_TOP.equals(cur)
-                    ? EventDisplayConfig.AGE_CENTER : EventDisplayConfig.AGE_TOP;
-            config.setAgePosition(next);
-
+                String cur = config.getFavIconMode();
+                next = EventDisplayConfig.FAV_HIDDEN.equals(cur)
+                        ? "" : EventDisplayConfig.FAV_HIDDEN;
+                config.setFavIconMode(next);
+                break;
         }
+
         if (next != null) {
             // Обновляем только этот элемент
             int pos = -1;

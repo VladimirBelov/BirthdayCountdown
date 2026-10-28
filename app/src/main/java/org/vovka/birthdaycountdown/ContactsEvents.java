@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 27.10.2026, 01:02
+ *  * Created by Vladimir Belov on 28.10.2026, 17:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.10.2026, 17:59
+ *  * Last modified 28.10.2026, 12:34
  *
  */
 
@@ -6211,7 +6211,6 @@ public class ContactsEvents {
 
             // Добавляем иконку избранного
             if (addFavoritesSign
-                    && preferences_list_event_info.contains(context.getString(R.string.pref_List_EventInfo_FavoritesIcon))
                     && checkIsFavoriteEvent(getEventKey(singleEventArray), getEventKeyWithRawId(singleEventArray), singleEventArray[Position_starred])) {
                 bm = ImageUtils.applyFavoriteStar(bm, roundingFactor, bmWidth, bmHeight, getResources());
             }
