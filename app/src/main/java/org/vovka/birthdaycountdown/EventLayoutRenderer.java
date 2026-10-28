@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.10.2026, 19:29
+ *  * Created by Vladimir Belov on 28.10.2026, 19:53
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.10.2026, 19:26
+ *  * Last modified 28.10.2026, 19:41
  *
  */
 
@@ -33,18 +33,18 @@ public class EventLayoutRenderer {
     private final EventDisplayConfig config;
 
     public static class RenderResult {
-        public String datesPosition = EventDisplayConfig.AGE_TOP;
-        public String photoPosition = EventDisplayConfig.PHOTO_TOP;
+
         public CharSequence beforeEventText;
-        public int beforeEventColor;
-        public int beforeEventStyle;
-        public String nameText;
-        public int nameColor;
         public CharSequence detailsText;
-        public int detailsColor;
+        public String nameText;
+        public int beforeEventStyle;
+        public int beforeEventColor;
+        public int nameColor;
         public boolean addFavoritesSign;
 
-        // Новые поля для режима макета (Layout Mode)
+        // Поля для режима макета (Layout Mode)
+        public String datesPosition = EventDisplayConfig.AGE_TOP;
+        public String photoPosition = EventDisplayConfig.PHOTO_TOP;
         public CharSequence dateTextTop;
         public CharSequence dateTextBottom;
         public boolean isDateTextTopEmpty;
@@ -52,18 +52,18 @@ public class EventLayoutRenderer {
         public boolean isAgeIsTop;
         public boolean showEventIcon;
         public boolean hasAgeShadow; // Флаг для применения тени к нужному TextView
+        public int descColor;
+        public String descriptionMode = EventDisplayConfig.DESC_TRIANGLE;
+        public boolean photoVisible;
 
-        // Поля для легаси-режима (чтобы ничего не сломать)
+        // Поля для легаси-режима
         public String dateText;
         public int dateColor;
         public String counterText;
         public int counterColor;
         public int counterStyle;
         public boolean eventIconVisible;
-        public boolean photoVisible;
-        public String descriptionMode = EventDisplayConfig.DESC_TRIANGLE;
         public String inlineDescription;
-        public int descColor;
     }
 
     public EventLayoutRenderer(Context ctx, TypedArray themeAttrs) {
@@ -237,8 +237,6 @@ public class EventLayoutRenderer {
         }
 
         r.detailsText = sb;
-        r.detailsColor = ta.getColor(R.styleable.Theme_eventDetailsColor,
-                ContextCompat.getColor(context, R.color.light_gray_darker));
         r.descColor = config.getColor(EventDisplayConfig.PARAM_DESCRIPTION, 0);
     }
 
@@ -615,8 +613,6 @@ public class EventLayoutRenderer {
                 : HtmlCompat.FROM_HTML_MODE_LEGACY;
 
         r.detailsText = HtmlCompat.fromHtml(sb.toString(), htmlMode);
-        r.detailsColor = ta.getColor(R.styleable.Theme_eventDetailsColor,
-                ContextCompat.getColor(context, R.color.light_gray_darker));
 
         // Date
         r.dateText = formatLegacyDate(ev);

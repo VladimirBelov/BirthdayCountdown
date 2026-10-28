@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.10.2026, 19:29
+ *  * Created by Vladimir Belov on 28.10.2026, 19:53
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.10.2026, 19:06
+ *  * Last modified 28.10.2026, 19:46
  *
  */
 
@@ -628,6 +628,8 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
     private void showColorPicker(final DisplayItem item) {
         int currentColor = config.getColor(item.paramId, 0);
         ColorPicker picker = new ColorPicker(this);
+        picker.setDialogTitle(item.title);
+        picker.setDialogIcon(R.drawable.ic_menu_paste);
         picker.selectColor(currentColor, 0, true, item.paramId,
                 (id, color) -> {
                     if (TextUtils.isEmpty(id)) return;

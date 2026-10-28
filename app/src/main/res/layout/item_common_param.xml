@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.10.2026, 15:38
+  ~  * Created by Vladimir Belov on 28.10.2026, 19:53
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.10.2026, 15:11
+  ~  * Last modified 28.10.2026, 19:49
   ~  */
   -->
 
@@ -47,7 +47,7 @@
         android:id="@+id/common_color_icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:src="@android:drawable/ic_menu_edit"
+        android:src="@drawable/ic_menu_paste"
         android:contentDescription="@string/hint_Color"
         android:visibility="gone" />
 
