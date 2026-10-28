@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.10.2026, 17:05
+ *  * Created by Vladimir Belov on 28.10.2026, 19:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.10.2026, 13:06
+ *  * Last modified 28.10.2026, 19:26
  *
  */
 
@@ -35,7 +35,7 @@ public class EventLayoutRenderer {
     public static class RenderResult {
         public String datesPosition = EventDisplayConfig.AGE_TOP;
         public String photoPosition = EventDisplayConfig.PHOTO_TOP;
-        public String beforeEventText;
+        public CharSequence beforeEventText;
         public int beforeEventColor;
         public int beforeEventStyle;
         public String nameText;
@@ -114,7 +114,7 @@ public class EventLayoutRenderer {
         }
 
         boolean hasWhen = order.contains(EventDisplayConfig.PARAM_WHEN);
-
+        boolean hasCustomColor = false;
         for (int i = 0; i < order.size(); i++) {
             String id = order.get(i);
             boolean fromNewLine = i == 0;
@@ -161,14 +161,15 @@ public class EventLayoutRenderer {
                 sb.append(text);
                 int customColor = config.getColor(id, 0);
                 if (customColor != 0) {
+                    hasCustomColor = true;
                     sb.setSpan(new ForegroundColorSpan(customColor), start, sb.length(),
                             SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
             }
         }
 
-        r.beforeEventText = sb.toString();
-        r.beforeEventColor = baseColor;
+        r.beforeEventText = sb;
+        r.beforeEventColor = hasCustomColor ? 0 : baseColor; //Если не было кастомных цветов, элемент покрасит getView()
         r.beforeEventStyle = baseStyle;
     }
 
@@ -212,11 +213,12 @@ public class EventLayoutRenderer {
                 continue;
             }
 
-            if (i > 0 && needsSeparator(order, i, autoNewline) && hasAnyContent) {
-                sb.append("\n");
-            }
             String text = extractDetailText(id, ev, subType, eventLabel, eventCaption);
             if (text != null && !text.isEmpty()) {
+                if (i > 0 && needsSeparator(order, i, autoNewline) && hasAnyContent) {
+                    sb.append("\n");
+                }
+
                 int start = sb.length();
                 sb.append(text);
                 int customColor = config.getColor(id, 0);
@@ -369,6 +371,7 @@ public class EventLayoutRenderer {
     private boolean needsSeparator(List<String> order, int i, boolean autoNewline) {
         String prev = order.get(i - 1);
         if (prev.startsWith(EventDisplayConfig.PARAM_NEWLINE)) return false;
+        if (autoNewline && EventDisplayConfig.PARAM_EVENT_EMOJI.equals(prev)) return false; //Чтобы после иконки не вставлял \n
         return autoNewline;
     }
 
@@ -396,7 +399,7 @@ public class EventLayoutRenderer {
                 return safeTrim(ev[ContactsEvents.Position_eventSource]).replace("~~", "\n");
 
             case EventDisplayConfig.PARAM_EVENT_EMOJI:
-                return safeTrim(ev[ContactsEvents.Position_eventEmoji]);
+                return safeTrim(ev[ContactsEvents.Position_eventEmoji]) + " ";
 
             case EventDisplayConfig.PARAM_EVENT_TYPE:
                 // Название типа события хранится в Position_eventCaption

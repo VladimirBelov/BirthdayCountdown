@@ -2,9 +2,9 @@
 
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.10.2026, 17:05
+  ~  * Created by Vladimir Belov on 28.10.2026, 19:29
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.10.2026, 16:30
+  ~  * Last modified 28.10.2026, 19:04
   ~  */
   -->
 
@@ -28,124 +28,121 @@
         android:scaleType="centerCrop"
         tools:ignore="ImageContrastCheck" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingStart="6dp">
 
-        <!-- Верхний ряд: Колонка А (Расстояние и Имя) и Колонка Б (Даты, Иконка, Возраст) -->
+        <!-- Колонка А: занимает всё доступное пространство -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/columnLeft"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <!-- Колонка А: занимает всё доступное пространство -->
-            <LinearLayout
-                android:id="@+id/columnLeft"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/entryDayDistanceTextView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:gravity="top|start"
+                android:maxLines="2"
+                android:text="@string/hint_EventDistance"
+                android:textAlignment="textStart"
+                android:textColor="?attr/eventDistanceColor"
+                android:textSize="@dimen/event_details" />
 
-                <TextView
-                    android:id="@+id/entryDayDistanceTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top|start"
-                    android:maxLines="2"
-                    android:text="@string/hint_EventDistance"
-                    android:textAlignment="textStart"
-                    android:textColor="?attr/eventDistanceColor"
-                    android:textSize="@dimen/event_details" />
+            <TextView
+                android:id="@+id/entryNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:breakStrategy="simple"
+                android:gravity="top|start"
+                android:maxLines="5"
+                android:text="@string/hint_Name"
+                android:textColor="?attr/eventFullNameColor"
+                android:textSize="@dimen/event_name"
+                android:textStyle="bold"
+                tools:ignore="UnusedAttribute" />
 
-                <TextView
-                    android:id="@+id/entryNameTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:breakStrategy="simple"
-                    android:gravity="top|start"
-                    android:maxLines="3"
-                    android:text="@string/hint_Name"
-                    android:textColor="?attr/eventFullNameColor"
-                    android:textSize="@dimen/event_name"
-                    android:textStyle="bold"
-                    tools:ignore="UnusedAttribute" />
+            <TextView
+                android:id="@+id/entryEventDetailsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|start"
+                android:text="@string/hint_EventDetails"
+                android:textColor="?attr/eventDetailsColor"
+                android:textSize="@dimen/event_details" />
 
-                <TextView
-                    android:id="@+id/entryEventDetailsTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top|start"
-                    android:text="@string/hint_EventDetails"
-                    android:textColor="?attr/eventDetailsColor"
-                    android:textSize="@dimen/event_details" />
+            <TextView
+                android:id="@+id/entryDescriptionTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:longClickable="false"
+                android:textColor="?attr/eventDetailsColor"
+                android:textSize="@dimen/event_details"
+                android:visibility="gone" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/entryDescriptionTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:longClickable="false"
-                    android:textColor="?attr/eventDetailsColor"
-                    android:textSize="@dimen/event_details"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <!-- Колонка Б: ширина по контенту -->
+        <!-- Колонка Б: ширина по контенту -->
+        <LinearLayout
+            android:id="@+id/columnRight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/columnRight"
+                android:id="@+id/ageAndDates"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|top"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/ageAndDates"
+                <TextView
+                    android:id="@+id/entryDateTextView"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal|top"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/entryDateTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="top|center"
-                        android:text="@string/hint_Date"
-                        android:textColor="?attr/eventDateColor"
-                        android:textSize="@dimen/event_date" />
-
-                    <ImageView
-                        android:id="@+id/entryEventIcon"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginBottom="2dp"
-                        android:contentDescription="@string/hint_EventIcon"
-                        android:gravity="top|center"
-                        android:scaleType="fitCenter" />
-
-                    <TextView
-                        android:id="@+id/entryDetailsCounter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="top|center"
-                        android:text="@string/hint_Age"
-                        android:textColor="?attr/eventAgeColor"
-                        android:textSize="@dimen/event_name" />
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:gravity="top|center"
+                    android:text="@string/hint_Date"
+                    android:textColor="?attr/eventDateColor"
+                    android:textSize="@dimen/event_date" />
 
                 <ImageView
-                    android:id="@+id/entryButtonShowDescription"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="bottom|end"
-                    android:contentDescription="@string/hint_Description"
-                    android:paddingHorizontal="2dp"
-                    android:src="@android:drawable/arrow_down_float"
-                    android:visibility="gone" />
+                    android:id="@+id/entryEventIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:contentDescription="@string/hint_EventIcon"
+                    android:gravity="top|center"
+                    android:scaleType="fitCenter" />
+
+                <TextView
+                    android:id="@+id/entryDetailsCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|center"
+                    android:text="@string/hint_Age"
+                    android:textColor="?attr/eventAgeColor"
+                    android:textSize="@dimen/event_name" />
             </LinearLayout>
 
-
-
+            <ImageView
+                android:id="@+id/entryButtonShowDescription"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="bottom|end"
+                android:contentDescription="@string/hint_Description"
+                android:paddingHorizontal="2dp"
+                android:src="@android:drawable/arrow_down_float"
+                android:visibility="gone" />
         </LinearLayout>
+
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.10.2026, 17:05
+ *  * Created by Vladimir Belov on 28.10.2026, 19:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.10.2026, 16:59
+ *  * Last modified 28.10.2026, 18:42
  *
  */
 
@@ -3042,7 +3042,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 // 2. "До события"
                 holder.DayDistanceTextView.setText(result.beforeEventText);
                 holder.DayDistanceTextView.setTypeface(null, result.beforeEventStyle);
-                holder.DayDistanceTextView.setTextColor(result.beforeEventColor);
+                if (result.beforeEventColor != 0) holder.DayDistanceTextView.setTextColor(result.beforeEventColor);
 
                 // 3. Имя
                 holder.NameTextView.setText(result.nameText);

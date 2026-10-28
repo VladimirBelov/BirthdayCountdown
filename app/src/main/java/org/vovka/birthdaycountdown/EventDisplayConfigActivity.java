@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.10.2026, 17:05
+ *  * Created by Vladimir Belov on 28.10.2026, 19:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.10.2026, 13:31
+ *  * Last modified 28.10.2026, 19:06
  *
  */
 
@@ -90,6 +90,8 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             {EventDisplayConfig.PARAM_NEWLINE + "_6", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_7", SECTION.details.toString(), "0", "0"},
             {EventDisplayConfig.PARAM_NEWLINE + "_8", SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_9", SECTION.details.toString(), "0", "0"},
+            {EventDisplayConfig.PARAM_NEWLINE + "_10", SECTION.details.toString(), "0", "0"},
             // Даты
             {EventDisplayConfig.PARAM_DATE_ORIGINAL, SECTION.dates.toString(), "1", "0"},
             {EventDisplayConfig.PARAM_EVENT_ICON, SECTION.dates.toString(), "0", "0"},
@@ -260,6 +262,8 @@ public class EventDisplayConfigActivity extends AppCompatActivity {
             case EventDisplayConfig.PARAM_NEWLINE + "_6":
             case EventDisplayConfig.PARAM_NEWLINE + "_7":
             case EventDisplayConfig.PARAM_NEWLINE + "_8":
+            case EventDisplayConfig.PARAM_NEWLINE + "_9":
+            case EventDisplayConfig.PARAM_NEWLINE + "_10":
                 return getString(R.string.pref_EventInfo_NewLine1);
             case EventDisplayConfig.PARAM_NAME: return getString(R.string.pref_EventInfo_EventTitle);
             case EventDisplayConfig.PARAM_JOB_TITLE: return getString(R.string.pref_EventInfo_JobTitle);
