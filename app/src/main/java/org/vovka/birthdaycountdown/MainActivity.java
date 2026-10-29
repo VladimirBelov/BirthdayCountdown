@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.10.2026, 19:29
+ *  * Created by Vladimir Belov on 29.10.2026, 17:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.10.2026, 18:42
+ *  * Last modified 29.10.2026, 14:55
  *
  */
 
@@ -194,6 +194,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //Цвет CutoutAppearance на повёрнутом экране
             //https://stackoverflow.com/questions/58896621/how-can-i-color-the-cutout-notch-area-in-non-full-screen-landscape-mode
             getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                int barColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
+                boolean isLightColor = (Color.red(barColor) > 200 && Color.green(barColor) > 200 && Color.blue(barColor) > 200);
+                if (isLightColor) {
+                    barColor = ContextCompat.getColor(this, R.color.black);
+                    getWindow().setStatusBarColor(barColor);
+                    getWindow().setNavigationBarColor(barColor);
+                }
+            }
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setPopupTheme(eventsData.preferences_theme.themePopup);

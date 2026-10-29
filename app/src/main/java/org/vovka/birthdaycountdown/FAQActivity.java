@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 15.10.2026, 16:49
+ *  * Created by Vladimir Belov on 29.10.2026, 17:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 13.10.2026, 16:25
+ *  * Last modified 29.10.2026, 16:03
  *
  */
 
@@ -75,6 +75,45 @@ public class FAQActivity extends AppCompatActivity {
 
             setContentView(R.layout.activity_faq);
 
+            //Цвет панели навигации
+            ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
+            int barColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
+            // Проверяем: если версия < 35 ИЛИ включена навигация кнопками
+            boolean useLegacyColors = Build.VERSION.SDK_INT < 35 || DeviceTools.isButtonNavigation(this);
+            // Определяем, является ли цвет слишком светлым (близким к белому)
+            boolean isLightColor = (Color.red(barColor) > 200 && Color.green(barColor) > 200 && Color.blue(barColor) > 200);
+            Window w = getWindow();
+
+            // Установка цвета фона панелей
+            if (useLegacyColors) {
+                // Для Android < 35 или при 3-кнопочной навигации используем классический метод.
+                // На Android 5.x (API < 23) иконки всегда белые, поэтому для светлого фона принудительно ставим чёрный
+                int finalBarColor = (Build.VERSION.SDK_INT < Build.VERSION_CODES.M && isLightColor)
+                        ? ContextCompat.getColor(this, R.color.black)
+                        : barColor;
+                //noinspection deprecation
+                w.setStatusBarColor(finalBarColor);
+                //noinspection deprecation
+                w.setNavigationBarColor(finalBarColor);
+            }
+
+            // Установка цвета иконок
+            // Если статус-бар светлый (белый или близкий к белому) — делаем иконки тёмными
+            if (isLightColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    WindowInsetsControllerCompat controller = ViewCompat.getWindowInsetsController(w.getDecorView());
+                    if (controller != null) {
+                        controller.setAppearanceLightStatusBars(true);
+                        controller.setAppearanceLightNavigationBars(true);
+                    }
+                } else {
+                    w.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                }
+            }
+
+            //Цвет CutoutAppearance на повёрнутом экране
+            w.setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
+
             View layoutMain = findViewById(R.id.layout_main);
             if (DeviceTools.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
@@ -116,46 +155,10 @@ public class FAQActivity extends AppCompatActivity {
                 if (backIcon != null) {
                     backIcon = backIcon.mutate();
                     // Берём цвет заголовка из темы — для белой темы это чёрный, для тёмных — белый
-                    int iconColor = ta.getColor(R.styleable.Theme_windowTitleColor,
+                    int iconColor = ta.getColor(R.styleable.Theme_windowTitleTextColor,
                             ContextCompat.getColor(this, R.color.white));
                     backIcon.setTint(iconColor);
                     bar.setHomeAsUpIndicator(backIcon);
-                }
-            }
-
-            //Цвет CutoutAppearance на повёрнутом экране
-            getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
-
-            //Цвет панели навигации
-            ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
-            int barColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
-            // Проверяем: если версия < 35 ИЛИ включена навигация кнопками
-            boolean useLegacyColors = Build.VERSION.SDK_INT < 35 || DeviceTools.isButtonNavigation(this);
-
-            Window w = getWindow();
-            if (useLegacyColors) {
-                // Для Android < 35 или при 3-кнопочной навигации используем классический метод.
-                // Он гарантирует корректный цвет нижней панели.
-                //noinspection deprecation
-                w.setStatusBarColor(barColor);
-                //noinspection deprecation
-                w.setNavigationBarColor(barColor);
-            }
-
-            //Цвет иконок statusbar, navigation
-            try (TypedArray ta2 = getTheme().obtainStyledAttributes(R.styleable.Theme)) {
-                int statusBarColor = ta2.getColor(R.styleable.Theme_windowStatusbarColor, 0);
-                // Если статус-бар светлый (белый или близкий к белому) — делаем иконки тёмными
-                if (Color.red(statusBarColor) > 200 && Color.green(statusBarColor) > 200 && Color.blue(statusBarColor) > 200) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        WindowInsetsControllerCompat controller = ViewCompat.getWindowInsetsController(getWindow().getDecorView());
-                        if (controller != null) {
-                            controller.setAppearanceLightStatusBars(true);
-                            controller.setAppearanceLightNavigationBars(true);
-                        }
-                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    }
                 }
             }
 

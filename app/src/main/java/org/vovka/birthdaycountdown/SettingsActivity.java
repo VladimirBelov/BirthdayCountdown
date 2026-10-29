@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.10.2026, 11:43
+ *  * Created by Vladimir Belov on 29.10.2026, 17:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.10.2026, 10:59
+ *  * Last modified 29.10.2026, 17:13
  *
  */
 
@@ -189,16 +189,39 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             int barColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
             // Проверяем: если версия < 35 ИЛИ включена навигация кнопками
             boolean useLegacyColors = Build.VERSION.SDK_INT < 35 || DeviceTools.isButtonNavigation(this);
-
+            // Определяем, является ли цвет слишком светлым (близким к белому)
+            boolean isLightColor = (Color.red(barColor) > 200 && Color.green(barColor) > 200 && Color.blue(barColor) > 200);
             Window w = getWindow();
+
+            // Установка цвета фона панелей
             if (useLegacyColors) {
                 // Для Android < 35 или при 3-кнопочной навигации используем классический метод.
-                // Он гарантирует корректный цвет нижней панели.
+                // На Android 5.x (API < 23) иконки всегда белые, поэтому для светлого фона принудительно ставим чёрный
+                int finalBarColor = (Build.VERSION.SDK_INT < Build.VERSION_CODES.M && isLightColor)
+                        ? ContextCompat.getColor(this, R.color.black)
+                        : barColor;
                 //noinspection deprecation
-                w.setStatusBarColor(barColor);
+                w.setStatusBarColor(finalBarColor);
                 //noinspection deprecation
-                w.setNavigationBarColor(barColor);
+                w.setNavigationBarColor(finalBarColor);
             }
+
+            // Установка цвета иконок
+            // Если статус-бар светлый (белый или близкий к белому) — делаем иконки тёмными
+            if (isLightColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    WindowInsetsControllerCompat controller = ViewCompat.getWindowInsetsController(w.getDecorView());
+                    if (controller != null) {
+                        controller.setAppearanceLightStatusBars(true);
+                        controller.setAppearanceLightNavigationBars(true);
+                    }
+                } else {
+                    w.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                }
+            }
+
+            //Цвет CutoutAppearance на повёрнутом экране
+            w.setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
 
             if (DeviceTools.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
@@ -230,26 +253,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 bar.setDisplayShowTitleEnabled(true);
                 bar.setHomeAsUpIndicator(backIcon);
                 bar.setTitle(R.string.window_settings);
-            }
-
-            //Цвет CutoutAppearance на повёрнутом экране
-            getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
-
-            //Цвет иконок statusbar, navigation
-            try (TypedArray ta2 = getTheme().obtainStyledAttributes(R.styleable.Theme)) {
-                int statusBarColor = ta2.getColor(R.styleable.Theme_windowStatusbarColor, 0);
-                // Если статус-бар светлый (белый или близкий к белому) — делаем иконки тёмными
-                if (Color.red(statusBarColor) > 200 && Color.green(statusBarColor) > 200 && Color.blue(statusBarColor) > 200) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        WindowInsetsControllerCompat controller = ViewCompat.getWindowInsetsController(getWindow().getDecorView());
-                        if (controller != null) {
-                            controller.setAppearanceLightStatusBars(true);
-                            controller.setAppearanceLightNavigationBars(true);
-                        }
-                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    }
-                }
             }
 
             if (eventsData.preferences_menustyle_compact) {
@@ -2363,6 +2366,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             ListView list = dialog.findViewById(android.R.id.list);
             Toolbar bar;
 
+            int barColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
+            boolean isLightColor = (Color.red(barColor) > 200 && Color.green(barColor) > 200 && Color.blue(barColor) > 200);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
 
                 ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) list.getLayoutParams();
@@ -2375,7 +2381,37 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 bar.setBackgroundColor(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white)));
                 bar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleTextColor, ContextCompat.getColor(this, R.color.black)));
 
-                root.addView(bar, 0); // insert at top
+                //Разделитель
+                LinearLayout barWrapper = new LinearLayout(this);
+                barWrapper.setOrientation(LinearLayout.VERTICAL);
+                barWrapper.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                // Переносим bar в обёртку
+                ViewGroup barParent = (ViewGroup) bar.getParent();
+                if (barParent != null) barParent.removeView(bar);
+                barWrapper.addView(bar);
+
+                // Добавляем разделитель в обёртку
+                View divider = new View(this);
+                int dividerHeight = (int) (1 * displayMetrics.density);
+                divider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dividerHeight));
+                divider.setBackgroundColor(ta.getColor(R.styleable.Theme_listDividerColor,
+                        ContextCompat.getColor(this, R.color.light_gray_transp)));
+                barWrapper.addView(divider);
+
+                // Добавляем обёртку в root на место bar (позиция 0)
+                if (root instanceof LinearLayout) {
+                    // В старых версиях root - это LinearLayout.
+                    // Добавляем в начало (индекс 0), чтобы быть выше списка.
+                    root.addView(barWrapper, 0);
+                } else {
+                    // В Android 16 (и многих других новых) root - это FrameLayout.
+                    // Добавление в конец (без индекса) гарантирует, что обертка будет
+                    // иметь высший Z-order (рисоваться ПОВЕРХ списка), а topMargin
+                    // прижмет её к самому верху, ровно в свободное пространство над списком.
+                    root.addView(barWrapper);
+                }
+
                 bar.setTitle(preferenceScreen.getTitle());
                 bar.setNavigationOnClickListener(v -> dialog.dismiss());
                 root.setBackgroundColor(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white)));
@@ -2391,7 +2427,30 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 bar.setBackgroundColor(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white)));
                 bar.setTitleTextColor(ta.getColor(R.styleable.Theme_windowTitleTextColor, ContextCompat.getColor(this, R.color.black)));
 
-                root.addView(bar, 0); // insert at top
+                //Разделитель
+                LinearLayout barWrapper = new LinearLayout(this);
+                barWrapper.setOrientation(LinearLayout.VERTICAL);
+                barWrapper.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                // Переносим bar в обёртку
+                ViewGroup barParent = (ViewGroup) bar.getParent();
+                if (barParent != null) barParent.removeView(bar);
+                barWrapper.addView(bar);
+
+                // Добавляем разделитель в обёртку
+                View divider = new View(this);
+                int dividerHeight = (int) (1 * displayMetrics.density);
+                divider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dividerHeight));
+                divider.setBackgroundColor(ta.getColor(R.styleable.Theme_listDividerColor,
+                        ContextCompat.getColor(this, R.color.light_gray_transp)));
+                barWrapper.addView(divider);
+
+                if (root instanceof LinearLayout) {
+                    root.addView(barWrapper, 0);
+                } else {
+                    root.addView(barWrapper);
+                }
+
                 bar.setTitle(preferenceScreen.getTitle());
                 bar.setNavigationOnClickListener(v -> dialog.dismiss());
                 root.setBackgroundColor(ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(this, R.color.white)));
@@ -2402,10 +2461,33 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 LinearLayout root = (LinearLayout) list.getParent();
                 bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
                 root.addView(bar, 0); // insert at top
+
+                //Разделитель
+                if (isLightColor) {
+                    View divider = new View(this);
+                    int dividerHeight = (int) (1 * displayMetrics.density);
+                    ViewGroup.LayoutParams dividerParams = new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT, dividerHeight);
+                    divider.setLayoutParams(dividerParams);
+                    divider.setBackgroundColor(ta.getColor(R.styleable.Theme_listDividerColor, ContextCompat.getColor(this, R.color.light_gray_transp)));
+                    root.addView(divider, 1);
+                }
+
                 bar.setTitle(preferenceScreen.getTitle());
                 bar.setNavigationOnClickListener(v -> dialog.dismiss());
                 root.setBackgroundColor(ta.getColor(R.styleable.Theme_backgroundColor, ContextCompat.getColor(this, R.color.white)));
 
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M && isLightColor) {
+                    barColor = ContextCompat.getColor(this, R.color.black);
+                    bar.setTitleTextColor(barColor);
+                    Window dialogWindow = dialog.getWindow();
+                    if (dialogWindow != null) {
+                        // На API 21 обязательно нужно явно разрешить окну рисовать фоны системных баров
+                        dialogWindow.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        dialogWindow.setStatusBarColor(barColor);
+                        dialogWindow.setNavigationBarColor(barColor);
+                    }
+                }
             }
 
             // Устанавливаем иконку "назад" с цветом заголовка текущей темы
