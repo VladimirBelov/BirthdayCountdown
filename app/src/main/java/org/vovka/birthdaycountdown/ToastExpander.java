@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 18.06.2026, 20:20
+ *  * Created by Vladimir Belov on 29.10.2026, 10:30
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 18.06.2026, 19:41
+ *  * Last modified 29.10.2026, 10:00
  *
  */
 
@@ -81,7 +81,9 @@ public class ToastExpander {
                                     } else if (type == msgTypeInfo) {
                                         eventsData.disableInfoMsg();
                                     }
-                                    mFluentSnackbar.removeAllMessagesByType(type);
+                                    if (mFluentSnackbar != null) {
+                                        mFluentSnackbar.removeAllMessagesByType(type);
+                                    }
                                 })
                                 .type(type)
                                 .show();

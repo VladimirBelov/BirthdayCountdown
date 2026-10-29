@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.10.2026, 13:13
+ *  * Created by Vladimir Belov on 29.10.2026, 10:30
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.10.2026, 12:51
+ *  * Last modified 29.10.2026, 10:10
  *
  */
 package org.vovka.birthdaycountdown.imagecropper;
@@ -216,11 +216,24 @@ public class CropImageActivity extends Activity {
 
         @Override
         protected void onPostExecute(Boolean result) {
-            if (mProgressDialog != null && mProgressDialog.isShowing()) {
-                mProgressDialog.dismiss();
-            }
             CropImageActivity activity = activityRef.get();
-            if (activity != null) {
+
+            // Безопасное закрытие диалога
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                try {
+                    // Проверяем, что Activity всё ещё жива и не находится в процессе завершения
+                    if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+                        mProgressDialog.dismiss();
+                    }
+                } catch (IllegalArgumentException | IllegalStateException e) {
+                    // Защита от известной ошибки Android при попытке закрыть уже удалённое окно.
+                    // Это нормальная ситуация при быстром уничтожении Activity, её можно безопасно логировать и игнорировать.
+                    Log.w(TAG, "Ignored exception during ProgressDialog.dismiss(): " + e.getMessage());
+                }
+            }
+
+            // Завершаем работу с Activity только если она всё ещё жива
+            if (activity != null && !activity.isFinishing()) {
                 activity.setResult(RESULT_OK, new Intent().putExtra(MediaStore.EXTRA_OUTPUT, mOutputPath));
                 activity.finish();
             }

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.10.2026, 17:05
+ *  * Created by Vladimir Belov on 29.10.2026, 10:30
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.10.2026, 12:34
+ *  * Last modified 29.10.2026, 09:26
  *
  */
 
@@ -872,9 +872,9 @@ public class ContactsEvents {
     boolean isUIOpen = false;
     /** Стартовый размер для деталей события и описания (в SP) */
     float dimen_List_details;
-    /** Стартовый размер для имени и возраста  (в SP) */
+    /** Стартовый размер для имени и возраста (в SP) */
     float dimen_List_name;
-    /** Стартовый размер для дат события  (в SP) */
+    /** Стартовый размер для дат события (в SP) */
     float dimen_list_date;
     String currentLocale = "";
 
@@ -2909,9 +2909,9 @@ public class ContactsEvents {
                             if (!map_events_weblinks.containsKey(personID)) {
                                 map_events_weblinks.put(personID, URL);
                             } else {
-                                String URlstored = map_events_weblinks.get(personID);
-                                if (!TextUtils.isEmpty(URlstored))
-                                    map_events_weblinks.put(personID, URlstored.concat(Constants.STRING_2TILDA).concat(URL));
+                                String URl_stored = map_events_weblinks.get(personID);
+                                if (!TextUtils.isEmpty(URl_stored))
+                                    map_events_weblinks.put(personID, URl_stored.concat(Constants.STRING_2TILDA).concat(URL));
                             }
                             statContactsURLCount++;
                         }
@@ -12145,7 +12145,7 @@ public class ContactsEvents {
     }
 
     /**
-     * Возвращает список типов событий с текущими эмодзи (для списков собыий)
+     * Возвращает список типов событий с текущими эмодзи (для списков событий)
      */
     @NonNull
     ArrayList<String> getEventTypesWithEmoji() {
