@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.10.2026, 15:38
+  ~  * Created by Vladimir Belov on 29.10.2026, 18:45
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.10.2026, 13:04
+  ~  * Last modified 29.10.2026, 18:42
   ~  */
   -->
 
@@ -16,7 +16,8 @@
         android:id="@+id/cb_age_next_full"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/age_next_show_full" />
+        android:text="@string/age_next_show_full"
+        android:textColor="?attr/dialogTextColor" />
 
     <TextView
         android:layout_width="match_parent"
@@ -24,7 +25,8 @@
         android:text="@string/age_next_style_title"
         android:textStyle="bold"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:textColor="?attr/dialogTextColor" />
 
     <RadioGroup
         android:id="@+id/rg_age_next_style"
@@ -35,19 +37,22 @@
             android:id="@+id/rb_age_next_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/age_next_style_normal" />
+            android:text="@string/age_next_style_normal"
+            android:textColor="?attr/dialogTextColor" />
 
         <RadioButton
             android:id="@+id/rb_age_next_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/age_next_style_bold" />
+            android:text="@string/age_next_style_bold"
+            android:textColor="?attr/dialogTextColor" />
 
         <RadioButton
             android:id="@+id/rb_age_next_shadow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/age_next_style_shadow" />
+            android:text="@string/age_next_style_shadow"
+            android:textColor="?attr/dialogTextColor" />
 
     </RadioGroup>
 
