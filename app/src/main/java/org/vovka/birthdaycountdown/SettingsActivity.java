@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.10.2026, 23:46
+ *  * Created by Vladimir Belov on 29.10.2026, 11:43
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 23.10.2026, 23:06
+ *  * Last modified 29.10.2026, 10:59
  *
  */
 
@@ -3891,7 +3891,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             } catch (ActivityNotFoundException e) { /**/ }
                         });
                         builder.setNeutralButton(R.string.button_share, (dialog, which) -> {
-                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            Intent intent = new Intent(Intent.ACTION_SEND).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                             intent.putExtra(Intent.EXTRA_STREAM, uri);
                             Intent chooser = Intent.createChooser(intent, "");
@@ -4399,7 +4399,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             } catch (ActivityNotFoundException e) { /**/ }
                         });
                         builder.setNeutralButton(R.string.button_share, (dialog, which) -> {
-                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            Intent intent = new Intent(Intent.ACTION_SEND).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                             intent.putExtra(Intent.EXTRA_STREAM, uri);
                             Intent chooser = Intent.createChooser(intent, "");
