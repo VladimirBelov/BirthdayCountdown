@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.10.2026, 16:49
+  ~  * Created by Vladimir Belov on 30.10.2026, 10:12
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 13.10.2026, 13:36
+  ~  * Last modified 30.10.2026, 09:40
   ~  */
   -->
 
@@ -38,11 +38,12 @@
             android:layout_weight="1"
             android:gravity="end"
             android:maxLines="1"
-            android:paddingEnd="6dp"
             android:paddingStart="6dp"
-            android:textAlignment="textEnd"
+            android:paddingEnd="6dp"
             android:textSize="14sp"
             android:textStyle="bold"
+            android:textAlignment="textEnd"
+            android:contentDescription="@string/button_close"
             android:background="?attr/windowTitleColor"
             android:textColor="?attr/windowTitleTextColor" />
     </LinearLayout>

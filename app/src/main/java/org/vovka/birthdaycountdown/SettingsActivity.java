@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.10.2026, 17:26
+ *  * Created by Vladimir Belov on 30.10.2026, 10:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.10.2026, 17:13
+ *  * Last modified 30.10.2026, 10:10
  *
  */
 
@@ -5937,17 +5937,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 textView.setTextSize(16);
                 textView.setMaxLines(5);
 
-                int color = colors.get(position);
-                int darkenedColor = Color.rgb(
-                        Color.red(color) * 192 / 256,
-                        Color.green(color) * 192 / 256,
-                        Color.blue(color) * 192 / 256);
+                int colorCircle = colors.get(position);
+                int borderColor;
+                if ((Color.red(colorCircle) + Color.green(colorCircle) + Color.blue(colorCircle)) > 60) {
+                    borderColor = Color.rgb(
+                            Color.red(colorCircle) * 192 / 256,
+                            Color.green(colorCircle) * 192 / 256,
+                            Color.blue(colorCircle) * 192 / 256);
+                } else {
+                    borderColor = Color.rgb(
+                            192,
+                            192,
+                            192);
+                }
 
                 GradientDrawable oval = new GradientDrawable();
                 oval.setShape(GradientDrawable.OVAL);
                 oval.setSize(80, 80);
-                oval.setColor(color);
-                oval.setStroke((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics), darkenedColor);
+                oval.setColor(colorCircle);
+                oval.setStroke((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics), borderColor);
                 textView.setCompoundDrawablesRelativeWithIntrinsicBounds(oval, null, null, null);
 
                 textView.setCompoundDrawablePadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, displayMetrics));

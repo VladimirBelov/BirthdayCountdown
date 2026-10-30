@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 15.10.2026, 16:49
+  ~  * Created by Vladimir Belov on 30.10.2026, 10:12
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 13.10.2026, 14:33
+  ~  * Last modified 30.10.2026, 09:40
   ~  */
   -->
 
@@ -36,17 +36,18 @@
 
         <TextView
             android:id="@+id/buttonClose"
-            android:layout_width="8dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_weight="1"
-            android:contentDescription="@string/button_close"
             android:gravity="end"
             android:maxLines="1"
+            android:paddingStart="6dp"
             android:paddingEnd="6dp"
-            android:textAlignment="textEnd"
             android:textSize="14sp"
             android:textStyle="bold"
+            android:textAlignment="textEnd"
+            android:contentDescription="@string/button_close"
             android:background="?attr/windowTitleColor"
             android:textColor="?attr/windowTitleTextColor"
             tools:ignore="TextSizeCheck" />
@@ -87,6 +88,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:drawableStart="@android:drawable/ic_menu_my_calendar"
+                        android:contentDescription="@string/event_photo_pick_contact_hint"
                         android:background="@android:color/transparent"
                         android:visibility="gone" />
 
@@ -96,6 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:drawableStart="@android:drawable/ic_menu_gallery"
+                        android:contentDescription="@string/event_photo_select_photo_hint"
                         android:background="@android:color/transparent"
                         android:visibility="gone" />
 
@@ -105,6 +108,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:drawableStart="@android:drawable/ic_menu_close_clear_cancel"
+                        android:contentDescription="@string/event_photo_clear_photo_hint"
                         android:background="@android:color/transparent"
                         android:visibility="gone" />
                 </LinearLayout>
@@ -233,6 +237,7 @@
                                 android:maxLines="3"
                                 android:textSize="12sp"
                                 android:paddingHorizontal="4dp"
+                                android:contentDescription="@string/local_event_dialog_caption_org"
                                 android:textColor="?attr/dialogTextColor" />
 
                         </LinearLayout>
@@ -272,6 +277,7 @@
                                 android:gravity="center_vertical"
                                 android:importantForAutofill="no"
                                 android:paddingHorizontal="4dp"
+                                android:contentDescription="@string/local_event_dialog_date_title"
                                 android:textColor="?attr/dialogTextColor" />
 
                         </LinearLayout>
@@ -309,6 +315,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingHorizontal="4dp"
                                 android:textColor="?attr/dialogTextColor"
+                                android:contentDescription="@string/local_event_dialog_type_title"
                                 tools:ignore="TouchTargetSizeCheck" />
 
                             <TextView
@@ -358,6 +365,7 @@
                                 android:maxLines="10"
                                 android:textSize="12sp"
                                 android:paddingHorizontal="4dp"
+                                android:contentDescription="@string/local_event_dialog_caption_desc"
                                 android:textColor="?attr/dialogTextColor" />
 
                         </LinearLayout>
@@ -411,6 +419,7 @@
                                     android:maxLines="3"
                                     android:textSize="12sp"
                                     android:paddingHorizontal="4dp"
+                                    android:contentDescription="@string/local_event_dialog_caption_url"
                                     android:textColor="?attr/dialogTextColor" />
 
                             </LinearLayout>
