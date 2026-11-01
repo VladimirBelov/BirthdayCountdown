@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.10.2026, 02:50
+  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.10.2026, 21:04
+  ~  * Last modified 02.11.2026, 00:49
   ~  */
   -->
 
@@ -38,6 +38,7 @@
     <string name="menu_filter_events">Filtrar…</string>
     <string name="menu_events_sources">Fontes…</string>
     <string name="menu_events_types">Tipos de eventos…</string>
+    <string name="menu_event_display_config">Editar layout…</string>
     <string name="menu_hints">Dicas de pesquisa…</string>
     <string name="menu_context_edit_contact">Editar contato</string>
     <string name="menu_context_open_contact">Abrir contato</string>
@@ -157,6 +158,8 @@
     <string name="msg_hint_search_all">Pesquisar em todos os lugares</string>
     <string name="msg_hint_global_search">Pesquisar aniversários e eventos</string>
     <string name="msg_hint_faq_search">Pesquisar no texto…</string>
+    <string name="msg_hint_select_color">Selecionar cor…</string>
+    <string name="msg_hint_additional_settings">Configurações adicionais…</string>
     <string name="msg_notifications_soon_no_events">Nenhum evento nos dias escolhidos</string>
     <string name="msg_notifications_soon">"Eventos em breve - "</string>
     <string name="msg_notifications_all">"Eventos - "</string>
@@ -224,6 +227,11 @@
 
     <string name="hint_ContactIcon">Foto</string>
     <string name="hint_Name">Nome completo</string>
+    <string name="hint_JobTitle">Cargo</string>
+    <string name="hint_Organization">Organização</string>
+    <string name="hint_EventType">Tipo de evento</string>
+    <string name="hint_EventDescription">Descrição</string>
+    <string name="hint_WebLink">Link da web</string>
     <string name="hint_Age">Idade</string>
     <string name="hint_Date">Data</string>
     <string name="hint_EventDistance">Antes do evento</string>
@@ -567,6 +575,7 @@
     <string name="pref_List_FontMagnify_seek_details">Detalhes do evento:</string>
     <string name="pref_List_FontMagnify_seek_date">Data:</string>
     <string name="pref_List_FontMagnify_seek_age">Idade:</string>
+    <string name="pref_List_FontMagnify_seek_photo">Foto:</string>
 
     <string name="pref_Color_title">Cor:</string>
     <string name="pref_Red_title">Vermelho:</string>
@@ -690,6 +699,9 @@
         <item>Conta do evento e data bruta</item>
     </string-array>
 
+    <string name="pref_List_EventInfo_Config_title">Layout do evento</string>
+    <string name="pref_List_EventInfo_Config_summary">Personalizar layout do evento</string>
+
     <string name="pref_List_OnClick_title">Ação ao clicar</string>
     <string name="pref_List_OnClick_summary">O que fazer no clique do evento</string>
     <string-array name="pref_List_OnClick_entries">
@@ -757,7 +769,9 @@
     <string name="pref_EventInfo_Dividers">Divisórias de eventos</string>
     <string name="pref_EventInfo_ButtonConfig">Botão Configurar</string>
     <string name="pref_EventInfo_Photo">Foto do contato</string>
-    <string name="pref_EventInfo_EventIcon">🎂 Ícone do tipo de evento</string>
+    <string name="pref_EventInfo_EventType">Tipo de evento</string>
+    <string name="pref_EventInfo_EventIcon">🖼️ Ícone do tipo de evento</string>
+    <string name="pref_EventInfo_EventEmoji">🎂 Emoji do tipo de evento</string>
     <string name="pref_EventInfo_EventLabel">Rótulo original do evento</string>
     <string name="pref_EventInfo_EventCaption">Legenda do evento</string>
     <string name="pref_EventInfo_FavIcon">🌟 Ícone de favoritos</string>
@@ -784,7 +798,9 @@
     <string name="pref_EventInfo_EventDayOfWeekFar">Dia da semana do evento (não próximo ao evento)</string>
     <string name="pref_EventInfo_Organization">Organização</string>
     <string name="pref_EventInfo_JobTitle">Título</string>
-    <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Ícone de origem do evento</string>
+    <string name="pref_EventInfo_Nickname">Apelido</string>
+    <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Ícone da fonte do evento</string>
+    <string name="pref_EventInfo_WebLink">🌐 Link da web</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Link da Web disponível</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Colorir todos os eventos pela cor da data</string>
     <string name="pref_EventInfo_ShowNearestEventPhoto">Exibir foto de contato para o evento mais próximo</string>
@@ -1494,6 +1510,40 @@ Clique longamente no item para selecionar a cor"</string>
     <string name="pref_Feature_Adv_Info_description">Mostrar informações mais detalhadas dentro dos elementos da interface: estatísticas, contagem de eventos, resumo dos valores das configurações, etc.</string>
     <string name="pref_Feature_Adv_Actions_title">Mais ações</string>
     <string name="pref_Feature_Adv_Actions_description">Habilitar mais ações para o tratamento de eventos</string>
+    <string name="pref_Feature_Edit_Layout_title">Layout do evento</string>
+    <string name="pref_Feature_Edit_Layout_description">Ativar edição do layout do evento</string>
+
+    <string name="event_display_config_title">Layout do Evento</string>
+    <string name="section_common">Geral</string>
+    <string name="section_before_event">Antes do evento</string>
+    <string name="section_event_details">Detalhes do evento</string>
+    <string name="section_dates">Datas</string>
+
+    <string name="param_dates_pos">Posição da idade</string>
+    <string name="param_when">Quando (Hoje/Amanhã/…)</string>
+    <string name="param_day_of_week">Dia da semana</string>
+    <string name="param_event_source">Fonte do evento</string>
+    <string name="param_description">Notas ou descrição</string>
+    <string name="param_debug_info">Tipo de conta e data bruta</string>
+    <string name="desc_settings_title">Modo de exibição da descrição</string>
+    <string name="desc_setting_inline">Mostrar logo abaixo dos detalhes</string>
+    <string name="desc_setting_triangle">Mostrar via triângulo de expansão</string>
+    <string name="desc_setting_hidden">Oculto</string>
+
+    <string name="name_settings_title">Configurações de nome</string>
+    <string name="name_setting_split">Dividir nome em linhas (para eventos de contatos)</string>
+    <string name="zodiac_settings_title">Configurações de zodíaco</string>
+    <string name="age_next_settings_title">Configurações da próxima idade</string>
+    <string name="age_next_show_full">Com descrição completa ("anos", "meses", etc.)</string>
+    <string name="age_next_style_title">Estilo de exibição:</string>
+    <string name="age_next_style_normal">Normal</string>
+    <string name="age_next_style_bold">Negrito</string>
+    <string name="age_next_style_shadow">Sombra</string>
+    <string name="msg_saved">Salvo</string>
+    <string name="msg_reset_config_confirmation">Redefinir configuração de exibição para os padrões?</string>
+    <string name="param_hidden">Oculto</string>
+    <string name="param_top">Topo</string>
+    <string name="param_center">Centro</string>
 
     <!-- https://pt.wikipedia.org/wiki/Anivers%C3%A1rio_de_casamento -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papel</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.10.2026, 00:50
+  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.10.2026, 00:48
+  ~  * Last modified 02.11.2026, 00:02
   ~  */
   -->
 
@@ -227,6 +227,11 @@
 
     <string name="hint_ContactIcon">Фото</string>
     <string name="hint_Name">ФИО</string>
+    <string name="hint_JobTitle">Должность</string>
+    <string name="hint_Organization">Организация</string>
+    <string name="hint_EventType">Тип события</string>
+    <string name="hint_EventDescription">Описание</string>
+    <string name="hint_WebLink">Web ссылка</string>
     <string name="hint_Age">Возраст</string>
     <string name="hint_Date">Дата</string>
     <string name="hint_EventDistance">До события</string>
@@ -570,6 +575,7 @@
     <string name="pref_List_FontMagnify_seek_details">Детали:</string>
     <string name="pref_List_FontMagnify_seek_date">Дата:</string>
     <string name="pref_List_FontMagnify_seek_age">Возраст:</string>
+    <string name="pref_List_FontMagnify_seek_photo">Фото:</string>
 
     <string name="pref_Color_title">Цвет:</string>
     <string name="pref_Red_title">Красный:</string>

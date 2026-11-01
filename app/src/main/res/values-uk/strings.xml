@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.10.2026, 02:50
+  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.10.2026, 21:05
+  ~  * Last modified 02.11.2026, 00:49
   ~  */
   -->
 
@@ -38,6 +38,7 @@
     <string name="menu_filter_events">Фільтр…</string>
     <string name="menu_events_sources">Джерела…</string>
     <string name="menu_events_types">Типи подій…</string>
+    <string name="menu_event_display_config">Змінити макет…</string>
     <string name="menu_hints">Пошукові підказки…</string>
     <string name="menu_context_edit_contact">Редагувати контакт</string>
     <string name="menu_context_open_contact">Відкрити контакт</string>
@@ -157,6 +158,8 @@
     <string name="msg_hint_search_all">Шукати всюди</string>
     <string name="msg_hint_global_search">Пошук подій</string>
     <string name="msg_hint_faq_search">Пошук у тексті…</string>
+    <string name="msg_hint_select_color">Виберіть колір…</string>
+    <string name="msg_hint_additional_settings">Додаткові налаштування…</string>
     <string name="msg_notifications_soon_no_events">Немає подій за вибрані дні</string>
     <string name="msg_notifications_soon">"Незабаром подій - "</string>
     <string name="msg_notifications_all">"Подій - "</string>
@@ -224,6 +227,11 @@
 
     <string name="hint_ContactIcon">Фото</string>
     <string name="hint_Name">ПІБ</string>
+    <string name="hint_JobTitle">Посада</string>
+    <string name="hint_Organization">Організація</string>
+    <string name="hint_EventType">Тип події</string>
+    <string name="hint_EventDescription">Опис</string>
+    <string name="hint_WebLink">Вебпосилання</string>
     <string name="hint_Age">Вік</string>
     <string name="hint_Date">Дата</string>
     <string name="hint_EventDistance">До події</string>
@@ -567,6 +575,7 @@
     <string name="pref_List_FontMagnify_seek_details">Деталі події:</string>
     <string name="pref_List_FontMagnify_seek_date">Дата:</string>
     <string name="pref_List_FontMagnify_seek_age">Вік:</string>
+    <string name="pref_List_FontMagnify_seek_photo">Фото:</string>
 
     <string name="pref_Color_title">Колір:</string>
     <string name="pref_Red_title">Червоний:</string>
@@ -690,6 +699,9 @@
         <item>Тип аккаунта і збережена дата</item>
     </string-array>
 
+    <string name="pref_List_EventInfo_Config_title">Макет події</string>
+    <string name="pref_List_EventInfo_Config_summary">Налаштувати макет події</string>
+
     <string name="pref_List_OnClick_title">Дія при натисканні</string>
     <string name="pref_List_OnClick_summary">Що робити при натисканні на подію</string>
     <string-array name="pref_List_OnClick_entries">
@@ -757,7 +769,9 @@
     <string name="pref_EventInfo_Dividers">Розділювачі подій</string>
     <string name="pref_EventInfo_ButtonConfig">Кнопка конфігурації</string>
     <string name="pref_EventInfo_Photo">Фото контакту</string>
-    <string name="pref_EventInfo_EventIcon">🎂 Іконка типу події</string>
+    <string name="pref_EventInfo_EventType">Тип події</string>
+    <string name="pref_EventInfo_EventIcon">🖼️ Іконка типу події</string>
+    <string name="pref_EventInfo_EventEmoji">🎂 Емодзі типу події</string>
     <string name="pref_EventInfo_EventLabel">Оригінальна мітка події</string>
     <string name="pref_EventInfo_EventCaption">Підпис до події</string>
     <string name="pref_EventInfo_FavIcon">🌟 Значок вибраного</string>
@@ -784,7 +798,9 @@
     <string name="pref_EventInfo_EventDayOfWeekFar">День тижня події (далека подія)</string>
     <string name="pref_EventInfo_Organization">Організація</string>
     <string name="pref_EventInfo_JobTitle">Посада</string>
-    <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Значок джерела події</string>
+    <string name="pref_EventInfo_Nickname">Псевдонім</string>
+    <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Іконка джерела події</string>
+    <string name="pref_EventInfo_WebLink">🌐 Вебпосилання</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Веб-посилання доступне</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Розфарбувати всі події кольором дати</string>
     <string name="pref_EventInfo_ShowNearestEventPhoto">Показати фотографію контакту для найближчої події</string>
@@ -1492,6 +1508,40 @@
     <string name="pref_Feature_Adv_Info_description">Показати детальнішу інформацію всередині елементів інтерфейсу: статистика, кількість подій, зведення значень налаштувань тощо.</string>
     <string name="pref_Feature_Adv_Actions_title">Більше дій</string>
     <string name="pref_Feature_Adv_Actions_description">Увімкнути більше дій для обробки подій</string>
+    <string name="pref_Feature_Edit_Layout_title">Макет події</string>
+    <string name="pref_Feature_Edit_Layout_description">Увімкнути редагування макета події</string>
+
+    <string name="event_display_config_title">Макет події</string>
+    <string name="section_common">Загальні</string>
+    <string name="section_before_event">До події</string>
+    <string name="section_event_details">Подробиці події</string>
+    <string name="section_dates">Дати</string>
+
+    <string name="param_dates_pos">Позиція віку</string>
+    <string name="param_when">Коли (Сьогодні/Завтра/…)</string>
+    <string name="param_day_of_week">День тижня</string>
+    <string name="param_event_source">Джерело події</string>
+    <string name="param_description">Нотатки або опис</string>
+    <string name="param_debug_info">Тип акаунта та сирий формат дати</string>
+    <string name="desc_settings_title">Режим відображення опису</string>
+    <string name="desc_setting_inline">Показувати одразу під подробицями</string>
+    <string name="desc_setting_triangle">Показувати через трикутник розгортання</string>
+    <string name="desc_setting_hidden">Приховано</string>
+
+    <string name="name_settings_title">Налаштування імені</string>
+    <string name="name_setting_split">Розбивати ім\'я на рядки (для подій контактів)</string>
+    <string name="zodiac_settings_title">Налаштування знаків зодіаку</string>
+    <string name="age_next_settings_title">Налаштування наступного віку</string>
+    <string name="age_next_show_full">З повним описом ("років", "місяців" тощо)</string>
+    <string name="age_next_style_title">Стиль відображення:</string>
+    <string name="age_next_style_normal">Звичайний</string>
+    <string name="age_next_style_bold">Жирний</string>
+    <string name="age_next_style_shadow">З тінню</string>
+    <string name="msg_saved">Збережено</string>
+    <string name="msg_reset_config_confirmation">Скинути конфігурацію відображення до значень за замовчуванням?</string>
+    <string name="param_hidden">Приховано</string>
+    <string name="param_top">Зверху</string>
+    <string name="param_center">По центру</string>
 
     <!-- http://pozdravok.ru/pozdravleniya/yubiley-svadby/
  https://kakaya-svadba.ru/

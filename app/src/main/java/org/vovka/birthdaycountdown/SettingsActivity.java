@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.10.2026, 10:12
+ *  * Created by Vladimir Belov on 02.11.2026, 01:20
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 30.10.2026, 10:10
+ *  * Last modified 02.11.2026, 00:12
  *
  */
 
@@ -3532,6 +3532,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             int dimen_details = (int) (eventsData.dimen_List_details / eventsData.displayMetrics_density);
             int dimen_name = (int) (eventsData.dimen_List_name / eventsData.displayMetrics_density);
             int dimen_date = (int) (eventsData.dimen_list_date / eventsData.displayMetrics_density);
+            int dimen_photo = (int) (eventsData.dimen_list_photo / eventsData.displayMetrics_density);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(
                     new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog))
@@ -3702,6 +3703,42 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             });
             UiTools.setupSeekBarButtons(view, seekAge, R.id.btnAgeMinus, R.id.btnAgePlus);
 
+            //Размер: Фото
+            TextView seek6_label = view.findViewById(R.id.seek6_label);
+            seek6_label.setText(getString(R.string.pref_List_FontMagnify_seek_photo));
+
+            SeekBar seekPhoto = view.findViewById(R.id.seekPhoto);
+            seekPhoto.setProgress(eventsData.preferences_list_magnify_photo + 5);
+
+            TextView seek6_progress = view.findViewById(R.id.seek6_progress);
+            seek6_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekPhoto.getProgress() - 5) * 10)));
+
+            if (photoEvent != null) {
+                android.view.ViewGroup.LayoutParams paramsPhoto = photoEvent.getLayoutParams();
+                int sizePhoto = ImageUtils.Dip2Px(getResources(), (int) (dimen_photo * (1 + eventsData.preferences_list_magnify_photo * 0.1)));
+                paramsPhoto.width = sizePhoto;
+                paramsPhoto.height = sizePhoto;
+                photoEvent.setLayoutParams(paramsPhoto);
+            }
+
+            seekPhoto.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    seek6_progress.setText(getString(R.string.pref_List_FontMagnify_progress, String.valueOf(100 + (seekPhoto.getProgress() - 5) * 10)));
+                    if (photoEvent != null) {
+                        android.view.ViewGroup.LayoutParams paramsPhoto = photoEvent.getLayoutParams();
+                        int sizePhoto = ImageUtils.Dip2Px(getResources(), (int) (dimen_photo * (1 + (seekPhoto.getProgress() - 5) * 0.1)));
+                        paramsPhoto.width = sizePhoto;
+                        paramsPhoto.height = sizePhoto;
+                        photoEvent.setLayoutParams(paramsPhoto);
+                    }
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+            UiTools.setupSeekBarButtons(view, seekPhoto, R.id.btnPhotoMinus, R.id.btnPhotoPlus);
+
             dialog.setOnShowListener(arg0 -> {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
                     eventsData.setPreferences_List_FontMagnify(
@@ -3709,7 +3746,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             seekName.getProgress() - 5,
                             seekLabel.getProgress() - 5,
                             seekDate.getProgress() - 5,
-                            seekAge.getProgress() - 5
+                            seekAge.getProgress() - 5,
+                            seekPhoto.getProgress() - 5
                     );
                     eventsData.savePreferences();
                     dialog.dismiss();
@@ -3720,6 +3758,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     seekLabel.setProgress(5);
                     seekDate.setProgress(5);
                     seekAge.setProgress(5);
+                    seekPhoto.setProgress(5);
                 });
 
             });
@@ -4099,6 +4138,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_List_FontMagnify_Details_key),
                         getString(R.string.pref_List_FontMagnify_Distance_key),
                         getString(R.string.pref_List_FontMagnify_Name_key),
+                        getString(R.string.pref_List_FontMagnify_Photo_key),
                         getString(R.string.pref_List_QuickAction_key),
                         getString(R.string.pref_LocalEvents_PhotoSize_key),
                         getString(R.string.pref_Notifications2_ChannelID),
@@ -4227,6 +4267,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                         getString(R.string.pref_Events_Favorite_key),
                         getString(R.string.pref_Events_Favorite_rawIds_key),
                         getString(R.string.pref_List_EventInfo_key),
+                        getString(R.string.pref_List_EventInfo_Config_key),
                         getString(R.string.pref_List_EventSources_key),
                         getString(R.string.pref_List_AgeFormat_key),
                         getString(R.string.pref_MergedID_key),

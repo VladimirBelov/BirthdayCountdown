@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.10.2026, 02:50
+  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.10.2026, 21:03
+  ~  * Last modified 02.11.2026, 00:49
   ~  */
   -->
 
@@ -38,6 +38,7 @@
     <string name="menu_filter_events">Filtre…</string>
     <string name="menu_events_sources">Sources…</string>
     <string name="menu_events_types">"Types d'événements…"</string>
+    <string name="menu_event_display_config">Modifier la disposition…</string>
     <string name="menu_hints">Astuces de recherche…</string>
     <string name="menu_context_edit_contact">Modifier le contact</string>
     <string name="menu_context_open_contact">Ouvrir le contact</string>
@@ -157,6 +158,8 @@
     <string name="msg_hint_search_all">Rechercher partout</string>
     <string name="msg_hint_global_search">Rechercher des anniversaires et des événements</string>
     <string name="msg_hint_faq_search">Rechercher dans le texte…</string>
+    <string name="msg_hint_select_color">Sélectionner la couleur…</string>
+    <string name="msg_hint_additional_settings">Paramètres supplémentaires…</string>
     <string name="msg_notifications_soon_no_events">Aucun événement pour les jours sélectionnés</string>
     <string name="msg_notifications_soon">"Événements bientôt - "</string>
     <string name="msg_notifications_all">"Événements - "</string>
@@ -224,6 +227,11 @@
 
     <string name="hint_ContactIcon">Photo</string>
     <string name="hint_Name">Nom complet</string>
+    <string name="hint_JobTitle">Intitulé du poste</string>
+    <string name="hint_Organization">Organisation</string>
+    <string name="hint_EventType">"Type d'événement"</string>
+    <string name="hint_EventDescription">Description</string>
+    <string name="hint_WebLink">Lien web</string>
     <string name="hint_Age">Âge</string>
     <string name="hint_Date">Date</string>
     <string name="hint_EventDistance">"Avant l'événement"</string>
@@ -567,6 +575,7 @@
     <string name="pref_List_FontMagnify_seek_details">"Détails de l'événement:"</string>
     <string name="pref_List_FontMagnify_seek_date">Date:</string>
     <string name="pref_List_FontMagnify_seek_age">Âge:</string>
+    <string name="pref_List_FontMagnify_seek_photo">Photo:</string>
 
     <string name="pref_Color_title">Couleur:</string>
     <string name="pref_Red_title">Rouge:</string>
@@ -690,6 +699,9 @@
         <item>"Compte d'événement et date brute"</item>
     </string-array>
 
+    <string name="pref_List_EventInfo_Config_title">Mise en page de l\'événement</string>
+    <string name="pref_List_EventInfo_Config_summary">Personnaliser la mise en page de l\'événement</string>
+
     <string name="pref_List_OnClick_title">Action sur le clic</string>
     <string name="pref_List_OnClick_summary">Que faire en cas de clic sur un événement</string>
     <string-array name="pref_List_OnClick_entries">
@@ -757,7 +769,9 @@
     <string name="pref_EventInfo_Dividers">"Diviseurs des événements"</string>
     <string name="pref_EventInfo_ButtonConfig">Bouton de configuration</string>
     <string name="pref_EventInfo_Photo">Photo du contact</string>
-    <string name="pref_EventInfo_EventIcon">"🎂 Icône de type d'événement"</string>
+    <string name="pref_EventInfo_EventType">Type d\'événement</string>
+    <string name="pref_EventInfo_EventIcon">🖼️ Icône du type d\'événement</string>
+    <string name="pref_EventInfo_EventEmoji">🎂 Emoji du type d\'événement</string>
     <string name="pref_EventInfo_EventLabel">"Étiquette d'événement d'origine"</string>
     <string name="pref_EventInfo_EventCaption">"Légende de l'événement"</string>
     <string name="pref_EventInfo_FavIcon">"🌟 Icône d'événement favori"</string>
@@ -784,7 +798,9 @@
     <string name="pref_EventInfo_EventDayOfWeekFar">"Jour de la semaine de l'événement (si l'événement n'est pas le plus proche)"</string>
     <string name="pref_EventInfo_Organization">Organisation</string>
     <string name="pref_EventInfo_JobTitle">Emploi</string>
-    <string name="pref_EventInfo_SourceIcon">"👨‍💼📆📁 Icône de source d'événement"</string>
+    <string name="pref_EventInfo_Nickname">Surnom</string>
+    <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Icône de la source de l\'événement</string>
+    <string name="pref_EventInfo_WebLink">🌐 Lien web</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Il y a un lien Web</string>
     <string name="pref_EventInfo_ColorizeEntireRow">"Colorer la date de tout l'événement"</string>
     <string name="pref_EventInfo_ShowNearestEventPhoto">"Afficher la photo de contact pour l'événement le plus proche"</string>
@@ -1494,6 +1510,40 @@ Cliquez longuement sur l'élément pour sélectionner la couleur"</string>
     <string name="pref_Feature_Adv_Info_description">"Afficher des informations plus détaillées dans les éléments d'interface: statistiques, nombre d'événements, récapitulatif des valeurs des paramètres, etc."</string>
     <string name="pref_Feature_Adv_Actions_title">"Plus d'actions"</string>
     <string name="pref_Feature_Adv_Actions_description">"Activer plus d'actions pour la gestion des événements"</string>
+    <string name="pref_Feature_Edit_Layout_title">Mise en page de l\'événement</string>
+    <string name="pref_Feature_Edit_Layout_description">Activer la modification de la mise en page de l\'événement</string>
+
+    <string name="event_display_config_title">Mise en page de l\'événement</string>
+    <string name="section_common">Général</string>
+    <string name="section_before_event">Avant l\'événement</string>
+    <string name="section_event_details">Détails de l\'événement</string>
+    <string name="section_dates">Dates</string>
+
+    <string name="param_dates_pos">Position de l\'âge</string>
+    <string name="param_when">Quand (Aujourd\'hui/Demain/…)</string>
+    <string name="param_day_of_week">Jour de la semaine</string>
+    <string name="param_event_source">Source de l\'événement</string>
+    <string name="param_description">Notes ou description</string>
+    <string name="param_debug_info">Type de compte et date brute</string>
+    <string name="desc_settings_title">Mode d\'affichage de la description</string>
+    <string name="desc_setting_inline">Afficher immédiatement sous les détails</string>
+    <string name="desc_setting_triangle">Afficher via le triangle d\'expansion</string>
+    <string name="desc_setting_hidden">Masqué</string>
+
+    <string name="name_settings_title">Paramètres du nom</string>
+    <string name="name_setting_split">Diviser le nom en lignes (pour les événements de contact)</string>
+    <string name="zodiac_settings_title">Paramètres du zodiaque</string>
+    <string name="age_next_settings_title">Paramètres du prochain âge</string>
+    <string name="age_next_show_full">Avec description complète ("ans", "mois", etc.)</string>
+    <string name="age_next_style_title">Style d\'affichage :</string>
+    <string name="age_next_style_normal">Normal</string>
+    <string name="age_next_style_bold">Gras</string>
+    <string name="age_next_style_shadow">Ombre</string>
+    <string name="msg_saved">Enregistré</string>
+    <string name="msg_reset_config_confirmation">Réinitialiser la configuration d\'affichage aux valeurs par défaut ?</string>
+    <string name="param_hidden">Masqué</string>
+    <string name="param_top">Haut</string>
+    <string name="param_center">Centre</string>
 
     <!--https://fr.wikipedia.org/wiki/Anniversaire_de_mariage-->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Coton</string>

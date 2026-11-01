@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 05.10.2026, 23:07
+  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 05.10.2026, 22:59
+  ~  * Last modified 01.11.2026, 23:48
   ~  */
   -->
 
@@ -16,6 +16,65 @@
     android:padding="?attr/dialogPreferredPadding">
 
     <include layout="@layout/entry_main"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:id="@+id/seek6_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="?android:attr/textColorSecondary"/>
+
+        <TextView
+            android:id="@+id/seek6_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textColor="?android:attr/textColorSecondary"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnPhotoMinus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/hint_Less"
+            android:src="@drawable/ic_menu_sub"
+            app:tint="?attr/colorAccent" />
+
+        <SeekBar
+            android:id="@+id/seekPhoto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="-8dp"
+            android:layout_marginEnd="-8dp"
+            android:maxHeight="50dp"
+            android:minHeight="50dp"
+            android:thumbTintMode="src_in"
+            android:max="20"/>
+
+        <ImageButton
+            android:id="@+id/btnPhotoPlus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/hint_More"
+            android:src="@android:drawable/ic_menu_add"
+            app:tint="?attr/colorAccent" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

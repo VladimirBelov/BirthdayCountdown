@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 28.10.2026, 00:50
+  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 28.10.2026, 00:24
+  ~  * Last modified 02.11.2026, 00:02
   ~  */
   -->
 
@@ -227,6 +227,11 @@
 
     <string name="hint_ContactIcon">Photo</string>
     <string name="hint_Name">Full name</string>
+    <string name="hint_JobTitle">Job title</string>
+    <string name="hint_Organization">Organization</string>
+    <string name="hint_EventType">Event type</string>
+    <string name="hint_EventDescription">Description</string>
+    <string name="hint_WebLink">Web link</string>
     <string name="hint_Age">Age</string>
     <string name="hint_Date">Date</string>
     <string name="hint_EventDistance">Before event</string>
@@ -570,6 +575,7 @@
     <string name="pref_List_FontMagnify_seek_details">Event details:</string>
     <string name="pref_List_FontMagnify_seek_date">Date:</string>
     <string name="pref_List_FontMagnify_seek_age">Age:</string>
+    <string name="pref_List_FontMagnify_seek_photo">Photo:</string>
 
     <string name="pref_Color_title">Color:</string>
     <string name="pref_Red_title">Red:</string>
@@ -2123,6 +2129,7 @@ Long click on item to select color"</string>
     <string name="pref_List_FontMagnify_Details_key" translatable="false">List_FontMagnify_Details</string>
     <string name="pref_List_FontMagnify_Date_key" translatable="false">List_FontMagnify_Date</string>
     <string name="pref_List_FontMagnify_Age_key" translatable="false">List_FontMagnify_Age</string>
+    <string name="pref_List_FontMagnify_Photo_key" translatable="false">List_FontMagnify_Photo</string>
 
     <string name="pref_List_Style_key" translatable="false">List_Style</string>
     <string name="pref_List_Style_default" translatable="false">@string/pref_List_Style_Card</string>

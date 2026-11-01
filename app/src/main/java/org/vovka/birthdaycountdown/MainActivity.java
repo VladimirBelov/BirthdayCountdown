@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.10.2026, 17:26
+ *  * Created by Vladimir Belov on 02.11.2026, 01:20
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.10.2026, 14:55
+ *  * Last modified 02.11.2026, 01:18
  *
  */
 
@@ -183,9 +183,32 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (DeviceTools.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
-                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
-                    layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
-                    layoutMain.setPadding(0, insets.bottom + ImageUtils.Sp2Px(resources, 62), 0, 0);
+                    // 1. Получаем размеры системных панелей отдельно
+                    Insets statusBarInsets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
+                    Insets navBarInsets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
+
+                    // 2. Ужимаем ВЕСЬ экран (включая Toolbar) по бокам до кнопок навигации,
+                    // а сверху добавляем отступ под статус-бар. Снизу оставляем 0, чтобы список уходил под кнопки.
+                    layoutCoordinator.setPadding(
+                            navBarInsets.left,
+                            statusBarInsets.top,
+                            navBarInsets.right,
+                            0
+                    );
+
+                    // Корректируем верхний отступ основного контента
+                    layoutMain.setPadding(0, ImageUtils.Sp2Px(resources, 62), 0, 0);
+
+                    // 3. Динамически выставляем отступ снизу для ListView, учитывая ориентацию
+                    if (listView != null) {
+                        // Применяем отступы к списку
+                        listView.setPadding(
+                                listView.getPaddingLeft(),
+                                listView.getPaddingTop(),
+                                listView.getPaddingRight(),
+                                navBarInsets.bottom
+                        );
+                    }
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
@@ -256,14 +279,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_backgroundColor, 0)));
                 listView.setDividerHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, displayMetrics));
-                int listPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics);
-                listView.setPadding(listPadding, listPadding, listPadding, listPadding);
 
             } else {
 
                 listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)));
                 listView.setDividerHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics));
-                listView.setPadding(0, 0, 0, 0);
 
             }
 
@@ -2424,14 +2444,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_backgroundColor, 0)));
                 listView.setDividerHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, displayMetrics));
-                int listPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics);
-                listView.setPadding(listPadding, listPadding, listPadding, listPadding);
 
             } else {
 
                 listView.setDivider(new ColorDrawable(ta.getColor(R.styleable.Theme_listDividerColor, 0)));
                 listView.setDividerHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, displayMetrics));
-                listView.setPadding(0, 0, 0, 0);
 
             }
 
@@ -2966,6 +2983,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         final int dimen_details;
         final int dimen_name;
         final int dimen_date;
+        final int dimen_photo;
         private final EventLayoutRenderer renderer;
         private final boolean useCustomLayout;
 
@@ -2977,6 +2995,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             dimen_details = (int) (eventsData.dimen_List_details / eventsData.displayMetrics_density);
             dimen_name = (int) (eventsData.dimen_List_name / eventsData.displayMetrics_density);
             dimen_date = (int) (eventsData.dimen_list_date / eventsData.displayMetrics_density);
+            dimen_photo = (int) (eventsData.dimen_list_photo / eventsData.displayMetrics_density);
 
             // Определяем, какой макет использовать
             this.useCustomLayout = eventsData.isFeatureEnabled(Constants.FEATURE_EDIT_LAYOUT);
@@ -3377,6 +3396,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 DateTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_date * (1 + eventsData.preferences_list_magnify_date * 0.1)));
                 CounterTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + eventsData.preferences_list_magnify_age * 0.1)));
             }
+            android.view.ViewGroup.LayoutParams paramsPhoto = EventIconImageView.getLayoutParams();
+            int sizePhoto = ImageUtils.Dip2Px(resources, (int) (dimen_photo * (1 + eventsData.preferences_list_magnify_photo * 0.1)));
+            paramsPhoto.width = sizePhoto;
+            paramsPhoto.height = sizePhoto;
+            PhotoImageView.setLayoutParams(paramsPhoto);
 
             return new ViewHolder(NameTextView, DayDistanceTextView, DateTextView, DetailsTextView, DescriptionTextView,
                     PhotoImageView, CounterTextView, EventIconImageView, ShowDescriptionImageView);

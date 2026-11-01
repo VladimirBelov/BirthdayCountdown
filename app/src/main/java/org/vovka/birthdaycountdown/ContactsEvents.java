@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.10.2026, 10:30
+ *  * Created by Vladimir Belov on 02.11.2026, 01:20
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.10.2026, 09:26
+ *  * Last modified 01.11.2026, 23:38
  *
  */
 
@@ -760,6 +760,7 @@ public class ContactsEvents {
     int preferences_list_magnify_details;
     int preferences_list_magnify_date;
     int preferences_list_magnify_age;
+    int preferences_list_magnify_photo;
     boolean preference_list_fastscroll;
 
     //Номера брать из R.string.pref_List_EventInfo_XXX
@@ -876,6 +877,8 @@ public class ContactsEvents {
     float dimen_List_name;
     /** Стартовый размер для дат события (в SP) */
     float dimen_list_date;
+    /** Стартовый размер для фото */
+    float dimen_list_photo;
     String currentLocale = "";
 
     //UI объекты
@@ -1754,6 +1757,7 @@ public class ContactsEvents {
             preferences_list_magnify_details = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Details_key), 0);
             preferences_list_magnify_date = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Date_key), 0);
             preferences_list_magnify_age = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Age_key), 0);
+            preferences_list_magnify_photo = getPreferenceInt(preferences, context.getString(R.string.pref_List_FontMagnify_Photo_key), 0);
             preference_list_fastscroll = getPreferenceBoolean(preferences, context.getString(R.string.pref_List_FastScroll_key), getResources().getBoolean(R.bool.pref_List_FastScroll_default));
             preferences_list_EventSources = getPreferenceStringSet(preferences, context.getString(R.string.pref_List_EventSources_key), new HashSet<>());
             preferences_list_events_scope = getPreferenceInt(preferences, context.getString(R.string.pref_Events_Scope), Constants.pref_Events_Scope_NotHidden);
@@ -2213,6 +2217,7 @@ public class ContactsEvents {
             dimen_List_details = resources.getDimension(R.dimen.event_details);
             dimen_List_name = resources.getDimension(R.dimen.event_name);
             dimen_list_date = resources.getDimension(R.dimen.event_date);
+            dimen_list_photo = resources.getDimension(R.dimen.eventlist_photoSize);
 
             // Была переконвертация иконок и символов событий. Пересохраняем в новом формате
             if (needResaveIcons) {
@@ -2469,6 +2474,7 @@ public class ContactsEvents {
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Details_key), preferences_list_magnify_details);
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Date_key), preferences_list_magnify_date);
             editor.putInt(context.getString(R.string.pref_List_FontMagnify_Age_key), preferences_list_magnify_age);
+            editor.putInt(context.getString(R.string.pref_List_FontMagnify_Photo_key), preferences_list_magnify_photo);
             editor.putInt(context.getString(R.string.pref_List_QuickAction_key), preferences_list_quick_action);
             editor.putString(context.getString(R.string.pref_Notifications_FactEvents_Count_key), Integer.toString(preferences_notifications_fact_event_count));
             editor.putString(context.getString(R.string.pref_Notifications2_FactEvents_Count_key), Integer.toString(preferences_notifications2_fact_event_count));
@@ -9824,12 +9830,13 @@ public class ContactsEvents {
         preferences_theme.prefNumber = themeNumber;
     }
 
-    void setPreferences_List_FontMagnify(int intDistance, int intName, int intDetails, int intDate, int intAge) {
+    void setPreferences_List_FontMagnify(int intDistance, int intName, int intDetails, int intDate, int intAge, int intPhoto) {
         preferences_list_magnify_distance = intDistance;
         preferences_list_magnify_name = intName;
         preferences_list_magnify_details = intDetails;
         preferences_list_magnify_date = intDate;
         preferences_list_magnify_age = intAge;
+        preferences_list_magnify_photo = intPhoto;
     }
 
     void showAnniversaryList(Context context, String age) {

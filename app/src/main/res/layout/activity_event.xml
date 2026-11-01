@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.10.2026, 10:12
+  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 30.10.2026, 09:40
+  ~  * Last modified 30.10.2026, 14:31
   ~  */
   -->
 
@@ -155,6 +155,7 @@
                                 android:maxLines="3"
                                 android:textSize="14sp"
                                 android:paddingHorizontal="4dp"
+                                android:contentDescription="@string/hint_Name"
                                 android:textColor="?attr/dialogTextColor" />
 
                         </LinearLayout>
@@ -196,6 +197,7 @@
                                 android:maxLines="3"
                                 android:textSize="12sp"
                                 android:paddingHorizontal="4dp"
+                                android:contentDescription="@string/hint_JobTitle"
                                 android:textColor="?attr/dialogTextColor" />
 
                         </LinearLayout>
@@ -237,7 +239,7 @@
                                 android:maxLines="3"
                                 android:textSize="12sp"
                                 android:paddingHorizontal="4dp"
-                                android:contentDescription="@string/local_event_dialog_caption_org"
+                                android:contentDescription="@string/hint_Organization"
                                 android:textColor="?attr/dialogTextColor" />
 
                         </LinearLayout>
@@ -277,7 +279,7 @@
                                 android:gravity="center_vertical"
                                 android:importantForAutofill="no"
                                 android:paddingHorizontal="4dp"
-                                android:contentDescription="@string/local_event_dialog_date_title"
+                                android:contentDescription="@string/hint_Date"
                                 android:textColor="?attr/dialogTextColor" />
 
                         </LinearLayout>
@@ -315,7 +317,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingHorizontal="4dp"
                                 android:textColor="?attr/dialogTextColor"
-                                android:contentDescription="@string/local_event_dialog_type_title"
+                                android:contentDescription="@string/hint_EventType"
                                 tools:ignore="TouchTargetSizeCheck" />
 
                             <TextView
@@ -365,7 +367,7 @@
                                 android:maxLines="10"
                                 android:textSize="12sp"
                                 android:paddingHorizontal="4dp"
-                                android:contentDescription="@string/local_event_dialog_caption_desc"
+                                android:contentDescription="@string/hint_EventDescription"
                                 android:textColor="?attr/dialogTextColor" />
 
                         </LinearLayout>
@@ -419,7 +421,7 @@
                                     android:maxLines="3"
                                     android:textSize="12sp"
                                     android:paddingHorizontal="4dp"
-                                    android:contentDescription="@string/local_event_dialog_caption_url"
+                                    android:contentDescription="@string/hint_WebLink"
                                     android:textColor="?attr/dialogTextColor" />
 
                             </LinearLayout>

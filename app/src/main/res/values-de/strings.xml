@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 11.10.2026, 02:50
+  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 10.10.2026, 21:02
+  ~  * Last modified 02.11.2026, 00:48
   ~  */
   -->
 
@@ -38,6 +38,7 @@
     <string name="menu_filter_events">Filtern…</string>
     <string name="menu_events_sources">Quellen…</string>
     <string name="menu_events_types">Ereignistypen…</string>
+    <string name="menu_event_display_config">Layout bearbeiten…</string>
     <string name="menu_hints">Suchhinweise…</string>
     <string name="menu_context_edit_contact">Kontakt bearbeiten</string>
     <string name="menu_context_open_contact">Kontakt öffnen</string>
@@ -157,6 +158,8 @@
     <string name="msg_hint_search_all">Überall suchen</string>
     <string name="msg_hint_global_search">Suche nach Ereignissen</string>
     <string name="msg_hint_faq_search">Im Text suchen…</string>
+    <string name="msg_hint_select_color">Farbe auswählen…</string>
+    <string name="msg_hint_additional_settings">Zusätzliche Einstellungen…</string>
     <string name="msg_notifications_soon_no_events">Keine Ereignisse für die ausgewählte Tage</string>
     <string name="msg_notifications_soon">"Ereignisse in Kürze - "</string>
     <string name="msg_notifications_all">"Ereignisse - "</string>
@@ -224,6 +227,11 @@
 
     <string name="hint_ContactIcon">Foto</string>
     <string name="hint_Name">Name</string>
+    <string name="hint_JobTitle">Berufsbezeichnung</string>
+    <string name="hint_Organization">Organisation</string>
+    <string name="hint_EventType">Ereignistyp</string>
+    <string name="hint_EventDescription">Beschreibung</string>
+    <string name="hint_WebLink">Weblink</string>
     <string name="hint_Age">Alter</string>
     <string name="hint_Date">Datum</string>
     <string name="hint_EventDistance">Bis zum Ereignis</string>
@@ -567,6 +575,7 @@
     <string name="pref_List_FontMagnify_seek_details">Ereignisdetails:</string>
     <string name="pref_List_FontMagnify_seek_date">Datum:</string>
     <string name="pref_List_FontMagnify_seek_age">Das Alter:</string>
+    <string name="pref_List_FontMagnify_seek_photo">Foto:</string>
 
     <string name="pref_Color_title">Farbe:</string>
     <string name="pref_Red_title">Rot:</string>
@@ -690,6 +699,9 @@
         <item>Kontotyp und Speicherdatum</item>
     </string-array>
 
+    <string name="pref_List_EventInfo_Config_title">Ereignislayout</string>
+    <string name="pref_List_EventInfo_Config_summary">Ereignislayout anpassen</string>
+
     <string name="pref_List_OnClick_title">Ereignisklick</string>
     <string name="pref_List_OnClick_summary">Was tun bei Anklicken des Ereignisses</string>
     <string-array name="pref_List_OnClick_entries">
@@ -757,7 +769,9 @@
     <string name="pref_EventInfo_Dividers">Teiler für Ereignisse</string>
     <string name="pref_EventInfo_ButtonConfig">Einstellungen-Taste</string>
     <string name="pref_EventInfo_Photo">Kontaktfoto</string>
-    <string name="pref_EventInfo_EventIcon">🎂 Ereignistyp-Symbol</string>
+    <string name="pref_EventInfo_EventType">Ereignistyp</string>
+    <string name="pref_EventInfo_EventIcon">🖼️ Ereignistyp-Symbol</string>
+    <string name="pref_EventInfo_EventEmoji">🎂 Ereignistyp-Emoji</string>
     <string name="pref_EventInfo_EventLabel">Original-Ereignisbezeichnung</string>
     <string name="pref_EventInfo_EventCaption">Ereignisbildunterschrift</string>
     <string name="pref_EventInfo_FavIcon">🌟 Favoriten Symbol</string>
@@ -784,7 +798,9 @@
     <string name="pref_EventInfo_EventDayOfWeekFar">Wochentag des Ereignisses (ferneres Ereignis)</string>
     <string name="pref_EventInfo_Organization">Unternehmen</string>
     <string name="pref_EventInfo_JobTitle">Titel</string>
-    <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Symbol für die Ereignisquelle</string>
+    <string name="pref_EventInfo_Nickname">Spitzname</string>
+    <string name="pref_EventInfo_SourceIcon">👨‍💼📆📁 Symbol der Ereignisquelle</string>
+    <string name="pref_EventInfo_WebLink">🌐 Weblink</string>
     <string name="pref_EventInfo_LinkIcon">🔗 Weblink vorhanden</string>
     <string name="pref_EventInfo_ColorizeEntireRow">Alle Ereignisse nach Datumsfarbe einfärben</string>
     <string name="pref_EventInfo_ShowNearestEventPhoto">Kontaktfoto für das nächstgelegene Ereignis anzeigen</string>
@@ -1493,6 +1509,40 @@ Klicken Sie lange auf das Element, um die Farbe auszuwählen"</string>
     <string name="pref_Feature_Adv_Info_description">Detailliertere Informationen zu den Oberflächenelementen anzeigen: Statistiken, Ereignisanzahl, Zusammenfassung der Einstellungswerte usw.</string>
     <string name="pref_Feature_Adv_Actions_title">Weitere Aktionen</string>
     <string name="pref_Feature_Adv_Actions_description">Weitere Aktionen für die Ereignisbehandlung aktivieren</string>
+    <string name="pref_Feature_Edit_Layout_title">Ereignislayout</string>
+    <string name="pref_Feature_Edit_Layout_description">Bearbeitung des Ereignislayouts aktivieren</string>
+
+    <string name="event_display_config_title">Ereignislayout</string>
+    <string name="section_common">Allgemein</string>
+    <string name="section_before_event">Vor dem Ereignis</string>
+    <string name="section_event_details">Ereignisdetails</string>
+    <string name="section_dates">Daten</string>
+
+    <string name="param_dates_pos">Altersposition</string>
+    <string name="param_when">Wann (Heute/Morgen/…)</string>
+    <string name="param_day_of_week">Wochentag</string>
+    <string name="param_event_source">Ereignisquelle</string>
+    <string name="param_description">Notizen oder Beschreibung</string>
+    <string name="param_debug_info">Kontotyp und Rohdatum</string>
+    <string name="desc_settings_title">Anzeigemodus der Beschreibung</string>
+    <string name="desc_setting_inline">Direkt unter den Details anzeigen</string>
+    <string name="desc_setting_triangle">Über Aufklapp-Dreieck anzeigen</string>
+    <string name="desc_setting_hidden">Ausgeblendet</string>
+
+    <string name="name_settings_title">Namenseinstellungen</string>
+    <string name="name_setting_split">Name in Zeilen aufteilen (für Kontakt-Ereignisse)</string>
+    <string name="zodiac_settings_title">Sternzeicheneinstellungen</string>
+    <string name="age_next_settings_title">Einstellungen für das nächste Alter</string>
+    <string name="age_next_show_full">Mit vollständiger Beschreibung ("Jahre", "Monate" usw.)</string>
+    <string name="age_next_style_title">Anzeigestil:</string>
+    <string name="age_next_style_normal">Normal</string>
+    <string name="age_next_style_bold">Fett</string>
+    <string name="age_next_style_shadow">Schatten</string>
+    <string name="msg_saved">Gespeichert</string>
+    <string name="msg_reset_config_confirmation">Anzeigekonfiguration auf Standardwerte zurücksetzen?</string>
+    <string name="param_hidden">Ausgeblendet</string>
+    <string name="param_top">Oben</string>
+    <string name="param_center">Mitte</string>
 
     <!-- https://blogs.transparent.com/german/7-german-wedding-milestones/   https://de.wikipedia.org/wiki/Hochzeitstag -->
     <string name="event_type_wedding_1" tools:keep="@string/event_type_wedding_1">Papierne Hochzeit</string>
