@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
+  ~  * Created by Vladimir Belov on 02.11.2026, 21:16
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.11.2026, 00:49
+  ~  * Last modified 02.11.2026, 21:15
   ~  */
   -->
 
@@ -918,8 +918,8 @@
     <string name="pref_Widgets_Color_EventFar_title">Événements lointains</string>
     <string name="pref_Widgets_Color_EventFar_summary">Couleur du nombre de jours pour les événements lointains</string>
 
-    <string name="pref_Widgets_Days_EventSoon_summary">Pendant combien de jours les événements sont considérés comme les plus proches</string>
     <string name="pref_Widgets_Days_EventSoon_title">"Événements proches"</string>
+    <string name="pref_Widgets_Days_EventSoon_summary">"Nombre de jours à l'avance pour qu'un événement soit considéré comme prochain. Permet également de désactiver la mise en surbrillance du nombre de jours restants"</string>
 
     <string name="widget_config_event_types_title">"Types des événements"</string>
     <string name="widget_config_event_types_description">"Quels événements afficher sur le widget"</string>

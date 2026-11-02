@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
+  ~  * Created by Vladimir Belov on 02.11.2026, 21:16
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.11.2026, 00:50
+  ~  * Last modified 02.11.2026, 21:13
   ~  */
   -->
 
@@ -918,8 +918,8 @@
     <string name="pref_Widgets_Color_EventFar_title">Wydarzenia w pobliżu</string>
     <string name="pref_Widgets_Color_EventFar_summary">Kolor liczby dni wydarzeń w pobliżu</string>
 
-    <string name="pref_Widgets_Days_EventSoon_summary">Ile dni wcześniej wydarzenia są uważane za najbliższe</string>
     <string name="pref_Widgets_Days_EventSoon_title">Nadchodzące wydarzenia</string>
+    <string name="pref_Widgets_Days_EventSoon_summary">Liczba dni wyprzedzenia, aby wydarzenie było uznawane za nadchodzące. Pozwala również wyłączyć podświetlenie liczby dni pozostałych do wydarzenia</string>
 
     <string name="widget_config_event_types_title">Typy wydarzeń</string>
     <string name="widget_config_event_types_description">Które wydarzenia mają być wyświetlane w widżecie</string>

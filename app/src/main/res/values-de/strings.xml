@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
+  ~  * Created by Vladimir Belov on 02.11.2026, 21:16
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.11.2026, 00:48
+  ~  * Last modified 02.11.2026, 21:12
   ~  */
   -->
 
@@ -918,8 +918,8 @@
     <string name="pref_Widgets_Color_EventFar_title">Ereignisse in der Ferne</string>
     <string name="pref_Widgets_Color_EventFar_summary">Farbe für die Anzahl der Tage der Ereignisse in der Ferne</string>
 
-    <string name="pref_Widgets_Days_EventSoon_summary">Ab wieviel Tagen gelten Ereignisse als nah</string>
     <string name="pref_Widgets_Days_EventSoon_title">Bevorstehende Ereignisse</string>
+    <string name="pref_Widgets_Days_EventSoon_summary">Anzahl der Tage im Voraus, ab denen Ereignisse als demnächst anstehend gelten. Ermöglicht auch das Deaktivieren der Hervorhebung der verbleibenden Tage</string>
 
     <string name="widget_config_event_types_title">Ereignistypen</string>
     <string name="widget_config_event_types_description">Welche Ereignisse im Widget angezeigt werden sollen </string>

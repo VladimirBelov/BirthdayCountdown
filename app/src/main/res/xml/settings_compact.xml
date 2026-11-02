@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 23.10.2026, 23:46
+  ~  * Created by Vladimir Belov on 02.11.2026, 21:16
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 23.10.2026, 22:54
+  ~  * Last modified 02.11.2026, 18:30
   ~  */
   -->
 
@@ -957,7 +957,7 @@
             android:key="@string/pref_Widgets_Color_EventCaption_key"
             android:title="@string/pref_Widgets_Color_EventCaption_title"
             android:summary="@string/pref_Widgets_Color_EventCaption_summary"
-            android:defaultValue="@color/pref_Widgets_Color_EventCaption_default"
+            app:defaultValue="@color/pref_Widgets_Color_EventCaption_default"
             android:icon="@drawable/ic_menu_paste"
             app:numColumns="5"
             app:itemLayout="@layout/item_color"
@@ -968,7 +968,7 @@
             android:key="@string/pref_Widgets_Color_WidgetCaption_key"
             android:title="@string/pref_Widgets_Color_WidgetCaption_title"
             android:summary="@string/pref_Widgets_Color_WidgetCaption_summary"
-            android:defaultValue="@color/pref_Widgets_Color_WidgetCaption_default"
+            app:defaultValue="@color/pref_Widgets_Color_WidgetCaption_default"
             android:icon="@drawable/ic_menu_paste"
             app:numColumns="5"
             app:itemLayout="@layout/item_color"

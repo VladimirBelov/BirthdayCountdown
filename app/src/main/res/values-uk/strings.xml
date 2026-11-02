@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
+  ~  * Created by Vladimir Belov on 02.11.2026, 21:16
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.11.2026, 00:49
+  ~  * Last modified 02.11.2026, 21:12
   ~  */
   -->
 
@@ -918,8 +918,8 @@
     <string name="pref_Widgets_Color_EventFar_title">Далекі події</string>
     <string name="pref_Widgets_Color_EventFar_summary">Колір кількості днів для далеких подій</string>
 
-    <string name="pref_Widgets_Days_EventSoon_summary">Кiлькiсть днів до подій, що вважаються найближчими</string>
     <string name="pref_Widgets_Days_EventSoon_title">Найближчі події</string>
+    <string name="pref_Widgets_Days_EventSoon_summary">За скільки днів події вважаються найближчими. Також дозволяє вимкнути підсвічування кількості днів до події</string>
 
     <string name="widget_config_event_types_title">Типи подій</string>
     <string name="widget_config_event_types_description">Які події будуть відображенi на віджеті</string>

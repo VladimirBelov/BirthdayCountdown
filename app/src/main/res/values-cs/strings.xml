@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
+  ~  * Created by Vladimir Belov on 02.11.2026, 21:16
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.11.2026, 00:50
+  ~  * Last modified 02.11.2026, 21:13
   ~  */
   -->
 
@@ -918,8 +918,8 @@
     <string name="pref_Widgets_Color_EventFar_title">Vzdálené události</string>
     <string name="pref_Widgets_Color_EventFar_summary">Barva počtu dnů pro vzdálené události</string>
 
-    <string name="pref_Widgets_Days_EventSoon_summary">Po kolik dní jsou události považovány za nejbližší</string>
     <string name="pref_Widgets_Days_EventSoon_title">Částka pro nejbližší události ve dnech</string>
+    <string name="pref_Widgets_Days_EventSoon_summary">Kolik dní předem je událost považována za blízkou. Umožňuje také vypnout zvýraznění počtu dní do události</string>
 
     <string name="widget_config_event_types_title">Typy událostí</string>
     <string name="widget_config_event_types_description">Jaké druhy událostí zobrazit na tomto widgetu</string>

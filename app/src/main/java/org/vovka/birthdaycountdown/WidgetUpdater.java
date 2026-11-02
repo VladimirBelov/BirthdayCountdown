@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.10.2026, 15:38
+ *  * Created by Vladimir Belov on 02.11.2026, 21:16
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.10.2026, 14:08
+ *  * Last modified 02.11.2026, 20:50
  *
  */
 
@@ -72,10 +72,16 @@ class WidgetUpdater {
     private final int widgetId;
     private String packageName;
     private double fontMagnify;
+    /** Цвет по-умоланию */
     private int colorDefault;
+    /** Цвет для сегодня */
     private int colorEventToday;
+    /** Цвет для ближайших событий */
     private int colorEventSoon;
+    /** Цвет для далёких событий */
     private int colorEventFar;
+    /** За сколько дней события считаются ближайшими. 0 - не выделять дни цветом */
+    private int daysSoon;
     private int eventsDisplayed;
     private int eventsToShow;
     private int eventsToSkip;
@@ -204,6 +210,7 @@ class WidgetUpdater {
             colorEventToday = eventsData.preferences_widgets_color_event_today;
             colorEventSoon = eventsData.preferences_widgets_color_event_soon;
             colorEventFar = eventsData.preferences_widgets_color_event_far;
+            daysSoon = eventsData.preferences_widgets_days_event_soon;
 
             //Параметры заголовков
             List<String> prefCaptions = new ArrayList<>();
@@ -881,31 +888,40 @@ class WidgetUpdater {
                 eventDistance_Days = 365;
             }
 
-            String colorDate = String.format("%06x", (eventsData.preferences_widgets_color_event_far & 0x00ffffff));
+            String htmlColorDate = String.format("%06x", (colorDefault & 0x00ffffff));
+            int colorDate = colorDefault;
             if (eventDistance_Days == 0) { //Сегодня
 
-                if (colorEventToday != 0) {
-                    if (person.Age > -1) {
-                        views.setTextColor(id_widget_Age, colorEventToday);
-                    } else {
-                        //Если возраста нет и событие уже сегодня - ставим цвет для ФИО
-                        views.setTextColor(textCaptionUpper, colorEventToday);
-                        views.setTextColor(textCaptionBottom, colorEventToday);
-                    }
+                if (daysSoon > 0 && colorEventToday != 0) {
+                    colorDate = colorEventToday;
+                    htmlColorDate = String.format("%06x", (colorDate & 0x00ffffff));
+                }
+                if (person.Age > -1) {
+                    views.setTextColor(id_widget_Age, colorDate);
+                } else {
+                    //Если возраста нет и событие уже сегодня - ставим цвет для ФИО
+                    views.setTextColor(textCaptionUpper, colorDate);
+                    views.setTextColor(textCaptionBottom, colorDate);
                 }
                 views.setTextViewText(id_widget_Distance, "");
-                colorDate = String.format("%06x", (colorEventToday & 0x00ffffff));
 
-            } else if (eventDistance_Days >= 1 && eventDistance_Days <= eventsData.preferences_widgets_days_event_soon) { //Скоро
+            } else if (eventDistance_Days <= daysSoon) { //Скоро
 
-                views.setTextColor(id_widget_Distance, colorEventSoon);
+                if (daysSoon > 0 && colorEventSoon != 0) {
+                    colorDate = colorEventSoon;
+                    htmlColorDate = String.format("%06x", (colorDate & 0x00ffffff));
+                }
+                views.setTextColor(id_widget_Distance, colorDate);
                 views.setTextViewText(id_widget_Distance, eventDistance);
                 views.setTextViewTextSize(id_widget_Distance, COMPLEX_UNIT_SP, (float) (Constants.WIDGET_TEXT_SIZE_BIG * fontMagnify));
-                colorDate = String.format("%06x", (colorEventSoon & 0x00ffffff));
 
             } else { //Попозже
 
-                views.setTextColor(id_widget_Distance, eventsData.preferences_widgets_days_event_soon != 0 ? colorEventFar : colorDefault);
+                if (daysSoon > 0 && colorEventFar != 0) {
+                    colorDate = colorEventFar;
+                    htmlColorDate = String.format("%06x", (colorDate & 0x00ffffff));
+                }
+                views.setTextColor(id_widget_Distance, colorDate);
                 views.setTextViewText(id_widget_Distance, eventDistance);
                 float sizeForDistance = (float) ((Integer.parseInt(eventDistance) < Constants.WIDGET_TEXT_SIZE_TINY
                         ? Constants.WIDGET_TEXT_SIZE_BIG : Constants.WIDGET_TEXT_SIZE_SMALL) * fontMagnify);
@@ -961,12 +977,9 @@ class WidgetUpdater {
             final String eventDay = AppDateUtils.getDateFormatted(singleEventArray[ContactsEvents.Position_eventDateFirstTime],
                     ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
                     res, eventsData.currentLocale);
-            String eventText = singleEventArray[ContactsEvents.Position_eventEmoji] +
-                    " " +
-                    Constants.HTML_COLOR_START + colorDate + Constants.HTML_COLOR_MIDDLE + eventDay + Constants.HTML_COLOR_END +
-                    " " +
-                    singleEventArray[ContactsEvents.Position_eventCaption] +
-                    ": " +
+            String eventText = singleEventArray[ContactsEvents.Position_eventEmoji] + " " +
+                    Constants.HTML_COLOR_START + htmlColorDate + Constants.HTML_COLOR_MIDDLE + eventDay + Constants.HTML_COLOR_END +
+                    " " + singleEventArray[ContactsEvents.Position_eventCaption] + ": " +
                     StringUtils.getFullName(singleEventArray, eventsData.preferences_name_format);
             if (pref_onClick == 1) { //Из общих настроек
                 intentAction = ContactsEvents.getViewActionIntent(event, eventText, singleEventArray, eventsData.preferences_widgets_on_click_action, context);
@@ -976,7 +989,7 @@ class WidgetUpdater {
 
             if (intentAction != null) {
                 intentAction.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, event.hashCode(), intentAction, PendingIntentImmutable);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, event.hashCode(), intentAction, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntentImmutable);
                 views.setOnClickPendingIntent(idEventPlaceholder, pendingIntent);
             } else { //Ничего не показываем
                 views.setOnClickPendingIntent(idEventPlaceholder, null);

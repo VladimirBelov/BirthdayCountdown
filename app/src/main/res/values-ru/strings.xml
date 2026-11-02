@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
+  ~  * Created by Vladimir Belov on 02.11.2026, 21:16
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.11.2026, 00:02
+  ~  * Last modified 02.11.2026, 21:12
   ~  */
   -->
 
@@ -918,8 +918,8 @@
     <string name="pref_Widgets_Color_EventFar_title">Далёкие события</string>
     <string name="pref_Widgets_Color_EventFar_summary">Цвет счётчика дней или дат для далёких событий</string>
 
-    <string name="pref_Widgets_Days_EventSoon_summary">За сколько дней события считаются ближайшими</string>
     <string name="pref_Widgets_Days_EventSoon_title">Ближайшие события</string>
+    <string name="pref_Widgets_Days_EventSoon_summary">За сколько дней события считаются ближайшими. Также позволяет выключить подсветку числа дней до события</string>
 
     <string name="widget_config_event_types_title">Типы событий</string>
     <string name="widget_config_event_types_description">Какие события отображать на виджете</string>

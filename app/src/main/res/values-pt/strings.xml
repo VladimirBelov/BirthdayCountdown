@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
+  ~  * Created by Vladimir Belov on 02.11.2026, 21:16
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.11.2026, 00:49
+  ~  * Last modified 02.11.2026, 21:12
   ~  */
   -->
 
@@ -918,8 +918,8 @@
     <string name="pref_Widgets_Color_EventFar_title">Eventos distantes</string>
     <string name="pref_Widgets_Color_EventFar_summary">Cor da contagem de dias para eventos distantes</string>
 
-    <string name="pref_Widgets_Days_EventSoon_summary">Por quantos dias os eventos são considerados mais próximos</string>
     <string name="pref_Widgets_Days_EventSoon_title">Quantidade de dias de eventos mais próximos</string>
+    <string name="pref_Widgets_Days_EventSoon_summary">Dias de antecedência para que um evento seja considerado próximo. Também permite desativar o destaque do número de dias restantes</string>
 
     <string name="widget_config_event_types_title">Tipos de eventos</string>
     <string name="widget_config_event_types_description">Que tipo de eventos exibir neste widget</string>

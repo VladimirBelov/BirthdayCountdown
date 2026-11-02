@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
+  ~  * Created by Vladimir Belov on 02.11.2026, 21:16
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.11.2026, 00:51
+  ~  * Last modified 02.11.2026, 21:14
   ~  */
   -->
 
@@ -918,8 +918,8 @@
     <string name="pref_Widgets_Color_EventFar_title">Eventi lontani</string>
     <string name="pref_Widgets_Color_EventFar_summary">Colore del contatore giorni o delle date per gli eventi lontani</string>
 
-    <string name="pref_Widgets_Days_EventSoon_summary">Da quanti giorni gli eventi sono considerati imminenti</string>
     <string name="pref_Widgets_Days_EventSoon_title">Eventi imminenti</string>
+    <string name="pref_Widgets_Days_EventSoon_summary">"Con quanti giorni di anticipo un evento è considerato imminente. Consente anche di disattivare l'evidenziazione del numero di giorni rimanenti"</string>
 
     <string name="widget_config_event_types_title">Tipi di eventi</string>
     <string name="widget_config_event_types_description">Quali eventi mostrare sul widget</string>
