@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
+  ~  * Created by Vladimir Belov on 02.11.2026, 16:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.11.2026, 00:02
+  ~  * Last modified 02.11.2026, 16:35
   ~  */
   -->
 
@@ -1692,6 +1692,7 @@ Long click on item to select color"</string>
     <string name="event_source_file" translatable="false">📁</string>
     <string name="event_source_internal" translatable="false">🗃️</string>
     <string name="event_source_local" translatable="false">📱</string>🗂
+    <string name="event_source_web" translatable="false">🌐</string>🗂
 
     <string name="popup_action_prev" translatable="false">⏪</string>
     <string name="popup_action_next" translatable="false">⏩</string>

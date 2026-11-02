@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
+  ~  * Created by Vladimir Belov on 02.11.2026, 16:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 30.10.2026, 14:31
+  ~  * Last modified 02.11.2026, 16:35
   ~  */
   -->
 
@@ -155,7 +155,6 @@
                                 android:maxLines="3"
                                 android:textSize="14sp"
                                 android:paddingHorizontal="4dp"
-                                android:contentDescription="@string/hint_Name"
                                 android:textColor="?attr/dialogTextColor" />
 
                         </LinearLayout>
@@ -197,7 +196,6 @@
                                 android:maxLines="3"
                                 android:textSize="12sp"
                                 android:paddingHorizontal="4dp"
-                                android:contentDescription="@string/hint_JobTitle"
                                 android:textColor="?attr/dialogTextColor" />
 
                         </LinearLayout>
@@ -224,7 +222,7 @@
                                 android:id="@+id/captionOrganization"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:labelFor="@id/editName"
+                                android:labelFor="@id/editOrganization"
                                 android:text="@string/local_event_dialog_caption_org"
                                 android:textSize="12sp"
                                 android:paddingStart="4dp"
@@ -239,7 +237,6 @@
                                 android:maxLines="3"
                                 android:textSize="12sp"
                                 android:paddingHorizontal="4dp"
-                                android:contentDescription="@string/hint_Organization"
                                 android:textColor="?attr/dialogTextColor" />
 
                         </LinearLayout>
@@ -266,8 +263,8 @@
                                 android:id="@+id/captionDate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:labelFor="@id/editDate"
                                 android:text="@string/local_event_dialog_date_title"
+                                android:labelFor="@id/editDate"
                                 android:textSize="12sp"
                                 android:paddingStart="4dp"
                                 android:textColor="?attr/dialogTextColor" />
@@ -279,7 +276,6 @@
                                 android:gravity="center_vertical"
                                 android:importantForAutofill="no"
                                 android:paddingHorizontal="4dp"
-                                android:contentDescription="@string/hint_Date"
                                 android:textColor="?attr/dialogTextColor" />
 
                         </LinearLayout>
@@ -305,8 +301,8 @@
                                 android:id="@+id/captionType"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:labelFor="@id/spinnerEventType"
                                 android:text="@string/local_event_dialog_type_title"
+                                android:labelFor="@id/spinnerEventType"
                                 android:textSize="12sp"
                                 android:paddingStart="4dp"
                                 android:textColor="?attr/dialogTextColor" />
@@ -352,7 +348,7 @@
                                 android:id="@+id/captionDescription"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:labelFor="@id/editName"
+                                android:labelFor="@id/editDescription"
                                 android:text="@string/local_event_dialog_caption_desc"
                                 android:textSize="12sp"
                                 android:paddingStart="4dp"
@@ -367,7 +363,6 @@
                                 android:maxLines="10"
                                 android:textSize="12sp"
                                 android:paddingHorizontal="4dp"
-                                android:contentDescription="@string/hint_EventDescription"
                                 android:textColor="?attr/dialogTextColor" />
 
                         </LinearLayout>
@@ -394,7 +389,7 @@
                                 android:id="@+id/captionUrl"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:labelFor="@id/editName"
+                                android:labelFor="@id/editUrl"
                                 android:text="@string/local_event_dialog_caption_url"
                                 android:textSize="12sp"
                                 android:paddingStart="4dp"
@@ -410,7 +405,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:paddingStart="5dp"
-                                    android:text="@string/event_source_internal"/>
+                                    android:text="@string/event_source_web"/>
 
                                 <EditText
                                     android:id="@+id/editUrl"
@@ -421,7 +416,6 @@
                                     android:maxLines="3"
                                     android:textSize="12sp"
                                     android:paddingHorizontal="4dp"
-                                    android:contentDescription="@string/hint_WebLink"
                                     android:textColor="?attr/dialogTextColor" />
 
                             </LinearLayout>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.11.2026, 01:20
+  ~  * Created by Vladimir Belov on 02.11.2026, 16:37
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 01.11.2026, 23:48
+  ~  * Last modified 02.11.2026, 16:12
   ~  */
   -->
 
@@ -28,6 +28,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:labelFor="@id/seekPhoto"
+            android:contentDescription="@string/pref_List_FontMagnify_seek_photo"
             android:textColor="?android:attr/textColorSecondary"/>
 
         <TextView
@@ -47,8 +49,8 @@
 
         <ImageButton
             android:id="@+id/btnPhotoMinus"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/hint_Less"
             android:src="@drawable/ic_menu_sub"
@@ -59,17 +61,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="-8dp"
-            android:layout_marginEnd="-8dp"
-            android:maxHeight="50dp"
-            android:minHeight="50dp"
+            android:maxHeight="48dp"
+            android:minHeight="48dp"
+            android:layout_marginStart="-10dp"
+            android:layout_marginEnd="-10dp"
             android:thumbTintMode="src_in"
             android:max="20"/>
 
         <ImageButton
             android:id="@+id/btnPhotoPlus"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/hint_More"
             android:src="@android:drawable/ic_menu_add"
@@ -87,6 +89,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:labelFor="@id/seekDistance"
+            android:contentDescription="@string/pref_List_FontMagnify_seek_distance"
             android:textColor="?android:attr/textColorSecondary"/>
 
         <TextView
@@ -106,8 +110,8 @@
 
         <ImageButton
             android:id="@+id/btnDistanceMinus"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/hint_Less"
             android:src="@drawable/ic_menu_sub"
@@ -118,17 +122,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="-8dp"
-            android:layout_marginEnd="-8dp"
-            android:maxHeight="50dp"
-            android:minHeight="50dp"
+            android:maxHeight="48dp"
+            android:minHeight="48dp"
+            android:layout_marginStart="-10dp"
+            android:layout_marginEnd="-10dp"
             android:thumbTintMode="src_in"
             android:max="20"/>
 
         <ImageButton
             android:id="@+id/btnDistancePlus"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/hint_More"
             android:src="@android:drawable/ic_menu_add"
@@ -146,6 +150,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:labelFor="@id/seekName"
+            android:contentDescription="@string/pref_List_FontMagnify_seek_name"
             android:textColor="?android:attr/textColorSecondary"/>
 
         <TextView
@@ -165,8 +171,8 @@
 
         <ImageButton
             android:id="@+id/btnNameMinus"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/hint_Less"
             android:src="@drawable/ic_menu_sub"
@@ -177,17 +183,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="-8dp"
-            android:layout_marginEnd="-8dp"
-            android:maxHeight="50dp"
-            android:minHeight="50dp"
+            android:maxHeight="48dp"
+            android:minHeight="48dp"
+            android:layout_marginStart="-10dp"
+            android:layout_marginEnd="-10dp"
             android:thumbTintMode="src_in"
             android:max="20"/>
 
         <ImageButton
             android:id="@+id/btnNamePlus"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/hint_More"
             android:src="@android:drawable/ic_menu_add"
@@ -205,6 +211,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:labelFor="@id/seekDetails"
+            android:contentDescription="@string/pref_List_FontMagnify_seek_details"
             android:textColor="?android:attr/textColorSecondary"/>
 
         <TextView
@@ -224,29 +232,29 @@
 
         <ImageButton
             android:id="@+id/btnLabelMinus"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/hint_Less"
             android:src="@drawable/ic_menu_sub"
             app:tint="?attr/colorAccent" />
 
         <SeekBar
-            android:id="@+id/seekLabel"
+            android:id="@+id/seekDetails"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="-8dp"
-            android:layout_marginEnd="-8dp"
-            android:maxHeight="50dp"
-            android:minHeight="50dp"
+            android:maxHeight="48dp"
+            android:minHeight="48dp"
+            android:layout_marginStart="-10dp"
+            android:layout_marginEnd="-10dp"
             android:thumbTintMode="src_in"
             android:max="20"/>
 
         <ImageButton
             android:id="@+id/btnLabelPlus"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/hint_More"
             android:src="@android:drawable/ic_menu_add"
@@ -264,6 +272,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:labelFor="@id/seekDate"
+            android:contentDescription="@string/pref_List_FontMagnify_seek_date"
             android:textColor="?android:attr/textColorSecondary"/>
 
         <TextView
@@ -283,8 +293,8 @@
 
         <ImageButton
             android:id="@+id/btnDateMinus"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/hint_Less"
             android:src="@drawable/ic_menu_sub"
@@ -295,17 +305,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="-8dp"
-            android:layout_marginEnd="-8dp"
-            android:maxHeight="50dp"
-            android:minHeight="50dp"
+            android:maxHeight="48dp"
+            android:minHeight="48dp"
+            android:layout_marginStart="-10dp"
+            android:layout_marginEnd="-10dp"
             android:thumbTintMode="src_in"
             android:max="20"/>
 
         <ImageButton
             android:id="@+id/btnDatePlus"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/hint_More"
             android:src="@android:drawable/ic_menu_add"
@@ -323,6 +333,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:labelFor="@id/seekAge"
+            android:contentDescription="@string/pref_List_FontMagnify_seek_age"
             android:textColor="?android:attr/textColorSecondary"/>
 
         <TextView
@@ -342,8 +354,8 @@
 
         <ImageButton
             android:id="@+id/btnAgeMinus"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/hint_Less"
             android:src="@drawable/ic_menu_sub"
@@ -354,17 +366,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="-8dp"
-            android:layout_marginEnd="-8dp"
-            android:maxHeight="50dp"
-            android:minHeight="50dp"
+            android:maxHeight="48dp"
+            android:minHeight="48dp"
+            android:layout_marginStart="-10dp"
+            android:layout_marginEnd="-10dp"
             android:thumbTintMode="src_in"
             android:max="20"/>
 
         <ImageButton
             android:id="@+id/btnAgePlus"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/hint_More"
             android:src="@android:drawable/ic_menu_add"

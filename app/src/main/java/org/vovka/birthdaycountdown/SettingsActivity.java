@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.11.2026, 01:20
+ *  * Created by Vladimir Belov on 02.11.2026, 16:37
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.11.2026, 00:12
+ *  * Last modified 02.11.2026, 16:12
  *
  */
 
@@ -3632,7 +3632,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             TextView seek3_label = view.findViewById(R.id.seek3_label);
             seek3_label.setText(getString(R.string.pref_List_FontMagnify_seek_details));
 
-            SeekBar seekLabel = view.findViewById(R.id.seekLabel);
+            SeekBar seekLabel = view.findViewById(R.id.seekDetails);
             seekLabel.setProgress(eventsData.preferences_list_magnify_details + 5);
 
             TextView seek3_progress = view.findViewById(R.id.seek3_progress);
