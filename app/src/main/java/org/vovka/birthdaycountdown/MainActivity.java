@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.11.2026, 01:20
+ *  * Created by Vladimir Belov on 02.11.2026, 15:05
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.11.2026, 01:18
+ *  * Last modified 02.11.2026, 14:51
  *
  */
 
@@ -3396,7 +3396,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 DateTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_date * (1 + eventsData.preferences_list_magnify_date * 0.1)));
                 CounterTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float) (dimen_name * (1 + eventsData.preferences_list_magnify_age * 0.1)));
             }
-            android.view.ViewGroup.LayoutParams paramsPhoto = EventIconImageView.getLayoutParams();
+            android.view.ViewGroup.LayoutParams paramsPhoto = PhotoImageView.getLayoutParams();
             int sizePhoto = ImageUtils.Dip2Px(resources, (int) (dimen_photo * (1 + eventsData.preferences_list_magnify_photo * 0.1)));
             paramsPhoto.width = sizePhoto;
             paramsPhoto.height = sizePhoto;
