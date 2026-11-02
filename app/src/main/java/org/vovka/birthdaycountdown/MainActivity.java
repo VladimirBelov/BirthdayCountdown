@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.11.2026, 15:05
+ *  * Created by Vladimir Belov on 03.11.2026, 00:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.11.2026, 14:51
+ *  * Last modified 03.11.2026, 00:25
  *
  */
 
@@ -384,20 +384,29 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             String contactID = selectedEvent[ContactsEvents.Position_contactID];
             if (!TextUtils.isEmpty(contactID)) {
                 menu.add(Menu.NONE, Constants.ContextMenu_EditContact, Menu.NONE, getString(R.string.menu_context_edit_contact))
-                        .setIcon(android.R.drawable.ic_menu_edit);
+                        .setIcon(DeviceTools.getAppActionIcon(
+                                this,
+                                DeviceTools.AppActionIcon.EDIT_CONTACT,
+                                android.R.drawable.ic_menu_edit
+                        ));
             } else if (isContactEvent && eventsData.isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS)) {
-                MenuItem menuItem = menu.add(Menu.NONE, Constants.ContextMenu_CreateContact, Menu.NONE, getString(R.string.menu_context_create_contact))
-                        .setIcon(R.drawable.ic_menu_invite);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    menuItem.setIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_green)));
-                }
+                menu.add(Menu.NONE, Constants.ContextMenu_CreateContact, Menu.NONE, getString(R.string.menu_context_create_contact))
+                        .setIcon(DeviceTools.getAppActionIcon(
+                                this,
+                                DeviceTools.AppActionIcon.CREATE_CONTACT,
+                                R.drawable.ic_menu_invite
+                        ));
             }
 
             if (!selectedEvent[ContactsEvents.Position_eventID].isEmpty()) {
 
                 if (eventStorage.contains(Constants.STRING_STORAGE_CALENDAR)) {
                     menu.add(Menu.NONE, Constants.ContextMenu_OpenCalendar, Menu.NONE, getString(R.string.menu_context_open_calendar_event))
-                            .setIcon(android.R.drawable.ic_menu_month);
+                            .setIcon(DeviceTools.getAppActionIcon(
+                                    this,
+                                    DeviceTools.AppActionIcon.OPEN_CALENDAR,
+                                    android.R.drawable.ic_menu_month
+                            ));
                     if (eventsData.isFeatureEnabled(Constants.FEATURE_ADV_ACTIONS)) {
                         final String eventKeyId = selectedEvent[ContactsEvents.Position_eventID]
                                 + Constants.STRING_2HASH + eventSubtype;
@@ -433,13 +442,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if (!eventURLs[0].isEmpty()) {
                 if (eventURLs.length == 1) {
                     menu.add(Menu.NONE, Constants.ContextMenu_OpenURL, Menu.NONE, getString(R.string.menu_context_open_url))
-                            .setIcon(android.R.drawable.ic_menu_directions);
+                            .setIcon(DeviceTools.getAppActionIcon(
+                                    this,
+                                    DeviceTools.AppActionIcon.OPEN_BROWSER,
+                                    android.R.drawable.ic_menu_directions
+                            ));
                 } else {
                     SubMenu sub = menu.addSubMenu(Menu.NONE, Menu.NONE, Menu.NONE, getString(R.string.menu_context_open_url))
-                            .setIcon(android.R.drawable.ic_menu_directions);
+                            .setIcon(DeviceTools.getAppActionIcon(
+                                    this,
+                                    DeviceTools.AppActionIcon.OPEN_BROWSER,
+                                    android.R.drawable.ic_menu_directions
+                            ));
                     for (int i = 0, eventURLsLength = eventURLs.length; i < eventURLsLength; i++) {
                         String url = eventURLs[i];
-                        sub.add(i, Constants.ContextMenu_OpenURL, Menu.NONE, url.replace(Constants.STRING_HTTP, "").replace(Constants.STRING_HTTPS, ""));
+                        sub.add(i, Constants.ContextMenu_OpenURL, Menu.NONE,
+                                url.replace(Constants.STRING_HTTP, "").replace(Constants.STRING_HTTPS, ""));
                     }
                 }
             }
@@ -606,7 +624,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else if (itemId == Constants.ContextMenu_OpenURL) {
 
                 int groupId = item.getGroupId();
-                //todo: доделать для несколько ссылок String[] eventURLs = selectedEvent[ContactsEvents.Position_eventURL].trim().split(Constants.STRING_2TILDA);
                 if (eventURLs.length >= groupId) {
                     try {
                         String url = eventURLs[groupId].trim();

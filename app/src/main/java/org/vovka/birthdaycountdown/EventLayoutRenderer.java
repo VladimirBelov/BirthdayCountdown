@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.10.2026, 19:53
+ *  * Created by Vladimir Belov on 03.11.2026, 00:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.10.2026, 19:41
+ *  * Last modified 03.11.2026, 00:22
  *
  */
 
@@ -230,6 +230,7 @@ public class EventLayoutRenderer {
                 hasContentSinceLastNewline = true;
             }
         }
+        if (sb.toString().endsWith("\n")) sb.delete(sb.length() - "\n".length(), sb.length());
 
         //добавляем метки только если есть контент
         if (hasAnyContent) {

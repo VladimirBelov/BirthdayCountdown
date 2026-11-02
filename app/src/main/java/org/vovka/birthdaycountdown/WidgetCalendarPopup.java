@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 28.09.2026, 13:29
+ *  * Created by Vladimir Belov on 03.11.2026, 00:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 28.09.2026, 13:22
+ *  * Last modified 02.11.2026, 23:42
  *
  */
 package org.vovka.birthdaycountdown;
@@ -13,8 +13,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
 import android.content.ClipDescription;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -34,6 +32,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
+import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.StringUtils;
 import org.vovka.birthdaycountdown.utils.UiTools;
 
@@ -47,6 +46,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 /**
  `WidgetCalendarPopup` - это Activity, которое отображает всплывающее окно с подробной информацией
  о выбранном дне из виджета календаря. Оно получает данные, связанные с этим днем,
@@ -79,7 +79,6 @@ public class WidgetCalendarPopup extends Activity {
     private String dayMills = null;
     private ArrayList<String> listEventsPacks;
     private HashMap<String, Integer> eventsColorsInMonth = null;
-    private String defaultCalendarPackage = null;
     private ExecutorService executorService;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -129,27 +128,23 @@ public class WidgetCalendarPopup extends Activity {
             //Календарь
             buttonCalendar = findViewById(R.id.button2);
             if (buttonCalendar != null) {
-                PackageManager pm = getPackageManager();
-                Intent mainCalendarIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_CALENDAR);
-                List<ResolveInfo> resolveInfoList = pm.queryIntentActivities(mainCalendarIntent, 0);
+                if (DeviceTools.isAppActionAvailable(this, DeviceTools.AppActionIcon.OPEN_CALENDAR)) {
+                    Drawable icon = DeviceTools.getAppActionIcon(
+                            this,
+                            DeviceTools.AppActionIcon.OPEN_CALENDAR,
+                            android.R.drawable.ic_menu_month
+                    );
 
-                if (!resolveInfoList.isEmpty()) {
-                    // Приложение календаря найдено
-                    ResolveInfo resolveInfo = resolveInfoList.get(0);
-                    defaultCalendarPackage = resolveInfo.activityInfo.packageName;
-
-                    // Получаем иконку приложения
-                    Drawable icon = resolveInfo.loadIcon(pm);
                     if (icon != null) {
-                        // Размер иконки ~20dp
                         int iconSize = (int) (20 * getResources().getDisplayMetrics().density);
                         icon.setBounds(0, 0, iconSize, iconSize);
                         buttonCalendar.setCompoundDrawables(icon, null, null, null);
-                        // Небольшой отступ между иконкой и текстом (4dp)
-                        buttonCalendar.setCompoundDrawablePadding((int) (4 * getResources().getDisplayMetrics().density));
+                        buttonCalendar.setCompoundDrawablePadding(
+                                (int) (4 * getResources().getDisplayMetrics().density)
+                        );
                     }
 
-                    // Текст: пробел + название из ресурсов (иконка уже стоит слева)
+                    // Текст: пробел + название из ресурсов
                     buttonCalendar.setText(" ".concat(getString(R.string.appwidget_label_Calendar)));
 
                     UiTools.addClickEffect(buttonCalendar);
@@ -238,7 +233,7 @@ public class WidgetCalendarPopup extends Activity {
     private void setupClickListeners() {
         try {
             //Календарь
-            if (buttonCalendar != null && defaultCalendarPackage != null) {
+            if (buttonCalendar != null && DeviceTools.isAppActionAvailable(this, DeviceTools.AppActionIcon.OPEN_CALENDAR)) {
                 buttonCalendar.setOnClickListener(view -> {
                     if (dayMills != null) {
                         Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
@@ -254,8 +249,13 @@ public class WidgetCalendarPopup extends Activity {
                         Intent intentCalendar = new Intent(Intent.ACTION_VIEW, builder.build());
                         intentCalendar.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                        // Жестко указываем найденный пакет, чтобы избежать системного диалога выбора
-                        intentCalendar.setPackage(defaultCalendarPackage);
+                        // Резолвим пакет при клике
+                        String calendarPackage = DeviceTools.getAppActionPackageName(
+                                this, DeviceTools.AppActionIcon.OPEN_CALENDAR
+                        );
+                        if (calendarPackage != null) {
+                            intentCalendar.setPackage(calendarPackage);
+                        }
 
                         try {
                             startActivity(intentCalendar);

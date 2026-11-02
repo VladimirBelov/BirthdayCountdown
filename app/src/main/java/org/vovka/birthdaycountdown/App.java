@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 30.11.2025, 02:33
- *  * Copyright (c) 2018 - 2025. All rights reserved.
- *  * Last modified 13.11.2025, 21:08
+ *  * Created by Vladimir Belov on 03.11.2026, 00:26
+ *  * Copyright (c) 2018 - 2026. All rights reserved.
+ *  * Last modified 02.11.2026, 23:02
  *
  */
 
@@ -10,7 +10,17 @@ package org.vovka.birthdaycountdown;
 
 import android.app.Application;
 
+import org.vovka.birthdaycountdown.utils.DeviceTools;
+
 public class App extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        int iconSizePx = (int) (32 * getResources().getDisplayMetrics().density + 0.5f);
+        DeviceTools.preloadAppActionIcons(this, iconSizePx);
+    }
 
     @Override
     public void onTerminate() {

@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.09.2026, 01:33
+ *  * Created by Vladimir Belov on 03.11.2026, 00:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.09.2026, 20:55
+ *  * Last modified 02.11.2026, 23:47
  *
  */
 package org.vovka.birthdaycountdown;
@@ -45,6 +45,7 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
+import org.vovka.birthdaycountdown.utils.DeviceTools;
 import org.vovka.birthdaycountdown.utils.ImageUtils;
 import org.vovka.birthdaycountdown.utils.StringUtils;
 
@@ -143,26 +144,42 @@ public class WidgetMenuActivity extends Activity {
 
                 if (!TextUtils.isEmpty(singleEventArray[ContactsEvents.Position_contactID])) {
                     menuItems.add(getString(R.string.menu_context_open_contact));
-                    menuIcons.add(AppCompatResources.getDrawable(this, R.drawable.ic_menu_friendslist));
+                    menuIcons.add(DeviceTools.getAppActionIcon(
+                            this,
+                            DeviceTools.AppActionIcon.OPEN_CONTACT,
+                            R.drawable.ic_menu_friendslist
+                    ));
                     menuActions.add(Constants.ContextMenu_OpenContact);
 
                     String phone = eventsData.getContactPhone(Long.parseLong(singleEventArray[ContactsEvents.Position_contactID]));
                     if (!phone.isEmpty()) {
                         menuItems.add(getString(R.string.menu_context_dial));
-                        menuIcons.add(AppCompatResources.getDrawable(this, android.R.drawable.ic_menu_call));
+                        menuIcons.add(DeviceTools.getAppActionIcon(
+                                this,
+                                DeviceTools.AppActionIcon.DIAL,
+                                android.R.drawable.ic_menu_call
+                        ));
                         menuActions.add(Constants.ContextMenu_DialContact);
                     }
                 }
 
                 if (!singleEventArray[ContactsEvents.Position_eventID].isEmpty() && eventStorage.contains(Constants.STRING_STORAGE_CALENDAR)) {
                     menuItems.add(getString(R.string.menu_context_open_calendar_event));
-                    menuIcons.add(AppCompatResources.getDrawable(this, android.R.drawable.ic_menu_month));
+                    menuIcons.add(DeviceTools.getAppActionIcon(
+                            this,
+                            DeviceTools.AppActionIcon.OPEN_CALENDAR,
+                            android.R.drawable.ic_menu_month
+                    ));
                     menuActions.add(Constants.ContextMenu_OpenCalendar);
                 }
 
                 if (!singleEventArray[ContactsEvents.Position_eventURL].isEmpty()) {
                     menuItems.add(getString(R.string.menu_context_open_url));
-                    menuIcons.add(AppCompatResources.getDrawable(this, android.R.drawable.ic_menu_directions));
+                    menuIcons.add(DeviceTools.getAppActionIcon(
+                            this,
+                            DeviceTools.AppActionIcon.OPEN_BROWSER,
+                            android.R.drawable.ic_menu_directions
+                    ));
                     menuActions.add(Constants.ContextMenu_OpenURL);
                 }
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.10.2026, 01:35
+  ~  * Created by Vladimir Belov on 03.11.2026, 00:26
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 20.10.2026, 02:47
+  ~  * Last modified 02.11.2026, 23:14
   ~  */
   -->
 
@@ -20,22 +20,79 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/> <!-- для доступа к точным будильникам -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> <!-- для Android 13+ нужно для отправки уведомлений -->
 
-    <queries> <!-- https://developer.android.com/about/versions/11/privacy/package-visibility -->
+    <queries>
         <!-- 🔔 Выбор мелодии (системный пикер) -->
         <intent>
             <action android:name="android.intent.action.RINGTONE_PICKER" />
         </intent>
-        <!-- 📅 Просмотр события в календаре -->
+
+        <!-- 📅 Календарь -->
+        <!-- Просмотр одного события -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:mimeType="vnd.android.cursor.item/event" />
         </intent>
-        <!-- 👤 Просмотр контакта -->
+        <!-- ✨ Просмотр списка событий (CalendarContract.Events.CONTENT_URI) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="vnd.android.cursor.dir/event" />
+        </intent>
+        <!-- ✨ Дефолтное приложение календаря (CATEGORY_APP_CALENDAR) -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.APP_CALENDAR" />
+        </intent>
+
+        <!-- 👤 Контакты -->
+        <!-- Просмотр контакта (легаси) -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:mimeType="vnd.android.cursor.item/person" />
         </intent>
-        <!-- 🌐 Открытие ссылок в браузере -->
+        <!-- ✨ Просмотр контакта (современный MIME) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="vnd.android.cursor.item/contact" />
+        </intent>
+        <!-- ✨ Просмотр списка контактов (ContactsContract.Contacts.CONTENT_URI) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="vnd.android.cursor.dir/contact" />
+        </intent>
+        <!-- ✨ Дефолтное приложение контактов -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.APP_CONTACTS" />
+        </intent>
+        <!-- ✨ Редактирование контакта -->
+        <intent>
+            <action android:name="android.intent.action.EDIT" />
+            <data android:mimeType="vnd.android.cursor.item/contact" />
+        </intent>
+        <!-- ✨ Создание/редактирование контакта (ACTION_INSERT_OR_EDIT) -->
+        <intent>
+            <action android:name="android.intent.action.INSERT_OR_EDIT" />
+            <data android:mimeType="vnd.android.cursor.item/contact" />
+        </intent>
+        <!-- ✨ Создание контакта (ACTION_INSERT) -->
+        <intent>
+            <action android:name="android.intent.action.INSERT" />
+            <data android:mimeType="vnd.android.cursor.dir/contact" />
+        </intent>
+
+        <!-- 📞 Звонилка -->
+        <!-- ✨ ACTION_DIAL + tel: -->
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+        <!-- ✨ ACTION_VIEW + tel: (тоже может использоваться для звонка) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="tel" />
+        </intent>
+
+        <!-- 🌐 Браузер -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="http" />
@@ -44,47 +101,52 @@
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="https" />
         </intent>
+        <!-- ✨ Дефолтное приложение браузера -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.APP_BROWSER" />
+        </intent>
+
         <!-- 🖼️ Выбор изображения (галерея / пикер) -->
         <intent>
             <action android:name="android.intent.action.PICK" />
             <data android:mimeType="image/*" />
         </intent>
+
         <!-- 📁 SAF: Выбор файлов -->
-        <!-- 1. Любой файл -->
         <intent>
             <action android:name="android.intent.action.OPEN_DOCUMENT" />
             <category android:name="android.intent.category.OPENABLE" />
             <data android:mimeType="*/*" />
         </intent>
-        <!-- 2. Аудио -->
         <intent>
             <action android:name="android.intent.action.OPEN_DOCUMENT" />
             <category android:name="android.intent.category.OPENABLE" />
             <data android:mimeType="audio/*" />
         </intent>
-        <!-- 3. Текст -->
         <intent>
             <action android:name="android.intent.action.OPEN_DOCUMENT" />
             <category android:name="android.intent.category.OPENABLE" />
             <data android:mimeType="text/*" />
         </intent>
-        <!-- 4. Изображения -->
         <intent>
             <action android:name="android.intent.action.OPEN_DOCUMENT" />
             <category android:name="android.intent.category.OPENABLE" />
             <data android:mimeType="image/*" />
         </intent>
-        <!-- 📤 Шаринг текста (все кейсы с ClipDescription.MIMETYPE_TEXT_PLAIN) -->
+
+        <!-- 📤 Шаринг текста -->
         <intent>
             <action android:name="android.intent.action.SEND" />
             <data android:mimeType="text/plain" />
         </intent>
-        <!-- 🖼️ Шаринг изображений (кейсы с bitmapShareUri, Constants.MIME_IMAGE_ALL) -->
+        <!-- 🖼️ Шаринг изображений -->
         <intent>
             <action android:name="android.intent.action.SEND" />
             <data android:mimeType="image/*" />
         </intent>
-        <!-- ⚙️ Открытие настроек приложения (для запроса разрешений) -->
+
+        <!-- ⚙️ Открытие настроек приложения -->
         <intent>
             <action android:name="android.settings.APPLICATION_DETAILS_SETTINGS" />
             <data android:scheme="package" />

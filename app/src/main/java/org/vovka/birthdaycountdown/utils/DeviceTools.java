@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.10.2026, 10:40
+ *  * Created by Vladimir Belov on 03.11.2026, 00:26
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 03.10.2026, 10:16
+ *  * Last modified 03.11.2026, 00:03
  *
  */
 
@@ -12,27 +12,45 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.provider.CalendarContract;
+import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.util.Log;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.Constants;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DeviceTools {
     private static final String TAG = "DeviceTools";
@@ -296,5 +314,423 @@ public class DeviceTools {
 
     public enum MIUIAutoStartState {
         ENABLED, DISABLED, NO_INFO, UNEXPECTED_RESULT
+    }
+
+    /**
+     * Типы действий, для которых мы хотим показывать иконки реально назначенных приложений.
+     */
+    public enum AppActionIcon {
+        OPEN_CONTACT,
+        EDIT_CONTACT,
+        CREATE_CONTACT,
+        DIAL,
+        OPEN_CALENDAR,
+        OPEN_BROWSER
+    }
+
+    private static final Map<AppActionIcon, Drawable.ConstantState> appActionIconCache = new ConcurrentHashMap<>();
+    private static final Map<AppActionIcon, String> appActionPackageCache = new ConcurrentHashMap<>();
+
+    private static final AtomicBoolean appActionIconsPreloadStarted = new AtomicBoolean(false);
+
+    private static volatile ExecutorService appActionIconsExecutor;
+
+    private static volatile int appActionIconSizePx = 0;
+
+    /**
+     * Предзагрузка иконок дефолтных приложений.
+     */
+    @SuppressWarnings("unused")
+    public static void preloadAppActionIcons(@NonNull Context context) {
+        preloadAppActionIcons(context, 0);
+    }
+
+    /**
+     * Предзагрузка иконок дефолтных приложений с указанием размера.
+     *
+     * @param context     контекст
+     * @param iconSizePx  размер иконки в px. Если 0 или меньше, используется системный/дефолтный размер.
+     */
+    public static void preloadAppActionIcons(@NonNull Context context, int iconSizePx) {
+        final Context appContext = context.getApplicationContext();
+
+        if (iconSizePx > 0) {
+            appActionIconSizePx = iconSizePx;
+        }
+
+        if (appActionIconsPreloadStarted.compareAndSet(false, true)) {
+            getAppActionIconsExecutor().execute(() -> {
+                for (AppActionIcon action : AppActionIcon.values()) {
+                    loadAndCacheAppActionIcon(appContext, action);
+                }
+            });
+        }
+    }
+
+    /**
+     * Получить иконку назначенного приложения для действия.
+     * Если иконка ещё не загружена, вернёт null и запустит асинхронную загрузку.
+     */
+    @Nullable
+    public static Drawable getAppActionIcon(@NonNull Context context,
+                                            @NonNull AppActionIcon action) {
+        Drawable.ConstantState cs = appActionIconCache.get(action);
+
+        if (cs != null) {
+            try {
+                return cs.newDrawable().mutate();
+            } catch (Exception e) {
+                Log.e(TAG, "getAppActionIcon newDrawable error: " + e.getMessage(), e);
+                appActionIconCache.remove(action);
+            }
+        }
+
+        loadAppActionIconAsync(context, action);
+        return null;
+    }
+
+    /**
+     * Получить иконку назначенного приложения, а если она ещё не загружена — fallback-иконку.
+     */
+    @Nullable
+    public static Drawable getAppActionIcon(@NonNull Context context,
+                                            @NonNull AppActionIcon action,
+                                            @DrawableRes int fallbackResId) {
+        Drawable icon = getAppActionIcon(context, action);
+        if (icon != null) {
+            return icon;
+        }
+
+        if (fallbackResId == 0) {
+            return null;
+        }
+
+        try {
+            Drawable fallback = AppCompatResources.getDrawable(context, fallbackResId);
+            return fallback != null ? fallback.mutate() : null;
+        } catch (Exception e) {
+            Log.e(TAG, "getAppActionIcon fallback error: " + e.getMessage(), e);
+            return null;
+        }
+    }
+
+    /**
+     * Асинхронная подгрузка иконки для конкретного действия.
+     */
+    public static void loadAppActionIconAsync(@NonNull Context context,
+                                              @NonNull AppActionIcon action) {
+        final Context appContext = context.getApplicationContext();
+
+        getAppActionIconsExecutor().execute(() ->
+                loadAndCacheAppActionIcon(appContext, action)
+        );
+    }
+
+    /**
+     * Очистить кэш иконок.
+     */
+    @SuppressWarnings("unused")
+    public static void clearAppActionIconCache() {
+        appActionIconCache.clear();
+        appActionPackageCache.clear();
+        appActionIconsPreloadStarted.set(false);
+    }
+
+    private static synchronized ExecutorService getAppActionIconsExecutor() {
+        if (appActionIconsExecutor == null) {
+            appActionIconsExecutor = Executors.newSingleThreadExecutor();
+        }
+        return appActionIconsExecutor;
+    }
+
+    private static void loadAndCacheAppActionIcon(@NonNull Context context,
+                                                  @NonNull AppActionIcon action) {
+        try {
+            if (appActionIconCache.containsKey(action)) {
+                return;
+            }
+
+            Drawable.ConstantState cs = resolveAppActionIconConstantState(context, action);
+            if (cs != null) {
+                appActionIconCache.put(action, cs);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "loadAndCacheAppActionIcon error: " + e.getMessage(), e);
+        }
+    }
+
+    @Nullable
+    private static Drawable.ConstantState resolveAppActionIconConstantState(@NonNull Context context,
+                                                                            @NonNull AppActionIcon action) {
+        PackageManager pm = context.getPackageManager();
+
+        List<Intent> intents = getAppActionIntents(action);
+
+        for (Intent intent : intents) {
+            ResolveInfo info = resolveActivityInfo(pm, intent);
+            if (info == null) {
+                continue;
+            }
+
+            Drawable icon = null;
+
+            try {
+                icon = info.loadIcon(pm);
+            } catch (Exception ignored) {
+                // Некоторые компоненты могут отдавать битую иконку.
+            }
+
+            if (icon == null && info.activityInfo != null) {
+                try {
+                    icon = info.activityInfo.loadIcon(pm);
+                } catch (Exception ignored) {
+                }
+            }
+
+            if (icon == null && info.activityInfo != null && info.activityInfo.applicationInfo != null) {
+                try {
+                    icon = info.activityInfo.applicationInfo.loadIcon(pm);
+                } catch (Exception ignored) {
+                }
+            }
+
+            if (icon != null) {
+                try {
+                    Drawable prepared = prepareAppIconDrawable(context, icon);
+                    Drawable.ConstantState cs = prepared.getConstantState();
+                    if (cs != null) {
+                        return cs;
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "resolveAppActionIcon prepare icon error: " + e.getMessage(), e);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
+    private static ResolveInfo resolveActivityInfo(@NonNull PackageManager pm,
+                                                   @NonNull Intent intent) {
+        try {
+            ResolveInfo info = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            if (info != null) {
+                return info;
+            }
+        } catch (Exception ignored) {
+        }
+
+        try {
+            List<ResolveInfo> list = pm.queryIntentActivities(intent, 0);
+            if (!list.isEmpty()) {
+                return list.get(0);
+            }
+        } catch (Exception ignored) {
+        }
+
+        return null;
+    }
+
+    @NonNull
+    private static List<Intent> getAppActionIntents(@NonNull AppActionIcon action) {
+        List<Intent> intents = new ArrayList<>();
+
+        switch (action) {
+            case OPEN_CONTACT: {
+                intents.add(new Intent(Intent.ACTION_VIEW, ContactsContract.Contacts.CONTENT_URI));
+                intents.add(new Intent(
+                        Intent.ACTION_VIEW,
+                        ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, 1L)
+                ));
+                intents.add(new Intent(Intent.ACTION_MAIN)
+                        .addCategory(Intent.CATEGORY_APP_CONTACTS));
+                break;
+            }
+
+            case EDIT_CONTACT: {
+                Intent editIntent = new Intent(Intent.ACTION_EDIT);
+                editIntent.setDataAndType(
+                        ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, 1L),
+                        ContactsContract.Contacts.CONTENT_ITEM_TYPE
+                );
+                intents.add(editIntent);
+
+                Intent insertOrEditIntent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
+                insertOrEditIntent.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
+                intents.add(insertOrEditIntent);
+
+                intents.add(new Intent(Intent.ACTION_MAIN)
+                        .addCategory(Intent.CATEGORY_APP_CONTACTS));
+
+                intents.add(new Intent(Intent.ACTION_VIEW, ContactsContract.Contacts.CONTENT_URI));
+                break;
+            }
+
+            case CREATE_CONTACT: {
+                Intent insertIntent = new Intent(Intent.ACTION_INSERT);
+                insertIntent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+                intents.add(insertIntent);
+
+                // Fallback: INSERT с MIME-типом dir/contact
+                Intent insertDirIntent = new Intent(Intent.ACTION_INSERT);
+                insertDirIntent.setDataAndType(
+                        ContactsContract.Contacts.CONTENT_URI,
+                        "vnd.android.cursor.dir/contact"
+                );
+                intents.add(insertDirIntent);
+
+                // Fallback: приложение контактов по категории
+                intents.add(new Intent(Intent.ACTION_MAIN)
+                        .addCategory(Intent.CATEGORY_APP_CONTACTS));
+                break;
+            }
+
+            case DIAL: {
+                Uri telUri = Uri.parse("tel:123");
+
+                intents.add(new Intent(Intent.ACTION_DIAL, telUri));
+                intents.add(new Intent(Intent.ACTION_VIEW, telUri));
+                break;
+            }
+
+            case OPEN_CALENDAR: {
+                intents.add(new Intent(Intent.ACTION_VIEW, CalendarContract.Events.CONTENT_URI));
+
+                intents.add(new Intent(
+                        Intent.ACTION_VIEW,
+                        ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, 1L)
+                ));
+
+                intents.add(new Intent(Intent.ACTION_MAIN)
+                        .addCategory(Intent.CATEGORY_APP_CALENDAR));
+                break;
+            }
+
+            case OPEN_BROWSER: {
+                Uri url = Uri.parse("https://example.com");
+
+                intents.add(new Intent(Intent.ACTION_VIEW, url));
+                intents.add(new Intent(Intent.ACTION_MAIN)
+                        .addCategory(Intent.CATEGORY_APP_BROWSER));
+                break;
+            }
+        }
+
+        return intents;
+    }
+
+    @NonNull
+    private static Drawable prepareAppIconDrawable(@NonNull Context context,
+                                                   @NonNull Drawable source) {
+        int size = getAppActionIconSizePx(context);
+
+        Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+
+        Drawable drawable = source.mutate();
+        drawable.setBounds(0, 0, size, size);
+        drawable.draw(canvas);
+
+        return new BitmapDrawable(context.getResources(), bitmap);
+    }
+
+    private static int getAppActionIconSizePx(@NonNull Context context) {
+        int size = appActionIconSizePx;
+
+        if (size > 0) {
+            return size;
+        }
+
+        try {
+            size = context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
+        } catch (Exception ignored) {
+        }
+
+        if (size <= 0) {
+            size = (int) (48 * context.getResources().getDisplayMetrics().density + 0.5f);
+        }
+
+        appActionIconSizePx = size;
+        return size;
+    }
+
+    /**
+     * Проверяет, есть ли на устройстве приложение, способное обработать данное действие.
+     * Используется для скрытия/показа UI-элементов.
+     *
+     * @param context контекст
+     * @param action  тип действия
+     * @return true, если приложение найдено
+     */
+    public static boolean isAppActionAvailable(@NonNull Context context,
+                                               @NonNull AppActionIcon action) {
+        PackageManager pm = context.getPackageManager();
+        List<Intent> intents = getAppActionIntents(action);
+
+        for (Intent intent : intents) {
+            try {
+                ResolveInfo info = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                if (info != null) return true;
+            } catch (Exception ignored) {
+            }
+
+            try {
+                List<ResolveInfo> list = pm.queryIntentActivities(intent, 0);
+                if (!list.isEmpty()) return true;
+            } catch (Exception ignored) {
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Получить имя пакета дефолтного приложения для данного действия.
+     * Результат кэшируется.
+     */
+    @Nullable
+    public static String getAppActionPackageName(@NonNull Context context,
+                                                 @NonNull AppActionIcon action) {
+        String pkg = appActionPackageCache.get(action);
+        if (pkg != null) {
+            return pkg;
+        }
+
+        pkg = resolveAppActionPackage(context.getApplicationContext(), action);
+        if (pkg != null) {
+            appActionPackageCache.put(action, pkg);
+        }
+        return pkg;
+    }
+
+    @Nullable
+    private static String resolveAppActionPackage(@NonNull Context context,
+                                                  @NonNull AppActionIcon action) {
+        PackageManager pm = context.getPackageManager();
+        List<Intent> intents = getAppActionIntents(action);
+
+        for (Intent intent : intents) {
+            try {
+                ResolveInfo info = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                if (info != null && info.activityInfo != null) {
+                    return info.activityInfo.packageName;
+                }
+            } catch (Exception ignored) {
+            }
+
+            try {
+                List<ResolveInfo> list = pm.queryIntentActivities(intent, 0);
+                if (!list.isEmpty()) {
+                    ResolveInfo info = list.get(0);
+                    if (info.activityInfo != null) {
+                        return info.activityInfo.packageName;
+                    }
+                }
+            } catch (Exception ignored) {
+            }
+        }
+
+        return null;
     }
 }
