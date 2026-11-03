@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.11.2026, 00:26
+ *  * Created by Vladimir Belov on 03.11.2026, 10:59
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 03.11.2026, 00:25
+ *  * Last modified 03.11.2026, 10:45
  *
  */
 
@@ -82,6 +82,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -218,14 +219,32 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //https://stackoverflow.com/questions/58896621/how-can-i-color-the-cutout-notch-area-in-non-full-screen-landscape-mode
             getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                int barColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
-                boolean isLightColor = (Color.red(barColor) > 200 && Color.green(barColor) > 200 && Color.blue(barColor) > 200);
+            // Цвет панели навигации
+            int barColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
+            boolean isLightColor = (Color.red(barColor) > 200 && Color.green(barColor) > 200 && Color.blue(barColor) > 200);
+
+            // Для Android 10+ с edge-to-edge используем WindowInsetsControllerCompat
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                WindowInsetsControllerCompat controller = ViewCompat.getWindowInsetsController(getWindow().getDecorView());
+                if (controller != null) {
+                    // Устанавливаем цвет навбара
+                    getWindow().setNavigationBarColor(barColor);
+                    // Управляем цветом иконок
+                    controller.setAppearanceLightNavigationBars(isLightColor);
+                }
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                getWindow().setNavigationBarColor(barColor);
+                if (isLightColor) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                    }
+                }
+            } else { // Для Android 5.x
                 if (isLightColor) {
                     barColor = ContextCompat.getColor(this, R.color.black);
-                    getWindow().setStatusBarColor(barColor);
-                    getWindow().setNavigationBarColor(barColor);
                 }
+                getWindow().setStatusBarColor(barColor);
+                getWindow().setNavigationBarColor(barColor);
             }
 
             Toolbar toolbar = findViewById(R.id.toolbar);
@@ -1915,6 +1934,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //https://medium.com/mobile-app-development-publication/swipe-to-refresh-not-showing-why-96b76c5c93e7
                 if (swipeRefresh != null && !swipeRefresh.isRefreshing()) {
                     swipeRefresh.postDelayed(() -> {
+                        //Перечитываем иконки приложений
+                        DeviceTools.clearAppActionIconCache();
+                        int iconSizePx = (int) (32 * getResources().getDisplayMetrics().density + 0.5f);
+                        DeviceTools.preloadAppActionIcons(this, iconSizePx);
+
                         eventsData.needUpdateEventList = true;
                         eventsData.clearDaysTypesAndInfo();
                         updateList(true);

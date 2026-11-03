@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.11.2026, 00:26
+ *  * Created by Vladimir Belov on 03.11.2026, 10:59
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 03.11.2026, 00:03
+ *  * Last modified 03.11.2026, 10:10
  *
  */
 
@@ -15,6 +15,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -45,6 +46,7 @@ import org.vovka.birthdaycountdown.Constants;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,6 +56,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DeviceTools {
     private static final String TAG = "DeviceTools";
+
+    /**
+     * MIME-типы таблицы событий календаря.
+     * Публичных констант в CalendarContract.Events нет (есть только в ContactsContract)
+     */
+    private static final String MIME_CALENDAR_EVENTS_DIR = "vnd.android.cursor.dir/event";
+    private static final String MIME_CALENDAR_EVENT_ITEM = "vnd.android.cursor.item/event";
     @SuppressLint("PrivateApi")
     public static MIUIAutoStartState getMIUIAutoStartState(@NonNull AppCompatActivity activity) throws Exception {
         //https://stackoverflow.com/questions/39366231/how-to-check-miui-autostart-permission-programmatically
@@ -429,7 +438,6 @@ public class DeviceTools {
     /**
      * Очистить кэш иконок.
      */
-    @SuppressWarnings("unused")
     public static void clearAppActionIconCache() {
         appActionIconCache.clear();
         appActionPackageCache.clear();
@@ -467,7 +475,7 @@ public class DeviceTools {
         List<Intent> intents = getAppActionIntents(action);
 
         for (Intent intent : intents) {
-            ResolveInfo info = resolveActivityInfo(pm, intent);
+            ResolveInfo info = resolveActivityInfo(context, intent);
             if (info == null) {
                 continue;
             }
@@ -511,43 +519,100 @@ public class DeviceTools {
     }
 
     @Nullable
-    private static ResolveInfo resolveActivityInfo(@NonNull PackageManager pm,
+    private static ResolveInfo resolveActivityInfo(@NonNull Context context,
                                                    @NonNull Intent intent) {
+        PackageManager pm = context.getPackageManager();
+        final String mime = intent.getType();
+
+        // 1) Системный дефолт — но только если он не "всеядный" (не */*)
         try {
-            ResolveInfo info = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
-            if (info != null) {
-                return info;
+            ResolveInfo def = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            if (def != null && getFilterSpecificity(def, mime) >= 0) {
+                return def;
             }
         } catch (Exception ignored) {
         }
 
+        // 2) Иначе выбираем из списка по специфичности фильтра
+        List<ResolveInfo> list = null;
         try {
-            List<ResolveInfo> list = pm.queryIntentActivities(intent, 0);
-            if (!list.isEmpty()) {
-                return list.get(0);
-            }
+            list = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
         } catch (Exception ignored) {
         }
+        if (list == null || list.isEmpty()) {
+            try {
+                list = pm.queryIntentActivities(intent, 0);
+            } catch (Exception ignored) {
+            }
+        }
+        if (list == null || list.isEmpty()) return null;
+        if (list.size() == 1) return list.get(0);
 
-        return null;
+        ResolveInfo best = null;
+        int bestScore = Integer.MIN_VALUE;
+        for (ResolveInfo info : list) {
+            int score = getFilterSpecificity(info, mime) * 4 + (info.isDefault ? 2 : 0);
+            if (score > bestScore) {
+                best = info;
+                bestScore = score;
+            }
+        }
+        return best;
+    }
+
+    /**
+     * Специфичность intent-фильтра, по которому кандидат совпал с intent:
+     *  2 - фильтр объявляет ТОЧНО тот MIME-тип, что у intent (vnd.android.cursor.item/event и т.п.);
+     *  1 - фильтр объявляет конкретные (не wildcard) MIME-типы;
+     *  0 - у фильтра вообще нет MIME-типов (матчинг по scheme/категории — браузеры, звонилки, MAIN+CATEGORY);
+     * -1 - фильтр "всеядный" (только wildcard-типы вида * / *) — типично для файловых
+     *      менеджеров, перехватывающих любые content:// URI.
+     */
+    private static int getFilterSpecificity(@NonNull ResolveInfo info, @Nullable String mime) {
+        IntentFilter filter = info.filter;
+        if (filter == null) return 0;
+        Iterator<String> types = filter.typesIterator();
+        if (types == null || !types.hasNext()) return 0;
+        boolean exact = false, specific = false, wildcard = false;
+        while (types.hasNext()) {
+            String t = types.next();
+            if (t == null) continue;
+            if (mime != null && mime.equalsIgnoreCase(t)) {
+                exact = true;
+            } else if (t.indexOf('*') >= 0) {
+                wildcard = true;
+            } else {
+                specific = true;
+            }
+        }
+        if (exact) return 2;
+        if (specific) return 1;
+        if (wildcard) return -1;
+        return 0;
     }
 
     @NonNull
     private static List<Intent> getAppActionIntents(@NonNull AppActionIcon action) {
         List<Intent> intents = new ArrayList<>();
-
         switch (action) {
             case OPEN_CONTACT: {
-                intents.add(new Intent(Intent.ACTION_VIEW, ContactsContract.Contacts.CONTENT_URI));
-                intents.add(new Intent(
-                        Intent.ACTION_VIEW,
-                        ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, 1L)
-                ));
+                // Просмотр конкретного контакта (как в рантайме)
+                intents.add(new Intent(Intent.ACTION_VIEW)
+                        .setDataAndType(
+                                ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, 1L),
+                                ContactsContract.Contacts.CONTENT_ITEM_TYPE
+                        ));
+                // Просмотр списка контактов
+                intents.add(new Intent(Intent.ACTION_VIEW)
+                        .setDataAndType(
+                                ContactsContract.Contacts.CONTENT_URI,
+                                ContactsContract.Contacts.CONTENT_TYPE
+                        ));
+                // Fallback: приложение контактов по категории
                 intents.add(new Intent(Intent.ACTION_MAIN)
                         .addCategory(Intent.CATEGORY_APP_CONTACTS));
                 break;
             }
-
             case EDIT_CONTACT: {
                 Intent editIntent = new Intent(Intent.ACTION_EDIT);
                 editIntent.setDataAndType(
@@ -555,68 +620,64 @@ public class DeviceTools {
                         ContactsContract.Contacts.CONTENT_ITEM_TYPE
                 );
                 intents.add(editIntent);
-
                 Intent insertOrEditIntent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
                 insertOrEditIntent.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
                 intents.add(insertOrEditIntent);
-
                 intents.add(new Intent(Intent.ACTION_MAIN)
                         .addCategory(Intent.CATEGORY_APP_CONTACTS));
-
-                intents.add(new Intent(Intent.ACTION_VIEW, ContactsContract.Contacts.CONTENT_URI));
+                intents.add(new Intent(Intent.ACTION_VIEW)
+                        .setDataAndType(
+                                ContactsContract.Contacts.CONTENT_URI,
+                                ContactsContract.Contacts.CONTENT_TYPE
+                        ));
                 break;
             }
-
             case CREATE_CONTACT: {
                 Intent insertIntent = new Intent(Intent.ACTION_INSERT);
                 insertIntent.setType(ContactsContract.Contacts.CONTENT_TYPE);
                 intents.add(insertIntent);
-
-                // Fallback: INSERT с MIME-типом dir/contact
                 Intent insertDirIntent = new Intent(Intent.ACTION_INSERT);
                 insertDirIntent.setDataAndType(
                         ContactsContract.Contacts.CONTENT_URI,
-                        "vnd.android.cursor.dir/contact"
+                        ContactsContract.Contacts.CONTENT_TYPE
                 );
                 intents.add(insertDirIntent);
-
-                // Fallback: приложение контактов по категории
                 intents.add(new Intent(Intent.ACTION_MAIN)
                         .addCategory(Intent.CATEGORY_APP_CONTACTS));
                 break;
             }
-
             case DIAL: {
                 Uri telUri = Uri.parse("tel:123");
-
                 intents.add(new Intent(Intent.ACTION_DIAL, telUri));
                 intents.add(new Intent(Intent.ACTION_VIEW, telUri));
                 break;
             }
-
             case OPEN_CALENDAR: {
-                intents.add(new Intent(Intent.ACTION_VIEW, CalendarContract.Events.CONTENT_URI));
-
-                intents.add(new Intent(
-                        Intent.ACTION_VIEW,
-                        ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, 1L)
-                ));
-
+                // Просмотр конкретного события (как в рантайме)
+                intents.add(new Intent(Intent.ACTION_VIEW)
+                        .setDataAndType(
+                                ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, 1L),
+                                MIME_CALENDAR_EVENT_ITEM
+                        ));
+                // Просмотр списка событий
+                intents.add(new Intent(Intent.ACTION_VIEW)
+                        .setDataAndType(
+                                CalendarContract.Events.CONTENT_URI,
+                                MIME_CALENDAR_EVENTS_DIR
+                        ));
+                // Fallback: приложение календаря по категории (как было в старом коде)
                 intents.add(new Intent(Intent.ACTION_MAIN)
                         .addCategory(Intent.CATEGORY_APP_CALENDAR));
                 break;
             }
-
             case OPEN_BROWSER: {
                 Uri url = Uri.parse("https://example.com");
-
                 intents.add(new Intent(Intent.ACTION_VIEW, url));
                 intents.add(new Intent(Intent.ACTION_MAIN)
                         .addCategory(Intent.CATEGORY_APP_BROWSER));
                 break;
             }
         }
-
         return intents;
     }
 
@@ -665,23 +726,12 @@ public class DeviceTools {
      */
     public static boolean isAppActionAvailable(@NonNull Context context,
                                                @NonNull AppActionIcon action) {
-        PackageManager pm = context.getPackageManager();
         List<Intent> intents = getAppActionIntents(action);
-
         for (Intent intent : intents) {
-            try {
-                ResolveInfo info = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                if (info != null) return true;
-            } catch (Exception ignored) {
-            }
-
-            try {
-                List<ResolveInfo> list = pm.queryIntentActivities(intent, 0);
-                if (!list.isEmpty()) return true;
-            } catch (Exception ignored) {
+            if (resolveActivityInfo(context, intent) != null) {
+                return true;
             }
         }
-
         return false;
     }
 
@@ -707,30 +757,12 @@ public class DeviceTools {
     @Nullable
     private static String resolveAppActionPackage(@NonNull Context context,
                                                   @NonNull AppActionIcon action) {
-        PackageManager pm = context.getPackageManager();
-        List<Intent> intents = getAppActionIntents(action);
-
-        for (Intent intent : intents) {
-            try {
-                ResolveInfo info = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                if (info != null && info.activityInfo != null) {
-                    return info.activityInfo.packageName;
-                }
-            } catch (Exception ignored) {
-            }
-
-            try {
-                List<ResolveInfo> list = pm.queryIntentActivities(intent, 0);
-                if (!list.isEmpty()) {
-                    ResolveInfo info = list.get(0);
-                    if (info.activityInfo != null) {
-                        return info.activityInfo.packageName;
-                    }
-                }
-            } catch (Exception ignored) {
+        for (Intent intent : getAppActionIntents(action)) {
+            ResolveInfo info = resolveActivityInfo(context, intent);
+            if (info != null && info.activityInfo != null) {
+                return info.activityInfo.packageName;
             }
         }
-
         return null;
     }
 }
