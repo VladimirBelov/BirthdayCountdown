@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.11.2026, 10:59
+ *  * Created by Vladimir Belov on 03.11.2026, 13:16
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 03.11.2026, 10:45
+ *  * Last modified 03.11.2026, 12:49
  *
  */
 
@@ -215,9 +215,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else {
                 layoutMain.setPadding(0, ImageUtils.Dip2Px(resources, 62), 0, 0);
             }
+            Window window = getWindow();
+
             //Цвет CutoutAppearance на повёрнутом экране
             //https://stackoverflow.com/questions/58896621/how-can-i-color-the-cutout-notch-area-in-non-full-screen-landscape-mode
-            getWindow().setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
+            window.setBackgroundDrawable(new ColorDrawable(ta.getColor(R.styleable.Theme_colorPrimary, ContextCompat.getColor(this, R.color.white))));
 
             // Цвет панели навигации
             int barColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
@@ -225,26 +227,24 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             // Для Android 10+ с edge-to-edge используем WindowInsetsControllerCompat
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                WindowInsetsControllerCompat controller = ViewCompat.getWindowInsetsController(getWindow().getDecorView());
+                WindowInsetsControllerCompat controller = ViewCompat.getWindowInsetsController(window.getDecorView());
                 if (controller != null) {
                     // Устанавливаем цвет навбара
-                    getWindow().setNavigationBarColor(barColor);
+                    window.setNavigationBarColor(barColor);
                     // Управляем цветом иконок
                     controller.setAppearanceLightNavigationBars(isLightColor);
                 }
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                getWindow().setNavigationBarColor(barColor);
-                if (isLightColor) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                    }
+                window.setNavigationBarColor(barColor);
+                if (isLightColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             } else { // Для Android 5.x
                 if (isLightColor) {
                     barColor = ContextCompat.getColor(this, R.color.black);
                 }
-                getWindow().setStatusBarColor(barColor);
-                getWindow().setNavigationBarColor(barColor);
+                window.setStatusBarColor(barColor);
+                window.setNavigationBarColor(barColor);
             }
 
             Toolbar toolbar = findViewById(R.id.toolbar);
