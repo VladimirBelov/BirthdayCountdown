@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 17.09.2026, 18:08
+ *  * Created by Vladimir Belov on 04.11.2026, 16:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 17.09.2026, 08:56
+ *  * Last modified 04.11.2026, 11:31
  *
  */
 
@@ -245,7 +245,7 @@ public class QuizActivity extends Activity {
      * Загрузка мастер-списка событий и фильтрация по источникам
      */
     private List<String> loadMasterEventList() {
-        List<String> events = new ArrayList<>(eventsData.eventList);
+        List<String> events = new ArrayList<>(eventsData.getEventList());
         Set<String> sources = eventsData.preferences_quiz_sources;
         if (sources != null && !sources.isEmpty()) {
             List<String> eventsFiltered = new ArrayList<>();

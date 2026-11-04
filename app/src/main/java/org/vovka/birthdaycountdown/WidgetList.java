@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 23.07.2026, 14:22
+ *  * Created by Vladimir Belov on 04.11.2026, 16:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 23.07.2026, 13:42
+ *  * Last modified 04.11.2026, 11:31
  *
  */
 
@@ -98,13 +98,13 @@ public class WidgetList extends AppWidgetProvider {
             }
             //todo: https://stackoverflow.com/questions/5070413/widget-double-click
 
-            List<String> filteredEventList = eventsData.getFilteredEventList(eventsData.eventList, widgetPref);
+            List<String> filteredEventList = eventsData.getFilteredEventList(eventsData.getEventList(), widgetPref);
             int eventsToShow = filteredEventList.size();
 
             if (eventsData.preferences_debug_on) {
                 views.setTextViewText(R.id.info, res.getString(R.string.widget_msg_updated)
                         + Objects.requireNonNull(eventsData.sdf_DDMMYYYYHHMM.get()).format(Calendar.getInstance().getTime())
-                        + "\n" + res.getString(R.string.widget_msg_events) + eventsToShow + "/" + eventsData.eventList.size());
+                        + "\n" + res.getString(R.string.widget_msg_events) + eventsToShow + "/" + eventsData.getEventList().size());
             } else {
                 views.setTextViewText(R.id.info, "");
             }

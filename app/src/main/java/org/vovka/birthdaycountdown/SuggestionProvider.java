@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.02.2026, 17:39
+ *  * Created by Vladimir Belov on 04.11.2026, 16:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 25.02.2026, 13:33
+ *  * Last modified 04.11.2026, 11:31
  *
  */
 
@@ -87,7 +87,7 @@ public class SuggestionProvider extends ContentProvider{
             }
 
             int eventNum = -1;
-            for (String event : eventsData.eventList) {
+            for (String event : eventsData.getEventList()) {
                 eventNum++;
                 final String eventDataNormalized = StringUtils.normalizeString(event);
                 if (eventDataNormalized == null || !eventDataNormalized.contains(queryString)) {

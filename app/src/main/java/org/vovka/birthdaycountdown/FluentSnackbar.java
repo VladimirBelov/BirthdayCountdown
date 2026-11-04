@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.06.2026, 22:04
+ *  * Created by Vladimir Belov on 04.11.2026, 16:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.06.2026, 21:29
+ *  * Last modified 04.11.2026, 09:43
  *
  */
 
@@ -62,7 +62,7 @@ final class FluentSnackbar {
     }
 
     public void removeAllMessagesByType(int type) {
-        mSnackbarHandler.setNotImportantByType(type);
+        if (mSnackbarHandler != null) mSnackbarHandler.setNotImportantByType(type);
     }
 
     void showSnackbar(Builder builder) {

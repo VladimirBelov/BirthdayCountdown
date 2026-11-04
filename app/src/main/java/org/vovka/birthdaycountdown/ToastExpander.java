@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.10.2026, 10:30
+ *  * Created by Vladimir Belov on 04.11.2026, 16:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.10.2026, 10:00
+ *  * Last modified 04.11.2026, 10:00
  *
  */
 
@@ -51,47 +51,46 @@ public class ToastExpander {
     }
 
     private synchronized void showText(@NonNull Context context, @NonNull String msg, int type) {
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             ContactsEvents eventsData = ContactsEvents.getInstance();
-            try {
-                if (eventsData.isUIOpen && eventsData.coordinator != null) {
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        if (mFluentSnackbar == null) {
-                            mFluentSnackbar = FluentSnackbar.create(ContactsEvents.getInstance().coordinator);
-                        }
+            final android.view.View currentCoordinator = eventsData.coordinator;
 
-                        @ColorInt int colorBack = 0;
-                        @ColorInt int colorAction = 0;
-                        try {
-                            colorBack = eventsData.getThemeBackColor();
-                            colorAction = eventsData.getThemeWindowTitleColor();
-                        } catch (Resources.NotFoundException ignored) { /**/ }
+            if (eventsData.isUIOpen && currentCoordinator != null) {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    if (mFluentSnackbar == null) {
+                        mFluentSnackbar = FluentSnackbar.create(currentCoordinator);
+                    }
 
-                        mFluentSnackbar
-                                .create(msg)
-                                .maxLines(8)
-                                .backgroundColor(colorBack)
-                                .important()
-                                .actionText(eventsData.getResources().getString(R.string.button_off))
-                                .actionTextColor(colorAction)
-                                .action(v -> {
-                                    if (type == msgTypeDebug) {
-                                        eventsData.disableDebugMsg();
-                                    } else if (type == msgTypeInfo) {
-                                        eventsData.disableInfoMsg();
-                                    }
-                                    if (mFluentSnackbar != null) {
-                                        mFluentSnackbar.removeAllMessagesByType(type);
-                                    }
-                                })
-                                .type(type)
-                                .show();
-                    });
-                } else {
-                    showToast(context, msg);
-                }
-            } catch (IllegalArgumentException e) {
+                    @ColorInt int colorBack = 0;
+                    @ColorInt int colorAction = 0;
+                    try {
+                        colorBack = eventsData.getThemeBackColor();
+                        colorAction = eventsData.getThemeWindowTitleColor();
+                    } catch (Resources.NotFoundException ignored) {
+                        /**/
+                    }
+
+                    mFluentSnackbar
+                            .create(msg)
+                            .maxLines(8)
+                            .backgroundColor(colorBack)
+                            .important()
+                            .actionText(eventsData.getResources().getString(R.string.button_off))
+                            .actionTextColor(colorAction)
+                            .action(v -> {
+                                if (type == msgTypeDebug) {
+                                    eventsData.disableDebugMsg();
+                                } else if (type == msgTypeInfo) {
+                                    eventsData.disableInfoMsg();
+                                }
+                                if (mFluentSnackbar != null) {
+                                    mFluentSnackbar.removeAllMessagesByType(type);
+                                }
+                            })
+                            .type(type)
+                            .show();
+                });
+            } else {
                 showToast(context, msg);
             }
         } else {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.09.2026, 14:09
+  ~  * Created by Vladimir Belov on 04.11.2026, 16:44
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.09.2026, 14:02
+  ~  * Last modified 04.11.2026, 16:40
   ~  */
   -->
 
@@ -11,8 +11,12 @@
 
 <string-array name="changelog" tools:ignore="InconsistentArrays">
 
-
-    <item>#1.9.1</item>
+    <item>#1.9.3</item>
+    <item>⚪ Ajout du thème blanc</item>
+    <item>"🎨 Personnalisation de la mise en page de l'événement (fonctionnalités supplémentaires)"</item>
+    <item>Ajout de la possibilité de modifier la taille de la photo dans la liste principale des événements</item>
+    <item>"Ajout des icônes des applications assignées dans le système pour les actions contextuelles de l'événement"</item>
+    <item>Corrections de bugs</item>
 
     <item>#1.9.2</item>
     <item>"🎂 Sélection d'icônes et de symboles pour les types d'événements"</item>

@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.09.2026, 14:09
+  ~  * Created by Vladimir Belov on 04.11.2026, 16:44
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.09.2026, 14:01
+  ~  * Last modified 04.11.2026, 16:38
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.3</item>
+        <item>⚪ Weißes Design hinzugefügt</item>
+        <item>🎨 Anpassung des Ereignislayouts (Extrafunktionen)</item>
+        <item>Möglichkeit hinzugefügt, die Fotogröße in der Hauptliste der Ereignisse zu ändern</item>
+        <item>Symbole der im System zugewiesenen Apps für kontextbezogene Aktionen hinzugefügt</item>
+        <item>Fehlerbehebungen</item>
 
         <item>#1.9.2</item>
         <item>🎂 Auswahl von Symbolen für Ereignistypen</item>

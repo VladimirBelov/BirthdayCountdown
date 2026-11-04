@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.09.2026, 14:09
+  ~  * Created by Vladimir Belov on 04.11.2026, 16:44
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.09.2026, 14:00
+  ~  * Last modified 04.11.2026, 16:35
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.3</item>
+        <item>⚪ Добавлена белая тема</item>
+        <item>🎨 Настройка макета отображения события (доп. функции)</item>
+        <item>Добавлена возможность менять размер фото в основном списке событий</item>
+        <item>Для контекстных действий для события добавлены иконки назначенных в системе приложений</item>
+        <item>Исправление ошибок</item>
 
         <item>#1.9.2</item>
         <item>🎂 Выбор иконок и символов для типов событий</item>

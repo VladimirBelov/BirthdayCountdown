@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.11.2026, 21:16
+ *  * Created by Vladimir Belov on 04.11.2026, 16:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.11.2026, 20:50
+ *  * Last modified 04.11.2026, 16:23
  *
  */
 
@@ -114,6 +114,7 @@ class WidgetUpdater {
             if (eventsData.isEmptyEventList() || System.currentTimeMillis() - eventsData.statLastComputeDates > Constants.TIME_FORCE_UPDATE + eventsData.statTimeComputeDates) {
                 eventsData.getEvents();
             }
+            final List<String> currentEvents = eventsData.getEventList();
 
             //По нажатию на виджет открываем основное окно
             Intent intentView = new Intent(context, MainActivity.class);
@@ -137,7 +138,7 @@ class WidgetUpdater {
                 if (!widgetPref.isEmpty()) startingIndex = Integer.parseInt(widgetPref.get(0));
             } catch (Exception e) {/**/}
 
-            if (eventsData.isEmptyEventList() || eventsData.eventList.size() < startingIndex) {
+            if (currentEvents.isEmpty() || currentEvents.size() < startingIndex) {
 
                 String prefZeroEventsMessage = null;
                 if (widgetPref.size() > 7) prefZeroEventsMessage = widgetPref.get(7).replace(Constants.STRING_EOT, ",");
@@ -196,7 +197,7 @@ class WidgetUpdater {
                 }
             }
 
-            eventsToShow = Math.min(this.eventsCount, eventsData.eventList.size());
+            eventsToShow = Math.min(this.eventsCount, currentEvents.size());
 
             if (widgetPref.size() > 1) {
                 fontMagnify = ImageUtils.getSizeForWidgetElement(widgetPref, 1, 1, 1);
@@ -319,7 +320,7 @@ class WidgetUpdater {
             eventsToSkip = startingIndex - 1;
 
             int i = 0;
-            while (i < eventsData.eventList.size() & eventsDisplayed <= eventsToShow) {
+            while (i < currentEvents.size() & eventsDisplayed <= eventsToShow) {
                 drawPhotoEvent(i);
                 i++;
             }
@@ -387,7 +388,7 @@ class WidgetUpdater {
         //Отрисовка одного события
         try {
 
-            String event = eventsData.eventList.get(i);
+            String event = eventsData.getEventList().get(i);
             String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
 
             boolean isVisibleEvent = false;

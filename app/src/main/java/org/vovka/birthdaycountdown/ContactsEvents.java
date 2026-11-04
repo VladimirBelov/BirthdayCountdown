@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.11.2026, 01:20
+ *  * Created by Vladimir Belov on 04.11.2026, 16:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 01.11.2026, 23:38
+ *  * Last modified 04.11.2026, 11:24
  *
  */
 
@@ -353,7 +353,7 @@ public class ContactsEvents {
     static final int Rules_Unrecognized_Type_Unrecognized = 2;
     static final int Rules_Unrecognized_Skip = 3;
 
-    final List<String> eventList = new ArrayList<>(); //Список всех событий
+    private volatile List<String> eventList = new ArrayList<>();
     final List<String> eventListUpdated = new ArrayList<>(); //Список всех событий (обновлённый)
     final List<String> eventListFacts = new ArrayList<>(); //Факты
     final List<String> eventListPrev = new ArrayList<>(); //Список предыдущих событий
@@ -406,6 +406,8 @@ public class ContactsEvents {
     final Map<String, DayType.Type> preferences_DaysTypes = new HashMap<>();
     /** Данные о событиях для календаря */
     private final Map<String, String> preferences_DaysInfo = new HashMap<>();
+
+    public List<String> getEventList() { return eventList; }
 
     //Даты
     public void setToday() {
@@ -2619,8 +2621,7 @@ public class ContactsEvents {
             statFavoriteEventsCount += getFavoritesEventsCount();
 
             if (result) {
-                eventList.clear();
-                eventList.addAll(eventListUpdated);
+                eventList = new ArrayList<>(eventListUpdated);
                 eventListUpdated.clear();
                 computeDates();
             }
@@ -6492,48 +6493,50 @@ public class ContactsEvents {
     }
 
     synchronized void computeDates() {
-        //Вычисляем даты
-
         long statCurrentModuleStart = System.currentTimeMillis();
-
         try {
+            // Создаём РАБОЧУЮ копию — все модификации идут только с ней
+            List<String> workingList = new ArrayList<>(eventList);
 
-            if (isEmptyEventList()) return;
+            if (workingList.isEmpty()) return;
 
-            List<String> magicList = new ArrayList<>(); //Для 5k событий
+            List<String> magicList = new ArrayList<>();
             Date currentDay = getToday().getTime();
 
-            for (int i = 0; i < eventList.size(); i++) {
-                computeDateForEvent(i, magicList, getToday(), currentDay);
+            for (int i = 0; i < workingList.size(); i++) {
+                computeDateForEvent(i, magicList, getToday(), currentDay, workingList);
             }
 
-            //Удаляем пустые
-            for (int i = eventList.size() - 1; i >= 0; i--) {
-                if (eventList.get(i).isEmpty()) eventList.remove(i);
+            // Удаляем пустые
+            for (int i = workingList.size() - 1; i >= 0; i--) {
+                if (workingList.get(i).isEmpty()) workingList.remove(i);
             }
 
-            //Добавляем 5k+
+            // Добавляем 5K+
             if (!magicList.isEmpty()) {
-                eventList.addAll(magicList);
-                magicList.clear();
+                workingList.addAll(magicList);
             }
+
+            // Сортируем
+            Collections.sort(workingList);
+
+            // АТОМАРНО публикуем результат — одним присваиванием volatile-ссылки
+            eventList = workingList;
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(context, StringUtils.getMethodName(3) + ": " + e);
         } finally {
-
-            //Сортируем
-            Collections.sort(eventList);
-
             statLastComputeDates = System.currentTimeMillis();
             statTimeComputeDates = statLastComputeDates - statCurrentModuleStart;
         }
     }
 
-    void computeDateForEvent(int eventIndex, @NonNull List<String> magicList, @NonNull Calendar now, @NonNull Date currentDay) {
+    void computeDateForEvent(int eventIndex, @NonNull List<String> magicList, @NonNull Calendar now,
+                             @NonNull Date currentDay, @NonNull List<String> workingList) {
 
-        String singleEvent = "";
+        final String singleEvent = workingList.get(eventIndex);
+        if (singleEvent == null) return;
 
         try {
             long dayDiff = -1;
@@ -6543,12 +6546,9 @@ public class ContactsEvents {
             Date eventDateThisTime = null; //следующая дата события
             int age = 0;
 
-            singleEvent = eventList.get(eventIndex);
-            if (singleEvent == null) return;
-
             String[] singleEventArray = singleEvent.split(Constants.STRING_EOT, -1);
             if (singleEventArray.length < Position_attrAmount) {
-                eventList.set(eventIndex, "");
+                workingList.set(eventIndex, "");
                 return;
             }
 
@@ -6756,7 +6756,7 @@ public class ContactsEvents {
                         );
                 ToastExpander.showInfoMsg(context, sb.toString());
 
-                eventList.set(eventIndex, "");
+                workingList.set(eventIndex, "");
                 return;
 
             }
@@ -6783,7 +6783,9 @@ public class ContactsEvents {
                     singleEventArray[Position_age_caption] = "";
                 }
                 if (eventDateFirstTime != null) {
-                    singleEventArray[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType, AppDateUtils.countDaysDiffText(eventDateFirstTime, currentDay, 3, resources, currentLocale), currentDay);
+                    singleEventArray[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType,
+                            AppDateUtils.countDaysDiffText(eventDateFirstTime, currentDay, 3, resources, currentLocale),
+                            currentDay, workingList);
                 }
             }
 
@@ -6795,7 +6797,7 @@ public class ContactsEvents {
             //Сортировка: дней до даты + (с уведомлением, не скрыт, скрыт)
             singleEventArray[Position_eventDate_sorted] = getSortKey(singleEventArray);
 
-            eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleEventArray));
+            workingList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleEventArray));
 
             if (age > 0) {
 
@@ -6830,7 +6832,9 @@ public class ContactsEvents {
                         singleEventArray5K[Position_eventDistanceText] = getEventDistanceText(magicDayDistance, cal5K.getTime());
                         singleEventArray5K[Position_eventIcon] = Constants.ICON_PREFIX_RES + getResources().getResourceEntryName(R.drawable.ic_event_medal); //https://www.flaticon.com/free-icon/medal_610333
                         singleEventArray5K[Position_eventEmoji] = resources.getString(R.string.event_type_5k_emoji);
-                        singleEventArray5K[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType, AppDateUtils.countDaysDiffText(eventDateFirstTime, currentDay, 3, resources, currentLocale), currentDay); //Возраст текущий
+                        singleEventArray5K[Position_age_current] = fillCurrentAge(singleEventArray, eventSubType,
+                                AppDateUtils.countDaysDiffText(eventDateFirstTime, currentDay, 3, resources, currentLocale),
+                                currentDay, workingList); //Возраст текущий
                         singleEventArray5K[Position_eventDate_sorted] = getSortKey(singleEventArray5K);
 
                         if (isInsideYear) {
@@ -6989,7 +6993,8 @@ public class ContactsEvents {
      * @return текущий возраст с префиксом
      */
     @NonNull
-    private String fillCurrentAge(@NonNull String[] singleEventArray, @NonNull String eventSubType, @NonNull String currentAge, Date today) {
+    private String fillCurrentAge(@NonNull String[] singleEventArray, @NonNull String eventSubType,
+                                  @NonNull String currentAge, Date today, @NonNull List<String> workingList) {
 
         String agePrefix = "";
         try {
@@ -7007,14 +7012,14 @@ public class ContactsEvents {
                         final String key = contactID + Constants.STRING_2HASH + Constants.EventType_Death;
                         if (map_eventsBySubtypeAndPersonID_offset.containsKey(key)) {
                             Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(key);
-                            if (eventIndex != null && eventIndex <= eventList.size()) {
-                                List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
+                            if (eventIndex != null && eventIndex <= workingList.size()) {
+                                List<String> singleRowList = Arrays.asList(workingList.get(eventIndex).split(Constants.STRING_EOT, -1));
                                 Date birthDate = birthdayDatesForIds.get(contactID);
                                 Date deathDate = deathDatesForIds.get(contactID);
                                 if (birthDate != null && deathDate != null) {
                                     final String wasAge = AppDateUtils.countDaysDiffText(birthDate, deathDate, 3, resources, currentLocale);
                                     singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_was).concat(wasAge));
-                                    eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
+                                    workingList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
                                 }
                             }
                         }
@@ -7025,14 +7030,14 @@ public class ContactsEvents {
 
                             final String key = personFullName + Constants.STRING_2HASH + Constants.EventType_Death;
                             Integer eventIndex = map_eventsBySubtypeAndPersonName_offset.get(key);
-                            if (eventIndex != null && eventIndex <= eventList.size()) {
-                                List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
+                            if (eventIndex != null && eventIndex <= workingList.size()) {
+                                List<String> singleRowList = Arrays.asList(workingList.get(eventIndex).split(Constants.STRING_EOT, -1));
                                 Date birthDate = birthdayDatesForNames.get(personFullName);
                                 Date deathDate = deathDatesForNames.get(personFullName);
                                 if (birthDate != null && deathDate != null) {
                                     final String wasAge = AppDateUtils.countDaysDiffText(birthDate, deathDate, 3, resources, currentLocale);
                                     singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_was).concat(wasAge));
-                                    eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
+                                    workingList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
                                 }
                             }
 
@@ -7054,10 +7059,10 @@ public class ContactsEvents {
                         final String key = contactID + Constants.STRING_2HASH + Constants.EventType_BirthDay;
                         if (map_eventsBySubtypeAndPersonID_offset.containsKey(key)) {
                             Integer eventIndex = map_eventsBySubtypeAndPersonID_offset.get(key);
-                            if (eventIndex != null && eventIndex <= eventList.size()) {
-                                List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
+                            if (eventIndex != null && eventIndex <= workingList.size()) {
+                                List<String> singleRowList = Arrays.asList(workingList.get(eventIndex).split(Constants.STRING_EOT, -1));
                                 singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_could_be_now).concat(AppDateUtils.countDaysDiffText(birthDate, today, 3, resources, currentLocale)));
-                                eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
+                                workingList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
                             }
                         }
                     } else { //Другие события
@@ -7086,10 +7091,10 @@ public class ContactsEvents {
                         final String key = personFullName + Constants.STRING_2HASH + Constants.EventType_BirthDay;
                         if (map_eventsBySubtypeAndPersonName_offset.containsKey(key)) {
                             Integer eventIndex = map_eventsBySubtypeAndPersonName_offset.get(key);
-                            if (eventIndex != null && eventIndex <= eventList.size()) {
-                                List<String> singleRowList = Arrays.asList(eventList.get(eventIndex).split(Constants.STRING_EOT, -1));
+                            if (eventIndex != null && eventIndex <= workingList.size()) {
+                                List<String> singleRowList = Arrays.asList(workingList.get(eventIndex).split(Constants.STRING_EOT, -1));
                                 singleRowList.set(Position_age_current, resources.getString(R.string.msg_age_could_be_now).concat(AppDateUtils.countDaysDiffText(birthDate, today, 3, resources, currentLocale)));
-                                eventList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
+                                workingList.set(eventIndex, TextUtils.join(Constants.STRING_EOT, singleRowList));
                             }
                         }
                     } else { //Другие события
@@ -7930,7 +7935,7 @@ public class ContactsEvents {
             Date currentDay = getToday().getTime();
 
             List<NotifyEvent> listNotify = new ArrayList<>();
-            for (String event : eventList) {
+            for (String event : getEventList()) {
                 String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                 if (singleEventArray.length == Position_attrAmount) {
 
@@ -8782,7 +8787,7 @@ public class ContactsEvents {
     }
 
     boolean isEmptyEventList() {
-        return eventList.isEmpty();
+        return getEventList().isEmpty();
     }
 
     void clearHiddenEvents() {
@@ -9929,13 +9934,13 @@ public class ContactsEvents {
         }
     }
 
-    synchronized List<String> getFilteredEventList(List<String> eventList, List<String> widgetPref) {
+    synchronized List<String> getFilteredEventList(List<String> events, List<String> widgetPref) {
 
         List<String> resultList = new ArrayList<>();
 
         try {
 
-            if (widgetPref == null || eventList.isEmpty()) return resultList;
+            if (widgetPref == null || events.isEmpty()) return resultList;
 
             //Типы событий
             List<String> eventsPrefList = new ArrayList<>();
@@ -9948,7 +9953,7 @@ public class ContactsEvents {
                 sourcesPrefList = Arrays.asList(widgetPref.get(10).split(Constants.REGEX_PLUS));
             }
 
-            for (String event : eventList) {
+            for (String event : events) {
 
                 String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                 boolean isVisibleEvent = false;
@@ -10860,11 +10865,7 @@ public class ContactsEvents {
 
     private void fillDayTypesForCalendarWidgetInternal() {
         try {
-            final List<String> eventListCopy;
-            synchronized (eventList) {
-                eventListCopy = new ArrayList<>(eventList);
-            }
-
+            final List<String> eventListCopy = new ArrayList<>(getEventList());
             for (String event : eventListCopy) {
                 String[] singleEventArray = event.split(Constants.STRING_EOT, -1);
                 if (singleEventArray.length < Position_attrAmount) continue;

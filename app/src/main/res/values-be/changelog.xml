@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.09.2026, 14:09
+  ~  * Created by Vladimir Belov on 04.11.2026, 16:44
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.09.2026, 14:03
+  ~  * Last modified 04.11.2026, 16:41
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.3</item>
+        <item>⚪ Дададзена белая тэма</item>
+        <item>🎨 Налада макета адлюстравання падзеі (дадатковыя функцыі)</item>
+        <item>Дададзена магчымасць змяняць памер фота ў асноўным спісе падзей</item>
+        <item>Для кантэкстных дзеянняў падзеі дададзены іконкі прызначаных у сістэме праграм</item>
+        <item>Выпраўленне памылак</item>
 
         <item>#1.9.2</item>
         <item>🎂 Выбар абразкоў і сімвалаў для тыпаў падзей</item>

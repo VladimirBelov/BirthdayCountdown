@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 07.10.2026, 16:02
+  ~  * Created by Vladimir Belov on 04.11.2026, 16:44
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 07.10.2026, 15:36
+  ~  * Last modified 04.11.2026, 16:37
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.3</item>
+        <item>⚪ Added white theme</item>
+        <item>🎨 Event layout customization (extra features)</item>
+        <item>Added ability to change photo size in the main event list</item>
+        <item>Added system app icons for event contextual actions</item>
+        <item>Bug fixes</item>
 
         <item>#1.9.2</item>
         <item>🎂 Selecting icons and symbols for event types</item>

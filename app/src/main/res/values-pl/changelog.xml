@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 22.09.2026, 14:09
+  ~  * Created by Vladimir Belov on 04.11.2026, 16:44
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 22.09.2026, 14:03
+  ~  * Last modified 04.11.2026, 16:41
   ~  */
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="changelog" tools:ignore="InconsistentArrays">
+
+        <item>#1.9.3</item>
+        <item>⚪ Dodano biały motyw</item>
+        <item>🎨 Dostosowanie układu wyświetlania wydarzenia (dodatkowe funkcje)</item>
+        <item>Dodano możliwość zmiany rozmiaru zdjęcia na głównej liście wydarzeń</item>
+        <item>Dodano ikony aplikacji przypisanych w systemie dla działań kontekstowych wydarzenia</item>
+        <item>Poprawki błędów</item>
 
         <item>#1.9.2</item>
         <item>🎂 Wybieranie ikon i symboli dla typów zdarzeń</item>
