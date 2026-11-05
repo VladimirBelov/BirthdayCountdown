@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.11.2026, 16:44
+  ~  * Created by Vladimir Belov on 05.11.2026, 22:39
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.11.2026, 16:40
+  ~  * Last modified 05.11.2026, 22:34
   ~  */
   -->
 
@@ -16,6 +16,8 @@
     <item>"🎨 Personnalisation de la mise en page de l'événement (fonctionnalités supplémentaires)"</item>
     <item>Ajout de la possibilité de modifier la taille de la photo dans la liste principale des événements</item>
     <item>"Ajout des icônes des applications assignées dans le système pour les actions contextuelles de l'événement"</item>
+    <item>Jours fériés mis à jour pour 2027</item>
+    <item>Jours fériés ajoutés pour 🇹🇷 Turquie, 🇨🇺 Cuba, 🇺🇿 Ouzbékistan, 🇳🇱 Pays-Bas, 🇵🇹 Portugal, 🇹🇲 Turkménistan</item>
     <item>Corrections de bugs</item>
 
     <item>#1.9.2</item>

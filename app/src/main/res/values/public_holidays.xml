@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 21.09.2026, 20:24
+  ~  * Created by Vladimir Belov on 05.11.2026, 22:39
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 21.09.2026, 20:16
+  ~  * Last modified 05.11.2026, 22:30
   ~  */
   -->
 
-<!-- 🗓️ Фиксированные даты: ДД.ММ.ГГГГ Название праздника [| Описание] [WEB ССЫЛКА: строка без пробелов, начинающаяся с http:// или https:// ] -->
-<!-- 🔄 Плавающие даты: NWW[+-СМЕЩЕНИЕ].ММ.ГГГГ Название праздника [| Описание] [WEB ССЫЛКА: строка без пробелов, начинающаяся с http:// или https:// ] -->
+<!-- 🗓️ Фиксированные даты: ДД.ММ.ГГГГ[,ФЛАГИ] Название праздника [| Описание] [WEB ССЫЛКА: строка без пробелов, начинающаяся с http:// или https:// ] -->
+<!-- 🔄 Плавающие даты: NWW[+-СМЕЩЕНИЕ].ММ.ГГГГ[,ФЛАГИ] Название праздника [| Описание] [WEB ССЫЛКА: строка без пробелов, начинающаяся с http:// или https:// ] -->
+<!-- ФЛАГИ: "1" - одноразовое событие, "!" - выходной, "?" - рабочая суббота -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
@@ -54,6 +55,14 @@
         09.03.2026,!1 Перенос с воскресенья 8 марта на понедельник
         11.05.2026,!1 Перенос с субботы 9 мая на понедельник
         31.12.2026,!1 Перенос с воскресенья 4 января на четверг"</item>
+        <item>"//2027 https://www.consultant.ru/law/ref/calendar/proizvodstvennye/2027/
+        20.02.2027,?1 Рабочая суббота за 22 февраля
+        22.02.2027,!1 Перенос с субботы 20 февраля на понедельник
+        03.05.2027,!1 Перенос с субботы 1 мая на понедельник
+        10.05.2027,!1 Перенос с воскресенья 9 мая на понедельник
+        14.06.2027,!1 Перенос с субботы 12 июня на понедельник
+        05.11.2027,!1 Перенос с субботы 2 января на пятницу
+        31.12.2027,!1 Перенос с воскресенья 3 января на пятницу"</item>
     </string-array>
 
     <string-array name="holidays2" translatable="false" tools:ignore="UnusedResources">
@@ -107,6 +116,15 @@
         25.05.2026,!1 Pfingstmontag
         04.06.2026,?1 Fronleichnam
         18.11.2026,?1 Buß- und Bettag"</item>
+        <item>"//2027
+        26.03.2027,!1 Karfreitag
+        28.03.2027,!1 Ostern
+        29.03.2027,!1 Ostermontag
+        06.05.2027,!1 Christi Himmelfahrt
+        16.05.2027,!1 Pfingstsonntag
+        17.05.2027,!1 Pfingstmontag
+        27.05.2027,?1 Fronleichnam
+        17.11.2027,?1 Buß- und Bettag"</item>
     </string-array>
 
     <string-array name="holidays3" translatable="false" tools:ignore="UnusedResources">
@@ -154,6 +172,11 @@
         31.05.2026,!1 Трійця
         11.05.2026,!1 Перенесення з неділі 31 травня на понеділок
         29.06.2026,!1 Перенесення з неділі 28 червня на понеділок"</item>
+        <item>"//2027
+        03.05.2027,!1 Перенесення з неділі 2 травня (Великдень) на понеділок
+        04.05.2027,!1 Перенесення із суботи 1 травня на вівторок
+        10.05.2027,!1 Перенесення з неділі 9 травня на понеділок
+        21.06.2027,!1 Перенесення з неділі 20 червня (Трійця) на понеділок"</item>
     </string-array>
 
     <string-array name="holidays4" translatable="false" tools:ignore="UnusedResources">
@@ -191,6 +214,11 @@
         20.04.2026,!1 Перанос з суботы 25 красавіка на панядзелак
         21.04.2026,!1 Радаўніца
         25.04.2026,?1 Працоўная субота за 20 красавіка"</item>
+        <item>"//2027 https://belta.by
+        02.01.2027,!1 Новый год
+        08.05.2027,?1 Працоўная субота за 10 мая
+        10.05.2027,!1 Перанос з суботы 8 мая на панядзелак
+        11.05.2027,!1 Радаўніца"</item>
     </string-array>
 
     <string-array name="holidays5" translatable="false" tools:ignore="UnusedResources">
@@ -232,6 +260,13 @@
         07.09.2026,!1 Labor Day
         12.10.2026,!1 Columbus Day
         26.11.2026,!1 Thanksgiving"</item>
+        <item>"//2027
+        18.01.2027,!1 Martin Luther King Day
+        15.02.2027,!1 President's Day
+        31.05.2027,!1 Memorial Day
+        06.09.2027,!1 Labor Day
+        11.10.2027,!1 Columbus Day
+        25.11.2027,!1 Thanksgiving"</item>
     </string-array>
 
     <string-array name="holidays6" translatable="false" tools:ignore="UnusedResources">
@@ -266,6 +301,12 @@
         04.05.2026,!1 May Day Bank Holiday
         25.05.2026,!1 Spring Bank Holiday
         31.08.2026,!1 Late Summer Bank Holiday"</item>
+        <item>"//2027
+        26.03.2027,!1 Good Friday
+        29.03.2027,!1 Easter Monday
+        03.05.2027,!1 May Day Bank Holiday
+        31.05.2027,!1 Spring Bank Holiday
+        30.08.2027,!1 Late Summer Bank Holiday"</item>
     </string-array>
 
     <string-array name="holidays7" translatable="false" tools:ignore="UnusedResources">
@@ -311,6 +352,16 @@
         21.09.2026,!1 Yom Kippur
         26.09.2026,!1 Sukkot
         03.10.2026,!1 Shemini Atzeret / Simchat Torah"</item>
+        <item>"//2027
+        22.04.2027,!1 Pesach
+        28.04.2027,!1 Shvi'i shel Pesach
+        12.05.2027,!1 Yom Ha-Atzmaut
+        11.06.2027,!1 Shavuot
+        02.10.2027,!1 Rosh Hashanah
+        03.10.2027,!1 Rosh Hashanah
+        11.10.2027,!1 Yom Kippur
+        16.10.2027,!1 Sukkot
+        23.10.2027,!1 Shemini Atzeret / Simchat Torah"</item>
     </string-array>
 
     <string-array name="holidays8" translatable="false" tools:ignore="UnusedResources">
@@ -345,6 +396,11 @@
         14.05.2026,!1 Christi Himmelfahrt
         25.05.2026,!1 Pfingstmontag
         04.06.2026,!1 Fronleichnam"</item>
+        <item>"//2027
+        29.03.2027,!1 Ostermontag
+        06.05.2027,!1 Christi Himmelfahrt
+        17.05.2027,!1 Pfingstmontag
+        27.05.2027,!1 Fronleichnam"</item>
     </string-array>
 
     <string-array name="holidays9" translatable="false" tools:ignore="UnusedResources">
@@ -375,6 +431,10 @@
         17.02.2026,!1 Terça-feira de Carnaval
         03.04.2026,!1 Sexta-feira Santa
         04.06.2026,!1 Corpus Christi"</item>
+        <item>"//2027
+        09.02.2027,!1 Terça-feira de Carnaval
+        26.03.2027,!1 Sexta-feira Santa
+        27.05.2027,!1 Corpus Christi"</item>
     </string-array>
 
     <string-array name="holidays10" translatable="false" tools:ignore="UnusedResources">
@@ -404,6 +464,9 @@
         <item>"//2026
         02.04.2026,!1 Jueves santo
         03.04.2026,!1 Viernes Santo"</item>
+        <item>"//2027
+        25.03.2027,!1 Jueves santo
+        26.03.2027,!1 Viernes Santo"</item>
     </string-array>
 
     <string-array name="holidays11" translatable="false" tools:ignore="UnusedResources">
@@ -433,6 +496,10 @@
         06.04.2026,!1 Lundi de Pâques
         14.05.2026,!1 Jeudi de l'Ascension
         24.05.2026,!1 Lundi de la Pentecôte"</item>
+        <item>"//2027
+        29.03.2027,!1 Lundi de Pâques
+        06.05.2027,!1 Jeudi de l'Ascension
+        17.05.2027,!1 Lundi de la Pentecôte"</item>
     </string-array>
 
     <string-array name="holidays12" translatable="false" tools:ignore="UnusedResources">
@@ -455,6 +522,8 @@
         18.04.2025,!1 Good Friday"</item>
         <item>"//2026
         03.04.2026,!1 Good Friday"</item>
+        <item>"//2027
+        26.03.2027,!1 Good Friday"</item>
     </string-array>
 
     <string-array name="holidays13" translatable="false" tools:ignore="UnusedResources">
@@ -499,6 +568,10 @@
         11.05.2026,!1 Перенос с субботы 9 мая на понедельник
         31.08.2026,!1 Перенос с воскресенья 30 августа на понедельник
         26.10.2026,!1 Перенос с воскресенья 25 октября на понедельник"</item>
+        <item>"//2027
+        24.03.2027,!1 Перенос с воскресенья 21 марта на среду
+        10.05.2027,!1 Перенос с воскресенья 9 мая на понедельник
+        16.05.2027,!1 Первый день Курбан-айта"</item>
     </string-array>
 
     <string-array name="holidays14" translatable="false" tools:ignore="UnusedResources">
@@ -533,6 +606,11 @@
         06.04.2026,!1 Poniedziałek Wielkanocny
         24.05.2026,!1 Zielone Świątki
         04.06.2026,!1 Boże Ciało"</item>
+        <item>"//2027
+        28.03.2027,!1 Wielkanoc
+        29.03.2027,!1 Poniedziałek Wielkanocny
+        16.05.2027,!1 Zielone Świątki
+        27.05.2027,!1 Boże Ciało"</item>
     </string-array>
 
     <string-array name="holidays15" translatable="false" tools:ignore="UnusedResources">
@@ -559,6 +637,9 @@
         <item>"//2026
         03.04.2026,!1 Velký pátek
         06.04.2026,!1 Velikonoční pondělí"</item>
+        <item>"//2027
+        26.03.2027,!1 Velký pátek
+        29.03.2027,!1 Velikonoční pondělí"</item>
     </string-array>
 
     <string-array name="holidays16" translatable="false" tools:ignore="UnusedResources">
@@ -580,5 +661,120 @@
         <item>"//2026
         05.04.2026,!1 Pasqua
         06.04.2026,!1 Lunedì dell'Angelo (Pasquetta)"</item>
+        <item>"//2027
+        28.03.2027,!1 Pasqua
+        29.03.2027,!1 Lunedì dell'Angelo (Pasquetta)"</item>
     </string-array>
+
+    <string-array name="holidays17" translatable="false" tools:ignore="UnusedResources">
+        <item>🇹🇷 Resmi Tatiller</item>
+        <item>"//Her Yıl
+        01.01.0000,! Yılbaşı
+        23.04.0000,! Ulusal Egemenlik ve Çocuk Bayramı
+        01.05.0000,! Emek ve Dayanışma Günü
+        19.05.0000,! Atatürk'ü Anma, Gençlik ve Spor Bayramı
+        15.07.0000,! Demokrasi ve Milli Birlik Günü
+        30.08.0000,! Zafer Bayramı
+        29.10.0000,! Cumhuriyet Bayramı"</item>
+        <item>"//2027
+        09.03.2027,!1 Ramazan Bayramı Arifesi
+        10.03.2027,!1 Ramazan Bayramı 1. Gün
+        11.03.2027,!1 Ramazan Bayramı 2. Gün
+        12.03.2027,!1 Ramazan Bayramı 3. Gün
+        16.05.2027,!1 Kurban Bayramı Arifesi
+        17.05.2027,!1 Kurban Bayramı 1. Gün
+        18.05.2027,!1 Kurban Bayramı 2. Gün
+        19.05.2027,!1 Kurban Bayramı 3. Gün
+        20.05.2027,!1 Kurban Bayramı 4. Gün"</item>
+    </string-array>
+
+    <string-array name="holidays18" translatable="false" tools:ignore="UnusedResources">
+        <item>🇨🇺 Días Festivos</item>
+        <item>"//Anual
+        01.01.0000,! Triunfo de la Revolución
+        02.01.0000,! Día de la Victoria
+        01.05.0000,! Día Internacional de los Trabajadores
+        25.07.0000,! Conmemoración del Asalto a los Cuarteles Moncada y Carlos M. de Céspedes
+        26.07.0000,! Día de la Rebeldía Nacional
+        27.07.0000,! Conmemoración del Asalto a los Cuarteles Moncada y Carlos M. de Céspedes
+        10.10.0000,! Inicio de las Guerras de Independencia
+        25.12.0000,! Navidad"</item>
+        <item>"//2027
+        26.03.2027,!1 Viernes Santo"</item>
+    </string-array>
+
+    <string-array name="holidays19" translatable="false" tools:ignore="UnusedResources">
+        <item>🇺🇿 Davlat Bayramlari</item>
+        <item>"//Har Yili
+        01.01.0000,! Yangi yil bayrami
+        08.03.0000,! Xalqaro xotin-qizlar kuni
+        21.03.0000,! Navroʻz bayrami
+        09.05.0000,! Xotira va qadrlash kuni
+        01.09.0000,! Mustaqillik kuni
+        01.10.0000,! Oʻqituvchi va murabbiylar kuni
+        08.12.0000,! Konstitutsiya kuni"</item>
+        <item>"//2027
+        10.03.2027,!1 Roʻza hayiti (Iyd al-Fitr)
+        22.03.2027,!1 Navroʻz munosabati bilan dam olish kuni (ko'chirish)
+        10.05.2027,!1 Xotira va qadrlash kuni munosabati bilan dam olish kuni (ko'chirish)
+        17.05.2027,!1 Qurbon hayiti (Iyd al-Adha)"</item>
+    </string-array>
+
+
+    <string-array name="holidays20" translatable="false" tools:ignore="UnusedResources">
+        <item>🇳🇱 Officiële Feestdagen</item>
+        <item>"//Jaarlijks
+        01.01.0000,! Nieuwjaarsdag
+        27.04.0000,! Koningsdag
+        05.05.0000,! Bevrijdingsdag
+        25.12.0000,! Eerste Kerstdag
+        26.12.0000,! Tweede Kerstdag"</item>
+        <item>"//2027
+        26.03.2027,!1 Goede Vrijdag
+        28.03.2027,!1 Eerste Paasdag
+        29.03.2027,!1 Tweede Paasdag
+        06.05.2027,!1 Hemelvaartsdag
+        16.05.2027,!1 Eerste Pinksterdag
+        17.05.2027,!1 Tweede Pinksterdag"</item>
+    </string-array>
+
+    <string-array name="holidays21" translatable="false" tools:ignore="UnusedResources">
+        <item>🇵🇹 Feriados Nacionais</item>
+        <item>"//Anual
+        01.01.0000,! Ano Novo
+        25.04.0000,! Dia da Liberdade
+        01.05.0000,! Dia do Trabalhador
+        10.06.0000,! Dia de Portugal
+        15.08.0000,! Assunção de Nossa Senhora
+        05.10.0000,! Implantação da República
+        01.11.0000,! Dia de Todos os Santos
+        01.12.0000,! Restauração da Independência
+        08.12.0000,! Imaculada Conceição
+        25.12.0000,! Natal"</item>
+        <item>"//2027
+        09.02.2027,!1 Carnaval
+        26.03.2027,!1 Sexta-feira Santa
+        28.03.2027,!1 Páscoa
+        27.05.2027,!1 Corpo de Deus"</item>
+    </string-array>
+
+    <string-array name="holidays22" translatable="false" tools:ignore="UnusedResources">
+        <item>🇹🇲 Döwlet Baýramlary</item>
+        <item>"//Her Ýyl
+        01.01.0000,! Täze ýyl
+        08.03.0000,! Halkara zenanlar güni
+        21.03.0000,! Milli bahar baýramy (Novruz)
+        22.03.0000,! Milli bahar baýramy (Novruz)
+        18.05.0000,! Türkmenistanyň Konstitusiýasynyň we Döwlet baýdagynyň güni
+        27.09.0000,! Garaşsyzlyk güni
+        06.10.0000,! Hatyra güni
+        12.12.0000,! Halkara Bitaraplyk güni"</item>
+        <item>"//2027
+        10.03.2027,!1 Oraza baýramy
+        22.03.2027,!1 Milli bahar baýramy munosabati bilen dynç güni (geçiriş)
+        17.05.2027,!1 Gurban baýramy
+        18.05.2027,!1 Gurban baýramy
+        19.05.2027,!1 Gurban baýramy"</item>
+    </string-array>
+
 </resources>

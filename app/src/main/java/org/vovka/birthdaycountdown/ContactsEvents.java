@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.11.2026, 16:44
+ *  * Created by Vladimir Belov on 05.11.2026, 22:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.11.2026, 11:24
+ *  * Last modified 05.11.2026, 20:58
  *
  */
 
@@ -2655,6 +2655,9 @@ public class ContactsEvents {
         });
     }
 
+    /** Загружает данные из адресной книги: организации, должности, псевдонимы, web сылки, заметки,
+     *  имена и события контактов
+     */
     private boolean getContactsData() {
         //Получаем требуемые события (дни рождения, и т.п.)
         //todo: попробовать добраться до ДР стандартными способами https://stackoverflow.com/questions/35448250/how-to-get-whatsapp-contacts-from-android
@@ -3538,6 +3541,9 @@ public class ContactsEvents {
 
     }
 
+    /** Добавляет в общий список календарные события
+     * @param eventType Тип событий
+     */
     private boolean getCalendarEvents(@NonNull String eventType) {
         //todo: использовать цвета календарей https://www.javatips.net/api/android.provider.calendarcontract.instances
 
@@ -4135,6 +4141,8 @@ public class ContactsEvents {
         eventListUpdated.set(eventIndex, dataRow.toString());
     }
 
+    /** Добавляет в общий список локальные события
+     */
     private boolean getLocalEvents() {
         try {
 
@@ -5541,6 +5549,7 @@ public class ContactsEvents {
                 }
             }
 
+            //todo: продумать, как поведёт себя импорт, когда нет событий контактов, а только файловые события
             if (map_contacts_names.isEmpty()) event.needScanContacts = false;
 
             if (event.needScanContacts) {

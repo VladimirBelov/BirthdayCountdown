@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.11.2026, 16:44
+  ~  * Created by Vladimir Belov on 05.11.2026, 22:39
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.11.2026, 16:42
+  ~  * Last modified 05.11.2026, 22:34
   ~  */
   -->
 
@@ -16,6 +16,8 @@
         <item>🎨 Přizpůsobení rozložení zobrazení události (další funkce)</item>
         <item>Přidána možnost měnit velikost fotky v hlavním seznamu událostí</item>
         <item>Pro kontextové akce události přidány ikony aplikací přiřazených v systému</item>
+        <item>Aktualizovány svátky na rok 2027</item>
+        <item>Přidány státní svátky pro 🇹🇷 Turecko, 🇨🇺 Kubu, 🇺🇿 Uzbekistán, 🇳🇱 Nizozemsko, 🇵🇹 Portugalsko, 🇹🇲 Turkmenistán</item>
         <item>Opravy chyb</item>
 
         <item>#1.9.2</item>

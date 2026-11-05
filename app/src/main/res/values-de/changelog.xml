@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.11.2026, 16:44
+  ~  * Created by Vladimir Belov on 05.11.2026, 22:39
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.11.2026, 16:38
+  ~  * Last modified 05.11.2026, 22:33
   ~  */
   -->
 
@@ -16,6 +16,8 @@
         <item>🎨 Anpassung des Ereignislayouts (Extrafunktionen)</item>
         <item>Möglichkeit hinzugefügt, die Fotogröße in der Hauptliste der Ereignisse zu ändern</item>
         <item>Symbole der im System zugewiesenen Apps für kontextbezogene Aktionen hinzugefügt</item>
+        <item>Feiertage für 2027 aktualisiert</item>
+        <item>Gesetzliche Feiertage hinzugefügt für 🇹🇷 Türkei, 🇨🇺 Kuba, 🇺🇿 Usbekistan, 🇳🇱 Niederlande, 🇵🇹 Portugal, 🇹🇲 Turkmenistan</item>
         <item>Fehlerbehebungen</item>
 
         <item>#1.9.2</item>

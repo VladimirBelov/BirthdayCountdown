@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 04.11.2026, 16:44
+  ~  * Created by Vladimir Belov on 05.11.2026, 22:39
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 04.11.2026, 16:38
+  ~  * Last modified 05.11.2026, 22:33
   ~  */
   -->
 
@@ -16,6 +16,8 @@
         <item>🎨 Personalización del diseño del evento (funciones adicionales)</item>
         <item>Añadida la posibilidad de cambiar el tamaño de la foto en la lista principal de eventos</item>
         <item>Añadidos iconos de las aplicaciones asignadas en el sistema para las acciones contextuales del evento</item>
+        <item>Actualizadas las festividades para 2027</item>
+        <item>Añadidas festividades nacionales para 🇹🇷 Turquía, 🇨🇺 Cuba, 🇺🇿 Uzbekistán, 🇳🇱 Países Bajos, 🇵🇹 Portugal, 🇹🇲 Turkmenistán</item>
         <item>Corrección de errores</item>
 
         <item>#1.9.2</item>

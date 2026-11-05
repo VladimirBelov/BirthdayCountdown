@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.11.2026, 00:26
+ *  * Created by Vladimir Belov on 05.11.2026, 22:39
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 03.11.2026, 00:22
+ *  * Last modified 05.11.2026, 21:15
  *
  */
 
@@ -72,7 +72,6 @@ public class EventLayoutRenderer {
         this.ta = themeAttrs;
         this.config = new EventDisplayConfig(ctx);
     }
-
 
     public RenderResult render(String[] singleEventArray, Person person, String eventKey) {
         RenderResult r = new RenderResult();
