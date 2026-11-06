@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 11.10.2026, 02:50
+ *  * Created by Vladimir Belov on 06.11.2026, 10:12
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 10.10.2026, 19:58
+ *  * Last modified 06.11.2026, 10:11
  *
  */
 
@@ -151,19 +151,19 @@ androidComponents {
 }
 
 dependencies {
-    //noinspection GradleDependency 1.8.0 - API23+
-    implementation 'androidx.appcompat:appcompat:1.7.1' //https://developer.android.com/jetpack/androidx/releases/appcompat
-    //noinspection GradleDependency 1.14.0-alpha09 - API23+
-    implementation 'com.google.android.material:material:1.14.0-alpha08' //https://github.com/material-components/material-components-android/releases
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0' //https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout
     implementation 'androidx.recyclerview:recyclerview:1.4.0' //https://developer.android.com/jetpack/androidx/releases/recyclerview
-    //noinspection GradleDependency 1.18 - API23+
-    implementation 'androidx.core:core:1.17.0' //https://developer.android.com/jetpack/androidx/releases/core
     implementation 'androidx.core:core-splashscreen:1.2.0' //https://developer.android.com/jetpack/androidx/releases/core#core-splashscreen-1.2.0
-    //noinspection GradleDependency 1.9.0 - API23+
-    implementation 'androidx.fragment:fragment:1.8.9' //https://developer.android.com/jetpack/androidx/releases/fragment
     //noinspection GradleDependency 1.12 - API23+
     implementation 'androidx.activity:activity:1.11.0' //https://developer.android.com/jetpack/androidx/releases/activity
+    //noinspection GradleDependency 1.8.0 - API23+
+    implementation 'androidx.appcompat:appcompat:1.7.1' //https://developer.android.com/jetpack/androidx/releases/appcompat
+    //noinspection GradleDependency 1.18 - API23+
+    implementation 'androidx.core:core:1.17.0' //https://developer.android.com/jetpack/androidx/releases/core
+    //noinspection GradleDependency 1.9.0 - API23+
+    implementation 'androidx.fragment:fragment:1.8.9' //https://developer.android.com/jetpack/androidx/releases/fragment
+    //noinspection GradleDependency 1.14.0-alpha09 - API23+
+    implementation 'com.google.android.material:material:1.14.0-alpha08' //https://github.com/material-components/material-components-android/releases
 }
 
 java {
