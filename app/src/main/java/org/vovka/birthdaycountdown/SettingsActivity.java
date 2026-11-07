@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 02.11.2026, 16:37
+ *  * Created by Vladimir Belov on 07.11.2026, 22:51
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.11.2026, 16:12
+ *  * Last modified 07.11.2026, 22:33
  *
  */
 
@@ -77,6 +77,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -3529,6 +3530,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         try {
 
+            boolean useCustomLayout = eventsData.isFeatureEnabled(Constants.FEATURE_EDIT_LAYOUT);
+
             int dimen_details = (int) (eventsData.dimen_List_details / eventsData.displayMetrics_density);
             int dimen_name = (int) (eventsData.dimen_List_name / eventsData.displayMetrics_density);
             int dimen_date = (int) (eventsData.dimen_list_date / eventsData.displayMetrics_density);
@@ -3546,6 +3549,29 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             View view = View.inflate(
                     new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog),
                     R.layout.dialog_fontmagnify, null);
+
+            ViewStub entryStub = view.findViewById(R.id.entry_stub);
+            if (entryStub != null) {
+                entryStub.setLayoutResource(useCustomLayout ? R.layout.entry_main_custom : R.layout.entry_main);
+                entryStub.inflate();
+
+                if (useCustomLayout) {
+                    // Адаптируем layout для диалога
+                    LinearLayout ageAndDates = view.findViewById(R.id.ageAndDates);
+                    if (ageAndDates != null) {
+                        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ageAndDates.getLayoutParams();
+                        params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                        params.weight = 0f; // Убираем weight, чтобы не конфликтовал с wrap_content
+                        ageAndDates.setLayoutParams(params);
+                    }
+                    LinearLayout columnRight = view.findViewById(R.id.columnRight);
+                    if (columnRight != null) {
+                        LinearLayout.LayoutParams paramsRight = (LinearLayout.LayoutParams) columnRight.getLayoutParams();
+                        paramsRight.height = LinearLayout.LayoutParams.WRAP_CONTENT; // Меняем с match_parent
+                        columnRight.setLayoutParams(paramsRight);
+                    }
+                }
+            }
 
             // Создаём ScrollView с ограниченной высотой
             ScrollView scrollView = new ScrollView(new ContextThemeWrapper(this, ContactsEvents.getInstance().preferences_theme.themeDialog)) {

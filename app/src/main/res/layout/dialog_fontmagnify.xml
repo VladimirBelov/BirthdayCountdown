@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 02.11.2026, 16:37
+  ~  * Created by Vladimir Belov on 07.11.2026, 22:51
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.11.2026, 16:12
+  ~  * Last modified 07.11.2026, 21:22
   ~  */
   -->
 
@@ -15,7 +15,10 @@
     android:orientation="vertical"
     android:padding="?attr/dialogPreferredPadding">
 
-    <include layout="@layout/entry_main"/>
+    <ViewStub
+        android:id="@+id/entry_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"

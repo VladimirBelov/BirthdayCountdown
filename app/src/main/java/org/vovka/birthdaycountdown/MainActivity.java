@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 04.11.2026, 16:44
+ *  * Created by Vladimir Belov on 07.11.2026, 22:51
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 04.11.2026, 11:31
+ *  * Last modified 07.11.2026, 21:29
  *
  */
 
@@ -3176,7 +3176,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         holder.EventIconImageView.setVisibility(View.GONE);
                     }
 
-                    // Устанавливаем гравитацию возраста из конфига
+                    // Устанавливаем гравитацию возраста из конфигурации
                     View parentView = (View) holder.CounterTextView.getParent();
                     if (parentView instanceof LinearLayout) {
                         LinearLayout parentLayout = (LinearLayout) parentView;
