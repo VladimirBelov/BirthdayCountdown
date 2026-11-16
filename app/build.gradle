@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 06.11.2026, 10:12
+ *  * Created by Vladimir Belov on 17.11.2026, 00:44
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 06.11.2026, 10:11
+ *  * Last modified 16.11.2026, 08:56
  *
  */
 
@@ -16,7 +16,7 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
-def appVersionName = "1.9.3"
+def appVersionName = "1.9.4"
 
 android {
 
