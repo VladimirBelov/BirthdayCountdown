@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 26.10.2026, 16:14
+ *  * Created by Vladimir Belov on 16.11.2026, 08:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 26.10.2026, 12:03
+ *  * Last modified 15.11.2026, 20:06
  *
  */
 
@@ -81,6 +81,7 @@ public final class Constants {
     static final String STRING_STORAGE_FILE = "file";
     static final String STRING_STORAGE_EMBEDDED = "embedded";
     static final String STRING_STORAGE_LOCAL = "local";
+    static final String EVENT_PREFIX_CONTACT_EVENT = "contact event";
     static final String EVENT_PREFIX_CALENDAR_EVENT = "calendar event";
     static final String EVENT_PREFIX_FILE_EVENT = "file event";
     static final String EVENT_PREFIX_EMBEDDED_EVENT = "embedded";

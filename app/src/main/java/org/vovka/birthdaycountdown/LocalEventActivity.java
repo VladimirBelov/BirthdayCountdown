@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 22.10.2026, 15:38
+ *  * Created by Vladimir Belov on 16.11.2026, 08:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 22.10.2026, 14:33
+ *  * Last modified 16.11.2026, 00:00
  *
  */
 
@@ -53,6 +53,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import org.vovka.birthdaycountdown.imagecropper.CropIntent;
 import org.vovka.birthdaycountdown.utils.AppDateUtils;
@@ -791,24 +792,30 @@ public class LocalEventActivity extends AppCompatActivity {
     );
 
     private void pickContactData() {
-
         if (DeviceTools.checkNoContactsAccess(eventsData.getContext())) {
-            //https://issuetracker.google.com/issues/118400813 - без доступа к контактам не работает
             requestContactsPermission();
         } else {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
-            //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startContactPicker();
+        }
+    }
 
-            try {
-                startActivityForResult(intent, Constants.RESULT_PICK_CONTACT);
-            } catch (ActivityNotFoundException ignored) { /**/ }
+    private void startContactPicker() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+        try {
+            startActivityForResult(intent, Constants.RESULT_PICK_CONTACT);
+        } catch (ActivityNotFoundException ignored) {
+            /**/
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (permissions.length == 0 || grantResults.length == 0) return;
+
         if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
             boolean granted = false;
 
@@ -822,20 +829,93 @@ public class LocalEventActivity extends AppCompatActivity {
             if (granted) {
                 pickPhoto();
             } else {
-                // Разрешение отклонено
                 Toast.makeText(this, getString(R.string.msg_no_access_storage), Toast.LENGTH_LONG).show();
 
-                //Доступа до фото нет. Выбираем просто файл
+                // Доступа к фото нет. Выбираем просто файл.
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType(Constants.MIME_IMAGE_ALL);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
                 try {
                     startActivityForResult(intent, Constants.RESULT_PICK_FILE);
-                } catch (android.content.ActivityNotFoundException e) { /**/ }
+                } catch (ActivityNotFoundException e) {
+                    /**/
+                }
             }
-        } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
-            pickContactData();
+
+            return;
+        }
+
+        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+            boolean allGranted = true;
+
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+
+            if (!allGranted) {
+                handlePermissionDenied(requestCode, permissions, grantResults);
+                return;
+            }
+
+            // Дополнительная проверка, что реально нужные разрешения выданы.
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
+                    != PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+
+            startContactPicker();
+        }
+    }
+
+    private void handlePermissionDenied(int requestCode,
+                                        @NonNull String[] permissions,
+                                        @NonNull int[] grantResults) {
+        if (requestCode != Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) return;
+
+        ToastExpander.showMsg(this, getString(R.string.msg_no_access_contacts_hint));
+
+        boolean needOpenSettings = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (int i = 0; i < permissions.length && i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED
+                        && isContactsPermission(permissions[i])
+                        && !shouldShowRequestPermissionRationale(permissions[i])) {
+                    needOpenSettings = true;
+                    break;
+                }
+            }
+        } else {
+            needOpenSettings = true;
+        }
+        if (needOpenSettings) {
+            openApplicationDetailsSettings();
+        }
+    }
+
+    private boolean isContactsPermission(@NonNull String permission) {
+        return Manifest.permission.READ_CONTACTS.equals(permission)
+                || Manifest.permission.GET_ACCOUNTS.equals(permission);
+    }
+
+    private void openApplicationDetailsSettings() {
+        try {
+            startActivity(new Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse(Constants.URI_PACKAGE + getPackageName())
+            ));
+        } catch (ActivityNotFoundException e) {
+            try {
+                startActivity(new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
+            } catch (ActivityNotFoundException ignored) {
+                /**/
+            }
         }
     }
 
@@ -1351,30 +1431,46 @@ public class LocalEventActivity extends AppCompatActivity {
     }
 
     void requestContactsPermission() {
-        try {
+        requestPermissionsIfNeeded(
+                new String[]{
+                        Manifest.permission.READ_CONTACTS,
+                        Manifest.permission.GET_ACCOUNTS
+                },
+                Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS
+        );
+    }
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                ActivityCompat.requestPermissions(
-                        this,
-                        new String[]{Manifest.permission.READ_CONTACTS},
-                        Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS
-                );
-            } else if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
-                ActivityCompat.requestPermissions(
-                        this,
-                        new String[]{Manifest.permission.READ_CONTACTS},
-                        Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS
-                );
-            } else {
-                ToastExpander.showMsg(this, getString(R.string.msg_no_access_contacts_hint));
-                try {
-                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
-                } catch (ActivityNotFoundException e) { /**/ }
+    @SuppressWarnings("SameParameterValue")
+    private void requestPermissionsIfNeeded(@NonNull String[] permissions, int requestCode) {
+        try {
+            List<String> neededPermissions = new ArrayList<>();
+
+            for (String permission : permissions) {
+                if (ContextCompat.checkSelfPermission(this, permission)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    neededPermissions.add(permission);
+                }
             }
 
+            if (neededPermissions.isEmpty()) {
+                handlePermissionGranted(requestCode);
+                return;
+            }
+
+            ActivityCompat.requestPermissions(
+                    this,
+                    neededPermissions.toArray(new String[0]),
+                    requestCode
+            );
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
+        }
+    }
+
+    private void handlePermissionGranted(int requestCode) {
+        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+            startContactPicker();
         }
     }
 

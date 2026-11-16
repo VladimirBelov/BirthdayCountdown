@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.10.2026, 17:26
+ *  * Created by Vladimir Belov on 16.11.2026, 08:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.10.2026, 16:00
+ *  * Last modified 15.11.2026, 23:02
  *
  */
 
@@ -264,7 +264,7 @@ public class AboutActivity extends AppCompatActivity {
                     sb.append(getString(R.string.stats_permissions_accounts, ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED
                             ? StringUtils.getHTMLColor(getString(R.string.msg_on), R.color.green, eventsData.getContext()) : StringUtils.getHTMLColor(getString(R.string.msg_off), R.color.dark_red, eventsData.getContext())).replace(Constants.STRING_HASH, ""));
 
-                    sb.append(getString(R.string.stats_permissions_contacts, !DeviceTools.checkNoContactsAccess(this)
+                    sb.append(getString(R.string.stats_permissions_contacts, ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
                             ? StringUtils.getHTMLColor(getString(R.string.msg_on), R.color.green, eventsData.getContext()) : StringUtils.getHTMLColor(getString(R.string.msg_off), R.color.dark_red, eventsData.getContext())).replace(Constants.STRING_HASH, ""));
 
                     sb.append(getString(R.string.stats_permissions_calendar, !DeviceTools.checkNoCalendarAccess(eventsData.getContext())

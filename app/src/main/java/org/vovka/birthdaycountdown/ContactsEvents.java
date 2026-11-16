@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.11.2026, 22:51
+ *  * Created by Vladimir Belov on 16.11.2026, 08:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.11.2026, 22:45
+ *  * Last modified 15.11.2026, 20:06
  *
  */
 
@@ -2757,8 +2757,11 @@ public class ContactsEvents {
                         if (dataList.add(getEventData(eventData))) {
                             //Добавляем для поиска календарных событий (дни рождения)
                             String personID = eventData.get(Position_contactID);
-                            if (!TextUtils.isEmpty(personID))
-                                map_eventsBySubtypeAndPersonID_offset.put(personID + Constants.STRING_2HASH + eventData.get(Position_eventSubType), dataList.size() - 1);
+                            if (!TextUtils.isEmpty(personID)) {
+                                String key = personID + Constants.STRING_2HASH + eventData.get(Position_eventSubType);
+                                map_eventsBySubtypeAndPersonID_offset.put(key, dataList.size() - 1);
+                            }
+                            increaseStatForEventSources(Constants.EVENT_PREFIX_CONTACT_EVENT);
                         }
                         eventData.clear();
                     }
@@ -3441,15 +3444,19 @@ public class ContactsEvents {
                 }
 
                 String newEventDate = accountType + ": " + eventDateStr + ": "
-                        + StringUtils.getHash(((!accountType.equals("null") && !accountType.equals(accountName)) ? Constants.eventSourceContactPrefix : Constants.eventSourcePhonePrefix) + accountKey);
+                        + StringUtils.getHash(((!accountType.equals("null") && !accountType.equals(accountName))
+                        ? Constants.eventSourceContactPrefix : Constants.eventSourcePhonePrefix) + accountKey);
 
                 if (!eventKey_next.equalsIgnoreCase(eventKey_current)) { //Начало данных нового контакта
 
                     if (!eventData.isEmpty()) { // Уже есть накопленные данные. Нужно сохранить всё, что накопили и обнулить UserData
                         if (dataList.add(getEventData(eventData))) {
                             String personID = eventData.get(Position_contactID);
-                            if (personID != null && !personID.isEmpty())
-                                map_eventsBySubtypeAndPersonID_offset.put(personID + Constants.STRING_2HASH + eventData.get(Position_eventSubType), dataList.size() - 1);
+                            if (!TextUtils.isEmpty(personID)) {
+                                String key = personID + Constants.STRING_2HASH + eventData.get(Position_eventSubType);
+                                map_eventsBySubtypeAndPersonID_offset.put(key, dataList.size() - 1);
+                            }
+                            increaseStatForEventSources(Constants.EVENT_PREFIX_CONTACT_EVENT);
                         }
                         eventData.clear();
                     }

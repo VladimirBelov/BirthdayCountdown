@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.11.2026, 10:59
+ *  * Created by Vladimir Belov on 16.11.2026, 08:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 03.11.2026, 10:10
+ *  * Last modified 15.11.2026, 23:23
  *
  */
 
@@ -271,7 +271,8 @@ public class DeviceTools {
      * @param context Контекст
      */
     public static boolean checkNoContactsAccess(Context context) {
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED;
     }
 
     public static boolean checkNoStorageAccess(Context context) {

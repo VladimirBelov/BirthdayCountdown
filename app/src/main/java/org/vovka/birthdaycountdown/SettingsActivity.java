@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.11.2026, 22:51
+ *  * Created by Vladimir Belov on 16.11.2026, 08:50
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.11.2026, 22:33
+ *  * Last modified 15.11.2026, 23:47
  *
  */
 
@@ -2328,33 +2328,117 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
-    //https://stackoverflow.com/questions/46003114/how-should-one-request-permissions-from-a-custom-preference
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) return;
+        if (permissions.length == 0 || grantResults.length == 0) return;
 
-        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+        // Уведомления обрабатываем отдельно, чтобы не ломать логику с SCHEDULE_EXACT_ALARM
+        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS) {
+            boolean postNotificationsGranted = true;
 
-            selectAccounts();
+            for (int i = 0; i < permissions.length && i < grantResults.length; i++) {
+                if (Manifest.permission.POST_NOTIFICATIONS.equals(permissions[i])) {
+                    postNotificationsGranted = grantResults[i] == PackageManager.PERMISSION_GRANTED;
+                    break;
+                }
+            }
 
-        } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR) {
+            if (postNotificationsGranted && eventsData != null) {
+                eventsData.initNotifications();
+            }
 
-            if (this.eventTypeForSelect != null && !this.eventTypeForSelect.isEmpty()) selectCalendars(this.eventTypeForSelect);
-
-        } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR_2
-                || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS_2) {
-
-            updateVisibility();
-
-        } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS) {
-
-            eventsData.initNotifications();
-
+            return;
         }
 
+        boolean allRequestedGranted = true;
+
+        for (int result : grantResults) {
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                allRequestedGranted = false;
+                break;
+            }
+        }
+
+        if (!allRequestedGranted) {
+            handlePermissionDenied(requestCode, permissions, grantResults);
+            return;
+        }
+
+        // Дополнительная проверка, что действительно выданы все нужные разрешения
+        if (isContactsRequestCode(requestCode)) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
+                    != PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+        }
+
+        if (isCalendarRequestCode(requestCode)) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR)
+                    != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+        }
+
+        handlePermissionGranted(requestCode);
+    }
+
+    private boolean isContactsRequestCode(int requestCode) {
+        return requestCode == Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS
+                || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS
+                || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS_2;
+    }
+
+    private boolean isCalendarRequestCode(int requestCode) {
+        return requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR
+                || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR_2;
+    }
+
+    private boolean isContactsPermission(@NonNull String permission) {
+        return Manifest.permission.READ_CONTACTS.equals(permission)
+                || Manifest.permission.GET_ACCOUNTS.equals(permission);
+    }
+
+    private void handlePermissionDenied(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        boolean contactsRequest = isContactsRequestCode(requestCode);
+        boolean calendarRequest = isCalendarRequestCode(requestCode);
+
+        if (!contactsRequest && !calendarRequest) return;
+
+        if (contactsRequest) {
+            ToastExpander.showMsg(this, getString(R.string.msg_no_access_contacts_hint));
+        } else {
+            ToastExpander.showMsg(this, getString(R.string.msg_no_access_calendar_hint));
+        }
+
+        boolean needOpenSettings = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (int i = 0; i < permissions.length && i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    String permission = permissions[i];
+
+                    boolean relevantPermission =
+                            (contactsRequest && isContactsPermission(permission))
+                                    || (calendarRequest && Manifest.permission.READ_CALENDAR.equals(permission));
+
+                    if (relevantPermission
+                            && !shouldShowRequestPermissionRationale(permission)) {
+                        needOpenSettings = true;
+                        break;
+                    }
+                }
+            }
+        } else {
+            needOpenSettings = true;
+        }
+        if (needOpenSettings) {
+            openApplicationDetailsSettings();
+        }
     }
 
     private void setUpNestedScreen(@NonNull PreferenceScreen preferenceScreen) {
@@ -4913,59 +4997,74 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
-    void requestCalendarPermission(int resultCode) {
-        try {
+    void requestContactsPermission(int resultCode) {
+        requestPermissionsIfNeeded(new String[]{
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.GET_ACCOUNTS
+        }, resultCode);
+    }
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                ActivityCompat.requestPermissions(
-                        this,
-                        new String[]{Manifest.permission.READ_CALENDAR},
-                        resultCode
-                );
-            } else if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)) {
-                ActivityCompat.requestPermissions(
-                        this,
-                        new String[]{Manifest.permission.READ_CALENDAR},
-                        resultCode
-                );
-            } else {
-                ToastExpander.showMsg(this, getString(R.string.msg_no_access_calendar_hint));
-                try {
-                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
-                } catch (ActivityNotFoundException e) { /**/ }
+    void requestCalendarPermission(int resultCode) {
+        requestPermissionsIfNeeded(new String[]{
+                Manifest.permission.READ_CALENDAR
+        }, resultCode);
+    }
+
+    private void requestPermissionsIfNeeded(@NonNull String[] permissions, int requestCode) {
+        try {
+            List<String> neededPermissions = new ArrayList<>();
+
+            for (String permission : permissions) {
+                if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                    neededPermissions.add(permission);
+                }
             }
 
+            if (neededPermissions.isEmpty()) {
+                handlePermissionGranted(requestCode);
+                return;
+            }
+
+            ActivityCompat.requestPermissions(
+                    this,
+                    neededPermissions.toArray(new String[0]),
+                    requestCode
+            );
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
 
-    void requestContactsPermission(int resultCode) {
+    private void openApplicationDetailsSettings() {
         try {
-
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                ActivityCompat.requestPermissions(
-                        this,
-                        new String[]{Manifest.permission.READ_CONTACTS},
-                        resultCode
-                );
-            } else if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
-                ActivityCompat.requestPermissions(
-                        this,
-                        new String[]{Manifest.permission.READ_CONTACTS},
-                        resultCode
-                );
-            } else {
-                ToastExpander.showMsg(this, getString(R.string.msg_no_access_contacts_hint));
-                try {
-                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(Constants.URI_PACKAGE + this.getPackageName())));
-                } catch (ActivityNotFoundException e) { /**/ }
+            startActivity(new Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse(Constants.URI_PACKAGE + getPackageName())
+            ));
+        } catch (ActivityNotFoundException e) {
+            try {
+                startActivity(new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
+            } catch (ActivityNotFoundException ignored) {
             }
+        }
+    }
 
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
+    private void handlePermissionGranted(int requestCode) {
+        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_GET_ACCOUNTS
+                || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+            selectAccounts();
+        } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR) {
+            if (this.eventTypeForSelect != null && !this.eventTypeForSelect.isEmpty()) {
+                selectCalendars(this.eventTypeForSelect);
+            }
+        } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CALENDAR_2
+                || requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_CONTACTS_2) {
+            updateVisibility();
+        } else if (requestCode == Constants.MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS) {
+            if (eventsData != null) {
+                eventsData.initNotifications();
+            }
         }
     }
 
