@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.11.2026, 00:26
+ *  * Created by Vladimir Belov on 20.11.2026, 01:56
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.11.2026, 23:47
+ *  * Last modified 20.11.2026, 01:26
  *
  */
 package org.vovka.birthdaycountdown;
@@ -335,6 +335,7 @@ public class WidgetMenuActivity extends Activity {
                     intent.putExtra(Constants.EXTRA_EVENT_DATA, singleEventArray[ContactsEvents.Position_eventID]);
                     try {
                         startActivityForResult(intent, Constants.RESULT_EDIT_EVENT);
+                        setResult(RESULT_OK);
                     } catch (ActivityNotFoundException ignored) { /**/ }
                     return;
 
@@ -371,13 +372,16 @@ public class WidgetMenuActivity extends Activity {
 
                 case Constants.ContextMenu_RemoveFromFavorites:
                     if (eventKey != null && eventsData.unsetFavoriteEvent(eventKey, eventKeyWithRawId)) {
+                        eventsData.clearDaysTypesAndInfo();
                         eventsData.updateWidgets(appWidgetId, null);
+                        setResult(RESULT_OK);
                     }
                     break;
-
                 case Constants.ContextMenu_AddToFavorites:
                     if (eventKey != null && eventsData.setFavoriteEvent(eventKey, eventKeyWithRawId)) {
+                        eventsData.clearDaysTypesAndInfo();
                         eventsData.updateWidgets(appWidgetId, null);
+                        setResult(RESULT_OK);
                     }
                     break;
 
@@ -395,7 +399,9 @@ public class WidgetMenuActivity extends Activity {
                             if (eventsData.checkIsSilencedEvent(finalEventKey, finalEventKeyWithRawId)) {
                                 eventsData.unsetSilencedEvent(finalEventKey, finalEventKeyWithRawId);
                             }
+                            eventsData.clearDaysTypesAndInfo();
                             eventsData.updateWidgets(appWidgetId, null);
+                            setResult(RESULT_OK);
                         }
                         dialog.dismiss();
                         finish();

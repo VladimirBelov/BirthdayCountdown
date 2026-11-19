@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 16.11.2026, 08:50
+ *  * Created by Vladimir Belov on 20.11.2026, 01:56
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.11.2026, 20:06
+ *  * Last modified 19.11.2026, 23:59
  *
  */
 
@@ -1011,6 +1011,7 @@ public class ContactsEvents {
         }
     }
 
+    /** Тип дня для календаря */
     static class DayType {
         enum Type {
             Holiday, Workday, Common
@@ -1022,6 +1023,17 @@ public class ContactsEvents {
         public DayType(String sourceId, Type type) {
             this.sourceId = sourceId;
             this.type = type;
+        }
+    }
+
+    /** Событие дня календаря: оформленный текст + ключ события (пустой, если неизвестен) */
+    public static class DayEvent {
+        public String text;                      //не final: текст ещё декорируется в попапе
+        @NonNull public final String eventKey;
+
+        public DayEvent(String text, @NonNull String eventKey) {
+            this.text = text;
+            this.eventKey = eventKey;
         }
     }
 
@@ -8583,6 +8595,85 @@ public class ContactsEvents {
         return "";
     }
 
+    /**
+     Ищет реальные события по ключам одним проходом по общему списку.
+     Второй шанс — по eventID (календарное событие могло «влиться» в событие контакта)
+     @param eventKeys Набор ключей событий
+     @return Карта: ключ -> строка события
+     */
+    @NonNull
+    Map<String, String> findEventsByKeys(@NonNull Set<String> eventKeys) {
+        Map<String, String> result = new HashMap<>();
+        try {
+            if (eventKeys.isEmpty()) return result;
+
+            final Map<String, String> idsToKeys = new HashMap<>();
+            for (String key : eventKeys) {
+                if (!StringUtils.hasContent(key)) continue;
+                int ind = key.indexOf(Constants.STRING_2HASH);
+                idsToKeys.put(ind > -1 ? key.substring(0, ind) : key, key);
+            }
+
+            final Map<String, String> fallback = new HashMap<>();
+            for (String event : getEventList()) {
+                String[] a = event.split(Constants.STRING_EOT, -1);
+                if (a.length < Position_attrAmount) continue;
+                final String key = getEventKey(a);
+                final String keyRaw = getEventKeyWithRawId(a);
+                if (eventKeys.contains(key) && !result.containsKey(key)) result.put(key, event);
+                if (eventKeys.contains(keyRaw) && !result.containsKey(keyRaw)) result.put(keyRaw, event);
+                final String idKey = idsToKeys.get(a[Position_eventID]);
+                if (idKey != null && !fallback.containsKey(idKey)) fallback.put(idKey, event);
+            }
+
+            for (Map.Entry<String, String> entry : fallback.entrySet()) {
+                if (!result.containsKey(entry.getKey())) result.put(entry.getKey(), entry.getValue());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + ": " + e);
+        }
+        return result;
+    }
+
+    /** Ищет одно событие по ключу */
+    @Nullable
+    String findEventByKey(@Nullable String eventKey) {
+        if (!StringUtils.hasContent(eventKey)) return null;
+        return findEventsByKeys(new HashSet<>(Collections.singletonList(eventKey))).get(eventKey);
+    }
+
+    /**
+     Минимальное «синтетическое» событие для меню: избранное / скрыть / не уведомлять / поделиться.
+     Используется, когда события нет в общем списке (например, справочник включён только в виджете)
+     @param eventKey  Ключ события (id + ## + subType)
+     @param eventTitle Заголовок события (plain text)
+     @param dateNext   Дата события в формате dd.MM.yyyy
+     */
+    @NonNull
+    String makeDayEventInfo(@NonNull String eventKey, @NonNull String eventTitle, @NonNull String dateNext) {
+        TreeMap<Integer, String> data = new TreeMap<>();
+        fillEmptyEventData(data);
+        String id = eventKey;
+        String subType = Constants.EventType_Holiday;
+        int ind = eventKey.indexOf(Constants.STRING_2HASH);
+        if (ind > -1) {
+            id = eventKey.substring(0, ind);
+            subType = eventKey.substring(ind + Constants.STRING_2HASH.length());
+        }
+        data.put(Position_personFullName, eventTitle);
+        data.put(Position_personFullNameAlt, eventTitle);
+        data.put(Position_eventCaption, resources.getString(R.string.event_type_holiday));
+        data.put(Position_eventType, Constants.EventType_Holiday);
+        data.put(Position_eventSubType, subType);
+        data.put(Position_eventID, id);
+        data.put(Position_eventStorage, Constants.STRING_STORAGE_EMBEDDED); //чтобы не лезли "редактировать"/"открыть календарь"
+        data.put(Position_eventDateNextTime, dateNext);
+        data.put(Position_eventIcon, getEventIconForType(Constants.EventType_Holiday));
+        data.put(Position_eventEmoji, getEventEmojiForType(Constants.EventType_Holiday));
+        return getEventData(data);
+    }
+
     void snoozeNotification(@NonNull String notifyData, String[] notifyDetails, String[] notifyActions, int snoozeHours, Date wakeDateTime) {
 
         try {
@@ -10565,20 +10656,17 @@ public class ContactsEvents {
     }
 
     /**
-     * Получение списка событий из общего массива
-     *
-     * @param day       Дата в формате yyyy-MM-dd
-     * @param fromPacks Список источников, откуда брать события
-     * @param colors    Массив цветов для источников (устанавливается в настройках конкретного виджета)
-     * @return Список событий
+     Получение списка событий дня с ключами
+     @param day       Дата в формате yyyy-MM-dd
+     @param fromPacks Список источников, откуда брать события
+     @param colors    Массив цветов для источников
+     @return Список событий дня
      */
     @NonNull
-    private List<String> getDayInfoInternal(@NonNull String day, @NonNull List<String> fromPacks, HashMap<String, Integer> colors) {
-        List<String> dayInfo = new ArrayList<>();
+    private List<DayEvent> getDayEventsInternal(@NonNull String day, @NonNull List<String> fromPacks, HashMap<String, Integer> colors) {
+        List<DayEvent> dayEvents = new ArrayList<>();
         try {
-
             for (String packId : fromPacks) {
-
                 final String key = packId.concat(":").concat(day);
                 final String key_noYear = packId.concat(":").concat("-").concat(day.substring(4));
 
@@ -10589,34 +10677,44 @@ public class ContactsEvents {
                         colorValue = colorFromPack;
                     }
                 }
-
                 String colorRGB = colorValue != null ? String.format("%06x", (colorValue & 0x00ffffff)) : Constants.TRANSPARENT;
-                if (preferences_DaysInfo.containsKey(key) && preferences_DaysInfo.get(key) != null) {
-                    String[] eventsList = StringUtils.getNotNullString(preferences_DaysInfo.get(key)).split(Constants.STRING_EOT, -1);
-                    for (String eventInfo : eventsList) {
-                        dayInfo.add(Constants.FONT_COLOR_DOT_START + colorRGB + Constants.FONT_COLOR_DOT_END + eventInfo);
-                    }
-                }
-                if (preferences_DaysInfo.containsKey(key_noYear) && preferences_DaysInfo.get(key_noYear) != null) {
-                    String[] eventsList = StringUtils.getNotNullString(preferences_DaysInfo.get(key_noYear)).split(Constants.STRING_EOT, -1);
-                    for (String eventInfo : eventsList) {
-                        dayInfo.add(Constants.FONT_COLOR_DOT_START + colorRGB + Constants.FONT_COLOR_DOT_END + eventInfo);
+
+                for (String k : new String[]{key, key_noYear}) {
+                    String stored = preferences_DaysInfo.get(k);
+                    if (stored == null) continue;
+                    for (String entry : StringUtils.getNotNullString(stored).split(Constants.STRING_EOT, -1)) {
+                        String text = entry;
+                        String eventKey = "";
+                        int ind = entry.indexOf(Constants.STRING_ETX);
+                        if (ind > -1) {
+                            text = entry.substring(0, ind);
+                            eventKey = entry.substring(ind + Constants.STRING_ETX.length());
+                        }
+                        dayEvents.add(new DayEvent(Constants.FONT_COLOR_DOT_START + colorRGB
+                                + Constants.FONT_COLOR_DOT_END + text, eventKey));
                     }
                 }
             }
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + ": " + e);
         }
-        return dayInfo;
+        return dayEvents;
     }
 
     @NonNull
-    List<String> getDayInfo(@NonNull String day, @NonNull List<String> fromPacks, HashMap<String, Integer> colors) {
+    List<DayEvent> getDayEvents(@NonNull String day, @NonNull List<String> fromPacks, HashMap<String, Integer> colors) {
         synchronized (preferences_DaysInfo) {
-            return getDayInfoInternal(day, fromPacks, colors);
+            return getDayEventsInternal(day, fromPacks, colors);
         }
+    }
+
+    /** Совместимость: только тексты (используется в WidgetCalendar#getAction) */
+    @NonNull
+    List<String> getDayInfo(@NonNull String day, @NonNull List<String> fromPacks, HashMap<String, Integer> colors) {
+        List<String> result = new ArrayList<>();
+        for (DayEvent de : getDayEvents(day, fromPacks, colors)) result.add(de.text);
+        return result;
     }
 
     void clearDaysTypesAndInfo() {
@@ -10674,7 +10772,8 @@ public class ContactsEvents {
                                     titlePrefix = eventPrefix;
                                 }
                                 List<String> expandedEvents = AppDateUtils.splitMultidayEventsAsSeparateLine(events, dateFormats, getToday());
-                                fillDaysTypesFromList(packHash, expandedEvents.toArray(new String[0]), titlePrefix, DayType.Type.Common);
+                                fillDaysTypesFromList(packHash, expandedEvents.toArray(new String[0]), titlePrefix, DayType.Type.Common,
+                                        Constants.PREFIX_HolidayEventID, eventsPack[0]);
                             }
                             preferences_DaysTypes.put(packHash, DayType.Type.Holiday); //todo: для других праздников - продумать
                         }
@@ -10732,7 +10831,8 @@ public class ContactsEvents {
                             continue;
                         }
                         List<String> expandedEvents = AppDateUtils.splitMultidayEventsAsSeparateLine(eventsArray, dateFormats, getToday());
-                        fillDaysTypesFromList(packHash, expandedEvents.toArray(new String[0]), Constants.eventTitleFilePrefix, DayType.Type.Holiday);
+                        fillDaysTypesFromList(packHash, expandedEvents.toArray(new String[0]), Constants.eventTitleFilePrefix, DayType.Type.Holiday,
+                                Constants.PREFIX_FileEventID, file);
                     }
                     preferences_DaysTypes.put(packHash, DayType.Type.Holiday);
                 }
@@ -10751,21 +10851,22 @@ public class ContactsEvents {
     }
 
     /**
-     * Добавление массива событий в общие массивы событий и типов событий для {@link WidgetCalendar}
-     *
-     * @param packHash       Хэш источника (тип источника + путь до источника (файла или внутреннего ресурса))
-     * @param events         Массив событий (дата + флаги события + описание события)
-     * @param titlePrefix    Префикс, добавляемый для всех событий (например: иконка)
-     * @param defaultDayType Тип дня по-умолчанию (если не стоят флаги "!" или "?")
+     Добавление массива событий в общие массивы событий и типов событий для {@link WidgetCalendar}
+     @param packHash       Хэш источника
+     @param events         Массив событий (дата + флаги события + описание события)
+     @param titlePrefix    Префикс, добавляемый для всех событий (например: иконка)
+     @param defaultDayType Тип дня по-умолчанию (если не стоят флаги "!" или "?")
+     @param eventIdPrefix  Префикс ID события (как при импорте в общий список)
+     @param eventSource    Источник для hash (название справочника или путь до файла)
      */
-    private void fillDaysTypesFromList(String packHash, String[] events, @NonNull String titlePrefix, @NonNull DayType.Type defaultDayType) {
+    private void fillDaysTypesFromList(String packHash, String[] events, @NonNull String titlePrefix,
+                                       @NonNull DayType.Type defaultDayType,
+                                       @NonNull String eventIdPrefix, @NonNull String eventSource) {
         try {
-
             if (preferences_DaysTypes.containsKey(packHash)) return;
 
             for (String eventLine : events) {
                 String day = eventLine.trim();
-
                 if (day.isEmpty() || day.startsWith(Constants.STRING_HASH) || day.startsWith("//"))
                     continue;
 
@@ -10814,6 +10915,7 @@ public class ContactsEvents {
                         }
                     }
                 }
+
                 if (dateEvent != null) {
                     final String eventTitle = titlePrefix
                             + StringUtils.substringBefore(day.substring(indexFirstSpace + 1).trim(), "|")
@@ -10828,13 +10930,12 @@ public class ContactsEvents {
                     } else {
                         key = packHash.concat(":").concat(Objects.requireNonNull(sdf_java_no_year.get()).format(dateEvent));
                     }
-                    //todo: если ежегодное событие начинается с какой-то даты в прошлом, то в календаре будут отражаться это событие и до этой даты
-                    fillDayTypeAndInfo(key, dayType, eventTitle);
+                    //todo: если ежегодное событие начинается с какой-то даты в прошлом, то в календаре это событие будет отображаться и до этой даты
+                    fillDayTypeAndInfo(key, dayType, eventTitle, makeFileLikeEventKey(eventIdPrefix, eventSource, eventLine));
                 } else {
                     ToastExpander.showInfoMsg(context, resources.getString(R.string.msg_event_parse_error, day));
                 }
             }
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + ": " + e);
@@ -10842,14 +10943,23 @@ public class ContactsEvents {
     }
 
     /**
-     * Добавление события в общие массивы событий и типов событий
-     *
-     * @param key        Ключ (packHash:yyyy-MM-dd)
-     * @param dayType    Тип дня (праздник, рабочий, ...)
-     * @param eventTitle Данные о событии
+     Добавление события в общие массивы событий и типов событий (без ключа)
      */
     private void fillDayTypeAndInfo(String key, DayType.Type dayType, String eventTitle) {
+        fillDayTypeAndInfo(key, dayType, eventTitle, "");
+    }
+
+    /**
+     Добавление события в общие массивы событий и типов событий
+     @param key        Ключ (packHash:yyyy-MM-dd)
+     @param dayType    Тип дня (праздник, рабочий, ...)
+     @param eventTitle Данные о событии
+     @param eventKey   Ключ события для меню (contactID/eventID + ## + subType), может быть пустым
+     */
+    private void fillDayTypeAndInfo(String key, DayType.Type dayType, String eventTitle, @NonNull String eventKey) {
         try {
+            //Скрытые события в календаре не показываем
+            if (!eventKey.isEmpty() && checkIsHiddenEvent(eventKey, null)) return;
 
             DayType.Type dayTypeStored = preferences_DaysTypes.get(key);
             if (dayTypeStored != null) {
@@ -10859,19 +10969,38 @@ public class ContactsEvents {
             } else {
                 preferences_DaysTypes.put(key, dayType);
             }
+
+            final String entry = eventKey.isEmpty() ? eventTitle : eventTitle + Constants.STRING_ETX + eventKey;
             String dayInfo = preferences_DaysInfo.get(key);
             if (dayInfo != null) {
                 if (!dayInfo.contains(eventTitle)) {
-                    preferences_DaysInfo.put(key, dayInfo.concat(Constants.STRING_EOT).concat(eventTitle));
+                    preferences_DaysInfo.put(key, dayInfo.concat(Constants.STRING_EOT).concat(entry));
                 }
             } else {
-                preferences_DaysInfo.put(key, eventTitle);
+                preferences_DaysInfo.put(key, entry);
             }
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + ": " + e);
         }
+    }
+
+    /**
+     Ключ события, идентичный тому, что получается в {@link #addFileEventFromLine}
+     @param eventIdPrefix Префикс ID ("h " / "f ")
+     @param eventSource   Название справочника или путь до файла (возможно с "|uri")
+     @param rawLine       Исходная строка события
+     */
+    @NonNull
+    private String makeFileLikeEventKey(@NonNull String eventIdPrefix, @NonNull String eventSource, @NonNull String rawLine) {
+        String line = rawLine.startsWith("\uFEFF") ? rawLine.substring(1).trim() : rawLine.trim();
+        final int indexFirstSpace = line.indexOf(" ");
+        final int indexComma = line.indexOf(",");
+        if (indexComma > -1 && indexFirstSpace > -1 && indexComma < indexFirstSpace && indexFirstSpace - indexComma == 1) {
+            line = line.substring(0, indexComma + 1) + line.substring(indexFirstSpace + 1); //как при импорте
+        }
+        return eventIdPrefix + StringUtils.getHash(StringUtils.substringBefore(eventSource, "|") + line)
+                + Constants.STRING_2HASH + Constants.EventType_Holiday;
     }
 
     /**
@@ -10894,6 +11023,7 @@ public class ContactsEvents {
 
                 final String eventKey = getEventKey(singleEventArray);
                 final String eventKeyWithRawId = getEventKeyWithRawId(singleEventArray);
+                final String keyToStore = !eventKey.isEmpty() ? eventKey : eventKeyWithRawId;
                 final String eventType = singleEventArray[Position_eventType];
                 final String eventSubType = singleEventArray[Position_eventSubType];
                 final String eventCaption = singleEventArray[Position_eventCaption];
@@ -10970,7 +11100,7 @@ public class ContactsEvents {
                                     cal.set(Calendar.YEAR, year);
                                     String key = packHash.concat(":")
                                             .concat(Objects.requireNonNull(sdf_java.get()).format(cal.getTime()));
-                                    fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
+                                    fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle, keyToStore);
                                     //Log.i("add fav", key);
                                 }
                                 showAsFav = true;
@@ -11048,7 +11178,7 @@ public class ContactsEvents {
                                     cal.set(Calendar.YEAR, year);
                                     String key = packHash.concat(":")
                                             .concat(Objects.requireNonNull(sdf_java.get()).format(cal.getTime()));
-                                    fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle);
+                                    fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle, keyToStore);
                                     //Log.i("add hol", key);
                                 }
                             }
@@ -11063,21 +11193,14 @@ public class ContactsEvents {
         }
     }
 
-    /**
-     * Считывание событий из календарей
-     *
-     * @param calendarHashes Хэши источников для получения событий
-     * @param startPeriod    Первый день периода считывания
-     * @param endPeriod      Последний день периода считывания
-     */
     private void fillDaysTypesFromCalendarsInternal(List<String> calendarHashes, @NonNull Calendar startPeriod, @NonNull Calendar endPeriod) {
         try {
-
             if (DeviceTools.checkNoCalendarAccess(context)) return;
 
             StringBuilder calIDs = new StringBuilder();
             for (String calHash : calendarHashes) {
-                String calKey = calHash + Objects.requireNonNull(sdf_DDMMYYYY.get()).format(startPeriod.getTime()) + Objects.requireNonNull(sdf_DDMMYYYY.get()).format(endPeriod.getTime());
+                String calKey = calHash + Objects.requireNonNull(sdf_DDMMYYYY.get()).format(startPeriod.getTime())
+                        + Objects.requireNonNull(sdf_DDMMYYYY.get()).format(endPeriod.getTime());
                 if (!preferences_DaysTypes.containsKey(calKey)) {
                     for (String calId : preferences_HolidayEvent_calendars) {
                         if (StringUtils.getHash(Constants.eventSourceCalendarPrefix + calId).equals(calHash)) {
@@ -11094,90 +11217,82 @@ public class ContactsEvents {
             if (calIDs.length() == 0) return;
 
             if (contentResolver == null) contentResolver = context.getContentResolver();
+
             String[] projection = {
+                    CalendarContract.Instances.EVENT_ID,
                     CalendarContract.Instances.BEGIN,
                     CalendarContract.Instances.END,
                     CalendarContract.Instances.CALENDAR_ID,
                     CalendarContract.Events.ALL_DAY,
                     CalendarContract.Instances.TITLE
             };
-            ColumnIndexCache cache = new ColumnIndexCache();
-            String selection = CalendarContract.Instances.CALENDAR_ID + " = " + calIDs;
-            Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
-            ContentUris.appendId(builder, startPeriod.getTimeInMillis());
-            ContentUris.appendId(builder, endPeriod.getTimeInMillis());
 
-            Cursor cursor = contentResolver.query(
-                    builder.build(),
-                    projection,
-                    selection,
-                    null,
-                    CalendarContract.Instances.BEGIN + " ASC"
-            );
-            if (cursor != null) {
-                if (cursor.getCount() > 0) {
-                    Log.i("EVENTS", String.valueOf(cursor.getCount()));
+            try (ColumnIndexCache cache = new ColumnIndexCache()) {
+                String selection = CalendarContract.Instances.CALENDAR_ID + " = " + calIDs;
+                Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
+                ContentUris.appendId(builder, startPeriod.getTimeInMillis());
+                ContentUris.appendId(builder, endPeriod.getTimeInMillis());
+                Cursor cursor = contentResolver.query(
+                        builder.build(),
+                        projection,
+                        selection,
+                        null,
+                        CalendarContract.Instances.BEGIN + " ASC"
+                );
 
-                    while (cursor.moveToNext()) {
-                        Calendar dateStart = AppDateUtils.getCalendarFromDate(new Date(StringUtils.parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.BEGIN)))));
-                        Calendar dateEnd = AppDateUtils.getCalendarFromDate(new Date(StringUtils.parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.END)))));
+                if (cursor != null) {
+                    if (cursor.getCount() > 0) {
+                        Log.i("EVENTS", String.valueOf(cursor.getCount()));
+                        while (cursor.moveToNext()) {
+                            Calendar dateStart = AppDateUtils.getCalendarFromDate(new Date(StringUtils.parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.BEGIN)))));
+                            Calendar dateEnd = AppDateUtils.getCalendarFromDate(new Date(StringUtils.parseToLong(cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.END)))));
+                            if (cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Events.ALL_DAY)) == 1) { //У AllDay событий зона всегда UTC
+                                if (TimeZone.getDefault().getRawOffset() < 0) { //Для отрицательных зон надо прибавлять день
+                                    dateStart.add(Calendar.DATE, 1);
+                                }
+                                dateStart.set(Calendar.HOUR_OF_DAY, 0);
+                                dateStart.set(Calendar.MINUTE, 0);
+                                dateStart.set(Calendar.SECOND, 0);
+                                dateStart.set(Calendar.MILLISECOND, 0);
+                                dateEnd.set(Calendar.HOUR_OF_DAY, 0);
+                                dateEnd.set(Calendar.MINUTE, 0);
+                                dateEnd.set(Calendar.SECOND, 0);
+                                dateEnd.set(Calendar.MILLISECOND, 0);
+                                dateEnd.add(Calendar.SECOND, -1);
+                            }
+                            if (dateEnd.before(startPeriod)) continue;
 
-                        if (cursor.getInt(cache.getColumnIndex(cursor, CalendarContract.Events.ALL_DAY)) == 1) { //У AllDay событий зона всегда UTC
-                            if (TimeZone.getDefault().getRawOffset() < 0) { //Для отрицательных зон надо прибавлять день
+                            final String calId = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.CALENDAR_ID));
+                            final String calHash = StringUtils.getHash(Constants.eventSourceCalendarPrefix + calId);
+                            final String calEventKey = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.EVENT_ID))
+                                    + Constants.STRING_2HASH + Constants.EventType_Holiday;
+
+                            String eventTitle = Constants.eventTitleCalendarPrefix + cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.TITLE));
+                            if (!AppDateUtils.isSameDay(dateStart, dateEnd)) {
+                                final FormatDate formatDate = dateStart.get(Calendar.YEAR) == dateEnd.get(Calendar.YEAR) ? FormatDate.WithoutYear : FormatDate.WithYear;
+                                eventTitle = eventTitle
+                                        .concat(" (")
+                                        .concat(AppDateUtils.getDateFormatted(Objects.requireNonNull(sdf_DDMMYYYY.get()).format(dateStart.getTime()), formatDate, preferences_date_format, context, getResources(), currentLocale))
+                                        .concat("-")
+                                        .concat(AppDateUtils.getDateFormatted(Objects.requireNonNull(sdf_DDMMYYYY.get()).format(dateEnd.getTime()), formatDate, preferences_date_format, context, getResources(), currentLocale))
+                                        .concat(")");
+                            }
+
+                            while (dateStart.before(startPeriod)) {
                                 dateStart.add(Calendar.DATE, 1);
                             }
-                            dateStart.set(Calendar.HOUR_OF_DAY, 0);
-                            dateStart.set(Calendar.MINUTE, 0);
-                            dateStart.set(Calendar.SECOND, 0);
-                            dateStart.set(Calendar.MILLISECOND, 0);
-                            dateEnd.set(Calendar.HOUR_OF_DAY, 0);
-                            dateEnd.set(Calendar.MINUTE, 0);
-                            dateEnd.set(Calendar.SECOND, 0);
-                            dateEnd.set(Calendar.MILLISECOND, 0);
-                            dateEnd.add(Calendar.SECOND, -1);
+                            dateEnd.add(Calendar.SECOND, 1);
+                            do {
+                                String key = calHash.concat(":").concat(Objects.requireNonNull(sdf_java.get()).format(dateStart.getTime()));
+                                fillDayTypeAndInfo(key, DayType.Type.Holiday, eventTitle, calEventKey);
+                                dateStart.add(Calendar.DATE, 1);
+                                if (dateStart.after(endPeriod)) break;
+                            } while (dateStart.before(dateEnd));
                         }
-                        if (dateEnd.before(startPeriod)) continue;
-
-                        final String calId = cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Events.CALENDAR_ID));
-                        final String calHash = StringUtils.getHash(Constants.eventSourceCalendarPrefix + calId);
-                        String eventTitle = Constants.eventTitleCalendarPrefix + cursor.getString(cache.getColumnIndex(cursor, CalendarContract.Instances.TITLE));
-
-                        if (!AppDateUtils.isSameDay(dateStart, dateEnd)) {
-                            final FormatDate formatDate = dateStart.get(Calendar.YEAR) == dateEnd.get(Calendar.YEAR) ? FormatDate.WithoutYear : FormatDate.WithYear;
-                            eventTitle = eventTitle
-                                    .concat(" (")
-                                    .concat(AppDateUtils.getDateFormatted(Objects.requireNonNull(sdf_DDMMYYYY.get()).format(dateStart.getTime()), formatDate, preferences_date_format, context, getResources(), currentLocale))
-                                    .concat("-")
-                                    .concat(AppDateUtils.getDateFormatted(Objects.requireNonNull(sdf_DDMMYYYY.get()).format(dateEnd.getTime()), formatDate, preferences_date_format, context, getResources(), currentLocale))
-                                    .concat(")");
-                        }
-
-                        while (dateStart.before(startPeriod)) {
-                            dateStart.add(Calendar.DATE, 1);
-                        }
-                        dateEnd.add(Calendar.SECOND, 1);
-
-                        do {
-                            String key = calHash.concat(":").concat(Objects.requireNonNull(sdf_java.get()).format(dateStart.getTime()));
-                            preferences_DaysTypes.put(key, DayType.Type.Holiday);
-                            String eventInfo = preferences_DaysInfo.get(key);
-                            if (eventInfo != null) {
-                                if (!eventInfo.contains(eventTitle)) {
-                                    preferences_DaysInfo.put(key, eventInfo.concat(Constants.STRING_EOT).concat(eventTitle));
-                                }
-                            } else {
-                                preferences_DaysInfo.put(key, eventTitle);
-                            }
-
-                            dateStart.add(Calendar.DATE, 1);
-                            if (dateStart.after(endPeriod)) break;
-                        } while (dateStart.before(dateEnd));
-
                     }
+                    cursor.close();
                 }
-                cursor.close();
             }
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(getContext(), StringUtils.getMethodName(3) + ": " + e);

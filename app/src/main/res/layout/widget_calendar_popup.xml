@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 30.10.2026, 10:12
+  ~  * Created by Vladimir Belov on 20.11.2026, 01:56
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 30.10.2026, 09:40
+  ~  * Last modified 20.11.2026, 00:44
   ~  */
   -->
 
@@ -48,19 +48,23 @@
             android:textColor="?attr/windowTitleTextColor" />
     </LinearLayout>
 
-    <ScrollView
+    <ListView
+        android:id="@+id/listEvents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:divider="@null"
+        android:dividerHeight="0dp" />
+
+    <TextView
+        android:id="@+id/textInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp" >
-
-        <TextView
-            android:id="@+id/textInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/appwidget_text"
-            android:padding="6dp" />
-    </ScrollView>
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="20dp"
+        android:visibility="gone"
+        tools:text="@string/month_event_empty" />
 
     <LinearLayout
         android:layout_width="match_parent"

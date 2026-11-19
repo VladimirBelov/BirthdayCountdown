@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 03.11.2026, 00:26
+ *  * Created by Vladimir Belov on 20.11.2026, 01:56
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 02.11.2026, 23:42
+ *  * Last modified 20.11.2026, 01:49
  *
  */
 package org.vovka.birthdaycountdown;
@@ -14,6 +14,7 @@ import android.content.ActivityNotFoundException;
 import android.content.ClipDescription;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,10 +23,16 @@ import android.os.Looper;
 import android.provider.CalendarContract;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
@@ -39,40 +46,48 @@ import org.vovka.birthdaycountdown.utils.UiTools;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Pattern;
 
 /**
- `WidgetCalendarPopup` - это Activity, которое отображает всплывающее окно с подробной информацией
- о выбранном дне из виджета календаря. Оно получает данные, связанные с этим днем,
- включая события или другую сопутствующую информацию, и представляет их пользователю.
- Это Activity обрабатывает:
- Отображение информации, полученной из экземпляра {@link ContactsEvents}.
- Предоставление действий, таких как просмотр дня в приложении календаря или обмен информацией о дне.
- Данные передаются этому Activity через Intent extras. Ожидаемые extras:
- {@link AppWidgetManager#EXTRA_APPWIDGET_ID}: Строка, содержащая ID вызвавшего виджета.
- {@link Constants#EXTRA_DAY_INFO}: Строка, содержащая основную информацию для отображения.
- {@link Constants#EXTRA_DAY_CAPTION}: Строка, содержащая подпись или заголовок для дня.
- {@link Constants#EXTRA_VALUES}: Строка, представляющая миллисекунды для выбранного дня.
- {@link Constants#EXTRA_LIST}: Массив, представляющая список источников для событий.
+ `WidgetCalendarPopup` - это Activity, которое отображает всплывающее окно со списком событий
+ выбранного дня из виджета календаря.
+ <p>Каждое событие — отдельная строка списка. По нажатию открывается {@link WidgetMenuActivity}.</p>
+ Ожидаемые extras:
+ {@link AppWidgetManager#EXTRA_APPWIDGET_ID}, {@link Constants#EXTRA_DAY_INFO},
+ {@link Constants#EXTRA_DAY_CAPTION}, {@link Constants#EXTRA_VALUES},
+ {@link Constants#EXTRA_LIST}, {@link Constants#EXTRA_MAP},
+ {@link Constants#EXTRA_DAY1}, {@link Constants#EXTRA_DAY2}
  */
 public class WidgetCalendarPopup extends Activity {
-    private static final String TAG = "WidgetCalendarPopup ";
+
+    private static final String TAG = "WidgetCalendarPopup";
+
     ContactsEvents eventsData;
     Intent intent;
     TextView viewCaption;
-    TextView viewInfo;
+    TextView viewInfo;              //заглушка "нет событий"
+    ListView listEvents;
     TextView buttonCalendar;
     TextView buttonShare;
     TextView buttonPrevDay;
     TextView buttonSelectDay;
     TextView buttonSelectColor;
     TextView buttonNextDay;
+
+    private DayEventsAdapter adapter;
+    private final List<EventRow> dayEvents = new ArrayList<>();
+
     private int appWidgetId = 0;
     private String dayInfo = null;
     private String dayCaption = null;
@@ -81,19 +96,81 @@ public class WidgetCalendarPopup extends Activity {
     private HashMap<String, Integer> eventsColorsInMonth = null;
     private ExecutorService executorService;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
-
+    private static final int REQ_EVENT_MENU = 1001;
+    private boolean dayTypesReady = false;
     public WidgetCalendarPopup() {
     }
+
+    /** Строка списка: сырое событие для меню + HTML для показа */
+    private static class EventRow {
+        @Nullable final String rawEvent;
+        @NonNull String displayHtml;
+        @Nullable Bitmap photo;
+        boolean photoLoaded = false;
+
+        EventRow(@Nullable String rawEvent, @NonNull String displayHtml) {
+            this.rawEvent = rawEvent;
+            this.displayHtml = displayHtml;
+        }
+    }
+
+    /** Адаптер списка событий дня */
+    private class DayEventsAdapter extends ArrayAdapter<EventRow> {
+
+        DayEventsAdapter() {
+            super(WidgetCalendarPopup.this, R.layout.widget_calendar_popup_item, dayEvents);
+        }
+
+        @Override
+        public boolean areAllItemsEnabled() {
+            return false;
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            EventRow row = getItem(position);
+            return row != null && row.rawEvent != null; //без данных о событии меню не открыть
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View view = convertView != null ? convertView
+                    : LayoutInflater.from(getContext()).inflate(R.layout.widget_calendar_popup_item, parent, false);
+            try {
+                EventRow row = getItem(position);
+                if (row != null) {
+                    TextView textEvent = view.findViewById(R.id.textEvent);
+                    ImageView imagePhoto = view.findViewById(R.id.imageEventPhoto);
+                    textEvent.setText(HtmlCompat.fromHtml(row.displayHtml, HtmlCompat.FROM_HTML_MODE_LEGACY));
+
+                    if (!row.photoLoaded) {
+                        row.photo = row.rawEvent != null
+                                ? eventsData.getEventPhoto(row.rawEvent, true, true, false, 0) : null;
+                        row.photoLoaded = true;
+                    }
+                    if (row.photo != null) {
+                        imagePhoto.setImageBitmap(row.photo);
+                        imagePhoto.setVisibility(View.VISIBLE);
+                    } else {
+                        imagePhoto.setImageDrawable(null);
+                        imagePhoto.setVisibility(View.GONE);
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
+            }
+            return view;
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-
             eventsData = ContactsEvents.getInstance();
             eventsData.initLanguage(this);
-
             this.setTheme(eventsData.preferences_theme.themeDialog);
-
             setContentView(R.layout.widget_calendar_popup);
 
             intent = getIntent();
@@ -102,15 +179,37 @@ public class WidgetCalendarPopup extends Activity {
             dayCaption = intent.getStringExtra(Constants.EXTRA_DAY_CAPTION);
             dayMills = intent.getStringExtra(Constants.EXTRA_VALUES);
             listEventsPacks = intent.getStringArrayListExtra(Constants.EXTRA_LIST);
+            if (listEventsPacks == null) listEventsPacks = new ArrayList<>();
             eventsColorsInMonth = getHashMapFromIntent(intent);
 
             if (dayInfo == null || dayMills == null) {
                 ToastExpander.showInfoMsg(getApplicationContext(), "No extras!");
                 finish();
+                return;
             }
 
             viewInfo = findViewById(R.id.textInfo);
             viewCaption = findViewById(R.id.textCaption);
+
+            //Список событий дня
+            listEvents = findViewById(R.id.listEvents);
+            adapter = new DayEventsAdapter();
+            listEvents.setAdapter(adapter);
+            listEvents.setEmptyView(viewInfo);
+            viewInfo.setText(R.string.month_event_empty);
+            listEvents.setOnItemClickListener((parent, view, position, id) -> openEventMenu(position));
+
+            //Первичное заполнение из intent (до отработки onResume) — строки ещё без ключей
+            if (!dayInfo.equals(getString(R.string.month_event_empty))) {
+                try {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(Long.parseLong(dayMills));
+                    List<String> texts = new ArrayList<>(Arrays.asList(
+                            dayInfo.split(Pattern.quote(Constants.HTML_BR), -1)));
+                    dayEvents.clear();
+                    for (String text : texts) dayEvents.add(new EventRow(null, text));
+                } catch (NumberFormatException ignored) { /**/ }
+            }
 
             //Предыдущий день
             buttonPrevDay = findViewById(R.id.button1);
@@ -134,7 +233,6 @@ public class WidgetCalendarPopup extends Activity {
                             DeviceTools.AppActionIcon.OPEN_CALENDAR,
                             android.R.drawable.ic_menu_month
                     );
-
                     if (icon != null) {
                         int iconSize = (int) (20 * getResources().getDisplayMetrics().density);
                         icon.setBounds(0, 0, iconSize, iconSize);
@@ -143,10 +241,7 @@ public class WidgetCalendarPopup extends Activity {
                                 (int) (4 * getResources().getDisplayMetrics().density)
                         );
                     }
-
-                    // Текст: пробел + название из ресурсов
                     buttonCalendar.setText(" ".concat(getString(R.string.appwidget_label_Calendar)));
-
                     UiTools.addClickEffect(buttonCalendar);
                     buttonCalendar.getBackground().setAlpha(50);
                     buttonCalendar.setOnLongClickListener(v -> {
@@ -155,7 +250,6 @@ public class WidgetCalendarPopup extends Activity {
                     });
                     buttonCalendar.setVisibility(View.VISIBLE);
                 } else {
-                    // Приложение календаря не найдено, скрываем кнопку полностью
                     buttonCalendar.setVisibility(View.GONE);
                 }
             }
@@ -230,6 +324,26 @@ public class WidgetCalendarPopup extends Activity {
         }
     }
 
+    /** Открывает меню события (как в остальных виджетах) */
+    private void openEventMenu(int position) {
+        try {
+            EventRow row = adapter.getItem(position);
+            if (row == null || row.rawEvent == null) return;
+
+            Intent menuIntent = new Intent(this, WidgetMenuActivity.class);
+            menuIntent.setAction(Constants.ACTION_MENU);
+            menuIntent.putExtra(Constants.EXTRA_CLICKED_EVENT, row.rawEvent);
+            menuIntent.putExtra(Constants.EXTRA_CLICKED_TEXT, row.displayHtml);
+            menuIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            try {
+                startActivityForResult(menuIntent, REQ_EVENT_MENU);
+            } catch (ActivityNotFoundException ignored) { /**/ }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
+        }
+    }
+
     private void setupClickListeners() {
         try {
             //Календарь
@@ -238,30 +352,22 @@ public class WidgetCalendarPopup extends Activity {
                     if (dayMills != null) {
                         Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
                         builder.appendPath(Constants.QUERY_PARAM_TIME);
-
                         Calendar calForUri = Calendar.getInstance();
                         calForUri.setTimeInMillis(Long.parseLong(dayMills));
-                        AppDateUtils.clearTime(calForUri); // Обнуляем до 00:00:00.000
-
-                        // Используем обнуленное время, а не исходную строку dayMills
+                        AppDateUtils.clearTime(calForUri);
                         builder.appendPath(Long.toString(calForUri.getTimeInMillis()));
-
                         Intent intentCalendar = new Intent(Intent.ACTION_VIEW, builder.build());
                         intentCalendar.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                        // Резолвим пакет при клике
                         String calendarPackage = DeviceTools.getAppActionPackageName(
                                 this, DeviceTools.AppActionIcon.OPEN_CALENDAR
                         );
                         if (calendarPackage != null) {
                             intentCalendar.setPackage(calendarPackage);
                         }
-
                         try {
                             startActivity(intentCalendar);
                             finish();
                         } catch (ActivityNotFoundException e) {
-                            // Fallback: если вдруг даже основной календарь не сработал
                             try {
                                 Intent fallbackIntent = new Intent(Intent.ACTION_MAIN);
                                 fallbackIntent.addCategory(Intent.CATEGORY_APP_CALENDAR);
@@ -279,12 +385,12 @@ public class WidgetCalendarPopup extends Activity {
             //Поделиться
             if (buttonShare != null) {
                 buttonShare.setOnClickListener(v -> {
-                    if (!dayInfo.equals(getString(R.string.month_event_empty))) {
+                    if (!dayEvents.isEmpty()) {
                         Intent intentShare = new Intent(Intent.ACTION_SEND);
                         intentShare.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                         intentShare.putExtra(Intent.EXTRA_TEXT,
                                 viewCaption.getText().toString().concat("\n")
-                                        .concat(viewInfo.getText().toString()));
+                                        .concat(HtmlCompat.fromHtml(dayInfo, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()));
                         try {
                             startActivity(Intent.createChooser(intentShare, " "));
                         } catch (ActivityNotFoundException ignored) { /**/ }
@@ -299,7 +405,6 @@ public class WidgetCalendarPopup extends Activity {
                         long millis = Long.parseLong(dayMills);
                         Calendar newCal = Calendar.getInstance();
                         newCal.setTimeInMillis(millis);
-
                         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                                 (view, selectedYear, selectedMonth, dayOfMonth) -> {
                                     newCal.clear();
@@ -323,17 +428,14 @@ public class WidgetCalendarPopup extends Activity {
                         Calendar cal = Calendar.getInstance();
                         cal.setTimeInMillis(millis);
                         String date = Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime());
-
                         int colorDefaultValue = ContextCompat.getColor(this, android.R.color.transparent);
                         int colorValue = colorDefaultValue;
-
                         String storedColorValue = eventsData.getDayInfo(date);
                         if (!storedColorValue.isEmpty()) {
                             try {
                                 colorValue = Integer.parseInt(storedColorValue);
                             } catch (NumberFormatException ignored) { /**/ }
                         }
-
                         ColorPicker picker = new ColorPicker(
                                 new ContextThemeWrapper(this, eventsData.preferences_theme.themeMain)
                         );
@@ -357,11 +459,9 @@ public class WidgetCalendarPopup extends Activity {
             if (buttonPrevDay != null) {
                 buttonPrevDay.setOnClickListener(v -> {
                     if (dayMills != null) {
-                        long millis = Long.parseLong(dayMills);
                         Calendar newCal = Calendar.getInstance();
-                        newCal.setTimeInMillis(millis);
+                        newCal.setTimeInMillis(Long.parseLong(dayMills));
                         newCal.add(Calendar.DAY_OF_YEAR, -1);
-
                         updateDayData(newCal);
                         showDayInfo();
                     }
@@ -372,11 +472,9 @@ public class WidgetCalendarPopup extends Activity {
             if (buttonNextDay != null) {
                 buttonNextDay.setOnClickListener(v -> {
                     if (dayMills != null) {
-                        long millis = Long.parseLong(dayMills);
                         Calendar newCal = Calendar.getInstance();
-                        newCal.setTimeInMillis(millis);
+                        newCal.setTimeInMillis(Long.parseLong(dayMills));
                         newCal.add(Calendar.DAY_OF_YEAR, +1);
-
                         updateDayData(newCal);
                         showDayInfo();
                     }
@@ -388,20 +486,66 @@ public class WidgetCalendarPopup extends Activity {
         }
     }
 
+    /** Однократное заполнение типов дней: избранные, календари, справочники, файлы */
+    private void prepareDayTypes() {
+        if (executorService == null || executorService.isShutdown()) return;
+        executorService.execute(() -> {
+            try {
+                if (eventsData.isEmptyEventList()) eventsData.getEvents();
+                eventsData.fillDayTypesForCalendarWidget();
+
+                if (intent != null && intent.hasExtra(Constants.EXTRA_DAY1) && intent.hasExtra(Constants.EXTRA_DAY2)) {
+                    Calendar calFirstDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY1);
+                    Calendar calLastDay  = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY2);
+                    if (calFirstDay != null && calLastDay != null) {
+                        eventsData.fillDaysTypesFromCalendars(listEventsPacks, calFirstDay, calLastDay);
+                    }
+                }
+                eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_HOLIDAY,
+                        Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
+                eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_OTHER_HOLIDAY,
+                        Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
+                eventsData.fillDaysTypesFromFiles(listEventsPacks);
+
+                dayTypesReady = true;
+
+                mainHandler.post(() -> {
+                    if (isFinishing() || isDestroyed()) return;
+                    rebuildCurrentDay();
+                });
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
+            }
+        });
+    }
+
+    /** Пересборка только текущего дня — как при нажатии стрелок */
+    private void rebuildCurrentDay() {
+        if (dayMills == null) return;
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(Long.parseLong(dayMills));
+            updateDayData(cal);
+        } catch (NumberFormatException e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        showDayInfo();
+    }
+
+    /** Пересчитывает данные дня: тексты событий + сырые события для меню */
     private void updateDayData(Calendar cal) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(" (EEE) ", Locale.getDefault());
-            List<String> allEventsThisDay = eventsData.getDayInfo(
-                    Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime()),
-                    listEventsPacks,
-                    eventsColorsInMonth
-            );
+            final String dateJava = Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(cal.getTime());
+            List<ContactsEvents.DayEvent> allEventsThisDay =
+                    eventsData.getDayEvents(dateJava, listEventsPacks, eventsColorsInMonth);
+
             // Аналогичный блок есть в WidgetCalendar#getAction
             if (!allEventsThisDay.isEmpty()) {
                 final String weddingPrefix = Constants.eventTitleFavoritePrefix.concat(getString(R.string.event_type_anniversary));
                 final String birthdayPrefix = Constants.eventTitleFavoritePrefix.concat(getString(R.string.event_type_birthday));
-                for (int i = 0; i < allEventsThisDay.size(); i++) {
-                    String event = allEventsThisDay.get(i);
+                for (ContactsEvents.DayEvent dayEvent : allEventsThisDay) {
+                    String event = dayEvent.text;
                     int indParOpen = event.lastIndexOf(" (");
                     int indParClose = event.lastIndexOf(")");
                     if (indParOpen > -1 && indParClose > -1) {
@@ -411,33 +555,77 @@ public class WidgetCalendarPopup extends Activity {
                             String strYear = event.substring(indParOpen + " (".length(), indParClose);
                             try {
                                 int year = Integer.parseInt(strYear);
-                                String anCaption = StringUtils.getWeddingName(cal.get(Calendar.YEAR) - year, eventsData.getContext(), eventsData.getResources());
+                                String anCaption = StringUtils.getWeddingName(cal.get(Calendar.YEAR) - year,
+                                        eventsData.getContext(), eventsData.getResources());
                                 if (StringUtils.hasContent(anCaption)) {
-                                    allEventsThisDay.set(i, event.concat(" (").concat(anCaption)
-                                            .concat(")"));
+                                    dayEvent.text = event.concat(" (").concat(anCaption).concat(")");
                                 }
                             } catch (NumberFormatException ignored) { /**/ }
                         } else if (indMinus == -1 && !event.contains(birthdayPrefix)) {
                             //Если событие на один день - удаляем год в скобках
-                            allEventsThisDay.set(i, event.substring(0, indParOpen));
+                            dayEvent.text = event.substring(0, indParOpen);
                         }
                     }
                 }
             }
 
-            dayInfo = allEventsThisDay.isEmpty()
+            //Сопоставление с реальными событиями (одним проходом по общему списку)
+            final Set<String> keys = new HashSet<>();
+            final List<String> texts = new ArrayList<>();
+            for (ContactsEvents.DayEvent dayEvent : allEventsThisDay) {
+                texts.add(dayEvent.text);
+                if (StringUtils.hasContent(dayEvent.eventKey)) keys.add(dayEvent.eventKey);
+            }
+            final Map<String, String> resolved = eventsData.findEventsByKeys(keys);
+            final String dateNext = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime());
+
+            dayEvents.clear();
+            for (ContactsEvents.DayEvent dayEvent : allEventsThisDay) {
+                String raw = resolved.get(dayEvent.eventKey);
+                if (raw == null && StringUtils.hasContent(dayEvent.eventKey)) {
+                    raw = eventsData.makeDayEventInfo(dayEvent.eventKey, toPlainTitle(dayEvent.text), dateNext);
+                }
+                dayEvents.add(new EventRow(raw, dayEvent.text));
+            }
+
+            dayInfo = texts.isEmpty()
                     ? getString(R.string.month_event_empty)
-                    : TextUtils.join(Constants.HTML_BR, allEventsThisDay);
+                    : TextUtils.join(Constants.HTML_BR, texts);
+
             dayCaption = getString(R.string.month_event_popup_prefix)
                     .concat(AppDateUtils.getDateFormatted(
                             Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime()),
                             ContactsEvents.FormatDate.WithYear, eventsData.preferences_date_format, eventsData.getContext(),
                             eventsData.getResources(), eventsData.currentLocale))
                     .concat(sdf.format(cal.getTime()));
+
             dayMills = Long.toString(cal.getTimeInMillis());
+
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
+        }
+    }
+
+    /** HTML события -> заголовок без цветной точки источника */
+    @NonNull
+    private String toPlainTitle(@NonNull String html) {
+        String plain = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY).toString().trim();
+        if (plain.startsWith("●")) plain = plain.substring(1).trim();
+        return plain;
+    }
+
+    /** Подставляет цвет фона темы вместо заглушки "transparent" (без TypedArray.close() — он только с API 31) */
+    @NonNull
+    private String replaceTransparent(@NonNull String html) {
+        if (!html.contains(Constants.TRANSPARENT)) return html;
+        TypedArray ta = null;
+        try {
+            ta = getTheme().obtainStyledAttributes(R.styleable.Theme);
+            return html.replace(Constants.TRANSPARENT,
+                    String.format("%06x", (ta.getColor(R.styleable.Theme_backgroundColor, 0) & 0x00ffffff)));
+        } finally {
+            if (ta != null) ta.recycle();
         }
     }
 
@@ -445,59 +633,20 @@ public class WidgetCalendarPopup extends Activity {
     public void onResume() {
         try {
             super.onResume();
-
-            if (executorService != null && !executorService.isShutdown()) {
-                executorService.execute(() -> {
-                    try {
-
-                        if (eventsData.isEmptyEventList()) {
-                            eventsData.getEvents();
-                        }
-                        //Заполнение типов дней для избранных событий и локальных праздников
-                        eventsData.fillDayTypesForCalendarWidget();
-
-                        if (intent != null) {
-                            //Заполнение типов дней из календарей по периоду
-                            Calendar calFirstDay = null;
-                            Calendar calLastDay = null;
-                            if (intent.hasExtra(Constants.EXTRA_DAY1) && intent.hasExtra(Constants.EXTRA_DAY2)) {
-                                calFirstDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY1);
-                                calLastDay = (Calendar) intent.getSerializableExtra(Constants.EXTRA_DAY2);
-                            }
-                            if (calFirstDay != null && calLastDay != null) {
-                                eventsData.fillDaysTypesFromCalendars(listEventsPacks, calFirstDay, calLastDay);
-                            }
-                        }
-
-                        //Заполнение типов дней из справочников
-                        eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
-                        eventsData.fillDaysTypesFromHolidays(listEventsPacks, Constants.STRING_TYPE_OTHER_HOLIDAY, Constants.eventSourceHolidayPrefix, Constants.eventTitleHolidayPrefix);
-                        //Заполнение типов дней из файлов
-                        eventsData.fillDaysTypesFromFiles(listEventsPacks);
-
-                        // Обновляем UI в главном потоке
-                        mainHandler.post(() -> {
-                            if (dayMills != null) {
-                                try {
-                                    long millis = Long.parseLong(dayMills);
-                                    Calendar cal = Calendar.getInstance();
-                                    cal.setTimeInMillis(millis);
-                                    updateDayData(cal);
-                                } catch (NumberFormatException e) {
-                                    Log.e(TAG, e.getMessage(), e);
-                                }
-                            }
-                            showDayInfo();
-                        });
-                    } catch (Exception e) {
-                        Log.e(TAG, e.getMessage(), e);
-                    }
-                });
+            if (!dayTypesReady) {
+                prepareDayTypes();  // выполнится и при первом запуске, и после изменений
             }
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_EVENT_MENU && resultCode == RESULT_OK) {
+            dayTypesReady = false;   // обработается в onResume
         }
     }
 
@@ -508,43 +657,35 @@ public class WidgetCalendarPopup extends Activity {
             executorService.shutdown();
         }
     }
+
     /** Показывает информацию о дне */
     private void showDayInfo() {
         try {
-            if (dayInfo.contains(Constants.TRANSPARENT)) {
-                try (TypedArray ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme)) {
-                    dayInfo = dayInfo.replace(Constants.TRANSPARENT,
-                            String.format("%06x", (ta.getColor(R.styleable.Theme_backgroundColor, 0) & 0x00ffffff)));
-                }
-            }
-            viewInfo.setText(HtmlCompat.fromHtml(dayInfo, HtmlCompat.FROM_HTML_MODE_LEGACY));
+            if (dayInfo != null) dayInfo = replaceTransparent(dayInfo);
+            for (EventRow row : dayEvents) row.displayHtml = replaceTransparent(row.displayHtml);
+            adapter.notifyDataSetChanged(); //видимость списка/заглушки разруливает setEmptyView()
 
             if (!TextUtils.isEmpty(dayCaption)) {
                 viewCaption.setText(dayCaption);
             }
 
-            boolean isEmptyDay = dayInfo.equals(getString(R.string.month_event_empty));
+            boolean isEmptyDay = dayEvents.isEmpty();
+            if (buttonShare != null) {
+                buttonShare.setVisibility(isEmptyDay ? View.GONE : View.VISIBLE);
+            }
 
-            // Показать/скрыть кнопку Share
-            buttonShare.setVisibility(isEmptyDay ? View.GONE : View.VISIBLE);
-
-            if (dayMills != null) {
-                long millis = Long.parseLong(dayMills);
+            if (buttonSelectColor != null && dayMills != null) {
                 Calendar newCal = Calendar.getInstance();
-                newCal.setTimeInMillis(millis);
-
+                newCal.setTimeInMillis(Long.parseLong(dayMills));
                 String date = Objects.requireNonNull(ContactsEvents.sdf_java.get()).format(newCal.getTime());
                 String storedColorValue = eventsData.getDayInfo(date);
-
                 int colorDefaultValue = ContextCompat.getColor(this, android.R.color.transparent);
                 int colorValue = colorDefaultValue;
-
                 if (!storedColorValue.isEmpty()) {
                     try {
                         colorValue = Integer.parseInt(storedColorValue);
                     } catch (NumberFormatException ignored) { /**/ }
                 }
-
                 if (colorValue != colorDefaultValue) {
                     buttonSelectColor.setText(HtmlCompat.fromHtml(
                             Constants.FONT_COLOR_DOT_START
@@ -557,12 +698,12 @@ public class WidgetCalendarPopup extends Activity {
                     buttonSelectColor.setText(R.string.popup_action_color);
                 }
             }
-
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             ToastExpander.showDebugMsg(this, StringUtils.getMethodName(3) + ": " + e);
         }
     }
+
     /**
      Вспомогательный метод для безопасного извлечения HashMap с подавлением предупреждения
      @param intent Intent
