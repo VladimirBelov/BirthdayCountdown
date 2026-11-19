@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 07.11.2026, 22:51
+ *  * Created by Vladimir Belov on 19.11.2026, 23:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 07.11.2026, 21:29
+ *  * Last modified 19.11.2026, 15:10
  *
  */
 
@@ -1541,7 +1541,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                                 if (!currentVersion.isEmpty()) break;
                                 currentVersion = strChange.substring(1);
-                                if (!currentVersion.equals(BuildConfig.VERSION_NAME)) break;
+                                if (!currentVersion.startsWith(BuildConfig.VERSION_NAME)) break;
                                 sb.append(Constants.HTML_UL_START);
 
                             } else {

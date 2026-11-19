@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 29.10.2026, 17:26
+ *  * Created by Vladimir Belov on 19.11.2026, 23:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 29.10.2026, 15:48
+ *  * Last modified 19.11.2026, 22:26
  *
  */
 package org.vovka.birthdaycountdown;
@@ -137,7 +137,7 @@ public class WidgetCalendarConfigureActivity extends AppCompatActivity {
             ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
             int barColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
             // Проверяем: если версия < 35 ИЛИ включена навигация кнопками
-            boolean useLegacyColors = Build.VERSION.SDK_INT < 35 || DeviceTools.isButtonNavigation(this);
+            boolean useLegacyColors = !DeviceTools.isEdgeToEdge() || DeviceTools.isButtonNavigation(this);
             // Определяем, является ли цвет слишком светлым (близким к белому)
             boolean isLightColor = (Color.red(barColor) > 200 && Color.green(barColor) > 200 && Color.blue(barColor) > 200);
             Window w = getWindow();

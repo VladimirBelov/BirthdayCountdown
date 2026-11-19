@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 16.11.2026, 08:50
+ *  * Created by Vladimir Belov on 19.11.2026, 23:29
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 15.11.2026, 23:02
+ *  * Last modified 19.11.2026, 22:53
  *
  */
 
@@ -90,7 +90,7 @@ public class AboutActivity extends AppCompatActivity {
             ta = this.getTheme().obtainStyledAttributes(R.styleable.Theme);
             int barColor = ta.getColor(R.styleable.Theme_windowStatusbarColor, 0);
             // Проверяем: если версия < 35 ИЛИ включена навигация кнопками
-            boolean useLegacyColors = Build.VERSION.SDK_INT < 35 || DeviceTools.isButtonNavigation(this);
+            boolean useLegacyColors = !DeviceTools.isEdgeToEdge() || DeviceTools.isButtonNavigation(this);
             // Определяем, является ли цвет слишком светлым (близким к белому)
             boolean isLightColor = (Color.red(barColor) > 200 && Color.green(barColor) > 200 && Color.blue(barColor) > 200);
             Window w = getWindow();
@@ -129,9 +129,10 @@ public class AboutActivity extends AppCompatActivity {
             if (DeviceTools.isEdgeToEdge()) {
                 View layoutCoordinator = findViewById(R.id.coordinator);
                 ViewCompat.setOnApplyWindowInsetsListener(layoutCoordinator, (v, windowInsets) -> {
-                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
-                    layoutCoordinator.setPadding(0, insets.top, 0, insets.bottom);
-                    layoutMain.setPadding(0, insets.bottom + ImageUtils.Sp2Px(getResources(), 62), 0, 0);
+                    Insets statusBarInsets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
+                    layoutCoordinator.setPadding(0, statusBarInsets.top, 0, statusBarInsets.bottom);
+                    layoutMain.setPadding(0, statusBarInsets.bottom + ImageUtils.Sp2Px(getResources(), 62), 0, 0);
+
                     return WindowInsetsCompat.CONSUMED;
                 });
             } else {
@@ -329,30 +330,46 @@ public class AboutActivity extends AppCompatActivity {
             if (arrChangeLog.length > 0) {
 
                 sb.append(getString(R.string.changelog_title));
-                int countRows = 0;
+                boolean insideVersion = false;
                 for (String strChange : arrChangeLog) {
-
-                    countRows++;
 
                     if (strChange.startsWith(Constants.STRING_2HASH)) {
 
-                        if (countRows > 1) sb.append(Constants.HTML_UL_END);
+                        //Заголовок (или крупная надпись)
+                        if (insideVersion) {
+                            sb.append(Constants.HTML_UL_END);
+                            insideVersion = false;
+                        }
                         sb.append(Constants.HTML_H2_START);
-                        sb.append(strChange.substring(2));
+                        sb.append(strChange.substring(Constants.STRING_2HASH.length()));
                         sb.append(Constants.HTML_H2_END);
 
                     } else if (strChange.startsWith(Constants.STRING_HASH)) {
 
-                        if (countRows > 1) sb.append(Constants.HTML_UL_END);
+                        //Заголовок версии
+                        if (insideVersion) {
+                            sb.append(Constants.HTML_UL_END);
+                            insideVersion = false;
+                        }
                         sb.append(getString(R.string.changelog_release_title, strChange.substring(1)));
 
                     } else {
 
+                        //Пункт изменений в версии
                         sb.append(Constants.HTML_LI).append(strChange.replace("\n", Constants.HTML_BR));
+                        insideVersion = true;
 
                     }
                 }
-                if (countRows > 0) sb.append(Constants.HTML_UL_END);
+                if (insideVersion) sb.append(Constants.HTML_UL_END);
+
+                //Отступ в самом низу списка
+                if (DeviceTools.isEdgeToEdge())
+                    if (DeviceTools.isButtonNavigation(this)) {
+                        sb.append(Constants.HTML_BR).append(Constants.HTML_BR).append(Constants.HTML_BR);
+                    } else {
+                        sb.append(Constants.HTML_BR);
+                    }
 
             }
             sb.append("</body></html>");
