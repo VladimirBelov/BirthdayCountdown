@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.11.2026, 01:56
+ *  * Created by Vladimir Belov on 20.11.2026, 13:23
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 20.11.2026, 01:49
+ *  * Last modified 20.11.2026, 13:20
  *
  */
 package org.vovka.birthdaycountdown;
@@ -105,7 +105,7 @@ public class WidgetCalendarPopup extends Activity {
     private static class EventRow {
         @Nullable final String rawEvent;
         @NonNull String displayHtml;
-        @Nullable Bitmap photo;
+        @Nullable Bitmap photo = null;
         boolean photoLoaded = false;
 
         EventRow(@Nullable String rawEvent, @NonNull String displayHtml) {
@@ -145,8 +145,14 @@ public class WidgetCalendarPopup extends Activity {
                     textEvent.setText(HtmlCompat.fromHtml(row.displayHtml, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
                     if (!row.photoLoaded) {
-                        row.photo = row.rawEvent != null
-                                ? eventsData.getEventPhoto(row.rawEvent, true, true, false, 0) : null;
+                        if (row.rawEvent != null) {
+                            String[] singleEventArray = row.rawEvent.split(Constants.STRING_EOT, -1);
+                            boolean isHoliday = singleEventArray.length > ContactsEvents.Position_eventType
+                                    && Constants.EventType_Holiday.equals(singleEventArray[ContactsEvents.Position_eventType]);
+                            if (!isHoliday) {
+                                row.photo = eventsData.getEventPhoto(row.rawEvent, true, true, false, 0);
+                            }
+                        }
                         row.photoLoaded = true;
                     }
                     if (row.photo != null) {
@@ -580,7 +586,14 @@ public class WidgetCalendarPopup extends Activity {
             final String dateNext = Objects.requireNonNull(ContactsEvents.sdf_DDMMYYYY.get()).format(cal.getTime());
 
             dayEvents.clear();
+            final Set<String> addedKeys = new HashSet<>();
+
             for (ContactsEvents.DayEvent dayEvent : allEventsThisDay) {
+                // Пропускаем дубликаты
+                if (StringUtils.hasContent(dayEvent.eventKey) && !addedKeys.add(dayEvent.eventKey)) {
+                    continue;
+                }
+
                 String raw = resolved.get(dayEvent.eventKey);
                 if (raw == null && StringUtils.hasContent(dayEvent.eventKey)) {
                     raw = eventsData.makeDayEventInfo(dayEvent.eventKey, toPlainTitle(dayEvent.text), dateNext);

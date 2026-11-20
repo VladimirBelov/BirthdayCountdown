@@ -1,8 +1,8 @@
 /*
  * *
- *  * Created by Vladimir Belov on 20.11.2026, 01:56
+ *  * Created by Vladimir Belov on 20.11.2026, 13:23
  *  * Copyright (c) 2018 - 2026. All rights reserved.
- *  * Last modified 19.11.2026, 23:59
+ *  * Last modified 20.11.2026, 13:05
  *
  */
 
@@ -8636,13 +8636,6 @@ public class ContactsEvents {
         return result;
     }
 
-    /** Ищет одно событие по ключу */
-    @Nullable
-    String findEventByKey(@Nullable String eventKey) {
-        if (!StringUtils.hasContent(eventKey)) return null;
-        return findEventsByKeys(new HashSet<>(Collections.singletonList(eventKey))).get(eventKey);
-    }
-
     /**
      Минимальное «синтетическое» событие для меню: избранное / скрыть / не уведомлять / поделиться.
      Используется, когда события нет в общем списке (например, справочник включён только в виджете)
@@ -10943,13 +10936,6 @@ public class ContactsEvents {
     }
 
     /**
-     Добавление события в общие массивы событий и типов событий (без ключа)
-     */
-    private void fillDayTypeAndInfo(String key, DayType.Type dayType, String eventTitle) {
-        fillDayTypeAndInfo(key, dayType, eventTitle, "");
-    }
-
-    /**
      Добавление события в общие массивы событий и типов событий
      @param key        Ключ (packHash:yyyy-MM-dd)
      @param dayType    Тип дня (праздник, рабочий, ...)
@@ -11027,6 +11013,7 @@ public class ContactsEvents {
                 final String eventType = singleEventArray[Position_eventType];
                 final String eventSubType = singleEventArray[Position_eventSubType];
                 final String eventCaption = singleEventArray[Position_eventCaption];
+                final String eventLabel = singleEventArray[Position_eventLabel];
                 final String notAnnualEvent = singleEventArray[Position_notAnnualEvent];
                 boolean isAnnual = !"1".equals(notAnnualEvent);
 
@@ -11040,6 +11027,8 @@ public class ContactsEvents {
                         anCaption = StringUtils.substringBefore(eventCaption, " (");
                     } else if (Constants.EventType_5K.equals(eventType)) {
                         anCaption = singleEventArray[Position_age_caption];
+                    } else if (!TextUtils.isEmpty(eventLabel)) {
+                        anCaption = eventLabel;
                     }
                     String eventTitle = Constants.eventTitleFavoritePrefix
                             .concat(anCaption)

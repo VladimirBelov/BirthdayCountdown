@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /**
-  ~  * Created by Vladimir Belov on 03.11.2026, 00:26
+  ~  * Created by Vladimir Belov on 20.11.2026, 13:23
   ~  * Copyright (c) 2018 - 2026. All rights reserved.
-  ~  * Last modified 02.11.2026, 23:14
+  ~  * Last modified 20.11.2026, 10:29
   ~  */
   -->
 
@@ -349,6 +349,7 @@
         <activity android:name=".WidgetCalendarPopup"
             android:theme="@android:style/Theme.Dialog"
             android:exported="false"
+            android:noHistory="true"
             android:excludeFromRecents="true"/>
 
         <activity android:name=".FactsPopupActivity"
@@ -375,6 +376,7 @@
             android:name=".WidgetMenuActivity"
             android:theme="@android:style/Theme.Dialog"
             android:exported="false"
+            android:noHistory="true"
             android:excludeFromRecents="true"/>
 
         <activity
